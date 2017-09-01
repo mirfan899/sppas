@@ -1,42 +1,43 @@
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              the automatic
-#           \__   |__/  |__/  |___| \__             annotation and
-#              \  |     |     |   |    \             analysis
-#           ___/  |     |     |   | ___/              of speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2017  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: src.resources.mapping.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.resources.mapping.py
+    ~~~~~~~~~~~~~~~~~~~~~~~
+
+    Class to manage mapping tables.
+
+"""
 import re
 
-from dictrepl import DictRepl
+from .dictrepl import sppasDictRepl
 
 # ----------------------------------------------------------------------------
 
@@ -45,26 +46,26 @@ DEFAULT_SEP = (";", ",", " ", ".", "|", "+", "-")
 # ----------------------------------------------------------------------------
 
 
-class Mapping(DictRepl):
+class sppasMapping(sppasDictRepl):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    @summary:      Mapping table of any set of strings.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      A mapping is an extended replacement dictionary.
 
-    A mapping is an extended replacement dictionary.
+    sppasMapping is used for the management of a mapping table of any set
+    of strings.
 
     """
     def __init__(self, dict_name=None):
-        """
-        Create a new Mapping instance.
+        """ Create a new sppasMapping instance.
 
-        :param dict_name: (string) is the file name with the mapping data (2 columns)
+        :param dict_name: (str) is the file name with the mapping data (2 columns)
 
         """
-        DictRepl.__init__(self, dict_name, nodump=True)
+        sppasDictRepl.__init__(self, dict_name, nodump=True)
 
         self._keep_miss = True  # remove or not missing values
         self._reverse = False   # will replace value by key instead of replacing key by value
@@ -82,8 +83,7 @@ class Mapping(DictRepl):
     # -----------------------------------------------------------------------
 
     def set_keep_miss(self, keep_miss):
-        """
-        Fix the keep_miss option.
+        """ Fix the keep_miss option.
 
         :param keep_miss: (bool) If keep_miss is set to True, each missing
         entry is kept without change; instead each missing entry is replaced
@@ -95,11 +95,10 @@ class Mapping(DictRepl):
     # -----------------------------------------------------------------------
 
     def set_reverse(self, reverse):
-        """
-        Fix the reverse option.
+        """ Fix the reverse option.
 
-        :param reverse (bool) If replace is set to True, mapping will replace
-        value by key instead of replacing key by value.
+        :param reverse: (bool) If replace is set to True, the mapping will
+        replace value by key instead of replacing key by value.
 
         """
         self._reverse = reverse
@@ -107,8 +106,7 @@ class Mapping(DictRepl):
     # -----------------------------------------------------------------------
 
     def set_miss_symbol(self, symbol):
-        """
-        Fix the symbol to be used if keep_miss is False.
+        """ Fix the symbol to be used if keep_miss is False.
 
         :param symbol: (str) US-ASCII symbol to be used in case of a symbol
         is missing of the mapping table.
@@ -121,14 +119,13 @@ class Mapping(DictRepl):
     # -----------------------------------------------------------------------
 
     def map_entry(self, entry):
-        """
-        Map an entry (a key or a value).
+        """ Map an entry (a key or a value).
 
         :param entry: (str) is the input string to map
         :returns: mapped entry is a string
 
         """
-        if self.get_size() == 0:
+        if self.is_empty() is True:
             return entry
 
         if self._reverse is False:
@@ -147,16 +144,15 @@ class Mapping(DictRepl):
     # -----------------------------------------------------------------------
 
     def map(self, mstr, delimiters=DEFAULT_SEP):
-        """
-        Run the Mapping process on an input string.
+        """ Run the Mapping process on an input string.
 
         :param mstr: is the input string to map
         :param delimiters: (list) list of character delimiters. Default is:
                [';', ',', ' ', '.', '|', '+', '-']
-        @return a string
+        :returns: a string
 
         """
-        if self.get_size() == 0:
+        if self.is_empty() is True:
             return mstr
 
         tab = []
@@ -194,5 +190,3 @@ class Mapping(DictRepl):
                 map_tab.append(self.map_entry(v))
 
         return "".join(map_tab)
-
-    # -----------------------------------------------------------------------

@@ -40,20 +40,12 @@ __authors__   = """Brigitte Bigi"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 
-#-----------------------------------------------------------------------------
-# Imports
-#-----------------------------------------------------------------------------
+PRECISION = 3  # number of digits, for zoom or scroll.
+
+# -----------------------------------------------------------------------------
 
 
-#-----------------------------------------------------------------------------
-# CONSTANTS
-#-----------------------------------------------------------------------------
-
-PRECISION=3 # number of digits, for zoom or scroll.
-
-#-----------------------------------------------------------------------------
-
-class DataPeriod:
+class DataPeriod(object):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -67,8 +59,8 @@ class DataPeriod:
     Two pairs of values can be fixed:
         - min/max of the delta (where delta = end - start),
         - min/max of the values.
-    """
 
+    """
     def __init__(self, start, end):
         """
         Create a new DataPeriod() instance with default values.
@@ -84,10 +76,6 @@ class DataPeriod:
         self._minv  = start            # minimum value (for start)
         self._maxv  = end              # maximum value (for end)
 
-    # End __init__
-    #-------------------------------------------------------------------------
-
-
     #-------------------------------------------------------------------------
     # Getters...
     #-------------------------------------------------------------------------
@@ -98,7 +86,6 @@ class DataPeriod:
         """
         return self._start
 
-    # End GetStart
     #-------------------------------------------------------------------------
 
 
@@ -108,7 +95,6 @@ class DataPeriod:
         """
         return self._end
 
-    # End GetEnd
     #-------------------------------------------------------------------------
 
 
@@ -118,7 +104,6 @@ class DataPeriod:
         """
         return self._end - self._start
 
-    # End Delta
     #-------------------------------------------------------------------------
 
 
@@ -128,7 +113,6 @@ class DataPeriod:
         """
         return self._minv
 
-    # End GetMin
     #-------------------------------------------------------------------------
 
 
@@ -138,7 +122,6 @@ class DataPeriod:
         """
         return self._maxv
 
-    # End GetMax
     #-------------------------------------------------------------------------
 
 
@@ -148,7 +131,6 @@ class DataPeriod:
         """
         return self._mind
 
-    # End GetMinDelta
     #-------------------------------------------------------------------------
 
 
@@ -158,7 +140,6 @@ class DataPeriod:
         """
         return self._maxd
 
-    # End GetMaxDelta
     #-------------------------------------------------------------------------
 
 
@@ -169,7 +150,6 @@ class DataPeriod:
         """
         return value >= self._start and value <= self._end
 
-    # End Inside
     #-------------------------------------------------------------------------
 
 
@@ -180,7 +160,6 @@ class DataPeriod:
         """
         return not self.Insize(value)
 
-    # End Outside
     #-------------------------------------------------------------------------
 
 
@@ -190,11 +169,6 @@ class DataPeriod:
         """
         return not (period.get_end() < self._start or
                     period.get_start() > self._end)
-
-    # End Overlap
-    #-------------------------------------------------------------------------
-
-
 
     #-------------------------------------------------------------------------
     # Setters...
@@ -208,7 +182,6 @@ class DataPeriod:
         """
         self._maxd = delta
 
-    # End SetMaxDelta
     #-------------------------------------------------------------------------
 
 
@@ -219,7 +192,6 @@ class DataPeriod:
         """
         self._mind = delta
 
-    # End SetMinDelta
     #-------------------------------------------------------------------------
 
 
@@ -229,7 +201,6 @@ class DataPeriod:
         """
         self._minv = value
 
-    # End SetMin
     #-------------------------------------------------------------------------
 
 
@@ -239,7 +210,6 @@ class DataPeriod:
         """
         self._maxv = value
 
-    # End SetMax
     #-------------------------------------------------------------------------
 
 
@@ -274,7 +244,6 @@ class DataPeriod:
 
         return start,end
 
-    # End Check
     #-------------------------------------------------------------------------
 
 
@@ -290,7 +259,6 @@ class DataPeriod:
 
         (self._start,self._end) = self.Check(start,end)
 
-    # End Update
     #-------------------------------------------------------------------------
 
 
@@ -324,7 +292,6 @@ class DataPeriod:
 
         return self.Check(start,end)
 
-    # End Zoom
     #-------------------------------------------------------------------------
 
 
@@ -368,7 +335,6 @@ class DataPeriod:
 
         return start,end
 
-    # End Scroll
     #-------------------------------------------------------------------------
 
 
@@ -383,7 +349,6 @@ class DataPeriod:
 
         return (self._minv,end)
 
-    # End ScrollToStart
     #-------------------------------------------------------------------------
 
 
@@ -398,7 +363,6 @@ class DataPeriod:
 
         return (start,self._maxv)
 
-    # End ScrollToEnd
     #-------------------------------------------------------------------------
 
 
@@ -413,7 +377,3 @@ class DataPeriod:
         # Convert delta in data units into delta in pixels
         return ((float(pixels) * self.Delta()) / float(width))
 
-    # End PixelsToDuration
-    #-------------------------------------------------------------------------
-
-#-----------------------------------------------------------------------------

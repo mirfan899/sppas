@@ -1,55 +1,38 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: channelmfcc.py
-# ---------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-import subprocess
+        http://www.sppas.org/
 
-from utils.type        import test_command
-from audiodata.channel import Channel
+        Use of this software is governed by the GNU Public License, version 3.
 
-# ---------------------------------------------------------------------------
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
 
-class ChannelMFCC( object ):
-    """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      A channel MFCC extractor class.
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.audiodata.channelmfcc.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Requires HTK to be installed.
+
 
     Mel-frequency cepstrum (MFC) is a representation of the short-term power
     spectrum of a sound, based on a linear cosine transform of a log power
@@ -63,33 +46,65 @@ class ChannelMFCC( object ):
         4. Take the discrete cosine transform of the list of mel log powers, as if it were a signal.
         5. The MFCCs are the amplitudes of the resulting spectrum.
 
+"""
+import os
+import subprocess
+
+# ---------------------------------------------------------------------------
+
+
+def test_command(command):
+    """ Test if a command is available.
+
+    :param command: (str) The command to execute as a sub-process.
+
+    """
+    try:
+        NULL = open(os.devnull, "w")
+        subprocess.call([command], stdout=NULL, stderr=subprocess.STDOUT)
+    except OSError:
+        return False
+
+    return True
+
+# ---------------------------------------------------------------------------
+
+
+class sppasChannelMFCC(object):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    :summary:      A channel MFCC extractor class.
+
     """
     def __init__(self, channel=None):
-        """
-        Constructor.
+        """ Create a sppasChannelMFCC instance.
 
-        @param channel (Channel) The channel to work on. Currently not used...!!!
+        :param channel: (sppasChannel) The channel to work on. Currently not used...!!!
 
         """
-        self.channel = channel
+        self._channel = channel
 
     # ----------------------------------------------------------------------
 
     def hcopy(self, wavconfigfile, scpfile):
-        """
-        Create MFCC files from features described in the config file.
+        """ Create MFCC files from features described in the config file.
         Requires HCopy to be installed.
 
-        @param wavconfigfile (str)
-        @param scpfile (str)
+        :param wavconfigfile: (str)
+        :param scpfile: (str)
 
         """
-        if test_command("HCopy") is False: return False
+        if test_command("HCopy") is False:
+            return False
 
         try:
             subprocess.check_call(["HCopy", "-T", "0",
-                                  "-C", wavconfigfile,
-                                  "-S", scpfile])
+                                   "-C", wavconfigfile,
+                                   "-S", scpfile])
         except subprocess.CalledProcessError:
             return False
 
@@ -98,10 +113,6 @@ class ChannelMFCC( object ):
     # ----------------------------------------------------------------------
 
     def evaluate(self, features):
-        """
-        Evaluate MFCC of the given channel.
+        """ Evaluate MFCC of the given channel. """
 
-        """
         raise NotImplementedError
-
-    # ----------------------------------------------------------------------

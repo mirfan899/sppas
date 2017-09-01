@@ -17,10 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS.  If not, see <http://www.gnu.org/licenses/>.
 
-from annotationdata.utils.tierutils import TierUtils
-from annotationdata.transcription import Transcription
-from annotationdata.tier import Tier
-import annotationdata.aio
+from ..transcription import Transcription
 
 
 def overlaps(a1, a2):
@@ -56,32 +53,32 @@ class TrsUtils(object):
     Provides utility methods for Transcription instances.
     """
 
-    @staticmethod
-    def Split(transcription, ref_tier):
-        """
-        Split a transcription into multiple small transcriptions.
-
-        @param transcription (Transcription)
-        @param ref_tier (Tier)
-
-        Return: list of transcription
-        """
-        result = []
-        for a1 in ref_tier:
-            if a1.GetLabel().IsEmpty():
-                continue
-            new_trs = Transcription(mintime=transcription.GetMaxTime())
-            for tier in transcription:
-                new_tier = TierUtils.Select(tier, lambda x: overlaps(a1, x))
-                if new_tier is not None:
-                    if new_tier[0].GetLocation().IsInterval():
-                        new_tier[0].GetLocation().SetBegin( a1.GetLocation().GetBegin() )
-                        new_tier[-1].GetLocation().SetEnd( a1.GetLocation().GetEnd() )
-                    new_trs.Append(new_tier)
-
-            if not new_trs.IsEmpty():
-                result.append(new_trs)
-        return result
+    # @staticmethod
+    # def Split(transcription, ref_tier):
+    #     """
+    #     Split a transcription into multiple small transcriptions.
+    #
+    #     @param transcription (Transcription)
+    #     @param ref_tier (Tier)
+    #
+    #     Return: list of transcription
+    #     """
+    #     result = []
+    #     for a1 in ref_tier:
+    #         if a1.GetLabel().IsEmpty():
+    #             continue
+    #         new_trs = Transcription(mintime=transcription.GetMaxTime())
+    #         for tier in transcription:
+    #             new_tier = TierUtils.Select(tier, lambda x: overlaps(a1, x))
+    #             if new_tier is not None:
+    #                 if new_tier[0].GetLocation().IsInterval():
+    #                     new_tier[0].GetLocation().SetBegin( a1.GetLocation().GetBegin() )
+    #                     new_tier[-1].GetLocation().SetEnd( a1.GetLocation().GetEnd() )
+    #                 new_trs.Append(new_tier)
+    #
+    #         if not new_trs.IsEmpty():
+    #             result.append(new_trs)
+    #     return result
 
 
     @staticmethod
@@ -118,7 +115,7 @@ class TrsUtils(object):
                         pass
 
         transcription.SetMinTime( max(0., transcription.GetMinTime() + n) )
-        if n<0:
+        if n < 0:
             transcription.SetMaxTime( transcription.GetMaxTime() + n )
         else:
             # transcription.GetMaxTime() automatically adjusts maxtime value

@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with SPPAS.  If not, see <http://www.gnu.org/licenses/>.
 
-from annotationdata.transcription import Transcription
-from annotationdata.tier import Tier
+from .transcription import Transcription
+from .tier import Tier
 
 
 class Pitch(Transcription):
@@ -35,7 +35,6 @@ class Pitch(Transcription):
         """
         Transcription.__init__(self, name, mintime, maxtime)
 
-    # End __init__
     # ------------------------------------------------------------------------------------
 
     def Set(self, trs, name="empty"):
@@ -56,7 +55,6 @@ class Pitch(Transcription):
             self._tiers = tiers
             self._tier = self._tiers[0]
 
-    # End Set
     # ------------------------------------------------------------------------------------
 
     def __add_points_affine(self, array, delta,
@@ -101,7 +99,6 @@ class Pitch(Transcription):
                 y = 0.
             array.append(y)
 
-    # End __add_points_affine
     # ------------------------------------------------------------------------------------
 
     def __add_points_linear(self, array, delta,
@@ -122,7 +119,6 @@ class Pitch(Transcription):
         for step in range(1, steps):
             array.append(p)
 
-    # End __add_points_linear
     # ------------------------------------------------------------------------------------
 
     def get_pitch_list(self, delta=0.01):
@@ -158,5 +154,4 @@ class Pitch(Transcription):
         return pitch
         self._tier = Tier(data_type="int")
 
-    # End get_pitch_list
     # ------------------------------------------------------------------------------------

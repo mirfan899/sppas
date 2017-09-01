@@ -4,7 +4,7 @@ Python code generation for models defined with grako.model
 """
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from dependencies.grako.util import (
+from sppas.src.dependencies.grako.util import (
     indent,
     safe_name,
     trim,
@@ -13,9 +13,9 @@ from dependencies.grako.util import (
     ustr,
     compress_seq
 )
-from dependencies.grako.exceptions import CodegenError
-from dependencies.grako.model import Node
-from dependencies.grako.codegen.cgbase import ModelRenderer, CodeGenerator
+from sppas.src.dependencies.grako.exceptions import CodegenError
+from sppas.src.dependencies.grako.model import Node
+from sppas.src.dependencies.grako.codegen.cgbase import ModelRenderer, CodeGenerator
 
 
 class PythonCodeGenerator(CodeGenerator):

@@ -39,19 +39,20 @@ import os.path
 import wx
 import logging
 
-from wxgui.sp_icons        import EMPTY_ICON, NON_EMPTY_ICON
-from wxgui.structs.files   import xFiles
+from sppas.src.wxgui.sp_icons import EMPTY_ICON, NON_EMPTY_ICON
+from sppas.src.wxgui.structs.files import xFiles
 
-from wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
-from wxgui.ui.CustomEvents import spEVT_SETTINGS
-from wxgui.ui.CustomEvents import spEVT_NOTEBOOK_NEW_PAGE
-from wxgui.ui.CustomEvents import spEVT_NOTEBOOK_CLOSE_PAGE
+from sppas.src.wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
+from sppas.src.wxgui.ui.CustomEvents import spEVT_SETTINGS
+from sppas.src.wxgui.ui.CustomEvents import spEVT_NOTEBOOK_NEW_PAGE
+from sppas.src.wxgui.ui.CustomEvents import spEVT_NOTEBOOK_CLOSE_PAGE
 
-from wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.cutils.imageutils import spBitmap
 
 # ----------------------------------------------------------------------------
 
-class BaseClient( wx.Window ):
+
+class BaseClient(wx.Window):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France

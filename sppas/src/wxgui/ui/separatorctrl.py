@@ -17,17 +17,10 @@
 # along with DataEditor.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
-import sys
-import os.path
-
 import wx
 import wx.lib.newevent
-import wxgui.cutils.colorutils as colorutils
+
+import sppas.src.wxgui.cutils.colorutils as colorutils
 
 # ----------------------------------------------------------------------------
 # Constants

@@ -41,19 +41,19 @@ import wx.lib.scrolledpanel
 import wx.lib.newevent
 import os
 
-from plugins.manager import sppasPluginsManager
+from sppas.src.plugins.manager import sppasPluginsManager
 
-from wxgui.sp_icons import PLUGIN_IMPORT_ICON, PLUGIN_REMOVE_ICON
-from wxgui.sp_consts import ID_FILES
+from sppas.src.wxgui.sp_icons import PLUGIN_IMPORT_ICON, PLUGIN_REMOVE_ICON
+from sppas.src.wxgui.sp_consts import ID_FILES
 
-from wxgui.panels.buttons import ButtonPanel
-from wxgui.panels.mainbuttons import MainToolbarPanel
-from wxgui.dialogs.msgdialogs import ShowInformation
-from wxgui.dialogs.msgdialogs import Choice
-from wxgui.dialogs.filedialogs import OpenSpecificFiles
-from wxgui.views.about import AboutPluginDialog
-from wxgui.views.pluginoptions import spPluginConfig
-from wxgui.views.processprogress import ProcessProgressDialog
+from sppas.src.wxgui.panels.buttons import ButtonPanel
+from sppas.src.wxgui.panels.mainbuttons import MainToolbarPanel
+from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
+from sppas.src.wxgui.dialogs.msgdialogs import Choice
+from sppas.src.wxgui.dialogs.filedialogs import OpenSpecificFiles
+from sppas.src.wxgui.views.about import AboutPluginDialog
+from sppas.src.wxgui.views.pluginoptions import spPluginConfig
+from sppas.src.wxgui.views.processprogress import ProcessProgressDialog
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -357,6 +357,9 @@ class PluginsListPanel(wx.lib.scrolledpanel.ScrolledPanel):
         # Add to the main sizer
         self.GetSizer().Add(box, flag=wx.ALL | wx.EXPAND, border=0)
         self._plugins[plugin_id] = (button_id, box, txt_readme)
+
+        self.Layout()
+        self.Refresh()
 
     # -----------------------------------------------------------------------
 

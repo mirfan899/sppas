@@ -46,26 +46,26 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import codecs
 
-from annotationdata.transcription  import Transcription
-from annotationdata.media          import Media
-from annotationdata.label.label    import Label
-import annotationdata.ptime.point
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation     import Annotation
+from ..transcription import Transcription
+from ..media import Media
+from ..label.label import Label
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..annotation import Annotation
 
-from utils import point2interval
-from utils import gen_id
+from .utils import point2interval
+from .utils import gen_id
 
 # ----------------------------------------------------------------------------
 
 SCLITE_RADIUS = 0.0005
 
+
+def ScliteTimePoint(time):
+    return TimePoint(time, SCLITE_RADIUS)
+
 # ----------------------------------------------------------------------------
 
-def TimePoint(time):
-    return annotationdata.ptime.point.TimePoint(time, SCLITE_RADIUS)
-
-# ----------------------------------------------------------------------------
 
 class TimeMarkedConversation(Transcription):
     """
@@ -106,8 +106,8 @@ class TimeMarkedConversation(Transcription):
                     channels[channel] = tier
 
                 interval = TimeInterval(
-                    TimePoint(float(begin)),
-                    TimePoint(float(begin) + float(duration)))
+                    ScliteTimePoint(float(begin)),
+                    ScliteTimePoint(float(begin) + float(duration)))
 
                 label = Label(word)
                 if score is not None:
@@ -203,8 +203,8 @@ class SegmentTimeMark(Transcription):
                     tier.metadata['speaker'] = speaker
 
                 interval = TimeInterval(
-                    TimePoint(float(begin)),
-                    TimePoint(float(end)))
+                    ScliteTimePoint(float(begin)),
+                    ScliteTimePoint(float(end)))
 
                 label = Label(word)
 

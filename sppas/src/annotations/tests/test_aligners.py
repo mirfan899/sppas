@@ -1,18 +1,18 @@
-#!/usr/bin/env python2
 # -*- coding: utf8 -*-
 
 import unittest
 import os.path
 
-import annotations.Align.aligners as aligners
-import annotations.Align.aligners.basicalign as basicalign
-import annotations.Align.aligners.juliusalign as juliusalign
-import annotations.Align.aligners.hvitealign as hvitealign
+from sppas import RESOURCES_PATH
+from sppas import SAMPLES_PATH
 
-# ---------------------------------------------------------------------------
-
-from sp_glob import RESOURCES_PATH
-from sp_glob import SAMPLES_PATH
+from ..Align.aligners import instantiate as aligners_instantiate
+from ..Align.aligners import check as aligners_check
+from ..Align.aligners import aligner_names
+from ..Align.aligners.basealigner import BaseAligner
+from ..Align.aligners.basicalign import BasicAligner
+from ..Align.aligners.juliusalign import JuliusAligner
+from ..Align.aligners.hvitealign import HviteAligner
 
 # ---------------------------------------------------------------------------
 
@@ -25,7 +25,7 @@ sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")  # mono; 160
 class TestBaseAligner( unittest.TestCase ):
 
     def setUp(self):
-        self._aligner = basicalign.BaseAligner( None )
+        self._aligner = BaseAligner( None )
 
     def test_outext(self):
         self.assertEqual( self._aligner.get_outext(),"" )
@@ -54,7 +54,7 @@ class TestBaseAligner( unittest.TestCase ):
 class TestBasicAlign( unittest.TestCase ):
 
     def setUp(self):
-        self._aligner = basicalign.BasicAligner( None )
+        self._aligner = BasicAligner( None )
 
     def test_run_basic(self):
 
@@ -107,7 +107,7 @@ class TestJuliusAlign( unittest.TestCase ):
 
     def setUp(self):
         self._modeldir = os.path.join(MODELDIR, "models-fra")
-        self._aligner = juliusalign.JuliusAligner( self._modeldir )
+        self._aligner = JuliusAligner( self._modeldir )
 
 # ---------------------------------------------------------------------------
 
@@ -116,7 +116,7 @@ class TestHviteAlign( unittest.TestCase ):
 
     def setUp(self):
         self._modeldir = os.path.join(MODELDIR, "models-fra")
-        self._aligner = hvitealign.HviteAligner( self._modeldir )
+        self._aligner = HviteAligner( self._modeldir )
 
 # ---------------------------------------------------------------------------
 
@@ -124,13 +124,13 @@ class TestHviteAlign( unittest.TestCase ):
 class TestAlignersPackage(unittest.TestCase):
 
     def test_check(self):
-        for a in aligners.aligner_names():
-            self.assertEqual(aligners.check(a),a)
+        for a in aligner_names():
+            self.assertEqual(aligners_check(a), a)
         with self.assertRaises(ValueError):
-            aligners.check("invalid")
+            aligners_check("invalid")
 
     def test_instantiate(self):
-        aligner = aligners.instantiate(None,"basic")
-        self.assertTrue(isinstance(aligner, basicalign.BasicAligner))
+        aligner = aligners_instantiate(None,"basic")
+        self.assertTrue(isinstance(aligner, BasicAligner))
 
 # ---------------------------------------------------------------------------

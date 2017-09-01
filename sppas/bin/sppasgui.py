@@ -42,12 +42,11 @@
     This is the main program to execute the Graphical User Interface of SPPAS.
     
 """
-
 import sys
 import os.path
 import traceback
 from argparse import ArgumentParser
-from butils import exit_error, check_python, install_gettext, check_aligner
+from butils import exit_error, check_python, check_aligner
 check_python()
 
 try:
@@ -57,29 +56,25 @@ except ImportError:
                "The Graphical User Interface of SPPAS can't work.")
 from checkwx import get_wx_version
 
-
 # import SPPAS Application Programming Interface
 # ----------------------------------------------
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname(os.path.dirname(PROGRAM)), "src")
-sys.path.insert(0, SPPAS)
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
+sys.path.append(SPPAS)
 
 try:
-    from wxgui.frames.mainframe import FrameSPPAS
-    from wxgui.dialogs.msgdialogs import ShowInformation
-    from wxgui.structs.prefs import Preferences_IO
-    from wxgui.structs.theme import sppasTheme
-    from utils.fileutils import setup_logging
-    from sp_glob import SETTINGS_FILE
-    from sp_glob import encoding
+    from sppas import encoding
+    from sppas import SETTINGS_FILE
+    from sppas.src.wxgui.frames.mainframe import FrameSPPAS
+    from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
+    from sppas.src.wxgui.structs.prefs import Preferences_IO
+    from sppas.src.wxgui.structs.theme import sppasTheme
+    from sppas.src.utils.fileutils import setup_logging
 except ImportError:
     exit_error("An unexpected error occurred.\n"
                "Verify the SPPAS installation and try again. "
                "The error message is: %s" % traceback.format_exc())
-
-reload(sys)
-sys.setdefaultencoding(encoding)
 
 # ---------------------------------------------------------------------------
 # Main application
@@ -101,7 +96,7 @@ for f in args.files:
         p = os.getcwd()
     filenames.append(os.path.abspath(os.path.join(p,b)))
 
-# Logging and Gettext
+# Logging
 # ----------------------------------------------------------------------------
 
 log_level = 1
@@ -112,8 +107,6 @@ except Exception:
     # stdin is not available if pythonw is used instead of python, on Windows!
     log_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM))), "sppas.log")
     setup_logging(log_level, log_file)
-
-install_gettext()
 
 # GUI is here:
 # ----------------------------------------------------------------------------
@@ -128,7 +121,8 @@ if prefsIO.Read() is False:
 # Tests
 v = get_wx_version()
 if v < 3:
-    message = "The version of WxPython is too old.\nThe Graphical User Interface will not display properly.\n"
+    message = "The version of WxPython is too old.\n" \
+              "The Graphical User Interface will not display properly.\n"
     ShowInformation(None, prefsIO, message, style=wx.ICON_WARNING)
 
 if check_aligner() is False:
@@ -139,10 +133,8 @@ if check_aligner() is False:
 # Main frame
 frame = FrameSPPAS(prefsIO)
 if len(filenames) > 0:
-    frame.RefreshTree(filenames)
+    frame.flp.RefreshTree(filenames)
 
 frame.Show()
 sppas.SetTopWindow(frame)
 sppas.MainLoop()
-
-# ---------------------------------------------------------------------------

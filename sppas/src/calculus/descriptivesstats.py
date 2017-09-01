@@ -34,14 +34,22 @@
 
 """
 
-import stats.central
-import stats.variability
-import stats.moment
+from .stats.central import fsum
+from .stats.central import fmin
+from .stats.central import fmax
+from .stats.central import fmean
+from .stats.central import fmedian
+
+from .stats.variability import lvariance
+from .stats.variability import lstdev
+from .stats.variability import lzs
+
+from .stats.moment import lvariation
 
 # ----------------------------------------------------------------------------
 
 
-class DescriptiveStatistics(object):
+class sppasDescriptiveStatistics(object):
     """
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
@@ -57,9 +65,9 @@ class DescriptiveStatistics(object):
         - the value is the list of data values for this data set.
 
     >>> d = {'apples':[1, 2, 3, 4], 'peers':[2, 3, 3, 5]}
-    >>> s = DescriptiveStatistics(d)
+    >>> s = sppasDescriptiveStatistics(d)
     >>> total = s.total()
-    >>> print total
+    >>> print(total)
     >>> (('peers', 13.0), ('apples', 10.0))
 
     """
@@ -69,7 +77,7 @@ class DescriptiveStatistics(object):
         :param dict_items: a dict of tuples (key, [values])
 
         """
-        self.items = dict_items
+        self._items = dict_items
 
     # -----------------------------------------------------------------------
 
@@ -79,7 +87,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of tuples (key, len)
 
         """
-        return dict((key, len(values)) for key,values in self.items.iteritems())
+        return dict((key, len(values)) for key,values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -89,7 +97,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of tuples (key, total) of float values
 
         """
-        return dict((key, stats.central.fsum(values)) for key, values in self.items.iteritems())
+        return dict((key, fsum(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -99,7 +107,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, min) of float values
 
         """
-        return dict((key, stats.central.fmin(values)) for key, values in self.items.iteritems())
+        return dict((key, fmin(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -109,7 +117,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, max) of float values
 
         """
-        return dict((key, stats.central.fmax(values)) for key, values in self.items.iteritems())
+        return dict((key, fmax(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -119,7 +127,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, mean) of float values
 
         """
-        return dict((key, stats.central.fmean(values)) for key, values in self.items.iteritems())
+        return dict((key, fmean(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -129,7 +137,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, mean) of float values
 
         """
-        return dict((key, stats.central.fmedian(values)) for key, values in self.items.iteritems())
+        return dict((key, fmedian(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -140,7 +148,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, variance) of float values
 
         """
-        return dict((key, stats.variability.lvariance(values)) for key, values in self.items.iteritems())
+        return dict((key, lvariance(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -151,7 +159,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, stddev) of float values
 
         """
-        return dict((key, stats.variability.lstdev(values)) for key, values in self.items.iteritems())
+        return dict((key, lstdev(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -162,7 +170,7 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, coefvariation) of float values
 
         """
-        return dict((key, stats.moment.lvariation(values)) for key, values in self.items.iteritems())
+        return dict((key, lvariation(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -173,4 +181,4 @@ class DescriptiveStatistics(object):
         :returns: (dict) a dictionary of (key, [z-scores]) of float values
 
         """
-        return dict((key, stats.variability.lzs(values)) for key, values in self.items.iteritems())
+        return dict((key, lzs(values)) for key, values in self._items.items())

@@ -4,7 +4,7 @@ from __future__ import (absolute_import, division, print_function,
 
 import itertools
 
-from dependencies.grako.model import NodeWalker
+from sppas.src.dependencies.grako.model import NodeWalker
 
 try:
     import pygraphviz as pgv

@@ -96,24 +96,24 @@ To get the list of extensions currently supported for reading and writing:
 
 """
 
-from annotationdata.transcription  import Transcription
-from annotationdata.tier           import Tier
-from annotationdata.media          import Media
-from annotationdata.hierarchy      import Hierarchy
-from annotationdata.ctrlvocab      import CtrlVocab
+from .transcription import Transcription
+from .tier import Tier
+from .media import Media
+from .hierarchy import Hierarchy
+from .ctrlvocab import CtrlVocab
 
-from annotationdata.annotation     import Annotation
-from annotationdata.label.label    import Label
-from annotationdata.label.text     import Text
-from annotationdata.ptime.disjoint import TimeDisjoint
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point    import TimePoint
+from .annotation import Annotation
+from .label.label import Label
+from .label.text import Text
+from .ptime.disjoint import TimeDisjoint
+from .ptime.interval import TimeInterval
+from .ptime.point import TimePoint
 
-from annotationdata.filter.predicate import Sel
-from annotationdata.filter.predicate import Rel
-from annotationdata.filter.filters   import Filter
-from annotationdata.filter.filters   import SingleFilter
-from annotationdata.filter.filters   import RelationFilter
+from .filter.predicate import Sel
+from .filter.predicate import Rel
+from .filter.filters import Filter
+from .filter.filters import SingleFilter
+from .filter.filters import RelationFilter
 
 #import annotationdata.aio
 

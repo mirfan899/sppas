@@ -35,22 +35,23 @@
 # File: trsfactory.py
 # ---------------------------------------------------------------------------
 
-from text          import RawText, CSV
-from praat         import TextGrid, PitchTier, IntensityTier
-from signaix       import HzPitch
-from transcriber   import Transcriber
-from xra           import XRA
-from phonedit      import Phonedit
-from htk           import HTKLabel, MasterLabel
-from subtitle      import SubRip, SubViewer
-from sclite        import TimeMarkedConversation, SegmentTimeMark
-from elan          import Elan
-from anvil         import Anvil
-from annotationpro import Antx
-from xtrans        import Xtrans
-from audacity      import Audacity
+from .text import RawText, CSV
+from .praat import TextGrid, PitchTier, IntensityTier
+from .signaix import HzPitch
+from .transcriber import Transcriber
+from .xra import XRA
+from .phonedit import Phonedit
+from .htk import HTKLabel, MasterLabel
+from .subtitle import SubRip, SubViewer
+from .sclite import TimeMarkedConversation, SegmentTimeMark
+from .elan import Elan
+from .anvil import Anvil
+from .annotationpro import Antx
+from .xtrans import Xtrans
+from .audacity import Audacity
 
 # ----------------------------------------------------------------------------
+
 
 class TrsFactory(object):
     """
@@ -99,5 +100,3 @@ class TrsFactory(object):
             return TrsFactory.TRANSCRIPTION_TYPES[trs_type.lower()]()
         except KeyError:
             raise KeyError("Unrecognized Transcription type: %s" % trs_type)
-
-# ----------------------------------------------------------------------------

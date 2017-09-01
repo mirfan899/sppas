@@ -1,184 +1,211 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: channel.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-from audioframes import AudioFrames
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.audiodata.channel.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
+from .audioframes import sppasAudioFrames
+from .audiodataexc import IntervalError, SampleWidthError, FrameRateError
 
 # ----------------------------------------------------------------------------
 
-class Channel( object ):
+
+class sppasChannel(object):
     """
-    @authors:      Nicolas Chazeau, Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      A class to manage frames of an audio channel.
+    :author:       Nicolas Chazeau, Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      A class to manage a channel.
 
     """
-    def __init__(self, framerate=0, sampwidth=0, frames=''):
-        """
-        Constructor.
+    def __init__(self, framerate=16000, sampwidth=2, frames=""):
+        """ Create a sppasChannel instance.
 
-        @param framerate (int) The frame rate of this channel, in Hertz.
-        The recommended framerate value is 48,000;
-        @param sampwidth (int) 1 for 8 bits, 2 for 16 bits, 4 for 32 bits
-        @param frames (str) The frames represented by a string.
+        :param framerate: (int) The frame rate of this channel, in Hertz.
+        :param sampwidth: (int) 1 for 8 bits, 2 for 16 bits, 4 for 32 bits.
+        :param frames: (str) The frames represented by a string.
 
         """
-        self.frames    = frames
-        self.framerate = framerate
-        self.sampwidth = sampwidth
-        self.position  = 0
+        self._framerate = 16000
+        self._sampwidth = 2
+        self._frames = ""
+        self._position = 0
+
+        self.set_framerate(framerate)
+        self.set_sampwidth(sampwidth)
+        self.set_frames(frames)
 
     # ----------------------------------------------------------------------
     # Setters
     # ----------------------------------------------------------------------
 
     def set_frames(self, frames):
-        """
-        Set new frames to the channel.
-        It is supposed the sampwidth and framerate are the same as the current ones.
+        """ Set new frames to the channel.
+        It is supposed the sampwidth and framerate are the same as the 
+        current ones.
 
-        @param frames (string) the new frames
+        :param frames: (str) the new frames
 
         """
-        self.frames = frames
+        self._frames = str(frames)
+
+    # ----------------------------------------------------------------------
+
+    def set_sampwidth(self, sampwidth):
+        """ Set a new samples width to the channel.
+
+        :param sampwidth: (int) 1 for 8 bits, 2 for 16 bits, 4 for 32 bits.
+
+        """
+        sampwidth = int(sampwidth)
+        if sampwidth not in [1, 2, 4]:
+            raise SampleWidthError(sampwidth)
+
+        self._sampwidth = sampwidth
+
+    # ----------------------------------------------------------------------
+
+    def set_framerate(self, framerate):
+        """ Set a new framerate to the channel.
+
+        :param framerate: (int) The frame rate of this channel, in Hertz.
+        A value between 8000 and 192000
+
+        """
+        framerate = int(framerate)
+        if 8000 <= framerate <= 192000:
+            self._framerate = framerate
+        else:
+            raise FrameRateError(framerate)
 
     # ----------------------------------------------------------------------
     # Getters
     # ----------------------------------------------------------------------
 
-    def get_frames(self, chuncksize):
-        """
-        Return chuncksize frames from the current position.
+    def get_frames(self, chunck_size=None):
+        """ Return some frames from the current position.
 
-        @param chuncksize (int) the size of the chunk to return
-        @return the frames
+        :param chunck_size: (int) the size of the chunk to return.
+        None for all frames of the channel.
+        :returns: (str) the frames
 
         """
-        chuncksize = int(chuncksize)
-        p = self.position
-        m = len(self.frames)
-        s = p*self.sampwidth
-        e = min(m, s + chuncksize*self.sampwidth )
-        f = ''.join( self.frames[i] for i in range(s,e) )
-        self.position = p + chuncksize
+        if chunck_size is None:
+            return self._frames
+
+        chunck_size = int(chunck_size)
+        p = self._position
+        m = len(self._frames)
+        s = p*self._sampwidth
+        e = min(m, s + chunck_size*self._sampwidth)
+        f = ''.join(self._frames[i] for i in range(s, e))
+        self._position = p + chunck_size
 
         return f
 
     # -----------------------------------------------------------------------
 
     def get_nframes(self):
-        """
-        Return the number of frames (a frame has a length of (sampwidth) bytes).
+        """ Return the number of frames.
+        A frame has a length of (sampwidth) bytes.
 
-        @return (int) the total number of frames
+        :returns: (int) the total number of frames
 
         """
-        return len(self.frames)/self.sampwidth
+        return len(self._frames)/self._sampwidth
 
     # -----------------------------------------------------------------------
 
     def get_framerate(self):
-        """
-        Return the frame rate, in Hz.
+        """ Return the frame rate, in Hz.
 
-        @return (int) the frame rate of the channel
+        :returns: (int) the frame rate of the channel
 
         """
-        return self.framerate
+        return self._framerate
 
     # -----------------------------------------------------------------------
 
     def get_sampwidth(self):
-        """
-        Return the sample width.
+        """ Return the sample width.
 
-        @return (int) the sample width of the channel
+        :returns: (int) the sample width of the channel
 
         """
-        return self.sampwidth
+        return self._sampwidth
 
     # -----------------------------------------------------------------------
 
     def get_cross(self):
-        """
-        Return the number of zero crossings.
+        """ Return the number of zero crossings.
 
-        @return (int) number of zero crossing
+        :returns: (int) number of zero crossing
 
         """
-        a = AudioFrames(self.frames, self.sampwidth, 1)
+        a = sppasAudioFrames(self._frames, self._sampwidth, 1)
         return a.cross()
 
     # -----------------------------------------------------------------------
 
     def rms(self):
-        """
-        Return the root mean square of the channel.
+        """ Return the root mean square of the channel.
 
-        @return (int) the root mean square of the channel
+        :returns: (int) the root mean square of the channel
 
         """
-        a = AudioFrames(self.frames, self.sampwidth, 1)
+        a = sppasAudioFrames(self._frames, self._sampwidth, 1)
         return a.rms()
 
     # -----------------------------------------------------------------------
 
     def clipping_rate(self, factor):
-        """
-        Return the clipping rate of the frames.
+        """ Return the clipping rate of the frames.
 
-        @param factor (float) An interval to be more precise on clipping rate.
+        :param factor: (float) An interval to be more precise on clipping rate.
         It will consider that all frames outside the interval are clipped.
         Factor has to be between 0 and 1.
-        @return (float) the clipping rate
+        :returns: (float) the clipping rate
 
         """
-        a = AudioFrames(self.frames, self.sampwidth, 1)
+        a = sppasAudioFrames(self._frames, self._sampwidth, 1)
         return a.clipping_rate(factor)
 
     # -----------------------------------------------------------------------
 
     def get_duration(self):
-        """
-        Return the duration of the channel, in seconds.
+        """ Return the duration of the channel, in seconds.
 
-        @return (float) the duration of the channel
+        :returns: (float) the duration of the channel
 
         """
         return float(self.get_nframes())/float(self.get_framerate())
@@ -186,76 +213,73 @@ class Channel( object ):
     # -----------------------------------------------------------------------
 
     def extract_fragment(self, begin=None, end=None):
+        """ Extract a fragment between the beginning and the end.
+
+        :param begin: (int: number of frames) the beginning of the fragment to extract
+        :param end: (int: number of frames) the end of the fragment to extract
+
+        :returns: (sppasChannel) the fragment extracted.
+
         """
-        Extract a fragment between the beginning and the end.
-
-        @param begin (int: number of frames) the beginning of the fragment to extract
-        @param end (int: number of frames) the end of the fragment to extract
-
-        @return (Channel) the fragment extracted.
-
-        """
+        nframes = self.get_nframes()
         if begin is None:
             begin = 0
         if end is None:
-            end = self.get_nframes()
-        if begin == 0 and end == self.get_nframes():
-            return Channel(self.framerate, self.sampwidth, self.frames)
+            end = nframes
+
+        begin = int(begin)
+        end = int(end)
+        if end < 0 or end > nframes:
+            end = nframes
+
+        if begin > nframes:
+            return sppasChannel(self._framerate, self._sampwidth, "")
+        if begin < 0:
+            begin = 0
+
+        if begin == 0 and end == nframes:
+            return sppasChannel(self._framerate, self._sampwidth, self._frames)
 
         if begin > end:
-            raise ValueError("The end (%d) can't be upper than the beginning (%d)."%(end,begin))
-        if begin < 0 or end < 0:
-            raise ValueError("Beginning or End can't be negative values. Got %d,%d."%(begin,end))
+            raise IntervalError(begin, end)
 
-        nframes = self.get_nframes()
-        if begin > nframes:
-            raise ValueError("The beginning can't be upper than the duration.")
-        if end > nframes:
-            raise ValueError("The end can't be upper than the duration.")
-
-        posbegin = int(begin*self.sampwidth)
+        pos_begin = int(begin*self._sampwidth)
         if end == self.get_nframes():
-            frames = self.frames[posbegin:]
+            frames = self._frames[pos_begin:]
         else:
-            posend = int(end*self.sampwidth)
-            frames = self.frames[posbegin:posend]
+            pos_end = int(end*self._sampwidth)
+            frames = self._frames[pos_begin:pos_end]
 
-        return Channel(self.framerate, self.sampwidth, frames)
+        return sppasChannel(self._framerate, self._sampwidth, frames)
 
     # -----------------------------------------------------------------------
     # Manage position
     # -----------------------------------------------------------------------
 
     def tell(self):
-        """
-        Return the current position.
+        """ Return the current position. """
 
-        @return the current position
+        return self._position
 
-        """
-        return self.position
-
+    # ------------------------------------------------------------------------
 
     def rewind(self):
-        """
-        Return at the beginning of the frames.
+        """ Set the position to 0. """
 
-        """
-        self.position = 0
+        self._position = 0
 
+    # ------------------------------------------------------------------------
 
     def seek(self, position):
-        """
-        Fix the current position.
+        """ Fix the current position.
 
-        @param the position to set
+        :param position: (int)
 
         """
-        self.position = max(0, min(position, len(self.frames)/self.sampwidth))
+        self._position = max(0, min(position, len(self._frames)/self._sampwidth))
 
     # ------------------------------------------------------------------------
 
     def __str__(self):
-        return "Channel: framerate %d, sampleswidth %d, position %d, nframes %d"%( self.framerate,self.sampwidth,self.position,len(self.frames) )
-
-# ----------------------------------------------------------------------------
+        return "Channel: framerate %d, sampleswidth %d, position %d, nframes %d" % \
+               (self._framerate, self._sampwidth, self._position, len(self._frames))

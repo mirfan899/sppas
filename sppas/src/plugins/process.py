@@ -33,7 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~
 
     Process a plugin.
-    This is currently limited one file only.
+    This is currently restricted to one file only.
 
 """
 
@@ -85,7 +85,7 @@ class sppasPluginProcess(object):
             elif opt_id == "options":
                 value = opt.get_untypedvalue()
                 if len(value) > 0:
-                    command += " "+value
+                    command += " " + value
 
             elif opt_id == "output":
                 value = opt.get_untypedvalue()
@@ -99,24 +99,23 @@ class sppasPluginProcess(object):
                     command += " " + opt.get_key()
 
             else:
-                command += " "+opt.get_key()
+                command += " " + opt.get_key()
                 value = opt.get_untypedvalue()
                 if len(value) > 0:
 
                     if value == "input":
                         command += " \"" + filename + "\" "
+                    elif "file" in opt.get_type():
+                        command += " \"" + value + "\" "
                     else:
-                        command += " "+value
-
-        # Execute the command
-        if isinstance(command, unicode):
-            command = command.encode('utf-8')
+                        command += " " + value
 
         args = shlex.split(command)
         for i, argument in enumerate(args):
             if "PLUGIN_PATH/" in argument:
                 newarg = argument.replace("PLUGIN_PATH/", "")
                 args[i] = os.path.join(self._plugin.get_directory(), newarg)
+
         self._process = Popen(args, shell=False, stdout=PIPE, stderr=STDOUT, universal_newlines=True)
 
     # ------------------------------------------------------------------------

@@ -41,7 +41,8 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-class Duration( object ):
+
+class Duration(object):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com

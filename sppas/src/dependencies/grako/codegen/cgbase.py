@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from dependencies.grako.model import Node
-from dependencies.grako.codegen import CodegenError
-from dependencies.grako.rendering import render, Renderer, RenderingFormatter
+from sppas.src.dependencies.grako.model import Node
+from sppas.src.dependencies.grako.codegen import CodegenError
+from sppas.src.dependencies.grako.rendering import render, Renderer, RenderingFormatter
 
 
 class DelegatingRenderingFormatter(RenderingFormatter):

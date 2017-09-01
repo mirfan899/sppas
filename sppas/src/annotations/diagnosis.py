@@ -1,172 +1,212 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: diagnosis.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.diagnosis.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import codecs
 import os
 
-import annotationdata.aio
-import audiodata.aio
-from audiodata.audio import AudioPCM
-from audiodata.channel import Channel
-
-from sp_glob import encoding
-from sp_glob import ERROR_ID, WARNING_ID, INFO_ID, OK_ID
+from sppas import encoding
+import sppas.src.annotationdata.aio
+import sppas.src.audiodata.aio
+from . import ERROR_ID, WARNING_ID, OK_ID
+from .import t
 
 # ----------------------------------------------------------------------------
 
-class sppasDiagnosis:
+MSG_VALID = t.gettext(":INFO 1000: ")
+MSG_ADMIT = t.gettext(":INFO 1002: ")
+MSG_INVALID = t.gettext(":INFO 1004: ")
+MSG_FAILED = t.gettext(":INFO 1006: ")
+MSG_AUDIO_CHANNELS_ERROR = (t.gettext(":INFO 1010: "))
+MSG_AUDIO_SAMPWIDTH_ERROR = (t.gettext(":INFO 1012: "))
+MSG_AUDIO_FRAMERATE_ERROR = (t.gettext(":INFO 1014: "))
+MSG_AUDIO_SAMPWIDTH_WARN = (t.gettext(":INFO 1016: "))
+MSG_AUDIO_FRAMERATE_WARN = (t.gettext(":INFO 1018: "))
+MSG_UNKNOWN_FILE = (t.gettext(":INFO 1020: "))
+MSG_FILE_NON_ASCII = (t.gettext(":INFO 1022: "))
+MSG_FILE_WHITESPACE = (t.gettext(":INFO 1024: "))
+MSG_FILE_ENCODING = (t.gettext(":INFO 1026: "))
+
+# ----------------------------------------------------------------------------
+
+
+class sppasDiagnosis(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      A class to diagnose if files are appropriate for SPPAS.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      A class to diagnose if files are appropriate.
+    
+    Check if files are valid for SPPAS automatic annotations.
 
     """
-    def __init__(self, logfile=None):
-        """
-        SPPAS files diagnosis.
+    EXPECTED_CHANNELS = 1
+    EXPECTED_FRAME_RATE = 16000
+    EXPECTED_SAMPLE_WIDTH = 2
 
-        """
-        self._logfile = logfile
+    # ------------------------------------------------------------------------
 
-        # for audio
-        self._reqSamplewidth = 2
-        self._reqFramerate   = 16000
-        self._reqChannels    = 1
+    def __init__(self):
+        """ SPPAS files diagnosis. """
 
-        # for transcriptions
-        self._encoding = encoding
+        pass
 
     # ------------------------------------------------------------------------
     # Workers
     # ------------------------------------------------------------------------
 
-    def checkfile(self, filename):
+    @staticmethod
+    def check_file(filename):
+        """ Return a status and a message depending on the fact that the file
+        is matching the requirements.
+
+        :param filename: (str) name of the input file to diagnose.
+        :returns: tuple with (status identifier, message)
+
         """
-        Return a status and a message depending on the fact that the file corresponds to the requirements.
+        ext = os.path.splitext(filename)[1]
 
-        @param filename (string) name of the input file to diagnose.
+        if ext.lower() in sppas.src.audiodata.aio.extensions:
+            return sppasDiagnosis.check_audio_file(filename)
 
-        """
-        ext = os.path.splitext( filename )[1]
+        if ext.lower() in sppas.src.annotationdata.aio.extensions:
+            return sppasDiagnosis.check_trs_file(filename)
 
-        if ext.lower() in audiodata.aio.extensions:
-            return self.audiofile( filename )
-
-        if ext.lower() in annotationdata.aio.extensions:
-            return self.trsfile( filename )
-
-        return (ERROR_ID,"Invalid. Unknown file extension %s."%ext)
+        message = MSG_FAILED + MSG_UNKNOWN_FILE.format(extension=ext)
+        return ERROR_ID, message
 
     # ------------------------------------------------------------------------
 
-    def audiofile(self, inputname):
-        """
-        Return a status and a message depending on the fact that the file corresponds to the requirements.
+    @staticmethod
+    def check_audio_file(filename):
+        """ Return a status and a message depending on the fact that the 
+        file is matching the requirements.
 
-        @param inputname (string) name of the inputfile
+        :param filename: (str) name of the input file
+        :returns: tuple with (status identifier, message)
 
         """
-        status  = OK_ID
-        message = "Valid."
+        status = OK_ID
+        message = ""
 
         # test file format: can we support it?
         try:
-            audio = audiodata.aio.open(inputname)
+            audio = sppas.src.audiodata.aio.open(filename)
             fm = audio.get_framerate()
             sp = audio.get_sampwidth()*8
             nc = audio.get_nchannels()
             audio.close()
+        except UnicodeDecodeError:
+            message = MSG_INVALID + MSG_FILE_ENCODING.format(encoding=encoding)
+            return ERROR_ID, message
         except Exception as e:
-            return (ERROR_ID,str(e))
+            message = MSG_INVALID + str(e)
+            return ERROR_ID, message
 
-        if nc > 1:
+        if nc > sppasDiagnosis.EXPECTED_CHANNELS:
             status = ERROR_ID
-            message = "Invalid. Audio file must contain only 1 channel. Got %d."%(audio.get_nchannels())
+            message += MSG_AUDIO_CHANNELS_ERROR.format(number=audio.get_nchannels())
 
-        elif sp < 16:
+        if sp < sppasDiagnosis.EXPECTED_SAMPLE_WIDTH*8:
             status = ERROR_ID
-            message = "Invalid. Sample width must be at least 16 bits. Got %d."%(sp)
+            message += MSG_AUDIO_SAMPWIDTH_ERROR.format(sampwidth=sp)
 
-        elif fm < 16000:
+        if fm < sppasDiagnosis.EXPECTED_FRAME_RATE:
             status = ERROR_ID
-            message = "Invalid. The frame rate of audio file must be at least 16000 Hz. Got %d."%(fm)
+            message += MSG_AUDIO_FRAMERATE_ERROR.format(framerate=fm)
 
-        elif sp > 16:
+        if status != ERROR_ID:
+            if sp > sppasDiagnosis.EXPECTED_SAMPLE_WIDTH*8:
+                status = WARNING_ID
+                message += MSG_AUDIO_SAMPWIDTH_WARN.format(sampwidth=sp)
+
+            if fm > sppasDiagnosis.EXPECTED_FRAME_RATE:
+                status = WARNING_ID
+                message += MSG_AUDIO_FRAMERATE_WARN.format(framerate=fm)
+
+        # test US-ASCII chars
+        if all(ord(x) < 128 for x in filename) is False:
             status = WARNING_ID
-            message = "Admit. Sample width is preferably 16 bits. Got %d. SPPAS will work on a converted file."%(sp)
+            message += MSG_FILE_NON_ASCII
 
-        elif fm > 16000:
+        if " " in filename:
             status = WARNING_ID
-            message = "Admit. The frame rate of audio file is preferably 16000 Hz. Got %d. SPPAS will work on a converted file."%(fm)
+            message += MSG_FILE_WHITESPACE
 
-        # append in message: test whitespace and accents in filename
+        # test whitespace
+        if status == ERROR_ID:
+            message = MSG_INVALID + message
+        elif status == WARNING_ID:
+            message = MSG_ADMIT + message
+        else:
+            message = MSG_VALID
 
-        return (status,message)
+        return status, message
 
     # ------------------------------------------------------------------------
 
-    def trsfile(self, inputname):
-        """
-        Return a status and a message depending on the fact that the file corresponds to the requirements.
+    @staticmethod
+    def check_trs_file(filename):
+        """ Return a status and a message depending on the fact that the file 
+        is matching the requirements.
 
-        @param inputname (string) name of the inputfile
+        :param filename: (string) name of the input file
+        :returns: tuple with (status identifier, message)
 
         """
+        status = OK_ID
+        message = MSG_VALID
+
         # test encoding
         try:
-            codecs.open(inputname,"r",encoding)
+            codecs.open(filename, "r", encoding)
         except UnicodeDecodeError:
-            return (ERROR_ID,"Invalid. Bad file encoding: only %s is accepted."%encoding)
+            message = MSG_INVALID + MSG_FILE_ENCODING.format(encoding=encoding)
+            return ERROR_ID, message
         except Exception as e:
-            return (ERROR_ID,"Invalid. %s."%str(e))
+            message = MSG_INVALID + str(e)
+            return ERROR_ID, message
 
-        # test US_ASCII  in filename
-        try:
-            str( inputname )
-        except Exception:
-            return (WARNING_ID,"Admit. File name should contain only US-ASCII characters.")
+        # test US_ASCII in filename
+        if all(ord(x) < 128 for x in filename) is False:
+            message = MSG_ADMIT + MSG_FILE_NON_ASCII
+            return WARNING_ID, message
 
-        # test whitespace and accents in filename
-        if " " in inputname:
-            return (WARNING_ID,"Admit. File name should not contain whitespace.")
+        # test whitespace in filename
+        if " " in filename:
+            message = MSG_ADMIT + MSG_FILE_WHITESPACE
+            return WARNING_ID, message
 
-        return (OK_ID,"Valid.")
-
-    # ------------------------------------------------------------------------
+        return status, message

@@ -37,21 +37,21 @@
 
 import wx
 
-from wxgui.sp_icons import AUDIOROAMER_APP_ICON
-from wxgui.sp_icons import DATAROAMER_APP_ICON
-from wxgui.sp_icons import IPUSCRIBE_APP_ICON
-from wxgui.sp_icons import SPPASEDIT_APP_ICON
-from wxgui.sp_icons import STATISTICS_APP_ICON
-from wxgui.sp_icons import DATAFILTER_APP_ICON
+from sppas.src.wxgui.sp_icons import AUDIOROAMER_APP_ICON
+from sppas.src.wxgui.sp_icons import DATAROAMER_APP_ICON
+from sppas.src.wxgui.sp_icons import IPUSCRIBE_APP_ICON
+from sppas.src.wxgui.sp_icons import SPPASEDIT_APP_ICON
+from sppas.src.wxgui.sp_icons import STATISTICS_APP_ICON
+from sppas.src.wxgui.sp_icons import DATAFILTER_APP_ICON
 
-from wxgui.panels.buttons import ButtonPanel
+from sppas.src.wxgui.panels.buttons import ButtonPanel
 
-from wxgui.sp_consts import ID_FRAME_DATAROAMER
-from wxgui.sp_consts import ID_FRAME_SNDROAMER
-from wxgui.sp_consts import ID_FRAME_IPUSCRIBE
-from wxgui.sp_consts import ID_FRAME_SPPASEDIT
-from wxgui.sp_consts import ID_FRAME_STATISTICS
-from wxgui.sp_consts import ID_FRAME_DATAFILTER
+from sppas.src.wxgui.sp_consts import ID_FRAME_DATAROAMER
+from sppas.src.wxgui.sp_consts import ID_FRAME_SNDROAMER
+from sppas.src.wxgui.sp_consts import ID_FRAME_IPUSCRIBE
+from sppas.src.wxgui.sp_consts import ID_FRAME_SPPASEDIT
+from sppas.src.wxgui.sp_consts import ID_FRAME_STATISTICS
+from sppas.src.wxgui.sp_consts import ID_FRAME_DATAFILTER
 
 # ----------------------------------------------------------------------------
 
@@ -112,5 +112,3 @@ class AnalyzePanel(wx.Panel):
         evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, obj.GetId())
         evt.SetEventObject(self)
         wx.PostEvent(self.GetParent(), evt)
-
-# ---------------------------------------------------------------------------

@@ -37,10 +37,10 @@
 import os
 import wx.lib.scrolledpanel
 
-from wxgui.cutils.imageutils  import spBitmap
-from wxgui.cutils.dialogutils import create_wildcard
+from sppas.src.wxgui.cutils.imageutils  import spBitmap
+from sppas.src.wxgui.cutils.dialogutils import create_wildcard
 
-from wxgui.sp_icons import TREE_FOLDER_OPEN
+from sppas.src.wxgui.sp_icons import TREE_FOLDER_OPEN
 
 # ----------------------------------------------------------------------------
 

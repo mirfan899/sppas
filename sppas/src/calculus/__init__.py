@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     src.calculus.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -43,3 +43,31 @@
     statistics on annotated data.
 
 """
+from sppas.src.utils.maketext import translate
+t = translate("calculus")
+
+from .descriptivesstats import sppasDescriptiveStatistics
+from .kappa import sppasKappa
+from .timegroupanalysis import sppasTimeGroupAnalysis
+from .geometry.distances import squared_euclidian, euclidian, manathan, minkowski, chi_squared
+from .stats.central import fsum, fmult, fmin, fmax, fmean, fgeometricmean, fharmonicmean
+from .stats.frequency import freq, percent, percentile, quantile
+from .stats.linregress import tga_linear_regression, tansey_linear_regression
+from .stats.linregress import gradient_descent, gradient_descent_linear_regression, compute_error_for_line_given_points
+from .stats.moment import lmoment, lvariation, lskew, lkurtosis
+from .stats.variability import lvariance, lstdev, lz, rPVI, nPVI
+
+# ---------------------------------
+
+__all__ = [
+    "sppasDescriptiveStatistics",
+    "sppasKappa",
+    "sppasTimeGroupAnalysis",
+    "squared_euclidian", "euclidian", "manathan", "minkowski", "chi_squared",
+    "fsum", "fmult", "fmin", "fmax", "fmean", "fgeometricmean", "fharmonicmean",
+    "freq", "percent", "percentile", "quantile",
+    "tga_linear_regression", "tansey_linear_regression",
+    "gradient_descent", "gradient_descent_linear_regression", "compute_error_for_line_given_points",
+    "lmoment", "lvariation", "lskew", "lkurtosis",
+    "lvariance", "lstdev", "lz", "rPVI", "nPVI"
+]

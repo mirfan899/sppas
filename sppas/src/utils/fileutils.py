@@ -1,203 +1,68 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: fileutils.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+        http://www.sppas.org/
 
-# ----------------------------------------------------------------------------
+        Use of this software is governed by the GNU Public License, version 3.
 
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.utils.fileutils.py
+    ~~~~~~~~~~~~~~~~~~~~~~
+
+    Utility classes to manage files and directories.
+    
+"""
 import os
 import random
-import shutil
-import codecs
-import re
 import logging
 import tempfile
 from datetime import date
 
-# ----------------------------------------------------------------------------
-
-def exists(filename):
-    """
-    os.path.exists() revisited!
-        - case-insensitive
-        - return the filename or None
-
-    """
-    for x in os.listdir( os.path.dirname(filename)):
-        if os.path.basename(filename.lower()) == x.lower():
-            return os.path.join(os.path.dirname(filename),x)
-    return None
+from .makeunicode import sppasUnicode
+from .utilsexc import NoDirectoryError
 
 # ----------------------------------------------------------------------------
 
-def get_files(directory,extension,recurs=True):
-    """
-    Get the lust of files of a directory.
 
-    @param directory is the directory to find files
-    @param extension is the file extension to filter the directory content
+def setup_logging(log_level, filename=None):
+    """ Setup default logger to log to stderr or and possible also to a file.
 
-    @return a list of files
+    :param log_level: Sets the threshold for this logger. Logging messages
+    which are less severe than this value will be ignored.
+    :param filename: Specifies that a FileHandler be created, using the
+    specified filename, rather than a StreamHandler.
 
-    """
-    filelist = []
-    if os.path.exists(directory):
-        filelist = dir_entries(directory, recurs, extension)
-        #filelist = [x for x in os.listdir(directory) if x.lower().endswith(extension.lower())]
-    else:
-        message = "ERROR: The directory "+directory+" does not exists."
-        raise IOError(message)
-    return filelist
+    The numeric values of logging levels are given in the following:
 
-# ----------------------------------------------------------------------------
-
-def dir_entries(dir_name, subdir, extension):
-    """
-    Return a list of file names found in directory 'dir_name'.
-
-    If 'subdir' is True, recursively access subdirectories under 'dir_name'.
-    Additional argument, if any, is file extension to match filenames.
-
-    """
-    fileList = []
-    for file in os.listdir(dir_name):
-        dirfile = os.path.join(dir_name, file)
-        if os.path.isfile(dirfile):
-            if not extension:
-                fileList.append(dirfile)
-            else:
-                if dirfile.lower().endswith(extension.lower()):
-                    fileList.append(dirfile)
-        # recursively access file names in subdirectories
-        elif os.path.isdir(dirfile) and subdir:
-            fileList.extend(dir_entries(dirfile, subdir, extension))
-    return fileList
-
-# ----------------------------------------------------------------------------
-
-def set_tmpfilename():
-    randval = random.random()    # random float
-    #tmp = "tmp_"+str(datetime.datetime.now())
-    tmp = "tmp_"+str(randval)
-    return tmp
-
-# ----------------------------------------------------------------------------
-
-def writecsv(filename, rows, separator="\t", encoding="utf-8-sig"):
-    """
-    Write the rows to the file.
-    Args:
-        filename (string):
-        rows (list):
-        separator (string):
-        encoding (string):
-
-    """
-    with codecs.open(filename, "w+", encoding) as f:
-        for row in rows:
-            tmp = []
-            for s in row:
-                if isinstance(s, (float, int)):
-                    s = str(s)
-                else:
-                    s = '"%s"' % s
-                tmp.append(s)
-            f.write('%s\n' % separator.join(tmp))
-
-# ----------------------------------------------------------------------------
-
-def gen_name( root="sppas_tmp", addtoday=True, addpid=True ):
-    """
-    Set a new file name.
-    Generates a random name of a non-existing file or directory.
-
-    """
-    name = "/"
-    while os.path.exists(name) is True:
-
-        # random float value
-        randval  = str(int(random.random()*10000))
-        # process pid
-        pid      = str(os.getpid())
-        # today's date
-        today    = str(date.today())
-
-        # fix filename
-        filename = root + "_"
-        if addtoday:
-            filename = filename + today + "_"
-        if addpid:
-            filename = filename + pid + "_"
-        filename = filename + randval
-
-        # final file name is path/filename
-        tempdir = tempfile.gettempdir() # get the system temporary directory
-        name = os.path.join(tempdir,filename)
-
-    return name
-
-# ----------------------------------------------------------------------------
-
-def format_filename(entry):
-    # Remove multiple spaces
-    __str = re.sub(u"[\s]+", ur" ", entry)
-    # Spaces at beginning and end
-    __str = re.sub(u"^[ ]+", ur"", __str)
-    __str = re.sub(u"[ ]+$", ur"", __str)
-    # Replace spaces by underscores
-    __str = re.sub(u'\s', ur'_', __str)
-
-    return __str
-
-def string_to_ascii(entry):
-    # Replace non-ASCII characters by underscores
-    return re.sub(r'[^\x00-\x7F]','_', entry)
-
-# ----------------------------------------------------------------------------
-
-def setup_logging(log_level, filename):
-    """
-    Setup default logger to log to stderr or and possible also to a file.
-
-    The default logger is used like this:
-        >>> import logging
-        >>> logging.error(text message)
+        - CRITICAL 	50
+        - ERROR 	40
+        - WARNING 	30
+        - INFO 	    20
+        - DEBUG 	10
+        - NOTSET 	 0
 
     """
     formatmsg = "%(asctime)s [%(levelname)s] %(message)s"
@@ -216,43 +81,204 @@ def setup_logging(log_level, filename):
         logging.getLogger().addHandler(console_handler)
 
     logging.getLogger().setLevel(log_level)
-    logging.info("Logging set up with log level=%s, filename=%s", log_level,filename)
+    logging.info("Logging set up level=%s, filename=%s", log_level, filename)
 
 # ----------------------------------------------------------------------------
 
-def fix_audioinput(inputaudioname):
+
+class sppasFileUtils(object):
     """
-    Fix the audio file name that will be used.
-    An only-ascii-based file name without whitespace is set if the
-    current audio file name does not fit in these requirements.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Utility file manager for SPPAS.
 
-    @param inputaudioname (str - IN) Given audio file name
+    >>> sf = sppasFileUtils("path/myfile.txt")
+    >>> print(sf.exists())
 
-    """
-    inputaudio = string_to_ascii(format_filename(inputaudioname))
-    if inputaudio != inputaudioname:
-        shutil.copy(inputaudioname, inputaudio)
-
-    return inputaudio
-
-# ------------------------------------------------------------------------
-
-def fix_workingdir(inputaudio):
-    """
-    Fix the working directory to store temporarily the data.
+    >>> sf = sppasFileUtils()
+    >>> sf.set_random()
+    >>> fn = sf.get_filename() + ".txt"
 
     """
-    if len(inputaudio) == 0:
-        # Notice that the following generates a directory that the
-        # aligners won't be able to access under Windows.
-        # No problem with MacOS or Linux.
-        workdir = gen_name()
-        while os.path.exists( workdir ) is True:
-            workdir = gen_name()
-    else:
-        workdir = os.path.splitext(inputaudio)[0]+"-temp"
+    def __init__(self, filename=None):
+        """ Create a sppasFileUtils instance.
 
-    os.mkdir( workdir )
-    return workdir
+        :param filename: (str) Name of the current file
 
-# ------------------------------------------------------------------------
+        """
+        self._filename = filename
+
+    # ------------------------------------------------------------------------
+
+    def get_filename(self):
+        """ Returns the current filename. """
+
+        return self._filename
+
+    # ------------------------------------------------------------------------
+
+    def set_random(self, root="sppas_tmp", add_today=True, add_pid=True):
+        """ Set randomly a basename, i.e. a filename without extension.
+
+        :param root: (str) String to start the filename
+        :param add_today: (bool) Add today's information to the filename
+        :param add_pid: (bool) Add the process PID to the filename
+        :returns: a random name of a non-existing file or directory
+
+        """
+        # get the system temporary directory
+        tempdir = tempfile.gettempdir()
+        # initial file name
+        name = "/"
+        while os.path.exists(name) is True:
+
+            filename = root + "_"
+
+            if add_today:
+                today = str(date.today())
+                filename = filename + today + "_"
+            if add_pid:
+                pid = str(os.getpid())
+                filename = filename + pid + "_"
+
+            # random float value
+            filename = filename + '{:04d}'.format(int(random.random() * 9999))
+
+            # final file name is path/filename
+            name = os.path.join(tempdir, filename)
+
+        self._filename = name
+        return name
+
+    # ------------------------------------------------------------------------
+
+    def exists(self, directory=None):
+        """ Check if the file exists, or exists in a given directory.
+        Case-insensitive test on all platforms.
+
+        :param directory: (str) Optional directory to test if a file exists.
+        :returns: the filename (including directory) or None
+    
+        """
+        if directory is None:
+            directory = os.path.dirname(self._filename)
+
+        for x in os.listdir(directory):
+            if os.path.basename(self._filename.lower()) == x.lower():
+                return os.path.join(directory, x)
+
+        return None
+
+    # ------------------------------------------------------------------------
+
+    def clear_whitespace(self):
+        """ Set filename without whitespace.
+
+        :returns: new filename with spaces replaced by underscores.
+
+        """
+        sp = sppasUnicode(self._filename)
+        self._filename = sp.clear_whitespace()
+        return self._filename
+
+    # ------------------------------------------------------------------------
+
+    def to_ascii(self):
+        """ Set filename with only US-ASCII characters.
+
+        :returns: new filename with non-ASCII characters replaced by underscores.
+
+        """
+        sp = sppasUnicode(self._filename)
+        self._filename = sp.to_ascii()
+        return self._filename
+
+    # ------------------------------------------------------------------------
+
+    def format(self):
+        """ Set filename without whitespace and with only US-ASCII characters.
+
+        :returns: new filename with non-ASCII characters and spaces replaced by underscores.
+
+        """
+        self.clear_whitespace()
+        self.to_ascii()
+        return self._filename
+
+# ----------------------------------------------------------------------------
+
+
+class sppasDirUtils(object):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Utility directory manager for SPPAS.
+
+    >>> sd = sppasDirUtils("my-path")
+    >>> print(sd.get_files())
+
+    """
+    def __init__(self, dirname):
+        """ Create a sppasDirUtils instance.
+
+        :param dirname: (str) Name of the current directory
+
+        """
+        self._dirname = dirname
+
+    # ------------------------------------------------------------------------
+
+    def get_files(self, extension, recurs=True):
+        """ Returns the list of files of the directory.
+
+        :param extension: (str) extension of files to filter the directory content
+        :param recurs: (bool) Find files recursively
+        :returns: a list of files
+        :raises: IOError
+
+        """
+        if self._dirname is None:
+            return []
+
+        if os.path.exists(self._dirname) is False:
+            raise NoDirectoryError(dirname=self._dirname)
+
+        return sppasDirUtils.dir_entries(self._dirname, extension, recurs)
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
+    def dir_entries(dir_name, extension=None, subdir=True):
+        """ Return a list of file names found in directory 'dir_name'.
+
+        If 'subdir' is True, recursively access subdirectories under
+        'dir_name'. Additional argument, if any, is file extension to
+        match filenames.
+
+        """
+        if extension is None:
+            extension = "*"
+        if extension.startswith(".") is False and extension != "*":
+            extension = "." + extension
+
+        file_list = []
+        for dfile in os.listdir(dir_name):
+            dirfile = os.path.join(dir_name, dfile)
+            if os.path.isfile(dirfile) is True:
+                if extension == "*":
+                    file_list.append(dirfile)
+                else:
+                    fname, fext = os.path.splitext(dirfile)
+                    if fext.lower() == extension.lower():
+                        file_list.append(dirfile)
+            # recursively access file names in subdirectories
+            elif os.path.isdir(dirfile) is True and subdir is True:
+                file_list.extend(sppasDirUtils.dir_entries(dirfile, extension, subdir))
+
+        return file_list

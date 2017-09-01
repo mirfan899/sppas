@@ -1,10 +1,10 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 import os.path
-from plugins.manager import sppasPluginsManager
-from sp_glob import BASE_PATH
+
+from sppas import BASE_PATH
+from ..manager import sppasPluginsManager
 
 # ---------------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ class TestPluginsManager(unittest.TestCase):
         self.assertEqual(len(self.manager.get_plugin_ids()), 0)
 
         # Install a plugin
-        soxid = self.manager.install( soxplugin, "SoX" )
+        soxid = self.manager.install(soxplugin, "SoX")
         self.assertEqual(len(self.manager.get_plugin_ids()), 1)
 
         # Use it!

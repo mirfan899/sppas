@@ -40,10 +40,9 @@ import wx
 import wx.lib.scrolledpanel
 import webbrowser
 
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.sp_icons import APP_ICON
-
-from sp_glob import program, version, author, copyright, brief, url, license_text
+import sppas
+from sppas.src.wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.sp_icons import APP_ICON
 
 # ----------------------------------------------------------------------------
 
@@ -77,7 +76,7 @@ class sppasBaseAbout(wx.lib.scrolledpanel.ScrolledPanel):
 
     # ------------------------------------------------------------------------
 
-    def Create(self):
+    def create(self):
         sizer = wx.BoxSizer(wx.VERTICAL)
 
         # Logo
@@ -88,60 +87,58 @@ class sppasBaseAbout(wx.lib.scrolledpanel.ScrolledPanel):
 
         # Program name
         if len(self.program) > 0:
-            textprogramversion = wx.StaticText(self, -1, self.program + " " + version)
-            self.__apply_preferences(textprogramversion)
+            text_program_version = wx.StaticText(self, -1, self.program + " " + sppas.__version__)
+            self.__apply_preferences(text_program_version)
             font = self._preferences.GetValue('M_FONT')
-            fontsize = font.GetPointSize()
-            font.SetPointSize(fontsize+4)
+            font_size = font.GetPointSize()
+            font.SetPointSize(font_size + 4)
             font.SetWeight(wx.BOLD)
-            textprogramversion.SetFont(font)
-            sizer.Add(textprogramversion, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            text_program_version.SetFont(font)
+            sizer.Add(text_program_version, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # Description
         if len(self.brief) > 0:
-            textdescr = wx.StaticText(self, -1, self.brief)
-            self.__apply_preferences(textdescr)
-            sizer.Add(textdescr, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            text_descr = wx.StaticText(self, -1, self.brief)
+            self.__apply_preferences(text_descr)
+            sizer.Add(text_descr, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # Copyright
         if len(self.copyright) > 0:
-            textcopy = wx.StaticText(self, -1, self.copyright)
-            self.__apply_preferences(textprogramversion)
+            text_copy = wx.StaticText(self, -1, self.copyright)
+            self.__apply_preferences(text_copy)
             font = self._preferences.GetValue('M_FONT')
             font.SetWeight(wx.BOLD)
-            textcopy.SetFont(font)
-            sizer.Add(textcopy, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            text_copy.SetFont(font)
+            sizer.Add(text_copy, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # URL
         if len(self.url) > 0:
-            texturl = wx.StaticText(self, -1, self.url)
-            self.__apply_preferences(texturl)
-            texturl.SetForegroundColour(wx.Colour(80, 100, 220))
-            texturl.Bind(wx.EVT_LEFT_UP, self.OnLink)
-            sizer.Add(texturl, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            text_url = wx.StaticText(self, -1, self.url)
+            self.__apply_preferences(text_url)
+            text_url.SetForegroundColour(wx.Colour(80, 100, 220))
+            text_url.Bind(wx.EVT_LEFT_UP, self.on_link)
+            sizer.Add(text_url, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # License
         if len(self.license) > 0:
-            textlicense = wx.StaticText(self, -1, self.license)
-            self.__apply_preferences(textgpl)
-            sizer.Add(textlicense, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            text_license = wx.StaticText(self, -1, self.license)
+            self.__apply_preferences(text_license)
+            sizer.Add(text_license, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
         # License text content
         if len(self.license_text) > 0:
-            textgpl = wx.StaticText(self, -1, self.license_text)
-            self.__apply_preferences(textgpl)
-            sizer.Add(textgpl, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            text_gpl = wx.StaticText(self, -1, self.license_text)
+            self.__apply_preferences(text_gpl)
+            sizer.Add(text_gpl, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
 
-        self.SetSizer(sizer)
-        self.FitInside()
+        self.SetSizerAndFit(sizer)
         self.SetupScrolling(scroll_x=True, scroll_y=True)
-        self.SetAutoLayout(True)
 
     # ------------------------------------------------------------------------
 
-    def OnLink(self, event):
+    def on_link(self, event):
         try:
-            webbrowser.open(url, 1)
+            webbrowser.open(sppas.__url__, 1)
         except:
             pass
 
@@ -172,16 +169,42 @@ class AboutSPPASPanel(sppasBaseAbout):
     def __init__(self, parent, preferences):
         sppasBaseAbout.__init__(self, parent, preferences)
 
-        self.program = program
-        self.version = version
-        self.author = author
-        self.copyright = copyright
-        self.brief = brief
-        self.url = url
-        self.license_text = license_text
+        self.program = sppas.__name__
+        self.version = sppas.__version__
+        self.author = sppas.__author__
+        self.copyright = sppas.__copyright__
+        self.brief = sppas.__summary__
+        self.url = sppas.__url__
         self.logo = APP_ICON
+        self.license_text = """
+------------------------------------------------------------
 
-        self.Create()
+By using SPPAS, you agree to cite the reference in your publications:
+
+Brigitte Bigi (2015),
+SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech,
+The Phonetician, International Society of Phonetic Sciences,
+vol. 111-112, ISBN: 0741-6164, pages 54-69.
+
+------------------------------------------------------------
+
+SPPAS is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation; either version 3 of
+the License, or (at your option) any later version.
+
+SPPAS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with File Hunter; if not, write to the Free Software Foundation,
+Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+------------------------------------------------------------
+"""
+        self.create()
+        self.SetAutoLayout(True)
 
 # ------------------------------------------------------------------------
 
@@ -217,4 +240,5 @@ class AboutPluginPanel(sppasBaseAbout):
             except Exception:
                 pass
 
-        self.Create()
+        self.create()
+        self.SetAutoLayout(True)

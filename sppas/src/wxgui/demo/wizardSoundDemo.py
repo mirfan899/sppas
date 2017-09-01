@@ -39,14 +39,12 @@
 
 import wx
 import wx.wizard
-import os
-import os.path
 
-from wxgui.sp_images import WIZARD_WELCOME_SOUND_BMP
-from wxgui.cutils.imageutils import ScaleImage
-
+from sppas.src.wxgui.sp_images import WIZARD_WELCOME_SOUND_BMP
+from sppas.src.wxgui.cutils.imageutils import ScaleImage
 
 # ----------------------------------------------------------------------------
+
 
 class WizardSoundDemo( wx.wizard.Wizard ):
 

@@ -38,47 +38,48 @@
 import wx
 import logging
 
-import annotationdata
-import audiodata
-from sp_glob import SETTINGS_FILE
+from sppas import SETTINGS_FILE
 
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.structs.prefs import Preferences_IO
-from wxgui.sp_icons import APP_ICON
+import sppas.src.annotationdata.aio
+import sppas.src.audiodata.aio
 
-from wxgui.sp_consts import MIN_FRAME_W
-from wxgui.sp_consts import MIN_FRAME_H
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
+from sppas.src.wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.structs.prefs import Preferences_IO
+from sppas.src.wxgui.sp_icons import APP_ICON
 
-from wxgui.sp_consts import ID_ANNOTATIONS
-from wxgui.sp_consts import ID_COMPONENTS
-from wxgui.sp_consts import ID_PLUGINS
-from wxgui.sp_consts import ID_ACTIONS
-from wxgui.sp_consts import ID_FILES
-from wxgui.sp_consts import ID_FRAME_DATAROAMER
-from wxgui.sp_consts import ID_FRAME_SNDROAMER
-from wxgui.sp_consts import ID_FRAME_IPUSCRIBE
-from wxgui.sp_consts import ID_FRAME_SPPASEDIT
-from wxgui.sp_consts import ID_FRAME_STATISTICS
-from wxgui.sp_consts import ID_FRAME_DATAFILTER
+from sppas.src.wxgui.sp_consts import MIN_FRAME_W
+from sppas.src.wxgui.sp_consts import MIN_FRAME_H
+from sppas.src.wxgui.sp_consts import FRAME_STYLE
+from sppas.src.wxgui.sp_consts import FRAME_TITLE
 
-from wxgui.panels.filetree import FiletreePanel
-from wxgui.panels.mainbuttons import MainActionsPanel, MainMenuPanel, MainActionsMenuPanel, MainTitlePanel, MainTooltips
-from wxgui.panels.components import AnalyzePanel
-from wxgui.panels.aannotations import AnnotationsPanel
-from wxgui.panels.pplugins import PluginsPanel
-from wxgui.panels.about import AboutSPPASPanel
-from wxgui.ui.splitterpanel import SplitterPanel
+from sppas.src.wxgui.sp_consts import ID_ANNOTATIONS
+from sppas.src.wxgui.sp_consts import ID_COMPONENTS
+from sppas.src.wxgui.sp_consts import ID_PLUGINS
+from sppas.src.wxgui.sp_consts import ID_ACTIONS
+from sppas.src.wxgui.sp_consts import ID_FILES
+from sppas.src.wxgui.sp_consts import ID_FRAME_DATAROAMER
+from sppas.src.wxgui.sp_consts import ID_FRAME_SNDROAMER
+from sppas.src.wxgui.sp_consts import ID_FRAME_IPUSCRIBE
+from sppas.src.wxgui.sp_consts import ID_FRAME_SPPASEDIT
+from sppas.src.wxgui.sp_consts import ID_FRAME_STATISTICS
+from sppas.src.wxgui.sp_consts import ID_FRAME_DATAFILTER
 
-from wxgui.frames.dataroamerframe import DataRoamerFrame
-from wxgui.frames.audioroamerframe import AudioRoamerFrame
-from wxgui.frames.ipuscribeframe import IPUscribeFrame
-from wxgui.frames.sppaseditframe import SppasEditFrame
-from wxgui.frames.datafilterframe import DataFilterFrame
-from wxgui.frames.datastatsframe import DataStatsFrame
-from wxgui.frames.helpbrowser import HelpBrowser
-from wxgui.views.settings import SettingsDialog
+from sppas.src.wxgui.panels.filetree import FiletreePanel
+from sppas.src.wxgui.panels.mainbuttons import MainActionsPanel, MainMenuPanel, MainActionsMenuPanel, MainTitlePanel, MainTooltips
+from sppas.src.wxgui.panels.components import AnalyzePanel
+from sppas.src.wxgui.panels.aannotations import AnnotationsPanel
+from sppas.src.wxgui.panels.pplugins import PluginsPanel
+from sppas.src.wxgui.panels.about import AboutSPPASPanel
+from sppas.src.wxgui.ui.splitterpanel import SplitterPanel
+
+from sppas.src.wxgui.frames.dataroamerframe import DataRoamerFrame
+from sppas.src.wxgui.frames.audioroamerframe import AudioRoamerFrame
+from sppas.src.wxgui.frames.ipuscribeframe import IPUscribeFrame
+from sppas.src.wxgui.frames.sppaseditframe import SppasEditFrame
+from sppas.src.wxgui.frames.datafilterframe import DataFilterFrame
+from sppas.src.wxgui.frames.datastatsframe import DataStatsFrame
+from sppas.src.wxgui.frames.helpbrowser import HelpBrowser
+from sppas.src.wxgui.views.settings import SettingsDialog
 
 # -----------------------------------------------------------------------
 # S P P A S  Graphical User Interface... is here!
@@ -118,7 +119,7 @@ class FrameSPPAS(wx.Frame):
         w *= 0.6
         h = min(0.9*h, w*9/16)
         self.SetMinSize((MIN_FRAME_W, MIN_FRAME_H))
-        self.SetSize(wx.Size(w, h))
+        self.SetSize(wx.Size(max(int(w), MIN_FRAME_W), max(int(h), MIN_FRAME_H)))
         self.Centre()
         self.Enable()
         self.SetFocus()
@@ -444,7 +445,7 @@ class FrameSPPAS(wx.Frame):
         """ Return the list of annotated files selected in the FLP. """
 
         selection = []
-        for ext in annotationdata.aio.extensions:
+        for ext in sppas.src.annotationdata.aio.extensions:
             selection.extend(self.flp.GetSelected(ext))
         return selection
 
@@ -454,6 +455,6 @@ class FrameSPPAS(wx.Frame):
         """ Return the list of audio files selected in the FLP. """
 
         selection = []
-        for ext in audiodata.aio.extensions:
+        for ext in sppas.src.audiodata.aio.extensions:
             selection.extend(self.flp.GetSelected(ext))
         return selection

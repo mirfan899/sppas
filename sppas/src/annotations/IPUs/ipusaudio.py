@@ -1,300 +1,332 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: ipusaudio.py
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
+
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.ipusaudio.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Silence/speech automatic segmentation system.
+
+"""
+from sppas.src.audiodata.channelsilence import sppasChannelSilence
+
 # ---------------------------------------------------------------------------
 
-from audiodata.channelsilence import ChannelSilence
 
-# ---------------------------------------------------------------------------
-
-class IPUsAudio( object ):
+class IPUsAudio(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      An IPUs segmenter from audio.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      An automatic silence/speech segmentation system.
 
+    Silence/speech segmentation aims at finding IPUs.
     IPUs - Inter-Pausal Units are blocks of speech bounded by silent pauses
     of more than X ms, and time-aligned on the speech signal.
 
     """
     MIN_SIL_DUR = 0.08
     MIN_IPU_DUR = 0.08
+    DEFAULT_MIN_SIL_DUR = 0.250
+    DEFAULT_MIN_IPU_DUR = 0.300
+    DEFAULT_VOL_THRESHOLD = 0
 
     def __init__(self, channel):
-        """
-        Creates a new IPUsAudio instance.
+        """ Creates a new IPUsAudio instance.
 
+        :param channel: (audiodata.Channel)
+        
         """
         super(IPUsAudio, self).__init__()
-        self.reset()
+        
+        self._min_sil_dur = IPUsAudio.DEFAULT_MIN_SIL_DUR
+        self._min_ipu_dur = IPUsAudio.DEFAULT_MIN_IPU_DUR
+        self._vol_threshold = IPUsAudio.DEFAULT_VOL_THRESHOLD
+        self._win_length = 0.020
+        self._shift_start = 0.010
+        self._shift_end = 0.020
+        self._auto_vol = True
+        self._sil_at_start = False
+        self._sil_at_end = False
+
+        self._channel_sil = None
         self.set_channel(channel)
-
-    # ------------------------------------------------------------------
-
-    def reset(self):
-        """
-        Set default values.
-
-        """
-        self.min_sil_dur   = 0.250
-        self.min_ipu_dur   = 0.300
-        self.vol_threshold = 0
-        self.shift_start   = 0.010
-        self.shift_end     = 0.020
-        self.win_lenght    = 0.020
-        self.auto_vol      = True
-
-        self.bornestart = False
-        self.borneend   = False
 
     # ------------------------------------------------------------------
     # Manage Channel
     # ------------------------------------------------------------------
 
-    def get_channel(self):
+    def get_track_data(self, tracks):
+        """ Return the audio data of tracks. 
+        
+        :param tracks: List of tracks. A track is a tuple (start, end).
+        :returns: List of audio data
+        
         """
-        Return the channel.
+        return self._channel_sil.track_data(tracks)
 
-        """
-        return self.chansil.get_channel()
+    # ------------------------------------------------------------------
+
+    def get_channel(self):
+        """ Return the channel. """
+        
+        return self._channel_sil.get_channel()
 
     # ------------------------------------------------------------------
 
     def set_channel(self, channel):
-        """
-        Set a new Channel.
+        """ Set a new Channel.
 
+        :param channel: (audiodata.Channel)
+        
         """
         if channel is not None:
-            self.chansil = ChannelSilence( channel, self.win_lenght )
+            self._channel_sil = sppasChannelSilence(channel, self._win_length)
         else:
-            self.chansil = None
+            self._channel_sil = None
 
     # ------------------------------------------------------------------
 
     def reset_silences(self):
-        """
-        Reset the list of silences.
-
-        """
-        if self.chansil is not None:
-            self.chansil.reset_silences()
+        """ Reset the list of silences. """
+        
+        if self._channel_sil is not None:
+            self._channel_sil.reset_silences()
 
     # ------------------------------------------------------------------
 
     def set_silences(self, silences):
-        """
-        Fix the list of silences.
+        """ Fix the list of silences.
+
+        :param silences: List of tuples (from_pos, to_pos)
 
         """
-        if self.chansil is not None:
-            self.chansil.set_silences( silences )
+        if self._channel_sil is not None:
+            self._channel_sil.set_silences(silences)
 
+    # ------------------------------------------------------------------
+    # Getters for members
+    # ------------------------------------------------------------------
+
+    def get_win_length(self):
+        """ Return the windows length used to estimate the RMS. """
+        return self._win_length
+
+    def get_vol_threshold(self):
+        """ Return the volume threshold used to find silences vs tracks. """
+        return self._vol_threshold
+
+    def get_min_sil_dur(self):
+        """ Return the minimum duration of a silence. """
+        return self._min_sil_dur
+
+    def get_min_ipu_dur(self):
+        """ Return the minimum duration of a track. """
+        return self._min_ipu_dur
 
     # ------------------------------------------------------------------
     # Setters for members
     # ------------------------------------------------------------------
 
     def set_vol_threshold(self, vol_threshold):
-        """
-        Fix the default minimum volume value to find silences.
+        """ Fix the default minimum volume value to find silences.
 
-        @param vol_threshold (int) RMS value
+        :param vol_threshold: (int) RMS value
 
         """
-        self.vol_threshold = int(vol_threshold)
+        self._vol_threshold = int(vol_threshold)
+        if self._vol_threshold < 0:
+            self._vol_threshold = IPUsAudio.DEFAULT_VOL_THRESHOLD
         if vol_threshold == 0:
-            self.auto_vol = True
+            self._auto_vol = True
         else:
-            self.auto_vol = False
+            self._auto_vol = False
 
     # ------------------------------------------------------------------
 
     def set_min_silence(self, min_sil_dur):
-        """
-        Fix the default minimum duration of a silence.
+        """ Fix the default minimum duration of a silence.
 
-        @param min_sil_dur (float) Duration in seconds.
+        :param min_sil_dur: (float) Duration in seconds.
 
         """
-        self.min_sil_dur = float(min_sil_dur)
+        self._min_sil_dur = float(min_sil_dur)
+        if self._min_sil_dur < 0.02:
+            self._min_sil_dur = IPUsAudio.DEFAULT_MIN_SIL_DUR
 
     # ------------------------------------------------------------------
 
     def set_min_speech(self, min_ipu_dur):
-        """
-        Fix the default minimum duration of an IPU.
+        """ Fix the default minimum duration of an IPU.
 
-        @param min_ipu_dur (float) Duration in seconds.
+        :param min_ipu_dur: (float) Duration in seconds.
 
         """
-        self.min_ipu_dur = float(min_ipu_dur)
+        self._min_ipu_dur = float(min_ipu_dur)
+        if self._min_ipu_dur < 0.02:
+            IPUsAudio.DEFAULT_MIN_IPU_DUR
 
     # ------------------------------------------------------------------
 
-    def set_vol_win_lenght(self, winlength):
-        """
-        Fix the default windows length for RMS estimations.
+    def set_vol_win_length(self, win_length):
+        """ Fix the default windows length for RMS estimations.
 
-        @param winlength (float) Duration in seconds.
+        :param win_length: (float) Duration in seconds.
 
         """
-        self.win_lenght = max(winlength, 0.005)
+        self._win_length = max(win_length, 0.005)
 
     # ------------------------------------------------------------------
 
     def set_shift(self, s):
-        """
-        Fix the default minimum boundary shift value.
+        """ Fix the default minimum boundary shift value for start and end.
 
-        @param s (float) Duration in seconds.
+        :param s: (float) Duration in seconds.
 
         """
-        self.shift_start = float(s)
-        self.shift_end   = float(s)
+        self.set_shift_start(s)
+        self.set_shift_end(s)
 
     # ------------------------------------------------------------------
 
     def set_shift_start(self, s):
-        """
-        Fix the default minimum boundary shift value.
+        """ Fix the default minimum boundary shift value.
 
-        @param s (float) Duration in seconds.
+        :param s: (float) Duration in seconds.
 
         """
-        self.shift_start = float(s)
+        s = float(s)
+        if -self._min_ipu_dur < s < self._min_sil_dur:
+            self._shift_start = s
 
     # ------------------------------------------------------------------
 
-    def set_shift_end(self,s):
-        """
-        Fix the default minimum boundary shift value.
+    def set_shift_end(self, s):
+        """ Fix the default minimum boundary shift value.
 
-        @param s (float) Duration in seconds.
+        :param s: (float) Duration in seconds.
 
         """
-        self.shift_end = float(s)
+        s = float(s)
+        if -self._min_ipu_dur < s < self._min_sil_dur:
+            self._shift_end = s
 
     # ------------------------------------------------------------------
 
     def min_channel_duration(self):
-        """
-        Return the minimum duration we expect for a channel.
+        """ Return the minimum duration we expect for a channel. """
 
-        """
-        d1 = self.min_sil_dur+self.shift_start+self.shift_end
-        d2 = self.min_ipu_dur+self.shift_start+self.shift_end
-        return max(d1,d2)
+        d = max(self._min_sil_dur, self._min_ipu_dur)
+        return d + self._shift_start + self._shift_end
 
     # ------------------------------------------------------------------
 
-    def set_bound_start(self, sil=False):
-        """
-        Fix if it is expected (or not) to find a silence at the beginning of the channel.
+    def set_bound_start(self, expect_sil=False):
+        """ Set if it is expected (or not) to find a silence at the
+        beginning of the channel.
+
+        :param expect_sil: (bool)
 
         """
-        self.bornestart = sil
+        self._sil_at_start = expect_sil
 
     # ------------------------------------------------------------------
 
-    def set_bound_end(self, sil=False):
-        """
-        Fix if it is expected (or not) to find a silence at the end of the channel.
+    def set_bound_end(self, expect_sil=False):
+        """ Set if it is expected (or not) to find a silence at the end
+        of the channel.
+
+        :param expect_sil: (bool)
 
         """
-        self.borneend = sil
+        self._sil_at_end = expect_sil
 
     # ------------------------------------------------------------------
     # Silence/Speech segmentation
     # ------------------------------------------------------------------
 
     def extract_tracks(self, min_ipu_dur=None, shift_start=None, shift_end=None):
-        """
-        Return a list of tuples (from_pos,to_pos) of tracks.
+        """ Return a list of tuples (from_pos,to_pos) of tracks.
         The tracks are found from the current list of silences.
 
-        @param min_ipu_dur (float) The minimum duration for a track (in seconds)
-        @param shiftdurstart (float) The time to remove to the start boundary (in seconds)
-        @param shiftdurend (float) The time to add to the end boundary (in seconds)
-        @return (list of tuples)
+        :param min_ipu_dur: (float) The minimum duration for a track (in seconds)
+        :param shift_start: (float) The time to remove to the start boundary (in seconds)
+        :param shift_end: (float) The time to add to the end boundary (in seconds)
+        :returns: (list of tuples) Return a list of tuples (from_pos,to_pos) of the tracks.
 
         """
-        if self.chansil is None:
+        if self._channel_sil is None:
             return []
 
         if min_ipu_dur is None:
-            min_ipu_dur=self.min_ipu_dur
+            min_ipu_dur = self._min_ipu_dur
         if shift_start is None:
-            shift_start=self.shift_start
+            shift_start = self._shift_start
         if shift_end is None:
-            shift_end=self.shift_end
+            shift_end = self._shift_end
 
-        return self.chansil.extract_tracks(min_ipu_dur, shift_start, shift_end)
+        return self._channel_sil.extract_tracks(min_ipu_dur, shift_start, shift_end)
 
     # ------------------------------------------------------------------
 
     def search_tracks(self, volume):
-        """
-        Return the tracks if volume is used as threshold.
+        """ Search the tracks if the given volume is used as threshold.
+
+        :param volume: (int) RMS threshold value (0=auto)
+        :returns: (list of tuples) Return a list of tuples (from_pos,to_pos) of the tracks.
 
         """
-        if self.chansil is None:
+        if self._channel_sil is None:
             return []
 
-        self.chansil.search_silences(volume, mintrackdur=IPUsAudio.MIN_IPU_DUR)
-        self.chansil.filter_silences(self.min_sil_dur)
+        self._channel_sil.search_silences(volume, mintrackdur=IPUsAudio.MIN_IPU_DUR)
+        self._channel_sil.filter_silences(self._min_sil_dur)
         return self.extract_tracks()
 
     # ------------------------------------------------------------------
 
     def check_boundaries(self, tracks):
-        """
-        Check if silences at start and end are as expected.
+        """ Check if silences at start and end are as expected.
 
-        @return bool
+        :param tracks:
+        :returns: (bool)
 
         """
         if len(tracks) == 0:
             return False
-        if self.chansil is None:
+        if self._channel_sil is None:
             return False
 
-        if self.bornestart is False and self.borneend is False:
+        if self._sil_at_start is False and self._sil_at_end is False:
             # we do not know anything about silences at start and end
             # then, everything is ALWAYS OK!
             return True
@@ -302,58 +334,58 @@ class IPUsAudio( object ):
         first_from_pos = tracks[0][0]
         last_to_pos = tracks[len(tracks)-1][1]
 
-        # If I expected a silence at start... and I found a track
-        if self.bornestart is True and first_from_pos==0:
+        # If I expected a silence at start... and I've found a track
+        if self._sil_at_start is True and first_from_pos == 0:
             return False
 
-        # If I expected a silence at end... and I found a track
-        if self.borneend is True and last_to_pos==self.chansil.get_channel().get_nframes():
+        # If I expected a silence at end... and I've found a track
+        if self._sil_at_end is True and last_to_pos == self._channel_sil.get_channel().get_nframes():
             return False
 
         return True
 
     # ------------------------------------------------------------------
 
-    def split_into_vol(self, nbtracks):
-        """
-        Try various volume values to estimate silences then get the expected number of tracks.
+    def split_into_vol(self, nb_tracks):
+        """ Try various volume values to estimate silences then get the
+        expected number of tracks.
 
-        @param nbtracks is the expected number of IPUs
-        @return number of tracks
+        :param nb_tracks: (int) the expected number of tracks
+        :returns: number of tracks found
 
         """
-        if self.chansil is None:
+        if self._channel_sil is None:
             return 0
 
-        volstats = self.chansil.get_volstats()
+        volstats = self._channel_sil.get_volstats()
         # Min volume in the speech
         vmin = volstats.min()
         # Max is set to the mean
         vmax = volstats.mean()
         # Step is necessary to not exaggerate a detailed search!
         # step is set to 5% of the volume between min and mean.
-        step = int( (vmax - vmin) / 20.0 )
+        step = int((vmax - vmin) / 20.0)
         # Min and max are adjusted
         vmin += step
         vmax -= step
 
         # First Test !!!
-        self.vol_threshold = vmin
+        self._vol_threshold = vmin
         tracks = self.search_tracks(vmin)
         n = len(tracks)
         b = self.check_boundaries(tracks)
 
-        while (n != nbtracks or b is False):
+        while n != nb_tracks or b is False:
             # We would never be done anyway.
-            if (vmax==vmin) or (vmax-vmin) < step:
+            if (vmax == vmin) or (vmax-vmin) < step:
                 return n
 
             # Try with the middle volume value
             vmid = int(vmin + (vmax - vmin) / 2.0)
-            if n > nbtracks:
+            if n > nb_tracks:
                 # We split too often. Need to consider less as silence.
                 vmax = vmid
-            elif n < nbtracks:
+            elif n < nb_tracks:
                 # We split too seldom. Need to consider more as silence.
                 vmin = vmid
             else:
@@ -361,7 +393,7 @@ class IPUsAudio( object ):
                 vmin += step
 
             # Find silences with these parameters
-            self.vol_threshold = int(vmid)
+            self._vol_threshold = int(vmid)
             tracks = self.search_tracks(vmid)
             n = len(tracks)
             b = self.check_boundaries(tracks)
@@ -370,66 +402,66 @@ class IPUsAudio( object ):
 
     # ------------------------------------------------------------------
 
-    def split_into(self, nbtracks):
-        """
-        Try various volume values, pause durations and silence duration to get silences.
+    def split_into(self, nb_tracks=0):
+        """ Try various volume values, pause durations and silence
+        duration to get silences.
 
-        @param nbtracks is the expected number of IPUs. 0=auto.
+        :param nb_tracks: (int) the expected number of IPUs. 0=auto.
 
         """
-        if self.chansil is None:
+        if self._channel_sil is None:
             raise Exception('No audio data.')
 
-        if self.auto_vol is True:
-            self.vol_threshold = self.chansil.search_threshold_vol()
+        if self._auto_vol is True:
+            self._vol_threshold = self._channel_sil.search_threshold_vol()
 
-        if nbtracks == 0:
-            self.search_tracks( self.vol_threshold )
+        if nb_tracks == 0:
+            self.search_tracks(self._vol_threshold)
             return 0
 
         # Try with default parameters:
-        tracks = self.search_tracks( self.vol_threshold )
+        tracks = self.search_tracks(self._vol_threshold)
         n = len(tracks)
         b = self.check_boundaries(tracks)
 
-        if n == nbtracks and b is True:
+        if n == nb_tracks and b is True:
             return n
 
         # Try with default lengths (change only volume):
-        n = self.split_into_vol( nbtracks )
+        n = self.split_into_vol(nb_tracks)
 
-        if n > nbtracks:
+        if n > nb_tracks:
 
             # We split too often. Try with larger' values.
-            while n > nbtracks:
-                self.min_sil_dur += self.win_lenght
-                self.min_ipu_dur += self.win_lenght
-                n = self.split_into_vol( nbtracks )
+            while n > nb_tracks:
+                self._min_sil_dur += self._win_length
+                self._min_ipu_dur += self._win_length
+                n = self.split_into_vol(nb_tracks)
 
-        elif n < nbtracks:
+        elif n < nb_tracks:
 
             # We split too seldom. Try with shorter' values of silences
-            p = self.min_sil_dur
-            m = self.min_ipu_dur
-            while n < nbtracks and self.min_sil_dur > IPUsAudio.MIN_SIL_DUR:
-                self.min_sil_dur -= self.win_lenght
-                n = self.split_into_vol( nbtracks )
+            p = self._min_sil_dur
+            m = self._min_ipu_dur
+            while n < nb_tracks and self._min_sil_dur > IPUsAudio.MIN_SIL_DUR:
+                self._min_sil_dur -= self._win_length
+                n = self.split_into_vol(nb_tracks)
 
             # we failed... try with shorter' values of ipus
-            if n < nbtracks:
-                self.min_sil_dur = p
-                while n < nbtracks and self.min_ipu_dur > IPUsAudio.MIN_IPU_DUR:
-                    self.min_ipu_dur -= self.win_lenght
-                    n = self.split_into_vol( nbtracks )
+            if n < nb_tracks:
+                self._min_sil_dur = p
+                while n < nb_tracks and self._min_ipu_dur > IPUsAudio.MIN_IPU_DUR:
+                    self._min_ipu_dur -= self._win_length
+                    n = self.split_into_vol(nb_tracks)
 
                 # we failed... try with shorter' values of both sil/ipus
-                if n < nbtracks:
-                    self.min_ipu_dur = m
-                    while n < nbtracks and self.min_sil_dur > IPUsAudio.MIN_SIL_DUR and self.min_ipu_dur > IPUsAudio.MIN_IPU_DUR:
-                        self.min_ipu_dur -= self.win_lenght
-                        self.min_sil_dur -= self.win_lenght
-                        n = self.split_into_vol( nbtracks )
+                if n < nb_tracks:
+                    self._min_ipu_dur = m
+                    while n < nb_tracks and \
+                            self._min_sil_dur > IPUsAudio.MIN_SIL_DUR and \
+                            self._min_ipu_dur > IPUsAudio.MIN_IPU_DUR:
+                        self._min_ipu_dur -= self._win_length
+                        self._min_sil_dur -= self._win_length
+                        n = self.split_into_vol(nb_tracks)
 
         return n
-
-    # ------------------------------------------------------------------

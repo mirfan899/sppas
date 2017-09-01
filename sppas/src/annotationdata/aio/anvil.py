@@ -44,11 +44,12 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-from annotationdata.transcription import Transcription
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation import Annotation
-from annotationdata.label.label import Label
-import annotationdata.ptime.point
+from ..transcription import Transcription
+from ..ptime.interval import TimeInterval
+from ..annotation import Annotation
+from ..label.label import Label
+from ..ptime.point import TimePoint
+
 import xml.etree.cElementTree as ET
 
 # ----------------------------------------------------------------------------
@@ -57,10 +58,11 @@ ANVIL_RADIUS = 0.02
 
 # ----------------------------------------------------------------------------
 
-def TimePoint(time):
-    return annotationdata.ptime.point.TimePoint(time, ANVIL_RADIUS)
+def AnvilTimePoint(time):
+    return TimePoint(time, ANVIL_RADIUS)
 
 # ----------------------------------------------------------------------------
+
 
 class Anvil(Transcription):
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
@@ -129,10 +131,10 @@ class Anvil(Transcription):
                 elif begin == end:
                     continue
 
-                location = TimeInterval(TimePoint(begin), TimePoint(end))
+                location = TimeInterval(AnvilTimePoint(begin), AnvilTimePoint(end))
             elif trackRoot.attrib['type'] == 'primarypoint':
                 time = float(elRoot.attrib['time'])
-                location = TimePoint(time)
+                location = AnvilTimePoint(time)
             else:
                 raise Exception('unknown primary track type')
 
@@ -169,7 +171,7 @@ class Anvil(Transcription):
             elif begin == end:
                 continue
 
-            location = TimeInterval(TimePoint(begin), TimePoint(end))
+            location = TimeInterval(AnvilTimePoint(begin), AnvilTimePoint(end))
 
             for attributeNode in elRoot.findall('attribute'):
                 label = attributeNode.text
@@ -209,7 +211,7 @@ class Anvil(Transcription):
             elif begin == end:
                 continue
 
-            location = TimeInterval(TimePoint(begin), TimePoint(end))
+            location = TimeInterval(AnvilTimePoint(begin), AnvilTimePoint(end))
 
             for attributeNode in elRoot.findall('attribute'):
                 label = attributeNode.text
@@ -253,7 +255,7 @@ class Anvil(Transcription):
                 b += 1
                 end = timeSlots[e]
                 e += 1
-                location = TimeInterval(TimePoint(begin), TimePoint(end))
+                location = TimeInterval(AnvilTimePoint(begin), AnvilTimePoint(end))
 
                 for attributeNode in elRoot.findall('attribute'):
                     label = attributeNode.text

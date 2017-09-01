@@ -30,8 +30,8 @@
 
         ---------------------------------------------------------------------
 
-    bin.plugins.py
-    ~~~~~~~~~~~~~~
+    bin.plugin.py
+    ~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -55,34 +55,53 @@
     >>> ./sppas/bin/plugin.py --install --apply --remove -p sppas/src/plugins/tests/data/soxplugin.zip -i samples/samples-eng/oriana1.wav -o resampled.wav
 
 """
-
 import sys
 import os
 from argparse import ArgumentParser
 
-PROGRAM_PATH = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname(os.path.dirname(PROGRAM_PATH)), "src")
+PROGRAM = os.path.abspath(__file__)
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sp_glob import program, author, version, copyright, url
-from term.terminalcontroller import TerminalController
+import sppas
+from sppas.src.term.terminalcontroller import TerminalController
 
-from plugins import sppasPluginsManager
+from sppas.src.plugins import sppasPluginsManager
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s [actions] [options]" % os.path.basename(PROGRAM_PATH),
-                        prog=PROGRAM_PATH,
+parser = ArgumentParser(usage="%s [actions] [options]" % os.path.basename(PROGRAM),
+                        prog=PROGRAM,
                         description="Plugin command line interface.")
 
-parser.add_argument("--install", action='store_true', help="Install a new plugin from a plugin package.")
-parser.add_argument("--remove",  action='store_true', help="Remove an existing plugin.")
-parser.add_argument("--apply",   action='store_true', help="Apply a plugin on a file.")
-parser.add_argument("-p", metavar="string", required=True, help="Plugin (either an identifier, or an archive file).")
-parser.add_argument("-i", metavar="string", required=False, help="Input file to apply a plugin on it.")
-parser.add_argument("-o", metavar="string", required=False, help="Output file, ie the result of the plugin.")
+parser.add_argument("--install",
+                    action='store_true',
+                    help="Install a new plugin from a plugin package.")
+
+parser.add_argument("--remove",
+                    action='store_true',
+                    help="Remove an existing plugin.")
+
+parser.add_argument("--apply",
+                    action='store_true',
+                    help="Apply a plugin on a file.")
+
+parser.add_argument("-p",
+                    metavar="string",
+                    required=True,
+                    help="Plugin (either an identifier, or an archive file).")
+
+parser.add_argument("-i",
+                    metavar="string",
+                    required=False,
+                    help="Input file to apply a plugin on it.")
+
+parser.add_argument("-o",
+                    metavar="string",
+                    required=False,
+                    help="Output file, ie the result of the plugin.")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -96,17 +115,17 @@ args = parser.parse_args()
 
 try:
     term = TerminalController()
-    print term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}')
-    print term.render('${RED}'+program+' - Version '+version+'${NORMAL}')
-    print term.render('${BLUE}'+copyright+'${NORMAL}')
-    print term.render('${BLUE}'+url+'${NORMAL}')
-    print term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}\n')
+    print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}'))
+    print(term.render('${RED}'+sppas.__name__+' - Version '+sppas.__version__+'${NORMAL}'))
+    print(term.render('${BLUE}'+sppas.__copyright__+'${NORMAL}'))
+    print(term.render('${BLUE}'+sppas.__url__+'${NORMAL}'))
+    print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}\n'))
 except Exception:
-    print '-----------------------------------------------------------------------\n'
-    print program+'   -  Version '+version
-    print copyright
-    print url+'\n'
-    print '-----------------------------------------------------------------------\n'
+    print('-----------------------------------------------------------------------\n')
+    print(sppas.__name__+'   -  Version '+sppas.__version__)
+    print(sppas.__copyright__)
+    print(sppas.__url__+'\n')
+    print('-----------------------------------------------------------------------\n')
 
 manager = sppasPluginsManager()
 plugin_id = args.p
@@ -114,7 +133,7 @@ plugin_id = args.p
 
 if args.install:
 
-    print "Plugin installation"
+    print("Plugin installation")
 
     # fix a name for the plugin directory
     plugin_folder = os.path.splitext(os.path.basename(args.p))[0]
@@ -138,11 +157,11 @@ if args.apply and args.i:
 
     # Run
     message = manager.run_plugin(plugin_id, [args.i])
-    print message
+    print(message)
 
 
 if args.remove:
 
     manager.delete(plugin_id)
 
-print "-----------------------------------------------------------------------\n"
+print("-----------------------------------------------------------------------\n")

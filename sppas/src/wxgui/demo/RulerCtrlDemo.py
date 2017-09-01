@@ -36,12 +36,11 @@
 # ----------------------------------------------------------------------------
 
 import logging
-import time
 import random
 import wx
 
-from wxgui.ui.timerulerctrl import TimeRulerCtrl
-from wxgui.ui.spControl import spEVT_CTRL_SELECTED
+from sppas.src.wxgui.ui.timerulerctrl import TimeRulerCtrl
+from sppas.src.wxgui.ui.spControl import spEVT_CTRL_SELECTED
 
 # ----------------------------------------------------------------------------
 

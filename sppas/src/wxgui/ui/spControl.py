@@ -39,7 +39,6 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
 # ---------------------------------------------------------------------------
 # Imports
 # ---------------------------------------------------------------------------
@@ -47,7 +46,6 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import logging
 import wx
 import wx.lib.newevent
-
 
 # ----------------------------------------------------------------------------
 # Constants

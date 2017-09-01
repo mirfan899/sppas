@@ -2,17 +2,17 @@ File type = "ooTextFile"
 Object class = "TextGrid"
 
 xmin = 0.0
-xmax = 6.760000
+xmax = 6.76
 tiers? <exists>
 size = 1
 item []:
-        item [1]:
+    item [1]:
         class = "IntervalTier"
         name = "transcription"
-                xmin = 0.0
-                xmax = 6.760000
-                intervals: size = 1
-        intervals [0]:
-                xmin = 0.0000
-                xmax = 6.760000
-                text = "elle habite sur Arles depuis que je la connais mais je crois qu' elle a pas toujours habité là-bas enfin je sais plus exactement je connais pas très très bien son parcours @ mais euh"
+        xmin = 0.000000
+        xmax = 6.760000
+        intervals: size = 1
+        intervals [1]:
+            xmin = 0.0
+            xmax = 6.76
+            text = "Elle habite sur $ Arles $ depuis que je la connais, mais je crois qu' elle a pas toujours habité là-bas. Enfin, je sais plus exactement, je connais pas très très bien son parcours. @ mais euh"

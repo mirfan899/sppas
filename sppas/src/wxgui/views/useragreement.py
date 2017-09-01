@@ -47,11 +47,11 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 import wx
 import wx.richtext
 
-from wxgui.dialogs.basedialog import spBaseDialog
-from wxgui.sp_icons import USERCHECK
+from sppas.src.calculus.kappa import sppasKappa
+from sppas.src.annotationdata.utils.tierutils import TierConverter
 
-from calculus.kappa           import Kappa
-from presenters.tierconverter import TierConverter
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.sp_icons import USERCHECK
 
 # ----------------------------------------------------------------------------
 # class UserAgreementDialog
@@ -102,8 +102,8 @@ class UserAgreementDialog( spBaseDialog ):
         page2 = KappaPanel(self.notebook, self.preferences)
 
         # add the pages to the notebook with the label to show on the tab
-        self.notebook.AddPage(page1, "Information"     )
-        self.notebook.AddPage(page2, "Cohen's Kappa" )
+        self.notebook.AddPage(page1, "Information")
+        self.notebook.AddPage(page2, "Cohen's Kappa")
 
         page1.ShowContent(self.tiers)
         self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnNotebookPageChanged)
@@ -294,7 +294,7 @@ class KappaPanel( BaseTierPanel ):
         p = d1.labels_to_vector( items )
         q = d2.labels_to_vector( items )
 
-        kappa = Kappa(p,q)
+        kappa = sppasKappa(p,q)
         v = kappa.evaluate()
         self.text_ctrl.WriteText( "value = "+str(v)+"\n" )
 

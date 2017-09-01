@@ -1,13 +1,45 @@
-#!/usr/bin/env python2
-# -*- coding:utf-8 -*-
+# -*- coding: UTF-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.structs.tests.test_lang.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import unittest
 import os.path
 
-# ---------------------------------------------------------------------------
+from sppas import RESOURCES_PATH
 
-from structs.lang import LangResource
-from sp_glob import RESOURCES_PATH
+from ..lang import sppasLangResource
+from ..structsexc import LangTypeError, LangNameError, LangPathError
 
 # ---------------------------------------------------------------------------
 
@@ -15,15 +47,15 @@ from sp_glob import RESOURCES_PATH
 class TestLang(unittest.TestCase):
 
     def setUp(self):
-        self.lr = LangResource()
+        self.lr = sppasLangResource()
 
     def test_set(self):
         self.assertEqual(self.lr.get_lang(), "und")
 
-        with self.assertRaises(IOError):
+        with self.assertRaises(LangPathError):
             self.lr.set("file", "wrongpath")
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(LangTypeError):
             self.lr.set("wrongtype", "vocab")
 
         self.lr.set("file", "vocab")
@@ -32,31 +64,31 @@ class TestLang(unittest.TestCase):
 
         # Tokenization:
         self.lr.set("file", "vocab", "", ".vocab")
-        self.assertEqual(os.path.join(RESOURCES_PATH,"vocab"), self.lr.get_langresource())
+        self.assertEqual(os.path.join(RESOURCES_PATH, "vocab"), self.lr.get_langresource())
         self.lr.set_lang("fra")
         self.assertEqual("fra", self.lr.get_lang())
-        self.assertEqual(os.path.join(RESOURCES_PATH,"vocab","fra.vocab"), self.lr.get_langresource())
-        with self.assertRaises(ValueError):
+        self.assertEqual(os.path.join(RESOURCES_PATH, "vocab", "fra.vocab"), self.lr.get_langresource())
+        with self.assertRaises(LangNameError):
             self.lr.set_lang("wrong")
 
         # Syllabification:
         self.lr.set("file", "syll", "syllConfig-", ".txt")
         self.lr.set_lang("fra")
-        self.assertEqual(os.path.join(RESOURCES_PATH,"syll","syllConfig-fra.txt"), self.lr.get_langresource())
-        with self.assertRaises(ValueError):
+        self.assertEqual(os.path.join(RESOURCES_PATH, "syll", "syllConfig-fra.txt"), self.lr.get_langresource())
+        with self.assertRaises(LangNameError):
             self.lr.set_lang("wrong")
 
         # Alignment
         self.lr.set("directory", "models", "models-")
         self.lr.set_lang("fra")
-        self.assertEqual(os.path.join(RESOURCES_PATH,"models","models-fra"), self.lr.get_langresource())
-        with self.assertRaises(ValueError):
+        self.assertEqual(os.path.join(RESOURCES_PATH, "models", "models-fra"), self.lr.get_langresource())
+        with self.assertRaises(LangNameError):
             self.lr.set_lang("wrong")
 
         self.lr.set("directory", "models", "models-", ".txt")
         self.lr.set_lang("fra")
-        self.assertEqual(os.path.join(RESOURCES_PATH,"models","models-fra"), self.lr.get_langresource())
-        with self.assertRaises(ValueError):
+        self.assertEqual(os.path.join(RESOURCES_PATH, "models", "models-fra"), self.lr.get_langresource())
+        with self.assertRaises(LangNameError):
             self.lr.set_lang("wrong")
 
 

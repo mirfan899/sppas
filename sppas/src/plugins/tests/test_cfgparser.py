@@ -1,11 +1,10 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 import os.path
 from shutil import copyfile
 
-from plugins.cfgparser import sppasPluginConfigParser
+from ..cfgparser import sppasPluginConfigParser
 
 # ---------------------------------------------------------------------------
 
@@ -27,7 +26,7 @@ class TestPluginConfigParser(unittest.TestCase):
         com = self.cfg.get_command()
 
         self.assertEqual(len(conf), 3)  # id, name, descr
-        self.assertEqual(len(opt), 3)   # input, -v, show-progress
+        self.assertEqual(len(opt), 4)   # input, -v, show-progress, -i
         self.assertEqual(len(com), 3)
 
         self.assertEqual(conf['id'], "pluginid")
@@ -47,5 +46,5 @@ class TestPluginConfigParser(unittest.TestCase):
         com = newcfg.get_command()
 
         self.assertEqual(len(conf), 3)  # id, name, descr
-        self.assertEqual(len(opt), 3)   # input, -v, show-progress
+        self.assertEqual(len(opt), 4)   # input, -v, show-progress, -i
         self.assertEqual(len(com), 3)

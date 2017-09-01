@@ -41,30 +41,22 @@
 
 import xml.etree.cElementTree as ET
 
-from annotationdata.transcription  import Transcription
-from annotationdata.ctrlvocab      import CtrlVocab
-from annotationdata.media          import Media
-from annotationdata.label.label    import Label
-import annotationdata.ptime.point
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.annotation     import Annotation
+from ..transcription import Transcription
+from ..label.label import Label
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..annotation import Annotation
 
 # -----------------------------------------------------------------
-
-CONSTRAINTS = {}
-CONSTRAINTS["Time subdivision of parent annotation's time interval, no time gaps allowed within this interval"]="Time_Subdivision"
-CONSTRAINTS["Symbolic subdivision of a parent annotation. Annotations refering to the same parent are ordered"]="Symbolic_Subdivision"
-CONSTRAINTS["1-1 association with a parent annotation"]="Symbolic_Association"
-CONSTRAINTS["Time alignable annotations within the parent annotation's time interval, gaps are allowed"]="Included_In"
 
 AUDACITY_RADIUS = 0.0005
 
+
+def AudacityTimePoint(time, radius=AUDACITY_RADIUS):
+    return TimePoint(time, radius)
+
 # -----------------------------------------------------------------
 
-def TimePoint(time, radius=AUDACITY_RADIUS):
-    return annotationdata.ptime.point.TimePoint(time, radius)
-
-# -----------------------------------------------------------------
 
 def normalize(name):
     if name[0] == "{":
@@ -75,7 +67,8 @@ def normalize(name):
 
 # -----------------------------------------------------------------
 
-class Audacity( Transcription ):
+
+class Audacity(Transcription):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -133,15 +126,15 @@ class Audacity( Transcription ):
             if name == "label":
                 label = annotationRoot.attrib['title']
                 begin = float(annotationRoot.attrib['t'])
-                end   = float(annotationRoot.attrib['t1'])
-                b = TimePoint(begin)
+                end = float(annotationRoot.attrib['t1'])
+                b = AudacityTimePoint(begin)
 
                 if begin == end:
                     new_a = Annotation(b, Label(label))
                 else:
-                    e = TimePoint(end)
+                    e = AudacityTimePoint(end)
                     new_a = Annotation(TimeInterval(b,e), Label(label))
 
-                tier.Add( new_a )
+                tier.Add(new_a)
 
     # -----------------------------------------------------------------

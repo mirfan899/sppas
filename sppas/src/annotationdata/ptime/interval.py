@@ -36,9 +36,10 @@
 # ----------------------------------------------------------------------------
 
 import logging
-import baseplacement
-import duration
-from point import TimePoint
+
+from .baseplacement import BasePlacement
+from .duration import Duration as duration_Duration
+from .point import TimePoint
 
 # ----------------------------------------------------------------------------
 
@@ -48,7 +49,8 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-class TimeInterval(baseplacement.BasePlacement):
+
+class TimeInterval(BasePlacement):
     """
     @author:  Brigitte Bigi, Tatsuya Watanabe
     @contact: brigitte.bigi@gmail.com
@@ -226,7 +228,7 @@ class TimeInterval(baseplacement.BasePlacement):
         # vagueness of the duration is based on begin/end radius values
         vagueness = self.__begin.GetRadius() + self.__end.GetRadius()
 
-        return duration.Duration(value,vagueness)
+        return duration_Duration(value, vagueness)
 
     # -----------------------------------------------------------------------
 

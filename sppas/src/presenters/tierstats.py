@@ -1,211 +1,238 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: tierstats.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+        http://www.sppas.org/
 
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.presenters.tierstats.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
+from sppas.src.calculus.descriptivesstats import sppasDescriptiveStatistics
+from sppas.src.calculus.infotheory.utilit import MAX_NGRAM
+from sppas.src.calculus.calculusexc import InsideIntervalError
 
 # ----------------------------------------------------------------------------
 
-from calculus.descriptivesstats import DescriptiveStatistics
 
-# ----------------------------------------------------------------------------
-
-class TierStats( object ):
+class TierStats(object):
     """
-    @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: Estimates descriptives statistics of annotations of a tier.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Estimates descriptive statistics of annotations of a tier.
 
     Map a tier into a dictionary where:
-    - key is a label
-    - value is the list of observed durations for this label
+    
+        - key is a label
+        - value is the list of observed durations for this label
 
     """
 
-    def __init__(self, tier=None, n=1, withradius=0, withalt=False):
+    def __init__(self, tier=None, n=1, with_radius=0, with_alt=False):
+        """ Create a new TierStats instance.
+
+        :param tier: (either Tier or list of tiers)
+        :param n: (int) n-gram value
+        :param with_radius: (int) 0 to use Midpoint, negative value to use R-, positive value to use R+
+        :param with_alt: (bool) Use or not use of alternative labels
+
         """
-        Create a new TierStats instance.
+        self.tier = tier
+        self._with_radius = with_radius
+        self._with_alt = with_alt
+        self._ngram = 1
 
-        @param tier (either Tier or list of tiers)
-        @param n (int): n-gram value
-        @param withradius (int): 0 means to use Midpoint, negative value means to use R-, positive radius means to use R+
-        @param withalt (boolean): Use or not use of alternative labels
-
-        """
-        self.tier         = tier
-        self.__withradius = withradius
-        self.__withalt    = withalt
-        self.__n          = n
-
-    # ------------------------------------------------------------------
+        self.set_ngram(n)
 
     # ------------------------------------------------------------------
     # Getters
     # ------------------------------------------------------------------
 
     def get_ngram(self):
-        return self.__n
+        """ Returns the n-gram value. """
+        
+        return self._ngram
 
-    def get_withradius(self):
-        return self.__withradius
+    # ------------------------------------------------------------------
 
-    def get_withalt(self):
-        return self.__withalt
+    def get_with_radius(self):
+        """ Returns how to use the radius in duration estimations.
+        0 means to use Midpoint, negative value means to use R-, and 
+        positive value means to use R+.
+        
+        """
+        return self._with_radius
 
+    # ------------------------------------------------------------------
+
+    def get_with_alt(self):
+        """ Return if alternative labels will be used or not. """
+
+        return self._with_alt
+
+    # ------------------------------------------------------------------
+    
     def get_tier(self):
+        """ Return the tier to estimate stats. """
+        
         return self.tier
 
     # ------------------------------------------------------------------
     # Setters
     # ------------------------------------------------------------------
 
-    def set_withradius(self, withradius):
+    def set_with_radius(self, with_radius):
+        """ Set the with_radius option, used to estimate the duration.
+        
+        :param with_radius: (int) 
+            - 0 means to use Midpoint;
+            - negative value means to use R-;
+            - positive radius means to use R+.
+        
         """
-        Set the withradius option, used to estimate the duration:
-            - 0 means to use Midpoint,
-            - negative value means to use R-,
-            - positive radius means to use R+
-        """
-        self.__withradius = int(withradius)
+        self._with_radius = int(with_radius)
 
+    # ------------------------------------------------------------------
+    
     def set_withalt(self, withalt):
         """
         Set the withalt option, used to select the labels
             - False means to use only the label with the higher score of each annotation
             - True means to use all labels of each annotation
         """
-        self.__withalt = withalt
+        self._with_alt = withalt
 
+    # ------------------------------------------------------------------
+    
     def set_ngram(self, n):
+        """ Set the n value of the n-grams.
+        It is used to fix the history size (at least =1).
+        
         """
-        Set the n value of the n-grams, used to fix the history size (at least =1).
-        """
-        if int(n) < 1:
-            raise ValueError('An n-gram must be at least of size 1, got %d'%n)
-        self.__n = int(n)
-
+        n = int(n)
+        if 0 < n <= MAX_NGRAM:
+            self._ngram = n
+        else:
+            raise InsideIntervalError(n, 1, MAX_NGRAM)
 
     # ------------------------------------------------------------------
     # Workers
     # ------------------------------------------------------------------
 
     def ds(self):
+        """ Create a DescriptiveStatistic object for the given tier. 
+        
+        :returns: (DescriptiveStatistic)
+        
         """
-        Create then return the DescriptiveStatistic object corresponding to the tier.
-        """
-        ltup  = self.__tiers_to_tuple()
+        ltup = self.__tiers_to_tuple()
         ngrams = list()
         for t in ltup:
-            ngrams.extend( self.__ngrams( t ) )
-        items = self.__tuple_to_dict(ngrams)
-        return DescriptiveStatistics(items)
-
-    # ------------------------------------------------------------------
-
+            ngrams.extend(self.__ngrams(t))
+        items = TierStats.tuple_to_dict(ngrams)
+        
+        return sppasDescriptiveStatistics(items)
 
     # ------------------------------------------------------------------
     # Private
     # ------------------------------------------------------------------
 
     def __tiers_to_tuple(self):
-        """
-        Return a list of tuples of label/duration pairs.
-        """
+        """ Return a list of tuples of label/duration pairs. """
+        
         tiers = self.tier
-        if not isinstance(self.tier,list):
+        if not isinstance(self.tier, list):
             tiers = [self.tier]
 
-        return [ self.__tier_to_tuple(tier) for tier in tiers ]
+        return [self.__tier_to_tuple(tier) for tier in tiers]
 
+    # ------------------------------------------------------------------
 
     def __tier_to_tuple(self, tier):
-        """
-        Return a tuple of label/duration pairs for a given tier.
+        """ Return a tuple of label/duration pairs for a given tier.
+        
+        :param tier: (Tier)
+        :returns: tuple
+        
         """
         l = list()
         for a in tier:
-            if self.__withalt is False:
-                textes = [ a.GetLabel().GetValue() ]
+            if self._with_alt is False:
+                textes = [a.GetLabel().GetValue()]
             else:
-                textes = [ t.GetValue() for t in a.GetLabels() ]
+                textes = [t.GetValue() for t in a.GetLabels()]
 
             duration = a.GetLocation().GetDuration().GetValue()
             if a.GetLocation().IsInterval():
-                if self.__withradius < 0:
+                if self._with_radius < 0:
                     duration = duration + a.GetLocation().GetDuration().GetMargin()
-                elif self.__withradius > 0:
+                elif self._with_radius > 0:
                     duration = duration - a.GetLocation().GetDuration().GetMargin()
 
             for texte in textes:
-                l.append( (texte,duration) )
+                l.append((texte, duration))
 
         return tuple(l)
 
+    # ------------------------------------------------------------------
+    
+    def __ngrams(self, items):
+        """ Yield a sequences of ngrams. 
 
-    def __ngrams(self,items):
-        """
-        Yield a sequences of ngrams.
+        :param items: (tuple) the ngram items
+
         """
         l = list()
         size = len(items)
-        if (size - self.__n) > 0:
-            limit = size - self.__n + 1
-            for i in xrange(limit):
-                l.append( items[i:i + self.__n] )
+        if (size - self._ngram) > 0:
+            limit = size - self._ngram + 1
+            for i in range(limit):
+                l.append(items[i:i + self._ngram])
         return l
 
+    # ------------------------------------------------------------------
 
-    def __tuple_to_dict(self,items):
-        """
-        Convert into a dictionary.
-        @param items (tuple) the ngram items
-        @return: dictionary key=text, value=list of durations.
+    @staticmethod
+    def tuple_to_dict(items):
+        """ Convert into a dictionary.
+        
+        :param items: (tuple) the ngram items
+        :returns: dictionary key=text, value=list of durations.
+        
         """
         d = {}
         for item in items:
             dur = sum([i[1] for i in item])
             text = " ".join([i[0] for i in item])
-            if not text in d:
+            if text not in d:
                 d[text] = []
             d[text].append(dur)
         return d
-
-# End TierStats
-# ---------------------------------------------------------------------------

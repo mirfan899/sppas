@@ -38,16 +38,14 @@ if SPPAS is None:
     SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 
 if os.path.exists(SPPAS) is False:
-    print "ERROR: SPPAS not found."
+    print("ERROR: SPPAS not found.")
     sys.exit(1)
+sys.path.append(SPPAS)
 
-SPPASSRC = os.path.join(SPPAS, "sppas", "src")
-sys.path.append(SPPASSRC)
-
-import annotationdata.aio
-from presenters.tiermapping import TierMapping
-from annotationdata.transcription import Transcription
-from sp_glob import encoding
+import sppas.src.annotationdata.aio as aio
+from sppas.src.presenters.tiermapping import TierMapping
+from sppas.src.annotationdata.transcription import Transcription
+from sppas import encoding
 
 reload(sys)
 sys.setdefaultencoding(encoding)
@@ -59,10 +57,26 @@ sys.setdefaultencoding(encoding)
 parser = ArgumentParser(usage="%s -i file -m table" %
                         os.path.basename(PROGRAM),
                         description="... a program to classify phonemes.")
-parser.add_argument("-i", metavar="file", required=True,  help='Input annotated file name.')
-parser.add_argument("-m", metavar="file", required=True,  help='Mapping table file name.')
-parser.add_argument("-s", metavar="symbol", required=False, default="*", help='Symbol for unknown phonemes (default:*).')
-parser.add_argument("--quiet", action='store_true', help="Disable the verbosity")
+
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Input annotated file name.')
+
+parser.add_argument("-m",
+                    metavar="file",
+                    required=True,
+                    help='Mapping table file name.')
+
+parser.add_argument("-s",
+                    metavar="symbol",
+                    required=False,
+                    default="*",
+                    help='Symbol for unknown phonemes (default:*).')
+
+parser.add_argument("--quiet",
+                    action='store_true',
+                    help="Disable the verbosity")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -74,18 +88,20 @@ args = parser.parse_args()
 
 fname, fext = os.path.splitext(args.i)
 if fname.endswith("-palign") is False:
-    print "ERROR: this plugin requires SPPAS alignment files (i.e. with -palign in its name)."
+    print("ERROR: this plugin requires SPPAS alignment files (i.e. with -palign in its name).")
     sys.exit(1)
 
 # read content
-trs_input = annotationdata.aio.read(args.i)
+trs_input = aio.read(args.i)
 tier = trs_input.Find("PhonAlign", case_sensitive=False)
 if tier is None:
-    print "A tier with name PhonAlign is required."
+    print("A tier with name PhonAlign is required.")
     sys.exit(1)
 
 # read the table
-if not args.quiet: print "Loading..."
+if not args.quiet:
+    print("Loading...")
+
 mappings = OrderedDict()
 with codecs.open(args.m, "r", encoding) as fp:
     firstline = fp.readline()
@@ -112,25 +128,29 @@ with codecs.open(args.m, "r", encoding) as fp:
         for name, value in zip(tiernames, phones):
             mappings[name].add(phoneme, value)
 
-if not args.quiet: print "\ndone..."
+if not args.quiet:
+    print("\ndone...")
 
 # ----------------------------------------------------------------------------
 # Convert input file
 
 trs = Transcription(name="PhonemesClassification")
 
-if not args.quiet: print "Classifying..."
+if not args.quiet:
+    print("Classifying...")
 for name in mappings.keys():
-    if not args.quiet: print " -", name
+    if not args.quiet:
+        print(" - {:s}".format(name))
     new_tier = mappings[name].map_tier(tier)
     new_tier.SetName(name)
     trs.Append(new_tier)
-print "done..."
+print("done...")
 
 # ----------------------------------------------------------------------------
 # Write converted tiers
 
-if not args.quiet: print "Saving..."
+if not args.quiet:
+    print("Saving...")
 filename = fname + "-class" + fext
-annotationdata.aio.write(filename, trs)
-print "File %s created." % filename.encode('utf8')
+aio.write(filename, trs)
+print("File {:s} created.".format(filename.encode('utf8')))

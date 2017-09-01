@@ -40,9 +40,9 @@
 import wx
 import random
 
-from wxgui.ui.labelctrl import LabelCtrl
-from annotationdata.label.label import Label
-from annotationdata.label.text import Text
+from sppas.src.wxgui.ui.labelctrl import LabelCtrl
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotationdata.label.text import Text
 
 # ----------------------------------------------------------------------------
 

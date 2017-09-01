@@ -47,28 +47,20 @@ import os
 import wx
 import re
 import operator
+import functools
 
-from annotationdata.filter.predicate import Sel
+from sppas.src.annotationdata.filter.predicate import Sel
 
-from wxgui.dialogs.basedialog import spBaseDialog
-
-from wxgui.sp_icons import DATAFILTER_APP_ICON
-from wxgui.sp_icons import FILTER_SINGLE
-from wxgui.sp_icons import APPLY_ICON
-from wxgui.sp_icons import FILTER_ADD_LABEL
-from wxgui.sp_icons import FILTER_ADD_DURATION
-from wxgui.sp_icons import FILTER_ADD_TIME
-from wxgui.sp_icons import FILTER_REMOVE
-
-from wxgui.panels.mainbuttons import MainToolbarPanel
-
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.ctrlutils import CreateGenButton
-from wxgui.cutils.textutils import TextValidator
-
-from wxgui.ui.CustomListCtrl import CheckListCtrl
-
-from sp_glob import ICONS_PATH
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.sp_icons import FILTER_SINGLE
+from sppas.src.wxgui.sp_icons import APPLY_ICON
+from sppas.src.wxgui.sp_icons import FILTER_ADD_LABEL
+from sppas.src.wxgui.sp_icons import FILTER_ADD_DURATION
+from sppas.src.wxgui.sp_icons import FILTER_ADD_TIME
+from sppas.src.wxgui.sp_icons import FILTER_REMOVE
+from sppas.src.wxgui.panels.mainbuttons import MainToolbarPanel
+from sppas.src.wxgui.cutils.textutils import TextValidator
+from sppas.src.wxgui.ui.CustomListCtrl import CheckListCtrl
 
 try:
     from agw import floatspin as FS
@@ -405,13 +397,14 @@ class _genPredicateSel(object):
                 kwargs[ 'opt' ] = self.opt
             preds.append( Sel(**kwargs) )
 
-        pred  = reduce(operator.or_, preds)
+        pred  = functools.reduce(operator.or_, preds)
 
         if self.reverse:
             return ~pred
         return pred
 
 # ----------------------------------------------------------------------------
+
 
 class LabelFilterDialog( spBaseDialog ):
     """

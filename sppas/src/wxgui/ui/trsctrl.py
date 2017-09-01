@@ -40,19 +40,13 @@ __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
-
 import logging
 import wx
 
-from tierctrl  import TierCtrl
+from sppas.src.wxgui.cutils.colorutils import PickRandomColour
+
+from tierctrl import TierCtrl
 from spControl import spControl
-from wxgui.cutils.colorutils import PickRandomColour
-
-# ---------------------------------------------------------------------------
-
 
 # ---------------------------------------------------------------------------
 # Class TranscriptionCtrl

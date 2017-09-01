@@ -37,8 +37,8 @@
 """
 from baseframe import ComponentFrame
 
-from wxgui.sp_icons import STATISTICS_APP_ICON
-from wxgui.clients.datastatsclient import DataStatsClient
+from sppas.src.wxgui.sp_icons import STATISTICS_APP_ICON
+from sppas.src.wxgui.clients.datastatsclient import DataStatsClient
 
 # ----------------------------------------------------------------------------
 

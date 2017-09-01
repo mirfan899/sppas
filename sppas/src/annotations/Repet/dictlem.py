@@ -39,36 +39,39 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
 
-import os
 import re
 import codecs
 
-from sp_glob import UNKSTAMP
+from sppas import encoding
+from sppas import unk_stamp
 
 # ----------------------------------------------------------------------------
 
-class LemmaDict:
+
+class LemmaDict(object):
     """ Perform a simple dictionary-based lemmatization.
     """
 
-    def __init__(self, dictfilename):
+    def __init__(self):
         """ Create a new LemmaDict instance.
-            The dictionary file contains at least 3 columns: the 1st column
-            indicates the token, the second column indicates the nb of occ.,
-            the last column indicates the lemma.
-            Parameters:
-                - dictfilename is the dictionary file name.
 
         """
-        self.unk = UNKSTAMP
+        self.unk = unk_stamp
         # Load the dictionary:
-        self.lemdict = {}
-        encoding='utf-8'
+        self.lemdict = dict()
+
+    # ------------------------------------------------------------------
+
+    def load(self, dictfilename):
+        """ Load a dictionary with "token occurrence lemma" as columns.
+
+        :param dictfilename: the dictionary file name.
+
+        """
         with codecs.open(dictfilename, 'r', encoding) as fd:
 
             dictfreq = {}
@@ -99,34 +102,13 @@ class LemmaDict:
 
     # ------------------------------------------------------------------
 
-    def get_size(self):
-        """ Return the number of entries in the dictionary.
-            (without the number of variants)
-            Parameters:  None
-            Return:      int
-            Exception:   None
-        """
-        return len(self.lemdict)
-
-    # ------------------------------------------------------------------
-
-    def get_dict(self):
-        """ Return the dictionary.
-            Parameters:  None
-            Return:      a dictionary
-            Exception:   None
-        """
-        return self.lemdict
-
-    # ------------------------------------------------------------------
-
     def __get(self, entry):
         """ Return the lemmatization of an entry in the dictionary or "UNK".
             Parameters:  None
             Return:      int
             Exception:   None
         """
-        return self.lemdict.get(self.__lower(entry), self.unk)
+        return self.lemdict.get( self.__lower(entry), self.unk )
 
     # ------------------------------------------------------------------
 
@@ -230,7 +212,7 @@ class LemmaDict:
             entry = self.__lower(entry)
             _lem = self.get_lem( entry )
             if len(_lem)>0 and _lem.find(self.unk)>-1:
-                if unk==True:
+                if unk is True:
                     _lem = entry
             tablem.append( _lem )
 
@@ -238,21 +220,11 @@ class LemmaDict:
         _s = " "
         return _s.join( tablem )
 
+    # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
 
-# ######################################################################### #
-# A main used to debug!
-# ######################################################################### #
+    def __len__(self):
+        return len(self.lemdict)
 
-if __name__ == "__main__":
-
-    dictdir  = "/home/bigi/Python/SPPAS.git/vocab"
-    dictfile = os.path.join(dictdir, "FR.lem")
-
-    print("Create LemmaDict instance")
-    grph = LemmaDict( dictfile )
-    print("   --> " + str(grph.get_size()) + " entries loaded.")
-
-    print("Lemmatization : ")
-    print("   --> " + grph.lemmatize("Salut je fais UN essai plus Bref ça marche"))
-
-# ######################################################################### #
+    # -----------------------------------------------------------------------

@@ -1,73 +1,78 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: hvitealign.py
-# ---------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.Align.aligners.hvitealign.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import os
 import codecs
 from subprocess import Popen, PIPE, STDOUT
 
-from annotations.Align.aligners.basealigner import BaseAligner
+from sppas import encoding
+from sppas.src.resources.dictpron import sppasDictPron
 
-from sp_glob import encoding
-from resources.dictpron import DictPron
+from .basealigner import BaseAligner
 
 # ----------------------------------------------------------------------------
 HVITE_EXT_OUT = ["mlf"]
 DEFAULT_EXT_OUT = HVITE_EXT_OUT[0]
 # ----------------------------------------------------------------------------
 
-class HviteAligner( BaseAligner ):
+
+class HviteAligner(BaseAligner):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      HVite automatic alignment system.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      HVite automatic alignment system.
 
     http://htk.eng.cam.ac.uk/links/asr_tool.shtml
 
     """
     def __init__(self, modeldir):
-        """
-        Constructor.
+        """ Create a HViteAligner instance.
 
-        HviteAligner aligns one inter-pausal unit.
+        This class allows to align one inter-pausal unit with with the
+        external segmentation tool HVite.
 
-        @param modeldir (str) the acoustic model file name
+        HVite is able to align one audio segment that can be:
+            - an inter-pausal unit,
+            - an utterance,
+            - a sentence,
+            - a paragraph...
+        no longer than a few seconds.
+
+        :param modeldir: (str) Name of the directory of the acoustic model
 
         """
         BaseAligner.__init__(self, modeldir)
@@ -76,55 +81,52 @@ class HviteAligner( BaseAligner ):
     # -----------------------------------------------------------------------
 
     def set_outext(self, ext):
-        """
-        Set the extension for output files.
+        """ Set the extension for output files.
 
-        @param str
+        :param ext: (str)
 
         """
         ext = ext.lower()
-        if not ext in HVITE_EXT_OUT:
-            raise ValueError("%s is not a valid file extension for HVitesAligner"%ext)
+        if ext not in HVITE_EXT_OUT:
+            raise ValueError("%s is not a valid file extension for HVitesAligner" % ext)
 
         self._outext = ext
 
     # -----------------------------------------------------------------------
 
     def gen_dependencies(self, grammarname, dictname):
-        """
-        Generate the dependencies (grammar, dictionary) for HVite.
+        """ Generate the dependencies (grammar, dictionary) for HVite.
 
-        @param grammarname is the file name of the tokens
-        @param dictname is the dictionary file name
+        :param grammarname: (str) the file name of the tokens
+        :param dictname: (str) the dictionary file name
 
         """
-        dictpron = DictPron()
+        dictpron = sppasDictPron()
 
         with codecs.open(grammarname, 'w', encoding) as flab:
 
-            for token,pron in zip(self._tokens.split(),self._phones.split()):
+            for token, pron in zip(self._tokens.split(), self._phones.split()):
 
                 # dictionary:
                 for variant in pron.split("|"):
-                    dictpron.add_pron( token, variant.replace("-"," ") )
+                    dictpron.add_pron(token, variant.replace("-", " "))
                     if self._infersp is True:
                         variant = variant + '-sil'
-                        dictpron.add_pron( token, variant.replace("-"," ") )
+                        dictpron.add_pron(token, variant.replace("-", " "))
 
                 # lab file (one token per line)
-                flab.write( token+"\n")
+                flab.write(token+"\n")
 
-        dictpron.save_as_ascii( dictname )
+        dictpron.save_as_ascii(dictname)
 
     # -----------------------------------------------------------------------
 
     def run_hvite(self, inputwav, outputalign):
-        """
-        Perform the speech segmentation.
+        """ Perform the speech segmentation.
         Call the system command `HVite`.
 
-        @param inputwav (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
-        @param outputalign (str - OUT) the output file name
+        :param inputwav: (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
+        :param outputalign: (str) the output file name
 
         """
         basename = os.path.splitext(inputwav)[0]
@@ -154,10 +156,10 @@ class HviteAligner( BaseAligner ):
         #
         # Replace the tiedlist by the list of phonemes for a monophone model
 
-        hmmdefs  = os.path.join(self._model, "hmmdefs")
-        macros   = os.path.join(self._model, "macros")
-        config   = os.path.join(self._model, "config")
-        graph    = os.path.join(self._model, "tiedlist")
+        hmmdefs = os.path.join(self._model, "hmmdefs")
+        macros = os.path.join(self._model, "macros")
+        config = os.path.join(self._model, "config")
+        graph = os.path.join(self._model, "tiedlist")
         if os.path.isfile(graph) is False:
             graph = os.path.join(self._model, "monophones")
 
@@ -184,28 +186,27 @@ class HviteAligner( BaseAligner ):
         line = p.communicate()
 
         if len(line[0]) > 0 and line[0].find("not found") > -1:
-            raise OSError( "HVite is not properly installed. See installation instructions for details." )
+            raise OSError("HVite is not properly installed. See installation instructions for details.")
 
         if len(line[0]) > 0 and line[0].find("ERROR [") > -1:
-            raise OSError( "HVite command failed." )
+            raise OSError("HVite command failed.")
 
         # Check output file
-        if os.path.isfile( outputalign ) is False:
+        if os.path.isfile(outputalign) is False:
             raise Exception('HVite did not created an alignment file.')
 
     # -----------------------------------------------------------------------
 
     def run_alignment(self, inputwav, outputalign):
+        """ Execute the external program `HVite` to align.
+
+        :param inputwav: (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
+        :param outputalign: (str) the output file name
+
+        :returns: (str) An empty string.
+
         """
-        Execute the external program `HVite` to align.
-
-        @param inputwav (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
-        @param outputalign (str - OUT) the output file name
-
-        @return (str) An empty string.
-
-        """
-        outputalign = outputalign + "."  + self._outext
+        outputalign = outputalign + "." + self._outext
 
         self.run_hvite(inputwav, outputalign)
 
@@ -216,5 +217,3 @@ class HviteAligner( BaseAligner ):
                     raise Exception(lines)
 
         return ""
-
-    # -----------------------------------------------------------------------

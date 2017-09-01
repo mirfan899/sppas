@@ -14,9 +14,9 @@ in the .grammars module.
 """
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
-from dependencies.grako.bootstrap import GrakoBootstrapParser
-from dependencies.grako.grammars import GrakoContext
-from dependencies.grako.semantics import GrakoASTSemantics, GrakoSemantics
+from sppas.src.dependencies.grako.bootstrap import GrakoBootstrapParser
+from sppas.src.dependencies.grako.grammars import GrakoContext
+from sppas.src.dependencies.grako.semantics import GrakoASTSemantics, GrakoSemantics
 
 __all__ = ['GrakoParser', 'GrakoGrammarGenerator']
 

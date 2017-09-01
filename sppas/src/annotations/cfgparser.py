@@ -1,48 +1,36 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: confparser.py
-# ----------------------------------------------------------------------------
-
-from ConfigParser import SafeConfigParser
-import codecs
-
-import logging
-from structs.lang       import LangResource
-from structs.baseoption import Option
-
 """
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
+
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.cfgparser.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
     A config file consists of one or more named sections, each of which can
     contain individual options with names and values.
 
@@ -58,93 +46,124 @@ from structs.baseoption import Option
     A config file may include comments, prefixed by specific characters
     (# and ;).
 
+    Here is an example with a comment, a section definition and two options:
+
+        | # This is a comment in a configuration file
+        | [Section]
+        | option1 = value1
+        | option2 = value2
+
 """
+from collections import OrderedDict
+try:  # python 3
+    from configparser import ConfigParser as SafeConfigParser
+except ImportError:  # python 2
+    from ConfigParser import SafeConfigParser
+
+from sppas.src.structs.lang import sppasLangResource
+from sppas.src.structs.baseoption import sppasOption
+from sppas.src.utils.makeunicode import u
+from .annotationsexc import AnnotationSectionConfigFileError
 
 # ----------------------------------------------------------------------------
 
-class AnnotationConfigParser( object ):
+
+class sppasAnnotationConfigParser(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Class to read an annotation configuration file.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Class to read an annotation configuration file.
 
     The required section "Configuration" includes an id, a name and a
     description, as for example:
-        [Configuration]
-        id:    annotationid
-        name:  The Annotation Name
-        descr: Performs an annotation on a file.
+    
+        | [Configuration]
+        | id:    annotationid
+        | name:  The Annotation Name
+        | descr: Performs an annotation on a file.
 
     Then, a set of sections with name starting by "Resource" can be defined,
     with the relative path to resource directory, the type (file or dir) and
     the extension, as for example:
-        [Resource]
-        path:  vocab
-        type:  file
-        ext:   .stp
+        
+        | [Resource]
+        | path:  vocab
+        | type:  file
+        | ext:   .stp
 
     Finally, a set of sections with name starting by "Option" can be appended,
     as follow:
-        [Option1]
-        id:    optid
-        type:  int
-        value: 0
-        text:  Explain what this option do here.
+        
+        | [Option1]
+        | id:    optid
+        | type:  int
+        | value: 0
+        | text:  Explain what this option do here.
 
     """
     def __init__(self):
         """ Creates a new instance. """
 
-        self.reset()
-        self.parser = SafeConfigParser()
+        self._config = OrderedDict()
+        self._resources = list()
+        self._options = list()
+        self._parser = SafeConfigParser()
 
     # ------------------------------------------------------------------------
 
     def reset(self):
         """ Set all members to their default value. """
 
-        self._config = {}
-        self._resources = []
-        self._options   = []
+        self._config = OrderedDict()
+        self._resources = list()
+        self._options = list()
 
     # ------------------------------------------------------------------------
 
     def get_config(self):
         """ Return the configuration dictionary. """
+        
         return self._config
+
+    # ------------------------------------------------------------------------
 
     def get_resources(self):
         """ Return the list of language resources. """
+        
         return self._resources
+
+    # ------------------------------------------------------------------------
 
     def get_options(self):
         """ Return the list of options. """
+        
         return self._options
 
     # ------------------------------------------------------------------------
 
     def parse(self, filename):
-        """
-        Parse a configuration file.
+        """ Parse a configuration file.
 
-        @param filename (str) Configuration file name.
+        :param filename: (str) Configuration file name.
 
         """
         self.reset()
 
         # Open the file with the correct encoding
-        with codecs.open(filename, 'r', encoding='utf-8') as f:
-            self.parser.readfp(f)
+        with open(filename, 'r') as f:
+            try:  # python 3
+                self._parser.read_file(f)
+            except:  # python 2
+                self._parser.readfp(f)
 
         # Analyze content and set to appropriate data structures
-        if self.parser.has_section( "Configuration" ):
+        if self._parser.has_section("Configuration"):
             self._parse()
         else:
-            raise Exception("Annotation configuration error: [Configuration] section required.")
-
+            raise AnnotationSectionConfigFileError("[Configuration]")
 
     # ------------------------------------------------------------------------
     # Private
@@ -152,70 +171,70 @@ class AnnotationConfigParser( object ):
 
     def _parse(self):
 
-        for section_name in self.parser.sections():
+        for section_name in self._parser.sections():
 
             if section_name == "Configuration":
-                self._parse_config(self.parser.items(section_name))
+                self._parse_config(self._parser.items(section_name))
 
             if section_name.startswith("Resource"):
-                self._resources.append( self._parse_resource(self.parser.items(section_name)) )
+                self._resources.append(sppasAnnotationConfigParser._parse_resource(self._parser.items(section_name)))
 
             if section_name.startswith("Option"):
-                self._options.append( self._parse_option(self.parser.items(section_name)) )
+                self._options.append(sppasAnnotationConfigParser._parse_option(self._parser.items(section_name)))
 
     # ------------------------------------------------------------------------
 
     def _parse_config(self, items):
 
-        for name,value in items:
-            self._config[name] = value.encode('utf-8')
+        for name, value in items:
+            self._config[name] = u(value)
 
     # ------------------------------------------------------------------------
 
-    def _parse_resource(self, items):
+    @staticmethod
+    def _parse_resource(items):
 
         rtype = ""
         rpath = ""
         rname = ""
-        rext  = ""
-        lr = LangResource()
-        for name,value in items:
+        rext = ""
+        lr = sppasLangResource()
+        for name, value in items:
             if name == "type":
-                rtype = value.encode('utf-8')
+                rtype = u(value)
             elif name == "path":
-                rpath = value.encode('utf-8')
+                rpath = u(value)
             elif name == "name":
-                rname = value.encode('utf-8')
+                rname = u(value)
             elif name == "ext":
-                rext  = value.encode('utf-8')
-        lr.set( rtype, rpath, rname, rext )
+                rext = u(value)
+        lr.set(rtype, rpath, rname, rext)
 
         return lr
 
     # ------------------------------------------------------------------------
 
-    def _parse_option(self, items):
+    @staticmethod
+    def _parse_option(items):
 
-        oid    = ""
-        otype  = ""
+        oid = ""
+        otype = ""
         ovalue = ""
-        otext  = ""
+        otext = ""
 
-        for name,value in items:
+        for name, value in items:
             if name == "type":
-                otype = value.encode('utf-8')
+                otype = u(value)
             elif name == "id":
-                oid = value.encode('utf-8')
+                oid = u(value)
             elif name == "value":
-                ovalue = value.encode('utf-8')
+                ovalue = u(value)
             elif name == "text":
-                otext = value.encode('utf-8')
+                otext = u(value)
 
-        opt = Option(oid)
+        opt = sppasOption(oid)
         opt.set_type(otype)
         opt.set_value(ovalue)
         opt.set_text(otext)
 
         return opt
-
-# ----------------------------------------------------------------------------

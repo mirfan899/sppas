@@ -39,15 +39,13 @@
 
 import wx
 import wx.wizard
-import os
-import os.path
 
-from wxgui.sp_images import WIZARD_WELCOME_ZOOM_BMP
-from wxgui.sp_images import WIZARD_ZOOM_PANEL_BMP
-from wxgui.sp_images import WIZARD_ZOOM_KEYBOARD_BMP
-from wxgui.sp_images import WIZARD_ZOOM_MOUSE_BMP
+from sppas.src.wxgui.sp_images import WIZARD_WELCOME_ZOOM_BMP
+from sppas.src.wxgui.sp_images import WIZARD_ZOOM_PANEL_BMP
+from sppas.src.wxgui.sp_images import WIZARD_ZOOM_KEYBOARD_BMP
+from sppas.src.wxgui.sp_images import WIZARD_ZOOM_MOUSE_BMP
 
-from wxgui.cutils.imageutils import ScaleImage
+from sppas.src.wxgui.cutils.imageutils import ScaleImage
 
 # ----------------------------------------------------------------------------
 

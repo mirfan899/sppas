@@ -3,9 +3,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import functools
 
-from dependencies.grako import tool
-from dependencies.grako import _version
-from dependencies.grako.codegen import pythoncg
+from sppas.src.dependencies.grako import tool
+from sppas.src.dependencies.grako import _version
+from sppas.src.dependencies.grako.codegen import pythoncg
 
 __version__ = _version.__version__
 

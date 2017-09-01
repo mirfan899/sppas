@@ -38,15 +38,15 @@
 import wx
 import logging
 
-import audiodata.aio
+import sppas.src.audiodata.aio
 
-from wxgui.sp_consts import ERROR_COLOUR
-from wxgui.sp_consts import INFO_COLOUR
-from wxgui.sp_consts import WARNING_COLOUR
-from wxgui.sp_consts import OK_COLOUR
+from sppas.src.wxgui.sp_consts import ERROR_COLOUR
+from sppas.src.wxgui.sp_consts import INFO_COLOUR
+from sppas.src.wxgui.sp_consts import WARNING_COLOUR
+from sppas.src.wxgui.sp_consts import OK_COLOUR
 
-from wxgui.sp_consts import MIN_PANEL_W
-from wxgui.sp_consts import MIN_PANEL_H
+from sppas.src.wxgui.sp_consts import MIN_PANEL_W
+from sppas.src.wxgui.sp_consts import MIN_PANEL_H
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -225,7 +225,7 @@ class AudioInfo( wx.Panel ):
         """
         self.fix_filename(filename)
         try:
-            _audio = audiodata.aio.open( filename )
+            _audio = sppas.src.audiodata.aio.open( filename )
             self.fix_duration(  _audio.get_duration())
             self.fix_framerate( _audio.get_framerate())
             self.fix_sampwidth( _audio.get_sampwidth())

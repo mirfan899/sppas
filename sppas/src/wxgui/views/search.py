@@ -43,22 +43,21 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 import sys
-import os
 import os.path
 sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
 
 import wx
 import wx.lib.newevent as newevent
 
-from wxgui.dialogs.basedialog import spBaseDialog
-from wxgui.cutils.imageutils  import spBitmap
-from wxgui.cutils.textutils   import TextValidator
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.cutils.imageutils  import spBitmap
+from sppas.src.wxgui.cutils.textutils   import TextValidator
 
-from wxgui.sp_icons import TIER_SEARCH
-from wxgui.sp_icons import BROOM_ICON
-from wxgui.sp_icons import BACKWARD_ICON
-from wxgui.sp_icons import FORWARD_ICON
-from wxgui.sp_icons import CLOSE_ICON
+from sppas.src.wxgui.sp_icons import TIER_SEARCH
+from sppas.src.wxgui.sp_icons import BROOM_ICON
+from sppas.src.wxgui.sp_icons import BACKWARD_ICON
+from sppas.src.wxgui.sp_icons import FORWARD_ICON
+from sppas.src.wxgui.sp_icons import CLOSE_ICON
 
 # ----------------------------------------------------------------------------
 

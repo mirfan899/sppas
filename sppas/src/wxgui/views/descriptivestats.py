@@ -39,21 +39,15 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
 __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import os.path
 import wx
 
-from presenters.tierstats import TierStats
+from sppas.src.presenters.tierstats import TierStats
 
-from wxgui.dialogs.basedialog import spBaseDialog
-
-from wxgui.sp_icons import SPREADSHEETS
-
-from wxgui.ui.CustomListCtrl import SortListCtrl
-from wxgui.panels.basestats import BaseStatPanel
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.sp_icons import SPREADSHEETS
+from sppas.src.wxgui.ui.CustomListCtrl import SortListCtrl
+from sppas.src.wxgui.panels.basestats import BaseStatPanel
 
 # ----------------------------------------------------------------------------
 # class DescriptivesStatsDialog
@@ -220,7 +214,7 @@ class DescriptivesStatsDialog( spBaseDialog ):
                 return
         # update infos of TierStats objects
         for ts in self._data:
-            ts.set_withradius( self.withradius )
+            ts.set_with_radius( self.withradius )
         page = self.notebook.GetPage( self.notebook.GetSelection() )
         page.ShowStats( self._data )
 
@@ -290,21 +284,21 @@ class SummaryPanel( BaseStatPanel ):
     # ------------------------------------------------------------------------
 
     def __get_ts(self, data):
-        tiers=[]
+        tiers = []
         n = 1
-        withalt=False
-        withradius=0
-        for ts,f in data.items():
-            if not isinstance( ts.tier,list ):
-                tiers.append( ts.tier )
+        with_alt = False
+        with_radius = 0
+        for ts, f in data.items():
+            if isinstance(ts.tier, list) is False:
+                tiers.append(ts.tier)
             else:
-                tiers.extend( ts.tier )
+                tiers.extend(ts.tier)
             # TODO:check if all n/withalt/withradius are the same
             # (it can happen for now, so it's a todo!)
-            n          = ts.get_ngram()
-            withalt    = ts.get_withalt()
-            withradius = ts.get_withradius()
-        return TierStats(tiers, n, withradius, withalt)
+            n = ts.get_ngram()
+            with_alt = ts.get_with_alt()
+            with_radius = ts.get_with_radius()
+        return TierStats(tiers, n, with_radius, with_alt)
 
 # ----------------------------------------------------------------------------
 

@@ -1,0 +1,196 @@
+# English translation for SPPAS
+# Copyright (c) 2011-2017 Brigitte Bigi
+# This file is distributed under the same license as the SPPAS package.
+# Brigitte Bigi <brigitte.bigi@gmail.com>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: SPPAS\n"
+"Report-Msgid-Bugs-To: brigitte.bigi@gmail.com\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Brigitte Bigi <brigitte.bigi@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Language: en_US\n"
+"X-Generator: Poedit 1.8.11\n"
+
+msgid ":INFO 1000: "
+msgstr "Valid. "
+
+msgid ":INFO 1002: "
+msgstr "Admit. "
+
+msgid ":INFO 1004: "
+msgstr "Invalid. "
+
+msgid ":INFO 1006: "
+msgstr "Failed. "
+
+msgid ":INFO 1010: "
+msgstr ""
+"An audio file must contain only 1 channel but this file contains {number} "
+"channels."
+
+msgid ":INFO 1012: "
+msgstr ""
+"The sample width of an audio file must be at least 16 bits but this file is "
+"{sampwidth} bits."
+
+msgid ":INFO 1014: "
+msgstr ""
+"The frame rate of an audio file must be at least 16000 Hz but this file is "
+"{framerate} Hz."
+
+msgid ":INFO 1016: "
+msgstr ""
+"The sample width of an audio file is preferably 16 bits but this file is "
+"{sampwidth} bits. SPPAS will work on a converted file."
+
+msgid ":INFO 1018: "
+msgstr ""
+"The frame rate of an audio file is preferably 16000 Hz but this file is "
+"{framerate} Hz. SPPAS will work on a converted file."
+
+msgid ":INFO 1020: "
+msgstr "Unknown file extension {extension}."
+
+msgid ":INFO 1022: "
+msgstr "File name should contain only US-ASCII characters."
+
+msgid ":INFO 1024: "
+msgstr "File name should not contain whitespace."
+
+msgid ":INFO 1026: "
+msgstr "Bad file encoding: only {encoding} is accepted."
+
+msgid ":INFO 1030: "
+msgstr "enabled"
+
+msgid ":INFO 1031: "
+msgstr "disabled"
+
+msgid ":INFO 1032: "
+msgstr "version"
+
+msgid ":INFO 1033: "
+msgstr "Web site"
+
+msgid ":INFO 1034: "
+msgstr "Contact"
+
+msgid ":INFO 1035: "
+msgstr "Automatic annotations"
+
+msgid ":INFO 1036: "
+msgstr "Date"
+
+msgid ":INFO 1037: "
+msgstr "Input languages"
+
+msgid ":INFO 1038: "
+msgstr "Selected files"
+
+msgid ":INFO 1039: "
+msgstr "Selected annotations"
+
+msgid ":INFO 1040: "
+msgstr "File extension"
+
+msgid ":INFO 1041: "
+msgstr "[    OK    ] "
+
+msgid ":INFO 1042: "
+msgstr "[   INFO   ] "
+
+msgid ":INFO 1043: "
+msgstr "[ WARNING  ] "
+
+msgid ":INFO 1044: "
+msgstr "[ IGNORE  ] "
+
+msgid ":INFO 1045: "
+msgstr "[  ERROR  ] "
+
+msgid ":INFO 1050: "
+msgstr "Options"
+
+msgid ":INFO 1052: "
+msgstr "Diagnosis"
+
+msgid ":INFO 1110: "
+msgstr "{:s} is missing of the dictionary and "
+
+msgid ":INFO 1112: "
+msgstr "was automatically phonetized as {:s}"
+
+msgid ":INFO 1114: "
+msgstr "wasn't phonetized."
+
+msgid ":INFO 1210: "
+msgstr "The model of L1 {:s} was ignored."
+
+msgid ":INFO 1220: "
+msgstr "Align interval number {number}."
+
+msgid ":INFO 1222: "
+msgstr "Empty interval."
+
+msgid ":INFO 1230: "
+msgstr "The automatic aligner '{name}' failed to perform segmentation."
+
+msgid ":INFO 1240: "
+msgstr "The same duration is assigned to each phoneme."
+
+msgid ":INFO 1250: "
+msgstr "Split into intervals: "
+
+msgid ":INFO 1252: "
+msgstr "Align each interval: "
+
+msgid ":INFO 1254: "
+msgstr "Merge interval's alignment:"
+
+msgid ":INFO 1256: "
+msgstr "Save automatic alignment: "
+
+msgid ":INFO 1260: "
+msgstr "Tokens alignment disabled."
+
+msgid ":INFO 1262: "
+msgstr "No time-aligned tokens found. No extra tier can be generated."
+
+msgid ":INFO 1270: "
+msgstr "{tiername} tier generation: {message}"
+
+msgid ":INFO 1280: "
+msgstr "The working directory is {dirname}."
+
+msgid ":ERROR 4014: "
+msgstr "Missing section {section_name} in the configuration file."
+
+msgid ":ERROR 1010: "
+msgstr "Unknown option with key {key}."
+
+msgid ":ERROR 1020: "
+msgstr "Empty input tier {name}."
+
+msgid ":ERROR 1030: "
+msgstr "Missing input tier. Please read the documentation."
+
+msgid ":ERROR 1040: "
+msgstr "Bad input tier type. Expected time-aligned intervals."
+
+msgid ":ERROR 1050: "
+msgstr "Inconsistency between the number of intervals of the input tiers. Got: {:d} and {:d}"
+
+msgid ":ERROR 1110: "
+msgstr "Unable to phonetize the unknown token {:s}."
+
+msgid ":ERROR 1210: "
+msgstr "The directory {dirname} does not exist."
+
+msgid ":ERROR 1220: "
+msgstr "The directory {dirname} does not contain relevant data."

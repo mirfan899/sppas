@@ -32,7 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: text.py
+# File: tag.py
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
@@ -40,6 +40,7 @@ __authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
+
 
 class Text(object):
 

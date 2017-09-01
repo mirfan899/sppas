@@ -6,13 +6,12 @@
  * This style expect the following files to be available...
  *
  * Fonts:
- *  - etc/font/Jura-DemiBold.ttf
- *  - etc/font/MavenPro-Regular.ttf
- *  - etc/font/data-latin.ttf
+ *  - etc/font/HandOfSean.ttf
+ *  - etc/font/MavenPro.ttf
+ *  - etc/font/FreeMono.ttf
  *
  * Images:
- *  - etc/img/background-motif.png
- *  - etc/img/background-motif.png
+ *  - etc/images/background-motif.png
  *
  *==========================================================================*/
 
@@ -101,7 +100,7 @@ h1, h2, h3 {
 /* Titlepage */
 
 section.title { 
-    background:     url('../../etc/img/background-header.png') repeat-x center;
+    background:     url('../../etc/images/background-header.png') repeat-x center;
 
     margin-top:    100px;
     margin-right:   auto;
@@ -160,7 +159,28 @@ section.level1 h1 {
 }
 
 /* Title at the top of each slide */
-section.level2 h1 { 
+section.level2 h1 {
+    font-family:    TitleFont, serif;
+    font-weight:    normal;
+    font-style:     normal;
+    font-variant:   normal;
+    font-size:      130%; 
+    text-align:     left;
+    letter-spacing: 1px;
+    margin-top:     10px;
+    margin-right:   20px;
+    margin-left:    20px;
+    margin-bottom:  10px;
+    padding-top:    15px;
+    padding-right:  15px;
+    padding-bottom: 15px;
+    padding-left:   15px;
+    border-bottom:  2px solid rgb(60,60,120);
+    color:          rgb(60,60,120);
+}
+
+/* Title at the top of each slide */
+section.level2 h2 {
     font-family:    TitleFont, serif;
     font-weight:    normal;
     font-style:     normal;

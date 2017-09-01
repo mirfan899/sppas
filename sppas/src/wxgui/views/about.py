@@ -37,11 +37,11 @@
 """
 import wx
 
-from wxgui.sp_icons import ABOUT_ICON
+from sppas.src.wxgui.sp_icons import ABOUT_ICON
 
-from wxgui.panels.about import AboutSPPASPanel
-from wxgui.panels.about import AboutPluginPanel
-from wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.panels.about import AboutSPPASPanel
+from sppas.src.wxgui.panels.about import AboutPluginPanel
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
 
 # ----------------------------------------------------------------------------
 
@@ -60,13 +60,11 @@ class AboutSPPASDialog(spBaseDialog):
         spBaseDialog.__init__(self, parent, preferences, title="About")
         wx.GetApp().SetAppName("about")
 
-        titlebox = self.CreateTitle(ABOUT_ICON, "About")
-        contentbox = AboutSPPASPanel(self, preferences)
-        buttonbox = self.CreateButtonBox([], [self.CreateOkayButton()])
+        self.about_panel = AboutSPPASPanel(self, preferences)
 
-        self.LayoutComponents(titlebox,
-                              contentbox,
-                              buttonbox)
+        self.LayoutComponents(self.CreateTitle(ABOUT_ICON, "About"),
+                              self.about_panel,
+                              self.CreateButtonBox([], [self.CreateOkayButton()]))
         self.SetMinSize((520, 580))
 
 # ------------------------------------------------------------------------

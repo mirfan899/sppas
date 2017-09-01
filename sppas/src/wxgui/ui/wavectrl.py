@@ -39,19 +39,12 @@ __docformat__ = """epytext"""
 __authors__   = """Brigitte Bigi"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-
-
-# ---------------------------------------------------------------------------
-# Imports
-# ---------------------------------------------------------------------------
-
 import math
-import struct
 import logging
 
 import wx
 
-from spControl   import spControl
+from spControl import spControl
 from channelctrl import ChannelCtrl, WavePreferences
 
 # ---------------------------------------------------------------------------
@@ -170,7 +163,7 @@ class WaveCtrl( spControl ):
         Constructor.
 
         Non-wxPython related parameter:
-          - audio (AudioPCM): the audio instance.
+          - audio (sppasAudioPCM): the audio instance.
 
         """
         spControl.__init__(self, parent, id, pos, size)
@@ -669,7 +662,7 @@ class WaveCtrl( spControl ):
 
         # Read samples
         duration = self._maxtime - self._mintime
-        self._audio.set_pos( pos )
+        self._audio.seek( pos )
         nframes = int( duration * self._audio.get_framerate() )
         data = self._audio.read_samples( nframes )
 

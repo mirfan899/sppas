@@ -3,10 +3,10 @@
 program:    sampa2praat
 author:     Brigitte Bigi
 contact:    brigite.bigi@gmail.com
-date:       2017-01-03
-version:    1.0
+date:       2017-07-26
+version:    1.2
 copyright:  Copyright (C) 2017  Brigitte Bigi
-license:    GNU Public License, v3
+license:    GNU Public License version 3 or any later version
 brief:      SPPAS plugin to convert SAMPA into Praat phonemes encoding.
 
 This plugin allows to convert transcriptions between the SAMPA (Speech
@@ -17,6 +17,17 @@ It can convert either individual phonemes or strings of phonemes (syllables,
 words, ...). The converted transcription is saved in a new file.
 Any symbols in the transcription tier which are not in the conversion file
 are not replaced.
+
+
+------------------------------------------------------------------------------
+Changes:
+
+Version 1.0:
+    - compatibility with SPPAS-1.8.2.
+Version 1.1:
+    - compatibility: from SPPAS-1.8.x (x>2) and SPPAS-1.9.x
+Version 1.2:
+    - better package license explanations
 
 ------------------------------------------------------------------------------
 

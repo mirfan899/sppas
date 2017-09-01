@@ -1,159 +1,127 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: st_cib.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+        http://www.sppas.org/
 
-# ----------------------------------------------------------------------------
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.Momel.st_cib.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 
 
-class Targets:
-    """ A class to store one selected target.
-        A target is made of 2 or 3 values:
-            - x: float ; required
-            - y: float ; required
-            - p: int   ; optionnal
-        Use getters and setters to manipulate x, y and p
+class Targets(object):
+    """
+    :author:       Tatsuya Watanabe, Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      A class to store one selected target.
+
+    A target is made of 2 or 3 values:
+        - x: float ; required
+        - y: float ; required
+        - p: int   ; optional
+    Use getters and setters to manipulate x, y and p
+
     """
     def __init__(self):
-        """ Create a new Targets instance with default values.
-        """
+        """ Create a new Targets instance with default values. """
+
         self.__x = 0.
         self.__y = 0.
         self.__p = 0
 
-    # End init
     # ------------------------------------------------------------------
 
-
-    def set(self,x,y,p=0):
+    def set(self, x, y, p=0):
         """ Set new values to a target.
-            Parameters:
-                - x is a float
-                - y is a float
-                - p is an integer
-            Exception:   TypeError
+
+        :param x: (float)
+        :param y: (float)
+        :param p: (int)
+
         """
         self.set_x(x)
         self.set_y(y)
-        if p:
-            self.set_p(p)
+        self.set_p(p)
 
-    # End set
     # ------------------------------------------------------------------
 
-
-    def set_x(self,x):
+    def set_x(self, x):
         """ Set a new x value to a target.
-            Parameters:
-                - x is a float value
-            Exception:   TypeError
+
+        :param x: (float)
+
         """
         self.__x = float(x)
 
-    # End set_x
     # ------------------------------------------------------------------
 
-
-    def set_y(self,y):
+    def set_y(self, y):
         """ Set a new y value to a target.
-            Parameters:
-                - y is a float value
-            Exception:   TypeError
+
+        :param y: (float)
+
         """
         self.__y = float(y)
 
-    # End set_y
     # ------------------------------------------------------------------
 
-
-    def set_p(self,p):
+    def set_p(self, p):
         """ Set a new p value to a target.
-            Parameters:
-                - p is an int value
-            Exception:   TypeError
+
+        :param p: (int)
+
         """
         self.__p = int(p)
 
-    # End set_p
     # ------------------------------------------------------------------
-
 
     def get_x(self):
-        """ Return the x value of a target.
-            Parameters:  None
-            Exception:   None
-            Return:      a float
-        """
+        """ Return the x value of a target. """
         return self.__x
 
-    # End get_x
     # ------------------------------------------------------------------
-
 
     def get_y(self):
-        """ Return the y value of a target.
-            Parameters:  None
-            Exception:   None
-            Return:      a float
-        """
+        """ Return the y value of a target. """
         return self.__y
 
-    # End get_y
     # ------------------------------------------------------------------
-
 
     def get_p(self):
-        """ Return the p value of a target.
-            Parameters:  None
-            Exception:   None
-            Return:      a float
-        """
+        """ Return the p value of a target. """
         return self.__p
 
-    # End get_p
     # ------------------------------------------------------------------
 
-
-    def print_cib(self,output,pasx=1,pasy=1):
-        toprint = str(self.__x * pasx)+" "+str(self.__y * pasy)
-        output.write(toprint+"\n")
-
-    # End print
-    # ------------------------------------------------------------------
-
+    def print_cib(self, output, pas_x=1, pas_y=1):
+        to_print = str(self.__x * pas_x) + " " + str(self.__y * pas_y)
+        output.write(to_print + "\n")

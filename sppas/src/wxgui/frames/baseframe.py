@@ -37,43 +37,43 @@
 """
 import wx
 
-from sp_glob import SETTINGS_FILE
+from sppas import SETTINGS_FILE
 
-from wxgui.sp_icons import SETTINGS_ICON
-from wxgui.sp_icons import COMPONENTS_ICON
-from wxgui.sp_icons import ADD_FILE_ICON
-from wxgui.sp_icons import REMOVE_ICON
-from wxgui.sp_icons import TAB_NEW_ICON
-from wxgui.sp_icons import TAB_CLOSE_ICON
-from wxgui.sp_icons import ABOUT_ICON
-from wxgui.sp_icons import HELP_ICON
+from sppas.src.wxgui.sp_icons import SETTINGS_ICON
+from sppas.src.wxgui.sp_icons import COMPONENTS_ICON
+from sppas.src.wxgui.sp_icons import ADD_FILE_ICON
+from sppas.src.wxgui.sp_icons import REMOVE_ICON
+from sppas.src.wxgui.sp_icons import TAB_NEW_ICON
+from sppas.src.wxgui.sp_icons import TAB_CLOSE_ICON
+from sppas.src.wxgui.sp_icons import ABOUT_ICON
+from sppas.src.wxgui.sp_icons import HELP_ICON
 
-from wxgui.sp_consts import DEFAULT_APP_NAME
-from wxgui.sp_consts import MIN_PANEL_W,MIN_PANEL_H
-from wxgui.sp_consts import MIN_FRAME_W
-from wxgui.sp_consts import MIN_FRAME_H
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
+from sppas.src.wxgui.sp_consts import DEFAULT_APP_NAME
+from sppas.src.wxgui.sp_consts import MIN_PANEL_W,MIN_PANEL_H
+from sppas.src.wxgui.sp_consts import MIN_FRAME_W
+from sppas.src.wxgui.sp_consts import MIN_FRAME_H
+from sppas.src.wxgui.sp_consts import FRAME_STYLE
+from sppas.src.wxgui.sp_consts import FRAME_TITLE
 
-from wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
-from wxgui.ui.CustomEvents import FileCheckEvent
-from wxgui.ui.CustomEvents import NotebookNewPageEvent
-from wxgui.ui.CustomEvents import NotebookClosePageEvent
-from wxgui.ui.CustomEvents import SettingsEvent
-from wxgui.ui.splitterpanel import SplitterPanel
+from sppas.src.wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
+from sppas.src.wxgui.ui.CustomEvents import FileCheckEvent
+from sppas.src.wxgui.ui.CustomEvents import NotebookNewPageEvent
+from sppas.src.wxgui.ui.CustomEvents import NotebookClosePageEvent
+from sppas.src.wxgui.ui.CustomEvents import SettingsEvent
+from sppas.src.wxgui.ui.splitterpanel import SplitterPanel
 
-from wxgui.dialogs.msgdialogs import ShowYesNoQuestion, ShowInformation
-from wxgui.views.about import ShowAboutDialog
-from wxgui.views.settings import SettingsDialog
-from wxgui.frames.helpbrowser import HelpBrowser
+from sppas.src.wxgui.dialogs.msgdialogs import ShowYesNoQuestion, ShowInformation
+from sppas.src.wxgui.views.about import ShowAboutDialog
+from sppas.src.wxgui.views.settings import SettingsDialog
+from sppas.src.wxgui.frames.helpbrowser import HelpBrowser
 
-from wxgui.structs.prefs import Preferences_IO
+from sppas.src.wxgui.structs.prefs import Preferences_IO
 
-from wxgui.panels.filemanager import FileManager
-import wxgui.dialogs.filedialogs as filedialogs
+from sppas.src.wxgui.panels.filemanager import FileManager
+import sppas.src.wxgui.dialogs.filedialogs as filedialogs
 
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.panels.mainbuttons import MainMenuPanel,MainToolbarPanel
+from sppas.src.wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.panels.mainbuttons import MainMenuPanel,MainToolbarPanel
 
 # ----------------------------------------------------------------------------
 # Constants

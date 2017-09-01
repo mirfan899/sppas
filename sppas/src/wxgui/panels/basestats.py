@@ -33,23 +33,38 @@
 #
 # ---------------------------------------------------------------------------
 # File: basestats.py
-# ----------------------------------------------------------------------------
-
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 import wx
-from utils import fileutils
+import codecs
+
+# ------------------------------------------------------------------------
+
+
+def writecsv(filename, rows, separator="\t", encoding="utf-8-sig"):
+    """ Write the rows to the file.
+    Args:
+        filename (string):
+        rows (list):
+        separator (string):
+        encoding (string):
+
+    """
+    with codecs.open(filename, "w+", encoding) as f:
+        for row in rows:
+            tmp = []
+            for s in row:
+                if isinstance(s, (float, int)):
+                    s = str(s)
+                else:
+                    s = '"%s"' % s
+                tmp.append(s)
+            f.write('%s\n' % separator.join(tmp))
+
 
 # ----------------------------------------------------------------------------
 # Base Stat Panel
 # ----------------------------------------------------------------------------
+
 
 class BaseStatPanel( wx.Panel ):
     """
@@ -112,7 +127,7 @@ class BaseStatPanel( wx.Panel ):
         encoding = "utf-16" if index == 0 else "utf-8"
 
         self.rowdata.insert(0, self.cols)
-        fileutils.writecsv(path, self.rowdata, separator=";", encoding=encoding)
+        writecsv(path, self.rowdata, separator=";", encoding=encoding)
         self.rowdata.pop(0)
 
     # ------------------------------------------------------------------------
@@ -128,4 +143,3 @@ class BaseStatPanel( wx.Panel ):
                 s = str(s)
             listctrl.SetStringItem(pos, j, s)
 
-# ----------------------------------------------------------------------------

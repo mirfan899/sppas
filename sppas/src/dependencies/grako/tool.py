@@ -10,13 +10,13 @@ import os
 import pickle
 import sys
 
-from dependencies.grako._version import __version__
-from dependencies.grako.util import eval_escapes
-from dependencies.grako.exceptions import GrakoException
-from dependencies.grako.parser import GrakoGrammarGenerator
+from sppas.src.dependencies.grako._version import __version__
+from sppas.src.dependencies.grako.util import eval_escapes
+from sppas.src.dependencies.grako.exceptions import GrakoException
+from sppas.src.dependencies.grako.parser import GrakoGrammarGenerator
 
 # we hook the tool to the Python code generator as the default
-from dependencies.grako.codegen import pythoncg
+from sppas.src.dependencies.grako.codegen import pythoncg
 
 DESCRIPTION = (
     'Grako (for "grammar compiler") takes a grammar'

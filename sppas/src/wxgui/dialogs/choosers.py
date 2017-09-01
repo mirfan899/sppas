@@ -45,9 +45,9 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 
 import wx
 
-from wxgui.cutils.textutils import TextAsNumericValidator
-from wxgui.dialogs.basedialog import spBaseDialog
-from wxgui.sp_icons import INFO_ICON
+from sppas.src.wxgui.cutils.textutils import TextAsNumericValidator
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.sp_icons import INFO_ICON
 
 # ----------------------------------------------------------------------------
 

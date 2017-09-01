@@ -43,15 +43,11 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-#import logging
-
-# wxPython imports
 import wx
 import wx.lib.newevent
 
-# local imports
-import wxgui.cutils.imageutils as imageutils
-import wxgui.cutils.colorutils as colorutils
+import sppas.src.wxgui.cutils.imageutils as imageutils
+import sppas.src.wxgui.cutils.colorutils as colorutils
 
 # ----------------------------------------------------------------------------
 # Constants

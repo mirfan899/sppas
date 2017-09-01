@@ -32,7 +32,7 @@
 # along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
 #
 # ---------------------------------------------------------------------------
-# File: text.py
+# File: tag.py
 # ---------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
@@ -48,13 +48,14 @@ import re
 import codecs
 import csv
 import cStringIO
-from annotationdata.transcription import Transcription
-from annotationdata.label.label import Label
-import annotationdata.ptime.point
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.framepoint import FramePoint
-from annotationdata.annotation import Annotation
 from re import split
+
+from ..transcription import Transcription
+from ..label.label import Label
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..ptime.framepoint import FramePoint
+from ..annotation import Annotation
 
 # ----------------------------------------------------------------------------
 
@@ -62,10 +63,11 @@ TEXT_RADIUS = 0.002
 
 # ----------------------------------------------------------------------------
 
-def TimePoint(time):
-    return annotationdata.ptime.point.TimePoint(time, TEXT_RADIUS)
+def RawTimePoint(time):
+    return TimePoint(time, TEXT_RADIUS)
 
 # ----------------------------------------------------------------------------
+
 
 class RawText(Transcription):
     """
@@ -78,8 +80,12 @@ class RawText(Transcription):
 
     @staticmethod
     def detect(filename):
-        with codecs.open(filename, 'r', 'utf-8'):
-            pass
+        try:
+            with codecs.open(filename, 'r', 'utf-8') as fp:
+                fp.readline()
+                pass
+        except Exception:
+            return False
         return True
 
     # ------------------------------------------------------------------------
@@ -193,9 +199,8 @@ class RawText(Transcription):
                         l = annotation.GetLabel().GetValue()
                         fp.write("%.3f\t%.3f\t%s\n"%(b,e,l))
 
-    # ------------------------------------------------------------------------
-
 # ----------------------------------------------------------------------------
+
 
 class CSV(Transcription):
     """
@@ -326,18 +331,18 @@ class CSV(Transcription):
                 b = float(begin)
                 e = float(end)
                 if b == e:
-                    time = TimePoint(b)
+                    time = RawTimePoint(b)
                 else:
-                    time = TimeInterval(TimePoint(b),
-                                        TimePoint(e))
+                    time = TimeInterval(RawTimePoint(b),
+                                        RawTimePoint(e))
             elif hasBegin:
-                time = TimePoint(float(begin))
+                time = RawTimePoint(float(begin))
 
             elif hasEnd:
-                time = TimePoint(float(end))
+                time = RawTimePoint(float(end))
 
             else:
-                raise Exception('No valid TimePoint in row: %r' % row)
+                raise Exception('No valid RawTimePoint in row: %r' % row)
 
             tier.Add(Annotation(time, Label(label)))
 

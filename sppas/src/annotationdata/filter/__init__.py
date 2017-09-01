@@ -33,13 +33,15 @@
 #
 # ---------------------------------------------------------------------------
 
-import itertools
 import operator
-from annotationdata.tier import Tier
-from annotationdata.ptime.interval import TimeInterval
+import functools
 
-import _bools
-import _relations
+from ._bools import create as bools_create
+from ._relations import create as relations_create
+
+from ..tier import Tier
+
+# ---------------------------------------------------------------------------
 
 
 class Predicate(object):
@@ -80,6 +82,8 @@ class Predicate(object):
     def __str__(self):
         return self.pred.__name__
 
+# ---------------------------------------------------------------------------
+
 
 class RelationPredicate(Predicate):
     def __init__(self, pred):
@@ -87,6 +91,8 @@ class RelationPredicate(Predicate):
 
     def __and__(self, other):
         raise Exception("& operator exception.")
+
+# ---------------------------------------------------------------------------
 
 
 class Bool(object):
@@ -137,9 +143,11 @@ class Bool(object):
         if not kwargs:
             functions.append(lambda a: True)
         for func_name, param in kwargs.items():
-            function = _bools.create(func_name, param)
+            function = bools_create(func_name, param)
             functions.append(function)
-        return reduce(operator.and_, (Predicate(f) for f in functions))
+        return functools.reduce(operator.and_, (Predicate(f) for f in functions))
+
+# ---------------------------------------------------------------------------
 
 
 class Rel(object):
@@ -205,39 +213,14 @@ class Rel(object):
         """
         functions = []
         for r in args:
-            func = _relations.create(r)
+            func = relations_create(r)
             functions.append(func)
         for k, v in kwargs.items():
-            func = _relations.create(k, v)
+            func = relations_create(k, v)
             functions.append(func)
-        return reduce(operator.or_, (RelationPredicate(f) for f in functions))
+        return functools.reduce(operator.or_, (RelationPredicate(f) for f in functions))
 
-
-
-class FilterFactory(object):
-    """
-    @deprecated
-    """
-    def __new__(cls, tier, *predicate, **kwargs):
-        """
-        Create a Filter.
-        @param tier: (Tier)
-        @param predicate: (Predicate)
-        @param kwargs:
-        @return: (Filter)
-        """
-        if not predicate and not kwargs:
-            predicate = Bool(**kwargs)
-        elif kwargs:
-            predicate = Bool(**kwargs)
-        elif not isinstance(predicate[0], Predicate):
-            raise Exception("Invalid argument %s" % predicate[0])
-        else:
-            predicate = predicate[0]
-
-        f = Filter(tier)
-        return f.Label(predicate)
-
+# ---------------------------------------------------------------------------
 
 
 class Filter(object):
@@ -280,6 +263,8 @@ class Filter(object):
                 pass
         return tier
 
+# ---------------------------------------------------------------------------
+
 
 class LabelFilter(Filter):
     """
@@ -310,6 +295,8 @@ class LabelFilter(Filter):
             except:
                 pass
         return tier
+
+# ---------------------------------------------------------------------------
 
 
 class RelationFilter(Filter):

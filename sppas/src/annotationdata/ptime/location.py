@@ -34,12 +34,13 @@
 # ---------------------------------------------------------------------------
 # File: location.py
 # ----------------------------------------------------------------------------
-
-from baseplacement import BasePlacement
-from localization import Localization
 import copy
 
+from .baseplacement import BasePlacement
+from .localization import Localization
+
 # ----------------------------------------------------------------------------
+
 
 class Location(object):
     """

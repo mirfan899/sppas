@@ -1,13 +1,44 @@
-#!/usr/bin/env python2
-# -*- coding: utf8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.audiodata.tests.test_channelsmixer.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import unittest
 import os.path
 
-import audiodata.aio
-from audiodata.channelformatter import ChannelFormatter
-from audiodata.channelsmixer import ChannelsMixer
-from sp_glob import SAMPLES_PATH
+from sppas import SAMPLES_PATH
+from ..aio import open as audio_open
+from ..channelformatter import sppasChannelFormatter
+from ..channelsmixer import sppasChannelMixer
 
 # ---------------------------------------------------------------------------
 
@@ -20,8 +51,8 @@ sample_2 = os.path.join(SAMPLES_PATH, "samples-fra", "F_F_B003-P9.wav")  # mono;
 class TestChannelsMixer(unittest.TestCase):
 
     def setUp(self):
-        self._sample_1 = audiodata.aio.open(sample_1)
-        self._sample_2 = audiodata.aio.open(sample_2)
+        self._sample_1 = audio_open(sample_1)
+        self._sample_2 = audio_open(sample_2)
 
     def tearDown(self):
         self._sample_1.close()
@@ -31,17 +62,17 @@ class TestChannelsMixer(unittest.TestCase):
         self._sample_1.extract_channel(0)
         self._sample_2.extract_channel(0)
 
-        formatter1 = ChannelFormatter(self._sample_1.get_channel(0))
+        formatter1 = sppasChannelFormatter(self._sample_1.get_channel(0))
         formatter1.set_framerate(16000)
         formatter1.set_sampwidth(2)
         formatter1.convert()
 
-        formatter2 = ChannelFormatter(self._sample_2.get_channel(0))
+        formatter2 = sppasChannelFormatter(self._sample_2.get_channel(0))
         formatter2.set_framerate(16000)
         formatter2.set_sampwidth(2)
         formatter2.convert()
 
-        mixer = ChannelsMixer()
+        mixer = sppasChannelMixer()
         mixer.append_channel(formatter1.get_channel())
         mixer.append_channel(formatter2.get_channel())
         mixer.norm_length()

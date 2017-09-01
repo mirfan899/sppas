@@ -41,28 +41,27 @@ import re
 import wx.html
 import webbrowser
 
-from dependencies.markdown import markdown
-from dependencies.markdown.extensions.tables import TableExtension
+from sppas import encoding
+from sppas.src.dependencies.markdown import markdown
+from sppas.src.dependencies.markdown.extensions.tables import TableExtension
 
-from wxgui.sp_icons import LOGOUT_ICON
-from wxgui.sp_icons import HOME_ICON
-from wxgui.sp_icons import FORWARD_ICON
-from wxgui.sp_icons import BACKWARD_ICON
-from wxgui.sp_icons import NEXT_ICON
-from wxgui.sp_icons import PREVIOUS_ICON
-from wxgui.sp_icons import APP_ICON
+from sppas.src.wxgui.sp_icons import LOGOUT_ICON
+from sppas.src.wxgui.sp_icons import HOME_ICON
+from sppas.src.wxgui.sp_icons import FORWARD_ICON
+from sppas.src.wxgui.sp_icons import BACKWARD_ICON
+from sppas.src.wxgui.sp_icons import NEXT_ICON
+from sppas.src.wxgui.sp_icons import PREVIOUS_ICON
+from sppas.src.wxgui.sp_icons import APP_ICON
 
-from wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.cutils.imageutils import spBitmap
 
-from wxgui.sp_consts import HELP_PATH
-from wxgui.sp_consts import HELP_IMG_PATH
-from wxgui.sp_consts import DOC_IDX
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
+from sppas.src.wxgui.sp_consts import HELP_PATH
+from sppas.src.wxgui.sp_consts import HELP_IMG_PATH
+from sppas.src.wxgui.sp_consts import DOC_IDX
+from sppas.src.wxgui.sp_consts import FRAME_STYLE
+from sppas.src.wxgui.sp_consts import FRAME_TITLE
 
-from sp_glob import encoding
-
-from wxgui.panels.buttons import ButtonToolbarPanel
+from sppas.src.wxgui.panels.buttons import ButtonToolbarPanel
 
 # ---------------------------------------------------------------------------
 # Functions

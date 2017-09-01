@@ -39,12 +39,7 @@ __docformat__ = """epytext"""
 __authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import logging
-
 import wx
 import wx.lib.newevent
 
@@ -53,10 +48,6 @@ from pointctrl import spEVT_MOVING,spEVT_MOVED,spEVT_RESIZING,spEVT_RESIZED,spEV
 from pointctrl import MIN_W as pointctrlMinWidth
 
 from labelctrl import LabelCtrl
-
-from annotationdata.ptime.point import TimePoint
-
-# ----------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------
 # Constants

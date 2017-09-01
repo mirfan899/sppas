@@ -1,15 +1,14 @@
-#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
 import unittest
 
-from annotationdata.annotation import Annotation
-from annotationdata.label.label import Label
-from annotationdata.label.text import Text
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point import TimePoint
-from annotationdata.tier import Tier
-from annotationdata import Filter, SingleFilter, Sel
+from ..annotation import Annotation
+from ..label.label import Label
+from ..label.text import Text
+from ..ptime.interval import TimeInterval
+from ..ptime.point import TimePoint
+from ..tier import Tier
+from .. import Filter, SingleFilter, Sel
 
 # ---------------------------------------------------------------------------
 

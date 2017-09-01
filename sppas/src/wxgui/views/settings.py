@@ -39,17 +39,16 @@ import os
 import wx
 from wx.lib import stattext
 
-from annotationdata.aio import extensions_out_multitiers as extensions_out
+from sppas import ICONS_PATH
 
-from wxgui.dialogs.basedialog import spBaseDialog
-from wxgui.sp_icons import SETTINGS_ICON
-from wxgui.sp_icons import BG_COLOR_ICON
-from wxgui.sp_icons import FG_COLOR_ICON
-from wxgui.sp_icons import FONT_ICON
+from sppas.src.annotationdata.aio import extensions_out_multitiers as extensions_out
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.sp_icons import SETTINGS_ICON
+from sppas.src.wxgui.sp_icons import BG_COLOR_ICON
+from sppas.src.wxgui.sp_icons import FG_COLOR_ICON
+from sppas.src.wxgui.sp_icons import FONT_ICON
+from sppas.src.wxgui.cutils.imageutils import spBitmap
 
-from wxgui.cutils.imageutils import spBitmap
-
-from sp_glob import ICONS_PATH
 
 # ----------------------------------------------------------------------------
 # class SettingsDialog

@@ -35,8 +35,8 @@
 # File: framepoint.py
 # ----------------------------------------------------------------------------
 
-import baseplacement
-import duration
+from .baseplacement import BasePlacement
+from .duration import Duration as duration_Duration
 
 from ..utils.deprecated import deprecated
 
@@ -48,7 +48,8 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-class FramePoint(baseplacement.BasePlacement):
+
+class FramePoint(BasePlacement):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -216,7 +217,7 @@ class FramePoint(baseplacement.BasePlacement):
 
         """
 
-        return duration.Duration(0, 2*self.__radius)
+        return duration_Duration(0, 2*self.__radius)
 
     # ------------------------------------------------------------------------
 

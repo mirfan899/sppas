@@ -42,15 +42,15 @@
 """
 import wx
 
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.ctrlutils import CreateGenButton
+from sppas.src.wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.cutils.ctrlutils import CreateGenButton
 
-from wxgui.sp_icons import CLOSE_ICON
-from wxgui.sp_icons import CANCEL_ICON
-from wxgui.sp_icons import SAVE_FILE
-from wxgui.sp_icons import YES_ICON
-from wxgui.sp_icons import NO_ICON
-from wxgui.sp_icons import OKAY_ICON
+from sppas.src.wxgui.sp_icons import CLOSE_ICON
+from sppas.src.wxgui.sp_icons import CANCEL_ICON
+from sppas.src.wxgui.sp_icons import SAVE_FILE
+from sppas.src.wxgui.sp_icons import YES_ICON
+from sppas.src.wxgui.sp_icons import NO_ICON
+from sppas.src.wxgui.sp_icons import OKAY_ICON
 
 # ---------------------------------------------------------------------------
 

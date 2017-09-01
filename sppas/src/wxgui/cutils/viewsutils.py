@@ -44,12 +44,11 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-
 import wx
 
-from wxgui.sp_consts import FRAME_TITLE
-from wxgui.sp_icons  import APP_ICON
-from wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.sp_consts import FRAME_TITLE
+from sppas.src.wxgui.sp_icons  import APP_ICON
+from sppas.src.wxgui.cutils.imageutils import spBitmap
 
 # ----------------------------------------------------------------------------
 

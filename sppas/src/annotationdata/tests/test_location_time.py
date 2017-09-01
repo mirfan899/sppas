@@ -3,9 +3,9 @@
 
 import unittest
 
-from annotationdata.ptime.point import TimePoint
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.disjoint import TimeDisjoint
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..ptime.disjoint import TimeDisjoint
 
 # ---------------------------------------------------------------------------
 

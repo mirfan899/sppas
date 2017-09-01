@@ -5,12 +5,13 @@ import unittest
 import os.path
 import shutil
 
-import annotationdata.aio
-import utils.fileutils
+from ..aio import read as trsread
+from ..aio import write as trswrite
+from sppas.src.utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 
-TEMP = utils.fileutils.gen_name()
+TEMP = sppasFileUtils().set_random()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # ---------------------------------------------------------------------------
@@ -27,9 +28,9 @@ class TestPhonedit(unittest.TestCase):
 
     def test_io(self):
         path = os.path.join(DATA, "sample-irish.tdf")
-        trs = annotationdata.aio.read(path)
-        annotationdata.aio.write(os.path.join(TEMP, "sample.mrk"), trs)
-        trs2 = annotationdata.aio.read(os.path.join(TEMP, "sample.mrk"))
+        trs = trsread(path)
+        trswrite(os.path.join(TEMP, "sample.mrk"), trs)
+        trs2 = trsread(os.path.join(TEMP, "sample.mrk"))
         self.compare(trs, trs2)
 
     def compare(self, trs1, trs2):
@@ -48,9 +49,9 @@ class TestPhonedit(unittest.TestCase):
                     self.assertEqual(text1.Value, text2.Value)
 
     def test_Import_XRA(self):
-        tg1 = annotationdata.aio.read(os.path.join(DATA, "sample-1.2.xra"))
-        annotationdata.aio.write(os.path.join(TEMP, "sample-1.2.mrk"), tg1)
-        tg2 = annotationdata.aio.read(os.path.join(TEMP, "sample-1.2.mrk"))
+        tg1 = trsread(os.path.join(DATA, "sample-1.2.xra"))
+        trswrite(os.path.join(TEMP, "sample-1.2.mrk"), tg1)
+        tg2 = trsread(os.path.join(TEMP, "sample-1.2.mrk"))
 
         # Compare annotations of tg1 and tg2
         for t1, t2 in zip(tg1, tg2):

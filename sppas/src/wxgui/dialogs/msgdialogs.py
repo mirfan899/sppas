@@ -36,17 +36,17 @@
 # ---------------------------------------------------------------------------
 import sys
 import os.path
-sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
 
 import wx
+
+from sppas.src.wxgui.sp_icons import MESSAGE_ICON
+from sppas.src.wxgui.sp_icons import DLG_INFO_ICON
+from sppas.src.wxgui.sp_icons import DLG_WARN_ICON
+from sppas.src.wxgui.sp_icons import DLG_ERR_ICON
+from sppas.src.wxgui.sp_icons import DLG_QUEST_ICON
+
 from basedialog import spBaseDialog
-
-from wxgui.sp_icons import MESSAGE_ICON
-
-from wxgui.sp_icons import DLG_INFO_ICON
-from wxgui.sp_icons import DLG_WARN_ICON
-from wxgui.sp_icons import DLG_ERR_ICON
-from wxgui.sp_icons import DLG_QUEST_ICON
 
 # ----------------------------------------------------------------------------
 
@@ -228,7 +228,7 @@ def DemoBaseDialog(parent, preferences=None):
         dlg = Choice( frame, preferences,"This is the message to describe choices:", ['choice 0','choice 1','choice 2'])
         if dlg.ShowModal() == wx.ID_OK:
             c = dlg.GetSelection()
-            ShowInformation( frame, preferences, "Your choice is: %d"%c)
+            ShowInformation( frame, preferences, "Your choice is: %d" % c)
         else:
             ShowInformation( frame, preferences, "You clicked the ""Cancel"" button")
         dlg.Destroy()
@@ -251,7 +251,7 @@ def DemoBaseDialog(parent, preferences=None):
     btnchoice = frame.CreateButton(DLG_QUEST_ICON,"Test choice", "This is a tooltip!", btnid=wx.NewId())
 
     btnclose  = frame.CreateCloseButton()
-    btnbox    = frame.CreateButtonBox( [btnyesno,btninfo,btnwarn,btnerror,btnchoice],[btnclose] )
+    btnbox    = frame.CreateButtonBox( [btnyesno,btninfo,btnwarn,btnerror,btnchoice], [btnclose] )
 
     frame.LayoutComponents( title, wx.Panel(frame, -1, size=(320,200)), btnbox )
 

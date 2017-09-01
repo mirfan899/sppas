@@ -35,14 +35,12 @@
 # File: pluginsoptions.py
 # ----------------------------------------------------------------------------
 
-import logging
 import wx
 import wx.lib.agw.floatspin
 
-from wxgui.dialogs.basedialog import spBaseDialog
-from wxgui.panels.options import sppasOptionsPanel
-
-from wxgui.sp_icons import PLUGINS_ICON
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.panels.options import sppasOptionsPanel
+from sppas.src.wxgui.sp_icons import PLUGINS_ICON
 
 # ----------------------------------------------------------------------------
 

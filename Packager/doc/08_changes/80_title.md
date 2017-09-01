@@ -1,2 +1,0 @@
-# SPPAS Release notes
-

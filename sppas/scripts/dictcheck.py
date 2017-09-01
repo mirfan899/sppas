@@ -42,16 +42,16 @@ from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
-sys.path.append(os.path.join(SPPAS, "sppas", "src"))
+sys.path.append(SPPAS)
 
-from resources.dictpron import DictPron
+from sppas.src.resources.dictpron import sppasDictPron
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
 parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
-                        description="... a script to merge pronunciation dictionaries.")
+                        description="... a script to detect pronunciation anomalies into a dictionary.")
 
 parser.add_argument("-i",
                     metavar="file",
@@ -71,18 +71,23 @@ args = parser.parse_args()
 
 args = parser.parse_args()
 
-pron_dict = DictPron(args.i, nodump=True)
+pron_dict = sppasDictPron(args.i, nodump=True)
 
-for entry in pron_dict.get_keys():
+for entry in pron_dict:
+
     prons = pron_dict.get_pron(entry)
     nb_chars = float(len(entry))
-    for pron in prons.split(DictPron.VARIANTS_SEPARATOR):
-       phonetization = pron.split(DictPron.PHONEMES_SEPARATOR)
-       nb_phones = float(len(phonetization))
-       if nb_phones < nb_chars * 0.5:
-           print("{:s}\t{:s}\tsmall".format(entry.encode('utf8'), pron.encode('utf8')))
-       elif nb_phones > nb_chars * 1.8:
-           print("{:s}\t{:s}\tlarge".format(entry.encode('utf8'), pron.encode('utf8')))    
-       elif nb_phones > nb_chars * 1.4:
-           print("{:s}\t{:s}\tbig".format(entry.encode('utf8'), pron.encode('utf8')))
 
+    for pron in prons.split(sppasDictPron.VARIANTS_SEPARATOR):
+
+        phonetization = pron.split(sppasDictPron.PHONEMES_SEPARATOR)
+        nb_phones = float(len(phonetization))
+
+        if nb_phones < nb_chars * 0.5:
+            print("{:s}\t{:s}\tsmall".format(entry.encode('utf8'), pron.encode('utf8')))
+
+        elif nb_phones > nb_chars * 1.8:
+            print("{:s}\t{:s}\tlarge".format(entry.encode('utf8'), pron.encode('utf8')))
+
+        elif nb_phones > nb_chars * 1.4:
+            print("{:s}\t{:s}\tbig".format(entry.encode('utf8'), pron.encode('utf8')))

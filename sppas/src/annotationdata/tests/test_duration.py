@@ -1,9 +1,8 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 
-from annotationdata.ptime.duration import Duration
+from ..ptime.duration import Duration
 
 # ---------------------------------------------------------------------------
 

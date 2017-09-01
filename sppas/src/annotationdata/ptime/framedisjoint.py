@@ -35,11 +35,11 @@
 # File: framedisjoint.py
 # ----------------------------------------------------------------------------
 
-import baseplacement
-import duration
+from .baseplacement import BasePlacement
+from .duration import Duration as duration_Duration
 
-from framepoint import FramePoint
-from frameinterval import FrameInterval
+from .framepoint import FramePoint
+from .frameinterval import FrameInterval
 
 # ----------------------------------------------------------------------------
 
@@ -49,7 +49,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-class FrameDisjoint(baseplacement.BasePlacement):
+class FrameDisjoint(BasePlacement):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -177,7 +177,7 @@ class FrameDisjoint(baseplacement.BasePlacement):
         value     = sum( interval.Duration().GetValue()  for interval in self.__intervals)
         vagueness = sum( interval.Duration().GetMargin() for interval in self.__intervals)
 
-        return duration.Duration( value,vagueness )
+        return duration_Duration(value, vagueness)
 
     # -----------------------------------------------------------------------
 

@@ -45,12 +45,12 @@
 
 """
 
-from entropy import Entropy
-from kullback import Kullback
-from perplexity import Perplexity
+from .entropy import sppasEntropy
+from .kullbackleibler import sppasKullbackLeibler
+from .perplexity import Perplexity
 
 __all__ = [
-        "Entropy",
-        "Kullback",
+        "sppasEntropy",
+        "sppasKullbackLeibler",
         "Perplexity"
 ]

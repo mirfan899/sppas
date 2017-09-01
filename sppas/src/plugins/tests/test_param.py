@@ -1,10 +1,10 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 import os.path
 
-from plugins.param import sppasPluginParam
+from sppas.src.utils.makeunicode import u
+from ..param import sppasPluginParam
 
 # ---------------------------------------------------------------------------
 
@@ -25,6 +25,8 @@ class TestPluginParam(unittest.TestCase):
         self.assertEqual(self.param.get_icon(), "")
 
         opt = self.param.get_options()
-        self.assertEqual(len(opt), 3)
+        self.assertEqual(len(opt), 4)
         self.assertEqual(opt["Option1"].get_key(), "-b")
         self.assertEqual(opt["Option2"].get_key(), "--show-progress")
+        self.assertEqual(opt["Option3"].get_key(), "-i")
+        self.assertEqual(opt["Option3"].get_value(), u('C:\Windows'))

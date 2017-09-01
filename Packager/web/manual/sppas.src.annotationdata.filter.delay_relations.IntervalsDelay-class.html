@@ -1,0 +1,969 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>sppas.src.annotationdata.filter.delay_relations.IntervalsDelay</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.lpl-aix.fr/~bigi/sppas/">SPPAS</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;sppas ::
+        Package&nbsp;src ::
+        <a href="sppas.src.annotationdata-module.html">Package&nbsp;annotationdata</a> ::
+        <a href="sppas.src.annotationdata.filter-module.html">Package&nbsp;filter</a> ::
+        <a href="sppas.src.annotationdata.filter.delay_relations-module.html">Module&nbsp;delay_relations</a> ::
+        Class&nbsp;IntervalsDelay
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class IntervalsDelay</h1><p class="nomargin-top"><span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+     object --+    
+              |    
+<a href="sppas.src.annotationdata.filter.delay_relations.BinaryPredicate-class.html">BinaryPredicate</a> --+
+                  |
+                 <strong class="uidshort">IntervalsDelay</strong>
+</pre>
+
+<hr />
+<pre class="literalblock">
+
+Predicate on the Maximal/minimal delay between two intervals.
+The reference point of each interval is express in percent,
+ i.e. start point &lt;=&gt; 0%, end point &lt;=&gt; 100%, middle point 50% (default), etc.
+
+</pre>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Methods</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mindelay</span>=<span class="summary-sig-default">0</span>,
+        <span class="summary-sig-arg">maxdelay</span>=<span class="summary-sig-default">0</span>,
+        <span class="summary-sig-arg">xpercent</span>=<span class="summary-sig-default">DEFAULT_PERCENT</span>,
+        <span class="summary-sig-arg">ypercent</span>=<span class="summary-sig-default">DEFAULT_PERCENT</span>,
+        <span class="summary-sig-arg">direction</span>=<span class="summary-sig-default">__DEFAULT_DIRECTION</span>,
+        <span class="summary-sig-arg">name</span>=<span class="summary-sig-default">''</span>)</span><br />
+      Build a new IntervalsDelay</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">a Delay if any of the (usefull) points is a TimePoint else a float 
+      nota: 'usefull points' if xpercent=0., point(xstart,xend) is xstart, 
+      so xend is useless</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#delay" class="summary-sig-name">delay</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">xstart</span>,
+        <span class="summary-sig-arg">xend</span>,
+        <span class="summary-sig-arg">ystart</span>,
+        <span class="summary-sig-arg">yend</span>)</span><br />
+      Compute the actual delay between the two intervals</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.delay">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#check" class="summary-sig-name">check</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">xstart</span>,
+        <span class="summary-sig-arg">xend</span>,
+        <span class="summary-sig-arg">ystart</span>,
+        <span class="summary-sig-arg">yend</span>)</span><br />
+      Check if the delay between the two intervals respect max/mindelay</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.check">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#__call__" class="summary-sig-name">__call__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      IntervalsDelay's predicate Accecpt either:</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.__call__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#__str__" class="summary-sig-name">__str__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      str(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.__str__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#__cmp__" class="summary-sig-name">__cmp__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Compare IntervalsDelay based on</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.__cmp__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__or__"></a><span class="summary-sig-name">__or__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Allow to combine 2 predicates with the '|' operator</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.__or__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__and__"></a><span class="summary-sig-name">__and__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">other</span>)</span><br />
+      Allow to combine 2 predicates with the '&amp;' operator</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.__and__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== STATIC METHODS ==================== -->
+<a name="section-StaticMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Static Methods</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#validMinMaxDelay" class="summary-sig-name">validMinMaxDelay</a>(<span class="summary-sig-arg">mindelay</span>,
+        <span class="summary-sig-arg">maxdelay</span>)</span><br />
+      Check if the min/max delays are a valid combination,
+ i.e.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.validMinMaxDelay">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="pointStr"></a><span class="summary-sig-name">pointStr</span>(<span class="summary-sig-arg">percent</span>)</span><br />
+      Convert a percent to the point name (start/end/middle/&lt;p&gt;%)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.pointStr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">TimePoint (better) if start/end are a TimePoint, else a float</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#point" class="summary-sig-name">point</a>(<span class="summary-sig-arg">start</span>,
+        <span class="summary-sig-arg">end</span>,
+        <span class="summary-sig-arg">percent</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Compute the point corresponding to a percent of an interval</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.point">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="delayStr"></a><span class="summary-sig-name">delayStr</span>(<span class="summary-sig-arg">mindelay</span>=<span class="summary-sig-default">0</span>,
+        <span class="summary-sig-arg">maxdelay</span>=<span class="summary-sig-default">0</span>,
+        <span class="summary-sig-arg">unit</span>=<span class="summary-sig-default">''</span>,
+        <span class="summary-sig-arg">delayformat</span>=<span class="summary-sig-default">'.3f'</span>)</span><br />
+      Convert the minimal/maximal delays into string</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.delayStr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">Boolean</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#checkDelay" class="summary-sig-name">checkDelay</a>(<span class="summary-sig-arg">delay</span>,
+        <span class="summary-sig-arg">mindelay</span>=<span class="summary-sig-default">0</span>,
+        <span class="summary-sig-arg">maxdelay</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Check a delay value between (optionals) maxdelay/mindelay</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.checkDelay">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="splitAnnotations"></a><span class="summary-sig-name">splitAnnotations</span>(<span class="summary-sig-arg">x</span>,
+        <span class="summary-sig-arg">y</span>)</span><br />
+      x,y (Annotation)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.splitAnnotations">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">float or dict</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#parsePoint" class="summary-sig-name">parsePoint</a>(<span class="summary-sig-arg">ptStr</span>,
+        <span class="summary-sig-arg">default</span>=<span class="summary-sig-default">DEFAULT_PERCENT</span>,
+        <span class="summary-sig-arg">prefix</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Parse a point string into it's percent value</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.parsePoint">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#relationValues" class="summary-sig-name">relationValues</a>(<span class="summary-sig-arg">rel</span>,
+        <span class="summary-sig-arg">value</span>,
+        <span class="summary-sig-arg">res</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Parse a point string into it's percent value</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.relationValues">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#create" class="summary-sig-name">create</a>(<span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Create a IntervalsDelay predicate.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.create">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Class Variables</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#POINTS_PERCENT" class="summary-name">POINTS_PERCENT</a> = <code title="{'start': 0, 'end': 1, 'mid': 0.5, 'middle': 0.5}">{'start': 0, 'end': 1, 'mid': 0.5, 'middle': <code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="DEFAULT_PERCENT"></a><span class="summary-name">DEFAULT_PERCENT</span> = <code title="0.5">0.5</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="PERCENT_ALIASES"></a><span class="summary-name">PERCENT_ALIASES</span> = <code title="'percent', '%'">'percent', '%'</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="DIRECTIONS"></a><span class="summary-name">DIRECTIONS</span> = <code title="{'after': 'after', 'before': 'before'}">{'after': 'after', 'before': 'before'}</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Properties</span></td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Method Details</span></td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mindelay</span>=<span class="sig-default">0</span>,
+        <span class="sig-arg">maxdelay</span>=<span class="sig-default">0</span>,
+        <span class="sig-arg">xpercent</span>=<span class="sig-default">DEFAULT_PERCENT</span>,
+        <span class="sig-arg">ypercent</span>=<span class="sig-default">DEFAULT_PERCENT</span>,
+        <span class="sig-arg">direction</span>=<span class="sig-default">__DEFAULT_DIRECTION</span>,
+        <span class="sig-arg">name</span>=<span class="sig-default">''</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Build a new IntervalsDelay</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>mindelay</code></strong> (float) - minimum delay between the 2 intervals (in second, default:0)</li>
+        <li><strong class="pname"><code>maxdelay</code></strong> (float) - maximum delay between the 2 intervals (in second, default:0)</li>
+        <li><strong class="pname"><code>xpercent</code></strong> (float) - first interval reference point ([0,1], default:0.5)</li>
+        <li><strong class="pname"><code>ypercent</code></strong> (float) - second interval reference point ([0,1], default:0.5)</li>
+        <li><strong class="pname"><code>direction</code></strong> - the X-Y direction if (direction=='after'), the delay is positif 
+          when X is after Y (usefull if we search X that are 'consequence' 
+          of Y) else, i.e. (direction=='before'), the delay is positif when
+          X is before Y (usefull if we search X that 'imply' Y)</li>
+        <li><strong class="pname"><code>name</code></strong> ('before' or 'after') - custom name for the relation</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="delay"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">delay</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">xstart</span>,
+        <span class="sig-arg">xend</span>,
+        <span class="sig-arg">ystart</span>,
+        <span class="sig-arg">yend</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.delay">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Compute the actual delay between the two intervals</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>xstart</code></strong> - first interval start point</li>
+        <li><strong class="pname"><code>xend</code></strong> - first interval end point</li>
+        <li><strong class="pname"><code>ystart</code></strong> - second interval start point</li>
+        <li><strong class="pname"><code>yend</code></strong> - second interval end point</li>
+    </ul></dd>
+    <dt>Returns: a Delay if any of the (usefull) points is a TimePoint else a float 
+      nota: 'usefull points' if xpercent=0., point(xstart,xend) is xstart, 
+      so xend is useless</dt>
+        <dd>the delay between the two intervals</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="check"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">check</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">xstart</span>,
+        <span class="sig-arg">xend</span>,
+        <span class="sig-arg">ystart</span>,
+        <span class="sig-arg">yend</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.check">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Check if the delay between the two intervals respect max/mindelay</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>xstart</code></strong> - first interval start point</li>
+        <li><strong class="pname"><code>xend</code></strong> - first interval end point</li>
+        <li><strong class="pname"><code>ystart</code></strong> - second interval start point</li>
+        <li><strong class="pname"><code>yend</code></strong> - second interval end point</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__call__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__call__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Call operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.__call__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>IntervalsDelay's predicate Accecpt either:</p>
+  <ul>
+    <li>
+      2 Annotation arguments (x,y)
+    </li>
+    <li>
+      4 Point arguments (xstart, xend, ystart, yend)
+    </li>
+  </ul>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="__str__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__str__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Informal representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.__str__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>str(x)</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__str__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__cmp__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__cmp__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">other</span>)</span>
+    <br /><em class="fname">(Comparison operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.__cmp__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Compare IntervalsDelay based on</p>
+  <ul>
+    <li>
+      (1) the first interval point (i.e. xpercent)
+    </li>
+    <li>
+      (2) the second interval point (i.e. ypercent)
+    </li>
+    <li>
+      (3) the direction (before &lt; after)
+    </li>
+    <li>
+      (4) the minimal delay (None ~ -infinity)
+    </li>
+    <li>
+      (5) the maximal delay (None ~ +infinity)
+    </li>
+  </ul>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="validMinMaxDelay"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">validMinMaxDelay</span>(<span class="sig-arg">mindelay</span>,
+        <span class="sig-arg">maxdelay</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.validMinMaxDelay">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Check if the min/max delays are a valid combination,
+ i.e. min &lt;= max, considering None as -/+infinity
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="point"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">point</span>(<span class="sig-arg">start</span>,
+        <span class="sig-arg">end</span>,
+        <span class="sig-arg">percent</span>=<span class="sig-default">0</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.point">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Compute the point corresponding to a percent of an interval</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>start</code></strong> (TimePoint (better) or float/int) - start of the interval</li>
+        <li><strong class="pname"><code>end</code></strong> (TimePoint (better) or float/int) - end of the interval</li>
+        <li><strong class="pname"><code>percent</code></strong> (float) - percent value</li>
+    </ul></dd>
+    <dt>Returns: TimePoint (better) if start/end are a TimePoint, else a float</dt>
+        <dd>the point corresponding to the percent of the interval</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="checkDelay"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">checkDelay</span>(<span class="sig-arg">delay</span>,
+        <span class="sig-arg">mindelay</span>=<span class="sig-default">0</span>,
+        <span class="sig-arg">maxdelay</span>=<span class="sig-default">0</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.checkDelay">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Check a delay value between (optionals) maxdelay/mindelay</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>delay</code></strong> (Delay or float) - the delay</li>
+        <li><strong class="pname"><code>mindelay</code></strong> (float or Delay or None) - the minimum delay (if defined, default 0)</li>
+        <li><strong class="pname"><code>maxdelay</code></strong> (float or Delay or None) - the maximum delay (if defined, default 0)</li>
+    </ul></dd>
+    <dt>Returns: Boolean</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="parsePoint"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">parsePoint</span>(<span class="sig-arg">ptStr</span>,
+        <span class="sig-arg">default</span>=<span class="sig-default">DEFAULT_PERCENT</span>,
+        <span class="sig-arg">prefix</span>=<span class="sig-default">None</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.parsePoint">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Parse a point string into it's percent value</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>ptStr</code></strong> (str) - the point string (start, end, mid, 20%, ...)</li>
+        <li><strong class="pname"><code>type</code></strong> - float, None</li>
+        <li><strong class="pname"><code>default</code></strong> - (optional) the default value</li>
+        <li><strong class="pname"><code>type</code></strong> - str</li>
+        <li><strong class="pname"><code>prefix</code></strong> - (optional) a prefix for a return of type {xpercent=&lt;value&gt;}</li>
+    </ul></dd>
+    <dt>Returns: float or dict</dt>
+        <dd>the percent value, or a {&lt;prefix&gt;percent=&lt;value&gt;} 
+          object if prefix is defined</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>ValueError</strong></code> - uncorrect ptStr</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="relationValues"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">relationValues</span>(<span class="sig-arg">rel</span>,
+        <span class="sig-arg">value</span>,
+        <span class="sig-arg">res</span>=<span class="sig-default">None</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.relationValues">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Parse a point string into it's percent value</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>rel</code></strong> (str) - the 'relation' part : min, max, eq, ... Nota: could be prefixed 
+          by a direction part 'before' or 'after' with an optional '_', 
+          b.e. 'aftermax', 'before_min'</li>
+        <li><strong class="pname"><code>value</code></strong> (float, (min, max), {delay=&lt;float&gt;}) - the 'numeric' value(s)</li>
+        <li><strong class="pname"><code>res</code></strong> (a dict) - (optional) the result object</li>
+    </ul></dd>
+    <dt>Returns:</dt>
+        <dd>an dict with mindelay/maxdelay key:value set</dd>
+    <dt>Raises:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code><strong class='fraise'>ValueError</strong></code> - uncorrect relation/value(s)</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="create"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">create</span>(<span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">Static Method</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="sppas.src.annotationdata.filter.delay_relations-pysrc.html#IntervalsDelay.create">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Create a IntervalsDelay predicate.
+For complex predicate, the default is a conjunction ('and').
+Can be specified by a first parameter or the special key 'join'
+@param args: a key-value sequence
+    keys have generally the form &lt;point&gt;_&lt;point&gt;(_&lt;rel&gt;)?
+        where &lt;point&gt; are in 'start', 'end', 'mid'/'middle' or 'percent' (default)
+          and &lt;rel&gt; are 'max' (default), 'min' or 'eq'
+    values are either a single numeric value (for maxdelay and/or mindelay),
+                  or a dict of parameters (p.e. {maxdelay=1, xpercent=0.3} after 'percent_start')
+    Special keys :
+    - name(str): the relation name
+    - join(str): 'and' or 'or' 
+    - direction(str): the X-Y direction ('before' or 'after')
+      . before : positive delay &lt;=&gt; X before Y (~ X is a 'cause' of Y)
+      . after : positive delay &lt;=&gt; X after Y (~ X is a 'consequence' of Y)
+@param kwargs: more key-value, same as args
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== CLASS VARIABLE DETAILS ==================== -->
+<a name="section-ClassVariableDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Class Variable Details</span></td>
+</tr>
+</table>
+<a name="POINTS_PERCENT"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">POINTS_PERCENT</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+{'start': 0, 'end': 1, 'mid': 0.5, 'middle': 0.5}
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.lpl-aix.fr/~bigi/sppas/">SPPAS</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Aug 30 15:39:20 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -43,10 +42,19 @@ import logging
 import zipfile
 from threading import Thread
 
-from sp_glob import PLUGIN_PATH
-import utils.fileutils as fileutils
-from param import sppasPluginParam
-from process import sppasPluginProcess
+from sppas import PLUGIN_PATH
+from sppas.src.utils.fileutils import sppasDirUtils
+from sppas.src.utils.makeunicode import u
+from . import get_info
+from .pluginsexc import PluginArchiveFileError
+from .pluginsexc import PluginArchiveIOError
+from .pluginsexc import PluginDuplicateError
+from .pluginsexc import PluginConfigFileError
+from .pluginsexc import PluginIdError
+from .pluginsexc import PluginFolderError
+from .pluginsexc import PluginKeyError
+from .param import sppasPluginParam
+from .process import sppasPluginProcess
 
 # ----------------------------------------------------------------------------
 
@@ -123,30 +131,30 @@ class sppasPluginsManager(Thread):
             try:
                 self.append(plugin_folder)
             except Exception as e:
-                logging.info("Plugin %s loading error: %s" % (plugin_folder, str(e)))
+                logging.info("Plugin {:s} loading error: {:s}".format(plugin_folder, str(e)))
 
     # ------------------------------------------------------------------------
 
     def install(self, plugin_archive, plugin_folder):
         """ Install a plugin into the plugin directory.
 
-        :param plugin_archive: (string) File name of the plugin to be installed (ZIP).
-        :param plugin_folder: (string) Destination folder name of the plugin to be installed.
+        :param plugin_archive: (str) File name of the plugin to be installed (ZIP).
+        :param plugin_folder: (str) Destination folder name of the plugin to be installed.
 
         """
         if zipfile.is_zipfile(plugin_archive) is False:
-            raise TypeError('Unsupported plugin file type.')
+            raise PluginArchiveFileError
 
-        plugin_dir = os.path.join(PLUGIN_PATH,plugin_folder)
+        plugin_dir = os.path.join(PLUGIN_PATH, plugin_folder)
         if os.path.exists(plugin_dir):
-            raise IOError("A plugin with the same name is already existing in that folder.")
+            raise PluginDuplicateError
 
         os.mkdir(plugin_dir)
 
         with zipfile.ZipFile(plugin_archive, 'r') as z:
             restest = z.testzip()
             if restest is not None:
-                raise Exception('zip file corrupted.')
+                raise PluginArchiveIOError
             z.extractall(plugin_dir)
 
         try:
@@ -170,7 +178,7 @@ class sppasPluginsManager(Thread):
             shutil.rmtree(p.get_directory())
             del self._plugins[plugin_id]
         else:
-            raise ValueError("No such plugin: %s" % plugin_id)
+            raise PluginIdError(plugin_id)
 
     # ------------------------------------------------------------------------
 
@@ -179,18 +187,18 @@ class sppasPluginsManager(Thread):
         It is supposed that the given plugin folder name is a folder of the
         plugin directory.
 
-        :param plugin_folder: (string) The folder name of the plugin.
+        :param plugin_folder: (str) The folder name of the plugin.
 
         """
         # Fix the full path of the plugin
         plugin_path = os.path.join(PLUGIN_PATH, plugin_folder)
         if os.path.exists(plugin_path) is False:
-            raise IOError("No such folder: %s" % plugin_path)
+            raise PluginFolderError(plugin_path)
 
         # Find a file with the extension .ini
         f = self.__get_config_file(plugin_path)
         if f is None:
-            raise IOError("No configuration file for the plugin.")
+            raise PluginConfigFileError
 
         # Create the plugin instance
         p = sppasPluginParam(plugin_path, f)
@@ -198,7 +206,7 @@ class sppasPluginsManager(Thread):
 
         # Append in our list
         if plugin_id in self._plugins.keys():
-            raise KeyError("A plugin with the same key is already existing or plugin already loaded.")
+            raise PluginKeyError
 
         self._plugins[plugin_id] = p
         return plugin_id
@@ -208,7 +216,7 @@ class sppasPluginsManager(Thread):
     def run_plugin(self, plugin_id, file_names):
         """ Apply a given plugin on a list of files.
 
-        :param plugin_id: (string) Identifier of the plugin to apply.
+        :param plugin_id: (str) Identifier of the plugin to apply.
         :param file_names: (list) List of files on which the plugin has to be applied.
 
         """
@@ -217,7 +225,7 @@ class sppasPluginsManager(Thread):
             self._progress.update(0, "")
 
         if plugin_id not in self._plugins.keys():
-            raise TypeError("No plugin with identifier %s is available." % plugin_id)
+            raise PluginIdError(plugin_id)
 
         output_lines = ""
         total = len(file_names)
@@ -226,16 +234,24 @@ class sppasPluginsManager(Thread):
             # Indicate the file to be processed
             if self._progress is not None:
                 self._progress.set_text(os.path.basename(pfile)+" ("+str(i+1)+"/"+str(total)+")")
-            output_lines += "Apply plugin on file: %s\n" % pfile
+            output_lines += get_info("4010").format(filename=pfile)
 
             # Apply the plugin
             process = sppasPluginProcess(self._plugins[plugin_id])
-            process.run(pfile)
-            result = process.communicate()
+            try:
+                process.run(pfile)
+                result = process.communicate()
+            except Exception as e:
+                result = str(e)
             if len(result) == 0:
-                output_lines += "done."
+                output_lines += get_info("4015")
             else:
-                output_lines += result
+                try:
+                    output_lines += u(result)
+                except Exception as e:
+                    output_lines += get_info("4100")
+                    logging.info(str(e))
+                    logging.info(result)
 
             # Indicate progress
             if self._progress is not None:
@@ -244,7 +260,7 @@ class sppasPluginsManager(Thread):
 
         # Indicate completed!
         if self._progress is not None:
-            self._progress.update(1, "Completed.\n")
+            self._progress.update(1, get_info("4020")+"\n")
             self._progress.set_header("")
 
         return output_lines
@@ -286,11 +302,10 @@ class sppasPluginsManager(Thread):
     def __get_config_file(plugin_dir):
         """ Return the config file of a given plugin. """
 
-        files = fileutils.get_files(plugin_dir, extension=".ini", recurs=False)
+        sd = sppasDirUtils(plugin_dir)
+        files = sd.get_files(extension=".ini", recurs=False)
         # Find a file with the extension .ini, and only one
         if len(files) == 1:
             return files[0]
 
         return None
-
-    # ------------------------------------------------------------------------

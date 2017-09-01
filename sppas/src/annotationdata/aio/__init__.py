@@ -51,8 +51,8 @@
 
 from os.path import splitext
 
-from trsfactory  import TrsFactory
-from heuristic   import HeuristicFactory
+from .trsfactory import TrsFactory
+from .heuristic import HeuristicFactory
 
 
 # ----------------------------------------------------------------------------
@@ -82,6 +82,7 @@ extensions_out_multitiers = ['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.antx
 
 # ----------------------------------------------------------------------------
 
+
 def get_extension(filename):
     return splitext(filename)[1][1:]
 
@@ -89,7 +90,8 @@ def get_extension(filename):
 # Functions for reading and writing annotated files.
 # ----------------------------------------------------------------------------
 
-def read( filename ):
+
+def read(filename):
     """
     Read a transcription file.
 
@@ -133,20 +135,22 @@ def read( filename ):
         transcription = HeuristicFactory.NewTrs(filename)
 
     try:
-        transcription.read( unicode(filename) )
+        transcription.read(unicode(filename))
     except IOError:
         raise
     except UnicodeError as e:
-        raise UnicodeError('Encoding error: the file %r contains non-UTF-8 characters: %s' % (filename,e))
+        raise UnicodeError('The file %r contains non-UTF-8 characters: %s' % (filename, e))
 
     # Each reader has its own solution to assign min and max, anyway
     # take care, if one missed to assign the values!
     if transcription.GetMinTime() is None:
-        transcription.SetMinTime( transcription.GetBegin() )
+        transcription.SetMinTime(transcription.GetBegin())
     if transcription.GetMaxTime() is None:
-        transcription.SetMaxTime( transcription.GetEnd() )
+        transcription.SetMaxTime(transcription.GetEnd())
 
     return transcription
+
+# ----------------------------------------------------------------------------
 
 
 def write(filename, transcription):
@@ -164,7 +168,7 @@ def write(filename, transcription):
     output = TrsFactory.NewTrs(ext)
 
     output.Set(transcription)
-    output.SetMinTime( transcription.GetMinTime() )
-    output.SetMaxTime( transcription.GetMaxTime() )
+    output.SetMinTime(transcription.GetMinTime())
+    output.SetMaxTime(transcription.GetMaxTime())
 
-    output.write( unicode(filename) )
+    output.write(unicode(filename))

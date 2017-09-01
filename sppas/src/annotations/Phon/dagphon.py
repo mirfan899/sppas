@@ -1,56 +1,54 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: dagphon.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.dagphon.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    A Direct Acyclic Graph is used to phonetize.
+
+"""
 import re
-from resources.dictpron import DictPron
+from sppas.src.resources.dictpron import sppasDictPron
 
 # ----------------------------------------------------------------------------
 
 
 class DAG(object):
-    """
-    Direct Acyclic Graph.
+    """ Direct Acyclic Graph.
 
     Implementation inspired from: http://www.python.org/doc/essays/graphs/
 
     """
     def __init__(self):
-        """
-        Create a new DAG instance.
+        """ Create a new DAG instance.
 
         This class represents the DAG as a dictionary.
         For example:
@@ -79,16 +77,19 @@ class DAG(object):
 
     def add_node(self, node):
         """ Add a new node (not added if already in the DAG). """
+
         if node not in self.__graph.keys():
             self.__graph[node] = list()
 
     def add_edge(self, src, dst):
         """ Add a new edge to a node. """
+
         # TODO. Must check if no cycle...
         self.__graph[src].append(dst)
 
     def remove_node(self, node):
         """ Remove a node. """
+
         if node in self.__graph.keys():
             del self.__graph[node]
 
@@ -98,8 +99,7 @@ class DAG(object):
     # -----------------------------------------------------------------------
 
     def find_path(self, start, end, path=[]):
-        """
-        Determine a path between two nodes.
+        """ Determine a path between two nodes.
 
         It takes a graph and the start and end nodes as arguments. It
         will return a list of nodes (including the start and end nodes)
@@ -165,12 +165,12 @@ class DAG(object):
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        print("Number of nodes: {:d}".format(len(self.__graph.keys())))
+        print("Number of nodes:", len(self.__graph.keys()))
         for i in self.__graph.keys():
             if self.__graph[i]:
-                print("  Node {:d} has edge to --> {:d}".format(i, self.__graph[i]))
+                print("  Node ", i, " has edge to --> ", self.__graph[i])
             else:
-                print("  Node {:d} has no edge ".format(i))
+                print("  Node ", i, " has no edge ")
 
     def __len__(self):
         return len(self.__graph)
@@ -178,32 +178,43 @@ class DAG(object):
 # ----------------------------------------------------------------------------
 
 
-class DAGPhon(object):
+class sppasDAGPhonetizer(object):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Utility class to manage phonetizations with a DAG.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Utility class to manage phonetizations with a DAG.
 
     """
     def __init__(self, variants=4):
-        """
-        Constructor.
+        """ Create a sppasDAGPhonetizer instance.
 
-        @param variants (int) Maximum number of variants for phonetizations.
+        :param variants: (int) Maximum number of variants for phonetizations.
 
         """
-        self.variants = variants
+        self.variants = 0
+        self.set_variants(variants)
+
+    # -----------------------------------------------------------------------
+
+    def set_variants(self, v):
+        """ Fix the maximum number of variants.
+
+        :param v: (int) If v is set to 0, all variants will be returned.
+
+        """
+        if v < 0 or v > 20:
+            raise ValueError('Unexpected value for the number of variants.')
+        self.variants = v
 
     # -----------------------------------------------------------------------
 
     def phon2DAG(self, pron):
-        """
-        Convert a phonetization into a DaG.
+        """ Convert a phonetization into a DAG.
 
-        @param pron
+        :param pron:
 
         """
         tabpron = pron.split()
@@ -223,7 +234,7 @@ class DAGPhon(object):
         # Get all longest-segments of a token
         for i in range(len(tabpron)):
 
-            variants = tabpron[i].split(DictPron.VARIANTS_SEPARATOR)
+            variants = tabpron[i].split(sppasDictPron.VARIANTS_SEPARATOR)
             # Get all variants of this part-of-token
             for v in range(len(variants)):
 
@@ -249,9 +260,12 @@ class DAGPhon(object):
 
     # -----------------------------------------------------------------------
 
-    def DAG2phon(self, graph, prongraph):
-        """
-        Convert a DAG into a dictionary including all pronunciation variants.
+    def DAG2phon(self, graph, pron_graph):
+        """ Convert a DAG into a dictionary including all pronunciation variants.
+
+        :param graph:
+        :param pron_graph:
+        :returns:
 
         """
         pathslist = graph.find_all_paths(0, len(graph)-1)
@@ -260,17 +274,16 @@ class DAGPhon(object):
         for variant in pathslist:
             p = ""
             for i in variant[1:len(variant)-1]:  # do not include Start and End nodes
-                p = p + DictPron.PHONEMES_SEPARATOR + prongraph[i]
+                p = p + sppasDictPron.PHONEMES_SEPARATOR + pron_graph[i]
             p = re.sub('^.', "", p)
-            pron[p] = len(p.split(DictPron.PHONEMES_SEPARATOR))
+            pron[p] = len(p.split(sppasDictPron.PHONEMES_SEPARATOR))
 
         return pron
 
     # -----------------------------------------------------------------------
 
     def decompose(self, pron1, pron2=""):
-        """
-        Create a decomposed phonetization from a string as follow:
+        """ Create a decomposed phonetization from a string as follow:
 
             >>> self.decompose("p1 p2|x2 p3|x3")
             p1-p2-p3|p1-p2-x3|p1-x2-p3|p1-x2-x3
@@ -300,7 +313,7 @@ class DAGPhon(object):
 
         # Output selection
 
-        v = DictPron.VARIANTS_SEPARATOR
+        v = sppasDictPron.VARIANTS_SEPARATOR
 
         # Return all variants
         if self.variants == 0:
@@ -313,5 +326,3 @@ class DAGPhon(object):
         # Other number of variants: choose shorters
         l = sorted(pron.items(), key=lambda x: x[1])[:self.variants]
         return v.join(zip(*l)[0])
-
-    # -----------------------------------------------------------------------

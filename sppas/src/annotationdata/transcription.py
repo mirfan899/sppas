@@ -43,13 +43,13 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import copy
 
-from meta      import MetaObject
-from tier      import Tier
-from hierarchy import Hierarchy
-from media     import Media
-from ctrlvocab import CtrlVocab
+from .meta import MetaObject
+from .tier import Tier
+from .hierarchy import Hierarchy
+from .media import Media
+from .ctrlvocab import CtrlVocab
 
-from utils.deprecated import deprecated
+from .utils.deprecated import deprecated
 
 # ----------------------------------------------------------------------------
 

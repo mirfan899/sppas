@@ -41,15 +41,14 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ---------------------------------------------------------------------------
 
-from annotation  import Annotation
-from ptime.point import TimePoint
-from meta        import MetaObject
-
-from utils.deprecated import deprecated
+from .annotation import Annotation
+from .ptime.point import TimePoint
+from .meta import MetaObject
 
 # ---------------------------------------------------------------------------
 
-class Tier( MetaObject ):
+
+class Tier(MetaObject):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -1123,12 +1122,5 @@ class Tier( MetaObject ):
 
     def __len__(self):
         return len(self.__ann)
-
-    @deprecated
-    def __call__(self, *args, **kwargs):
-        from filter import FilterFactory
-        return FilterFactory(self, *args, **kwargs)
-
-    # -----------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------

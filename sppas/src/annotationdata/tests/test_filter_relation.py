@@ -1,15 +1,14 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 
-from annotationdata.annotation import Annotation
-from annotationdata.label.label import Label
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point import TimePoint
-from annotationdata.tier import Tier
-from annotationdata.filter.predicate import Rel
-from annotationdata.filter.filters import RelationPredicate, Filter, RelationFilter
+from ..annotation import Annotation
+from ..label.label import Label
+from ..ptime.interval import TimeInterval
+from ..ptime.point import TimePoint
+from ..tier import Tier
+from ..filter.predicate import Rel, RelationPredicate
+from ..filter.filters import Filter, RelationFilter
 
 # ---------------------------------------------------------------------------
 

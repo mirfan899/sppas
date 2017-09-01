@@ -41,7 +41,8 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-from annotationdata.label.text import Text
+from .label.text import Text
+
 
 # ----------------------------------------------------------------------------
 # An Entry of a controlled vocabulary:

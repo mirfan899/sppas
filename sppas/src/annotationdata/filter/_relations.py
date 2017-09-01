@@ -39,12 +39,10 @@ __docformat__ = """epytext"""
 __authors__   = """Tatsuya Watanabe, Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
-# ----------------------------------------------------------------------------
-
-
-#---------------------------------------------------------------
+# ---------------------------------------------------------------
 # Allen's interval relations
-#---------------------------------------------------------------
+# ---------------------------------------------------------------
+
 """
 James Allen, in 1983, proposed an algebraic framework named Interval Algebra
 (IA), for qualitative reasoning with time intervals where the binary

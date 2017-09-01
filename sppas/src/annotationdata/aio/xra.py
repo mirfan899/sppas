@@ -37,24 +37,24 @@ import logging
 from datetime import datetime
 import xml.etree.cElementTree as ET
 
-from annotationdata.transcription       import Transcription
-from annotationdata.media               import Media
-from annotationdata.ctrlvocab           import CtrlVocab
+from ..transcription import Transcription
+from ..media import Media
+from ..ctrlvocab import CtrlVocab
 
-from annotationdata.annotation          import Annotation
-from annotationdata.label.label         import Label
-from annotationdata.label.text          import Text
-from annotationdata.ptime.location      import Location
-from annotationdata.ptime.localization  import Localization
-from annotationdata.ptime.point         import TimePoint
-from annotationdata.ptime.interval      import TimeInterval
-from annotationdata.ptime.disjoint      import TimeDisjoint
-from annotationdata.ptime.framepoint    import FramePoint
-from annotationdata.ptime.frameinterval import FrameInterval
-from annotationdata.ptime.framedisjoint import FrameDisjoint
+from ..annotation import Annotation
+from ..label.label import Label
+from ..label.text import Text
+from ..ptime.location import Location
+from ..ptime.localization import Localization
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..ptime.disjoint import TimeDisjoint
+from ..ptime.framepoint import FramePoint
+from ..ptime.frameinterval import FrameInterval
+from ..ptime.framedisjoint import FrameDisjoint
 
-from utils import indent
-from utils import gen_id
+from .utils import indent
+from .utils import gen_id
 
 # ---------------------------------------------------------------------------
 
@@ -80,9 +80,6 @@ class XRA(Transcription):
 
         """
         Transcription.__init__(self, name, mintime, maxtime)
-
-    # -----------------------------------------------------------------
-
 
     # -----------------------------------------------------------------
     # Read XRA 1.1 and 1.2
@@ -127,7 +124,7 @@ class XRA(Transcription):
         mediamime = ''
         if 'mimetype' in mediaRoot.attrib:
             mediamime = mediaRoot.attrib['mimetype']
-        media = Media( mediaid,mediaurl,mediamime )
+        media = Media(mediaid,mediaurl,mediamime)
 
         # Add content if any
         contentRoot = mediaRoot.find('Content')
@@ -137,7 +134,7 @@ class XRA(Transcription):
         # link to tiers
         for tierNode in mediaRoot.findall('Tier'):
             tier = self.__id_tier_map[tierNode.attrib['id']]
-            tier.SetMedia( media )
+            tier.SetMedia(media)
 
     # -----------------------------------------------------------------
 
@@ -185,7 +182,7 @@ class XRA(Transcription):
             entrydesc = ""
             if "description" in entryNode.attrib:
                 entrydesc = entryNode.attrib['description']
-            ctrlvocab.Append( entrytext,entrydesc )
+            ctrlvocab.Append(entrytext,entrydesc)
 
         # link to tiers
         for tierNode in vocabularyRoot.findall('Tier'):
@@ -195,7 +192,7 @@ class XRA(Transcription):
                 # XRA < 1.2
                 idtier = tierNode.attrib['ID']
             tier = self.__id_tier_map[idtier]
-            tier.SetCtrlVocab( ctrlvocab )
+            tier.SetCtrlVocab(ctrlvocab)
 
     # -----------------------------------------------------------------
 
@@ -332,7 +329,7 @@ class XRA(Transcription):
             disjointRoot.findall('TimeInterval' if
                                  isTimeDisjoint else
                                  'FrameInterval')
-        ):
+       ):
             interval = XRA.__parse_interval(intervalRoot)
             intervalList.append(interval)
 
@@ -484,7 +481,7 @@ class XRA(Transcription):
 
     @staticmethod
     def __format_metadata(metadataRoot, metaObject):
-        for key, value in metaObject.metadata.iteritems():
+        for key, value in metaObject.metadata.items():
             entry = ET.SubElement(metadataRoot, 'Entry')
             entry.set('key', key)
             entry.text = unicode(value)

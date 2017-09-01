@@ -1,17 +1,16 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 import random
 
-from annotationdata.filter.delay_relations import Delay
-from annotationdata.filter.delay_relations import IntervalsDelay
-from annotationdata.filter.delay_relations import AndPredicates, OrPredicates
+from ..filter.delay_relations import Delay
+from ..filter.delay_relations import IntervalsDelay
+from ..filter.delay_relations import AndPredicates, OrPredicates
 
-from annotationdata.ptime.point import TimePoint
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.label.label import Label
-from annotationdata.annotation import Annotation
+from ..ptime.point import TimePoint
+from ..ptime.interval import TimeInterval
+from ..label.label import Label
+from ..annotation import Annotation
 
 # ---------------------------------------------------------------------------
 

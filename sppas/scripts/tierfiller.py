@@ -1,71 +1,62 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
-#
-#           http://www.lpl-aix.fr/~bigi/sppas
-#
-# ---------------------------------------------------------------------------
-# developed at:
-#
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2014  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
-# ---------------------------------------------------------------------------
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: tierfiller.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
+        http://www.sppas.org/
 
+        Use of this software is governed by the GNU Public License, version 3.
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
 
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    scripts.tierfiller.py
+    ~~~~~~~~~~~~~~~~~~~~~~
+
+    ... a script to fill empty labels of a tier of an annotated file.
+
+"""
 import sys
-import os
 import os.path
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import annotationdata.aio
-from annotationdata.transcription import Transcription
-from   annotationdata.label.label import Label
-from annotationdata.aio.utils import fill_gaps
+import sppas.src.annotationdata.aio
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotationdata.aio.utils import fill_gaps
 
 # ----------------------------------------------------------------------------
 
+
 def fct_fill(tier, filler):
-    """
-    Fill empty annotations with a specific filler.
+    """ Fill empty annotations with a specific filler.
+
+    :param tier: (Tier)
+    :param filler: (str)
     
     """
     labelfiller = Label(filler)
@@ -112,6 +103,7 @@ def fct_fill(tier, filler):
 
 # ----------------------------------------------------------------------------
 
+
 def fct_clean(tier, filler, duration):
     """
     Merge too short intervals with the previous one if filler match.
@@ -141,13 +133,39 @@ def fct_clean(tier, filler, duration):
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM), description="... a script to fill empty labels of a tier of an annotated file.")
+parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
+                        description="... a script to fill empty labels of a tier of an annotated file.")
 
-parser.add_argument("-i", metavar="file", required=True,  help='Input annotated file file name')
-parser.add_argument("-t", metavar="value", required=False, action='append', type=int, help='A tier number (use as many -t options as wanted). Positive or negative value: 1=first tier, -1=last tier.')
-parser.add_argument("-o", metavar="file", required=True, help='Output file name')
-parser.add_argument("-f", metavar="text", required=False, default="#", help='Text to fill with (default:#)')
-parser.add_argument("-d", metavar="duration", required=False, default=0.02, type=float, help='Minimum duration of a filled interval (default:0.02)')
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
+                    help='Input annotated file name')
+
+parser.add_argument("-t",
+                    metavar="value",
+                    required=False,
+                    action='append',
+                    type=int,
+                    help='A tier number (use as many -t options as wanted). '
+                         'Positive or negative value: 1=first tier, -1=last tier.')
+
+parser.add_argument("-o",
+                    metavar="file",
+                    required=True,
+                    help='Output file name')
+
+parser.add_argument("-f",
+                    metavar="text",
+                    required=False,
+                    default="#",
+                    help='Text to fill with (default:#)')
+
+parser.add_argument("-d",
+                    metavar="duration",
+                    required=False,
+                    default=0.02,
+                    type=float,
+                    help='Minimum duration of a filled interval (default:0.02)')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -157,10 +175,10 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 # Read
 
-trsinput = annotationdata.aio.read( args.i )
+trsinput = sppas.src.annotationdata.aio.read( args.i )
 
 # Take all tiers or specified tiers
-tiersnumbs = []
+tiersnumbs = list()
 if not args.t:
     tiersnumbs = range(1, (trsinput.GetSize() + 1))
 elif args.t:
@@ -180,17 +198,15 @@ for i in tiersnumbs:
         if ctrlvocab.Contains(args.f) is False:
             ctrlvocab.Append( args.f, descr="Filler" )
 
-    print "Tier: ",tier.GetName()
-    print "Fill empty intervals with",args.f, "(and merge with previous or following if any)"
+    print "Tier: ", tier.GetName()
+    print "Fill empty intervals with", args.f, "(and merge with previous or following if any)"
     tier = fct_fill(tier, args.f)
     print "Merge intervals during less than",args.d
     tier = fct_clean(tier, args.f, args.d)
-    print
+    print()
     trsout.Append(tier)
 
 # ----------------------------------------------------------------------------
 # Write
 
-annotationdata.aio.write(args.o, trsout)
-
-# ----------------------------------------------------------------------------
+sppas.src.annotationdata.aio.write(args.o, trsout)

@@ -1,194 +1,300 @@
 ## A gentle introduction to programming
 
-This section is partially made of selected parts of *the Python website*
-and *wikipedia*.
 
+### Introduction
 
-### Definitions
+This section includes examples in Python programming language.
+You may want to try out some of the examples that come with the
+description. In order to do this, execute the Python IDLE - 
+available in the Application-Menu of your operating system),
+and write the examples after the prompt ">>>".
 
-*Programming* is the process of writing instructions for computers to produce
-software for users. More than anything, it is a creative and problem-solving
-activity. Any problem can be solved in a large number of ways.
+![The Python IDLE logo](./etc/logos/python_idle.png)
 
-An *algorithm* is the step-by-step solution to a certain problem:
-algorithms are lists of *instructions* which are followed step by step,
-from top to bottom and from left to right.  To practice writing programs
-in a programming language, it is required first to think of a the problem
-and consider the logical solution before writing it out.
+To get information about the IDLE, get access to 
+[the IDLE documentation](https://docs.python.org/2/library/idle.html)
 
-Writing a program is done so using a programming language. Thankfully even
-though some languages are vastly different than others, most share a lot of
-common ground, so that once anyone knows his/her first language, other
-languages are much easier to pick up.
+Writing any program consists of writing statements so using a programming 
+language. A *statement* is often known as a line of code that can be one
+of: 
 
-Any program is made of statements.
-A *statement* is more casually (and commonly) known as a line of code
-is the smallest standalone element which expresses some action to be carried
-out while executing the program.
-It can be one of: comment, assignment, conditions, iterations, etc.
-Most languages have a fixed set of statements defined by the language.s
+- comment, 
+- documentation,
+- assignment, 
+- conditions, 
+- iterations, etc.
 
-Lines of code are grouped in *blocks*.
-Blocks are delimited by brackets, braces or by the indentation
-(depending on the programming language).
+Lines of code are grouped in *blocks*. Depending on the programming 
+language, blocks delimited by brackets, braces or by the indentation.
 
-The prompt indicates the system is ready to receive input. Most of times, it is
-represented by '>'. In the following, the prompt is not mentioned.
-
-
-### Comments and blocks
-
-Comments are not required by the program to work. But comments are necessary!
-It is commonly admitted that about 25% to 30% of lines of a program must be
-comments.
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
- # this is a comment in python, bash and others.
- # I can write what I want after the # symbol :-)~
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Each language has its own syntax to write these lines and the user has to
+follow strictly this syntax for the program to be able to interpret the
+program. However, the amount of freedom the user has to use capital 
+letters, whitespace and so on is very high. Recommendations for Python
+language are available in the 
+[PEP8 - Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/).
 
 
 ### Variables: Assignment and Typing
 
-A *variable* in any programming language is a named piece of computer memory,
-containing some information inside. When declaring a variable, it is usually
-also stated what kind of data it should carry.
-Assignment is setting a variable to a value.
-Dynamically typed languages, such as Python, allow automatic conversions
-between types according to defined rules.
-
-Python variables do not have to be explicitly declared:
-the declaration happens automatically when a value is assigned to a variable.
-In most languages, the equal sign (=) is used to assign values to variables.
+A *variable* is a name to give to a piece of memory with some information 
+inside. Assignment is then the action of setting a variable to a value.
+The equal sign (=) is used to assign values to variables.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
- a = 1
- b = 1.0
- c = 'c'
- hello = 'Hello world!'
- vrai = True
+ >>>a = 1    
+ >>>b = 1.0
+ >>>c = "c"
+ >>>cc = u"ç"
+ >>>hello = "Hello world!"
+ >>>vrai = True
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In the previous example, `a`, `b`, `c`, `hello` and `vrai` are variables,
-`a = 1` is a declaration with a typed-statement.
+`a = 1` is a declaration.
 
-Here is a list of some fundamental data types, and their characteristics:
+**MISSING:Variable declarations and print in the Python IDLE./etc/screenshots/python_idle_example.png**
 
-* *char*  Character and/or small integer, 1 byte (signed: -128 to 127 or unsigned: 0 to 255)
-* *int*   Integer, 4 bytes (signed: -2147483648 to 2147483647 or unsigned:0 to 4294967295)
-* *bool*  Boolean value, can take two values `True` or `False`
-* *float* Floating point number, 4 bytes
-
-Notice that the number `0` represents the boolean value `False`.
-
-Assignments are performed with *operators*.
-Python Assignment Operators are:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- a = 10   # simple assignment operator
- a += 10  # add and assignment operator
- a -= 10
- a *= 10
- a /= 10
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Notice that a Character is a single letter, number, punctuation or other value;
-and a String is a collection of these character values, often manipulated as
-if it were a single value.
-
-Complex data types are often used, for example: arrays, lists, tree,
-hash-tables, etc. For example, with Python:
+Assignments to variables with Python language can be performed with the 
+following operators:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
- lst = ['a', 'bb', 'ccc', 'dddd', 'eeeee' ]
- sublst = lst[1:2]
+>>> a = 10   # simple assignment operator
+>>> a += 2   # add and assignment operator, so a is 12
+>>> a -= 7   # minus and assignment, so a is 5
+>>> a *= 20  # multiply and assignment, so a is 100
+>>> a /= 10  # divide and assignment, so a is 10
+>>> a        # verify the value of a...
+10
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 ### Basic Operators
 
-Python Arithmetic Operators:
+Basic operators are used to use and/or manipulate variables. The 
+following is the list of operators that can be used with Python, 
+i.e. equal (assignment), plus, minus, multiply, divide:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
- a = 10
- b = 20
- a + b  # Addition
- a - b  # Subtraction
- a * b  # Multiplication
- a / b  # Division
- float(a) / float(b) # try it! and compare with the previous one
+>>> a = 10
+>>> b = 20  # Assignment
+>>> a + b   # Addition
+>>> a - b   # Subtraction
+>>> a * b   # Multiplication
+>>> a / b   # Division
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+### Data types
+
+The variables are of a data-type. For example, the declarations `a=1` and `a=1.0`
+are respectively assigning an integer and a real number. In Python, the command 
+`type` allows to get the type of a variable, like in the following:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+>>> type(a)
+<type 'int'>
+>>> type(b)
+<type 'float'>
+>>> type(c)
+<type 'str'>
+>>> type(cc)
+<type 'unicode'>
+>>> type(vrai)
+<type 'bool'>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following is a list of some fundamental data types, and their characteristics:
+
+* *str*   String of characters
+* *unicode*  Unicode string of characters
+* *int*   Integer in range from -2147483648 to 2147483647
+* *bool*  Boolean value, can take value `True` (=1) or `False` (=0)
+* *float* Floating point number (max 15 digits)
+
+Python is assigning data types dynamically. As a consequence, the result of the sum 
+between an `int` and a `float` is a `float`. The next examples illustrate that 
+the type of the variables have to be carefully managed. 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+>>> a = 10
+>>> a += 0.
+>>> a
+10.0
+>>> a += True
+>>> a
+11.0
+>>> a += "a"
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+TypeError: unsupported operand type(s) for +=: 'float' and 'str'
+>>> a = "a"
+>>> a *= 5
+>>> a
+'aaaaa'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The type of a variable can be changed. This is called a "cast", like in
+the following:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+>>> a = 10
+>>> b = 2
+>>> a/b
+5
+>>> float(a) / float(b)
+5.0
+>>> a = 1
+>>> b = 1 
+>>> str(a) + str(b)
+'11'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Complex data types are often used to store variables sharing the same 
+properties like a list of numbers, and so on. Common types in languages 
+are lists/arrays and dictionaries. The following is the assignment of a 
+list with name `fruits`, then the assignment of a sub-part of the list to
+the `to_buy` list:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+>>> fruits = ['apples', 'tomatoes', 'peers', 'bananas']
+>>> to_buy = fruits[1:2]
+>>> to_buy
+['tomatoes']
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 ### Conditions
 
-Decision making structures require that the programmer specify one or more
-conditions to be evaluated or tested by the program. The condition statement
-is a simple control that tests whether a statement is true or false.
-The condition can include a variable, or be a variable.
-If the condition is true, then an action occurs.
-If the condition is false, nothing is done.
-
-Conditions are performed with the help of comparison operators, as equal,
+Conditions aim to test whether a statement is True or False.
+The statement of the condition can include a variable, or be a variable.
+If the result of the condition is true and/or false, then a given action 
+occurs. Statements of conditions are written with operators, as equal,
 less than, greater than, etc.
-
-In the following, we give example of conditions/comparisons in Python.
+The following shows examples of conditions/comparisons in Python. Notice that
+the comparison of variables of a different data-type is possible (but not
+recommended!).
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
- var = 100
- if var == 100: print "Value of expression is 100"
+>>> var = 100
+>>> if var == 100: 
+...     print("Value of expression is 100.")
+...
+Value of expression is 100.
+
+>>> if var == "100":
+...     print("This message won't be printed out.")
+...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Python programming language assumes any non-zero and non-null values as `True`,
-and if it is either zero or null, then it is assumed as `False` value.
+Conditions can expressed in a more complex way like:
+ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+>>> if a == b:
+...     print('a and b are equals')
+... elif a > b:
+...    print('a is greater than b')
+... else:
+...    print('b is greater than a')
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The simple operators for comparisons are summarized in the next examples:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
- if a == b:
-     print 'equals'
- elif a > b:
-    print 'a greater than b'
- else:
-    print 'b greater than a'
+>>> a == b   # check if equals
+>>> a != b   # check if different
+>>> a > b    # check if a is greater than b
+>>> a >= b   # check if a is greater or equal to b
+>>> a < b    # check if a is lesser than b
+>>> a <= b   # check if a is lesser or equal to b
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Python Comparison Operators:
+It is also possible to use the following operators:
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
- a == b  # check if equals
- a != b  # check if different
- a > b   # check if a is greater than b
- a >= b  # check if a is greater or equal to b
- a < b
- a <= b
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Other Python Operators:
-
-* `and` Called Logical AND operator.
+- `and`: called "Logical AND operator".
 If both the operands are true then the condition becomes true.
-* `or` Called Logical OR Operator.
+- `or`: called Logical OR Operator.
 If any of the two operands are non zero then the condition becomes true.
-* `not` Called Logical NOT Operator.
+- `not` called Logical NOT Operator.
 Use to reverses the logical state of its operand.
 If a condition is true then Logical NOT operator will make false.
-* `in` Evaluates to true if it finds a variable in the specified sequence
+- `in`: evaluates to true if it finds a variable in the specified sequence
 and false otherwise.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+>>> if a == "apples" and b == "peers":
+...    print("You need to buy fruits.")
+
+>>> if a == "apples" or b == "apples":
+...    print("You already have bought apples.")
+
+>>> if "tomatoas" not in to_buy:
+...    print("You do not have to buy tomatoes.")
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 ### Loops
 
-A "loop" is a process in which a loop is initiated until a condition has
-been met.
-
-A `while` loop statement repeatedly executes a target statement as long as a
-given condition is true.
-
-The `for` loop has the ability to iterate over the items of any sequence,
-such as a list or a string. The following Python program prints items of
-a list on the screen:
+The `for` loop statement iterates over the items of any sequence. 
+The next Python lines of code print items of a list on the screen:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
- l = ['fruits', 'viande', 'poisson', 'oeufs']
- for item in l:
-    print item
+>>> to_buy = ['fruits', 'viande', 'poisson', 'oeufs']
+>>> for item in to_buy:
+...    print(item)
+...
+fruits
+viande
+poisson
+oeufs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A `while` loop statement repeatedly executes a target statement as long as a
+given condition returns `True`. The following example prints exactly the same 
+result as the previous one:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+>>> to_buy = ['fruits', 'viande', 'poisson', 'oeufs']
+>>> i = 0
+>>> while i < len(to_buy):
+...  print(to_buy[i])
+...  i += 1
+...
+fruits
+viande
+poisson
+oeufs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+### Dictionaries
+
+A dictionary is a very useful data type. It consists of pairs of keys and 
+their corresponding values.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+>>> fruits = dict()
+>>> fruits['apples'] = 3
+>>> fruits['peers'] = 5
+>>> fruits['tomatoas'] = 1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+
+`fruits['apples']` is a way to get the value - i.e. 3, of the `apple` key.
+However, an error is sent if the key is unknown, like `fruits[bananas]`.
+Alternatively, the `get` function can be used, like `fruits.get("bananas", 0)`
+that returns 0 instead of an error.
+
+The next example is showing how use a simple dictionary:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+>>> for key in ['apples', 'peers', 'tomatoes', 'babanas']:
+...    value = fruits.get(key, 0)
+...    if value < 3:
+...        print("You have to buy new {:s}.".format(key))
+...
+You have to buy new tomatoes.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+To learn more about data structures and how to manage them, get access to 
+[the Python documentation](https://docs.python.org/2/tutorial/datastructures.html)
+

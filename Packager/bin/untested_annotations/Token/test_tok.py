@@ -10,7 +10,7 @@ from os.path import *
 SPPAS = dirname(dirname(dirname(dirname(dirname(abspath(__file__))))))
 sys.path.append(os.path.join(SPPAS, 'sppas'))
 
-from annotations.Token.tok import sppasTok
+from annotations.TextNorm.tok import sppasTok
 from annotationdata.annotation import Annotation
 from annotationdata.tier import Tier
 from annotationdata.ptime.point import TimePoint

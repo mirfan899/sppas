@@ -38,15 +38,16 @@
     See: <http://wwwhomes.uni-bielefeld.de/gibbon/TGA/>
 
 """
+from .stats.linregress import tga_linear_regression
+from .stats.variability import rPVI
+from .stats.variability import nPVI
 
-from descriptivesstats import DescriptiveStatistics
-import stats.linregress
-import stats.variability
+from .descriptivesstats import sppasDescriptiveStatistics
 
 # ----------------------------------------------------------------------------
 
 
-class TimeGroupAnalysis(DescriptiveStatistics):
+class sppasTimeGroupAnalysis(sppasDescriptiveStatistics):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -61,12 +62,11 @@ class TimeGroupAnalysis(DescriptiveStatistics):
         - value is the list of durations of each segments in the time group.
 
     >>> d = { 'tg1':[1.0, 1.2, 3.2, 4.1] , 'tg2':[2.9, 3.3, 3.6, 5.8] }
-    >>> tga = TimeGroupAnalysis(d)
+    >>> tga = sppasTimeGroupAnalysis(d)
     >>> total = tga.total()
     >>> slope = tga.slope()
-    >>> print slope['tg_1']
-    >>> print slope['tg_2']
-    >>>
+    >>> print(slope['tg_1'])
+    >>> print(slope['tg_2'])
 
     """
     def __init__(self, dict_items):
@@ -75,10 +75,10 @@ class TimeGroupAnalysis(DescriptiveStatistics):
         :param dict_items: (dict) a dict of a list of durations.
 
         """
-        DescriptiveStatistics.__init__(self, dict_items)
+        sppasDescriptiveStatistics.__init__(self, dict_items)
 
     # -----------------------------------------------------------------------
-    # Specific estimators for rythm analysis
+    # Specific estimators for speech rythm analysis
     # -----------------------------------------------------------------------
 
     def rPVI(self):
@@ -87,7 +87,7 @@ class TimeGroupAnalysis(DescriptiveStatistics):
         :returns: (dict) a dictionary of (key, nPVI) of float values
 
         """
-        return dict((key, stats.variability.rPVI(values)) for key, values in self.items.iteritems())
+        return dict((key, rPVI(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -97,7 +97,7 @@ class TimeGroupAnalysis(DescriptiveStatistics):
         :returns: (dict) a dictionary of (key, nPVI) of float values
 
         """
-        return dict((key, stats.variability.nPVI(values)) for key, values in self.items.iteritems())
+        return dict((key, nPVI(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -111,9 +111,9 @@ class TimeGroupAnalysis(DescriptiveStatistics):
         #  x is the position
         #  y is the duration
         linreg = []
-        for key, values in self.items.iteritems():
+        for key, values in self._items.items():
             points = [(position, duration) for position, duration in enumerate(values)]
-            linreg.append((key, (stats.linregress.tga_linear_regression(points))))
+            linreg.append((key, (tga_linear_regression(points))))
 
         return dict(linreg)
 
@@ -129,12 +129,12 @@ class TimeGroupAnalysis(DescriptiveStatistics):
         # x is the timestamps
         # y is the duration
         linreg = []
-        for key, values in self.items.iteritems():
+        for key, values in self._items.items():
             points = []
             timestamp = 0.
             for duration in values:
                 points.append((timestamp, duration))
                 timestamp += duration
-            linreg.append((key, (stats.linregress.tga_linear_regression(points))))
+            linreg.append((key, (tga_linear_regression(points))))
 
         return dict(linreg)

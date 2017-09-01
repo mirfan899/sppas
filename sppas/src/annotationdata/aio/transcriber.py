@@ -46,13 +46,14 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import xml.etree.cElementTree as ET
 
-from annotationdata.transcription  import Transcription
-from annotationdata.label.label    import Label
-from annotationdata.ptime.interval import TimeInterval
-from annotationdata.ptime.point    import TimePoint
-from annotationdata.annotation     import Annotation
+from ..transcription import Transcription
+from ..label.label import Label
+from ..ptime.interval import TimeInterval
+from ..ptime.point import TimePoint
+from ..annotation import Annotation
 
 # ----------------------------------------------------------------------------
+
 
 def add_at_label_end(tier, annotation, labelString):
     oldlabel = annotation.GetLabel().GetValue()
@@ -66,8 +67,8 @@ def add_at_label_end(tier, annotation, labelString):
             break
     tier.Add(newAnnotation)
 
-# End add_at_label_end
 # ----------------------------------------------------------------------------
+
 
 class Transcriber(Transcription):
     """

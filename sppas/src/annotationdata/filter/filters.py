@@ -35,48 +35,21 @@
 # File: filters.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
 __authors__   = """Tatsuya Watanabe, Brigitte Bigi (brigitte.bigi@gmail.com), Grégoire Montcheuil"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+__copyright__ = """Copyright (C) 2011-2017 Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
 
-from annotationdata.tier import Tier
+from ..tier import Tier
 
-from predicate import Predicate,RelationPredicate,Sel,Rel
-
-# ----------------------------------------------------------------------------
-
-class FilterFactory(object):
-    """
-    @deprecated
-    """
-    def __new__(cls, tier, *predicate, **kwargs):
-        """
-        Create a Filter.
-        @param tier: (Tier)
-        @param predicate: (Predicate)
-        @param kwargs:
-        @return: (Filter)
-        """
-        if not predicate and not kwargs:
-            predicate = Sel(**kwargs)
-        elif kwargs:
-            predicate = Sel(**kwargs)
-        elif not isinstance(predicate[0], Predicate):
-            raise Exception("Invalid argument %s" % predicate[0])
-        else:
-            predicate = predicate[0]
-
-        f = Filter(tier)
-        return f.Label(predicate)
+from .predicate import Sel
+from .predicate import Rel
 
 # ----------------------------------------------------------------------------
 
 
 class Filter(object):
-    """
-    Create an empty Filter.
+    """ Create an empty Filter.
 
     >>> f = Filter(tier)
     >>> copytier = f.Filter()
@@ -84,8 +57,9 @@ class Filter(object):
     """
     def __init__(self, tier, unfill=False):
         """
-        @param tier: (Tier)
-        @param unfill (bool) Remove empty labels.
+        :param tier: (Tier)
+        :param unfill: (bool) Remove empty labels.
+
         """
         self.tier = tier
         self.unfill = unfill
@@ -98,29 +72,10 @@ class Filter(object):
                 if x.GetLabel().IsEmpty() is False:
                     yield x
 
-
-    def Label(self, predicate):
-        """
-        @deprecated
-        """
-        return SingleFilter(predicate, self)
-
-    def Link(self, other, relation):
-        """
-        @deprecated
-
-        @param other:(Filter)
-        @param relation: (RelationPredicate)
-        @return: (RelationFilter)
-        """
-        return RelationFilter(relation, self, other)
-
-
     def Filter(self):
-        """
-        Filter the given tier without any predicate: simply copy the tier!
+        """ Filter the given tier without any predicate: simply copy the tier!
 
-        @return: (Tier)
+        :returns: (Tier)
 
         """
         tier = Tier()
@@ -136,26 +91,24 @@ class Filter(object):
 
 
 class SingleFilter(Filter):
-    """
-    Create a filter on a single filter.
+    """ Create a filter on a single filter.
 
     >>> f = Filter(tier)
     >>> p = Sel(exact='foo') | Sel(exact='bar') & Sel(duration_le=0.2)
-    >>> sf = SingleFilter(p,f)
+    >>> sf = SingleFilter(p, f)
     >>> newtier = sf.Filter()
 
     """
     def __init__(self, predicate, filter):
-        """
-        Constructor for SingleFilter, a filter on a single tier.
+        """ Constructor for SingleFilter, a filter on a single tier.
 
-        @param predicate (Predicate)
-        @param filter (either: Filter, SingleFilter, RelationFilter)
+        :param predicate: (Predicate)
+        :param filter: (either: Filter, SingleFilter, RelationFilter)
 
         """
+        Filter.__init__(self, filter.tier)
         self.filter = filter
         self.predicate = predicate
-
 
     def __iter__(self):
         for x in self.filter:
@@ -165,10 +118,9 @@ class SingleFilter(Filter):
     # -----------------------------------------------------------------------
 
     def Filter(self):
-        """
-        Apply the predicate on all annotations of the tier defined in the filter.
+        """ Apply the predicate on all annotations of the tier defined in the filter.
 
-        @return: (Tier)
+        :returns: (Tier)
 
         """
         tier = Tier(self.filter.tier.GetName()+"SingleFilter")
@@ -180,50 +132,48 @@ class SingleFilter(Filter):
                 pass
         return tier
 
-    # -----------------------------------------------------------------------
-
 # ----------------------------------------------------------------------------
 
 
-class RelationFilter(Filter):
-    """
-    Create a filter on relations between 2 filters.
+class RelationFilter():
+    """ Create a filter on relations between 2 filters.
 
     >>> fX = Filter(tier1)
     >>> fY = Filter(tier2)
     >>> p = Rel("overlaps") | Rel("overlappedby")
-    >>> rf = RelationFilter(p,fX,fY)
+    >>> rf = RelationFilter(p, fX, fY)
     >>> newtier = rf.Filter()	# the new tier annotations have X's label
     >>> newtier2 = rf.Filter(annotformat="{x} {rel} {y}")	# the new tier annotations' labels show the X-Y relation
 
     """
-
     def __init__(self, relation, filter1, filter2):
-        """
-        Constructor for RelationFilter, a filter on relations between 2 filters.
+        """ Constructor for RelationFilter, a filter on relations between 2 filters.
 
-        @param relation: (RelationPredicate)
-        @param filter1: (either: Filter, SingleFilter, RelationFilter)
-        @param filter2: (either: Filter, SingleFilter, RelationFilter)
+        :param relation: (RelationPredicate)
+        :param filter1: (either: Filter, SingleFilter, RelationFilter)
+        :param filter2: (either: Filter, SingleFilter, RelationFilter)
 
         """
         self.pred = relation
         self.filter1 = filter1
         self.filter2 = filter2
 
+    # -----------------------------------------------------------------------
+
     def __iter__(self):
+        """ Iterator
+
+        :returns: a tuple (x, rel, y) with the annotations and their relation (type: (Annotation, string, Annotation))
+
         """
-        Iterator
-        @return: a tuple (x, rel, y) with the annotations and their relation (type: (Annotation, string, Annotation))
-        """
-        if not isinstance(self.filter1, RelationFilter):
+        if isinstance(self.filter1, RelationFilter) is False:
             f1 = [x for x in self.filter1 if not x.GetLabel().IsEmpty()]
-        else: # as RelationFilter iterator return a tuple (x, rel, y), we get the 1st value
+        else:  # as RelationFilter iterator return a tuple (x, rel, y), we get the 1st value
             f1 = [x[0] for x in self.filter1]
 
-        if not isinstance(self.filter2, RelationFilter):
+        if isinstance(self.filter2, RelationFilter) is False:
             f2 = [x for x in self.filter2 if not x.GetLabel().IsEmpty()]
-        else: # as RelationFilter iterator return a tuple (x, rel, y), we get the 1st value
+        else:  # as RelationFilter iterator return a tuple (x, rel, y), we get the 1st value
             f2 = [x[0] for x in self.filter2]
 
         for x in f1:
@@ -235,36 +185,42 @@ class RelationFilter(Filter):
     # -----------------------------------------------------------------------
 
     def Filter(self, annotformat="{x}"):
-        """
-        Apply the predicate on all annotations of the tier defined in the filter.
+        """ Apply the predicate on all annotations of the tier defined in the filter.
 
-        @type annotformat:	str
-        @param annotformat:	format of the resulting annotation label.
+        :type annotformat:	str
+        :param annotformat:	format of the resulting annotation label.
             Use {x}, {y} for each annotation's label and {rel} for the relation.
             By default we keep the x label (equivalent to "{x}").
-        @return: (Tier)
+
+        :returns: (Tier)
+
         """
-        tier = Tier(self.filter1.tier.GetName()+"Relation"+self.filter2.tier.GetName())
-        tier.SetSherableProperties(self.filter1.tier)
+        n = ""
+        if isinstance(self.filter1, RelationFilter) is False:
+            n = self.filter1.tier.GetName()
+        n += "Relation"
+        if isinstance(self.filter2, RelationFilter) is False:
+            n += self.filter2.tier.GetName()
+        tier = Tier(n)
+        if isinstance(self.filter1, RelationFilter) is False:
+            tier.SetSherableProperties(self.filter1.tier)
 
         i = 0
         # feed the tier
         for x, rel, y in self:
             a = x.Copy()
-            annotlabel = annotformat.format(x=x.GetLabel(), rel=rel, y=y.GetLabel())
-            a.GetLabel().SetValue( annotlabel )
+            annot_label = annotformat.format(x=x.GetLabel(), rel=rel, y=y.GetLabel())
+            a.GetLabel().SetValue(annot_label)
             try:
                 tier.Append(a)
             except:
-                if "{rel}" in annotformat and i>1:
-                    annotlabel = annotformat.format(x=x.GetLabel(), rel=rel, y=y.GetLabel())
+                if "{rel}" in annotformat and i > 1:
+                    annot_label = annotformat.format(x=x.GetLabel(), rel=rel, y=y.GetLabel())
                     e = tier[-1]
                     label = e.GetLabel().GetValue()
-                    e.GetLabel().SetValue( label + " | %s" % annotlabel)
+                    e.GetLabel().SetValue(label + " | %s" % annot_label)
                 pass
-            i = i+1
+            i += 1
         return tier
-
-    # -----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------

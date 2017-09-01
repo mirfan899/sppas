@@ -37,12 +37,12 @@ import os
 import wx
 import shutil
 
-from annotations.manager import sppasAnnotationsManager
+from sppas.src.annotations.manager import sppasAnnotationsManager
 
-from wxgui.sp_consts import ID_FILES
-from wxgui.views.log import ShowLogDialog
-from wxgui.views.processprogress import ProcessProgressDialog
-from wxgui.dialogs.msgdialogs import ShowInformation
+from sppas.src.wxgui.sp_consts import ID_FILES
+from sppas.src.wxgui.views.log import ShowLogDialog
+from sppas.src.wxgui.views.processprogress import ProcessProgressDialog
+from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
 
 # ----------------------------------------------------------------------------
 

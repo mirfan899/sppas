@@ -2,11 +2,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from collections import OrderedDict
 
-from dependencies.grako.util import simplify_list, eval_escapes, warning
-from dependencies.grako.util import re, RE_FLAGS
-from dependencies.grako import grammars
-from dependencies.grako.exceptions import FailedSemantics
-from dependencies.grako.model import ModelBuilderSemantics
+from sppas.src.dependencies.grako.util import simplify_list, eval_escapes, warning
+from sppas.src.dependencies.grako.util import re, RE_FLAGS
+from sppas.src.dependencies.grako import grammars
+from sppas.src.dependencies.grako.exceptions import FailedSemantics
+from sppas.src.dependencies.grako.model import ModelBuilderSemantics
 
 
 class GrakoASTSemantics(object):

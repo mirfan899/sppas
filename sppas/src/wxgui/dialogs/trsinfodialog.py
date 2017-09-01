@@ -40,24 +40,20 @@ __authors__   = """Brigitte Bigi"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import wx
 
-from wxgui.panels.trslist import TrsList
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.ctrlutils import CreateGenButton
-from wxgui.sp_icons import APP_ICON
-from wxgui.sp_icons import CANCEL_ICON
-from wxgui.sp_icons import INFO_ICON
+from sppas.src.wxgui.panels.trslist import TrsList
+from sppas.src.wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.cutils.ctrlutils import CreateGenButton
+from sppas.src.wxgui.sp_icons import APP_ICON
+from sppas.src.wxgui.sp_icons import CANCEL_ICON
+from sppas.src.wxgui.sp_icons import INFO_ICON
 
-from wxgui.sp_consts import FRAME_STYLE
-from wxgui.sp_consts import FRAME_TITLE
-
+from sppas.src.wxgui.sp_consts import FRAME_STYLE
+from sppas.src.wxgui.sp_consts import FRAME_TITLE
 
 # ----------------------------------------------------------------------------
+
 
 class TrsInfoDialog( wx.Dialog ):
     """

@@ -46,12 +46,11 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 # General libraries import
 import wx
 import wx.richtext
-import wx.lib.mixins.listctrl as listmix # for large tiers!
 
-from wxgui.dialogs.basedialog import spBaseDialog
-from wxgui.sp_icons  import TIER_PREVIEW
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.sp_icons import TIER_PREVIEW
 
-from wxgui.ui.CustomListCtrl import LineListCtrl
+from sppas.src.wxgui.ui.CustomListCtrl import LineListCtrl
 
 # ----------------------------------------------------------------------------
 # Constants

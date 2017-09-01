@@ -35,11 +35,8 @@
 """
 import wx
 
-from wxgui.sp_icons import APP_ICON
-from wxgui.sp_icons import ANNOTATE_ICON
-
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.sp_icons import ANNOTATE_ICON
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
 
 # ----------------------------------------------------------------------------
 

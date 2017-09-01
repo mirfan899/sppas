@@ -38,34 +38,34 @@
 import wx
 import webbrowser
 
-from structs.tips import Tips
+import sppas
+from sppas.src.structs.tips import sppasTips
 
-from wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel, ImgPanel, ButtonCreator, ButtonToolbarPanel
-from sp_glob import program, title
+from sppas.src.wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel, ImgPanel, ButtonCreator, ButtonToolbarPanel
 
-from wxgui.sp_icons import ANNOTATIONS_ICON
-from wxgui.sp_icons import COMPONENTS_ICON
-from wxgui.sp_icons import PLUGINS_ICON
-from wxgui.sp_icons import ABOUT_ICON
-from wxgui.sp_icons import HELP_ICON
-from wxgui.sp_icons import SETTINGS_ICON
+from sppas.src.wxgui.sp_icons import ANNOTATIONS_ICON
+from sppas.src.wxgui.sp_icons import COMPONENTS_ICON
+from sppas.src.wxgui.sp_icons import PLUGINS_ICON
+from sppas.src.wxgui.sp_icons import ABOUT_ICON
+from sppas.src.wxgui.sp_icons import HELP_ICON
+from sppas.src.wxgui.sp_icons import SETTINGS_ICON
 
-from wxgui.sp_icons import MENU_EXIT_ICON
-from wxgui.sp_icons import MENU_BUG_ICON
-from wxgui.sp_icons import MENU_FEEDBACK_ICON
-from wxgui.sp_icons import MENU_BACK_ICON
-from wxgui.sp_icons import MENU_CLOSE_ICON
-from wxgui.sp_icons import FORWARD_ICON
+from sppas.src.wxgui.sp_icons import MENU_EXIT_ICON
+from sppas.src.wxgui.sp_icons import MENU_BUG_ICON
+from sppas.src.wxgui.sp_icons import MENU_FEEDBACK_ICON
+from sppas.src.wxgui.sp_icons import MENU_BACK_ICON
+from sppas.src.wxgui.sp_icons import MENU_CLOSE_ICON
+from sppas.src.wxgui.sp_icons import FORWARD_ICON
 
-from wxgui.sp_consts import ID_ANNOTATIONS
-from wxgui.sp_consts import ID_COMPONENTS
-from wxgui.sp_consts import ID_PLUGINS
-from wxgui.sp_consts import ID_FEEDBACK
-from wxgui.sp_consts import ID_EXT_BUG
-from wxgui.sp_consts import ID_ACTIONS
-from wxgui.sp_consts import ID_FILES
+from sppas.src.wxgui.sp_consts import ID_ANNOTATIONS
+from sppas.src.wxgui.sp_consts import ID_COMPONENTS
+from sppas.src.wxgui.sp_consts import ID_PLUGINS
+from sppas.src.wxgui.sp_consts import ID_FEEDBACK
+from sppas.src.wxgui.sp_consts import ID_EXT_BUG
+from sppas.src.wxgui.sp_consts import ID_ACTIONS
+from sppas.src.wxgui.sp_consts import ID_FILES
 
-from wxgui.views.feedback import ShowFeedbackDialog
+from sppas.src.wxgui.views.feedback import ShowFeedbackDialog
 
 # ----------------------------------------------------------------------------
 
@@ -144,7 +144,7 @@ class MainTitlePanel(wx.Panel):
         self.SetBackgroundColour(preferences.GetValue('M_BGD_COLOUR'))
 
         s = wx.BoxSizer()
-        text = wx.StaticText(self, label=program+" - "+title)
+        text = wx.StaticText(self, label=sppas.__name__+" - "+sppas.__title__)
         text.SetFont(preferences.GetValue('M_HEADER_FONT'))
         text.SetForegroundColour(preferences.GetValue('M_FG_COLOUR'))
         text.Bind(wx.EVT_LEFT_UP, self.OnButtonClick)
@@ -352,7 +352,7 @@ class MainTooltips(wx.Panel):
         wx.Panel.__init__(self, parent, -1, style=wx.RAISED_BORDER)
         self.SetBackgroundColour(preferences.GetValue('M_BGD_COLOUR'))
         self._prefs = preferences
-        self.tips = Tips()
+        self.tips = sppasTips()
 
         menu = self._create_menu()
         self.text = self._create_content()
@@ -373,7 +373,7 @@ class MainTooltips(wx.Panel):
 
     def _create_content(self):
         txt = wx.TextCtrl(self, wx.ID_ANY,
-                          value=self.tips.get(),
+                          value=self.tips.get_message(),
                           style=wx.TE_READONLY | wx.TE_MULTILINE | wx.NO_BORDER | wx.TE_NO_VSCROLL | wx.TE_WORDWRAP)
         font = self._prefs.GetValue('M_FONT')
         txt.SetFont(font)
@@ -400,7 +400,7 @@ class MainTooltips(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnNext(self, event):
-        self.text.SetValue(self.tips.get())
+        self.text.SetValue(self.tips.get_message())
         self.Refresh()
 
     # -----------------------------------------------------------------------

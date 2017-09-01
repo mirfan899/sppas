@@ -38,8 +38,8 @@
 import codecs
 import pickle
 
-from wxgui.structs.wxoption import sppasWxOption
-from theme import sppasTheme
+from sppas.src.wxgui.structs.wxoption import sppasWxOption
+from .theme import sppasTheme
 
 # ----------------------------------------------------------------------------
 
@@ -55,7 +55,7 @@ class Preferences(object):
 
     """
     def __init__(self, theme=None):
-        """ Creates a dict of Option() instances, with option id as key. """
+        """ Creates a dict of sppasWxOption() instances, with option id as key. """
 
         self._prefs = {}
 

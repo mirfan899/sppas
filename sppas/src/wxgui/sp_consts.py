@@ -37,16 +37,15 @@
 import os.path
 import wx
 
-from sp_glob import BASE_PATH
-from sp_glob import program, version
+import sppas
 
 # ---------------------------------------------------------------------------
 # Define all paths (relatively to SPPAS base path)
 # ---------------------------------------------------------------------------
 
-PREFS_FILE = os.path.join(BASE_PATH, "etc", "sppas.prefs")
+PREFS_FILE = os.path.join(sppas.BASE_PATH, "etc", "sppas.prefs")
 
-HELP_PATH = os.path.join(BASE_PATH, "doc")
+HELP_PATH = os.path.join(sppas.BASE_PATH, "doc")
 HELP_IMG_PATH = os.path.join(HELP_PATH, "img")
 DOC_IDX = os.path.join(HELP_PATH, "markdown.idx")
 HELP_IDX_EXT = ".idx"
@@ -56,20 +55,20 @@ HELP_IDX_EXT = ".idx"
 # Base components:
 
 FRAME_STYLE = wx.DEFAULT_FRAME_STYLE|wx.CLOSE_BOX
-FRAME_TITLE = " " + program + " " + version + " "
+FRAME_TITLE = " " + sppas.__name__ + " " + sppas.__version__ + " "
 DIALOG_STYLE = wx.CAPTION|wx.RESIZE_BORDER|wx.THICK_FRAME
 
-DEFAULT_APP_NAME = program + "Component"
+DEFAULT_APP_NAME = sppas.__name__ + "Component"
 
 
 # ---------------------------------------------------------------------------
 # GUI design.
 
-ERROR_COLOUR = wx.Colour(220,  30,  10)    # red
-INFO_COLOUR = wx.Colour(55,  30, 200)      # blue
-IGNORE_COLOUR = wx.Colour(140, 100, 160)   # gray-violet
-WARNING_COLOUR = wx.Colour(240, 190,  45)  # orange
-OK_COLOUR = wx.Colour(25, 160,  50)        # green
+ERROR_COLOUR = wx.Colour(220, 30, 10)     # red
+INFO_COLOUR = wx.Colour(55, 30, 200)      # blue
+IGNORE_COLOUR = wx.Colour(140, 100, 160)  # gray-violet
+WARNING_COLOUR = wx.Colour(240, 190, 45)  # orange
+OK_COLOUR = wx.Colour(25, 160, 50)        # green
 
 # ---------------------------------------------------------------------------
 # GUI design.
@@ -98,5 +97,3 @@ ID_FRAME_IPUSCRIBE = wx.NewId()
 ID_FRAME_SPPASEDIT = wx.NewId()
 ID_FRAME_STATISTICS = wx.NewId()
 ID_FRAME_DATAFILTER = wx.NewId()
-
-# ---------------------------------------------------------------------------

@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -41,7 +40,6 @@
     plugins is a free and open source Python library to access and manage
     external programs to plug into SPPAS.
 
-    >>> from plugins import sppasPluginsManager
     >>> # Create a plugin manager (it will explore the installed plugins).
     >>> manager = sppasPluginsManager()
     >>> # Install a plugin
@@ -50,15 +48,23 @@
     >>> p = manager.get_plugin(plugin_id)
     >>> # Apply a plugin on a list of files
     >>> message = manager.run_plugin(plugin_id, [some_filename1, some_filename2])
-    >>> print message
+    >>> print(message)
     >>> # Delete an installed plugin
     >>> manager.delete(plugin_id)
 
 """
-from manager import sppasPluginsManager
-from param import sppasPluginParam
-from process import sppasPluginProcess
-from cfgparser import sppasPluginConfigParser
+from sppas.src.utils.maketext import translate
+from sppas.src.utils.makeunicode import u
+t = translate("plugins")
+
+
+def get_info(msg_id):
+    return u(t.gettext(":INFO " + msg_id + ": "))
+
+from .manager import sppasPluginsManager
+from .param import sppasPluginParam
+from .process import sppasPluginProcess
+from .cfgparser import sppasPluginConfigParser
 
 __all__ = [
     "sppasPluginsManager",

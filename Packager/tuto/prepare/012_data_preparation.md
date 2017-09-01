@@ -28,7 +28,7 @@ has a determining influence on the quality of the corpus, and so on the annotati
 
 ### Recording speech: SPPAS requirements
 
-* `wav`, `aiff` and `au` audio file formats 
+* `wav` and `au` audio file formats 
 
 * only one channel (mono) per file
 

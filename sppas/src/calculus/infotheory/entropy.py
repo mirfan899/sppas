@@ -1,60 +1,56 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: entropy.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-from utilit import log2
-from utilit import MAX_NGRAM
-from utilit import symbols_to_items
+        http://www.sppas.org/
 
-# ----------------------------------------------------------------------------
-# Class Entropy
-# ----------------------------------------------------------------------------
+        Use of this software is governed by the GNU Public License, version 3.
 
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
 
-class Entropy(object):
-    """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Entropy estimation.
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.calculus.infotheory.entropy.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Entropy is a measure of unpredictability of information content.
     Entropy is one of several ways to measure diversity.
+
+"""
+from ..calculusexc import EmptyError, InsideIntervalError
+from .utilit import log2
+from .utilit import MAX_NGRAM
+from .utilit import symbols_to_items
+
+# ----------------------------------------------------------------------------
+
+
+class sppasEntropy(object):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Entropy estimation.
 
     If we want to look at the entropy on a large series, we could also compute
     the entropy for windows to measure the evenness or uncertainties.
@@ -63,103 +59,69 @@ class Entropy(object):
     lower variance would result in lower entropy.
 
     """
-    def __init__(self, symbols, ngram=1):
-        """
-        Create a Entropy instance with a list of symbols.
+    def __init__(self, symbols, n=1):
+        """ Create a sppasEntropy instance with a list of symbols.
 
-        @param symbols is a vector of symbols of any type
-        @param ngram (integer) is 1..8
+        :param symbols: (list) a vector of symbols of any type.
+        :param n: (int) n value for n-gram estimation. n ranges 1..MAX_NGRAM
 
         """
+        self._symbols = list()
+        self._ngram = 1
+
         self.set_symbols(symbols)
-        self.set_ngram(ngram)
+        self.set_ngram(n)
 
     # -----------------------------------------------------------------------
 
     def set_symbols(self, symbols):
-        """
-        Set the list of symbols.
+        """ Set the list of symbols.
 
-        @param symbols (list) List of symbols of any type.
+        :param symbols: (list) a vector of symbols of any type.
 
         """
-        if symbols is None or len(symbols)==0:
-            raise ValueError('To estimate entropy, the input vector must contain at least one symbol.')
-        self.symbols = symbols
+        if len(symbols) == 0:
+            raise EmptyError
+
+        self._symbols = symbols
 
     # -----------------------------------------------------------------------
 
     def set_ngram(self, n):
-        """
-        Set the n value of n-grams.
+        """ Set the n value of n-grams.
 
-        @param n (int) Value ranging from 1 to MAX_GRAM
+        :param n: (int) n value for n-gram estimation. n ranges 1..8
 
         """
-        if n > 0 and n < MAX_NGRAM:
-            self.ngram = n
+        n = int(n)
+        if 0 < n <= MAX_NGRAM:
+            self._ngram = n
         else:
-            raise ValueError('The ngram value must range from 1 to %d. Got %d'%(MAX_NGRAM,n))
+            raise InsideIntervalError(n, 1, MAX_NGRAM)
 
     # -----------------------------------------------------------------------
 
-    def get(self):
-        """
-        Estimates the Shannon entropy of a vector of symbols.
+    def eval(self):
+        """ Estimates the Shannon entropy of a vector of symbols.
+        
         Shannon's entropy measures the information contained in a message as
         opposed to the portion of the message that is determined
         (or predictable).
 
-        @return float value
+        :returns: (float) entropy value
 
         """
-        exr = symbols_to_items(self.symbols, self.ngram)
-        total = len(self.symbols) - self.ngram + 1
-        entropy = 0
+        if len(self._symbols) == 0:
+            raise EmptyError
 
-        for symbol,occurrences in exr.items():
+        exr = symbols_to_items(self._symbols, self._ngram)
+        total = len(self._symbols) - self._ngram + 1
+        result = 0.
+
+        for symbol, occurrences in exr.items():
 
             probability = 1.0 * occurrences / total
-            self_information = log2( 1.0 / probability )
-            entropy += (probability * self_information)
+            self_information = log2(1.0 / probability)
+            result += (probability * self_information)
 
-        return entropy
-
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-
-    entropy = Entropy( list("1223334444") )
-    print round(entropy.get(),5), round(entropy.get(),5) == 1.84644
-
-    entropy.set_symbols( list("0000000000") )
-    print "0: ",round(entropy.get(),5)
-
-    entropy.set_symbols( list("1000000000") )
-    print "1: ",round(entropy.get(),5)
-
-    entropy.set_symbols( list("1100000000") )
-    print "2: ",round(entropy.get(),5)
-
-    entropy.set_symbols( list("1110000000") )
-    print "3: ",round(entropy.get(),5)
-
-    entropy.set_symbols( list("1111000000") )
-    print "4: ",round(entropy.get(),5)
-
-    entropy.set_symbols( list("1111100000") )
-    print "5: ",round(entropy.get(),5)
-
-    entropy.set_symbols( list("1111111111") )
-    print "10: ",round(entropy.get(),5)
-
-    entropy.set_symbols( list("1111000000") )
-    entropy.set_ngram(1)
-    print "1111000000, ngram = 1: ",round(entropy.get(),5)
-    entropy.set_ngram(2)
-    print "1111000000, ngram = 2: ",round(entropy.get(),5)
-
-    entropy.set_symbols( list("1010101010") )
-    print "1010101010: ngram=2",round(entropy.get(),5)
-    entropy.set_symbols( list("1111100000") )
-    print "1111100000: ngram=2",round(entropy.get(),5)
+        return result

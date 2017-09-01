@@ -37,8 +37,7 @@
 # Imports
 # ---------------------------------------------------------------------------
 
-import  wx
-import wx.lib.scrolledpanel as scrolled
+import wx
 
 try:
     from agw import floatspin as FS

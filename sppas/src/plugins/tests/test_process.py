@@ -1,13 +1,12 @@
-#!/usr/bin/env python2
 # -*- coding:utf-8 -*-
 
 import unittest
 import os.path
 import time
 
-from plugins.param import sppasPluginParam
-from plugins.process import sppasPluginProcess
-from sp_glob import BASE_PATH
+from sppas import BASE_PATH
+from ..param import sppasPluginParam
+from ..process import sppasPluginProcess
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 sample = os.path.join(os.path.dirname(BASE_PATH), "samples", "samples-eng", "oriana1.wav")

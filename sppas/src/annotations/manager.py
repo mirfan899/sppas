@@ -1,94 +1,82 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: manager.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+        http://www.sppas.org/
 
+        Use of this software is governed by the GNU Public License, version 3.
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
 
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.manager.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import os
-
-import utils.fileutils
-
-from annotationdata.transcription import Transcription
-
-import audiodata.aio
-import annotationdata.aio
-from annotations.infotier import sppasMetaInfoTier
-from annotations.log import sppasLog
-
-from annotations.Momel.sppasmomel import sppasMomel
-from annotations.Intsint.sppasintsint import sppasIntsint
-from annotations.IPUs.ipusseg import sppasIPUs
-from annotations.Token.sppastok import sppasTok
-from annotations.Phon.sppasphon import sppasPhon
-from annotations.Chunks.sppaschunks import sppasChunks
-from annotations.Align.sppasalign import sppasAlign
-from annotations.Syll.sppassyll import sppasSyll
-from annotations.Repet.sppasrepet import sppasRepet
-
 from threading import Thread
+
+from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.utils.fileutils import sppasDirUtils
+from sppas.src.annotationdata.transcription import Transcription
+
+import sppas.src.audiodata.aio
+import sppas.src.annotationdata.aio
+from sppas.src.annotations.infotier import sppasMetaInfoTier
+from sppas.src.annotations.log import sppasLog
+
+from sppas.src.annotations.Momel.sppasmomel import sppasMomel
+from sppas.src.annotations.Intsint.sppasintsint import sppasIntsint
+from sppas.src.annotations.IPUs.sppasipusseg import sppasIPUseg
+from sppas.src.annotations.TextNorm.sppastok import sppasTok
+from sppas.src.annotations.Phon.sppasphon import sppasPhon
+from sppas.src.annotations.Chunks.sppaschunks import sppasChunks
+from sppas.src.annotations.Align.sppasalign import sppasAlign
+from sppas.src.annotations.Syll.sppassyll import sppasSyll
+from sppas.src.annotations.Repet.sppasrepet import sppasRepet
+
+from .annotationsexc import AnnotationOptionError
 
 # ----------------------------------------------------------------------------
 
 
 class sppasAnnotationsManager(Thread):
     """
-    @author:       Brigitte Bigi
-    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
-    @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Parent class for running annotation processes.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      Parent class for running annotation processes.
 
     Process a directory full of files or a single file, and report on a
     progress.
 
     """
     def __init__(self, parameters):
-        """
-        Create a new sppasAnnotationsManager instance.
+        """ Create a new sppasAnnotationsManager instance.
         Initialize a Thread.
 
-        @param parameters (sppasParam) SPPAS parameters, i.e. config of annotations
+        :param parameters: (sppasParam) SPPAS parameters, i.e. config of annotations
 
         """
         Thread.__init__(self)
@@ -96,58 +84,53 @@ class sppasAnnotationsManager(Thread):
         # fix input variables
         self.parameters = parameters
         self._progress = None
-        self._logfile  = None
-        self._domerge  = True
+        self._logfile = None
+        self.__do_merge = True
 
         self.start()
 
     # ------------------------------------------------------------------------
 
     def fix_options(self, options):
-        """
-        Fix all options.
+        """ Fix all options.
 
         Available options are:
+
             - domerge (bool) create a merged TextGrid file.
 
-        @param options (option)
+        :param options: (option)
 
         """
-
         for opt in options:
 
             key = opt.get_key()
-
             if key == "domerge":
-                self.set_domerge(opt.get_value())
-
+                self.set_do_merge(opt.get_value())
             else:
-                raise Exception('Unknown key option: %s'%key)
+                raise AnnotationOptionError(key)
 
     # -----------------------------------------------------------------------
 
-    def set_domerge(self, domerge):
-        """
-        Fix the domerge option.
-        If domerge is set to True, a merged TextGrid file is created.
+    def set_do_merge(self, do_merge):
+        """ Fix the domerge option.
+        If do merge is set to True, a merged TextGrid file is created.
 
-        @param domerge (Boolean)
+        :param do_merge: (bool)
 
         """
-        self._domerge = domerge
+        self.__do_merge = do_merge
 
     # ----------------------------------------------------------------------
 
     # -----------------------------------------------------------------------
 
     def set_filelist(self, extension, not_ext=[], not_start=[]):
-        """
-        Create a list of file names from the parameter inputs.
+        """ Create a list of file names from the parameter inputs.
 
-        @param extension: expected file extension
-        @param not_ext: list of extension of files that must not be treated
-        @param not_start: list of start of filenames that must not be treated
-        @return a list of strings
+        :param extension: (str) expected file extension
+        :param not_ext: (str) list of extensions of files that must not be treated
+        :param not_start: (str) list of start of filenames that must not be treated
+        :returns: a list of strings
 
         """
         filelist = []
@@ -157,46 +140,39 @@ class sppasAnnotationsManager(Thread):
                 inputfilename, inputfileextension = os.path.splitext(sinput)
 
                 # Input is a file (and not a directory)
-                if extension.lower() in audiodata.aio.extensions and os.path.isfile(sinput) is True:
+                if extension.lower() in sppas.src.audiodata.aio.extensions and os.path.isfile(sinput) is True:
                     filelist.append(sinput)
 
-                elif inputfileextension.lower() in audiodata.aio.extensions:
+                elif inputfileextension.lower() in sppas.src.audiodata.aio.extensions:
                     sinput = inputfilename + extension
                     if os.path.isfile(sinput) is True:
                         filelist.append(sinput)
                     else:
                         if self._logfile is not None:
-                            self._logfile.print_message("Can't find file %s\n"%sinput, indent=1,status=1)
+                            self._logfile.print_message("Can't find file %s\n" % sinput, indent=1, status=1)
 
                 # Input is a directory:
                 else:
                     # Get the list of files with 'extension' from the input directory
-                    files = utils.fileutils.get_files(sinput, extension)
+                    files = sppasDirUtils(sinput).get_files(extension)
                     filelist.extend(files)
         except:
             pass
 
         # Removing files with not_ext as extension or containing not_start
-        # TODO: DEBUG!!!
         fl2 = []
         for x in filelist:
             is_valid = True
             for ne in not_ext:
-                if x.lower().endswith(ne.lower()) == True:
-                    #filelist.remove(x)
-#                    print "remove %s"%x
+                if x.lower().endswith(ne.lower()) is True:
                     is_valid = False
-#                else:
-#                    print "end with %s:%s? added %s"%(ne,x,x)
+
             for ns in not_start:
                 basex = os.path.basename(x.lower())
-                if basex.startswith(ns.lower()) == True:
-                    #filelist.remove(x)
-#                    print "remove %s"%x
+                if basex.startswith(ns.lower()) is True:
                     is_valid = False
-#                else:
-#                    print "start with %s:%s? added %s"%(ns,x,x)
-            if is_valid == True:
+
+            if is_valid is True:
                 fl2.append(x)
 
         return fl2
@@ -204,21 +180,19 @@ class sppasAnnotationsManager(Thread):
     # ------------------------------------------------------------------------
 
     def _get_filename(self, filename, extensions):
+        """ Return a filename corresponding to one of extensions.
+
+        :param filename: input file name
+        :param extensions: the list of expected extension
+        :returns: a file name of the first existing file with an expected extension or None
+
         """
-        Return a filename corresponding to one of extensions.
-
-        @param filename input file name
-        @param extensions is the list of expected extension
-        @return a file name of the first existing file with an expected extension or None
-
-        """
-
         for ext in extensions:
 
-            extfilename = os.path.splitext(filename)[0] + ext
-            newfilename = utils.fileutils.exists(extfilename)
-            if newfilename is not None and os.path.isfile(newfilename):
-                return newfilename
+            ext_filename = os.path.splitext(filename)[0] + ext
+            new_filename = sppasFileUtils(ext_filename).exists()
+            if new_filename is not None and os.path.isfile(new_filename):
+                return new_filename
 
         return None
 
@@ -239,10 +213,10 @@ class sppasAnnotationsManager(Thread):
         stepname = self.parameters.get_step_name(stepidx)
         files_processed_success = 0
         self._progress.set_header(stepname)
-        self._progress.update(0,"")
+        self._progress.update(0, "")
 
         # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav")#,not_start=["track_"])
+        filelist = self.set_filelist(".wav")  #,not_start=["track_"])
         if len(filelist) == 0:
             return 0
         total = len(filelist)
@@ -252,11 +226,11 @@ class sppasAnnotationsManager(Thread):
             m = sppasMomel(self._logfile)
         except Exception as e:
             if self._logfile is not None:
-                self._logfile.print_message("%s\n"%str(e), indent=1,status=1)
+                self._logfile.print_message("%s\n" % str(e), indent=1, status=1)
             return 0
 
         # Execute annotation for each file in the list
-        for i,f in enumerate(filelist):
+        for i, f in enumerate(filelist):
 
             # fix the default values
             m.fix_options(step.get_options())
@@ -279,13 +253,14 @@ class sppasAnnotationsManager(Thread):
                     m.run(inname, trsoutput=textgridoutname, outputfile=outname)
                     files_processed_success += 1
                     if self._logfile is not None:
-                        self._logfile.print_message(textgridoutname,indent=2,status=0)
+                        self._logfile.print_message(textgridoutname, indent=2, status=0)
                 except Exception as e:
                     if self._logfile is not None:
-                        self._logfile.print_message(textgridoutname+": %s"%str(e),indent=2,status=-1)
+                        self._logfile.print_message(textgridoutname+": %s" % str(e), indent=2, status=-1)
             else:
                 if self._logfile is not None:
-                    self._logfile.print_message("Failed to find a file with pitch values. Read the documentation for details.",indent=2,status=2)
+                    self._logfile.print_message("Failed to find a file with pitch values. "
+                                                "Read the documentation for details.", indent=2, status=2)
 
             # Indicate progress
             self._progress.set_fraction(float((i+1))/float(total))
@@ -293,7 +268,7 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_newline()
 
         # Indicate completed!
-        self._progress.update(1,"Completed (%d files successfully over %d files).\n"%(files_processed_success,total))
+        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success,total))
         self._progress.set_header("")
 
         return files_processed_success
@@ -312,7 +287,7 @@ class sppasAnnotationsManager(Thread):
         stepname = self.parameters.get_step_name(stepidx)
         files_processed_success = 0
         self._progress.set_header(stepname)
-        self._progress.update(0,"")
+        self._progress.update(0, "")
 
         # Get the list of input file names, with the ".wav" (or ".wave") extension
         filelist = self.set_filelist(".wav")#,not_start=["track_"])
@@ -338,7 +313,7 @@ class sppasAnnotationsManager(Thread):
 
             # Get the input file
             ext = ['-momel'+self.parameters.get_output_format()]
-            for e in annotationdata.aio.extensions_out:
+            for e in sppas.src.annotationdata.aio.extensions_out:
                 ext.append('-momel'+e)
 
             inname = self._get_filename(f, ext)
@@ -355,7 +330,7 @@ class sppasAnnotationsManager(Thread):
                         self._logfile.print_message(outname,indent=2,status=0)
                 except Exception as e:
                     if self._logfile is not None:
-                        self._logfile.print_message(outname+": %s"%str(e),indent=2,status=-1)
+                        self._logfile.print_message(outname+": %s" % str(e), indent=2, status=-1)
             else:
                 if self._logfile is not None:
                     self._logfile.print_message("Failed to find a file with momel targets. Read the documentation for details.",indent=2,status=2)
@@ -395,7 +370,7 @@ class sppasAnnotationsManager(Thread):
 
         # Create annotation instance, and fix options
         try:
-            seg = sppasIPUs(self._logfile)
+            seg = sppasIPUseg(self._logfile)
         except Exception as e:
             if self._logfile is not None:
                 self._logfile.print_message("%s\n"%str(e), indent=1,status=4)
@@ -418,7 +393,7 @@ class sppasAnnotationsManager(Thread):
 
             # Is there already an existing IPU-seg (in any format)!
             ext = []
-            for e in annotationdata.aio.extensions_in:
+            for e in sppas.src.annotationdata.aio.extensions_in:
                 if not e in ['.txt','.hz', '.PitchTier']:
                     ext.append(e)
             existoutname = self._get_filename(f, ext)
@@ -430,14 +405,14 @@ class sppasAnnotationsManager(Thread):
                     self._logfile.print_message('Export '+existoutname, indent=2)
                     self._logfile.print_message('into '+outname, indent=2)
                 try:
-                    t = annotationdata.aio.read(existoutname)
-                    annotationdata.aio.write(outname,t)
+                    t = sppas.src.annotationdata.aio.read(existoutname)
+                    sppas.src.annotationdata.aio.write(outname,t)
                     # OK, now outname is as expected! (or not...)
                 except Exception:
                     pass
 
             # Execute annotation
-            tgfname = utils.fileutils.exists(outname)
+            tgfname = sppasFileUtils(outname).exists()
             if tgfname is None:
                 # No already existing IPU seg., but perhaps a txt.
                 txtfile = self._get_filename(f, [".txt"])
@@ -453,7 +428,7 @@ class sppasAnnotationsManager(Thread):
                         self._logfile.print_message(outname, indent=2,status=0)
                 except Exception as e:
                     if self._logfile is not None:
-                        self._logfile.print_message("%s for file %s\n"%(str(e),outname), indent=2,status=-1)
+                        self._logfile.print_message("%s for file %s\n" % (str(e),outname), indent=2,status=-1)
             else:
                 if seg.get_option('dirtracks') is True:
                     self._logfile.print_message("A time-aligned transcription was found, split into multiple files", indent=2,status=3)
@@ -523,7 +498,7 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_message(stepname+" of file " + f, indent=1)
 
             # Get the input file
-            inname = self._get_filename(f, [self.parameters.get_output_format()] + annotationdata.aio.extensions_out)
+            inname = self._get_filename(f, [self.parameters.get_output_format()] + sppas.src.annotationdata.aio.extensions_out)
             if inname is not None:
 
                 # Fix output file name
@@ -599,7 +574,7 @@ class sppasAnnotationsManager(Thread):
 
             # Get the input file
             ext = ['-token'+self.parameters.get_output_format()]
-            for e in annotationdata.aio.extensions_out_multitiers:
+            for e in sppas.src.annotationdata.aio.extensions_out_multitiers:
                 ext.append('-token'+e)
 
             inname = self._get_filename(f, ext)
@@ -755,7 +730,7 @@ class sppasAnnotationsManager(Thread):
             # Get the input file
             extt = ['-token'+self.parameters.get_output_format()]
             extp = ['-phon'+self.parameters.get_output_format()]
-            for e in annotationdata.aio.extensions_out:
+            for e in sppas.src.annotationdata.aio.extensions_out:
                 extt.append('-token'+e)
                 extp.append('-phon'+e)
             extt.append('-chunks'+self.parameters.get_output_format())
@@ -835,7 +810,7 @@ class sppasAnnotationsManager(Thread):
 
             # Get the input file
             ext = ['-palign'+self.parameters.get_output_format()]
-            for e in annotationdata.aio.extensions_out_multitiers:
+            for e in sppas.src.annotationdata.aio.extensions_out_multitiers:
                 ext.append('-palign'+e)
 
             inname = self._get_filename(f,ext)
@@ -910,7 +885,7 @@ class sppasAnnotationsManager(Thread):
 
             # Get the input file
             ext = ['-palign'+self.parameters.get_output_format()]
-            for e in annotationdata.aio.extensions_out_multitiers:
+            for e in sppas.src.annotationdata.aio.extensions_out_multitiers:
                 ext.append('-palign'+e)
 
             inname = self._get_filename(f, ext)
@@ -939,7 +914,7 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_newline()
 
         # Indicate completed!
-        self._progress.update(1,"Completed (%d files successfully over %d files).\n"%(files_processed_success,total))
+        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success,total))
         self._progress.set_header("")
 
         return files_processed_success
@@ -947,7 +922,7 @@ class sppasAnnotationsManager(Thread):
     # ------------------------------------------------------------------------
 
     def __add_trs(self, trs, trsinputfile):
-        trsinput = annotationdata.aio.read(trsinputfile)
+        trsinput = sppas.src.annotationdata.aio.read(trsinputfile)
         for tier in trsinput:
             alreadin = False
             if trs.IsEmpty() is False:
@@ -1042,14 +1017,14 @@ class sppasAnnotationsManager(Thread):
                     infotier = sppasMetaInfoTier()
                     tier = infotier.create_time_tier(trs.GetBegin(),trs.GetEnd())
                     trs.Add(tier)
-                    annotationdata.aio.write(basef + "-merge.TextGrid", trs)
+                    sppas.src.annotationdata.aio.write(basef + "-merge.TextGrid", trs)
                     if self._logfile is not None:
-                        self._logfile.print_message(basef + "-merge.TextGrid", indent=2, status=0)
+                        self._logfile.print_message(basef + "-merge.TextGrid", indent=2,status=0)
                 elif self._logfile is not None:
-                    self._logfile.print_message("", indent=2, status=2)
+                    self._logfile.print_message("", indent=2,status=2)
             except Exception as e:
                 if self._logfile is not None:
-                    self._logfile.print_message(str(e), indent=2, status=-1)
+                    self._logfile.print_message(str(e), indent=2,status=-1)
 
             self._progress.set_fraction(float((i+1))/float(total))
             if self._logfile is not None:
@@ -1073,7 +1048,7 @@ class sppasAnnotationsManager(Thread):
         # ##################################################################### #
         try:
             self._logfile = sppasLog(self.parameters)
-            self._logfile.open_new(self.parameters.get_logfilename())
+            self._logfile.create(self.parameters.get_logfilename())
             self._logfile.print_header()
         except Exception:
             self._logfile=None
@@ -1104,7 +1079,7 @@ class sppasAnnotationsManager(Thread):
                     nbruns[i] = self.run_intsint(i)
                 elif self.parameters.get_step_key(i) == "ipus":
                     nbruns[i] = self.run_ipusegmentation(i)
-                elif self.parameters.get_step_key(i) == "tok":
+                elif self.parameters.get_step_key(i) == "textnorm":
                     nbruns[i] = self.run_tokenization(i)
                 elif self.parameters.get_step_key(i) == "phon":
                     nbruns[i] = self.run_phonetization(i)
@@ -1124,7 +1099,7 @@ class sppasAnnotationsManager(Thread):
             self._logfile.print_newline()
             self._logfile.print_separator()
 
-        if self._domerge: self.merge()
+        if self.__do_merge: self.merge()
 
         # ##################################################################### #
         # Log file: Final information
@@ -1134,7 +1109,7 @@ class sppasAnnotationsManager(Thread):
             self._logfile.print_message('Result statistics:')
             self._logfile.print_separator()
             for i in range(self.parameters.get_step_numbers()):
-                self._logfile.print_stat(i, nbruns[i])
+                self._logfile.print_stat(i, str(nbruns[i]))
             self._logfile.print_separator()
             self._logfile.close()
 

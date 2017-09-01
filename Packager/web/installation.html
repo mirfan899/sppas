@@ -41,11 +41,11 @@
 
     <div class="menu">
         <a class="home"     href="index.html">Home</a>
-        <a class="install"  href="installation.html">Installation</a>
+        <a class="install current"  href="installation.html">Installation</a>
         <a class="download" href="download.html">Download</a>
         <a class="tutorial" href="tutorial.html">Tutorials</a>
         <a class="documentation" href="documentation.html">Documentation</a>
-        <a class="group"    href="https://groups.google.com/forum/?fromgroups#!forum/sppas-users">User's group</a>
+        <a class="group"    href="faq.html">F.A.Q.</a>
     </div>
 
     <!----------------------------------------------------------------->
@@ -78,10 +78,9 @@
         <div class="cols8">
             <figure>
             <video width="90%" src="./etc/screencasts/sppas-install.mp4"  controls> </video>
-            <figcaption>Video included in the "Tutorial: Getting started"</figcaption>
+            <figcaption>Video: "How to install SPPAS package?"</figcaption>
             </figure>
         </div>
-
     </div>
 
     <!----------------------------------------------------------------->
@@ -98,7 +97,7 @@
             operating system.
             </p>
             <p>
-                Notice that <i>administrator rights are required to perform these installations.</i>
+            <i>Administrator rights are required to perform these installations.</i>
             </p>
         </div>
     </div>
@@ -112,25 +111,26 @@
             </figure>
         </div>
         <div class="cols7">
-            <h2> Windows</h2>
+            <h2>Windows</h2>
             <ol>
                 <li>Click the link to download Python 2.7
-                <a href="https://www.python.org/downloads/release/python-2711/">"Windows x86 MSI installer"</a>, 
-                then execute it. 
+                <a href="https://www.python.org/downloads/release/python-2713/">"Windows x86 MSI installer"</a>,
+                then execute it. Notice that even if your system is 64 bits, you have to install the 32 bits version of python.
                 </li>
 
                 <li>Click the link to download wxPython with version name: 
                 <a href="http://www.wxpython.org/download.php#msw"> "-win32-py27",</a>
-                then execute it.
+                (i.e. windows 32-bits, python 2.7) then execute it.
                 </li>
 
                 <li>Click the link to download 
-                <a href="http://sourceforge.jp/projects/julius/downloads/60273/julius-4.3.1-win32bin.zip/"> 
-                Julius (release >= 4.1)</a>. Unpack the file then go to into the directory.
-                Open the "bin" folder then select the file "julius.exe".
+                <a href="https://fr.osdn.net/frs/redir.php?m=rwthaachen&f=%2Fjulius%2F66547%2Fjulius-4.4.2-win32bin.zip">
+                Julius (any release >= 4.1)</a>. Unpack the zip file then go into the directory.
+                Open the "bin" folder then select the file "julius.exe.
                 Copy this file into C:\WINDOWS\.
-                Notice that the file name must be STRICTLY julius.exe, and nothing else
-                    (you'll have to rename it by removing the version number if any).
+                Notice that the file name must be strictly "julius.exe", i.e. without
+                version number. If the ".exe" can't be seen in your Explorer, check the box
+                    to show the extensions!
                 </li>
             </ol>
         </div>

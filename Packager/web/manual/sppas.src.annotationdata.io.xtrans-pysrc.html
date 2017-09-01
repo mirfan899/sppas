@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>sppas.src.annotationdata.io.xtrans</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.lpl-aix.fr/~bigi/sppas/">SPPAS</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;sppas ::
+        Package&nbsp;src ::
+        <a href="sppas.src.annotationdata-module.html">Package&nbsp;annotationdata</a> ::
+        <a href="sppas.src.annotationdata.io-module.html">Package&nbsp;io</a> ::
+        Module&nbsp;xtrans
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="sppas.src.annotationdata.io.xtrans-module.html">Module sppas.src.annotationdata.io.xtrans</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">#!/usr/bin/env python2</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: UTF-8 -*-</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment">#            ___   __    __    __    ___</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment">#           /     |  \  |  \  |  \  /              Automatic</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment">#           \__   |__/  |__/  |___| \__             Annotation</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment">#              \  |     |     |   |    \             of</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment">#           ___/  |     |     |   | ___/              Speech</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment">#                           http://www.sppas.org/</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment">#            Laboratoire Parole et Langage, Aix-en-Provence, France</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment">#                   Copyright (C) 2011-2016  Brigitte Bigi</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment">#                   This banner notice must not be removed</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment"># Use of this software is governed by the GNU Public License, version 3.</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-comment"># SPPAS is free software: you can redistribute it and/or modify</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-comment"># it under the terms of the GNU General Public License as published by</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-comment"># the Free Software Foundation, either version 3 of the License, or</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-comment"># (at your option) any later version.</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-comment"># SPPAS is distributed in the hope that it will be useful,</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-comment"># but WITHOUT ANY WARRANTY; without even the implied warranty of</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-comment"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-comment"># GNU General Public License for more details.</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-comment"># You should have received a copy of the GNU General Public License</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-comment"># along with SPPAS. If not, see &lt;http://www.gnu.org/licenses/&gt;.</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-comment">#</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-comment"># File: xtrans.py</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-comment"># ---------------------------------------------------------------------------</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">codecs</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">mimetypes</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package sppas.src.annotationdata=sppas.src.annotationdata-module.html"><a title="sppas.src.annotationdata" class="py-name" href="#" onclick="return doclink('link-0', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module sppas.src.annotationdata.transcription=sppas.src.annotationdata.transcription-module.html"><a title="sppas.src.annotationdata.transcription" class="py-name" href="#" onclick="return doclink('link-1', 'transcription', 'link-1');">transcription</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class sppas.src.annotationdata.transcription.Transcription=sppas.src.annotationdata.transcription.Transcription-class.html"><a title="sppas.src.annotationdata.transcription.Transcription" class="py-name" href="#" onclick="return doclink('link-2', 'Transcription', 'link-2');">Transcription</a></tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name"><a title="sppas.src.annotationdata" class="py-name" href="#" onclick="return doclink('link-3', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Module sppas.src.annotationdata.tier=sppas.src.annotationdata.tier-module.html"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-4', 'tier', 'link-4');">tier</a></tt> <tt class="py-keyword">import</tt> <tt id="link-5" class="py-name" targets="Class sppas.src.annotationdata.tier.Tier=sppas.src.annotationdata.tier.Tier-class.html"><a title="sppas.src.annotationdata.tier.Tier" class="py-name" href="#" onclick="return doclink('link-5', 'Tier', 'link-5');">Tier</a></tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-6" class="py-name"><a title="sppas.src.annotationdata" class="py-name" href="#" onclick="return doclink('link-6', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Module sppas.src.annotationdata.media=sppas.src.annotationdata.media-module.html"><a title="sppas.src.annotationdata.media" class="py-name" href="#" onclick="return doclink('link-7', 'media', 'link-7');">media</a></tt>               <tt class="py-keyword">import</tt> <tt id="link-8" class="py-name" targets="Class sppas.src.annotationdata.media.Media=sppas.src.annotationdata.media.Media-class.html"><a title="sppas.src.annotationdata.media.Media" class="py-name" href="#" onclick="return doclink('link-8', 'Media', 'link-8');">Media</a></tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-9" class="py-name"><a title="sppas.src.annotationdata" class="py-name" href="#" onclick="return doclink('link-9', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Module sppas.src.annotationdata.annotation=sppas.src.annotationdata.annotation-module.html"><a title="sppas.src.annotationdata.annotation" class="py-name" href="#" onclick="return doclink('link-10', 'annotation', 'link-10');">annotation</a></tt>     <tt class="py-keyword">import</tt> <tt id="link-11" class="py-name" targets="Class sppas.src.annotationdata.annotation.Annotation=sppas.src.annotationdata.annotation.Annotation-class.html"><a title="sppas.src.annotationdata.annotation.Annotation" class="py-name" href="#" onclick="return doclink('link-11', 'Annotation', 'link-11');">Annotation</a></tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-12" class="py-name"><a title="sppas.src.annotationdata" class="py-name" href="#" onclick="return doclink('link-12', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Package sppas.src.annotationdata.label=sppas.src.annotationdata.label-module.html,Module sppas.src.annotationdata.label.label=sppas.src.annotationdata.label.label-module.html"><a title="sppas.src.annotationdata.label
+sppas.src.annotationdata.label.label" class="py-name" href="#" onclick="return doclink('link-13', 'label', 'link-13');">label</a></tt><tt class="py-op">.</tt><tt id="link-14" class="py-name"><a title="sppas.src.annotationdata.label
+sppas.src.annotationdata.label.label" class="py-name" href="#" onclick="return doclink('link-14', 'label', 'link-13');">label</a></tt>    <tt class="py-keyword">import</tt> <tt id="link-15" class="py-name" targets="Method sppas.src.annotationdata.filter.Filter.Label()=sppas.src.annotationdata.filter.Filter-class.html#Label,Method sppas.src.annotationdata.filter.filters.Filter.Label()=sppas.src.annotationdata.filter.filters.Filter-class.html#Label,Class sppas.src.annotationdata.label.label.Label=sppas.src.annotationdata.label.label.Label-class.html"><a title="sppas.src.annotationdata.filter.Filter.Label
+sppas.src.annotationdata.filter.filters.Filter.Label
+sppas.src.annotationdata.label.label.Label" class="py-name" href="#" onclick="return doclink('link-15', 'Label', 'link-15');">Label</a></tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-16" class="py-name"><a title="sppas.src.annotationdata" class="py-name" href="#" onclick="return doclink('link-16', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Package sppas.src.annotationdata.ptime=sppas.src.annotationdata.ptime-module.html"><a title="sppas.src.annotationdata.ptime" class="py-name" href="#" onclick="return doclink('link-17', 'ptime', 'link-17');">ptime</a></tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Module sppas.src.annotationdata.ptime.interval=sppas.src.annotationdata.ptime.interval-module.html"><a title="sppas.src.annotationdata.ptime.interval" class="py-name" href="#" onclick="return doclink('link-18', 'interval', 'link-18');">interval</a></tt> <tt class="py-keyword">import</tt> <tt id="link-19" class="py-name" targets="Class sppas.src.annotationdata.ptime.interval.TimeInterval=sppas.src.annotationdata.ptime.interval.TimeInterval-class.html"><a title="sppas.src.annotationdata.ptime.interval.TimeInterval" class="py-name" href="#" onclick="return doclink('link-19', 'TimeInterval', 'link-19');">TimeInterval</a></tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-20" class="py-name"><a title="sppas.src.annotationdata" class="py-name" href="#" onclick="return doclink('link-20', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="sppas.src.annotationdata.ptime" class="py-name" href="#" onclick="return doclink('link-21', 'ptime', 'link-17');">ptime</a></tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Static Method sppas.src.annotationdata.filter.delay_relations.IntervalsDelay.point()=sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#point,Module sppas.src.annotationdata.ptime.point=sppas.src.annotationdata.ptime.point-module.html"><a title="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay.point
+sppas.src.annotationdata.ptime.point" class="py-name" href="#" onclick="return doclink('link-22', 'point', 'link-22');">point</a></tt>    <tt class="py-keyword">import</tt> <tt id="link-23" class="py-name" targets="Function sppas.src.annotationdata.io.annotationpro.TimePoint()=sppas.src.annotationdata.io.annotationpro-module.html#TimePoint,Function sppas.src.annotationdata.io.anvil.TimePoint()=sppas.src.annotationdata.io.anvil-module.html#TimePoint,Function sppas.src.annotationdata.io.elan.TimePoint()=sppas.src.annotationdata.io.elan-module.html#TimePoint,Function sppas.src.annotationdata.io.htk.TimePoint()=sppas.src.annotationdata.io.htk-module.html#TimePoint,Function sppas.src.annotationdata.io.phonedit.TimePoint()=sppas.src.annotationdata.io.phonedit-module.html#TimePoint,Function sppas.src.annotationdata.io.praat.TimePoint()=sppas.src.annotationdata.io.praat-module.html#TimePoint,Function sppas.src.annotationdata.io.sclite.TimePoint()=sppas.src.annotationdata.io.sclite-module.html#TimePoint,Function sppas.src.annotationdata.io.subtitle.TimePoint()=sppas.src.annotationdata.io.subtitle-module.html#TimePoint,Function sppas.src.annotationdata.io.text.TimePoint()=sppas.src.annotationdata.io.text-module.html#TimePoint,Function sppas.src.annotationdata.io.xtrans.TimePoint()=sppas.src.annotationdata.io.xtrans-module.html#TimePoint,Class sppas.src.annotationdata.ptime.point.TimePoint=sppas.src.annotationdata.ptime.point.TimePoint-class.html"><a title="sppas.src.annotationdata.io.annotationpro.TimePoint
+sppas.src.annotationdata.io.anvil.TimePoint
+sppas.src.annotationdata.io.elan.TimePoint
+sppas.src.annotationdata.io.htk.TimePoint
+sppas.src.annotationdata.io.phonedit.TimePoint
+sppas.src.annotationdata.io.praat.TimePoint
+sppas.src.annotationdata.io.sclite.TimePoint
+sppas.src.annotationdata.io.subtitle.TimePoint
+sppas.src.annotationdata.io.text.TimePoint
+sppas.src.annotationdata.io.xtrans.TimePoint
+sppas.src.annotationdata.ptime.point.TimePoint" class="py-name" href="#" onclick="return doclink('link-23', 'TimePoint', 'link-23');">TimePoint</a></tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-24" class="py-name"><a title="sppas.src.annotationdata" class="py-name" href="#" onclick="return doclink('link-24', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="sppas.src.annotationdata.ptime" class="py-name" href="#" onclick="return doclink('link-25', 'ptime', 'link-17');">ptime</a></tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay.point
+sppas.src.annotationdata.ptime.point" class="py-name" href="#" onclick="return doclink('link-26', 'point', 'link-22');">point</a></tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-27" class="py-name" targets="Module sppas.src.annotationdata.io.utils=sppas.src.annotationdata.io.utils-module.html,Package sppas.src.annotationdata.utils=sppas.src.annotationdata.utils-module.html"><a title="sppas.src.annotationdata.io.utils
+sppas.src.annotationdata.utils" class="py-name" href="#" onclick="return doclink('link-27', 'utils', 'link-27');">utils</a></tt> <tt class="py-keyword">import</tt> <tt id="link-28" class="py-name" targets="Function sppas.src.annotationdata.io.utils.gen_id()=sppas.src.annotationdata.io.utils-module.html#gen_id"><a title="sppas.src.annotationdata.io.utils.gen_id" class="py-name" href="#" onclick="return doclink('link-28', 'gen_id', 'link-28');">gen_id</a></tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-comment"># ----------------------------------------------------------------------------</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt id="link-29" class="py-name" targets="Variable sppas.src.annotationdata.io.text.TEXT_RADIUS=sppas.src.annotationdata.io.text-module.html#TEXT_RADIUS,Variable sppas.src.annotationdata.io.xtrans.TEXT_RADIUS=sppas.src.annotationdata.io.xtrans-module.html#TEXT_RADIUS"><a title="sppas.src.annotationdata.io.text.TEXT_RADIUS
+sppas.src.annotationdata.io.xtrans.TEXT_RADIUS" class="py-name" href="#" onclick="return doclink('link-29', 'TEXT_RADIUS', 'link-29');">TEXT_RADIUS</a></tt> <tt class="py-op">=</tt> <tt class="py-number">0.0005</tt> </tt>
+<a name="TimePoint"></a><div id="TimePoint-def"><a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-comment"># ----------------------------------------------------------------------------</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt> <a class="py-toggle" href="#" id="TimePoint-toggle" onclick="return toggle('TimePoint');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.io.xtrans-module.html#TimePoint">TimePoint</a><tt class="py-op">(</tt><tt class="py-param">time</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TimePoint-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="TimePoint-expanded"><a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-30" class="py-name"><a title="sppas.src.annotationdata" class="py-name" href="#" onclick="return doclink('link-30', 'annotationdata', 'link-0');">annotationdata</a></tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="sppas.src.annotationdata.ptime" class="py-name" href="#" onclick="return doclink('link-31', 'ptime', 'link-17');">ptime</a></tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="sppas.src.annotationdata.filter.delay_relations.IntervalsDelay.point
+sppas.src.annotationdata.ptime.point" class="py-name" href="#" onclick="return doclink('link-32', 'point', 'link-22');">point</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="sppas.src.annotationdata.io.annotationpro.TimePoint
+sppas.src.annotationdata.io.anvil.TimePoint
+sppas.src.annotationdata.io.elan.TimePoint
+sppas.src.annotationdata.io.htk.TimePoint
+sppas.src.annotationdata.io.phonedit.TimePoint
+sppas.src.annotationdata.io.praat.TimePoint
+sppas.src.annotationdata.io.sclite.TimePoint
+sppas.src.annotationdata.io.subtitle.TimePoint
+sppas.src.annotationdata.io.text.TimePoint
+sppas.src.annotationdata.io.xtrans.TimePoint
+sppas.src.annotationdata.ptime.point.TimePoint" class="py-name" href="#" onclick="return doclink('link-33', 'TimePoint', 'link-23');">TimePoint</a></tt><tt class="py-op">(</tt><tt class="py-name">time</tt><tt class="py-op">,</tt> <tt id="link-34" class="py-name"><a title="sppas.src.annotationdata.io.text.TEXT_RADIUS
+sppas.src.annotationdata.io.xtrans.TEXT_RADIUS" class="py-name" href="#" onclick="return doclink('link-34', 'TEXT_RADIUS', 'link-29');">TEXT_RADIUS</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"> </tt>
+<a name="Xtrans"></a><div id="Xtrans-def"><a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-comment"># ----------------------------------------------------------------------------</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt> <a class="py-toggle" href="#" id="Xtrans-toggle" onclick="return toggle('Xtrans');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="sppas.src.annotationdata.io.xtrans.Xtrans-class.html">Xtrans</a><tt class="py-op">(</tt> <tt class="py-base-class">Transcription</tt> <tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Xtrans-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Xtrans-expanded"><a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-docstring">    @author:       Brigitte Bigi</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-docstring">    @organization: Laboratoire Parole et Langage, Aix-en-Provence, France</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-docstring">    @contact:      brigitte.bigi@gmail.com</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-docstring">    @license:      GPL, v3</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"><tt class="py-docstring">    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt class="py-docstring">    @summary:      Represents a text file from Xtrans software.</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-docstring">    XTrans is a multi-platform, multilingual, multi-channel transcription tool</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-docstring">    that supports manual transcription and annotation of audio recordings.</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-docstring">    Last version of Xtrans was distributed in 2009.</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-docstring">    Consequently... this class implements only a Xtrans reader, not a writer.</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-docstring">    Transcripts are output in a Tab Delimited Format (TDF).</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="Xtrans.detect"></a><div id="Xtrans.detect-def"><a name="L81"></a><tt class="py-lineno"> 81</tt> <a class="py-toggle" href="#" id="Xtrans.detect-toggle" onclick="return toggle('Xtrans.detect');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.io.xtrans.Xtrans-class.html#detect">detect</a><tt class="py-op">(</tt><tt class="py-param">filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Xtrans.detect-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Xtrans.detect-expanded"><a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">        <tt class="py-keyword">with</tt> <tt class="py-name">codecs</tt><tt class="py-op">.</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">,</tt> <tt class="py-string">'r'</tt><tt class="py-op">,</tt> <tt class="py-string">'utf-8'</tt><tt class="py-op">)</tt> <tt class="py-keyword">as</tt> <tt class="py-name">fp</tt><tt class="py-op">:</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">            <tt class="py-name">lines</tt> <tt class="py-op">=</tt> <tt class="py-name">fp</tt><tt class="py-op">.</tt><tt class="py-name">readlines</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">line</tt> <tt class="py-keyword">in</tt> <tt class="py-name">lines</tt><tt class="py-op">:</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">line</tt><tt class="py-op">.</tt><tt class="py-name">startswith</tt><tt class="py-op">(</tt><tt class="py-string">";;"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">                    <tt class="py-keyword">continue</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">                <tt class="py-name">tab</tt> <tt class="py-op">=</tt> <tt class="py-name">line</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">'\t'</tt><tt class="py-op">)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">tab</tt><tt class="py-op">)</tt> <tt class="py-op">&lt;</tt> <tt class="py-number">10</tt><tt class="py-op">:</tt> <tt class="py-comment"># expected is 13</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">                    <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+</div><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">    <tt class="py-comment"># --------------------------------------------------------------------</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"> </tt>
+<a name="Xtrans.__init__"></a><div id="Xtrans.__init__-def"><a name="L95"></a><tt class="py-lineno"> 95</tt> <a class="py-toggle" href="#" id="Xtrans.__init__-toggle" onclick="return toggle('Xtrans.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.io.xtrans.Xtrans-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">=</tt><tt class="py-string">"NoName"</tt><tt class="py-op">,</tt> <tt class="py-param">mintime</tt><tt class="py-op">=</tt><tt class="py-number">0.</tt><tt class="py-op">,</tt> <tt class="py-param">maxtime</tt><tt class="py-op">=</tt><tt class="py-number">0.</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Xtrans.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Xtrans.__init__-expanded"><a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-docstring">        Creates a new Xtrans Transcription instance.</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt id="link-35" class="py-name"><a title="sppas.src.annotationdata.transcription.Transcription" class="py-name" href="#" onclick="return doclink('link-35', 'Transcription', 'link-2');">Transcription</a></tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Method sppas.src.annotationdata.annotation.Annotation.__init__()=sppas.src.annotationdata.annotation.Annotation-class.html#__init__,Method sppas.src.annotationdata.ctrlvocab.CtrlVocab.__init__()=sppas.src.annotationdata.ctrlvocab.CtrlVocab-class.html#__init__,Method sppas.src.annotationdata.ctrlvocab.CtrlVocabEntry.__init__()=sppas.src.annotationdata.ctrlvocab.CtrlVocabEntry-class.html#__init__,Method sppas.src.annotationdata.filter.Filter.__init__()=sppas.src.annotationdata.filter.Filter-class.html#__init__,Method sppas.src.annotationdata.filter.LabelFilter.__init__()=sppas.src.annotationdata.filter.LabelFilter-class.html#__init__,Method sppas.src.annotationdata.filter.Predicate.__init__()=sppas.src.annotationdata.filter.Predicate-class.html#__init__,Method sppas.src.annotationdata.filter.RelationFilter.__init__()=sppas.src.annotationdata.filter.RelationFilter-class.html#__init__,Method sppas.src.annotationdata.filter.RelationPredicate.__init__()=sppas.src.annotationdata.filter.RelationPredicate-class.html#__init__,Method sppas.src.annotationdata.filter.delay_relations.AndPredicates.__init__()=sppas.src.annotationdata.filter.delay_relations.AndPredicates-class.html#__init__,Method sppas.src.annotationdata.filter.delay_relations.CheckedIntervalsDelay.__init__()=sppas.src.annotationdata.filter.delay_relations.CheckedIntervalsDelay-class.html#__init__,Method sppas.src.annotationdata.filter.delay_relations.Delay.__init__()=sppas.src.annotationdata.filter.delay_relations.Delay-class.html#__init__,Method sppas.src.annotationdata.filter.delay_relations.IntervalsDelay.__init__()=sppas.src.annotationdata.filter.delay_relations.IntervalsDelay-class.html#__init__,Method sppas.src.annotationdata.filter.delay_relations.JoinList.__init__()=sppas.src.annotationdata.filter.delay_relations.JoinList-class.html#__init__,Method sppas.src.annotationdata.filter.delay_relations.OrPredicates.__init__()=sppas.src.annotationdata.filter.delay_relations.OrPredicates-class.html#__init__,Method sppas.src.annotationdata.filter.filters.Filter.__init__()=sppas.src.annotationdata.filter.filters.Filter-class.html#__init__,Method sppas.src.annotationdata.filter.filters.RelationFilter.__init__()=sppas.src.annotationdata.filter.filters.RelationFilter-class.html#__init__,Method sppas.src.annotationdata.filter.filters.SingleFilter.__init__()=sppas.src.annotationdata.filter.filters.SingleFilter-class.html#__init__,Method sppas.src.annotationdata.filter.predicate.Predicate.__init__()=sppas.src.annotationdata.filter.predicate.Predicate-class.html#__init__,Method sppas.src.annotationdata.filter.predicate.RelationPredicate.__init__()=sppas.src.annotationdata.filter.predicate.RelationPredicate-class.html#__init__,Method sppas.src.annotationdata.hierarchy.Hierarchy.__init__()=sppas.src.annotationdata.hierarchy.Hierarchy-class.html#__init__,Method sppas.src.annotationdata.io.annotationpro.Antx.__init__()=sppas.src.annotationdata.io.annotationpro.Antx-class.html#__init__,Method sppas.src.annotationdata.io.anvil.Anvil.__init__()=sppas.src.annotationdata.io.anvil.Anvil-class.html#__init__,Method sppas.src.annotationdata.io.htk.HTKLabel.__init__()=sppas.src.annotationdata.io.htk.HTKLabel-class.html#__init__,Method sppas.src.annotationdata.io.htk.MasterLabel.__init__()=sppas.src.annotationdata.io.htk.MasterLabel-class.html#__init__,Method sppas.src.annotationdata.io.phonedit.Phonedit.__init__()=sppas.src.annotationdata.io.phonedit.Phonedit-class.html#__init__,Method sppas.src.annotationdata.io.praat.IntensityTier.__init__()=sppas.src.annotationdata.io.praat.IntensityTier-class.html#__init__,Method sppas.src.annotationdata.io.praat.PitchTier.__init__()=sppas.src.annotationdata.io.praat.PitchTier-class.html#__init__,Method sppas.src.annotationdata.io.praat.TextGrid.__init__()=sppas.src.annotationdata.io.praat.TextGrid-class.html#__init__,Method sppas.src.annotationdata.io.sclite.SegmentTimeMark.__init__()=sppas.src.annotationdata.io.sclite.SegmentTimeMark-class.html#__init__,Method sppas.src.annotationdata.io.sclite.TimeMarkedConversation.__init__()=sppas.src.annotationdata.io.sclite.TimeMarkedConversation-class.html#__init__,Method sppas.src.annotationdata.io.signaix.HzPitch.__init__()=sppas.src.annotationdata.io.signaix.HzPitch-class.html#__init__,Method sppas.src.annotationdata.io.subtitle.SubRip.__init__()=sppas.src.annotationdata.io.subtitle.SubRip-class.html#__init__,Method sppas.src.annotationdata.io.subtitle.SubViewer.__init__()=sppas.src.annotationdata.io.subtitle.SubViewer-class.html#__init__,Method sppas.src.annotationdata.io.text.CSV.UnicodeReader.__init__()=sppas.src.annotationdata.io.text.CSV.UnicodeReader-class.html#__init__,Method sppas.src.annotationdata.io.text.CSV.UnicodeWriter.__init__()=sppas.src.annotationdata.io.text.CSV.UnicodeWriter-class.html#__init__,Method sppas.src.annotationdata.io.text.CSV.__init__()=sppas.src.annotationdata.io.text.CSV-class.html#__init__,Method sppas.src.annotationdata.io.text.RawText.__init__()=sppas.src.annotationdata.io.text.RawText-class.html#__init__,Method sppas.src.annotationdata.io.transcriber.Transcriber.__init__()=sppas.src.annotationdata.io.transcriber.Transcriber-class.html#__init__,Method sppas.src.annotationdata.io.xra.XRA.__init__()=sppas.src.annotationdata.io.xra.XRA-class.html#__init__,Method sppas.src.annotationdata.io.xtrans.Xtrans.__init__()=sppas.src.annotationdata.io.xtrans.Xtrans-class.html#__init__,Method sppas.src.annotationdata.label.label.Label.__init__()=sppas.src.annotationdata.label.label.Label-class.html#__init__,Method sppas.src.annotationdata.label.text.Text.__init__()=sppas.src.annotationdata.label.text.Text-class.html#__init__,Method sppas.src.annotationdata.media.Media.__init__()=sppas.src.annotationdata.media.Media-class.html#__init__,Method sppas.src.annotationdata.meta.MetaObject.__init__()=sppas.src.annotationdata.meta.MetaObject-class.html#__init__,Method sppas.src.annotationdata.pitch.Pitch.__init__()=sppas.src.annotationdata.pitch.Pitch-class.html#__init__,Method sppas.src.annotationdata.ptime.baseplacement.BasePlacement.__init__()=sppas.src.annotationdata.ptime.baseplacement.BasePlacement-class.html#__init__,Method sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.__init__()=sppas.src.annotationdata.ptime.disjoint.TimeDisjoint-class.html#__init__,Method sppas.src.annotationdata.ptime.duration.Duration.__init__()=sppas.src.annotationdata.ptime.duration.Duration-class.html#__init__,Method sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.__init__()=sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint-class.html#__init__,Method sppas.src.annotationdata.ptime.frameinterval.FrameInterval.__init__()=sppas.src.annotationdata.ptime.frameinterval.FrameInterval-class.html#__init__,Method sppas.src.annotationdata.ptime.framepoint.FramePoint.__init__()=sppas.src.annotationdata.ptime.framepoint.FramePoint-class.html#__init__,Method sppas.src.annotationdata.ptime.interval.TimeInterval.__init__()=sppas.src.annotationdata.ptime.interval.TimeInterval-class.html#__init__,Method sppas.src.annotationdata.ptime.localization.Localization.__init__()=sppas.src.annotationdata.ptime.localization.Localization-class.html#__init__,Method sppas.src.annotationdata.ptime.location.Location.__init__()=sppas.src.annotationdata.ptime.location.Location-class.html#__init__,Method sppas.src.annotationdata.ptime.point.TimePoint.__init__()=sppas.src.annotationdata.ptime.point.TimePoint-class.html#__init__,Method sppas.src.annotationdata.tier.Tier.__init__()=sppas.src.annotationdata.tier.Tier-class.html#__init__,Method sppas.src.annotationdata.transcription.Transcription.__init__()=sppas.src.annotationdata.transcription.Transcription-class.html#__init__"><a title="sppas.src.annotationdata.annotation.Annotation.__init__
+sppas.src.annotationdata.ctrlvocab.CtrlVocab.__init__
+sppas.src.annotationdata.ctrlvocab.CtrlVocabEntry.__init__
+sppas.src.annotationdata.filter.Filter.__init__
+sppas.src.annotationdata.filter.LabelFilter.__init__
+sppas.src.annotationdata.filter.Predicate.__init__
+sppas.src.annotationdata.filter.RelationFilter.__init__
+sppas.src.annotationdata.filter.RelationPredicate.__init__
+sppas.src.annotationdata.filter.delay_relations.AndPredicates.__init__
+sppas.src.annotationdata.filter.delay_relations.CheckedIntervalsDelay.__init__
+sppas.src.annotationdata.filter.delay_relations.Delay.__init__
+sppas.src.annotationdata.filter.delay_relations.IntervalsDelay.__init__
+sppas.src.annotationdata.filter.delay_relations.JoinList.__init__
+sppas.src.annotationdata.filter.delay_relations.OrPredicates.__init__
+sppas.src.annotationdata.filter.filters.Filter.__init__
+sppas.src.annotationdata.filter.filters.RelationFilter.__init__
+sppas.src.annotationdata.filter.filters.SingleFilter.__init__
+sppas.src.annotationdata.filter.predicate.Predicate.__init__
+sppas.src.annotationdata.filter.predicate.RelationPredicate.__init__
+sppas.src.annotationdata.hierarchy.Hierarchy.__init__
+sppas.src.annotationdata.io.annotationpro.Antx.__init__
+sppas.src.annotationdata.io.anvil.Anvil.__init__
+sppas.src.annotationdata.io.htk.HTKLabel.__init__
+sppas.src.annotationdata.io.htk.MasterLabel.__init__
+sppas.src.annotationdata.io.phonedit.Phonedit.__init__
+sppas.src.annotationdata.io.praat.IntensityTier.__init__
+sppas.src.annotationdata.io.praat.PitchTier.__init__
+sppas.src.annotationdata.io.praat.TextGrid.__init__
+sppas.src.annotationdata.io.sclite.SegmentTimeMark.__init__
+sppas.src.annotationdata.io.sclite.TimeMarkedConversation.__init__
+sppas.src.annotationdata.io.signaix.HzPitch.__init__
+sppas.src.annotationdata.io.subtitle.SubRip.__init__
+sppas.src.annotationdata.io.subtitle.SubViewer.__init__
+sppas.src.annotationdata.io.text.CSV.UnicodeReader.__init__
+sppas.src.annotationdata.io.text.CSV.UnicodeWriter.__init__
+sppas.src.annotationdata.io.text.CSV.__init__
+sppas.src.annotationdata.io.text.RawText.__init__
+sppas.src.annotationdata.io.transcriber.Transcriber.__init__
+sppas.src.annotationdata.io.xra.XRA.__init__
+sppas.src.annotationdata.io.xtrans.Xtrans.__init__
+sppas.src.annotationdata.label.label.Label.__init__
+sppas.src.annotationdata.label.text.Text.__init__
+sppas.src.annotationdata.media.Media.__init__
+sppas.src.annotationdata.meta.MetaObject.__init__
+sppas.src.annotationdata.pitch.Pitch.__init__
+sppas.src.annotationdata.ptime.baseplacement.BasePlacement.__init__
+sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.__init__
+sppas.src.annotationdata.ptime.duration.Duration.__init__
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.__init__
+sppas.src.annotationdata.ptime.frameinterval.FrameInterval.__init__
+sppas.src.annotationdata.ptime.framepoint.FramePoint.__init__
+sppas.src.annotationdata.ptime.interval.TimeInterval.__init__
+sppas.src.annotationdata.ptime.localization.Localization.__init__
+sppas.src.annotationdata.ptime.location.Location.__init__
+sppas.src.annotationdata.ptime.point.TimePoint.__init__
+sppas.src.annotationdata.tier.Tier.__init__
+sppas.src.annotationdata.transcription.Transcription.__init__" class="py-name" href="#" onclick="return doclink('link-36', '__init__', 'link-36');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">mintime</tt><tt class="py-op">,</tt> <tt class="py-name">maxtime</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">    <tt class="py-comment"># -----------------------------------------------------------------------</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"> </tt>
+<a name="Xtrans.read"></a><div id="Xtrans.read-def"><a name="L104"></a><tt class="py-lineno">104</tt> <a class="py-toggle" href="#" id="Xtrans.read-toggle" onclick="return toggle('Xtrans.read');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="sppas.src.annotationdata.io.xtrans.Xtrans-class.html#read">read</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Xtrans.read-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Xtrans.read-expanded"><a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-docstring">        Read an Xtrans file and fill the Transcription.</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-docstring">        It creates a tier for each speaker-channel observed in the file.</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">        <tt class="py-keyword">with</tt> <tt class="py-name">codecs</tt><tt class="py-op">.</tt><tt class="py-name">open</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">,</tt> <tt class="py-string">'r'</tt><tt class="py-op">,</tt> <tt class="py-string">'utf-8'</tt><tt class="py-op">)</tt> <tt class="py-keyword">as</tt> <tt class="py-name">fp</tt><tt class="py-op">:</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">            <tt class="py-name">lines</tt> <tt class="py-op">=</tt> <tt class="py-name">fp</tt><tt class="py-op">.</tt><tt class="py-name">readlines</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">            <tt class="py-name">rownames</tt> <tt class="py-op">=</tt> <tt class="py-name">lines</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">'\t'</tt><tt class="py-op">)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">            <tt class="py-name">lines</tt><tt class="py-op">.</tt><tt class="py-name">pop</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">            <tt class="py-name">medias</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">            <tt class="py-comment"># Extract rows, create tiers and metadata.</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">line</tt> <tt class="py-keyword">in</tt> <tt class="py-name">lines</tt><tt class="py-op">:</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">                <tt class="py-comment"># a comment</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">line</tt><tt class="py-op">.</tt><tt class="py-name">startswith</tt><tt class="py-op">(</tt><tt class="py-string">';;'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">                    <tt class="py-keyword">continue</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">                <tt class="py-comment"># a tab-delimited line</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">                <tt class="py-name">line</tt> <tt class="py-op">=</tt> <tt class="py-name">line</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">'\t'</tt><tt class="py-op">)</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">                <tt class="py-comment"># fix the name of the tier</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">                <tt class="py-name">channel</tt> <tt class="py-op">=</tt> <tt class="py-name">line</tt><tt class="py-op">[</tt><tt class="py-name">rownames</tt><tt class="py-op">.</tt><tt class="py-name">index</tt><tt class="py-op">(</tt><tt class="py-string">'channel;int'</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">                <tt class="py-name">speaker</tt> <tt class="py-op">=</tt> <tt class="py-name">line</tt><tt class="py-op">[</tt><tt class="py-name">rownames</tt><tt class="py-op">.</tt><tt class="py-name">index</tt><tt class="py-op">(</tt><tt class="py-string">'speaker;unicode'</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">                <tt class="py-name">tiername</tt> <tt class="py-op">=</tt> <tt class="py-name">speaker</tt><tt class="py-op">+</tt><tt class="py-string">'-'</tt><tt class="py-op">+</tt><tt class="py-name">channel</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">                <tt class="py-comment"># check for the tier (find it or create it)</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">                <tt id="link-37" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-37', 'tier', 'link-4');">tier</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Method sppas.src.annotationdata.tier.Tier.Find()=sppas.src.annotationdata.tier.Tier-class.html#Find,Method sppas.src.annotationdata.transcription.Transcription.Find()=sppas.src.annotationdata.transcription.Transcription-class.html#Find"><a title="sppas.src.annotationdata.tier.Tier.Find
+sppas.src.annotationdata.transcription.Transcription.Find" class="py-name" href="#" onclick="return doclink('link-38', 'Find', 'link-38');">Find</a></tt><tt class="py-op">(</tt><tt class="py-name">tiername</tt><tt class="py-op">)</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-39" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-39', 'tier', 'link-4');">tier</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">                    <tt id="link-40" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-40', 'tier', 'link-4');">tier</a></tt> <tt class="py-op">=</tt> <tt id="link-41" class="py-name"><a title="sppas.src.annotationdata.tier.Tier" class="py-name" href="#" onclick="return doclink('link-41', 'Tier', 'link-5');">Tier</a></tt><tt class="py-op">(</tt><tt class="py-name">tiername</tt><tt class="py-op">)</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">                    <tt class="py-name">mediaurl</tt> <tt class="py-op">=</tt> <tt class="py-name">line</tt><tt class="py-op">[</tt><tt class="py-name">rownames</tt><tt class="py-op">.</tt><tt class="py-name">index</tt><tt class="py-op">(</tt><tt class="py-string">'file;unicode'</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">mediaurl</tt> <tt class="py-keyword">in</tt> <tt class="py-name">medias</tt><tt class="py-op">:</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">                        <tt class="py-name">mediaid</tt> <tt class="py-op">=</tt> <tt id="link-42" class="py-name"><a title="sppas.src.annotationdata.io.utils.gen_id" class="py-name" href="#" onclick="return doclink('link-42', 'gen_id', 'link-28');">gen_id</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">                        <tt class="py-name">medias</tt><tt class="py-op">[</tt><tt class="py-name">mediaurl</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">mediaid</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">                    <tt class="py-name">mediaid</tt> <tt class="py-op">=</tt> <tt class="py-name">medias</tt><tt class="py-op">[</tt><tt class="py-name">mediaurl</tt><tt class="py-op">]</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">                    <tt class="py-op">(</tt><tt class="py-name">mediamime</tt><tt class="py-op">,</tt><tt class="py-name">mediaencoding</tt><tt class="py-op">)</tt> <tt class="py-op">=</tt> <tt class="py-name">mimetypes</tt><tt class="py-op">.</tt><tt class="py-name">guess_type</tt><tt class="py-op">(</tt><tt class="py-name">mediaurl</tt><tt class="py-op">)</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">                    <tt id="link-43" class="py-name"><a title="sppas.src.annotationdata.media" class="py-name" href="#" onclick="return doclink('link-43', 'media', 'link-7');">media</a></tt> <tt class="py-op">=</tt> <tt id="link-44" class="py-name"><a title="sppas.src.annotationdata.media.Media" class="py-name" href="#" onclick="return doclink('link-44', 'Media', 'link-8');">Media</a></tt><tt class="py-op">(</tt> <tt class="py-name">mediaid</tt><tt class="py-op">,</tt> <tt class="py-name">mediaurl</tt><tt class="py-op">,</tt> <tt class="py-name">mediamime</tt> <tt class="py-op">)</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-name">mediaencoding</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">                        <tt id="link-45" class="py-name"><a title="sppas.src.annotationdata.media" class="py-name" href="#" onclick="return doclink('link-45', 'media', 'link-7');">media</a></tt><tt class="py-op">.</tt><tt class="py-name">metadata</tt><tt class="py-op">[</tt> <tt class="py-string">"encoding"</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">mediaencoding</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">                    <tt id="link-46" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-46', 'tier', 'link-4');">tier</a></tt><tt class="py-op">.</tt><tt id="link-47" class="py-name" targets="Method sppas.src.annotationdata.tier.Tier.SetMedia()=sppas.src.annotationdata.tier.Tier-class.html#SetMedia,Method sppas.src.annotationdata.transcription.Transcription.SetMedia()=sppas.src.annotationdata.transcription.Transcription-class.html#SetMedia"><a title="sppas.src.annotationdata.tier.Tier.SetMedia
+sppas.src.annotationdata.transcription.Transcription.SetMedia" class="py-name" href="#" onclick="return doclink('link-47', 'SetMedia', 'link-47');">SetMedia</a></tt><tt class="py-op">(</tt> <tt id="link-48" class="py-name"><a title="sppas.src.annotationdata.media" class="py-name" href="#" onclick="return doclink('link-48', 'media', 'link-7');">media</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">                    <tt id="link-49" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-49', 'tier', 'link-4');">tier</a></tt><tt class="py-op">.</tt><tt class="py-name">metadata</tt><tt class="py-op">[</tt> <tt class="py-string">"speakerName"</tt> <tt class="py-op">]</tt>    <tt class="py-op">=</tt> <tt class="py-name">speaker</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">                    <tt id="link-50" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-50', 'tier', 'link-4');">tier</a></tt><tt class="py-op">.</tt><tt class="py-name">metadata</tt><tt class="py-op">[</tt> <tt class="py-string">"speakerType"</tt> <tt class="py-op">]</tt>    <tt class="py-op">=</tt> <tt class="py-name">line</tt><tt class="py-op">[</tt> <tt class="py-name">rownames</tt><tt class="py-op">.</tt><tt class="py-name">index</tt><tt class="py-op">(</tt><tt class="py-string">'speakerType;unicode'</tt><tt class="py-op">)</tt> <tt class="py-op">]</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">                    <tt id="link-51" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-51', 'tier', 'link-4');">tier</a></tt><tt class="py-op">.</tt><tt class="py-name">metadata</tt><tt class="py-op">[</tt> <tt class="py-string">"speakerDialect"</tt> <tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">line</tt><tt class="py-op">[</tt> <tt class="py-name">rownames</tt><tt class="py-op">.</tt><tt class="py-name">index</tt><tt class="py-op">(</tt><tt class="py-string">'speakerDialect;unicode'</tt><tt class="py-op">)</tt> <tt class="py-op">]</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">                    <tt id="link-52" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-52', 'tier', 'link-4');">tier</a></tt><tt class="py-op">.</tt><tt class="py-name">metadata</tt><tt class="py-op">[</tt> <tt class="py-string">"mediaChannel"</tt> <tt class="py-op">]</tt>   <tt class="py-op">=</tt> <tt class="py-name">channel</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">                    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name" targets="Method sppas.src.annotationdata.ctrlvocab.CtrlVocab.Append()=sppas.src.annotationdata.ctrlvocab.CtrlVocab-class.html#Append,Method sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.Append()=sppas.src.annotationdata.ptime.disjoint.TimeDisjoint-class.html#Append,Method sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.Append()=sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint-class.html#Append,Method sppas.src.annotationdata.tier.Tier.Append()=sppas.src.annotationdata.tier.Tier-class.html#Append,Method sppas.src.annotationdata.transcription.Transcription.Append()=sppas.src.annotationdata.transcription.Transcription-class.html#Append"><a title="sppas.src.annotationdata.ctrlvocab.CtrlVocab.Append
+sppas.src.annotationdata.ptime.disjoint.TimeDisjoint.Append
+sppas.src.annotationdata.ptime.framedisjoint.FrameDisjoint.Append
+sppas.src.annotationdata.tier.Tier.Append
+sppas.src.annotationdata.transcription.Transcription.Append" class="py-name" href="#" onclick="return doclink('link-53', 'Append', 'link-53');">Append</a></tt><tt class="py-op">(</tt> <tt id="link-54" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-54', 'tier', 'link-4');">tier</a></tt> <tt class="py-op">)</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">                <tt class="py-comment"># Add the new annotation</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">                <tt id="link-55" class="py-name"><a title="sppas.src.annotationdata.label
+sppas.src.annotationdata.label.label" class="py-name" href="#" onclick="return doclink('link-55', 'label', 'link-13');">label</a></tt> <tt class="py-op">=</tt> <tt id="link-56" class="py-name"><a title="sppas.src.annotationdata.filter.Filter.Label
+sppas.src.annotationdata.filter.filters.Filter.Label
+sppas.src.annotationdata.label.label.Label" class="py-name" href="#" onclick="return doclink('link-56', 'Label', 'link-15');">Label</a></tt><tt class="py-op">(</tt> <tt class="py-name">line</tt><tt class="py-op">[</tt><tt class="py-name">rownames</tt><tt class="py-op">.</tt><tt class="py-name">index</tt><tt class="py-op">(</tt><tt class="py-string">'transcript;unicode'</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">)</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">                <tt class="py-name">begin</tt> <tt class="py-op">=</tt> <tt id="link-57" class="py-name"><a title="sppas.src.annotationdata.io.annotationpro.TimePoint
+sppas.src.annotationdata.io.anvil.TimePoint
+sppas.src.annotationdata.io.elan.TimePoint
+sppas.src.annotationdata.io.htk.TimePoint
+sppas.src.annotationdata.io.phonedit.TimePoint
+sppas.src.annotationdata.io.praat.TimePoint
+sppas.src.annotationdata.io.sclite.TimePoint
+sppas.src.annotationdata.io.subtitle.TimePoint
+sppas.src.annotationdata.io.text.TimePoint
+sppas.src.annotationdata.io.xtrans.TimePoint
+sppas.src.annotationdata.ptime.point.TimePoint" class="py-name" href="#" onclick="return doclink('link-57', 'TimePoint', 'link-23');">TimePoint</a></tt><tt class="py-op">(</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt> <tt class="py-name">line</tt><tt class="py-op">[</tt><tt class="py-name">rownames</tt><tt class="py-op">.</tt><tt class="py-name">index</tt><tt class="py-op">(</tt><tt class="py-string">'start;float'</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">                <tt class="py-name">end</tt>   <tt class="py-op">=</tt> <tt id="link-58" class="py-name"><a title="sppas.src.annotationdata.io.annotationpro.TimePoint
+sppas.src.annotationdata.io.anvil.TimePoint
+sppas.src.annotationdata.io.elan.TimePoint
+sppas.src.annotationdata.io.htk.TimePoint
+sppas.src.annotationdata.io.phonedit.TimePoint
+sppas.src.annotationdata.io.praat.TimePoint
+sppas.src.annotationdata.io.sclite.TimePoint
+sppas.src.annotationdata.io.subtitle.TimePoint
+sppas.src.annotationdata.io.text.TimePoint
+sppas.src.annotationdata.io.xtrans.TimePoint
+sppas.src.annotationdata.ptime.point.TimePoint" class="py-name" href="#" onclick="return doclink('link-58', 'TimePoint', 'link-23');">TimePoint</a></tt><tt class="py-op">(</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt> <tt class="py-name">line</tt><tt class="py-op">[</tt><tt class="py-name">rownames</tt><tt class="py-op">.</tt><tt class="py-name">index</tt><tt class="py-op">(</tt><tt class="py-string">'end;float'</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> <tt class="py-op">)</tt> <tt class="py-op">)</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">                <tt class="py-name">new_ann</tt> <tt class="py-op">=</tt> <tt id="link-59" class="py-name"><a title="sppas.src.annotationdata.annotation.Annotation" class="py-name" href="#" onclick="return doclink('link-59', 'Annotation', 'link-11');">Annotation</a></tt><tt class="py-op">(</tt><tt id="link-60" class="py-name"><a title="sppas.src.annotationdata.ptime.interval.TimeInterval" class="py-name" href="#" onclick="return doclink('link-60', 'TimeInterval', 'link-19');">TimeInterval</a></tt><tt class="py-op">(</tt><tt class="py-name">begin</tt><tt class="py-op">,</tt><tt class="py-name">end</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt id="link-61" class="py-name"><a title="sppas.src.annotationdata.label
+sppas.src.annotationdata.label.label" class="py-name" href="#" onclick="return doclink('link-61', 'label', 'link-13');">label</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">                <tt id="link-62" class="py-name"><a title="sppas.src.annotationdata.tier" class="py-name" href="#" onclick="return doclink('link-62', 'tier', 'link-4');">tier</a></tt><tt class="py-op">.</tt><tt id="link-63" class="py-name" targets="Method sppas.src.annotationdata.ctrlvocab.CtrlVocab.Add()=sppas.src.annotationdata.ctrlvocab.CtrlVocab-class.html#Add,Method sppas.src.annotationdata.tier.Tier.Add()=sppas.src.annotationdata.tier.Tier-class.html#Add,Method sppas.src.annotationdata.transcription.Transcription.Add()=sppas.src.annotationdata.transcription.Transcription-class.html#Add"><a title="sppas.src.annotationdata.ctrlvocab.CtrlVocab.Add
+sppas.src.annotationdata.tier.Tier.Add
+sppas.src.annotationdata.transcription.Transcription.Add" class="py-name" href="#" onclick="return doclink('link-63', 'Add', 'link-63');">Add</a></tt><tt class="py-op">(</tt> <tt class="py-name">new_ann</tt> <tt class="py-op">)</tt> </tt>
+</div></div><a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.lpl-aix.fr/~bigi/sppas/">SPPAS</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Tue Aug 30 15:39:20 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -40,9 +40,10 @@
 import wx
 import random
 
-from wxgui.ui.pointctrl import PointCtrl, spEVT_RESIZING, spEVT_MOVING, spEVT_MOVED, spEVT_POINT_LEFT
+from sppas.src.wxgui.ui.pointctrl import PointCtrl, spEVT_RESIZING, spEVT_MOVING, spEVT_MOVED, spEVT_POINT_LEFT
 
 # ----------------------------------------------------------------------------
+
 
 class PointCtrlDemo(wx.Window):
 

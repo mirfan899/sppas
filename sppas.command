@@ -49,7 +49,7 @@ LANG='C'
 PROGRAM_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 BIN_DIR="$PROGRAM_DIR/sppas/bin"
 SRC_DIR="$PROGRAM_DIR/sppas/src"
-PROGRAM_VERSION=$(grep -e "^version =" $SRC_DIR/sp_glob.py | awk -F'=' '{print $2}' | cut -f2 -d'"')
+PROGRAM_VERSION=$(grep -e "__version__" $PROGRAM_DIR/sppas/meta.py | awk -F'=' '{print $2}' | cut -f2 -d'"')
 
 # User-Interface
 MSG_HEADER="SPPAS $PROGRAM_VERSION, a program written by Brigitte Bigi."
@@ -119,7 +119,7 @@ function fct_clean_temp {
 # ===========================================================================
 # MAIN
 # ===========================================================================
-
+export PYTHONIOENCODING=UTF-8
 
 fct_echo_title $MSG_HEADER  # Print the header message on stdout
 fct_clean_temp              # Remove temporary files (if any)
@@ -136,7 +136,7 @@ if [ $? != "0" ]; then
 fi
 
 # Get the name of the system
-unamestr="`uname`"
+unamestr="`uname | cut -f1 -d'_'`"
 
 echo "Command: "$PYTHON
 echo "System:  "$unamestr
@@ -145,17 +145,10 @@ echo "System:  "$unamestr
 if [[ "$unamestr" == 'Linux' ]]; then
     $PYTHON $BIN_DIR/checkwx.py
     wxstatus="$?"
-    if [[ $wxstatus == "1" ]]; then
-        fct_echo_warning "It seems you are using SPPAS with an old version of wxPython.\nUpdate it at: <http://www.wxpython.org/>."
-    elif [[ $wxstatus == "2" ]]; then
+    if [[ $wxstatus == "2" ]]; then
         fct_exit_error "Wxpython is not installed. Get it at: <http://www.wxpython.org/> "
     fi
     $PYTHON $BIN_DIR/sppasgui.py
-
-# Cygwin
-elif [[ "$unamestr" == 'CYGWIN_*' ]]; then
-   fct_echo_warning "It seems you are using SPPAS under Cygwin... Some troubles can occur with the GUI!"
-   $PYTHON $BIN_DIR/sppasgui.py
 
 # MacOS
 elif [[ "$unamestr" == 'Darwin' ]]; then
@@ -170,6 +163,18 @@ elif [[ "$unamestr" == 'Darwin' ]]; then
     else
         $PYTHON $BIN_DIR/sppasgui.py
     fi
+
+# Cygwin
+elif [[ "$unamestr" == 'CYGWIN' ]]; then
+   if [ -z $DISPLAY ]; then
+       fct_exit_error "Unable to access the X Display. Did you enabled XWin server?"
+   fi
+   $PYTHON $BIN_DIR/checkwx.py
+   wxstatus="$?"
+   if [[ $wxstatus == "2" ]]; then
+       fct_exit_error "Wxpython is not installed. Get it at: <http://www.wxpython.org/> "
+   fi
+   $PYTHON $BIN_DIR/sppasgui.py
 
 else
     fct_exit_error "Your operating system is not supported, or the "uname" command\nreturns an unexpected entry.\nPlease, send an e-mail to the author. "

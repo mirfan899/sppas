@@ -1,12 +1,8 @@
 # [] #
-0 [] sil
-+ [] sil
-<turn> [] gb
-SENT_END [] sil
-SENT_START [] sil
-UNK [] gb
-dummy [] dummy
 * [] gb
++ [] sil
+0 [] sil
+<turn> [] gb
 @ [] @@
 a [] a
 aah [] a a
@@ -69,7 +65,6 @@ cao [] ts_h a o
 cau [] ts_h a u
 ce [] ts_h e
 ceng [] ts_h e N
-cing [] ts_h i N
 ch [] ts
 cha [] ts a
 chah [] ts a
@@ -179,10 +174,11 @@ chui [] ts u i
 chun [] ts u n
 chut [] ts u t
 ci [] ts_h i
+cing [] ts_h i N
 cky [] ts_h k y
+cong [] ts_h o N
 cool [] k u l
 cou [] ts_h o u
-cong [] ts_h o N
 cu [] ts_h u
 cuan [] ts_h u a n
 cui [] ts_h u e i
@@ -210,10 +206,10 @@ dou [] d O
 du [] d u
 duan [] d u a n
 dui [] d u i
+dummy [] dummy
 dun [] d u n
 duo [] t u o
 e [] e
-eN [] e n
 eh [] e
 ehh [] e h
 ehnn [] e~
@@ -295,7 +291,6 @@ hao [] h a o
 hap [] h a p
 hau [] h a u
 he [] h e
-heN [] h e n
 hei [] h e i
 hen [] h e n
 heng [] h e N
@@ -321,7 +316,6 @@ hmm [] h m m
 hng [] h N
 hnn [] h n n
 ho [] h o
-hoN [] h o n
 hoa [] h o a
 hoah [] h o a
 hoai [] h o a i
@@ -372,7 +366,7 @@ iou [] i O
 it [] i t
 iu [] i u
 iunn [] i u~
-j [] dz 
+j [] dz
 ji [] dz i
 jia [] dz i a
 jiam [] dz i a m
@@ -732,7 +726,7 @@ q [] ts_h
 qai [] ts_h a i
 qi [] ts_h i
 qian [] ts_h i a n
-qiang []	 ts_h i a N
+qiang [] ts_h i a N
 qiao [] ts_h i a u
 qie [] ts_h i e
 qin [] ts_h i n
@@ -742,20 +736,19 @@ qu [] ts_h y
 quan [] ts_h y a n
 que [] ts_h y e
 r [] z
-rau [] z a u
 ran [] z a n
 rang [] z a N
-rong [] z o N
 rao [] z a u
+rau [] z a u
 re [] z S
 ren [] z S n
 ri [] z i
+rong [] z o N
 rou [] z o u
 ru [] z u
 ruan [] z u a n
 ruo [] z u o
 s [] s
-si [] s i
 sa [] s a
 sah [] s a
 sahnn [] s a~
@@ -775,6 +768,8 @@ sek [] s e k
 sen [] s e n
 seng [] s e N
 senn [] s e~
+sent_end [] sil
+sent_start [] sil
 sha [] s h a
 shai [] s h a i
 shan [] s h a n
@@ -795,6 +790,7 @@ shuang [] s h u a N
 shui [] s h u i
 shun [] s h u n
 shuo [] s h u o
+si [] s i
 sia [] s i a
 siah [] s i a
 siahn [] s i a n
@@ -941,6 +937,7 @@ uhnn [] u~
 ui [] u i
 um [] u m
 un [] u n
+unk [] gb
 unn [] u~
 vai [] v a i
 van [] v a n
@@ -964,8 +961,8 @@ xia [] ss i a
 xian [] ss i a n
 xiang [] ss i a N
 xiao [] ss i a o
-xiau [] ss i a u
 xiar [] ss i a @
+xiau [] ss i a u
 xie [] ss i e
 xin [] ss i n
 xing [] ss i N

@@ -13,8 +13,8 @@ import os
 from bisect import bisect_left
 from collections import namedtuple
 
-from dependencies.grako.util import ustr, strtype, re as regexp, WHITESPACE_RE, RE_FLAGS
-from dependencies.grako.exceptions import ParseError
+from sppas.src.dependencies.grako.util import ustr, strtype, re as regexp, WHITESPACE_RE, RE_FLAGS
+from sppas.src.dependencies.grako.exceptions import ParseError
 
 # TODO: There could be a file buffer using random access
 

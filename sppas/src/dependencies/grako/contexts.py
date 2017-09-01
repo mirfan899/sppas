@@ -7,11 +7,11 @@ import functools
 from collections import namedtuple
 from contextlib import contextmanager
 
-from dependencies.grako.util import notnone, ustr, prune_dict, is_list, info, safe_name
-from dependencies.grako.ast import AST
-from dependencies.grako import buffering
-from dependencies.grako.color import Fore, Style
-from dependencies.grako.exceptions import (
+from sppas.src.dependencies.grako.util import notnone, ustr, prune_dict, is_list, info, safe_name
+from sppas.src.dependencies.grako.ast import AST
+from sppas.src.dependencies.grako import buffering
+from sppas.src.dependencies.grako.color import Fore, Style
+from sppas.src.dependencies.grako.exceptions import (
     FailedCut,
     FailedLeftRecursion,
     FailedLookahead,

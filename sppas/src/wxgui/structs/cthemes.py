@@ -38,8 +38,8 @@
 
 import wx
 
-from wxgui.structs.wxoption import sppasWxOption
-from wxgui.structs.theme import sppasTheme
+from sppas.src.wxgui.structs.wxoption import sppasWxOption
+from sppas.src.wxgui.structs.theme import sppasTheme
 
 # ----------------------------------------------------------------------------
 

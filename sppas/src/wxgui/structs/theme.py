@@ -37,7 +37,7 @@
 """
 import wx
 
-from wxgui.structs.wxoption import sppasWxOption
+from sppas.src.wxgui.structs.wxoption import sppasWxOption
 
 # ----------------------------------------------------------------------------
 
@@ -92,6 +92,7 @@ class sppasTheme(object):
                  '',
                  wx.FONTENCODING_SYSTEM
                  )
+
     # -----------------------------------------------------------------------
 
     def __init__(self):

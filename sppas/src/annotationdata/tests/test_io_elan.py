@@ -5,14 +5,15 @@ import unittest
 import os.path
 import shutil
 
-import annotationdata.aio
-from annotationdata.aio.elan import Elan
-from annotationdata.transcription import Transcription
-import utils.fileutils
+from ..aio import read as trsread
+from ..aio import write as trswrite
+from ..aio.elan import Elan
+from ..transcription import Transcription
+from sppas.src.utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 
-TEMP = utils.fileutils.gen_name()
+TEMP = sppasFileUtils().set_random()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # ---------------------------------------------------------------------------
@@ -59,11 +60,11 @@ class TestEAF(unittest.TestCase):
                 self.assertTrue(ctrl2.Contains(entry.Text))
 
     def test_Import_XRA(self):
-        tg1 = annotationdata.aio.read(os.path.join(DATA, "sample-1.2.xra"))
-        annotationdata.aio.write(os.path.join(TEMP, "sample-1.2.eaf"), tg1)
+        tg1 = trsread(os.path.join(DATA, "sample-1.2.xra"))
+        trswrite(os.path.join(TEMP, "sample-1.2.eaf"), tg1)
         tg2 = Elan()
         tg2.read(os.path.join(TEMP, "sample-1.2.eaf"))
-        annotationdata.aio.write(os.path.join(TEMP, "sample-1.2.xra"), tg2)
+        trswrite(os.path.join(TEMP, "sample-1.2.xra"), tg2)
 
         # Compare annotations of tg1 and tg2
         for t1, t2 in zip(tg1, tg2):

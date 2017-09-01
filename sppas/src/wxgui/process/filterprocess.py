@@ -47,11 +47,12 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import operator
 import wx
 import logging
+import functools
 
-from annotationdata import Filter, SingleFilter, RelationFilter
-from wxgui.views.processprogress import ProcessProgressDialog
+from sppas.src.annotationdata import Filter, SingleFilter, RelationFilter
+from sppas.src.annotationdata.filter.predicate import Rel, Sel
 
-from annotationdata.filter.predicate import Rel, Sel
+from sppas.src.wxgui.views.processprogress import ProcessProgressDialog
 
 # ----------------------------------------------------------------------------
 
@@ -89,8 +90,8 @@ class FilterProcess:
         #    - AND if "Apply All"
         #    - OR  if "Apply any"
         if self.match_all:
-            return reduce(operator.and_, self.sel_predicates)
-        return reduce(operator.or_, self.sel_predicates)
+            return functools.reduce(operator.and_, self.sel_predicates)
+        return functools.reduce(operator.or_, self.sel_predicates)
 
 
     def RunSingleFilter(self):

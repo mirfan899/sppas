@@ -37,12 +37,12 @@
 """
 import wx
 
-from baseframe import ComponentFrame
-from wxgui.clients.ipuscribeclient import IPUscribeClient
+from sppas.src.wxgui.clients.ipuscribeclient import IPUscribeClient
+from sppas.src.wxgui.sp_icons import IPUSCRIBE_APP_ICON
+from sppas.src.wxgui.sp_icons import SAVE_FILE
+from sppas.src.wxgui.sp_icons import SAVE_ALL_FILE
 
-from wxgui.sp_icons import IPUSCRIBE_APP_ICON
-from wxgui.sp_icons import SAVE_FILE
-from wxgui.sp_icons import SAVE_ALL_FILE
+from .baseframe import ComponentFrame
 
 # ----------------------------------------------------------------------------
 

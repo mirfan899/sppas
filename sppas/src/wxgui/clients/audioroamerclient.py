@@ -40,42 +40,44 @@ import codecs
 import wx
 import wx.lib.scrolledpanel as scrolled
 
-from wxgui.ui.CustomEvents  import NotebookClosePageEvent
-from wxgui.ui.CustomEvents  import FileWanderEvent, spEVT_FILE_WANDER
-from wxgui.ui.CustomEvents  import spEVT_SETTINGS
+import sppas
 
-from baseclient              import BaseClient
-from wxgui.panels.sndplayer  import SndPlayer
-from wxgui.panels.audioinfo  import AudioInfo
-from wxgui.structs.prefs     import Preferences
-from wxgui.structs.theme    import sppasTheme
+from sppas.src.wxgui.ui.CustomEvents import NotebookClosePageEvent
+from sppas.src.wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
+from sppas.src.wxgui.ui.CustomEvents import spEVT_SETTINGS
 
-from wxgui.cutils.imageutils import spBitmap
-from wxgui.cutils.ctrlutils  import CreateGenButton
-from wxgui.cutils.textutils   import TextAsNumericValidator
+from sppas.src.wxgui.panels.sndplayer import SndPlayer
+from sppas.src.wxgui.panels.audioinfo import AudioInfo
+from sppas.src.wxgui.structs.prefs import Preferences
+from sppas.src.wxgui.structs.theme import sppasTheme
 
-from wxgui.sp_icons  import AUDIOROAMER_APP_ICON
-from wxgui.sp_icons  import SAVE_FILE
-from wxgui.sp_icons  import SAVE_AS_FILE
+from sppas.src.wxgui.cutils.imageutils import spBitmap
+from sppas.src.wxgui.cutils.ctrlutils import CreateGenButton
+from sppas.src.wxgui.cutils.textutils import TextAsNumericValidator
 
-from wxgui.sp_consts import INFO_COLOUR
-from wxgui.sp_consts import MIN_PANEL_W
-from wxgui.sp_consts import MIN_PANEL_H
+from sppas.src.wxgui.sp_icons import AUDIOROAMER_APP_ICON
+from sppas.src.wxgui.sp_icons import SAVE_FILE
+from sppas.src.wxgui.sp_icons import SAVE_AS_FILE
 
-from wxgui.dialogs.filedialogs import SaveAsAudioFile, SaveAsAnyFile
-from wxgui.dialogs.msgdialogs import ShowInformation, ShowYesNoQuestion
-from wxgui.dialogs.basedialog import spBaseDialog
-from wxgui.dialogs.choosers import PeriodChooser
+from sppas.src.wxgui.sp_consts import INFO_COLOUR
+from sppas.src.wxgui.sp_consts import MIN_PANEL_W
+from sppas.src.wxgui.sp_consts import MIN_PANEL_H
 
-import audiodata.aio
-from audiodata.channelsilence   import ChannelSilence
-from audiodata.channelformatter import ChannelFormatter
-from audiodata.audioframes      import AudioFrames
-from audiodata.audio            import AudioPCM
-from audiodata.audioutils       import amp2db as amp2db
+from sppas.src.wxgui.dialogs.filedialogs import SaveAsAudioFile, SaveAsAnyFile
+from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation, ShowYesNoQuestion
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.dialogs.choosers import PeriodChooser
 
-from sp_glob import program, version, copyright, url, author, contact
-from sp_glob import encoding
+import sppas.src.audiodata.aio
+from sppas.src.audiodata.channelsilence import sppasChannelSilence
+from sppas.src.audiodata.channelformatter import sppasChannelFormatter
+from sppas.src.audiodata.audioframes import sppasAudioFrames
+from sppas.src.audiodata.audio import sppasAudioPCM
+from sppas.src.audiodata.audioconvert import sppasAudioConverter
+
+from sppas import encoding
+
+from .baseclient import BaseClient
 
 # ----------------------------------------------------------------------------
 
@@ -104,7 +106,6 @@ class AudioRoamerClient(BaseClient):
         return SndRoamer(parent, prefsIO)
 
 # ----------------------------------------------------------------------------
-
 
 class SndRoamer(scrolled.ScrolledPanel):
     """
@@ -426,7 +427,7 @@ class AudioRoamerDialog(spBaseDialog):
         return self.CreateButtonBox([btn_save_channel,btn_save_fragment,btn_save_info],[btn_close])
 
     def _create_content(self):
-        audio = audiodata.aio.open(self._filename)
+        audio = sppas.src.audiodata.aio.open(self._filename)
         nchannels = audio.get_nchannels()
         audio.extract_channels()
         audio.close()
@@ -522,11 +523,11 @@ class AudioRoamerPanel(wx.Panel):
 
         """
         wx.Panel.__init__(self, parent)
-        self._channel = channel   # Channel
+        self._channel  = channel  # Channel
         self._filename = None     # Fixed when "Save as" is clicked
-        self._cv = None           # ChannelSilence, fixed by ShowInfos
+        self._cv = None           # sppasChannelSilence, fixed by ShowInfos
         self._tracks = None       # the IPUs we found automatically
-        self._ca = None           # AudioFrames with only this channel, fixed by ShowInfos
+        self._ca = None           # sppasAudioFrames with only this channel, fixed by ShowInfos
         self._wxobj = {}          # Dict of wx objects
         self._prefs = None
 
@@ -577,8 +578,8 @@ class AudioRoamerPanel(wx.Panel):
         self._wxobj["titleamplitude"] = (static_tx, None)
 
         self.__add_info(self, gbs, "nframes", 1)
-        self.__add_info(self, gbs, "minmax", 2)
-        self.__add_info(self, gbs, "cross", 3)
+        self.__add_info(self, gbs, "minmax",  2)
+        self.__add_info(self, gbs, "cross",   3)
 
         static_tx = wx.StaticText(self, -1, "")
         gbs.Add(static_tx, (4, 0), (1, 2), flag=wx.LEFT, border=2)
@@ -654,8 +655,8 @@ class AudioRoamerPanel(wx.Panel):
         gbs.Add(static_tx, (5, 0), (1, 2), flag=wx.LEFT, border=2)
         self._wxobj["titleipus"] = (static_tx, None)
 
-        self.__add_info(self, gbs, "volsil", 6)
-        self.__add_info(self, gbs, "nbipus", 7)
+        self.__add_info(self, gbs, "volsil",  6)
+        self.__add_info(self, gbs, "nbipus",  7)
         self.__add_info(self, gbs, "duripus", 8)
 
         border = wx.BoxSizer()
@@ -672,12 +673,12 @@ class AudioRoamerPanel(wx.Panel):
         :param evt: (wx.event)
 
         """
-        evt_obj = evt.GetEventObject()
-        evt_value = evt_obj.GetValue()
-        for (key, default_value) in self.MODIFIABLES.items():
-            (tx, obj) = self._wxobj[key]
-            if evt_obj == obj:
-                if evt_value == default_value:
+        evtobj   = evt.GetEventObject()
+        evtvalue = evtobj.GetValue()
+        for key, defaultvalue in self.MODIFIABLES.items():
+            (tx,obj) = self._wxobj[key]
+            if evtobj == obj:
+                if evtvalue == defaultvalue:
                     obj.SetForegroundColour(self._prefs.GetValue('M_FG_COLOUR'))
                     tx.SetForegroundColour(self._prefs.GetValue('M_FG_COLOUR'))
                 else:
@@ -712,7 +713,7 @@ class AudioRoamerPanel(wx.Panel):
 
         """
         wx.Window.SetFont(self, font)
-        for (tx, obj) in self._wxobj.values():
+        for (tx,obj) in self._wxobj.values():
             tx.SetFont(font)
             if obj is not None:
                 obj.SetFont(font)
@@ -736,7 +737,7 @@ class AudioRoamerPanel(wx.Panel):
 
         """
         wx.Window.SetBackgroundColour(self, color)
-        for (tx, obj) in self._wxobj.values():
+        for (tx,obj) in self._wxobj.values():
             tx.SetBackgroundColour(color)
             if obj is not None:
                 obj.SetBackgroundColour(color)
@@ -750,7 +751,7 @@ class AudioRoamerPanel(wx.Panel):
 
         """
         wx.Window.SetForegroundColour(self, color)
-        for (tx, obj) in self._wxobj.values():
+        for (tx,obj) in self._wxobj.values():
             tx.SetForegroundColour(color)
             if obj is not None:
                 obj.SetForegroundColour(color)
@@ -777,13 +778,13 @@ class AudioRoamerPanel(wx.Panel):
 
         # Modifiable
         fm = str(self._channel.get_framerate())
-        if fm not in AudioRoamerPanel.FRAMERATES:
+        if not fm in AudioRoamerPanel.FRAMERATES:
             self._wxobj["framerate"][1].Append(fm)
         self._wxobj["framerate"][1].SetStringSelection(fm)
         self.MODIFIABLES["framerate"] = fm
 
         sp = str(self._channel.get_sampwidth()*8)
-        if sp not in AudioRoamerPanel.SAMPWIDTH:
+        if not sp in AudioRoamerPanel.SAMPWIDTH:
             self._wxobj["sampwidth"][1].Append(sp)
         self._wxobj["sampwidth"][1].SetStringSelection(sp)
         self.MODIFIABLES["sampwidth"] = sp
@@ -797,12 +798,15 @@ class AudioRoamerPanel(wx.Panel):
         vmin = self._cv.get_volstats().min()
         vmax = self._cv.get_volstats().max()
         vavg = self._cv.get_volstats().mean()
-        self._wxobj["volmin"][1].ChangeValue(" "+str(vmin)+" ("+str(amp2db(vmin))+" dB) ")
-        self._wxobj["volmax"][1].ChangeValue(" "+str(vmax)+" ("+str(amp2db(vmax))+" dB) ")
-        self._wxobj["volavg"][1].ChangeValue(" "+str(int(vavg))+" ("+str(amp2db(vavg))+" dB) ")
+        vmin_db = sppasAudioConverter().amp2db(vmin)
+        vmax_db = sppasAudioConverter().amp2db(vmax)
+        vavg_db = sppasAudioConverter().amp2db(vavg)
+        self._wxobj["volmin"][1].ChangeValue(" "+str(vmin)+" ("+str(vmin_db)+" dB) ")
+        self._wxobj["volmax"][1].ChangeValue(" "+str(vmax)+" ("+str(vmax_db)+" dB) ")
+        self._wxobj["volavg"][1].ChangeValue(" "+str(int(vavg))+" ("+str(vavg_db)+" dB) ")
         self._wxobj["volsil"][1].ChangeValue(" "+str(self._cv.search_threshold_vol())+" ")
         self._wxobj["nbipus"][1].ChangeValue(" "+str(len(self._tracks))+" ")
-        d = sum([(e-s) for (s, e) in self._tracks])
+        d = sum([(e-s) for (s,e) in self._tracks])
         self._wxobj["duripus"][1].ChangeValue(" "+str(d)+" ")
 
     # -----------------------------------------------------------------------
@@ -810,7 +814,7 @@ class AudioRoamerPanel(wx.Panel):
     def SetChannel(self, new_channel):
         """ Set a new channel, estimates the values to be displayed.
 
-        :param new_channel: (Channel)
+        :param new_channel: (sppasChannel)
 
         """
         # Set the channel
@@ -821,13 +825,13 @@ class AudioRoamerPanel(wx.Panel):
 
         # To estimate values related to amplitude
         frames = self._channel.get_frames(self._channel.get_nframes())
-        self._ca = AudioFrames(frames, self._channel.get_sampwidth(), 1)
+        self._ca = sppasAudioFrames(frames, self._channel.get_sampwidth(), 1)
 
         # Estimates the RMS (=volume), then find where are silences, then IPUs
-        self._cv = ChannelSilence(self._channel)
-        self._cv.search_silences()                # threshold=0, mintrackdur=0.08
-        self._cv.filter_silences()                # minsildur=0.2
-        self._tracks = self._cv.extract_tracks()  # mintrackdur=0.3
+        self._cv = sppasChannelSilence(self._channel)
+        self._cv.search_silences()               # threshold=0, mintrackdur=0.08
+        self._cv.filter_silences()               # minsildur=0.2
+        self._tracks = self._cv.extract_tracks() # mintrackdur=0.3
 
         b.Destroy()
         b = None
@@ -840,14 +844,14 @@ class AudioRoamerPanel(wx.Panel):
 
         :param from_time: (float)
         :param to_time: (float)
-        :returns: (Channel) new channel or None if nothing changed
+        :returns: (sppasChannel) new channel or None if nothing changed
 
         """
         # Get the list of modifiable values from wx objects
-        fm = int(self._wxobj["framerate"][1].GetValue())
-        sp = int(int(self._wxobj["sampwidth"][1].GetValue())/8)
-        mul = float(self._wxobj["mul"][1].GetValue())
-        bias = int(self._wxobj["bias"][1].GetValue())
+        fm     = int(self._wxobj["framerate"][1].GetValue())
+        sp     = int(int(self._wxobj["sampwidth"][1].GetValue())/8)
+        mul    = float(self._wxobj["mul"][1].GetValue())
+        bias   = int(self._wxobj["bias"][1].GetValue())
         offset = self._wxobj["offset"][1].GetValue()
 
         dirty = False
@@ -868,7 +872,7 @@ class AudioRoamerPanel(wx.Panel):
         if fm != self._channel.get_framerate() or sp != self._channel.get_sampwidth() or mul != 1. or bias != 0 or offset is True:
             wx.BeginBusyCursor()
             b = wx.BusyInfo("Please wait while formatting data...")
-            channelfmt = ChannelFormatter(channel)
+            channelfmt = sppasChannelFormatter(channel)
             channelfmt.set_framerate(fm)
             channelfmt.set_sampwidth(sp)
             channelfmt.convert()
@@ -908,9 +912,7 @@ class AudioRoamerPanel(wx.Panel):
                     if e < s:
                         raise Exception
                 except Exception:
-                    ShowInformation(self, self._prefs,
-                                    "Error in the definition of the portion of time.",
-                                    style=wx.ICON_ERROR)
+                    ShowInformation(self, self._prefs, "Error in the definition of the portion of time.", style=wx.ICON_ERROR)
                     return
             dlg.Destroy()
             if answer != wx.ID_OK:
@@ -921,18 +923,14 @@ class AudioRoamerPanel(wx.Panel):
         # If it is the OK response, process the data.
         if new_filename is not None:
             if new_filename == parent_filename:
-                ShowInformation(self, self._prefs,
-                                "Assigning the current file name is forbidden. Choose a new file name.",
-                                style=wx.ICON_ERROR)
+                ShowInformation(self, self._prefs, "Assigning the current file name is forbidden. Choose a new file name.", style=wx.ICON_ERROR)
                 return
 
             # Create a formatted channel
             try:
                 channel = self.ApplyChanges(s, e)
             except Exception as e:
-                ShowInformation(self, self._prefs,
-                                "Error while formatting the channel: {:s}".format(str(e)),
-                                style=wx.ICON_ERROR)
+                ShowInformation(self, self._prefs, "Error while formatting the channel: %s" % str(e), style=wx.ICON_ERROR)
                 return
 
             message = "File {:s} saved successfully.".format(new_filename)
@@ -943,9 +941,9 @@ class AudioRoamerPanel(wx.Panel):
 
             # Save the channel
             try:
-                audio = AudioPCM()
+                audio = sppasAudioPCM()
                 audio.append_channel(channel)
-                audiodata.aio.save(new_filename, audio)
+                sppas.src.audiodata.aio.save(new_filename, audio)
             except Exception as e:
                 message = "File not saved. Error: {:s}".format(str(e))
             else:
@@ -976,21 +974,21 @@ class AudioRoamerPanel(wx.Panel):
     def _infos_content(self, parent_filename):
         content = ""
         content += self.__separator()
-        content += self.__line(program + ' - Version ' + version)
-        content += self.__line(copyright)
-        content += self.__line("Web site: " + url)
-        content += self.__line("Contact: " + author + "(" + contact + ")")
+        content += self.__line(sppas.__name__ + ' - Version ' + sppas.__version__)
+        content += self.__line(sppas.__copyright__)
+        content += self.__line("Web site: " + sppas.__url__)
+        content += self.__line("Contact: " + sppas.__author__ + "(" + sppas.__contact__ + ")")
         content += self.__separator()
         content += self.__newline()
         content += self.__line("Date: " + str(datetime.datetime.now()))
 
         # General information
         content += self.__section("General information")
-        content += self.__line("Channel filename: {:s}".format(self._filename))
-        content += self.__line("Channel extracted from file: {:s}".format(parent_filename))
-        content += self.__line("Duration: {:f} sec.".format(self._channel.get_duration()))
-        content += self.__line("Framerate: {:d} Hz".format(self._channel.get_framerate()))
-        content += self.__line("Samp. width: {:d} bits".format((int(self._channel.get_sampwidth())*8)))
+        content += self.__line("Channel filename: %s"%self._filename)
+        content += self.__line("Channel extracted from file: "+parent_filename)
+        content += self.__line("Duration: %s sec."%self._channel.get_duration())
+        content += self.__line("Framerate: %d Hz"%self._channel.get_framerate())
+        content += self.__line("Samp. width: %d bits" % (int(self._channel.get_sampwidth())*8))
 
         # Amplitude
         content += self.__section("Amplitude")
@@ -1000,7 +998,7 @@ class AudioRoamerPanel(wx.Panel):
 
         # Clipping
         content += self.__section("Amplitude clipping")
-        for i in range(1, 10):
+        for i in range(1,10):
             f = self._ca.clipping_rate(float(i)/10.) * 100.
             content += self.__item("  factor "+str(float(i)/10.)+": "+str(round(f, 2))+"%")
 
@@ -1085,8 +1083,9 @@ class AudioRoamerPanel(wx.Panel):
 
 # ----------------------------------------------------------------------------
 
+
 def ShowAudioRoamerDialog(parent, preferences, filename):
-    audio = audiodata.aio.open(filename)
+    audio = sppas.src.audiodata.aio.open(filename)
     if audio.get_nframes() > 15000000:
         userChoice = ShowYesNoQuestion(None, preferences, "Audio file is very large. Showing more will take a while and could generate a memory error. Really want more?")
         if userChoice == wx.ID_NO:

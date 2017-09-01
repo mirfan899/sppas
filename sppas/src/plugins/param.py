@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     src.plugins.param.py
-    ~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~
 
     The set of parameters of a plugin is made of a directory name, a 
     configuration file name and a sppasPluginParser. This latter allows to
@@ -40,16 +40,18 @@
         - the plugin configuration: identifier, name, description and icon;
         - the commands for windows, macos and linux;
         - a set of options, each one containing at least an identifier, \
-        and optionnally a type, a value and a description text.
+        and optionally a type, a value and a description text.
 
 """
-
 import os
 import platform
 import shlex
 from subprocess import Popen
 
-from cfgparser import sppasPluginConfigParser
+from .pluginsexc import CommandExecError
+from .pluginsexc import CommandSystemError
+from .pluginsexc import OptionKeyError
+from .cfgparser import sppasPluginConfigParser
 
 # ----------------------------------------------------------------------------
 
@@ -67,28 +69,19 @@ class sppasPluginParam(object):
     def __init__(self, directory, config_file):
         """ Creates a new sppasPluginParam instance.
 
-        :param directory: (string) the directory where to find the plugin
-        :param config_file: (string) the file name of the plugin configuration
+        :param directory: (str) the directory where to find the plugin
+        :param config_file: (str) the file name of the plugin configuration
 
         """
         # The path where to find the plugin and its config
         self._directory = directory
-        self._cfgfile   = config_file
+        self._cfgfile = config_file
         self._cfgparser = sppasPluginConfigParser()
 
-        # Declare members and initialize
-        self.reset()
-
-        # OK... fill members from the given file
-        self.parse()
-
-    # ------------------------------------------------------------------------
-
-    def reset(self):
-        """ Reset all members to their default value. """
+        # Declare members and initialize:
 
         # An identifier to represent this plugin
-        self._key  = None
+        self._key = None
         # The name of the plugin
         self._name = ""
         # The description of the plugin do
@@ -98,7 +91,22 @@ class sppasPluginParam(object):
 
         # The command to be executed and its options
         self._command = ""
-        self._options = {}
+        self._options = dict()
+        # OK... fill members from the given file
+        self.parse()
+
+    # ------------------------------------------------------------------------
+
+    def reset(self):
+        """ Reset all members to their default value. """
+
+        self._key = None
+        self._name = ""
+        self._descr = ""
+        self._icon = ""
+
+        self._command = ""
+        self._options = dict()
 
     # ------------------------------------------------------------------------
 
@@ -106,21 +114,21 @@ class sppasPluginParam(object):
         """ Parse the configuration file of the plugin.  """
 
         self.reset()
-        filename = os.path.join(self._directory,self._cfgfile)
+        filename = os.path.join(self._directory, self._cfgfile)
         self._cfgparser.parse(filename)
 
         # get the command
         command = self.__get_command(self._cfgparser.get_command())
         if not self.__check_command(command):
-            raise IOError("Command not found: %s" % command)
+            raise CommandExecError(command)
         self._command = command
 
         # get the configuration
         conf = self._cfgparser.get_config()
-        self._key   = conf['id']
-        self._name  = conf.get("name", "")
+        self._key = conf['id']
+        self._name = conf.get("name", "")
         self._descr = conf.get("descr", "")
-        self._icon  = conf.get("icon", "")
+        self._icon = conf.get("icon", "")
 
         # get the options
         self._options = self._cfgparser.get_options()
@@ -174,7 +182,7 @@ class sppasPluginParam(object):
         for option in self._options.values():
             if option.get_key() == key:
                 return option
-        raise KeyError("No option with key %s" % key)
+        raise OptionKeyError(key)
 
     def get_options(self):
         """ Get all the options. """
@@ -190,11 +198,11 @@ class sppasPluginParam(object):
 
     @staticmethod
     def __get_command(commands):
-        """ Return the appropriate command from a list of available ones. """
+        """ Returns the appropriate command from a list of available ones. """
 
         _system = platform.system().lower()
 
-        if 'windows' in _system and 'windows' in commands.keys():
+        if ('windows' in _system or 'cygwin' in _system) and 'windows' in commands.keys():
             return commands['windows']
 
         if 'darwin' in _system and 'macos' in commands.keys():
@@ -203,13 +211,13 @@ class sppasPluginParam(object):
         if 'linux' in _system and 'linux' in commands.keys():
             return commands['linux']
 
-        raise Exception("No command defined for the system: %s. Supported systems are: %s" % (_system, " ".join(commands.keys())))
+        raise CommandSystemError(_system, commands.keys())
 
     # ------------------------------------------------------------------------
 
     @staticmethod
     def __check_command(command):
-        """ Return True if command exists.
+        """ Returns True if command exists.
         Test only the main command (i.e. the first string, without args).
 
         """
@@ -217,14 +225,11 @@ class sppasPluginParam(object):
         test_command = command_args[0]
 
         NULL = open(os.devnull, 'w')
-        if isinstance(test_command, unicode):
-            test_command = test_command.encode('utf-8')
         try:
             p = Popen([test_command], shell=False, stdout=NULL, stderr=NULL)
+            NULL.close()
         except OSError:
             return False
         else:
             p.kill()
             return True
-
-    # ------------------------------------------------------------------------

@@ -45,14 +45,13 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import wx
 
-from annotationdata.filter.predicate import Rel
+from sppas.src.annotationdata.filter.predicate import Rel
 
-from wxgui.dialogs.basedialog import spBaseDialog
-from wxgui.sp_icons import DATAFILTER_APP_ICON
-from wxgui.sp_icons import FILTER_RELATION
+from sppas.src.wxgui.dialogs.basedialog import spBaseDialog
+from sppas.src.wxgui.sp_icons import FILTER_RELATION
 
-from wxgui.cutils.textutils import TextValidator
-from wxgui.panels.relationstable import AllensRelationsTable
+from sppas.src.wxgui.cutils.textutils import TextValidator
+from sppas.src.wxgui.panels.relationstable import AllensRelationsTable
 
 # ----------------------------------------------------------------------------
 # Constants

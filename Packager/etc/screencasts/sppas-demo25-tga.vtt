@@ -1,0 +1,28 @@
+﻿WEBVTT
+
+00:00:00.100 --> 00:00:02.700
+Time Group Analysis requires syllables
+
+00:00:15.000 --> 00:00:19.000
+proposed by D. Gibbon and implemented into DataStats of SPPAS
+
+00:00:24.000 --> 00:00:28.000
+Select tiers with syllables
+
+00:00:33.500 --> 00:00:36.000
+then click on the "TGA" button
+
+00:00:36.867 --> 00:00:39.867
+Each line of the displayed grid is a Time Group
+
+00:01:24.000 --> 00:01:28.000
+The "Means" tab displays information of each file
+
+00:01:30.067 --> 00:01:34.067
+The "Delta Duration" tab compares the duration of each syllable with the previous one
+
+00:01:45.000 --> 00:01:48.000
+TGA results can be exported as an annotated file
+
+00:01:50.000 --> 00:01:53.000
+TGA results can be saved in a CSV file

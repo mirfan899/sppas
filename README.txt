@@ -5,9 +5,11 @@
        \  |     |     |   |    \             analysis
     ___/  |     |     |   | ___/              of speech
 
-    http://www.sppas.org/
+    <http://www.sppas.org/>
 
-    Use of this software is governed by the GNU Public License, version 3.
+    * Use of this software is governed by GPL version 3 or any later version.
+    * Documentation of this software is governed by GNU Free Documentation License, version 1.3.
+    * Resources of this software have individual licenses (see documentation).
 
     SPPAS is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,7 +22,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+    along with SPPAS. If not, see http://www.gnu.org/licenses/.
 
     -------------------------------------------------------------------------
 
@@ -29,8 +31,9 @@
     the Laboratoire Parole et Langage, in Aix-en-Provence, France.
 
     Any and all constructive comments are welcome. Contact the author:
-        - brigitte.bigi@gmail.com
-        - http://www.lpl-aix.fr/~bigi
+
+    - `brigitte.bigi@gmail.com`
+    - http://www.lpl-aix.fr/~bigi/
 
     -------------------------------------------------------------------------
 
@@ -47,8 +50,8 @@
 
     Need help?
 
-        - Tutorials are available on the web site;
-        - Explore the "documentation" folder;
-        - Subscribe to the user's group.
+    - Tutorials are available on the web site
+    - Explore the "documentation" folder of this package
+      or the documentation on the web
 
     -------------------------------------------------------------------------

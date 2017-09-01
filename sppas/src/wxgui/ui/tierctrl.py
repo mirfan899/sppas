@@ -19,7 +19,6 @@
 
 __docformat__ = "epytext"
 
-
 # ----------------------------------------------------------------------------
 # Imports
 # ----------------------------------------------------------------------------
@@ -29,18 +28,13 @@ import logging
 import wx
 import wx.lib.newevent
 
-from spControl import spControl
+from sppas.src.wxgui.cutils.textutils import TextAsNumericValidator
+from sppas.src.wxgui.cutils.colorutils import PickRandomColour, ContrastiveColour
 
+from spControl import spControl
 from pointctrl import PointCtrl
 from pointctrl import MIN_W as pointctrlMinWidth
-
 from labelctrl import LabelCtrl
-
-from wxgui.cutils.textutils import TextAsNumericValidator
-from wxgui.cutils.colorutils import PickRandomColour, ContrastiveColour
-
-# ----------------------------------------------------------------------------
-
 
 # ----------------------------------------------------------------------------
 # Constants

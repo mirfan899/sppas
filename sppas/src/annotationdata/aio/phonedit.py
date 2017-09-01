@@ -39,11 +39,11 @@ import codecs
 from datetime import datetime
 import re
 
-from annotationdata.transcription import Transcription
-from annotationdata.annotation import Annotation
-from annotationdata.label.label import Label
-from annotationdata.ptime.interval import TimeInterval
-import annotationdata.ptime.point
+from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.label.label import Label
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+import sppas.src.annotationdata.ptime.point
 
 # ----------------------------------------------------------------------------
 
@@ -53,7 +53,7 @@ PHONEDIT_RADIUS = 0.0005
 
 
 def TimePoint(time):
-    return annotationdata.ptime.point.TimePoint(time, PHONEDIT_RADIUS)
+    return sppas.src.annotationdata.ptime.point.TimePoint(time, PHONEDIT_RADIUS)
 
 # ----------------------------------------------------------------------------
 

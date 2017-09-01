@@ -1,97 +1,99 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /        Automatic
-#           \__   |__/  |__/  |___| \__      Annotation
-#              \  |     |     |   |    \     of
-#           ___/  |     |     |   | ___/     Speech
-#           =============================
-#
-#           http://www.lpl-aix.fr/~bigi/sppas
-#
-# ---------------------------------------------------------------------------
-# developed at:
-#
-#       Laboratoire Parole et Langage
-#
-#       Copyright (C) 2011-2014  Brigitte Bigi
-#
-#       Use of this software is governed by the GPL, v3
-#       This banner notice must not be removed
-# ---------------------------------------------------------------------------
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: trsmerge.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
-__copyright__ = """Copyright (C) 2011-2014  Brigitte Bigi"""
+        http://www.sppas.org/
 
+        Use of this software is governed by the GNU Public License, version 3.
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
 
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    scripts.trsmerge.py
+    ~~~~~~~~~~~~~~~~~~~
+
+    ... a script to merge annotation files.
+
+"""
 import sys
-import os
 import os.path
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.join(os.path.dirname( os.path.dirname( PROGRAM ) ), "src")
+SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from   annotationdata.transcription import Transcription
-import annotationdata.aio
+from sppas.src.annotationdata.transcription import Transcription
+import sppas.src.annotationdata.aio
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM), description="... a script to merge annotations files.")
+parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
+                        description="... a script to merge annotation files.")
 
-parser.add_argument("-i", metavar="file", action='append', required=True,  help='Input annotated file name (as many as wanted)')
-parser.add_argument("-o", metavar="file",  required=True,  help='Output annotated file name')
-parser.add_argument("--quiet", action='store_true', help="Disable the verbosity" )
+parser.add_argument("-i",
+                    metavar="file",
+                    action='append',
+                    required=True,
+                    help='Input annotated file name (as many as wanted)')
+
+parser.add_argument("-o",
+                    metavar="file",
+                    required=True,
+                    help='Output annotated file name')
+
+parser.add_argument("--quiet",
+                    action='store_true',
+                    help="Disable the verbosity")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
 
 args = parser.parse_args()
 
-
 # ----------------------------------------------------------------------------
 
-trsoutput = Transcription()
+trs_output = Transcription("SPPAS Merge")
 
-for trsinputfile in args.i:
+for trs_input_file in args.i:
 
-    if not args.quiet: print "Read input file:"
-    trsinput = annotationdata.aio.read(trsinputfile)
+    if not args.quiet:
+        print("Read input annotated file:")
+    trs_input = sppas.src.annotationdata.aio.read(trs_input_file)
 
     # Take all tiers
-    for i in range(trsinput.GetSize()):
-        if not args.quiet: sys.stdout.write( " -> Tier "+str(i+1)+": ")
-        trsoutput.Append(trsinput[i])
-        if not args.quiet: print " [  OK  ]"
+    for i in range(trs_input.GetSize()):
+        if not args.quiet:
+            sys.stdout.write(" -> Tier "+str(i+1)+": ")
+        trs_output.Append(trs_input[i])
+        if not args.quiet:
+            print(" [  OK  ]")
 
-if not args.quiet: sys.stdout.write( "Write output file: ")
-annotationdata.aio.write(args.o, trsoutput)
-if not args.quiet: print " [  OK  ]"
-
-# ----------------------------------------------------------------------------
+if not args.quiet:
+    sys.stdout.write("Write output file: ")
+sppas.src.annotationdata.aio.write(args.o, trs_output)
+if not args.quiet:
+    print(" [  OK  ]")
