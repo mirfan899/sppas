@@ -43,7 +43,7 @@
 import unittest
 
 from ..makeunicode import sppasUnicode
-from ..makeunicode import u, b
+from ..makeunicode import u, b, basestring
 
 # ---------------------------------------------------------------------------
 
@@ -179,3 +179,10 @@ class TestMakeUnicode(unittest.TestCase):
         s = "  ée  àa  çc  "
         #print(u(s))
         #print(b(u(s)))
+
+    def test_basestring(self):
+        self.assertTrue(isinstance('toto', basestring))
+        self.assertTrue(isinstance(u('toto'), basestring))
+        self.assertTrue(isinstance(b('toto'), basestring))
+        self.assertFalse(isinstance(True, basestring))
+        self.assertFalse(isinstance(5, basestring))

@@ -70,6 +70,8 @@ if sys.version_info < (3,):
     def b(x):
         return x.encode(encoding)
 
+    basestring = basestring
+
 else:
     """ Unicode conversion for Python > 3.2 """
 
@@ -82,6 +84,8 @@ else:
     def b(x):
         return x.encode(encoding)
         # return codecs.utf_8_encode(x)[0]
+
+    basestring = str
 
 # ---------------------------------------------------------------------------
 

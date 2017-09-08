@@ -382,8 +382,7 @@ class TestsppasAcModel(unittest.TestCase):
 
     def test_proto(self):
         sp = sppasCompare()
-        h1 = sppasHtkIO()
-        h1.write_hmm_proto(25, os.path.join(TEMP, "proto_from_htkio"))
+        sppasHtkIO.write_hmm_proto(25, os.path.join(TEMP, "proto_from_htkio"))
 
         h2 = sppasHMM()
         h2.create_proto(25)

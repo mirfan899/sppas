@@ -36,6 +36,9 @@ import collections
 import copy
 import json
 
+from sppas.src.utils.makeunicode import basestring
+from ..modelsexc import DataTypeError
+
 import acmodelhtkio
 
 # ---------------------------------------------------------------------------
@@ -54,12 +57,23 @@ class sppasBaseModel(object):
     It could also be used to define transitions, etc...
     A model is made of a name (str) and a definition (OrderedDict).
 
+    Each model is made of:
+
+       - a 'name': a string
+       - a 'definition': an OrderedDict
+
     """
+    DEFAULT_NAME = "und"
+
+    # -----------------------------------------------------------------------
+
     def __init__(self):
-        """ Create a sppasBaseModel instance. """
+        """ Create a sppasBaseModel instance.
+         The model includes a default name and an empty definition. """
         
-        self.name = ""
-        self.definition = sppasBaseModel.create_default()
+        self.__name = sppasBaseModel.DEFAULT_NAME
+        self._definition = collections.OrderedDict()
+        self.set_default_definition()
 
     # -----------------------------------------------------------------------
 
@@ -75,17 +89,43 @@ class sppasBaseModel(object):
 
     # -----------------------------------------------------------------------
 
+    def get_name(self):
+        """ Return the name (str) of the model. """
+
+        return self.__name
+
+    # -----------------------------------------------------------------------
+
     def set_name(self, name):
         """ Set the name of the model.
 
-        :param name: (str) Name of the HMM
+        :param name: (str) Name of the HMM.
+        :raises: DataTypeError
 
         """
-        if isinstance(name, (str, unicode)) is False:
-            raise TypeError('Expected a name of type string. '
-                            'Got: %s' % type(name))
-        
-        self.name = name
+        if name is None:
+            self.__name = sppasBaseModel.DEFAULT_NAME
+        else:
+            if isinstance(name, basestring) is False:
+                raise DataTypeError("name of HMM", "string", type(name))
+            self.__name = name
+
+    # -----------------------------------------------------------------------
+
+    def get_definition(self):
+        """ Return the definition (OrderedDict) of the model. """
+
+        return self._definition
+
+    # -----------------------------------------------------------------------
+
+    def set_default_definition(self):
+        """ Set an empty definition. """
+
+        self._definition = collections.OrderedDict()
+        self._definition['state_count'] = 0
+        self._definition['states'] = list()
+        self._definition['transition'] = list()
 
     # -----------------------------------------------------------------------
 
@@ -93,25 +133,34 @@ class sppasBaseModel(object):
         """ Set the definition of the model.
 
         :param definition: (OrderedDict) Definition of the HMM (states and transitions)
+        :raises: DataTypeError
 
         """
         if isinstance(definition, collections.OrderedDict) is False:
-            raise TypeError('Expected a definition of type collections.OrderedDict. '
-                            'Got: %s' % type(definition))
-        
-        self.definition = definition
+            raise DataTypeError("definition of HMM", "collections.OrderedDict", type(definition))
+
+        self._definition = definition
 
     # -----------------------------------------------------------------------
 
     @staticmethod
     def create_default():
-        return collections.defaultdict(lambda: None)
-        # return collections.OrderedDict()
+        """ Create a default ordered dictionary, used for states.
+
+        :returns: collections.OrderedDict()
+
+        """
+        return collections.OrderedDict()
 
     # ----------------------------------
 
     @staticmethod
     def create_vector(vector):
+        """ Create a default vector.
+
+        :returns: collections.OrderedDict()
+
+        """
         v = sppasBaseModel.create_default()
         v['dim'] = len(vector)
         v['vector'] = vector
@@ -121,10 +170,22 @@ class sppasBaseModel(object):
 
     @staticmethod
     def create_square_matrix(matrix):
+        """ Create a default matrix.
+
+        :returns: collections.OrderedDict()
+
+        """
         m = sppasBaseModel.create_default()
         m['dim'] = len(matrix[0])
         m['matrix'] = matrix
         return m
+
+    # -----------------------------------------------------------------------
+    # Properties
+    # -----------------------------------------------------------------------
+
+    name = property(fget=get_name, fset=set_name, fdel=None, doc=None)
+    definition = property(fget=get_definition, fset=set_definition, fdel=None, doc=None)
 
 # ---------------------------------------------------------------------------
 
@@ -148,10 +209,6 @@ class sppasHMM(sppasBaseModel):
     highly flexible distribution able to model, for example, asymmetric and
     multi-modal distributed data.
 
-    Each hmm model is made of:
-       - a 'name': str or unicode
-       - a 'definition': OrderedDict
-
     An HMM-definition is made of:
         - state_count: int
         - states: list of OrderedDict with "index" and "state" as keys.
@@ -173,49 +230,51 @@ class sppasHMM(sppasBaseModel):
 
         :param states: (OrderedDict)
         :param transition: (OrderedDict)
-        :param name: (string)
+        :param name: (string) The name of the HMM. If None, the default name is assigned.
 
         """
         self.set_name(name)
-        self.definition = sppasBaseModel.create_default()
+        self.set_default_definition()
 
-        self.definition['state_count'] = len(states) + 2
-        self.definition['states'] = []
+        self._definition['state_count'] = len(states) + 2
+        self._definition['states'] = list()
         for i, state in enumerate(states):
             hmm_state = sppasBaseModel.create_default()
             hmm_state['index'] = i + 2
             hmm_state['state'] = state
-            self.definition['states'].append(hmm_state)
+            self._definition['states'].append(hmm_state)
 
-        self.definition['transition'] = transition
+        self._definition['transition'] = transition
 
     # -----------------------------------------------------------------------
 
-    def create_proto(self, protosize, nbmix=1):
+    def create_proto(self, proto_size, nb_mix=1):
         """ Create the 5-states HMM `proto` and set it.
 
-        :param protosize (int) Number of mean and variance values.
+        :param proto_size: (int) Number of mean and variance values.
         It's commonly either 25 or 39, it depends on the MFCC parameters.
-        :param nbmix: (int) Number of mixtures (i.e. the number of times means and variances occur)
+        :param nb_mix: (int) Number of mixtures (i.e. the number of times means and variances occur)
 
         """
+        # Fix the name and an empty definition
         self.name = "proto"
-        self.definition = sppasBaseModel.create_default()
+        self.set_default_definition()
 
-        means = [0.0]*protosize
-        variances = [1.0]*protosize
+        # Fix the definition
+        means = [0.0]*proto_size
+        variances = [1.0]*proto_size
 
         # Define states
-        self.definition['state_count'] = 5
-        self.definition['states'] = []
+        self._definition['state_count'] = 5
+        self._definition['states'] = list()
         for i in range(3):
             hmm_state = sppasBaseModel.create_default()
             hmm_state['index'] = i + 2
-            hmm_state['state'] = sppasHMM.create_gmm([means]*nbmix, [variances]*nbmix)
-            self.definition['states'].append(hmm_state)
+            hmm_state['state'] = sppasHMM.create_gmm([means]*nb_mix, [variances]*nb_mix)
+            self._definition['states'].append(hmm_state)
 
         # Define transitions
-        self.definition['transition'] = sppasHMM.create_transition()
+        self._definition['transition'] = sppasHMM.create_transition()
 
     # -----------------------------------------------------------------------
 
@@ -230,18 +289,18 @@ class sppasHMM(sppasBaseModel):
 
         """
         self.name = "sp"
-        self.definition = sppasBaseModel.create_default()
+        self.set_default_definition()
 
         # Define states
-        self.definition['state_count'] = 3
-        self.definition['states'] = []
+        self._definition['state_count'] = 3
+        self._definition['states'] = []
         hmm_state = sppasBaseModel.create_default()
         hmm_state['index'] = 2
         hmm_state['state'] = "silst"
-        self.definition['states'].append(hmm_state)
+        self._definition['states'].append(hmm_state)
 
         # Define transitions
-        self.definition['transition'] = sppasHMM.create_transition([0.9])
+        self._definition['transition'] = sppasHMM.create_transition([0.9])
 
     # -----------------------------------------------------------------------
 
@@ -254,11 +313,9 @@ class sppasHMM(sppasBaseModel):
         htk_model = acmodelhtkio.sppasHtkIO(filename)
         hmms = htk_model.get_hmms()
         if len(hmms) < 1:
-            raise IOError('HMM not loaded.')
+            raise IOError('No HMM loaded.')
 
-        htk_hmm = hmms[0]
-        self.name = htk_hmm.name
-        self.definition = htk_hmm.definition
+        self.set(hmms[0].name, hmms[0].definition)
 
     # -----------------------------------------------------------------------
 
@@ -283,7 +340,7 @@ class sppasHMM(sppasBaseModel):
         :returns: collections.OrderedDict or None
 
         """
-        states = self.definition['states']
+        states = self._definition['states']
         for item in states:
             if int(item['index']) == index:
                 return item['state']
@@ -295,51 +352,60 @@ class sppasHMM(sppasBaseModel):
     def get_vecsize(self):
         """ Return the number of means and variance of each state. """
 
-        return self.definition['states'][0]['state']['streams'][0]['mixtures'][0]['pdf']['mean']['dim']
+        try:
+            return self._definition['states'][0]['state']['streams'][0]['mixtures'][0]['pdf']['mean']['dim']
+        except IndexError:
+            return 0
 
     # -----------------------------------------------------------------------
 
     def static_linear_interpolation(self, hmm, gamma):
-        """ Static Linear Interpolation is perhaps one of the most straightforward
-        manner to combine models. This is an efficient way for merging the GMMs
-        of the component models.
+        """ Static Linear Interpolation.
+        This is perhaps one of the most straightforward manner to combine models.
+        This is an efficient way for merging the GMMs of the component models.
 
-        Gamma coefficient is applied to self and (1-Gamma) to the other hmm.
+        Gamma coefficient is applied to self and (1-gamma) to the other hmm.
 
         :param hmm: (HMM) the hmm to be interpolated with.
-        :param gamma: (float) coefficient to apply to self.
+        :param gamma: (float) coefficient to be applied to self.
         :returns: (bool) Status of the interpolation.
 
         """
         lin = HMMInterpolation()
 
-        sstates = self.definition['states']
-        ostates = hmm.definition['states']
-        intsts = lin.linear_states([sstates, ostates], [gamma, 1.-gamma])
+        my_states = self._definition['states']
+        other_states = hmm.definition['states']
+        intsts = lin.linear_states([my_states, other_states], [gamma, 1.-gamma])
         if intsts is None:
             return False
 
-        stransition = self.definition['transition']
-        otransition = hmm.definition['transition']
-        inttrs = lin.linear_transitions([stransition, otransition], [gamma, 1.-gamma])
+        my_transition = self._definition['transition']
+        other_transition = hmm.definition['transition']
+        inttrs = lin.linear_transitions([my_transition, other_transition], [gamma, 1.-gamma])
         if inttrs is None:
             return False
 
-        self.definition['states'] = intsts
-        self.definition['transition'] = inttrs
+        self._definition['states'] = intsts
+        self._definition['transition'] = inttrs
 
         return True
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def create_transition(state_stay_probabilites=[0.6, 0.6, 0.7]):
-        n_states = len(state_stay_probabilites) + 2
-        transitions = []
+    def create_transition(state_stay_probabilities=(0.6, 0.6, 0.7)):
+        """ Create and return a transition matrix.
+
+        :param state_stay_probabilities: (list) Center transition probabilities
+        :returns: collections.OrderedDict()
+
+        """
+        n_states = len(state_stay_probabilities) + 2
+        transitions = list()
         for i in range(n_states):
             transitions.append([0.]*n_states)
         transitions[0][1] = 1.
-        for i, p in enumerate(state_stay_probabilites):
+        for i, p in enumerate(state_stay_probabilities):
             transitions[i+1][i+1] = p
             transitions[i+1][i+2] = 1 - p
 
@@ -349,8 +415,12 @@ class sppasHMM(sppasBaseModel):
 
     @staticmethod
     def create_gmm(means, variances, gconsts=None, weights=None):
+        """ Create and return a GMM.
 
-        mixtures = []
+        :returns: collections.OrderedDict()
+
+        """
+        mixtures = list()
 
         if len(means[0]) == 1:
             means = means[None, :]
@@ -371,7 +441,7 @@ class sppasHMM(sppasBaseModel):
                 mixture['weight'] = weights[i]
             else:
                 mixture['weight'] = 1.0/len(means)
-            mixture['index'] = i+1
+            mixture['index'] = i + 1
 
             mixtures.append(mixture)
 
@@ -385,7 +455,7 @@ class sppasHMM(sppasBaseModel):
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        return "Name:"+self.name+"\n"+json.dumps(self.definition, indent=2)
+        return "Name:" + self.name + "\n" + json.dumps(self._definition, indent=2)
 
 # ---------------------------------------------------------------------------
 # Interpolation of HMMs.
@@ -426,10 +496,10 @@ class HMMInterpolation(object):
         if len(states) == 1:
             return states[0]
 
-        intsts = []
+        intsts = list()
         for i in range(len(states[0])):
-            indexstates = [v[i] for v in states]
-            intsts.append(HMMInterpolation.linear_interpolate_states(indexstates, coefficients))
+            index_states = [v[i] for v in states]
+            intsts.append(HMMInterpolation.linear_interpolate_states(index_states, coefficients))
 
         return intsts
 
@@ -468,8 +538,8 @@ class HMMInterpolation(object):
         :param gammas: List of coefficients (must sum to 1.)
 
         """
-        intval = [v*g for (v, g) in zip(values, gammas)]
-        return sum(intval)
+        int_values = [v*g for (v, g) in zip(values, gammas)]
+        return sum(int_values)
 
     # -----------------------------------------------------------------------
 
@@ -481,7 +551,7 @@ class HMMInterpolation(object):
         :param gammas: List of coefficients (must sum to 1.)
 
         """
-        intvec = []
+        intvec = list()
         for i in range(len(vectors[0])):
             values = [v[i] for v in vectors]
             intvec.append(HMMInterpolation.linear_interpolate_values(values, gammas))
@@ -497,7 +567,7 @@ class HMMInterpolation(object):
         :param gammas: List of coefficients (must sum to 1.)
 
         """
-        intmat = []
+        intmat = list()
         for i in range(len(matrices[0])):
             vectors = [m[i] for m in matrices]
             intmat.append(HMMInterpolation.linear_interpolate_vectors(vectors, gammas))
@@ -518,11 +588,11 @@ class HMMInterpolation(object):
         if all(t['dim'] == transitions[0]['dim'] for t in transitions) is False:
             return None
 
-        transmatrix = [t['matrix'] for t in transitions]
-        if len(transmatrix) != len(gammas):
+        trans_matrix = [t['matrix'] for t in transitions]
+        if len(trans_matrix) != len(gammas):
             return None
 
-        matrix = HMMInterpolation.linear_interpolate_matrix(transmatrix, gammas)
+        matrix = HMMInterpolation.linear_interpolate_matrix(trans_matrix, gammas)
 
         # t = collections.OrderedDict()
         t = copy.deepcopy(transitions[0])
@@ -541,25 +611,29 @@ class HMMInterpolation(object):
         :returns: state (OrderedDict)
 
         """
-        intstate = copy.deepcopy(states[0])
+        # interpolated state
+        int_state = copy.deepcopy(states[0])
 
+        # get states
         state = [s['state'] for s in states]
         if all(type(item) == collections.OrderedDict for item in state) is False:
             return None
+
         # Keys of state are: 'streams', 'streams_mixcount', 'weights', 'duration'
+
         # streams / weights are lists.
         streams = [s['streams'] for s in state]
         for i in range(len(streams[0])):
             values = [v[i] for v in streams]
-            intstate['state']['streams'][i] = HMMInterpolation.linear_interpolate_streams(values, gammas)
+            int_state['state']['streams'][i] = HMMInterpolation.linear_interpolate_streams(values, gammas)
 
         weights = [w['weights'] for w in state]
         if all(type(item) == collections.OrderedDict for item in weights) is True:
             for i in range(len(weights[0])):
                 values = [v[i] for v in weights]
-                intstate['state']['weights'][i] = HMMInterpolation.linear_interpolate_vectors(values, gammas)
+                int_state['state']['weights'][i] = HMMInterpolation.linear_interpolate_vectors(values, gammas)
 
-        return intstate
+        return int_state
 
     # -----------------------------------------------------------------------
 
@@ -573,12 +647,15 @@ class HMMInterpolation(object):
         :returns: stream (OrderedDict)
 
         """
-        intmix = copy.deepcopy(streams[0])
+        # interpolated mixtures
+        int_mix = copy.deepcopy(streams[0])
+
         mixtures = [item['mixtures'] for item in streams]
         for i in range(len(mixtures[0])):
             values = [v[i] for v in mixtures]
-            intmix['mixtures'][i] = HMMInterpolation.linear_interpolate_mixtures(values, gammas)
-        return intmix
+            int_mix['mixtures'][i] = HMMInterpolation.linear_interpolate_mixtures(values, gammas)
+
+        return int_mix
 
     # -----------------------------------------------------------------------
 
@@ -614,18 +691,18 @@ class HMMInterpolation(object):
             intwgt = HMMInterpolation.linear_interpolate_values(w, gammas)
 
         # interpolate means, variance and gconsts
-        intmean = HMMInterpolation.linear_interpolate_vectors(means, gammas)
-        intvari = HMMInterpolation.linear_interpolate_vectors(variances, gammas)
-        intgcst = HMMInterpolation.linear_interpolate_values(gconsts, gammas)
+        int_mean = HMMInterpolation.linear_interpolate_vectors(means, gammas)
+        int_vari = HMMInterpolation.linear_interpolate_vectors(variances, gammas)
+        int_gcst = HMMInterpolation.linear_interpolate_values(gconsts, gammas)
 
         # Assign to a new state
-        if intmean is None or intvari is None or intgcst is None:
+        if int_mean is None or int_vari is None or int_gcst is None:
             return None
 
-        intmixt = copy.deepcopy(mixtures[0])
-        intmixt['weight'] = intwgt
-        intmixt['pdf']['mean']['vector'] = intmean
-        intmixt['pdf']['covariance']['variance']['vector'] = intvari
-        intmixt['pdf']['gconst'] = intgcst
+        int_mixt = copy.deepcopy(mixtures[0])
+        int_mixt['weight'] = intwgt
+        int_mixt['pdf']['mean']['vector'] = int_mean
+        int_mixt['pdf']['covariance']['variance']['vector'] = int_vari
+        int_mixt['pdf']['gconst'] = int_gcst
 
-        return intmixt
+        return int_mixt

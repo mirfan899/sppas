@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -29,30 +28,31 @@
 
         ---------------------------------------------------------------------
 
-    src.models.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.models.modelsexc.py
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-
-    models is a free and open source Python library to work with models:
-
-        - acoustic models: acm
-        - statistical language models: slm
+    Exceptions for models package.
 
 """
-from sppas.src.utils.maketext import translate
-t = translate("models")
+from . import t
 
-from acm.hmm import sppasBaseModel, sppasHMM, HMMInterpolation
+# -----------------------------------------------------------------------
 
-# ---------------------------------
+DATATYPE_ERROR = ":ERROR 7010: "
 
-__all__ = [
-    "sppasBaseModel",
-    "sppasHMM",
-    "HMMInterpolation"
-]
+# -----------------------------------------------------------------------
+
+
+class DataTypeError(TypeError):
+    """ :ERROR 7010: Expected a {data_name} of type {expected_type}. Got {data_type} instead. """
+
+    def __init__(self, data_name, expected_type, data_type):
+        self.parameter = DATATYPE_ERROR + \
+                         (t.gettext(DATATYPE_ERROR)).format(data_name=data_name,
+                                                            expected_type=expected_type,
+                                                            data_type=data_type)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------

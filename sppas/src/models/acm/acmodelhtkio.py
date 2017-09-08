@@ -35,6 +35,7 @@
 import collections
 
 from sppas.src.dependencies.grako.parsing import graken, Parser
+from sppas.src.utils.makeunicode import basestring
 
 import hmm
 
@@ -148,7 +149,7 @@ class sppasHtkIO(object):
 
     # -----------------------------------------------------------------------
 
-    def set_macros(self,macros):
+    def set_macros(self, macros):
         """ Set the macros of the model.
 
         :param macros: (OrderedDict)
@@ -158,7 +159,7 @@ class sppasHtkIO(object):
 
     # -----------------------------------------------------------------------
 
-    def set_hmms(self,hmms):
+    def set_hmms(self, hmms):
         """ Set the list of HMMs the model.
 
         :param hmms: (list) List of HMM instances
@@ -189,23 +190,23 @@ class sppasHtkIO(object):
 
             elif macro.get('transition', None):
                 result += '~t "{}"\n'.format(macro['transition']['name'])
-                result += self._serialize_transp(macro['transition']['definition'])
+                result += sppasHtkIO._serialize_transp(macro['transition']['definition'])
 
             elif macro.get('variance', None):
                 result += '~v "{}"\n'.format(macro['variance']['name'])
-                result += self._serialize_variance(macro['variance']['definition'])
+                result += sppasHtkIO._serialize_variance(macro['variance']['definition'])
 
             elif macro.get('state', None):
                 result += '~s "{}"\n'.format(macro['state']['name'])
-                result += self._serialize_stateinfo(macro['state']['definition'])
+                result += sppasHtkIO._serialize_stateinfo(macro['state']['definition'])
 
             elif macro.get('mean', None):
                 result += '~u "{}"\n'.format(macro['mean']['name'])
-                result += self._serialize_mean(macro['mean']['definition'])
+                result += sppasHtkIO._serialize_mean(macro['mean']['definition'])
 
             elif macro.get('duration', None):
                 result += '~d "{}"\n'.format(macro['duration']['name'])
-                result += self._serialize_duration(macro['duration']['definition'])
+                result += sppasHtkIO._serialize_duration(macro['duration']['definition'])
 
             else:
                 raise NotImplementedError('Cannot serialize {}'.format(macro))
@@ -220,27 +221,28 @@ class sppasHtkIO(object):
         :returns: The HTK-ASCII model as a string.
 
         """
-        result= ''
-        for hmm in self._hmms:
-            if hmm.name is not None:
-                result += self._serialize_name(hmm.name)
-            result += self._serialize_definition(hmm.definition)
+        result = ''
+        for hmm_model in self._hmms:
+            if hmm_model.name is not None:
+                result += sppasHtkIO._serialize_name(hmm_model.name)
+            result += sppasHtkIO._serialize_definition(hmm_model.definition)
 
         return result
 
     # -----------------------------------------------------------------------
 
-    def write_hmm_proto(self, protosize, protofilename):
+    @staticmethod
+    def write_hmm_proto(proto_size, protofilename):
         """ Write a `proto` file. The proto is based on a 5-states HMM.
 
-        :param protosize: (int) Number of mean and variance values. It's commonly
+        :param proto_size: (int) Number of mean and variance values. It's commonly
         either 25 or 39, it depends on the MFCC parameters.
         :param protofilename: (str) Full name of the prototype to write.
 
         """
         with open(protofilename, "w") as fp:
-            means = "0.0 "*protosize
-            variances = "1.0 "*protosize
+            means = "0.0 "*proto_size
+            variances = "1.0 "*proto_size
             means = means.strip()
             variances = variances.strip()
 
@@ -251,10 +253,10 @@ class sppasHtkIO(object):
                 fp.write("<State> {}\n".format(i))
                 fp.write("<NumMixes> 1\n")
                 fp.write("<Mixture> 1 1.0\n")
-                fp.write("<Mean> %d\n" % protosize)
-                fp.write("%s\n" % means)
-                fp.write("<Variance> %d\n" % protosize)
-                fp.write("%s\n" % variances)
+                fp.write("<Mean> {:d}\n".format(proto_size))
+                fp.write("{:s}\n".format(means))
+                fp.write("<Variance> {:d}\n".format(proto_size))
+                fp.write("{:s}\n".format(variances))
             fp.write("<Transp> 5\n")
             fp.write(" 0.0 1.0 0.0 0.0 0.0\n")
             fp.write(" 0.0 0.6 0.4 0.0 0.0\n")
@@ -267,31 +269,33 @@ class sppasHtkIO(object):
     # Private
     # -----------------------------------------------------------------------
 
-    def _serialize_name(self, name):
+    @staticmethod
+    def _serialize_name(name):
         return '~h "{}"\n'.format(name)
 
     # ----------------------------------
 
-    def _serialize_definition(self, definition):
+    @staticmethod
+    def _serialize_definition(definition):
         result = ''
 
         result += '<BeginHMM>\n'
         if definition.get('options', None):
             for option in definition['options']:
-                result += self._serialize_option(option)
+                result += sppasHtkIO._serialize_option(option)
 
         result += '<NumStates> {}\n'.format(definition['state_count'])
 
         for state in definition['states']:
-            result += self._serialize_state(state)
+            result += sppasHtkIO._serialize_state(state)
 
         if definition.get('regression_tree', None) is not None:
             raise NotImplementedError('Cannot serialize {}'.format(definition['regression_tree']))
 
-        result += self._serialize_transp(definition['transition'])
+        result += sppasHtkIO._serialize_transp(definition['transition'])
 
         if definition.get('duration', None) is not None:
-            result += self._serialize_duration(definition['duration'])
+            result += sppasHtkIO._serialize_duration(definition['duration'])
 
         result += '<EndHMM>\n'
 
@@ -299,7 +303,8 @@ class sppasHtkIO(object):
 
     # ----------------------------------
 
-    def _serialize_option(self, option):
+    @staticmethod
+    def _serialize_option(option):
         result = ''
         if option.get('hmm_set_id', None) is not None:
             result += '<HmmSetId> {}'.format(option['hmm_set_id'])
@@ -332,65 +337,71 @@ class sppasHtkIO(object):
 
     # ----------------------------------
 
-    def _serialize_transp(self, definition):
+    @staticmethod
+    def _serialize_transp(definition):
         if isinstance(definition, basestring):
             return '~t "{}"\n'.format(definition)
 
         result = ''
         result += '<TransP> {}\n'.format(definition['dim'])
-        result += '{}'.format(self._matrix_to_htk(definition['matrix']))
+        result += '{}'.format(sppasHtkIO._matrix_to_htk(definition['matrix']))
         return result
 
     # ----------------------------------
 
-    def _serialize_variance(self, definition):
+    @staticmethod
+    def _serialize_variance(definition):
         if isinstance(definition, basestring):
             return '~v {}\n'.format(definition)
 
         result = ''
         result += '<Variance> {}\n'.format(definition['dim'])
-        result += '{}'.format(self._array_to_htk(definition['vector']))
+        result += '{}'.format(sppasHtkIO._array_to_htk(definition['vector']))
         return result
 
     # ----------------------------------
 
-    def _serialize_mean(self, definition):
+    @staticmethod
+    def _serialize_mean(definition):
         if isinstance(definition, basestring):
             return '~u "{}"\n'.format(definition)
 
         result = ''
         result += '<Mean> {}\n'.format(definition['dim'])
-        result += '{}'.format(self._array_to_htk(definition['vector']))
+        result += '{}'.format(sppasHtkIO._array_to_htk(definition['vector']))
         return result
 
     # ----------------------------------
 
-    def _serialize_duration(self, definition):
+    @staticmethod
+    def _serialize_duration(definition):
         if isinstance(definition, basestring):
             return '~d "{}"\n'.format(definition)
 
         result = ''
         result += '<Duration> {}\n'.format(definition['dim'])
-        result += '{}'.format(self._array_to_htk(definition['vector']))
+        result += '{}'.format(sppasHtkIO._array_to_htk(definition['vector']))
         return result
 
     # ----------------------------------
 
-    def _serialize_weights(self, definition):
+    @staticmethod
+    def _serialize_weights(definition):
         if isinstance(definition, basestring):
             return '~w "{}"\n'.format(definition)
 
         result = ''
         result += '<SWeights> {}\n'.format(definition['dim'])
-        result += '{}'.format(self._array_to_htk(definition['vector']))
+        result += '{}'.format(sppasHtkIO._array_to_htk(definition['vector']))
         return result
 
     # ----------------------------------
 
-    def _serialize_covariance(self, definition):
+    @staticmethod
+    def _serialize_covariance(definition):
         result = ''
         if definition['variance'] is not None:
-            result += self._serialize_variance(definition['variance'])
+            result += sppasHtkIO._serialize_variance(definition['variance'])
 
         else:
             raise NotImplementedError('Cannot serialize {}'.format(definition))
@@ -399,7 +410,8 @@ class sppasHtkIO(object):
 
     # ----------------------------------
 
-    def _serialize_mixpdf(self, definition):
+    @staticmethod
+    def _serialize_mixpdf(definition):
         if isinstance(definition, basestring):
             return '~m "{}"\n'.format(definition)
 
@@ -407,8 +419,8 @@ class sppasHtkIO(object):
         if definition.get('regression_class', None) is not None:
             result += '<RClass> {}\n'.format(definition['regression_class'])
 
-        result += self._serialize_mean(definition['mean'])
-        result += self._serialize_covariance(definition['covariance'])
+        result += sppasHtkIO._serialize_mean(definition['mean'])
+        result += sppasHtkIO._serialize_covariance(definition['covariance'])
 
         if definition.get('gconst', None) is not None:
             result += '<GConst> {:.6e}\n'.format(definition['gconst'])
@@ -417,18 +429,20 @@ class sppasHtkIO(object):
 
     # ----------------------------------
 
-    def _serialize_mixture(self, definition):
+    @staticmethod
+    def _serialize_mixture(definition):
         result = ''
 
         if definition.get('index', None) is not None:
             result += '<Mixture> {} {:.6e}\n'.format(definition['index'], definition['weight'])
 
-        result += self._serialize_mixpdf(definition['pdf'])
+        result += sppasHtkIO._serialize_mixpdf(definition['pdf'])
         return result
 
     # ----------------------------------
 
-    def _serialize_stream(self, definition):
+    @staticmethod
+    def _serialize_stream(definition):
         result = ''
 
         if definition.get('dim', None) is not None:
@@ -436,7 +450,7 @@ class sppasHtkIO(object):
 
         if definition.get('mixtures', None) is not None:
             for mixture in definition['mixtures']:
-                result += self._serialize_mixture(mixture)
+                result += sppasHtkIO._serialize_mixture(mixture)
 
         else:
             raise NotImplementedError('Cannot serialize {}'.format(definition))
@@ -445,7 +459,8 @@ class sppasHtkIO(object):
 
     # ----------------------------------
 
-    def _serialize_stateinfo(self, definition):
+    @staticmethod
+    def _serialize_stateinfo(definition):
         if isinstance(definition, basestring):
             return '~s "{}"\n'.format(definition)
 
@@ -454,37 +469,40 @@ class sppasHtkIO(object):
             result += '<NumMixes> {}\n'.format(' '.join(['{}'.format(v) for v in definition['streams_mixcount']]))
 
         if definition.get('weights', None) is not None:
-            result += self._serialize_weights(definition['weights'])
+            result += sppasHtkIO._serialize_weights(definition['weights'])
 
         for stream in definition['streams']:
-            result += self._serialize_stream(stream)
+            result += sppasHtkIO._serialize_stream(stream)
 
         if definition.get('duration', None) is not None:
-            result += self._serialize_duration(definition['duration'])
+            result += sppasHtkIO._serialize_duration(definition['duration'])
 
         return result
 
     # ----------------------------------
 
-    def _serialize_state(self, definition):
+    @staticmethod
+    def _serialize_state(definition):
         result = ''
 
         result += '<State> {}\n'.format(definition['index'])
-        result += self._serialize_stateinfo(definition['state'])
+        result += sppasHtkIO._serialize_stateinfo(definition['state'])
 
         return result
 
     # ----------------------------------
 
-    def _array_to_htk(self, arr):
+    @staticmethod
+    def _array_to_htk(arr):
         return ' {}\n'.format(' '.join(['{:2.6e}'.format(value) for value in arr]))
 
     # ----------------------------------
 
-    def _matrix_to_htk(self, mat):
+    @staticmethod
+    def _matrix_to_htk(mat):
         result = ''
         for arr in mat:
-            result = result + self._array_to_htk(arr)
+            result = result + sppasHtkIO._array_to_htk(arr)
         return result
 
 # ---------------------------------------------------------------------------
@@ -518,15 +536,15 @@ class HtkModelSemantics(object):
         d = _to_ordered_dict(ast)
         d['matrix'] = []
         aarray = []
-        d['array'].append(None)# for the last serie to be appended!
+        d['array'].append(None)  # for the last serie to be appended!
         for a in d['array']:
             if len(aarray) == ast['dim']:
                 d['matrix'].append(aarray)
                 aarray = [a]
             else:
                 aarray.append(a)
-        #numpy solution:
-        #d['matrix'] = d['array'].reshape((ast['dim'], ast['dim']))
+        #  numpy solution:
+        #  d['matrix'] = d['array'].reshape((ast['dim'], ast['dim']))
         d.pop('array')
         return d
 
@@ -849,7 +867,8 @@ class HtkModelParser(Parser):
             self._error('no available options')
 
         self.ast._define(
-            ['hmm_set_id', 'stream_info', 'vector_size', 'input_transform', 'covariance_kind', 'duration_kind', 'parameter_kind'],
+            ['hmm_set_id', 'stream_info', 'vector_size', 'input_transform',
+             'covariance_kind', 'duration_kind', 'parameter_kind'],
             []
         )
 
@@ -1415,7 +1434,6 @@ class HtkModelParser(Parser):
         def block0():
             self._short_()
         self._positive_closure(block0)
-
 
         def block1():
             self._block_()
