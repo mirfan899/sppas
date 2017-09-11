@@ -37,41 +37,49 @@ import copy
 import json
 
 from sppas.src.utils.makeunicode import basestring
-from ..modelsexc import DataTypeError
-
-import acmodelhtkio
+from ..modelsexc import ModelsDataTypeError
 
 # ---------------------------------------------------------------------------
 
 
-class sppasBaseModel(object):
+class sppasHMM(object):
     """
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      brigitte.bigi@gmail.com
-    :summary:      Base for a model representation: a name and a definition.
+    :summary:      HMM representation for one phone.
 
-    This sppasBaseModel instance is used by HMM.
-    It could also be used to define transitions, etc...
-    A model is made of a name (str) and a definition (OrderedDict).
+    Hidden Markov Models (HMMs) provide a simple and effective framework for
+    modeling time-varying spectral vector sequences. As a consequence, most
+    of speech technology systems are based on HMMs.
+    Each base phone is represented by a continuous density HMM, with transition
+    probability parameters and output observation distributions.
+    One of the most commonly used extensions to standard HMMs is to model the
+    state-output distribution as a mixture model, a mixture of Gaussians is a
+    highly flexible distribution able to model, for example, asymmetric and
+    multi-modal distributed data.
 
-    Each model is made of:
-
-       - a 'name': a string
-       - a 'definition': an OrderedDict
+    An HMM-definition is made of:
+        - state_count: int
+        - states: list of OrderedDict with "index" and "state" as keys.
+        - transition: OrderedDict with "dim" and "matrix" as keys.
+        - options
+        - regression_tree
+        - duration
 
     """
     DEFAULT_NAME = "und"
 
     # -----------------------------------------------------------------------
 
-    def __init__(self):
-        """ Create a sppasBaseModel instance.
-         The model includes a default name and an empty definition. """
-        
-        self.__name = sppasBaseModel.DEFAULT_NAME
+    def __init__(self, name=DEFAULT_NAME):
+        """ Create a sppasHMM instance.
+        The model includes a default name and an empty definition.
+
+        """
+        self.__name = name
         self._definition = collections.OrderedDict()
         self.set_default_definition()
 
@@ -100,14 +108,16 @@ class sppasBaseModel(object):
         """ Set the name of the model.
 
         :param name: (str) Name of the HMM.
-        :raises: DataTypeError
+        :raises: ModelsDataTypeError
 
         """
         if name is None:
-            self.__name = sppasBaseModel.DEFAULT_NAME
+            self.__name = sppasHMM.DEFAULT_NAME
         else:
             if isinstance(name, basestring) is False:
-                raise DataTypeError("name of HMM", "string", type(name))
+                raise ModelsDataTypeError("name of the HMM model",
+                                          "string",
+                                          type(name))
             self.__name = name
 
     # -----------------------------------------------------------------------
@@ -133,95 +143,15 @@ class sppasBaseModel(object):
         """ Set the definition of the model.
 
         :param definition: (OrderedDict) Definition of the HMM (states and transitions)
-        :raises: DataTypeError
+        :raises: ModelsDataTypeError
 
         """
         if isinstance(definition, collections.OrderedDict) is False:
-            raise DataTypeError("definition of HMM", "collections.OrderedDict", type(definition))
+            raise ModelsDataTypeError("definition of the HMM model",
+                                      "collections.OrderedDict",
+                                      type(definition))
 
         self._definition = definition
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def create_default():
-        """ Create a default ordered dictionary, used for states.
-
-        :returns: collections.OrderedDict()
-
-        """
-        return collections.OrderedDict()
-
-    # ----------------------------------
-
-    @staticmethod
-    def create_vector(vector):
-        """ Create a default vector.
-
-        :returns: collections.OrderedDict()
-
-        """
-        v = sppasBaseModel.create_default()
-        v['dim'] = len(vector)
-        v['vector'] = vector
-        return v
-
-    # ----------------------------------
-
-    @staticmethod
-    def create_square_matrix(matrix):
-        """ Create a default matrix.
-
-        :returns: collections.OrderedDict()
-
-        """
-        m = sppasBaseModel.create_default()
-        m['dim'] = len(matrix[0])
-        m['matrix'] = matrix
-        return m
-
-    # -----------------------------------------------------------------------
-    # Properties
-    # -----------------------------------------------------------------------
-
-    name = property(fget=get_name, fset=set_name, fdel=None, doc=None)
-    definition = property(fget=get_definition, fset=set_definition, fdel=None, doc=None)
-
-# ---------------------------------------------------------------------------
-
-
-class sppasHMM(sppasBaseModel):
-    """
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :author:       Brigitte Bigi
-    :contact:      brigitte.bigi@gmail.com
-    :summary:      HMM representation for one phone.
-
-    Hidden Markov Models (HMMs) provide a simple and effective framework for
-    modeling time-varying spectral vector sequences. As a consequence, most
-    of speech technology systems are based on HMMs.
-    Each base phone is represented by a continuous density HMM, with transition
-    probability parameters and output observation distributions.
-    One of the most commonly used extensions to standard HMMs is to model the
-    state-output distribution as a mixture model, a mixture of Gaussians is a
-    highly flexible distribution able to model, for example, asymmetric and
-    multi-modal distributed data.
-
-    An HMM-definition is made of:
-        - state_count: int
-        - states: list of OrderedDict with "index" and "state" as keys.
-        - transition: OrderedDict with "dim" and "matrix" as keys.
-        - options
-        - regression_tree
-        - duration
-
-    """
-    def __init__(self):
-        """ Create a HMM instance. """
-
-        sppasBaseModel.__init__(self)
 
     # -----------------------------------------------------------------------
 
@@ -230,7 +160,8 @@ class sppasHMM(sppasBaseModel):
 
         :param states: (OrderedDict)
         :param transition: (OrderedDict)
-        :param name: (string) The name of the HMM. If None, the default name is assigned.
+        :param name: (string) The name of the HMM. 
+        If name is set to None, the default name is assigned.
 
         """
         self.set_name(name)
@@ -239,7 +170,7 @@ class sppasHMM(sppasBaseModel):
         self._definition['state_count'] = len(states) + 2
         self._definition['states'] = list()
         for i, state in enumerate(states):
-            hmm_state = sppasBaseModel.create_default()
+            hmm_state = sppasHMM.create_default()
             hmm_state['index'] = i + 2
             hmm_state['state'] = state
             self._definition['states'].append(hmm_state)
@@ -253,11 +184,12 @@ class sppasHMM(sppasBaseModel):
 
         :param proto_size: (int) Number of mean and variance values.
         It's commonly either 25 or 39, it depends on the MFCC parameters.
-        :param nb_mix: (int) Number of mixtures (i.e. the number of times means and variances occur)
+        :param nb_mix: (int) Number of mixtures 
+        (i.e. the number of times means and variances occur)
 
         """
         # Fix the name and an empty definition
-        self.name = "proto"
+        self.__name = "proto"
         self.set_default_definition()
 
         # Fix the definition
@@ -268,7 +200,7 @@ class sppasHMM(sppasBaseModel):
         self._definition['state_count'] = 5
         self._definition['states'] = list()
         for i in range(3):
-            hmm_state = sppasBaseModel.create_default()
+            hmm_state = sppasHMM.create_default()
             hmm_state['index'] = i + 2
             hmm_state['state'] = sppasHMM.create_gmm([means]*nb_mix, [variances]*nb_mix)
             self._definition['states'].append(hmm_state)
@@ -288,48 +220,19 @@ class sppasHMM(sppasBaseModel):
            0.0 0.0 0.0
 
         """
-        self.name = "sp"
+        self.__name = "sp"
         self.set_default_definition()
 
         # Define states
         self._definition['state_count'] = 3
         self._definition['states'] = []
-        hmm_state = sppasBaseModel.create_default()
+        hmm_state = sppasHMM.create_default()
         hmm_state['index'] = 2
         hmm_state['state'] = "silst"
         self._definition['states'].append(hmm_state)
 
         # Define transitions
         self._definition['transition'] = sppasHMM.create_transition([0.9])
-
-    # -----------------------------------------------------------------------
-
-    def load(self, filename):
-        """ Return the (first) HMM described into the given filename.
-
-        :returns: filename (str) File to read.
-
-        """
-        htk_model = acmodelhtkio.sppasHtkIO(filename)
-        hmms = htk_model.get_hmms()
-        if len(hmms) < 1:
-            raise IOError('No HMM loaded.')
-
-        self.set(hmms[0].name, hmms[0].definition)
-
-    # -----------------------------------------------------------------------
-
-    def save(self, filename):
-        """ Save the hmm into the given filename.
-
-        :param filename: (str) File to write.
-
-        """
-        htk_io = acmodelhtkio.sppasHtkIO()
-        htk_io.set_hmms([self])
-        result = htk_io.serialize_hmms()
-        with open(filename, 'w') as f:
-            f.write(result)
 
     # -----------------------------------------------------------------------
 
@@ -350,12 +253,17 @@ class sppasHMM(sppasBaseModel):
     # -----------------------------------------------------------------------
 
     def get_vecsize(self):
-        """ Return the number of means and variance of each state. """
+        """ Return the number of means and variance of each state.
+        If state is pointing to a macro, 0 is returned.
 
-        try:
-            return self._definition['states'][0]['state']['streams'][0]['mixtures'][0]['pdf']['mean']['dim']
-        except IndexError:
-            return 0
+        """
+        state = self._definition['states'][0]['state']
+
+        # but a state can be either an OrderedDict or a string (to refer to a macro)
+        if isinstance(state, collections.OrderedDict):
+            return state['streams'][0]['mixtures'][0]['pdf']['mean']['dim']
+
+        return 0
 
     # -----------------------------------------------------------------------
 
@@ -375,18 +283,18 @@ class sppasHMM(sppasBaseModel):
 
         my_states = self._definition['states']
         other_states = hmm.definition['states']
-        intsts = lin.linear_states([my_states, other_states], [gamma, 1.-gamma])
-        if intsts is None:
+        int_sts = lin.linear_states([my_states, other_states], [gamma, 1.-gamma])
+        if int_sts is None:
             return False
 
         my_transition = self._definition['transition']
         other_transition = hmm.definition['transition']
-        inttrs = lin.linear_transitions([my_transition, other_transition], [gamma, 1.-gamma])
-        if inttrs is None:
+        int_trs = lin.linear_transitions([my_transition, other_transition], [gamma, 1.-gamma])
+        if int_trs is None:
             return False
 
-        self._definition['states'] = intsts
-        self._definition['transition'] = inttrs
+        self._definition['states'] = int_sts
+        self._definition['transition'] = int_trs
 
         return True
 
@@ -409,7 +317,7 @@ class sppasHMM(sppasBaseModel):
             transitions[i+1][i+1] = p
             transitions[i+1][i+2] = 1 - p
 
-        return sppasBaseModel.create_square_matrix(transitions)
+        return sppasHMM.create_square_matrix(transitions)
 
     # ----------------------------------
 
@@ -426,36 +334,83 @@ class sppasHMM(sppasBaseModel):
             means = means[None, :]
             variances = variances[None, :]
 
-        gmm = sppasBaseModel.create_default()
+        gmm = sppasHMM.create_default()
 
         for i in range(len(means)):
-            mixture = sppasBaseModel.create_default()
-            mixture['pdf'] = sppasBaseModel.create_default()
-            mixture['pdf']['mean'] = sppasBaseModel.create_vector(means[i])
-            mixture['pdf']['covariance'] = sppasBaseModel.create_default()
-            mixture['pdf']['covariance']['variance'] = sppasBaseModel.create_vector(variances[i])
+            mixture = sppasHMM.create_default()
+            mixture['pdf'] = sppasHMM.create_default()
+            mixture['pdf']['mean'] = sppasHMM.create_vector(means[i])
+            mixture['pdf']['covariance'] = sppasHMM.create_default()
+            mixture['pdf']['covariance']['variance'] = sppasHMM.create_vector(variances[i])
 
             if gconsts is not None:
                 mixture['pdf']['gconst'] = gconsts[i]
             if weights is not None:
                 mixture['weight'] = weights[i]
             else:
-                mixture['weight'] = 1.0/len(means)
+                mixture['weight'] = 1.0 / len(means)
             mixture['index'] = i + 1
 
             mixtures.append(mixture)
 
-        stream = sppasBaseModel.create_default()
+        stream = sppasHMM.create_default()
         stream['mixtures'] = mixtures
         gmm['streams'] = [stream]
         gmm['streams_mixcount'] = [len(means)]
 
         return gmm
+    # -----------------------------------------------------------------------
 
+    @staticmethod
+    def create_default():
+        """ Create a default ordered dictionary, used for states.
+
+        :returns: collections.OrderedDict()
+
+        """
+        return collections.OrderedDict()
+
+    # ----------------------------------
+
+    @staticmethod
+    def create_vector(vector):
+        """ Create a default vector.
+
+        :returns: collections.OrderedDict()
+
+        """
+        v = sppasHMM.create_default()
+        v['dim'] = len(vector)
+        v['vector'] = vector
+        return v
+
+    # ----------------------------------
+
+    @staticmethod
+    def create_square_matrix(matrix):
+        """ Create a default matrix.
+
+        :returns: collections.OrderedDict()
+
+        """
+        m = sppasHMM.create_default()
+        m['dim'] = len(matrix[0])
+        m['matrix'] = matrix
+        return m
+
+    # -----------------------------------------------------------------------
+    # Properties
+    # -----------------------------------------------------------------------
+
+    name = property(fget=get_name, fset=set_name, fdel=None, doc=None)
+    definition = property(fget=get_definition, fset=set_definition, fdel=None, doc=None)
+
+    # -----------------------------------------------------------------------
+    # Overloads
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        return "Name:" + self.name + "\n" + json.dumps(self._definition, indent=2)
+        return "Name:" + self.__name + "\n" + json.dumps(self._definition, indent=2)
 
 # ---------------------------------------------------------------------------
 # Interpolation of HMMs.

@@ -227,7 +227,7 @@ class sppasTextGrid(sppasBasePraat):
         :param filename: is the input file name, ending by ".TextGrid"
 
         """
-        with codecs.open(filename, 'r', encoding) as it:
+        with codecs.open(filename, 'r', encoding, buffering=8096) as it:
             try:
                 for i in range(6):
                     it.next()

@@ -19,3 +19,12 @@ msgstr ""
 
 msgid ":ERROR 7010: "
 msgstr "Expected a {data_name} of type {expected_type}. Got {data_type} instead."
+
+msgid ":ERROR 7500: "
+msgstr "The file {!s:s} contains non UTF-8 characters: {:s}."
+
+msgid ":ERROR 7505: "
+msgstr "Fail formats: unrecognized file format {!s:s}."
+
+msgid ":ERROR 7510: "
+msgstr "Fail formats: the folder {!s:s} does not contain a known model."

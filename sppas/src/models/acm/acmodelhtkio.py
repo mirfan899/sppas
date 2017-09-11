@@ -32,12 +32,18 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
 """
+import os
 import collections
+import glob
+import codecs
 
+from sppas import encoding
 from sppas.src.dependencies.grako.parsing import graken, Parser
-from sppas.src.utils.makeunicode import basestring
+from sppas.src.utils.makeunicode import basestring, sppasUnicode
 
-import hmm
+from ..modelsexc import MioFolderError
+from .hmm import sppasHMM
+from .acmbaseio import sppasBaseIO
 
 # ---------------------------------------------------------------------------
 
@@ -52,7 +58,7 @@ def _to_ordered_dict(ast):
 # ---------------------------------------------------------------------------
 
 
-class sppasHtkIO(object):
+class sppasHtkIO(sppasBaseIO):
     """
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
@@ -65,29 +71,175 @@ class sppasHtkIO(object):
     HTK-ASCII files.
 
     """
-    def __init__(self, *args):
-        """ Create an sppasHtkIO instance, and optionnaly load a model from some files.
+    @staticmethod
+    def detect(folder):
+        hmmdefs_files = glob.glob(os.path.join(folder, 'hmmdefs'))
+        if len(hmmdefs_files) == 0:
+            hmmdefs_files = glob.glob(os.path.join(folder, 'macros'))
+            hmmdefs_files.extend(glob.glob(os.path.join(folder, '*.hmm')))
+            if len(hmmdefs_files) == 0:
+                return False
+        return True
 
-        :param args: Filenames of the model (e.g. macros and/or hmmdefs)
+    # -----------------------------------------------------------------
+
+    def __init__(self, name=None):
+        """ Create an sppasHtkIO instances.
 
         """
-        self._macros = None
-        self._hmms = None
-        if args:
-            self.load(*args)
+        if name is None:
+            name = self.__class__.__name__
+        sppasBaseIO.__init__(self, name)
 
     # -----------------------------------------------------------------------
 
-    def load(self, *args):
+    def read(self, folder, filename="hmmdefs"):
+        """ Load all known data from a folder.
+
+        The default file names are:
+            - hmmdefs for an HTK-ASCII acoustic model
+            - tiedlist
+            - monophones.repl
+
+        :param folder: (str) Folder name of the acoustic model
+        :param filename: (str) Optional name of the file to read
+        :returns: list of loaded file names
+
+        """
+        # Find and load the hmmdefs file
+        hmmdefs_files = glob.glob(os.path.join(folder, filename))
+        if len(hmmdefs_files) == 0:
+            hmmdefs_files = glob.glob(os.path.join(folder, 'macros'))
+            hmmdefs_files.extend(glob.glob(os.path.join(folder, '*.hmm')))
+            if len(hmmdefs_files) == 0:
+                raise MioFolderError(folder)
+        self.read_macros_hmms(hmmdefs_files)
+
+        # Find and load the tiedlist file
+        tiedlist_files = glob.glob(os.path.join(folder, 'tiedlist'))
+        if len(tiedlist_files) == 1:
+            self.read_tiedlist(tiedlist_files[0])
+
+        # Find and load the monophones.repl file
+        repl_files = glob.glob(os.path.join(folder, 'monophones.repl'))
+        if len(repl_files) == 1:
+            self.read_phonesrepl(repl_files[0])
+
+    # -----------------------------------------------------------------------
+
+    def write(self, folder, filename="hmmdefs"):
+        """ Save the model into a file, in HTK-ASCII standard format.
+
+        The default file names are:
+            - hmmdefs for an HTK-ASCII acoustic model
+            - tiedlist
+            - monophones.repl
+
+        :param folder: (str)
+
+        """
+        if os.path.isdir(folder) is False:
+            os.mkdir(folder)
+
+        # Write macros and hmms in the hmmdefs file
+        filename = os.path.join(folder, filename)
+        with open(filename, 'w') as f:
+            if self._macros:
+                f.write(self._serialize_macros())
+
+            if self._hmms:
+                f.write(self._serialize_hmms())
+
+        # write tiedlist
+        if self._tiedlist.is_empty() is False:
+            self._tiedlist.save(os.path.join(folder, 'tiedlist'))
+
+        # write monophones.repl
+        if self._repllist.is_empty() is False:
+            self._repllist.save_as_ascii(os.path.join(folder, 'monophones.repl'))
+
+    # -----------------------------------------------------------------------
+
+    def read_hmm(self, filename):
+        """ Return the (first) HMM described into the given filename.
+
+        :returns: filename (str) File to read.
+
+        """
+        self.read(os.path.dirname(filename))
+        if len(self._hmms) < 1:
+            raise IOError('No HMM loaded.')
+
+        hmm = self._hmms[0]
+        self._hmms = [hmm]
+
+    # -----------------------------------------------------------------------
+
+    def write_hmm(self, hmm, filename):
+        """ Save a single hmm into the given filename.
+
+        :param filename: (str) File to write.
+
+        """
+        saved_hmms = self._hmms
+        self._hmms = [hmm]
+        result = self._serialize_hmms()
+        with open(filename, 'w') as f:
+            f.write(result)
+        self._hmms = saved_hmms
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def write_hmm_proto(proto_size, proto_filename):
+        """ Write a `proto` file. The proto is based on a 5-states HMM.
+
+        :param proto_size: (int) Number of mean and variance values. It's commonly
+        either 25 or 39, it depends on the MFCC parameters.
+        :param proto_filename: (str) Full name of the prototype to write.
+
+        """
+        with open(proto_filename, "w") as fp:
+            means = "0.0 " * proto_size
+            variances = "1.0 " * proto_size
+            means = means.strip()
+            variances = variances.strip()
+
+            fp.write("~h \"proto\"\n")
+            fp.write("<BeginHMM>\n")
+            fp.write("<NumStates> 5\n")
+            for i in range(2, 5):
+                fp.write("<State> {}\n".format(i))
+                fp.write("<NumMixes> 1\n")
+                fp.write("<Mixture> 1 1.0\n")
+                fp.write("<Mean> {:d}\n".format(proto_size))
+                fp.write("{:s}\n".format(means))
+                fp.write("<Variance> {:d}\n".format(proto_size))
+                fp.write("{:s}\n".format(variances))
+            fp.write("<Transp> 5\n")
+            fp.write(" 0.0 1.0 0.0 0.0 0.0\n")
+            fp.write(" 0.0 0.6 0.4 0.0 0.0\n")
+            fp.write(" 0.0 0.0 0.6 0.4 0.0\n")
+            fp.write(" 0.0 0.0 0.0 0.7 0.3\n")
+            fp.write(" 0.0 0.0 0.0 0.0 0.0\n")
+            fp.write("<EndHMM>\n")
+
+    # -----------------------------------------------------------------------
+
+    def read_macros_hmms(self, filenames):
         """ Load an HTK model from one or more files.
 
-        :param args: Filenames of the model (e.g. macros and/or hmmdefs)
+        :param filenames: Filenames of the model
+        (e.g. macros and/or hmms files and/or hmmdefs)
 
         """
         text = ''
-        for fnm in args:
-            text += open(fnm).read()
-            text += '\n'
+        for fnm in filenames:
+            with codecs.open(fnm, 'r', encoding) as fp:
+                for line in fp.readlines():
+                    line = line.strip()
+                    if len(line) > 0:
+                        text += line + "\n"
 
         parser = HtkModelParser()
         htk_model = HtkModelSemantics()  # OrderedDict()
@@ -99,80 +251,18 @@ class sppasHtkIO(object):
                              trace=False)
 
         self._macros = model['macros']
-        self._hmms = []
+        self._hmms = list()
         for h in model['hmms']:
-            new_hmm = hmm.sppasHMM()
+            new_hmm = sppasHMM()
             new_hmm.set_name(h['name'])
             new_hmm.set_definition(h['definition'])
             self._hmms.append(new_hmm)
 
     # -----------------------------------------------------------------------
-
-    def save(self, filename):
-        """ Save the model into a file, in HTK-ASCII standard format.
-
-        :param filename: File where to save the model.
-
-        """
-        with open(filename, 'w') as f:
-            if self._macros:
-                f.write(self.serialize_macros())
-
-            if self._hmms:
-                f.write(self.serialize_hmms())
-
+    # Private
     # -----------------------------------------------------------------------
 
-    def get_macros(self):
-        """ Return the macros of the acoustic model. """
-
-        return self._macros
-
-    # -----------------------------------------------------------------------
-
-    def get_hmms(self):
-        """ Return the list of hmms of the acoustic mdoel. """
-
-        return self._hmms
-
-    # -----------------------------------------------------------------------
-
-    def set(self, macros, hmms):
-        """ Set the model of the HMM.
-
-        :param macros: (OrderedDict)
-        :param hmms: (list) List of HMM instances
-
-        """
-        self.set_macros(macros)
-        self.set_hmms(hmms)
-
-    # -----------------------------------------------------------------------
-
-    def set_macros(self, macros):
-        """ Set the macros of the model.
-
-        :param macros: (OrderedDict)
-
-        """
-        self._macros = macros
-
-    # -----------------------------------------------------------------------
-
-    def set_hmms(self, hmms):
-        """ Set the list of HMMs the model.
-
-        :param hmms: (list) List of HMM instances
-
-        """
-        if not (isinstance(hmms, list) and all([isinstance(h, hmm.sppasHMM) for h in hmms])):
-            raise TypeError('Expected a list of HMMs instances.')
-
-        self._hmms = hmms
-
-    # -----------------------------------------------------------------------
-
-    def serialize_macros(self):
+    def _serialize_macros(self):
         """ Serialize macros into a string, in HTK-ASCII standard format.
 
         :returns: The HTK-ASCII macros as a string.
@@ -215,7 +305,7 @@ class sppasHtkIO(object):
 
     # -----------------------------------------------------------------------
 
-    def serialize_hmms(self):
+    def _serialize_hmms(self):
         """ Serialize macros into a string, in HTK-ASCII standard format.
 
         :returns: The HTK-ASCII model as a string.
@@ -229,44 +319,6 @@ class sppasHtkIO(object):
 
         return result
 
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def write_hmm_proto(proto_size, protofilename):
-        """ Write a `proto` file. The proto is based on a 5-states HMM.
-
-        :param proto_size: (int) Number of mean and variance values. It's commonly
-        either 25 or 39, it depends on the MFCC parameters.
-        :param protofilename: (str) Full name of the prototype to write.
-
-        """
-        with open(protofilename, "w") as fp:
-            means = "0.0 "*proto_size
-            variances = "1.0 "*proto_size
-            means = means.strip()
-            variances = variances.strip()
-
-            fp.write("~h \"proto\"\n")
-            fp.write("<BeginHMM>\n")
-            fp.write("<NumStates> 5\n")
-            for i in range(2, 5):
-                fp.write("<State> {}\n".format(i))
-                fp.write("<NumMixes> 1\n")
-                fp.write("<Mixture> 1 1.0\n")
-                fp.write("<Mean> {:d}\n".format(proto_size))
-                fp.write("{:s}\n".format(means))
-                fp.write("<Variance> {:d}\n".format(proto_size))
-                fp.write("{:s}\n".format(variances))
-            fp.write("<Transp> 5\n")
-            fp.write(" 0.0 1.0 0.0 0.0 0.0\n")
-            fp.write(" 0.0 0.6 0.4 0.0 0.0\n")
-            fp.write(" 0.0 0.0 0.6 0.4 0.0\n")
-            fp.write(" 0.0 0.0 0.0 0.7 0.3\n")
-            fp.write(" 0.0 0.0 0.0 0.0 0.0\n")
-            fp.write("<EndHMM>\n")
-
-    # -----------------------------------------------------------------------
-    # Private
     # -----------------------------------------------------------------------
 
     @staticmethod
@@ -521,7 +573,8 @@ class HtkModelSemantics(object):
         pass
 
     def matrix(self, ast):
-        return [float(v) for v in ast.split(' ')]
+        #  return [float(v) for v in ast.split(' ')]
+        return [float(v) for v in ast.split()]
 
     def vector(self, ast):
         return [float(v) for v in ast.split(' ')]

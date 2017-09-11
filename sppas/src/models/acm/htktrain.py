@@ -343,8 +343,6 @@ class sppasDataTrainer(object):
             if os.path.exists(self.protofile) is False:
                 logging.info('Write proto file: %s' % self.protofile)
 
-                protomodel = sppasAcModel()
-
                 vectorsize = self.features.nbmv
                 targetkind = self.features.targetkind
                 paramkind = sppasAcModel.create_parameter_kind("mfcc", targetkind[4:])
@@ -352,13 +350,16 @@ class sppasDataTrainer(object):
                 opt = sppasAcModel.create_options(vector_size=vectorsize,
                                                   parameter_kind=paramkind,
                                                   stream_info=[vectorsize])
-                protomodel.macros = [opt]
-                protomodel.append_hmm(self.proto)
-                protomodel.save_htk(self.protofile)
+                protomodel = sppasHtkIO()
+                # protomodel.set_macros([opt])
+                # protomodel.append_hmm(self.proto)
+                # protomodel.write(self.protodir, proto_filename)
+                # HERE WE DON'T WRITE THE MACRO... SHOULD WE DO IT???
+                protomodel.write_hmm(self.proto, self.protofile)
             else:
                 logging.info('Read proto file: %s' % self.protofile)
-                self.proto = sppasHMM()
-                self.proto.load(self.protofile)
+                parser = sppasHtkIO()
+                self.proto = parser.read_hmm(self.protofile)
                 self.features.nbmv = self.proto.get_vecsize()
                 logging.info(' ... [OK] Vector size: %d' % self.features.nbmv)
 
@@ -1049,8 +1050,8 @@ class sppasHTKModelInitializer(object):
                 self._create_flat_start_model()
                 if os.path.exists(os.path.join(self.directory, "proto")):
                     self.trainingcorpus.datatrainer.protofile = os.path.join(self.directory, "proto")
-                    self.trainingcorpus.datatrainer.proto = sppasHMM()
-                    self.trainingcorpus.datatrainer.proto.load(self.trainingcorpus.datatrainer.protofile)
+                    parser = sppasHtkIO()
+                    self.trainingcorpus.datatrainer.proto = parser.read(self.trainingcorpus.datatrainer.protofile)
                     self.trainingcorpus.datatrainer.features.nbmv = self.trainingcorpus.datatrainer.proto.get_vecsize()
                     logging.info(' ... ... [ OK ] ')
                 else:
@@ -1070,15 +1071,14 @@ class sppasHTKModelInitializer(object):
             if self.trainingcorpus.datatrainer.protodir is not None:
                 proto_phone = os.path.join(self.trainingcorpus.datatrainer.protodir, phone + ".hmm")
                 if os.path.exists(proto_phone):
-                    infile = os.path.join(proto_phone)
-                    h = sppasHMM()
-                    h.load(infile)
+                    parser = sppasHtkIO()
+                    h = parser.read_hmm(proto_phone)
                     if h.get_vecsize() != self.trainingcorpus.datatrainer.features.nbmv:
                         logging.info(' ... ... [FAIL] Bad HMM vector size. Got %d.' % h.get_vecsize())
                     else:
                         h.set_name(phone)
                         h.save(outfile)
-                        logging.info(' ... ... [PROTO]: %s' % infile)
+                        logging.info(' ... ... [PROTO]: %s' % proto_phone)
                         continue
 
             # Train an initial model
@@ -1090,15 +1090,16 @@ class sppasHTKModelInitializer(object):
             if os.path.exists(outfile) is False:
                 h = self.trainingcorpus.datatrainer.proto
                 h.set_name(phone)
-                h.save(outfile)
+                parser = sppasHtkIO()
+                parser.write_hmm(h, outfile)
                 logging.info(' ... ... [FLAT]')
                 h.set_name("proto")
             else:
-                # HInit gives a bad name (it's the filename, including path!!)!
-                h = sppasHMM()
-                h.load(outfile)
+                # HInit assigned a bad name (it's the filename, including path!!)!
+                parser = sppasHtkIO()
+                h = parser.read_hmm(outfile)
                 h.set_name(phone)
-                h.save(outfile)
+                parser.write_hmm(h, outfile)
                 logging.info(' ... ... [TRAIN]')
 
     # -----------------------------------------------------------------------
@@ -1112,21 +1113,16 @@ class sppasHTKModelInitializer(object):
         opt = sppasAcModel.create_options(vector_size=vector_size,
                                           parameter_kind=param_kind,
                                           stream_info=[vector_size])
-        acmodel = sppasAcModel()
-        acmodel.macros = [opt]
 
-        for phone in self.trainingcorpus.monophones.get_list():
-            filename = os.path.join(self.directory, phone + ".hmm")
-            h = sppasHMM()
-            h.load(filename)
-            acmodel.append_hmm(h)
-
-        acmodel.save_htk(os.path.join(self.directory, DEFAULT_HMMDEFS_FILENAME))
+        parser = sppasHtkIO()
+        parser.set_macros([opt])
+        parser.read(self.directory)
+        parser.write(os.path.join(self.directory, DEFAULT_HMMDEFS_FILENAME))
 
     # -----------------------------------------------------------------------
 
     def create_macros(self):
-        """ Create macros file. """
+        """ Create macros file from vfloors. """
 
         vfloors = os.path.join(self.directory, "vFloors")
         if os.path.exists(vfloors):
@@ -1137,13 +1133,14 @@ class sppasHTKModelInitializer(object):
             opt = sppasAcModel.create_options(vector_size=vector_size,
                                               parameter_kind=param_kind,
                                               stream_info=[vector_size])
-            h = sppasHtkIO(vfloors)
+            parser = sppasHtkIO()
+            h = parser.read(self.directory, filename="vFloors")
             m = h.get_macros()
 
-            ac_model = sppasAcModel()
+            ac_model = sppasHtkIO()
             ac_model.macros = [opt]
             ac_model.macros.append(m[0])
-            ac_model.save_htk(os.path.join(self.directory, DEFAULT_MACROS_FILENAME))
+            ac_model.write(self.directory, filename=DEFAULT_MACROS_FILENAME)
 
 # ---------------------------------------------------------------------------
 
@@ -1229,8 +1226,8 @@ class sppasHTKModelTrainer(object):
 
         """
         # Load current acoustic model and prepare the new working directory
-        model = sppasAcModel()
-        model.load_htk(os.path.join(self.curdir, DEFAULT_HMMDEFS_FILENAME))
+        model = sppasHtkIO()
+        model.read(self.curdir, DEFAULT_HMMDEFS_FILENAME)
         self.init_epoch_dir()
 
         # Manage sil (to extract the "silst" state).
@@ -1246,7 +1243,7 @@ class sppasHTKModelTrainer(object):
         option['name'] = "silst"
         option['definition'] = silst
         macro['state'] = option
-        model.macros.append(macro)
+        model.get_macros().append(macro)
 
         # Create an "sp" HMM and append it in the model.
         # It supposes that a "silst" state is already existing in the model.
@@ -1255,7 +1252,7 @@ class sppasHTKModelTrainer(object):
         model.append_hmm(sp)
 
         # Finally, save the model with the new sp HMM.
-        model.save_htk(os.path.join(self.curdir, DEFAULT_HMMDEFS_FILENAME))
+        model.write(self.curdir, DEFAULT_HMMDEFS_FILENAME)
         self.corpus.monophones.add("sp")
         self.corpus.monophones.save(self.corpus.phonesfile)
 
@@ -1326,21 +1323,21 @@ class sppasHTKModelTrainer(object):
                 tiertokens, tierStokens, tierCustom = tokenizer.convert(tier_input)
             except Exception as e:
                 logging.info(' ... [ERROR] '
-                             'Text normalization failed for file {:s}. {:s}'.format((trs_workfile, str(e))))
+                             'Text normalization failed for file {:s}. {:s}'.format(trs_workfile, str(e)))
                 # return False
                 continue
             try:
                 tierphones = phonetizer.convert(tiertokens)
             except Exception as e:
                 logging.info(' ... [ERROR] '
-                             'Phonetization failed for file {:s}. {:s}'.format((trs_workfile, str(e))))
+                             'Phonetization failed for file {:s}. {:s}'.format(trs_workfile, str(e)))
                 # return False
                 continue
             try:
                 trsalign = aligner.convert(tierphones, None, audio_work_file, alignerdir)
             except Exception as e:
                 logging.info(' ... [ERROR] '
-                             'Alignment error failed file {:s}. {:s}'.format((trs_workfile, str(e))))
+                             'Alignment error failed file {:s}. {:s}'.format(trs_workfile, str(e)))
                 # return False
                 continue
 
@@ -1539,9 +1536,9 @@ class sppasHTKModelTrainer(object):
     def get_current_model(self):
         """ Return the model of the current epoch, or None. """
 
-        model = sppasAcModel()
+        model = sppasHtkIO()
         try:
-            model.load_htk(os.path.join(self.curdir,DEFAULT_HMMDEFS_FILENAME))
+            model.read(self.curdir, DEFAULT_HMMDEFS_FILENAME)
         except Exception:
             return None
         return model
@@ -1551,9 +1548,9 @@ class sppasHTKModelTrainer(object):
     def get_current_macro(self):
         """ Return the macros of the current epoch, or None. """
 
-        model = sppasAcModel()
+        model = sppasHtkIO()
         try:
-            model.load_htk(os.path.join(self.curdir, DEFAULT_MACROS_FILENAME))
+            model.read(self.curdir, DEFAULT_MACROS_FILENAME)
         except Exception:
             return None
         return model
@@ -1599,9 +1596,9 @@ class sppasHTKModelTrainer(object):
                     logging.info('Error while creating directory {:s}'.format(outdir))
                     to_continue = False
             if to_continue:
-                model.save_htk(os.path.join(outdir, DEFAULT_HMMDEFS_FILENAME))
+                model.write(outdir, DEFAULT_HMMDEFS_FILENAME)
                 if macro is not None:
-                    macro.save_htk(os.path.join(outdir, DEFAULT_MACROS_FILENAME))
+                    macro.write(outdir, DEFAULT_MACROS_FILENAME)
                 self.corpus.monophones.save(os.path.join(outdir, DEFAULT_MONOPHONES_FILENAME))
                 self.corpus.phonemap.save_as_ascii(os.path.join(outdir, DEFAULT_MAPPINGMONOPHONES_FILENAME))
                 self.corpus.datatrainer.features.write_wav_config(os.path.join(outdir, "config"))

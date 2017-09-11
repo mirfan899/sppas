@@ -112,7 +112,7 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def set_name(self, name=None):
-        """ Set the name of the tier.
+        """ Set the name of the transcription.
 
         :param name: (str or None) The identifier name or None.
         :returns: the name

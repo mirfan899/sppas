@@ -40,10 +40,14 @@ from . import t
 
 DATATYPE_ERROR = ":ERROR 7010: "
 
+MIO_ENCODING_ERROR = ":ERROR 7500: "
+MIO_FILE_FORMAT_ERROR = ":ERROR 7505: "
+MIO_FOLDER_ERROR = ":ERROR 7510: "
+
 # -----------------------------------------------------------------------
 
 
-class DataTypeError(TypeError):
+class ModelsDataTypeError(TypeError):
     """ :ERROR 7010: Expected a {data_name} of type {expected_type}. Got {data_type} instead. """
 
     def __init__(self, data_name, expected_type, data_type):
@@ -56,3 +60,46 @@ class DataTypeError(TypeError):
         return repr(self.parameter)
 
 # -----------------------------------------------------------------------
+
+
+class MioEncodingError(UnicodeDecodeError):
+    """ :ERROR 7500: MIO_ENCODING_ERROR
+    The file {!s:s} contains non UTF-8 characters: {:s}.
+
+    """
+    def __init__(self, filename, error):
+        self.parameter = MIO_ENCODING_ERROR + \
+                         (t.gettext(MIO_ENCODING_ERROR)).format(filename, error)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class MioFileFormatError(IOError):
+    """ :ERROR 7505: MIO_FILE_EXTENSION_ERROR
+    Fail formats: unrecognized file format {!s:s}.
+
+    """
+    def __init__(self, name):
+        self.parameter = MIO_FILE_FORMAT_ERROR + \
+                         (t.gettext(MIO_FILE_FORMAT_ERROR)).format(name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class MioFolderError(IOError):
+    """ :ERROR 7510: MIO_FOLDER_ERROR
+    Fail formats: the folder {!s:s} does not contain a known model.
+
+    """
+    def __init__(self, folder):
+        self.parameter = MIO_FOLDER_ERROR + \
+                         (t.gettext(MIO_FOLDER_ERROR)).format(folder)
+
+    def __str__(self):
+        return repr(self.parameter)

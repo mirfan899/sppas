@@ -121,14 +121,6 @@ class sppasGUID(object):
     # ---------------------------------------------------------------------------
 
     @staticmethod
-    def random_char(y, lowercase=True):
-        if lowercase:
-            return ''.join(random.choice(string.ascii_lowercase) for x in range(y))
-        return ''.join(random.choice(string.ascii_letters) for x in range(y))
-
-    # ---------------------------------------------------------------------------
-
-    @staticmethod
     def random_int(y):
         return ''.join(str(random.randint(0, 9)) for x in range(y))
 

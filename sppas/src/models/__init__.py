@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     src.models.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -47,12 +47,11 @@
 from sppas.src.utils.maketext import translate
 t = translate("models")
 
-from acm.hmm import sppasBaseModel, sppasHMM, HMMInterpolation
+from acm.hmm import sppasHMM, HMMInterpolation
 
 # ---------------------------------
 
 __all__ = [
-    "sppasBaseModel",
     "sppasHMM",
     "HMMInterpolation"
 ]

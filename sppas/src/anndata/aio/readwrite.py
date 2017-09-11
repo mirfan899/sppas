@@ -150,7 +150,7 @@ class sppasRW(object):
         try:
             trs.read(self.__filename)
         except UnicodeError as e:
-            raise AioEncodingError(self.__filename, e)
+            raise AioEncodingError(self.__filename, str(e))
         except Exception:
             raise
 
@@ -198,7 +198,7 @@ class sppasRW(object):
     def write(self, transcription):
         """ Write a transcription into a file.
 
-        :param transcription: (str)
+        :param transcription: (sppasTranscription)
 
         """
         trs_rw = sppasRW.create_trs_from_extension(self.__filename)
@@ -207,6 +207,6 @@ class sppasRW(object):
         try:
             trs_rw.write(self.__filename)
         except UnicodeError as e:
-            raise AioEncodingError(self.__filename, e)
+            raise AioEncodingError(self.__filename, str(e))
         except Exception:
             raise
