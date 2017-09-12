@@ -35,12 +35,11 @@
 import collections
 import json
 import copy
-import glob
-import os.path
 
 from sppas.src.resources.mapping import sppasMapping
+from sppas.src.utils.fileutils import sppasGUID
+from sppas.src.utils.makeunicode import sppasUnicode
 
-from .acmodelhtkio import sppasHtkIO
 from .hmm import sppasHMM
 from .tiedlist import sppasTiedList
 
@@ -63,160 +62,82 @@ class sppasAcModel(object):
        - a mapping table to replace phone names.
 
     """
-    def __init__(self):
+    def __init__(self, name=None):
         """ Create an sppasAcModel instance. """
 
-        self.macros = None
-        self.hmms = []
-        self.tiedlist = sppasTiedList()
-        self.repllist = sppasMapping()
+        self._name = None
+        self._macros = None
+        self._hmms = list()
+        self._tiedlist = sppasTiedList()
+        self._repllist = sppasMapping()
+
+        self.set_name(name)
 
     # -----------------------------------------------------------------------
-    # Files
+    # Name
     # -----------------------------------------------------------------------
 
-    def load(self, directory):
-        """ Load all known data from a directory.
-        
-        The default file names are:
-            - hmmdefs for an HTK-ASCII acoustic model
-            - tiedlist
-            - monophones.repl
+    def get_name(self):
+        """ Return the identifier name of the acoustic model. """
 
-        :param directory: (str) Folder name of the acoustic model
-        :returns: list of loaded file names
+        return self._name
+
+    # -----------------------------------------------------------------------
+
+    def set_name(self, name=None):
+        """ Set the name of the acoustic model.
+
+        :param name: (str or None) The identifier name or None.
+        :returns: the name
 
         """
-        l = []
-        hmmdefsfiles = glob.glob(os.path.join(directory, 'hmmdefs'))
-        if len(hmmdefsfiles) == 0:
-            raise IOError('Missing hmmdefs file in %s' % directory)
-        self.load_htk(hmmdefsfiles[0])
-        l.append(hmmdefsfiles[0])
+        if name is None:
+            name = sppasGUID().get()
+        su = sppasUnicode(name)
+        self._name = su.to_strip()
 
-        tiedlistfiles = glob.glob(os.path.join(directory, 'tiedlist'))
-        if len(tiedlistfiles) == 1:
-            self.load_tiedlist(tiedlistfiles[0])
-            l.append(tiedlistfiles[0])
+        return self._name
 
-        replfiles = glob.glob(os.path.join(directory, 'monophones.repl'))
-        if len(replfiles) == 1:
-            self.load_phonesrepl(replfiles[0])
-            l.append(replfiles[0])
+    # -----------------------------------------------------------------------
+    # Getters
+    # -----------------------------------------------------------------------
 
-        return l
+    def get_macros(self):
+        return self._macros
+
+    def get_hmms(self):
+        return self._hmms
+
+    def get_tiedlist(self):
+        return self._tiedlist
+
+    def get_repllist(self):
+        return self._repllist
+
+    # -----------------------------------------------------------------------
+    # Setters
+    # -----------------------------------------------------------------------
+
+    def set_macros(self, macros):
+        """ Set the macros of the model.
+
+        :param macros: (OrderedDict)
+
+        """
+        self._macros = macros
 
     # -----------------------------------------------------------------------
 
-    def save(self, directory):
-        """ Save all data into a directory.
+    def set_hmms(self, hmms):
+        """ Set the list of HMMs the model.
 
-        The default file names are:
-            - hmmdefs for an HTK-ASCII acoustic model
-            - tiedlist
-            - monophones.repl
-
-        :param directory: (str)
-        :returns: list of saved file names
+        :param hmms: (list) List of HMM instances
 
         """
-        if os.path.isdir(directory) is False:
-            os.mkdir(directory)
+        if not (isinstance(hmms, list) and all([isinstance(h, sppasHMM) for h in hmms])):
+            raise TypeError('Expected a list of HMMs instances.')
 
-        l = list()
-        self.save_htk(os.path.join(directory, 'hmmdefs'))
-        l.append(os.path.join(directory, 'hmmdefs'))
-
-        if self.tiedlist.is_empty() is False:
-            self.save_tiedlist(os.path.join(directory, 'tiedlist'))
-            l.append(os.path.join(directory, 'tiedlist'))
-
-        if self.repllist.is_empty() is False:
-            self.save_phonesrepl(os.path.join(directory, 'monophones.repl'))
-            l.append(os.path.join(directory, 'monophones.repl'))
-
-        return l
-
-    # -----------------------------------------------------------------------
-
-    def load_phonesrepl(self, filename):
-        """ Load a replacement table of phone names from a file.
-
-        :param filename: (str)
-
-        """
-        try:
-            self.repllist.load_from_ascii(filename)
-            # Some HACK...
-            # because '+' and '-' are the biphones/triphones delimiters,
-            # they can't be used as phone name.
-            self.repllist.remove('+')
-            self.repllist.remove('-')
-        except Exception:
-            pass
-
-    # -----------------------------------------------------------------------
-
-    def save_phonesrepl(self, filename):
-        """ Save a replacement table of phone names into a file.
-
-        :param filename: (str)
-
-        """
-        try:
-            self.repllist.save_as_ascii(filename)
-        except Exception:
-            pass
-
-    # -----------------------------------------------------------------------
-
-    def load_tiedlist(self, filename):
-        """ Load a tiedlist from a file.
-
-        :param filename: (str)
-
-        """
-        try:
-            self.tiedlist.load(filename)
-        except Exception:
-            pass
-
-    # -----------------------------------------------------------------------
-
-    def save_tiedlist(self, filename):
-        """ Save a tiedlist into a file.
-
-        :param filename: (str)
-
-        """
-        try:
-            self.tiedlist.save(filename)
-        except Exception:
-            pass
-
-    # -----------------------------------------------------------------------
-
-    def load_htk(self, *args):
-        """ Load an HTK model from one or more files.
-
-        :param args: Filenames of the model (e.g. macros and/or hmmdefs)
-
-        """
-        htk_model = sppasHtkIO(*args)
-        self.macros = htk_model.get_macros()
-        self.hmms = htk_model.get_hmms()
-
-    # -----------------------------------------------------------------------
-
-    def save_htk(self, filename):
-        """ Save the model into a file, in HTK-ASCII standard format.
-
-        :param filename: File where to save the model.
-
-        """
-        htk_model = sppasHtkIO()
-        htk_model.set(self.macros, self.hmms)
-        htk_model.save(filename)
+        self._hmms = hmms
 
     # -----------------------------------------------------------------------
     # HMM
@@ -229,7 +150,7 @@ class sppasAcModel(object):
         :raises: ValueError if phoneme is not in the model
 
         """
-        hmms = [h for h in self.hmms if h.name == phone]
+        hmms = [h for h in self._hmms if h.get_name() == phone]
         if len(hmms) == 1:
             return hmms[0]
         raise ValueError('%s not in the model' % phone)
@@ -244,20 +165,18 @@ class sppasAcModel(object):
 
         """
         if isinstance(hmm, sppasHMM) is False:
-            raise TypeError('Expected an HMM instance. Got %s' % type(hmm))
+            raise TypeError('Expected an HMM instance. Got {:s}.'.format(type(hmm)))
 
-        if hmm.name is None:
-            raise TypeError('Expected an hmm with a name as key.')
-        for h in self.hmms:
-            if h.name == hmm.name:
-                raise ValueError('Duplicate HMM is forbidden. %s already in the model.' % hmm.name)
+        for h in self._hmms:
+            if h.get_name() == hmm.get_name():
+                raise ValueError('Duplicate HMM is forbidden. {:s} is already in the model.'.format(hmm.get_name()))
 
         if hmm.definition is None:
-            raise TypeError('Expected an hmm with a definition as key.')
+            raise TypeError('Expected an hmm with a definition as key. No definition was given.')
         if hmm.definition.get('states', None) is None or hmm.definition.get('transition', None) is None:
             raise TypeError('Expected an hmm with a definition including states and transitions.')
 
-        self.hmms.append(hmm)
+        self._hmms.append(hmm)
 
     # -----------------------------------------------------------------------
 
@@ -269,8 +188,8 @@ class sppasAcModel(object):
 
         """
         hmm = self.get_hmm(phone)
-        idx = self.hmms.index(hmm)
-        self.hmms.pop(idx)
+        idx = self._hmms.index(hmm)
+        self._hmms.pop(idx)
 
     # -----------------------------------------------------------------------
     # Manage the model
@@ -290,44 +209,44 @@ class sppasAcModel(object):
         :param reverse: (bool) reverse the replacement direction.
 
         """
-        if self.repllist.is_empty() is True:
+        if self._repllist.is_empty() is True:
             return
         delimiters = ["-", "+"]
 
-        oldreverse = self.repllist.get_reverse()
-        self.repllist.set_reverse(reverse)
+        oldreverse = self._repllist.get_reverse()
+        self._repllist.set_reverse(reverse)
 
         # Replace in the tiedlist
         newtied = sppasTiedList()
 
-        for observed in self.tiedlist.observed:
-            mapped = self.repllist.map(observed,delimiters)
+        for observed in self._tiedlist.observed:
+            mapped = self._repllist.map(observed, delimiters)
             newtied.add_observed(mapped)
-        for tied,observed in self.tiedlist.tied.items():
-            mappedtied = self.repllist.map(tied, delimiters)
-            mappedobserved = self.repllist.map(observed, delimiters)
+        for tied, observed in self._tiedlist.tied.items():
+            mappedtied = self._repllist.map(tied, delimiters)
+            mappedobserved = self._repllist.map(observed, delimiters)
             newtied.add_tied(mappedtied, mappedobserved)
-        self.tiedlist = newtied
+        self._tiedlist = newtied
 
         # Replace in HMMs
-        for hmm in self.hmms:
-            hmm.set_name(self.repllist.map(hmm.name, delimiters))
+        for hmm in self._hmms:
+            hmm.set_name(self._repllist.map(hmm.get_name(), delimiters))
 
             states = hmm.definition['states']
             if all(isinstance(state['state'], (collections.OrderedDict, collections.defaultdict)) for state in states) is False:
                 for state in states:
                     if isinstance(state['state'], (collections.OrderedDict, collections.defaultdict)) is False:
                         tab = state['state'].split('_')
-                        tab[1] = self.repllist.map_entry(tab[1])
+                        tab[1] = self._repllist.map_entry(tab[1])
                         state['state'] = "_".join(tab)
 
             transition = hmm.definition['transition']
             if isinstance(transition, (collections.OrderedDict, collections.defaultdict)) is False:
                 tab = transition.split('_')
-                tab[1] = self.repllist.map_entry(tab[1])
-                transition = "_".join(tab)
+                tab[1] = self._repllist.map_entry(tab[1])
+                # transition = "_".join(tab)
 
-        self.repllist.set_reverse(oldreverse)
+        self._repllist.set_reverse(oldreverse)
 
     # -----------------------------------------------------------------------
 
@@ -338,36 +257,37 @@ class sppasAcModel(object):
            - replace all the "T_..." by the corresponding macro, for transitions.
 
         """
-        for hmm in self.hmms:
+        for hmm in self._hmms:
 
             states = hmm.definition['states']
             transition = hmm.definition['transition']
 
-            if all(isinstance(state['state'],(collections.OrderedDict, collections.defaultdict)) for state in states) is False:
-                newstates = self._fill_states(states)
-                if all(s is not None for s in newstates):
-                    hmm.definition['states'] = newstates
+            if all(isinstance(state['state'], (collections.OrderedDict, collections.defaultdict)) for state in states) is False:
+                new_states = self._fill_states(states)
+                if all(s is not None for s in new_states):
+                    hmm.definition['states'] = new_states
                 else:
-                    raise ValueError('No corresponding macro for states: %s'%states)
+                    raise ValueError('No corresponding macro for states: {:s}'.format(states))
 
             if isinstance(transition, (collections.OrderedDict, collections.defaultdict)) is False:
-                newtrs = self._fill_transition(transition)
-                if newtrs is not None:
-                    hmm.definition['transition'] = newtrs
+                new_trs = self._fill_transition(transition)
+                if new_trs is not None:
+                    hmm.definition['transition'] = new_trs
                 else:
                     raise ValueError('No corresponding macro for transition: %s' % transition)
 
         # No more need of states and transitions in macros
-        newmacros = list()
-        if self.macros is not None:
-            for m in self.macros:
+        new_macros = list()
+        if self._macros is not None:
+            for m in self._macros:
                 if m.get('transition', None) is None and m.get('state', None) is None:
-                    newmacros.append(m)
-        self.macros = newmacros
+                    new_macros.append(m)
+        self._macros = new_macros
 
     # -----------------------------------------------------------------------
 
-    def create_model(self, macros, hmms):
+    @staticmethod
+    def create_model(macros, hmms):
         """ Create an empty sppasAcModel and return it.
 
         :param macros: OrderedDict of options, transitions, states, ...
@@ -375,8 +295,9 @@ class sppasAcModel(object):
 
         """
         model = sppasAcModel()
-        model.macros = macros
-        model.hmms = hmms
+        model.set_macros(macros)
+        model.set_hmms(hmms)
+
         return model
 
     # -----------------------------------------------------------------------
@@ -393,17 +314,17 @@ class sppasAcModel(object):
         ac = sppasAcModel()
 
         # The macros
-        if self.macros is not None:
-            ac.macros = copy.deepcopy(self.macros)
+        if self._macros is not None:
+            ac.set_macros(copy.deepcopy(self._macros))
 
         # The HMMs
-        for h in self.hmms:
-            if "+" not in h.name and "-" not in h.name:
+        for h in self._hmms:
+            if "+" not in h.get_name() and "-" not in h.get_name():
                 ac.append_hmm(copy.deepcopy(h))
         ac.fill_hmms()
 
         # The repl mapping table
-        ac.repllist = copy.deepcopy(self.repllist)
+        ac.repllist = copy.deepcopy(self._repllist)
 
         return ac
 
@@ -412,13 +333,13 @@ class sppasAcModel(object):
     def get_mfcc_parameter_kind(self):
         """ Return the MFCC parameter kind, as a string, or an empty string. """
 
-        if self.macros is None:
+        if self._macros is None:
             return ""
 
-        for m in self.macros:
-            option = m.get('options',None)
+        for m in self._macros:
+            option = m.get('options', None)
             if option is not None:
-                definition = option.get('definition',None)
+                definition = option.get('definition', None)
                 if definition is not None:
                     for defn in definition:
                         parameter_kind = defn.get('parameter_kind', None)
@@ -460,7 +381,7 @@ class sppasAcModel(object):
 
         :raises: TypeError, ValueError
         :returns: a tuple indicating the number of hmms that was
-        appended, interpolated, keeped, changed.
+        appended, interpolated, kept, changed.
 
         """
         # Check the given input data
@@ -478,134 +399,148 @@ class sppasAcModel(object):
         #   - replace all the "ST_..." by the corresponding macro, for states.
         #   - replace all the "T_..." by the corresponding macro, for transitions.
         self.fill_hmms()
-        othercopy = copy.deepcopy(other)
-        othercopy.fill_hmms()
+        other_copy = copy.deepcopy(other)
+        other_copy.fill_hmms()
 
         # Merge the list of HMMs
         appended = 0
         interpolated = 0
-        keeped = len(self.hmms)
+        kept = len(self._hmms)
         changed = 0
-        for hmm in othercopy.hmms:
+        for hmm in other_copy.get_hmms():
             got = False
-            for h in self.hmms:
-                if h.name == hmm.name:
+            for h in self._hmms:
+                if h.get_name() == hmm.get_name():
                     got = True
                     if gamma == 1.0:
                         pass
                     elif gamma == 0.:
-                        self.pop_hmm(hmm.name)
+                        self.pop_hmm(hmm.get_name())
                         self.append_hmm(hmm)
                         changed = changed + 1
-                        keeped = keeped - 1
+                        kept = kept - 1
                     else:
-                        selfhmm = self.get_hmm(hmm.name)
-                        res = selfhmm.static_linear_interpolation(hmm, gamma)
+                        self_hmm = self.get_hmm(hmm.get_name())
+                        res = self_hmm.static_linear_interpolation(hmm, gamma)
                         if res is True:
                             interpolated = interpolated + 1
-                            keeped = keeped - 1
+                            kept = kept - 1
                     break
             if got is False:
                 self.append_hmm(hmm)
                 appended = appended + 1
 
         # Merge the tiedlists
-        self.tiedlist.merge(other.tiedlist)
+        self._tiedlist.merge(other.get_tiedlist())
 
-        for k in other.repllist:
-            v = other.repllist.get(k)
-            if k not in self.repllist and self.repllist.is_value(v) is False:
-                self.repllist.add(k, v)
+        for k in other.get_repllist():
+            v = other.get_repllist().get(k)
+            if k not in self._repllist and self._repllist.is_value(v) is False:
+                self._repllist.add(k, v)
 
-        return appended, interpolated, keeped, changed
+        return appended, interpolated, kept, changed
 
     # -----------------------------------------------------------------------
-    # Private
+    # Create methods
     # -----------------------------------------------------------------------
 
-    def __str__(self):
-        strmacros = json.dumps(self.macros, indent=2)
-        strhmms = "\n".join([str(h) for h in self.hmms])
-        return "MACROS:" + strmacros + "\nHMMS:" + strhmms
-
-    # ----------------------------------
-
-    def _fill_states(self, states):
-        newstates = []
-        for state in states:
-            if isinstance(state['state'], (collections.OrderedDict,collections.defaultdict)) is True:
-                newstates.append(state)
-                continue
-            news = copy.deepcopy(state)
-            news['state'] = self._fill_state(state['state'])
-            newstates.append(news)
-        return newstates
-
-    # ----------------------------------
-
-    def _fill_state(self, state):
-        newstate = None
-        if self.macros is not None:
-            for macro in self.macros:
-                if macro.get('state', None):
-                    if macro['state']['name'] == state:
-                        newstate = copy.deepcopy(macro['state']['definition'])
-        return newstate
-
-    # ----------------------------------
-
-    def _fill_transition(self, transition):
-        newtransition = None
-        if self.macros is not None:
-            for macro in self.macros:
-                if macro.get('transition', None):
-                    if macro['transition']['name'] == transition:
-                        newtransition = copy.deepcopy(macro['transition']['definition'])
-        return newtransition
-
-    # ----------------------------------
-
-    def _create_default(self):
+    @staticmethod
+    def _create_default():
         return collections.OrderedDict()
 
     # ----------------------------------
 
-    def create_parameter_kind(self, base=None, options=[]):
-        result = self._create_default()
+    @staticmethod
+    def create_parameter_kind(base=None, options=list()):
+        result = sppasAcModel._create_default()
         result['base'] = base
         result['options'] = options
         return result
 
     # ----------------------------------
 
-    def create_options(self, vector_size, parameter_kind=None, stream_info=None, duration_kind="nulld", covariance_kind="diagc"):
-        macro = self._create_default()
+    @staticmethod
+    def create_options(vector_size,
+                       parameter_kind=None,
+                       stream_info=None,
+                       duration_kind="nulld",
+                       covariance_kind="diagc"):
+        macro = sppasAcModel._create_default()
         options = []
 
         if stream_info:
-            option = self._create_default()
-            option['stream_info'] = self._create_default()
+            option = sppasAcModel._create_default()
+            option['stream_info'] = sppasAcModel._create_default()
             option['stream_info']['count'] = len(stream_info)
             option['stream_info']['sizes'] = stream_info
             options.append(option)
 
-        option = self._create_default()
+        option = sppasAcModel._create_default()
         option['vector_size'] = vector_size
         options.append(option)
 
-        option = self._create_default()
+        option = sppasAcModel._create_default()
         option['duration_kind'] = duration_kind
         options.append(option)
 
         if parameter_kind:
-            option = self._create_default()
+            option = sppasAcModel._create_default()
             option['parameter_kind'] = parameter_kind
             options.append(option)
 
-        option = self._create_default()
+        option = sppasAcModel._create_default()
         option['covariance_kind'] = covariance_kind
         options.append(option)
 
         macro['options'] = {'definition': options}
 
         return macro
+
+    # -----------------------------------------------------------------------
+    # Private
+    # -----------------------------------------------------------------------
+
+    def _fill_states(self, states):
+        new_states = list()
+        for state in states:
+            if isinstance(state['state'], (collections.OrderedDict, collections.defaultdict)) is True:
+                new_states.append(state)
+                continue
+            news = copy.deepcopy(state)
+            news['state'] = self._fill_state(state['state'])
+            new_states.append(news)
+        return new_states
+
+    # ----------------------------------
+
+    def _fill_state(self, state):
+        new_state = None
+        if self._macros is not None:
+            for macro in self._macros:
+                if macro.get('state', None):
+                    if macro['state']['name'] == state:
+                        new_state = copy.deepcopy(macro['state']['definition'])
+        return new_state
+
+    # ----------------------------------
+
+    def _fill_transition(self, transition):
+        new_transition = None
+        if self._macros is not None:
+            for macro in self._macros:
+                if macro.get('transition', None):
+                    if macro['transition']['name'] == transition:
+                        new_transition = copy.deepcopy(macro['transition']['definition'])
+        return new_transition
+
+    # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
+
+    def __str__(self):
+        str_macros = json.dumps(self._macros, indent=2)
+        str_hmms = "\n".join([str(h) for h in self._hmms])
+        return "Model: " + self._name + "\nMACROS:\n" + str_macros + "\nHMMS:\n" + str_hmms
+
+    def __len__(self):
+        return len(self._hmms)
