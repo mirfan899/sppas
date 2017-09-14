@@ -476,13 +476,11 @@ class sppasTier(sppasMetaData):
             if lo == -1:
                 lo = self.near(begin, direction=1)
             for ann in self.__ann[lo:]:
-                print(ann)
                 lowest = ann.get_lowest_localization()
                 highest = ann.get_highest_localization()
                 if lowest > end and highest > end:
                     break
                 if lowest >= begin and highest <= end:
-                    print(" --> append")
                     annotations.append(ann)
 
         else:

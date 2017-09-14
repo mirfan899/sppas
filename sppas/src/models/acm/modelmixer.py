@@ -34,7 +34,7 @@
 """
 import copy
 
-from .acmodel import sppasAcModel
+from .readwrite import sppasACMRW
 
 # ----------------------------------------------------------------------------
 
@@ -55,26 +55,26 @@ class sppasModelMixer(object):
     def __init__(self):
         """ Create a sppasModelMixer instance. """
         
-        self.model1 = None
-        self.model2 = None
-        self.model_mix = None
+        self._model1 = None
+        self._model2 = None
+        self._model_mix = None
 
     # ------------------------------------------------------------------------
 
-    def load(self, model_text_dir, model_spk_dir):
-        """ Load the acoustic models from their directories.
+    def read(self, model_text_dir, model_spk_dir):
+        """ Read the acoustic models from their directories.
 
         :param model_text_dir: (str)
         :param model_spk_dir: (str)
 
         """
-        model_text = sppasAcModel()
-        model_spk = sppasAcModel()
-        self.model_mix = None
+        self._model_mix = None
 
         # Load the acoustic models.
-        model_text.load(model_text_dir)
-        model_spk.load(model_spk_dir)
+        parser = sppasACMRW(model_text_dir)
+        model_text = parser.read()
+        parser.set_folder(model_spk_dir)
+        model_spk = parser.read()
 
         self.set_models(model_text, model_spk)
 
@@ -90,21 +90,21 @@ class sppasModelMixer(object):
         # Check the MFCC parameter kind:
         # we can only interpolate identical models.
         if model_text.get_mfcc_parameter_kind() != model_spk.get_mfcc_parameter_kind():
-            raise TypeError('Can only mix models of identical MFCC parameter kind.')
+            raise TypeError('Can only mix models of identical MFCC parameters kind.')
 
         # Extract the monophones of both models.
-        self.model1 = model_text.extract_monophones()
-        self.model2 = model_spk.extract_monophones()
+        self._model1 = model_text.extract_monophones()
+        self._model2 = model_spk.extract_monophones()
 
         # Map the phonemes names.
         # Why? Because the same phoneme can have a different name
         # in each model. Fortunately, we have the mapping table!
-        self.model1.replace_phones(reverse=False)
-        self.model2.replace_phones(reverse=False)
+        self._model1.replace_phones(reverse=False)
+        self._model2.replace_phones(reverse=False)
 
     # ------------------------------------------------------------------------
 
-    def mix(self, outputdir, gamma=1.):
+    def mix(self, outputdir, format="hmmdefs", gamma=1.):
         """ Mix the acoustic model of the text with the one of the mother language
         of the speaker reading such text.
 
@@ -112,6 +112,7 @@ class sppasModelMixer(object):
         Static Linear Interpolation.
 
         :param outputdir: (str) The directory to save the new mixed model.
+        :param format: (str) the format of the resulting acoustic model
         :param gamma: (float) coefficient to apply to the model: between 0.
         and 1. This means that a coefficient value of 1. indicates to keep
         the current version of each shared hmm.
@@ -121,39 +122,41 @@ class sppasModelMixer(object):
         (appended, interpolated, kept, changed).
 
         """
-        if self.model1 is None or self.model2 is None:
-            raise TypeError('No model to mix.')
+        if self._model1 is None or self._model2 is None:
+            raise TypeError('No given model to mix.')
 
-        self.model_mix = copy.deepcopy(self.model1)
+        self._model_mix = copy.deepcopy(self._model1)
 
         # Manage both mapping table to provide conflicts.
         # Because a key in modelText can be a value in modelSpk
         # i.e. in modelText, a WRONG symbol is used!
-        for k in self.model_mix.repllist:
-            v = self.model_mix.repllist.get(k)
+        repllist = self._model_mix.get_repllist()
+        for k in repllist:
+            v = repllist.get(k)
 
-            for key in self.model2.repllist:
-                value = self.model2.repllist.get(key)
+            for key in self._model2.get_repllist():
+                value = self._model2.get_repllist().get(key)
 
                 if k == value and v != key:
                     new_key = key
-                    if self.model2.repllist.is_value(v):
-                        for key2 in self.model2.repllist:
-                            value2 = self.model2.repllist.get(key2)
+                    if self._model2.get_repllist().is_value(v):
+                        for key2 in self._model2.get_repllist():
+                            value2 = self._model2.get_repllist().get(key2)
                             if v == value2:
                                 new_key = key2
-                                while self.model_mix.repllist.is_key(new_key) is True:
+                                while repllist.is_key(new_key) is True:
                                     new_key = new_key + key2
                     else:
                         new_key = k
-                        while self.model_mix.repllist.is_key(new_key) is True:
+                        while repllist.is_key(new_key) is True:
                             new_key = new_key + k
 
-                    self.model_mix.repllist.remove(k)
-                    self.model_mix.repllist.add(new_key, v)
+                    repllist.remove(k)
+                    repllist.add(new_key, v)
 
-        (appended, interpolated, kept, changed) = self.model_mix.merge_model(self.model2, gamma)
-        self.model_mix.replace_phones(reverse=True)
+        (appended, interpolated, kept, changed) = self._model_mix.merge_model(self._model2, gamma)
+        self._model_mix.replace_phones(reverse=True)
 
-        self.model_mix.save(outputdir)
+        parser = sppasACMRW(outputdir)
+        parser.write(self._model_mix, format)
         return appended, interpolated, kept, changed

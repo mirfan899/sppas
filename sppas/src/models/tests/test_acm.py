@@ -8,10 +8,11 @@ import shutil
 from sppas import RESOURCES_PATH, SAMPLES_PATH
 from sppas.src.utils.compare import sppasCompare
 from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.utils.fileutils import setup_logging
 
 from ..acm.acmodelhtkio import sppasHtkIO
-from ..acm.hmm import sppasHMM, HMMInterpolation
-from ..acm.htktrain import sppasHTKModelTrainer, sppasDataTrainer, sppasPhoneSet, sppasTrainingCorpus, sppasHTKModelInitializer
+from ..acm.htktrain import sppasHTKModelTrainer, sppasDataTrainer, \
+    sppasPhoneSet, sppasTrainingCorpus, sppasHTKModelInitializer
 
 # ---------------------------------------------------------------------------
 
@@ -30,8 +31,12 @@ class TestTrainer(unittest.TestCase):
         os.mkdir(TEMP)
         shutil.copytree(os.path.join(DATA, "protos"), os.path.join(TEMP, "protos"))
 
+    # -----------------------------------------------------------------------
+
     def tearDown(self):
         shutil.rmtree(TEMP)
+
+    # -----------------------------------------------------------------------
 
     def test_add_corpus(self):
         corpus = sppasTrainingCorpus()
@@ -46,6 +51,8 @@ class TestTrainer(unittest.TestCase):
         self.assertEqual(len(corpus.phonfiles), 0)
         self.assertEqual(len(corpus.alignfiles), 0)
 
+    # -----------------------------------------------------------------------
+
     def test_datatrainer(self):
         datatrainer = sppasDataTrainer()
         datatrainer.create()
@@ -54,6 +61,8 @@ class TestTrainer(unittest.TestCase):
         self.assertTrue(os.path.exists(dire))
         datatrainer.delete()
         self.assertFalse(os.path.exists(dire))
+
+    # -----------------------------------------------------------------------
 
     def test_phoneset(self):
         pho = sppasPhoneSet()
@@ -69,6 +78,8 @@ class TestTrainer(unittest.TestCase):
             self.assertTrue(pho.is_in(phone))
 
         os.remove(os.path.join(TEMP, "monophones"))
+
+    # -----------------------------------------------------------------------
 
     def test_trainingcorpus(self):
         corpus = sppasTrainingCorpus()
@@ -86,6 +97,8 @@ class TestTrainer(unittest.TestCase):
         self.assertTrue(corpus.add_file(os.path.join(DATA, "F_F_B003-P8-palign.TextGrid"), os.path.join(DATA, "F_F_B003-P8.wav")))
         corpus.datatrainer.delete()
 
+    # -----------------------------------------------------------------------
+
     def test_initializer_without_corpus(self):
         corpus = sppasTrainingCorpus()
         workdir = os.path.join(TEMP, "working")
@@ -93,23 +106,18 @@ class TestTrainer(unittest.TestCase):
         shutil.copy(os.path.join(DATA, "protos", "vFloors"), workdir)
 
         initial = sppasHTKModelInitializer(corpus, workdir)
-
         corpus.datatrainer.protodir = os.path.join(DATA, "protos")
         initial.create_model()
+
+    # -----------------------------------------------------------------------
 
     def test_trainer_without_data(self):
         trainer = sppasHTKModelTrainer()
         model = trainer.training_recipe()
         self.assertEqual(len(model.get_hmms()), 0)
 
-        trainer.corpus = sppasTrainingCorpus()
-        model = trainer.training_recipe()
-        self.assertEqual(len(model.get_hmms()), 4)
-
     # def test_trainer_with_data(self):
-    # TODO: Test the model
-    #     #from utils.fileutils import setup_logging
-    #     #setup_logging(1,None)
+    #     setup_logging(1, None)
     #     corpus = sppasTrainingCorpus()
     #     corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "fra.dict"),
     #                          mappingfile=os.path.join(RESOURCES_PATH, "models", "models-fra", "monophones.repl"))
@@ -121,19 +129,12 @@ class TestTrainer(unittest.TestCase):
     #
     #     trainer = sppasHTKModelTrainer(corpus)
     #     acmodel = trainer.training_recipe(delete=True)
-
+    #     self.assertEqual(len(acmodel), 41)
 
 # ---------------------------------------------------------------------------
 
 
 class TestsppasAcModel(unittest.TestCase):
-
-# This one takes too much time to be tested each time....
-#     def test_load_all_models(self):
-#         models = glob.glob(os.path.join(MODEL_PATH,"models-*","hmmdefs"))
-#         for hmmdefs in models:
-#             acmodel = sppasAcModel(hmmdefs)
-#             self._test_load_save(acmodel)
 
     def setUp(self):
         self.hmmdefs = os.path.join(MODEL_PATH, "models-jpn")
@@ -143,8 +144,12 @@ class TestsppasAcModel(unittest.TestCase):
             shutil.rmtree(TEMP)
         os.mkdir(TEMP)
 
+    # -----------------------------------------------------------------------
+
     def tearDown(self):
         shutil.rmtree(TEMP)
+
+    # -----------------------------------------------------------------------
 
     def test_get_hmm(self):
         with self.assertRaises(ValueError):
@@ -153,17 +158,21 @@ class TestsppasAcModel(unittest.TestCase):
         self.__test_states(Nhmm.definition['states'])
         self.__test_transition(Nhmm.definition['transition'])
 
+    # -----------------------------------------------------------------------
+
     def test_append_hmm(self):
         with self.assertRaises(TypeError):
             self.acmodel.append_hmm({'toto': None})
 
-        Nhmm = self.acmodel.get_hmm('N')
+        n_hmm = self.acmodel.get_hmm('N')
         with self.assertRaises(ValueError):
-            self.acmodel.append_hmm(Nhmm)
+            self.acmodel.append_hmm(n_hmm)
 
-        Newhmm = copy.deepcopy(Nhmm)
-        Newhmm.name = "NewN"
-        self.acmodel.append_hmm(Newhmm)
+        new_hmm = copy.deepcopy(n_hmm)
+        new_hmm.name = "NewN"
+        self.acmodel.append_hmm(new_hmm)
+
+    # -----------------------------------------------------------------------
 
     def test_pop_hmm(self):
         self.acmodel.pop_hmm("N")
@@ -186,6 +195,8 @@ class TestsppasAcModel(unittest.TestCase):
     #     self.assertEqual(hmm.name, newhmm.name)
     #     self.assertTrue(sp.equals(hmm.definition, newhmm.definition))
 
+    # -----------------------------------------------------------------------
+
     def test_fill(self):
         sp = sppasCompare()
         acmodel1 = sppasHtkIO()
@@ -195,6 +206,8 @@ class TestsppasAcModel(unittest.TestCase):
 
         acmodel1.fill_hmms()
         self.assertTrue(sp.equals(ahmm1.definition['transition'], a1transition['definition']))
+
+    # -----------------------------------------------------------------------
 
     def test_no_merge(self):
         nbhmms = len(self.acmodel.get_hmms())
@@ -227,6 +240,8 @@ class TestsppasAcModel(unittest.TestCase):
         with self.assertRaises(TypeError):
             acmodel2.merge_model(self.acmodel, gamma=1.)
 
+    # -----------------------------------------------------------------------
+
     def test_merge(self):
         acmodel1 = sppasHtkIO()
         acmodel1.read_macros_hmms([os.path.join(DATA, "1-hmmdefs")])
@@ -241,6 +256,8 @@ class TestsppasAcModel(unittest.TestCase):
 
         self.__test_states(acmodel2.get_hmm('a').definition['states'])
         self.__test_transition(acmodel2.get_hmm('a').definition['transition'])
+
+    # -----------------------------------------------------------------------
 
     def test_replace_phones(self):
         sp = sppasCompare()
@@ -257,10 +274,11 @@ class TestsppasAcModel(unittest.TestCase):
             self.assertTrue(sp.equals(h1.definition['transition'], h2.definition['transition']))
             self.assertTrue(sp.equals(h1.definition['states'], h2.definition['states']))
 
+    # -----------------------------------------------------------------------
+
     def test_monophones(self):
         acmodel1 = sppasHtkIO()
         acmodel1.read(os.path.join(MODEL_PATH, "models-fra"))
-
         acmodel2 = acmodel1.extract_monophones()
         parser = sppasHtkIO()
         parser.set(acmodel2)
@@ -269,24 +287,10 @@ class TestsppasAcModel(unittest.TestCase):
         self.assertTrue(os.path.isfile(os.path.join(TEMP, 'fra-mono', 'monophones.repl')))
         self.assertFalse(os.path.isfile(os.path.join(TEMP, 'fra-mono', 'tiedlist')))
 
-        self.assertEqual(len(acmodel2.hmms), 38)
+        self.assertEqual(len(acmodel2.get_hmms()), 38)
+        self.assertEqual(len(acmodel2), 38)
 
-    # def test_proto(self):
-    #     sp = sppasCompare()
-    #     sppasHtkIO.write_hmm_proto(25, os.path.join(TEMP, "proto_from_htkio"))
-    #
-    #     h2 = sppasHMM()
-    #     h2.create_proto(25)
-    #     h2.save(os.path.join(TEMP, "proto_from_hmm"))
-    #
-    #     m1 = sppasHMM()
-    #     m1.load(os.path.join(TEMP, "proto_from_htkio"))
-    #
-    #     m2 = sppasHMM()
-    #     m2.load(os.path.join(TEMP, "proto_from_hmm"))
-    #
-    #     self.assertTrue(sp.equals(m1.definition['transition'], m2.definition['transition']))
-    #     self.assertTrue(sp.equals(m1.definition['states'], m2.definition['states']))
+    # -----------------------------------------------------------------------
 
     def __test_transition(self, transition):
         self.assertEqual(transition['dim'], 5)

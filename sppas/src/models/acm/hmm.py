@@ -78,6 +78,8 @@ class sppasHMM(object):
         """ Create a sppasHMM instance.
         The model includes a default name and an empty definition.
 
+        :param name: (str) Name of the HMM (usually the phoneme in SAMPA)
+
         """
         self.__name = name
         self._definition = collections.OrderedDict()
@@ -451,12 +453,12 @@ class HMMInterpolation(object):
         if len(states) == 1:
             return states[0]
 
-        intsts = list()
+        int_sts = list()
         for i in range(len(states[0])):
             index_states = [v[i] for v in states]
-            intsts.append(HMMInterpolation.linear_interpolate_states(index_states, coefficients))
+            int_sts.append(HMMInterpolation.linear_interpolate_states(index_states, coefficients))
 
-        return intsts
+        return int_sts
 
     # -----------------------------------------------------------------------
 
@@ -637,13 +639,13 @@ class HMMInterpolation(object):
             return None
 
         # interpolate weights
-        intwgt = None
+        int_wgt = None
         w = []
         for m in mixtures:
             if m['weight'] is not None:
                 w.append(m['weight'])
         if len(w) == len(mixtures[0]):
-            intwgt = HMMInterpolation.linear_interpolate_values(w, gammas)
+            int_wgt = HMMInterpolation.linear_interpolate_values(w, gammas)
 
         # interpolate means, variance and gconsts
         int_mean = HMMInterpolation.linear_interpolate_vectors(means, gammas)
@@ -655,7 +657,7 @@ class HMMInterpolation(object):
             return None
 
         int_mixt = copy.deepcopy(mixtures[0])
-        int_mixt['weight'] = intwgt
+        int_mixt['weight'] = int_wgt
         int_mixt['pdf']['mean']['vector'] = int_mean
         int_mixt['pdf']['covariance']['variance']['vector'] = int_vari
         int_mixt['pdf']['gconst'] = int_gcst

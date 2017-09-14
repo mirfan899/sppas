@@ -43,13 +43,16 @@ DATATYPE_ERROR = ":ERROR 7010: "
 MIO_ENCODING_ERROR = ":ERROR 7500: "
 MIO_FILE_FORMAT_ERROR = ":ERROR 7505: "
 MIO_FOLDER_ERROR = ":ERROR 7510: "
+MIO_FILE_ERROR = ":ERROR 7515: "
 
 # -----------------------------------------------------------------------
 
 
 class ModelsDataTypeError(TypeError):
-    """ :ERROR 7010: Expected a {data_name} of type {expected_type}. Got {data_type} instead. """
+    """ :ERROR 7010: DATATYPE_ERROR
+    Expected a {data_name} of type {expected_type}. Got {data_type} instead.
 
+    """
     def __init__(self, data_name, expected_type, data_type):
         self.parameter = DATATYPE_ERROR + \
                          (t.gettext(DATATYPE_ERROR)).format(data_name=data_name,
@@ -85,6 +88,21 @@ class MioFileFormatError(IOError):
     def __init__(self, name):
         self.parameter = MIO_FILE_FORMAT_ERROR + \
                          (t.gettext(MIO_FILE_FORMAT_ERROR)).format(name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class MioFileError(IOError):
+    """ :ERROR 7515: MIO_FILE_ERROR
+    No model found or empty model in {!s:s}.
+
+    """
+    def __init__(self, name):
+        self.parameter = MIO_FILE_ERROR + \
+                         (t.gettext(MIO_FILE_ERROR)).format(name)
 
     def __str__(self):
         return repr(self.parameter)

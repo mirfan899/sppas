@@ -58,8 +58,11 @@ class sppasBaseIO(sppasAcModel):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new Acoustic Model reader-writer instance. """
+        """ Initialize a new Acoustic Model reader-writer instance.
 
+        :param name: (str) Name of the acoustic model.
+
+        """
         sppasAcModel.__init__(self, name)
         self._is_ascii = True
         self._is_binary = False
@@ -69,10 +72,10 @@ class sppasBaseIO(sppasAcModel):
     # -----------------------------------------------------------------------
 
     def is_ascii(self):
-        """ Return True if this reader-writer supports to read and write
-        ascii files.
+        """ Return True if the reader-writer supports to read and write
+        ASCII files.
 
-        :returns: boolean
+        :returns: (bool)
 
         """
         return self._is_ascii
@@ -83,7 +86,7 @@ class sppasBaseIO(sppasAcModel):
         """ Return True if this reader-writer supports to read and write
         binary files.
 
-        :returns: boolean
+        :returns: (bool)
 
         """
         return self._is_binary
@@ -98,14 +101,14 @@ class sppasBaseIO(sppasAcModel):
         :param other: (sppasAcModel)
 
         """
-        if isinstance(other, sppasAcModel) is False:
+        try:
+            self._name = other.get_name()
+            self._macros = other.get_macros()
+            self._hmms = other.get_hmms()
+            self._tiedlist = other.get_tiedlist()
+            self._repllist = other.get_repllist()
+        except AttributeError:
             raise ModelsDataTypeError("acoustic model", "sppasAcModel", type(other))
-
-        self._name = other.get_name()
-        self._macros = other.get_macros()
-        self._hmms = other.get_hmms()
-        self._tiedlist = other.get_tiedlist()
-        self._repllist = other.get_repllist()
 
     # -----------------------------------------------------------------------
 
@@ -167,6 +170,6 @@ class sppasBaseIO(sppasAcModel):
 
         """
         try:
-            self._tiedlist.load(filename)
+            self._tiedlist.read(filename)
         except Exception:
             pass

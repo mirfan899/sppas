@@ -35,13 +35,11 @@
 import os
 import collections
 import glob
-import codecs
 
-from sppas import encoding
 from sppas.src.dependencies.grako.parsing import graken, Parser
-from sppas.src.utils.makeunicode import basestring, sppasUnicode
+from sppas.src.utils.makeunicode import basestring
 
-from ..modelsexc import MioFolderError
+from ..modelsexc import MioFolderError, MioFileError
 from .hmm import sppasHMM
 from .acmbaseio import sppasBaseIO
 
@@ -73,18 +71,27 @@ class sppasHtkIO(sppasBaseIO):
     """
     @staticmethod
     def detect(folder):
+        """ Return True if the folder contains the HTK-ASCII file(s) of an ACM.
+        Expected files of this reader is mainly "hmmdefs".
+
+        """
         hmmdefs_files = glob.glob(os.path.join(folder, 'hmmdefs'))
         if len(hmmdefs_files) == 0:
             hmmdefs_files = glob.glob(os.path.join(folder, 'macros'))
+            hmmdefs_files = glob.glob(os.path.join(folder, 'vFloors'))
             hmmdefs_files.extend(glob.glob(os.path.join(folder, '*.hmm')))
             if len(hmmdefs_files) == 0:
                 return False
+
         return True
 
     # -----------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Create an sppasHtkIO instances.
+        """ Create a sppasHtkIO instances.
+
+        :param name: (str) An identifier name for the Acoustic Model.
+        By default, the name of the class is used.
 
         """
         if name is None:
@@ -93,37 +100,53 @@ class sppasHtkIO(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def read(self, folder, filename="hmmdefs"):
-        """ Load all known data from a folder.
+    def read(self, folder, filename=None):
+        """ Load all known data from a folder or only the given file.
 
         The default file names are:
-            - hmmdefs for an HTK-ASCII acoustic model
-            - tiedlist
-            - monophones.repl
+
+            - hmmdefs for an HTK-ASCII acoustic model;
+            - macros for a separated macro description;
+            - vFloors for a separated description allowing to construct the macro;
+            - tiedlist for triphone models;
+            - monophones.repl to map between phoneme representations.
 
         :param folder: (str) Folder name of the acoustic model
-        :param filename: (str) Optional name of the file to read
-        :returns: list of loaded file names
+        :param filename: (str) Optional name of a single file to read
 
         """
-        # Find and load the hmmdefs file
-        hmmdefs_files = glob.glob(os.path.join(folder, filename))
-        if len(hmmdefs_files) == 0:
-            hmmdefs_files = glob.glob(os.path.join(folder, 'macros'))
-            hmmdefs_files.extend(glob.glob(os.path.join(folder, '*.hmm')))
+        # Find the hmmdefs file, or the other files
+        if filename is None:
+            hmmdefs_files = glob.glob(os.path.join(folder, "hmmdefs"))
+            if len(hmmdefs_files) == 0:
+                hmmdefs_files = glob.glob(os.path.join(folder, 'macros'))
+                hmmdefs_files.extend(glob.glob(os.path.join(folder, '*.hmm')))
+                if len(hmmdefs_files) == 0:
+                    hmmdefs_files = glob.glob(os.path.join(folder, 'vFloors'))
+                    if len(hmmdefs_files) == 0:
+                        raise MioFolderError(folder)
+        else:
+            # Find the given file
+            hmmdefs_files = glob.glob(os.path.join(folder, filename))
             if len(hmmdefs_files) == 0:
                 raise MioFolderError(folder)
-        self.read_macros_hmms(hmmdefs_files)
 
-        # Find and load the tiedlist file
-        tiedlist_files = glob.glob(os.path.join(folder, 'tiedlist'))
-        if len(tiedlist_files) == 1:
-            self.read_tiedlist(tiedlist_files[0])
+        # Read the macros and the hmms
+        try:
+            self.read_macros_hmms(hmmdefs_files)
+        except Exception:
+            raise MioFolderError(folder)
 
-        # Find and load the monophones.repl file
-        repl_files = glob.glob(os.path.join(folder, 'monophones.repl'))
-        if len(repl_files) == 1:
-            self.read_phonesrepl(repl_files[0])
+        if filename is None:
+            # Find and load the tiedlist file
+            tiedlist_files = glob.glob(os.path.join(folder, 'tiedlist'))
+            if len(tiedlist_files) == 1:
+                self.read_tiedlist(tiedlist_files[0])
+
+            # Find and load the monophones.repl file
+            repl_files = glob.glob(os.path.join(folder, 'monophones.repl'))
+            if len(repl_files) == 1:
+                self.read_phonesrepl(repl_files[0])
 
     # -----------------------------------------------------------------------
 
@@ -131,11 +154,12 @@ class sppasHtkIO(sppasBaseIO):
         """ Save the model into a file, in HTK-ASCII standard format.
 
         The default file names are:
-            - hmmdefs for an HTK-ASCII acoustic model
-            - tiedlist
-            - monophones.repl
+            - hmmdefs (macros + hmms);
+            - tiedlist (if triphones);
+            - monophones.repl.
 
-        :param folder: (str)
+        :param folder: (str) Folder name of the acoustic model
+        :param filename: (str) Optional name of the file to write macros and hmms
 
         """
         if os.path.isdir(folder) is False:
@@ -145,10 +169,10 @@ class sppasHtkIO(sppasBaseIO):
         filename = os.path.join(folder, filename)
         with open(filename, 'w') as f:
             if self._macros:
-                f.write(self._serialize_macros())
+                f.write(sppasHtkIO._serialize_macros(self._macros))
 
             if self._hmms:
-                f.write(self._serialize_hmms())
+                f.write(sppasHtkIO._serialize_hmms(self._hmms))
 
         # write tiedlist
         if self._tiedlist.is_empty() is False:
@@ -160,33 +184,35 @@ class sppasHtkIO(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def read_hmm(self, filename):
+    @staticmethod
+    def read_hmm(filename):
         """ Return the (first) HMM described into the given filename.
 
-        :returns: filename (str) File to read.
+        :param filename: (str) File to read.
+        :returns: (sppasHMM)
 
         """
-        self.read(os.path.dirname(filename))
-        if len(self._hmms) < 1:
-            raise IOError('No HMM loaded.')
+        folder_name, file_name = os.path.split(filename)
+        parser = sppasHtkIO()
+        parser.read(folder_name, file_name)
+        if len(parser.get_hmms()) < 1:
+            raise MioFolderError(filename)
 
-        hmm = self._hmms[0]
-        self._hmms = [hmm]
+        return parser.get_hmms()[0]
 
     # -----------------------------------------------------------------------
 
-    def write_hmm(self, hmm, filename):
+    @staticmethod
+    def write_hmm(hmm, filename):
         """ Save a single hmm into the given filename.
 
-        :param filename: (str) File to write.
+        :param hmm: (sppasHMM) The HMM model to write
+        :param filename: (str) Name of the file to write.
 
         """
-        saved_hmms = self._hmms
-        self._hmms = [hmm]
-        result = self._serialize_hmms()
+        result = sppasHtkIO._serialize_hmms([hmm])
         with open(filename, 'w') as f:
             f.write(result)
-        self._hmms = saved_hmms
 
     # -----------------------------------------------------------------------
 
@@ -227,19 +253,22 @@ class sppasHtkIO(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def read_macros_hmms(self, filenames):
-        """ Load an HTK model from one or more files.
+        """ Load an HTK-ASCII model from one or more files.
 
-        :param filenames: Filenames of the model
+        :param filenames: Name of the files of the model
         (e.g. macros and/or hmms files and/or hmmdefs)
 
         """
         text = ''
         for fnm in filenames:
-            with codecs.open(fnm, 'r', encoding) as fp:
+            with open(fnm, 'r') as fp:
                 for line in fp.readlines():
                     line = line.strip()
                     if len(line) > 0:
                         text += line + "\n"
+
+        if len(text) == 0:
+            raise MioFileError(" ".join(filenames))
 
         parser = HtkModelParser()
         htk_model = HtkModelSemantics()  # OrderedDict()
@@ -262,21 +291,23 @@ class sppasHtkIO(sppasBaseIO):
     # Private
     # -----------------------------------------------------------------------
 
-    def _serialize_macros(self):
+    @staticmethod
+    def _serialize_macros(macros):
         """ Serialize macros into a string, in HTK-ASCII standard format.
 
+        :param macros: (OrderedDict) Macros to save
         :returns: The HTK-ASCII macros as a string.
 
         """
         result = ''
 
         # First serialize the macros
-        for macro in self._macros:
+        for macro in macros:
 
             if macro.get('options', None):
                 result += '~o '
                 for option in macro['options']['definition']:
-                    result += self._serialize_option(option)
+                    result += sppasHtkIO._serialize_option(option)
 
             elif macro.get('transition', None):
                 result += '~t "{}"\n'.format(macro['transition']['name'])
@@ -303,23 +334,24 @@ class sppasHtkIO(sppasBaseIO):
 
         return result
 
-    # -----------------------------------------------------------------------
+    # -----------------------------------
 
-    def _serialize_hmms(self):
-        """ Serialize macros into a string, in HTK-ASCII standard format.
+    @staticmethod
+    def _serialize_hmms(hmms):
+        """ Serialize hmms into a string, in HTK-ASCII standard format.
 
         :returns: The HTK-ASCII model as a string.
 
         """
         result = ''
-        for hmm_model in self._hmms:
+        for hmm_model in hmms:
             if hmm_model.name is not None:
                 result += sppasHtkIO._serialize_name(hmm_model.name)
             result += sppasHtkIO._serialize_definition(hmm_model.definition)
 
         return result
 
-    # -----------------------------------------------------------------------
+    # ----------------------------------
 
     @staticmethod
     def _serialize_name(name):

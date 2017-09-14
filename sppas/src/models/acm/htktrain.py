@@ -350,16 +350,14 @@ class sppasDataTrainer(object):
                 opt = sppasAcModel.create_options(vector_size=vectorsize,
                                                   parameter_kind=paramkind,
                                                   stream_info=[vectorsize])
-                protomodel = sppasHtkIO()
                 # protomodel.set_macros([opt])
                 # protomodel.append_hmm(self.proto)
                 # protomodel.write(self.protodir, proto_filename)
                 # HERE WE DON'T WRITE THE MACRO... SHOULD WE DO IT???
-                protomodel.write_hmm(self.proto, self.protofile)
+                sppasHtkIO.write_hmm(self.proto, self.protofile)
             else:
                 logging.info('Read proto file: %s' % self.protofile)
-                parser = sppasHtkIO()
-                self.proto = parser.read_hmm(self.protofile)
+                self.proto = sppasHtkIO.read_hmm(self.protofile)
                 self.features.nbmv = self.proto.get_vecsize()
                 logging.info(' ... [OK] Vector size: %d' % self.features.nbmv)
 
@@ -1071,13 +1069,12 @@ class sppasHTKModelInitializer(object):
             if self.trainingcorpus.datatrainer.protodir is not None:
                 proto_phone = os.path.join(self.trainingcorpus.datatrainer.protodir, phone + ".hmm")
                 if os.path.exists(proto_phone):
-                    parser = sppasHtkIO()
-                    h = parser.read_hmm(proto_phone)
+                    h = sppasHtkIO.read_hmm(proto_phone)
                     if h.get_vecsize() != self.trainingcorpus.datatrainer.features.nbmv:
                         logging.info(' ... ... [FAIL] Bad HMM vector size. Got %d.' % h.get_vecsize())
                     else:
                         h.set_name(phone)
-                        h.save(outfile)
+                        sppasHtkIO.write_hmm(h, os.path.join(self.directory, phone + ".hmm"))
                         logging.info(' ... ... [PROTO]: %s' % proto_phone)
                         continue
 
@@ -1090,16 +1087,14 @@ class sppasHTKModelInitializer(object):
             if os.path.exists(outfile) is False:
                 h = self.trainingcorpus.datatrainer.proto
                 h.set_name(phone)
-                parser = sppasHtkIO()
-                parser.write_hmm(h, outfile)
+                sppasHtkIO.write_hmm(h, outfile)
                 logging.info(' ... ... [FLAT]')
                 h.set_name("proto")
             else:
                 # HInit assigned a bad name (it's the filename, including path!!)!
-                parser = sppasHtkIO()
-                h = parser.read_hmm(outfile)
+                h = sppasHtkIO.read_hmm(outfile)
                 h.set_name(phone)
-                parser.write_hmm(h, outfile)
+                sppasHtkIO.write_hmm(h, outfile)
                 logging.info(' ... ... [TRAIN]')
 
     # -----------------------------------------------------------------------
@@ -1134,8 +1129,8 @@ class sppasHTKModelInitializer(object):
                                               parameter_kind=param_kind,
                                               stream_info=[vector_size])
             parser = sppasHtkIO()
-            h = parser.read(self.directory, filename="vFloors")
-            m = h.get_macros()
+            parser.read(self.directory, filename="vFloors")
+            m = parser.get_macros()
 
             ac_model = sppasHtkIO()
             ac_model.macros = [opt]
@@ -1366,6 +1361,7 @@ class sppasHTKModelTrainer(object):
 
         :param scpfile: (str)
         :param rounds: (int) Number of times HERest is called.
+        :param dopruning: (bool)
         :returns: bool
 
         """
@@ -1425,8 +1421,9 @@ class sppasHTKModelTrainer(object):
         # Create a working directory if needed
         if self.corpus.datatrainer.workdir is None:
             sf = sppasFileUtils()
-            self.corpus.datatrainer.workdir = sf.set_random()
-            os.mkdir(self.corpus.datatrainer.workdir)
+            work_dir = sf.set_random()
+            os.mkdir(work_dir)
+            self.corpus.datatrainer.workdir = work_dir
 
         # Fix resources if needed
         if self.corpus.phonesfile is None:
@@ -1438,11 +1435,17 @@ class sppasHTKModelTrainer(object):
         """ Step 2 of the training procedure: Monophones initialization. """
 
         logging.info("Step 2. Monophones initialization.")
+
+        if self.corpus.datatrainer.workdir is None:
+            raise IOError('No working directory was previously fixed. Step 2 aborted.')
+        if os.path.exists(self.corpus.datatrainer.workdir) is False:
+            raise IOError('The working directory was not previously created. Step 2 aborted.')
+
         self.init_epoch_dir()
         initial = sppasHTKModelInitializer(self.corpus, self.curdir)
         initial.create_model()
 
-        if os.path.exists(os.path.join(self.curdir,DEFAULT_HMMDEFS_FILENAME)) is False:
+        if os.path.exists(os.path.join(self.curdir, DEFAULT_HMMDEFS_FILENAME)) is False:
             raise IOError('Monophones initialization failed.')
 
         if len(self.corpus.audiofiles) == 0:
@@ -1526,8 +1529,82 @@ class sppasHTKModelTrainer(object):
 
     def training_step4(self):
         """ Step 4 of the training procedure: Triphones training.
-        TODO.
+
+        Requires a "header tree" script.
+
         """
+        logging.info("Step 4. Tied-State Triphones training.")
+
+        # THE FOLLOWING IS THE TCSH-CODE TO TRANSLATE IN PYTHON:
+
+        # ** - Making Triphones from Monophones
+        # HLEd -A -D -T 1 - n ./htk/triphones - l '*' -i wintri.mlf ./htk/mktri.led phones2.mlf
+
+        # ATTENTION.... il est important que dans le fichier triphones,
+        # les triphones soient listees dans leur ordre d'arrivee!
+        # (NE PAS faire de "sort" sur ce fichier !).
+        # cat ./htk/triphones | grep - v "-" | grep - v "+" > monophones
+        # cat ./htk/monophones1 monophones | sort | uniq - u >> ./htk/triphones
+        # rm monophones
+
+        # This will create the transcription file wintri.mlf (words in triphones),
+        # and the file triphones1 which contains the list of the corpus' triphones.
+        # Create a list of triphones from monophones:
+        # cat ./htk/monophones1 | awk 'BEGIN{print "CL htk/triphones"} {printf "TI T_%s {(*-%s+*,%s+*,*-%s).transP}\n",$0,$0,$0,$0}' >./ htk / mktri.hed
+        #
+        # cp  hmm11/macros hmm12
+        # CAUTION: this will use the file htk/triphones
+        # HHEd -A -D -T 1 -H ./hmm11/hmmdefs -M  hmm12 ./htk/mktri.hed ./htk/monophones1
+
+        # logging.info(" ... Intermediate training.")
+        # ret = self.train_step(self.corpus.get_scp(aligned=True,
+        #                                           phonetized=True,
+        #                                           transcribed=True))
+        #  if ret is False:
+        #      logging.info('ERROR: Intermediate training failed.')
+        #      return False
+
+        # ** Making Tied - State Triphones
+        #
+        # Execute the HDMan command against the entire lexicon file,
+        # not just the training dictionnary we have used thus far.
+        #  HDMan -A -D -T 1 -b sp -n ./htk/fulllist -g ./htk/global.ded -l ./log/flog ./etc/dict-tri $DICT
+        # This creates 2 files:
+        #  * dict-tri: the entire dictionary.
+        #  * fulllist: the complete list of monophones.
+
+        # Now, add triphones to the full monophones list.
+        #  cat ./htk/monophones1 ./htk/triphones | sort | uniq > ./htk/fulllist
+
+        # touch ./htk/tree.hed
+        # echo "RO 100 ./log/stats"  >> ./htk/tree.hed
+        # echo ""                    >> ./htk/tree.hed
+        # echo "TR 0"                >> ./htk/tree.hed
+        # echo ""                    >> ./htk/tree.hed
+        # cat $TREE                  >> ./htk/tree.hed
+        # echo ""                    >> ./htk/tree.hed
+        # echo "TR 2"                >> ./htk/tree.hed
+        # echo ""                    >> ./htk/tree.hed
+        # perl ./scripts/mkclscript.pl TB 350 ./htk/monophones1 >> ./htk/tree.hed
+        # echo ""                    >> ./htk/tree.hed
+        # echo "TR 1"                >> ./htk/tree.hed
+        # echo ""                    >> ./htk/tree.hed
+        # echo 'AU "./htk/fulllist"' >> ./htk/tree.hed
+        # echo 'CO "./htk/tiedlist"' >> ./htk/tree.hed
+        # echo ""                    >> ./htk/tree.hed
+        # echo 'ST "./htk/trees"'    >> ./htk/tree.hed
+        # echo ""                    >> ./htk/tree.hed
+
+        #  HHEd -A -D -T 1 -H ./hmm14/hmmdefs -M  hmm15 ./htk/mktri.hed ./htk/monophones1
+        #  logging.info(" ... Final training.")
+        #  ret = self.train_step(self.corpus.get_scp(aligned=True,
+        #                                           phonetized=True,
+        #                                           transcribed=True))
+        #  if ret is False:
+        #      logging.info('ERROR: Final training failed.')
+        #      return False
+
+        # cp ./htk/tiedlist ./hmm17
 
         return True
 
@@ -1535,6 +1612,9 @@ class sppasHTKModelTrainer(object):
 
     def get_current_model(self):
         """ Return the model of the current epoch, or None. """
+
+        if os.path.exists(os.path.join(self.curdir, DEFAULT_HMMDEFS_FILENAME)) is False:
+            return None
 
         model = sppasHtkIO()
         try:
@@ -1547,6 +1627,9 @@ class sppasHTKModelTrainer(object):
 
     def get_current_macro(self):
         """ Return the macros of the current epoch, or None. """
+
+        if os.path.exists(os.path.join(self.curdir, DEFAULT_MACROS_FILENAME)) is False:
+            return None
 
         model = sppasHtkIO()
         try:
@@ -1602,6 +1685,8 @@ class sppasHTKModelTrainer(object):
                 self.corpus.monophones.save(os.path.join(outdir, DEFAULT_MONOPHONES_FILENAME))
                 self.corpus.phonemap.save_as_ascii(os.path.join(outdir, DEFAULT_MAPPINGMONOPHONES_FILENAME))
                 self.corpus.datatrainer.features.write_wav_config(os.path.join(outdir, "config"))
+        elif model is None:
+            model = sppasAcModel()
 
         if delete is True:
             self.corpus.datatrainer.delete()

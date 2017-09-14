@@ -60,8 +60,8 @@ class sppasTiedList(object):
 
     # -----------------------------------------------------------------------
 
-    def load(self, filename):
-        """ Load a tiedlist from a file and set it.
+    def read(self, filename):
+        """ Read a tiedlist from a file and set it.
 
         :param filename: (str)
 

@@ -3,6 +3,7 @@
 import unittest
 import os.path
 import shutil
+import glob
 
 from sppas import RESOURCES_PATH, SAMPLES_PATH
 from sppas.src.utils.fileutils import sppasFileUtils
@@ -80,8 +81,19 @@ class TestMIO(unittest.TestCase):
         # self.assertEqual(len(model), 1368)   # monophones, biphones, triphones
 
     def test_load_save(self):
+        self._test_load_save(os.path.join(MODEL_PATH, "models-jpn"))
+        self._test_load_save(os.path.join(MODEL_PATH, "models-nan"))
+
+    # This one takes too much time to be tested each time...
+    def test_load_all_models(self):
+        models_dir = glob.glob(os.path.join(MODEL_PATH, "models-*"))
+        for folder in models_dir:
+            self._test_load_save(folder)
+
+    def _test_load_save(self, folder):
+        """ Test to read and write an acoustic model of the given directory. """
         # Read the acoustic model (monophone)
-        parser = sppasACMRW(os.path.join(MODEL_PATH, "models-jpn"))
+        parser = sppasACMRW(folder)
         acmodel = parser.read()
 
         # Save temporarily the loaded model

@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.models.acm.aio.readwrite.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.models.acm.readwrite.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Readers and writers of acoustic models.
 
@@ -45,7 +45,6 @@ from ..modelsexc import MioFileFormatError
 
 from .acmodelhtkio import sppasHtkIO
 
-
 # ----------------------------------------------------------------------------
 
 
@@ -56,13 +55,13 @@ class sppasACMRW(object):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Main parser of annotated data.
+    :summary:      Generic reader and writer for acoustic models.
 
-    Readers and Writers of acoustic models.
-    We expect to add readers and writers for several file formats 
-    in a - far - future.
     Currently, only HTK-ASCII is supported.
-    
+
+    We expect to add readers and writers for several file formats
+    in a -- far -- future.
+
     """
     ACM_TYPES = OrderedDict()
     ACM_TYPES["hmmdefs"] = sppasHtkIO
@@ -72,7 +71,7 @@ class sppasACMRW(object):
     def __init__(self, folder):
         """ Create an acoustic model reader-writer.
 
-        :param folder: (str)
+        :param folder: (str) Name of the folder with the acoustic model files
 
         """
         self.__folder = u(folder)
@@ -88,7 +87,7 @@ class sppasACMRW(object):
     # -----------------------------------------------------------------------
 
     def get_folder(self):
-        """ Return the folder name of the acoustic model. """
+        """ Return the name of the folder of the acoustic model. """
 
         return self.__folder
 
@@ -97,7 +96,7 @@ class sppasACMRW(object):
     def set_folder(self, folder):
         """ Set a new folder to store files of the acoustic model. 
 
-        :param folder: (str)
+        :param folder: (str) New name of the folder of the acoustic model.
 
         """
         self.__folder = u(folder)
@@ -105,7 +104,7 @@ class sppasACMRW(object):
     # -----------------------------------------------------------------------
 
     def read(self):
-        """ Read an acoustic model from a folder. 
+        """ Read an acoustic model from the folder.
         
          :returns: sppasAcModel() 
 
@@ -123,8 +122,7 @@ class sppasACMRW(object):
     # -----------------------------------------------------------------------
 
     def get_reader(self):
-        """ Return an acoustic model according to a given filename.
-        The given file is opened and an heuristic allows to fix the format.
+        """ Return an acoustic model according to the given folder.
 
         :returns: sppasAcModel()
 

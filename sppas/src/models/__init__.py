@@ -47,7 +47,7 @@
 from sppas.src.utils.maketext import translate
 t = translate("models")
 
-from acm.hmm import sppasHMM, HMMInterpolation
+from .acm.hmm import sppasHMM, HMMInterpolation
 
 # ---------------------------------
 

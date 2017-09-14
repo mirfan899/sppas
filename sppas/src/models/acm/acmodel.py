@@ -40,6 +40,7 @@ from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.fileutils import sppasGUID
 from sppas.src.utils.makeunicode import sppasUnicode
 
+from ..modelsexc import ModelsDataTypeError
 from .hmm import sppasHMM
 from .tiedlist import sppasTiedList
 
@@ -118,6 +119,19 @@ class sppasAcModel(object):
     # Setters
     # -----------------------------------------------------------------------
 
+    def set_repllist(self, repllist):
+        """ Set the placement list of the model.
+
+        :param repllist: (sppasMapping)
+
+        """
+        if not isinstance(repllist, sppasMapping):
+            raise ModelsDataTypeError("tiedlist", "sppasMapping()", type(repllist))
+
+        self._repllist = repllist
+
+    # -----------------------------------------------------------------------
+
     def set_macros(self, macros):
         """ Set the macros of the model.
 
@@ -135,7 +149,7 @@ class sppasAcModel(object):
 
         """
         if not (isinstance(hmms, list) and all([isinstance(h, sppasHMM) for h in hmms])):
-            raise TypeError('Expected a list of HMMs instances.')
+            raise ModelsDataTypeError("hmms", "list of sppasHMM()", type(hmms))
 
         self._hmms = hmms
 
@@ -153,7 +167,7 @@ class sppasAcModel(object):
         hmms = [h for h in self._hmms if h.get_name() == phone]
         if len(hmms) == 1:
             return hmms[0]
-        raise ValueError('%s not in the model' % phone)
+        raise ValueError('{:s} not in the model'.format(phone))
 
     # -----------------------------------------------------------------------
 
@@ -173,6 +187,7 @@ class sppasAcModel(object):
 
         if hmm.definition is None:
             raise TypeError('Expected an hmm with a definition as key. No definition was given.')
+
         if hmm.definition.get('states', None) is None or hmm.definition.get('transition', None) is None:
             raise TypeError('Expected an hmm with a definition including states and transitions.')
 
@@ -323,8 +338,8 @@ class sppasAcModel(object):
                 ac.append_hmm(copy.deepcopy(h))
         ac.fill_hmms()
 
-        # The repl mapping table
-        ac.repllist = copy.deepcopy(self._repllist)
+        # The phonemes mapping table
+        ac.set_repllist(copy.deepcopy(self._repllist))
 
         return ac
 
