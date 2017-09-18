@@ -58,7 +58,8 @@ def train(pron_dict,
           corpus_dir_list,
           lang,
           working_dir,
-          output_dir):
+          output_dir,
+          tree_script=None):
 
     # ---------------------------------
     # 1. Create a Data Manager
@@ -87,25 +88,23 @@ def train(pron_dict,
     #   - codes the audio data.
 
     corpus = sppasTrainingCorpus(datatrainer, lang=lang)
-    corpus.fix_resources(dictfile=pron_dict, mappingfile=mapping_table)
+    corpus.fix_resources(dict_file=pron_dict, mapping_file=mapping_table)
 
     if corpus_dir_list:
         for entry in corpus_dir_list:
             if os.path.isdir(entry):
                 corpus.add_corpus(entry)
             else:
-                logging.info('[ WARNING ] Ignore the given entry: %s' % entry)
+                logging.info('[ WARNING ] Ignore the given entry: {!s:s}'.format(entry))
 
     # ---------------------------------
     # 3. Acoustic Model Training
 
     trainer = sppasHTKModelTrainer(corpus)
-    DELETE = False
+    clean = False
     if args.t is None:
-        DELETE = True
-    trainer.training_recipe(outdir=output_dir, delete=DELETE)
-
-    # ---------------------------------------------------------------------------
+        clean = True
+    trainer.training_recipe(outdir=output_dir, delete=clean, header_tree=tree_script)
 
 
 # ----------------------------------------------------------------------------
@@ -157,7 +156,13 @@ parser.add_argument("-o",
                     default=None,
                     help='Output directory name.')
 
-parser.add_argument("--quiet", action='store_true', help="Disable the verbosity." )
+parser.add_argument("-T",
+                    metavar="tree",
+                    required=False,
+                    default=None,
+                    help="Tree LED script to train a triphone model.")
+
+parser.add_argument("--quiet", action='store_true', help="Disable the verbosity.")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -179,4 +184,5 @@ train(pron_dict=args.r,
       corpus_dir_list=args.i,
       lang=args.l,
       working_dir=args.t,
-      output_dir=args.o)
+      output_dir=args.o,
+      tree_script=args.T)

@@ -79,7 +79,7 @@ from .phoneset import sppasPhoneSet
 
 DEFAULT_HMMDEFS_FILENAME = "hmmdefs"
 DEFAULT_MACROS_FILENAME = "macros"
-DEFAULT_PROTO_FILENAME = "proto"
+DEFAULT_PROTO_FILENAME = "proto.hmm"
 DEFAULT_MONOPHONES_FILENAME = "monophones"
 DEFAULT_MAPPING_MONOPHONES_FILENAME = "monophones.repl"
 
@@ -149,6 +149,7 @@ class sppasDataTrainer(object):
         # The directory with all HMM prototypes, and the default proto file.
         self.protodir = None
         self.protofile = None
+        self.macrofile = None
         self.proto = sppasHMM()
         self.proto.create_proto(self.features.nbmv)
 
@@ -174,6 +175,7 @@ class sppasDataTrainer(object):
         # The directory with all HMM prototypes, and the default proto file.
         self.protodir = None
         self.protofile = None
+        self.macrofile = None
         self.proto = sppasHMM()
         self.proto.create_proto(self.features.nbmv)
 
@@ -318,7 +320,7 @@ class sppasDataTrainer(object):
                   proto_dir=DEFAULT_PROTO_DIR, 
                   proto_filename=DEFAULT_PROTO_FILENAME):
         """ (Re-)Create the proto, then if relevant only, create a `protos` directory
-        and add the proto file.
+        and add the proto file. Create the macro if any.
 
         :param proto_dir: (str) Directory in which prototypes will be stored
         :param proto_filename: (str) File name of the default prototype
@@ -339,10 +341,19 @@ class sppasDataTrainer(object):
 
         if self.protodir is not None:
             self.protofile = os.path.join(self.protodir, proto_filename)
+            self.macrofile = os.path.join(self.protodir, DEFAULT_MACROS_FILENAME)
 
             if os.path.exists(self.protofile) is False:
-                logging.info('Write proto file: %s' % self.protofile)
+                logging.info('Write proto file: {:s}'.format(self.protofile))
+                sppasHtkIO.write_hmm(self.proto, self.protofile)
+            else:
+                logging.info('Read proto file: {!s:s}'.format(self.protofile))
+                self.proto = sppasHtkIO.read_hmm(self.protofile)
+                self.features.nbmv = self.proto.get_vecsize()
+                logging.info(' ... [OK] Vector size: {:d}'.format(self.features.nbmv))
 
+            if os.path.exists(self.macrofile) is False:
+                logging.info('Write macros file: {:s}'.format(DEFAULT_MACROS_FILENAME))
                 vectorsize = self.features.nbmv
                 targetkind = self.features.targetkind
                 paramkind = sppasAcModel.create_parameter_kind("mfcc", targetkind[4:])
@@ -350,16 +361,10 @@ class sppasDataTrainer(object):
                 opt = sppasAcModel.create_options(vector_size=vectorsize,
                                                   parameter_kind=paramkind,
                                                   stream_info=[vectorsize])
-                # protomodel.set_macros([opt])
-                # protomodel.append_hmm(self.proto)
-                # protomodel.write(self.protodir, proto_filename)
-                # HERE WE DON'T WRITE THE MACRO... SHOULD WE DO IT???
-                sppasHtkIO.write_hmm(self.proto, self.protofile)
-            else:
-                logging.info('Read proto file: %s' % self.protofile)
-                self.proto = sppasHtkIO.read_hmm(self.protofile)
-                self.features.nbmv = self.proto.get_vecsize()
-                logging.info(' ... [OK] Vector size: %d' % self.features.nbmv)
+                macromodel = sppasHtkIO()
+                macromodel.set_macros([opt])
+                self.macrofile = os.path.join(self.protodir, DEFAULT_MACROS_FILENAME)
+                macromodel.write(self.protodir, DEFAULT_MACROS_FILENAME)
 
     # -----------------------------------------------------------------------
 
@@ -485,48 +490,53 @@ class sppasTrainingCorpus(object):
 
     # -----------------------------------------------------------------------
 
-    def fix_resources(self, vocabfile=None, dictfile=None, mappingfile=None):
+    def fix_resources(self, vocab_file=None, dict_file=None, mapping_file=None):
         """ Fix resources using default values.
 
         Ideally, resources are fixed *after* the datatrainer.
 
-        :param vocabfile: (str) The lexicon, used during tokenization of the corpus.
-        :param dictfile: (str) The pronunciation dictionary, used both to
+        :param vocab_file: (str) The lexicon, used during tokenization of the corpus.
+        :param dict_file: (str) The pronunciation dictionary, used both to
         generate the list of phones and to perform phonetization of the corpus.
-        :param mappingfile: (str) file that contains the mapping table for the phone set.
+        :param mapping_file: (str) file that contains the mapping table for the phone set.
 
         """
         logging.info('Fix resources: ')
 
         # The mapping table (required to convert the dictionary)
-        if self.datatrainer.workdir is not None and mappingfile is not None:
-            self._create_phonemap(mappingfile)
+        if self.datatrainer.workdir is not None and mapping_file is not None:
+            logging.info(' - mapping table {!s:s}'.format(mapping_file))
+            self._create_phonemap(mapping_file)
+        else:
+            logging.info(' - no mapping table is defined.')
 
         # The pronunciation dictionary (also used to construct the vocab if required)
-        if dictfile is not None and os.path.exists(dictfile) is True:
+        if dict_file is not None and os.path.exists(dict_file) is True:
+            logging.info(' - pronunciation dictionary {!s:s}'.format(dict_file))
+
             # Map the phoneme strings of the dictionary. Save the mapped version.
-            pdict = sppasDictPron(dictfile)
+            pdict = sppasDictPron(dict_file)
             if self.datatrainer.workdir is not None:
-                mapdict = pdict.map_phones(self.phonemap)
-                dictfile = os.path.join(self.datatrainer.workdir, self.lang+".dict")
-                mapdict.save_as_ascii(dictfile)
-            if vocabfile is None:
-                vocabfile = os.path.join(self.datatrainer.workdir, self.lang+".vocab")
+                map_dict = pdict.map_phones(self.phonemap)
+                dict_file = os.path.join(self.datatrainer.workdir, self.lang+".dict")
+                map_dict.save_as_ascii(dict_file)
+            # Create the vocabulary from the dictionary.
+            if vocab_file is None:
+                vocab_file = os.path.join(self.datatrainer.workdir, self.lang+".vocab")
                 w = sppasVocabulary()
                 for token in pdict:
                     if '(' not in token and ')' not in token:
                         w.add(token)
-                w.save(vocabfile)
-            logging.info(' - pronunciation dictionary: %s' % dictfile)
-            self.dictfile = dictfile
+                w.save(vocab_file)
+            self.dictfile = dict_file
             self.monophones.add_from_dict(self.dictfile)
         else:
             logging.info(' - no pronunciation dictionary is defined.')
 
         # Either the given vocab or the constructed one
-        if vocabfile is not None:
-            logging.info('- vocabulary: %s' % vocabfile)
-            self.vocabfile = vocabfile
+        if vocab_file is not None:
+            logging.info('- vocabulary: {!s:s}'.format(vocab_file))
+            self.vocabfile = vocab_file
         else:
             logging.info(' - no vocabulary is defined.')
 
@@ -977,30 +987,37 @@ class sppasHTKModelInitializer(object):
     def _create_flat_start_model(self):
         """ Create a new version of proto in the directory with `HCompV`.
 
-        This creates two new files in the directory:
-            - proto
-            - vFloors
+        Read the current proto and the data, then, creates two new files
+        in the directory:
+            - proto (with variances and means updated);
+            - vFloors (variance floor macros).
 
         """
         if test_command("HCompV") is False:
             logging.info("Error. HCompV is not installed.")
             return
 
-        scpfile = self.trainingcorpus.get_scp(aligned=True, phonetized=True, transcribed=False)
-        if scpfile is None:
+        scp_file = self.trainingcorpus.get_scp(aligned=True, phonetized=True, transcribed=False)
+        if scp_file is None:
             logging.info("Error. The scp file is not defined.")
             return
 
+        log_file = os.path.join(self.trainingcorpus.datatrainer.logdir, "log-step00.txt")
+        error_file = os.path.join(self.trainingcorpus.datatrainer.logdir, "err-step00.txt")
+
         try:
-            subprocess.check_call(["HCompV", "-T", "0", "-m",
+            subprocess.check_call(["HCompV",
+                                   "-T", "2",
+                                   "-m",
                                    "-I", self.trainingcorpus.get_mlf(),
                                    "-f", str(0.01),
                                    "-C", self.trainingcorpus.datatrainer.features.configfile,
-                                   "-S", scpfile,
+                                   "-S", scp_file,
+                                   "-H", self.trainingcorpus.datatrainer.macrofile,
                                    "-M", self.directory,
                                    self.trainingcorpus.datatrainer.protofile],
-                                   stdout=open(os.devnull, 'wb'),
-                                   stderr=open(os.devnull, 'wb'))
+                                   stdout=open(log_file, 'ab+'),
+                                   stderr=open(error_file, 'ab+'))
         except subprocess.CalledProcessError as e:
             logging.info("Error. HCompV failed: {:s}".format(str(e)))
             return
@@ -1014,24 +1031,30 @@ class sppasHTKModelInitializer(object):
             logging.info("Error. HInit is not installed.")
             return
 
-        scpfile = self.trainingcorpus.get_scp(aligned=True, phonetized=False, transcribed=False)
-        if scpfile is None:
+        scp_file = self.trainingcorpus.get_scp(aligned=True, phonetized=False, transcribed=False)
+        if scp_file is None:
             logging.info("Error. The scp file is not defined.")
             return
 
+        log_file = os.path.join(self.trainingcorpus.datatrainer.logdir, "log-step00.txt")
+        error_file = os.path.join(self.trainingcorpus.datatrainer.logdir, "err-step00.txt")
+
         try:
-            subprocess.check_call(["HInit", "-T", "0", "-i", "20",
+            subprocess.check_call(["HInit",
+                                   "-T", "2",
+                                   "-i", "20",
                                    "-m", "1",
                                    "-v", "0.0001",
                                    "-I", self.trainingcorpus.get_mlf(),
                                    "-l", phone,
                                    "-o", outfile,
                                    "-C", self.trainingcorpus.datatrainer.features.configfile,
-                                   "-S", scpfile,
+                                   "-S", scp_file,
+                                   "-H", self.trainingcorpus.datatrainer.macrofile,
                                    "-M", self.directory,
                                    self.trainingcorpus.datatrainer.protofile],
-                                   stdout=open(os.devnull, 'wb'),
-                                   stderr=open(os.devnull, 'wb'))
+                                   stdout=open(log_file, 'ab+'),
+                                   stderr=open(error_file, 'ab+'))
         except subprocess.CalledProcessError as e:
             logging.info("Error. HInit failed: {:s}".format(str(e)))
             return
@@ -1055,10 +1078,10 @@ class sppasHTKModelInitializer(object):
             if self.trainingcorpus.datatrainer.protofile is not None:
                 logging.info(' ... Train proto model:')
                 self._create_flat_start_model()
-                if os.path.exists(os.path.join(self.directory, "proto")):
-                    self.trainingcorpus.datatrainer.protofile = os.path.join(self.directory, "proto")
-                    parser = sppasHtkIO()
-                    self.trainingcorpus.datatrainer.proto = parser.read(self.trainingcorpus.datatrainer.protofile)
+                hcompv_proto_file = os.path.join(self.directory, "proto")
+                if os.path.exists(hcompv_proto_file) is True:
+                    self.trainingcorpus.datatrainer.protofile = hcompv_proto_file
+                    self.trainingcorpus.datatrainer.proto = sppasHtkIO.read_hmm(hcompv_proto_file)
                     self.trainingcorpus.datatrainer.features.nbmv = self.trainingcorpus.datatrainer.proto.get_vecsize()
                     logging.info(' ... ... [ OK ] ')
                 else:
@@ -1116,45 +1139,48 @@ class sppasHTKModelInitializer(object):
 
         parser = sppasHtkIO()
 
-        # Create a default macro, in case a macros is not already existing.
-        vector_size = self.trainingcorpus.datatrainer.features.nbmv
-        target_kind = self.trainingcorpus.datatrainer.features.targetkind
-        param_kind = sppasAcModel.create_parameter_kind("mfcc", target_kind[4:])
-        opt = sppasAcModel.create_options(vector_size=vector_size,
-                                          parameter_kind=param_kind,
-                                          stream_info=[vector_size])
-        parser.set_macros([opt])
-        
         # Read the set of HMMs of the directory, and if any, read the macros.
         parser.read(self.directory)
-        
-        # Write all-in-one in an hmmdefs file
-        parser.write(os.path.join(self.directory, DEFAULT_HMMDEFS_FILENAME))
 
-    # -----------------------------------------------------------------------
-
-    def create_macros(self):
-        """ Create macros file from vfloors. """
-
-        vfloors = os.path.join(self.directory, "vFloors")
-        if os.path.exists(vfloors):
-            
-            parser = sppasHtkIO()
-            parser.read(self.directory, filename="vFloors")
-            m = parser.get_macros()
-            
-            # Create a default macro
+        # Create a default macro if a macros is not already existing.
+        if parser.get_macros() is None:
             vector_size = self.trainingcorpus.datatrainer.features.nbmv
             target_kind = self.trainingcorpus.datatrainer.features.targetkind
             param_kind = sppasAcModel.create_parameter_kind("mfcc", target_kind[4:])
             opt = sppasAcModel.create_options(vector_size=vector_size,
                                               parameter_kind=param_kind,
                                               stream_info=[vector_size])
-            
-            ac_model = sppasHtkIO()
-            ac_model.set_macros([opt])
+            parser.set_macros([opt])
+
+        # Write all-in-one in an hmmdefs file
+        parser.write(self.directory, DEFAULT_HMMDEFS_FILENAME)
+
+    # -----------------------------------------------------------------------
+
+    def create_macros(self):
+        """ Create macros file from vfloors. """
+
+        ac_model = sppasHtkIO()
+
+        # Create a default macro
+        vector_size = self.trainingcorpus.datatrainer.features.nbmv
+        target_kind = self.trainingcorpus.datatrainer.features.targetkind
+        param_kind = sppasAcModel.create_parameter_kind("mfcc", target_kind[4:])
+        opt = sppasAcModel.create_options(vector_size=vector_size,
+                                          parameter_kind=param_kind,
+                                          stream_info=[vector_size])
+        ac_model.set_macros([opt])
+
+        # Get the given vFloors (if it was created by HCompv)
+        vfloors = os.path.join(self.directory, "vFloors")
+        if os.path.exists(vfloors):
+            parser = sppasHtkIO()
+            parser.read(self.directory, filename="vFloors")
+            m = parser.get_macros()
             ac_model.get_macros().append(m[0])
-            ac_model.write(self.directory, filename=DEFAULT_MACROS_FILENAME)
+
+        # Write the macros
+        ac_model.write(self.directory, filename=DEFAULT_MACROS_FILENAME)
 
 # ---------------------------------------------------------------------------
 
@@ -1244,7 +1270,7 @@ class sppasHTKModelTrainer(object):
         """
         # Load current acoustic model and prepare the new working directory
         model = sppasHtkIO()
-        model.read(self.__current_dir)  # , DEFAULT_HMMDEFS_FILENAME)
+        model.read(self.__current_dir, DEFAULT_HMMDEFS_FILENAME)
         self.init_epoch_dir()
 
         # Manage sil (to extract the "silst" state).
@@ -1260,7 +1286,10 @@ class sppasHTKModelTrainer(object):
         option['name'] = "silst"
         option['definition'] = silst
         macro['state'] = option
-        model.get_macros().append(macro)
+        if model.get_macros() is not None:
+            model.get_macros().append(macro)
+        else:
+            model.set_macros(macro)
 
         # Create an "sp" HMM and append it in the model.
         # It supposes that a "silst" state is already existing in the model.
@@ -1285,7 +1314,7 @@ class sppasHTKModelTrainer(object):
         """
         # Nothing to do!
         if len(self.corpus.transfiles) == 0:
-            logging.info("Warning. No transcribed files. Nothing to do!")
+            logging.info("... ... No transcribed files. Nothing to do!")
             return True
 
         # Create Tokenizer, Phonetizer, Aligner
@@ -1303,9 +1332,12 @@ class sppasHTKModelTrainer(object):
             if test_command("julius") is False:
                 if test_command("HVite") is True:
                     aligner.set_aligner("hvite")
+                    logging.info("Aligner is set to HVite.")
                 else:
                     logging.info('None of Julius nor HVite command is available.')
                     return False
+            else:
+                logging.info("Aligner is set to Julius.")
             # aligner.set_clean(False)
             aligner.set_activity_tier(False)
             aligner.set_activity_duration_tier(False)
@@ -1411,8 +1443,8 @@ class sppasHTKModelTrainer(object):
                         self.corpus.datatrainer.htkscripts.mktrifile,
                         self.corpus.get_mlf(),
                         ],
-                        stdout=open(os.devnull, 'wb'),
-                        stderr=open(os.devnull, 'wb'))
+                        stdout=open(os.devnull, 'ab+'),
+                        stderr=open(os.devnull, 'ab+'))
         except subprocess.CalledProcessError as e:
             logging.info('HLEd failed: {:s}'.format(str(e)))
             return False
@@ -1423,6 +1455,11 @@ class sppasHTKModelTrainer(object):
 
     def train_step(self, scpfile, rounds=3, dopruning=True):
         """ Perform some rounds of HERest estimation.
+
+        It expects the input HMM definition to have been initialised and
+        it uses the embedded Baum-Welch re-estimation. This involves finding
+        the probability of being in each state at each time frame using the
+        Forward-Backward algorithm.
 
         :param scpfile: (str) Description file with the list of data files
         :param rounds: (int) Number of times HERest is called.
@@ -1435,13 +1472,13 @@ class sppasHTKModelTrainer(object):
             return False
 
         # Is there files?
-        if scpfile is None:
+        if scpfile is None or len(scpfile) == 0:
             logging.info("Error. The scp file is not defined.")
             return True
 
         macro = []
         if self.__previous_dir is not None and \
-                        os.path.exists(os.path.join(self.__previous_dir, DEFAULT_MACROS_FILENAME)) is True:
+           os.path.exists(os.path.join(self.__previous_dir, DEFAULT_MACROS_FILENAME)) is True:
             macro.append('-H')
             macro.append(os.path.join(self.__previous_dir, DEFAULT_MACROS_FILENAME))
 
@@ -1471,8 +1508,8 @@ class sppasHTKModelTrainer(object):
                             "-H", os.path.join(self.__previous_dir, DEFAULT_HMMDEFS_FILENAME)]
                             + macro + pruning +
                             [self.corpus.phonesfile],
-                            stdout=open(log_file, 'wb'),
-                            stderr=open(error_file, 'wb'))
+                            stdout=open(log_file, 'wb+'),
+                            stderr=open(error_file, 'wb+'))
             except subprocess.CalledProcessError as e:
                 logging.info('HERest failed: {:s}'.format(str(e)))
                 return False
@@ -1554,8 +1591,8 @@ class sppasHTKModelTrainer(object):
         logging.info(" ... Modeling silence.")
         self.small_pause()
 
-        # Step 3.3 Train from utterrance-aligned data with phonetization.
-        # ---------------------------------------------------------------
+        # Step 3.3 Train from utterance-aligned data with phonetization.
+        # --------------------------------------------------------------
 
         logging.info(" ... Additional training.")
         scp_file = self.corpus.get_scp(aligned=True,
@@ -1567,7 +1604,7 @@ class sppasHTKModelTrainer(object):
             return False
 
         # Step 3.4 Train from utterance-aligned data with orthography.
-        # -------------------------------------------------------------
+        # ------------------------------------------------------------
 
         logging.info(" ... Aligning transcribed files.")
         self.align_trs(infersp=False)
@@ -1595,10 +1632,10 @@ class sppasHTKModelTrainer(object):
 
     # -----------------------------------------------------------------------
 
-    def training_step4(self):
+    def training_step4(self, header_tree):
         """ Step 4 of the training procedure: Triphones training.
 
-        Requires a "header tree" script.
+        :param header_tree: (str) Name of the script file to train a triphone (commonly header-tree.hed).
 
         """
         logging.info("Step 4. Tied-State Triphones training.")
@@ -1707,14 +1744,15 @@ class sppasHTKModelTrainer(object):
 
     # -----------------------------------------------------------------------
 
-    def training_recipe(self, outdir=None, delete=False, triphone=False):
+    def training_recipe(self, outdir=None, delete=False, header_tree=None):
         """ Create an acoustic model and return it.
 
         A corpus (sppasTrainingCorpus) must be previously defined.
 
         :param outdir: (str) Directory to save the final model and related files
         :param delete: (bool) Delete the working directory.
-        :param triphone: (bool) Train the monophone then a triphone
+        :param header_tree: (str) Name of the script file to train a triphone (commonly header-tree.hed).
+
         :returns: sppasAcModel
 
         """
@@ -1731,8 +1769,8 @@ class sppasHTKModelTrainer(object):
             if self.training_step3() is True:
 
                 # Step 4: Triphones training
-                if triphone is True:
-                    self.training_step4()
+                if header_tree is not None:
+                    self.training_step4(header_tree)
 
         model = self.get_current_model()
         macro = self.get_current_macro()

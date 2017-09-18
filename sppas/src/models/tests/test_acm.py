@@ -86,11 +86,11 @@ class TestTrainer(unittest.TestCase):
 
         self.assertEqual(corpus.phonemap.map_entry('#'), "#")
 
-        corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "nan.dict"))
+        corpus.fix_resources(dict_file=os.path.join(RESOURCES_PATH, "dict", "nan.dict"))
         self.assertEqual(len(corpus.monophones), 44)
 
-        corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "nan.dict"),
-                             mappingfile=os.path.join(RESOURCES_PATH, "models", "models-nan", "monophones.repl"))
+        corpus.fix_resources(dict_file=os.path.join(RESOURCES_PATH, "dict", "nan.dict"),
+                             mapping_file=os.path.join(RESOURCES_PATH, "models", "models-nan", "monophones.repl"))
         self.assertEqual(corpus.phonemap.map_entry('#'), "sil")
 
         self.assertFalse(corpus.add_file("toto", "toto"))

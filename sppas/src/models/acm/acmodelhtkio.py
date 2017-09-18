@@ -78,7 +78,7 @@ class sppasHtkIO(sppasBaseIO):
         hmmdefs_files = glob.glob(os.path.join(folder, 'hmmdefs'))
         if len(hmmdefs_files) == 0:
             hmmdefs_files = glob.glob(os.path.join(folder, 'macros'))
-            hmmdefs_files = glob.glob(os.path.join(folder, 'vFloors'))
+            hmmdefs_files.extend(glob.glob(os.path.join(folder, 'vFloors')))
             hmmdefs_files.extend(glob.glob(os.path.join(folder, '*.hmm')))
             if len(hmmdefs_files) == 0:
                 return False
@@ -170,7 +170,6 @@ class sppasHtkIO(sppasBaseIO):
         with open(filename, 'w') as f:
             if self._macros:
                 f.write(sppasHtkIO._serialize_macros(self._macros))
-
             if self._hmms:
                 f.write(sppasHtkIO._serialize_hmms(self._hmms))
 
