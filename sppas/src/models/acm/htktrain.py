@@ -1071,10 +1071,10 @@ class sppasHTKModelInitializer(object):
         or use the default prototype.
 
         """
-        scpfile = self.trainingcorpus.get_scp(aligned=True, phonetized=False, transcribed=False)
+        scp_file = self.trainingcorpus.get_scp(aligned=True, phonetized=False, transcribed=False)
 
         # Adapt the proto file from the corpus (if any)
-        if scpfile is not None:
+        if scp_file is not None:
             if self.trainingcorpus.datatrainer.protofile is not None:
                 logging.info(' ... Train proto model:')
                 self._create_flat_start_model()
@@ -1114,8 +1114,8 @@ class sppasHTKModelInitializer(object):
                         continue
 
             # Train an initial model
-            if scpfile is not None:
-                if os.path.exists(scpfile):
+            if scp_file is not None:
+                if os.path.exists(scp_file):
                     self._create_start_model(phone, outfile)
 
             # the start model was not created.
