@@ -535,7 +535,7 @@ class sppasTrainingCorpus(object):
 
         # Either the given vocab or the constructed one
         if vocab_file is not None:
-            logging.info('- vocabulary: {!s:s}'.format(vocab_file))
+            logging.info(' - vocabulary: {!s:s}'.format(vocab_file))
             self.vocabfile = vocab_file
         else:
             logging.info(' - no vocabulary is defined.')
@@ -979,8 +979,8 @@ class sppasHTKModelInitializer(object):
             raise IOError('A list of monophones must be defined in order to initialize the model.')
 
         self.create_models()
-        self.create_hmmdefs()
         self.create_macros()
+        self.create_hmmdefs()
 
     # -----------------------------------------------------------------------
 
@@ -1476,11 +1476,11 @@ class sppasHTKModelTrainer(object):
             logging.info("Error. The scp file is not defined.")
             return True
 
-        macro = []
-        if self.__previous_dir is not None and \
-           os.path.exists(os.path.join(self.__previous_dir, DEFAULT_MACROS_FILENAME)) is True:
-            macro.append('-H')
-            macro.append(os.path.join(self.__previous_dir, DEFAULT_MACROS_FILENAME))
+        # macro = []
+        # if self.__previous_dir is not None and \
+        #    os.path.exists(os.path.join(self.__previous_dir, DEFAULT_MACROS_FILENAME)) is True:
+        #     macro.append('-H')
+        #     macro.append(os.path.join(self.__previous_dir, DEFAULT_MACROS_FILENAME))
 
         stat_file = os.path.join(self.corpus.datatrainer.logdir, "stats-step"+str(self.__epoch).zfill(2)+".txt")
         log_file = os.path.join(self.corpus.datatrainer.logdir, "log-step"+str(self.__epoch).zfill(2)+".txt")
@@ -1506,7 +1506,8 @@ class sppasHTKModelTrainer(object):
                             "-s", stat_file,
                             "-M", self.__current_dir,
                             "-H", os.path.join(self.__previous_dir, DEFAULT_HMMDEFS_FILENAME)]
-                            + macro + pruning +
+                            #  + macro
+                            + pruning +
                             [self.corpus.phonesfile],
                             stdout=open(log_file, 'wb+'),
                             stderr=open(error_file, 'wb+'))
