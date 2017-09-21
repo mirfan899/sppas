@@ -1476,7 +1476,7 @@ class sppasHTKModelTrainer(object):
             logging.info("Error. The scp file is not defined.")
             return True
 
-        # macro = []
+        macro = []
         # if self.__previous_dir is not None and \
         #    os.path.exists(os.path.join(self.__previous_dir, DEFAULT_MACROS_FILENAME)) is True:
         #     macro.append('-H')
@@ -1506,9 +1506,9 @@ class sppasHTKModelTrainer(object):
                             "-s", stat_file,
                             "-M", self.__current_dir,
                             "-H", os.path.join(self.__previous_dir, DEFAULT_HMMDEFS_FILENAME)]
-                            #  + macro
-                            + pruning +
-                            [self.corpus.phonesfile],
+                            + macro
+                            + pruning
+                            + [self.corpus.phonesfile],
                             stdout=open(log_file, 'wb+'),
                             stderr=open(error_file, 'wb+'))
             except subprocess.CalledProcessError as e:

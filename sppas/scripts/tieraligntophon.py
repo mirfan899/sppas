@@ -47,6 +47,7 @@ sys.path.append(SPPAS)
 
 import sppas.src.annotationdata.aio
 from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.annotations.searchtier import sppasSearchTier
 from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.label.label import Label
 from sppas.src.annotationdata.ptime.interval import TimeInterval
@@ -54,22 +55,15 @@ from sppas.src.annotationdata.annotation import Annotation
 from sppas.src.utils.fileutils import setup_logging
 
 # ----------------------------------------------------------------------------
-# Constants
-# ----------------------------------------------------------------------------
-
-# separators = ['#', '@@', 'euh', 'fp', 'gb', '##', '*', 'dummy']
-separators = ['#', 'sil']
-
-
-# ----------------------------------------------------------------------------
 # Functions
 # ----------------------------------------------------------------------------
 
 
-def unalign(aligned_tier):
-    """ Convert a time-aligner tier into a non-aligned tier.
+def unalign(aligned_tier, ipus_separators=['#', 'dummy']):
+    """ Convert a time-aligned tier into a non-aligned tier.
 
     :param aligned_tier: (Tier)
+    :param ipus_separators: (list)
     :returns: (Tier)
     
     """
@@ -78,26 +72,24 @@ def unalign(aligned_tier):
     e = b
     l = ""
     for a in aligned_tier:
-        if a.GetLabel().IsSilence() is True or a.GetLabel().GetValue() in separators:
-            if len(l) > 0 and e > b:
+        label = a.GetLabel().GetValue()
+        if label in ipus_separators or a.GetLabel().IsEmpty() is True:
+            if e > b:
                 at = Annotation(TimeInterval(b, e), Label(l))
                 new_tier.Add(at)
-                new_tier.Add(a)
+            new_tier.Add(a)
             b = a.GetLocation().GetEnd()
             e = b
             l = ""
         else:
             e = a.GetLocation().GetEnd()
-            label = a.GetLabel().GetValue()
             label = label.replace('.', ' ')
-            if a.GetLabel().IsEmpty() is False:
-                l = l + " " + label
+            l += " " + label
 
     if e > b:
         a = aligned_tier[-1]
-        label = a.GetLabel().GetValue()
-        label = label.replace('.', ' ')
-        at = Annotation(TimeInterval(b, e), Label(label))
+        e = a.GetLocation().GetEnd()
+        at = Annotation(TimeInterval(b, e), Label(l))
         new_tier.Add(at)
 
     return new_tier
@@ -120,6 +112,10 @@ parser.add_argument("-o",
                     required=True,
                     help='Output file name')
 
+parser.add_argument("--tok",
+                    action='store_true',
+                    help="Convert time-aligned tokens into their tokenization.")
+
 parser.add_argument("--quiet",
                     action='store_true',
                     help="Disable the verbosity.")
@@ -138,39 +134,36 @@ else:
 # Read
 
 trs_input = sppas.src.annotationdata.aio.read(args.i)
+trs_out = Transcription()
 
 # ----------------------------------------------------------------------------
 # Transform the PhonAlign tier to a Phonetization tier
 
-align_tier = trs_input.Find("PhonAlign", case_sensitive=False)
-phon_tier = None
-if align_tier is None:
+try:
+    align_tier = sppasSearchTier.aligned_phones(trs_input)
     logging.info("PhonAlign tier found.")
     phon_tier = unalign(align_tier)
     phon_tier.SetName("Phonetization")
-else:
+    trs_out.Add(phon_tier)
+except IOError:
     logging.info("PhonAlign tier not found.")
 
 # ----------------------------------------------------------------------------
 # Transform the TokensAlign tier to a Tokenization tier
 
-align_tier = trs_input.Find("TokensAlign", case_sensitive=False)
-token_tier = None
-if align_tier is not None:
-    logging.info("TokensAlign tier found.")
-    token_tier = unalign(align_tier)
-    token_tier.SetName("Tokenization")
-else:
-    logging.info("TokensAlign tier not found.")
+if args.tok:
+    try:
+        align_tier = sppasSearchTier.aligned_tokens(trs_input)
+        logging.info("TokensAlign tier found.")
+        token_tier = unalign(align_tier)
+        token_tier.SetName("Tokenization")
+        trs_out.Add(token_tier)
+    except IOError:
+        logging.info("TokensAlign tier not found.")
 
 # ----------------------------------------------------------------------------
 # Write
 
-trs_out = Transcription()
-if phon_tier:
-    trs_out.Add(phon_tier)
-if token_tier:
-    trs_out.Add(token_tier)
 if len(trs_out) > 0:
     sppas.src.annotationdata.aio.write(args.o, trs_out)
 else:

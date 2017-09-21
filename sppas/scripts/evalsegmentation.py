@@ -50,6 +50,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
+from sppas.src.calculus.scoring.ubpa import ubpa
 from sppas.src.annotationdata.transcription import Transcription
 import sppas.src.annotationdata.aio
 
@@ -105,88 +106,6 @@ def get_tiers(ref_filename, hyp_filename, ref_idx=0, hyp_idx=0):
     hyp_tier = get_tier(hyp_filename, hyp_idx)
 
     return ref_tier, hyp_tier
-
-
-# ----------------------------------------------------------------------------
-# Functions to estimate the Unit Boundary Positioning Accuracy.
-
-def _eval_index(step, value):
-    m = (value % step)  # Estimate the rest
-    d = (value-m)       # Make "d" an entire value
-    index = d/step      # evaluate the index depending on step
-    return int(index)
-
-
-def _inc(vector, idx):
-    if idx >= len(vector):
-        to_add = idx - len(vector) + 1
-        vector.extend([0]*to_add)
-    vector[idx] += 1
-
-
-def ubpa(vector, text, filename, summary=False):
-    """ Estimates the Unit Boundary Positioning Accuracy,
-    and write the result into a file.
-
-    :param vector: contains the list of the delta values.
-    :param text: one of "Duration", "Position Start", ...
-    :param filename: is the file to write the result.
-    :param summary: (bool) print a summary on stdout.
-
-    """
-    step = 0.01
-    tabNeg = []
-    tabPos = []
-
-    for delta in vector:
-        if delta > 0.:
-            idx = _eval_index(step, delta)
-            _inc(tabPos, idx)
-        else:
-            idx = _eval_index(step, delta*-1.)
-            _inc(tabNeg, idx)
-
-    with codecs.open(filename, "w", "utf8") as fp:
-        fp.write("|--------------------------------------------| \n")
-        fp.write("|      Unit Boundary Positioning Accuracy    | \n")
-        fp.write("|            Delta=T(hyp)-T(ref)             | \n")
-        fp.write("|--------------------------------------------| \n")
-        i = len(tabNeg)-1
-        for value in reversed(tabNeg):
-            percent = ((value*100.)/len(vector))
-            fp.write("|  Delta-%s < -%.3f: " % (text, ((i+1)*step)))
-            fp.write("%d (%.2f%%) \n" % (value, percent))
-            i -= 1
-        fp.write("|--------------------------------------------| \n")
-        for i, value in enumerate(tabPos):
-            percent = round(((value*100.)/len(vector)), 3)
-            fp.write("|  Delta-%s < +%.3f: " % (text, ((i+1)*step)))
-            fp.write("%d (%.2f%%)\n" % (value, percent))
-        fp.write("|--------------------------------------------| \n")
-
-    if summary is True:
-        print("|--------------------------------------------| ")
-        print("|      Unit Boundary Positioning Accuracy    | ")
-        print("|            Delta=T(hyp)-T(ref)             | ")
-        print("|--------------------------------------------| ")
-        i = len(tabNeg)-1
-        percentsum = 0
-        for value in reversed(tabNeg):
-            if (i+1)*step < 0.05:
-                percent = ((value*100.)/len(vector))
-                print("|  Delta-{:s} < -{:f}: {:d} ({:f}%)".format(text, (i+1)*step, value, percent))
-                percentsum += percent
-            i -= 1
-        print("|--------------------------------------------| ")
-        for i, value in enumerate(tabPos):
-            if (i+1)*step < 0.05:
-                percent = round(((value*100.)/len(vector)), 3)
-                print("|  Delta-{:s} < +{:f}: {:d} ({:f}%)".format(text, (i+1)*step, value, percent))
-                percentsum += percent
-        print("|--------------------------------------------| ")
-        print("| Total: {0:.2f} %".format(round(percentsum, 3)))
-        print("|--------------------------------------------| ")
-
 
 # ----------------------------------------------------------------------------
 # Function to draw the evaluation as BoxPlots (using an R script)
@@ -522,10 +441,18 @@ fpd.close()
 # ----------------------------------------------------------------------------
 # Estimates the Unit Boundary Positioning Accuracy
 
-ubpa(deltaposB, "PositionStart", outname+"-eval-position-start.txt", summary=not args.quiet)
-ubpa(deltaposE, "PositionEnd", outname+"-eval-position-end.txt", summary=False)
-ubpa(deltaposM, "PositionMiddle", outname+"-eval-position-middle.txt", summary=False)
-ubpa(deltadur, "Duration", outname+"-eval-duration.txt", summary=False)
+if not args.quiet:
+    ubpa(deltaposB, "Start boundary", sys.stdout)
+
+with open(outname+"-eval-position-start.txt", "w") as fp:
+    ubpa(deltaposB, "Start boundary position", fp)
+with open(outname+"-eval-position-end.txt", "w") as fp:
+    ubpa(deltaposE, "End boundary position", fp)
+with open(outname+"-eval-position-middle.txt", "w") as fp:
+        ubpa(deltaposM, "Middle boundary position", fp)
+
+with open(outname+"-eval-duration.txt") as fp:
+    ubpa(deltadur, "Duration", fp)
 
 # ----------------------------------------------------------------------------
 # Draw BoxPlots of the accuracy via an R script

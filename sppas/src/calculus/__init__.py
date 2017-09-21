@@ -56,6 +56,7 @@ from .stats.linregress import tga_linear_regression, tansey_linear_regression
 from .stats.linregress import gradient_descent, gradient_descent_linear_regression, compute_error_for_line_given_points
 from .stats.moment import lmoment, lvariation, lskew, lkurtosis
 from .stats.variability import lvariance, lstdev, lz, rPVI, nPVI
+from .scoring.ubpa import ubpa
 
 # ---------------------------------
 
@@ -69,5 +70,6 @@ __all__ = [
     "tga_linear_regression", "tansey_linear_regression",
     "gradient_descent", "gradient_descent_linear_regression", "compute_error_for_line_given_points",
     "lmoment", "lvariation", "lskew", "lkurtosis",
-    "lvariance", "lstdev", "lz", "rPVI", "nPVI"
+    "lvariance", "lstdev", "lz", "rPVI", "nPVI",
+    "ubpa"
 ]
