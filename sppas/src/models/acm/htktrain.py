@@ -609,24 +609,34 @@ class sppasTrainingCorpus(object):
 
         try:
             trs = annotationdataio.read(trsfilename)
-        except Exception:
-            logging.info("Error reading file: {!s:s}".format(trsfilename))
+        except Exception as e:
+            logging.info("Error with file: {!s:s}: {:s}".format(trsfilename, str(e)))
             return False
 
-        tier = trs.Find('PhonAlign', case_sensitive=False)
-        if tier is not None:
-            return self._append_phonalign(tier, trsfilename, audio_filename)
-        else:
-            tier = trs.Find('Phonetization', case_sensitive=False)
-            if tier is not None:
-                return self._append_phonetization(tier, trsfilename, audio_filename)
-            else:
-                for tier in trs:
-                    if "trans" in tier.GetName().lower():
-                        return self._append_transcription(tier, trsfilename, audio_filename)
+        try:
+            tier = sppasSearchTier.aligned_phones(trs)
+            appended = self._append_phonalign(tier, trsfilename, audio_filename)
+        except NoInputError:
+            appended = False
 
-        logging.info("None of the expected tier was found in {!s:s}.".format(trsfilename))
-        return False
+        if appended is False:
+            try:
+                tier = sppasSearchTier.phonetization(trs)
+                appended = self._append_phonetization(tier, trsfilename, audio_filename)
+            except NoInputError:
+                appended = False
+
+        if appended is False:
+            try:
+                tier = sppasSearchTier.transcription(trs)
+                appended = self._append_transcription(tier, trsfilename, audio_filename)
+            except NoInputError:
+                appended = False
+
+        if appended is False:
+            logging.info("No tier was found and/or appended from file {!s:s}.".format(trsfilename))
+
+        return appended
 
     # -----------------------------------------------------------------------
 

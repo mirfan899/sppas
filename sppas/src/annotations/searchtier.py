@@ -74,11 +74,11 @@ class sppasSearchTier(object):
                 return tier
             elif "trs" in tier_name:
                 return tier
-            elif "ipu" in tier_name:
+            elif "toe" in tier_name:
                 return tier
             elif "ortho" in tier_name:
                 return tier
-            elif "toe" in tier_name:
+            elif "ipu" in tier_name:
                 return tier
 
         raise NoInputError
