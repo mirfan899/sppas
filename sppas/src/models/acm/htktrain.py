@@ -558,36 +558,38 @@ class sppasTrainingCorpus(object):
 
         """
         # Get the list of audio files from the input directory
-        audiofilelist = []
+        audio_files = []
         sd = sppasDirUtils(directory)
         for extension in audiodataio.extensions:
             files = sd.get_files(extension)
-            audiofilelist.extend(files)
+            audio_files.extend(files)
 
-        # Get the list of transcription files from the input directory
-        trsfilelist = []
+        # Get the list of annotated files from the input directory
+        trs_files = []
         for extension in annotationdataio.extensions_in:
             if extension.lower() in [".hz", ".pitchtier", ".txt"]:
                 continue
             files = sd.get_files(extension)
             if len(files) > 0:
-                trsfilelist.extend(files)
+                trs_files.extend(files)
 
         count = 0
         # Find matching files (audio / transcription files).
-        for trsfilename in trsfilelist:
-            trsbasename = os.path.splitext(trsfilename)[0]
+        for trs_filename in trs_files:
+            trs_basename = os.path.splitext(trs_filename)[0]
 
-            if trsbasename.endswith("-palign"):
-                trsbasename = trsbasename[:-7]
-            if trsbasename.endswith("-phon"):
-                trsbasename = trsbasename[:-5]
+            if trs_basename.endswith("-palign"):  # already aligned
+                trs_basename = trs_basename[:-7]
+            if trs_basename.endswith("-phon"):    # already phonetized
+                trs_basename = trs_basename[:-5]
+            if trs_basename.endswith("-token"):   # already tokenized
+                trs_basename = trs_basename[:-6]
 
-            for audio_filename in audiofilelist:
-                audiobasename = os.path.splitext(audio_filename)[0]
+            for audio_filename in audio_files:
+                audio_basename = os.path.splitext(audio_filename)[0]
 
-                if audiobasename == trsbasename:
-                    ret = self.add_file(trsfilename, audio_filename)
+                if audio_basename == trs_basename:
+                    ret = self.add_file(trs_filename, audio_filename)
                     if ret is True:
                         count += 1
 
@@ -595,11 +597,11 @@ class sppasTrainingCorpus(object):
 
     # -----------------------------------------------------------------------
 
-    def add_file(self, trsfilename, audio_filename):
+    def add_file(self, trs_filename, audio_filename):
         """ Add a new couple of files to deal with.
         If such files are already in the data, they will be added again.
 
-        :param trsfilename: (str) The annotated file.
+        :param trs_filename: (str) The annotated file.
         :param audio_filename: (str) The audio file.
         :returns: Bool
 
@@ -608,33 +610,44 @@ class sppasTrainingCorpus(object):
             self.create()
 
         try:
-            trs = annotationdataio.read(trsfilename)
+            trs = annotationdataio.read(trs_filename)
         except Exception as e:
-            logging.info("Error with file: {!s:s}: {:s}".format(trsfilename, str(e)))
+            logging.info("Error with file: {!s:s}: {:s}".format(trs_filename, str(e)))
             return False
 
+        # Already time-aligned phonemes
         try:
             tier = sppasSearchTier.aligned_phones(trs)
-            appended = self._append_phonalign(tier, trsfilename, audio_filename)
+            appended = self._append_phonalign(tier, trs_filename, audio_filename)
         except NoInputError:
             appended = False
 
+        # Already phonetized
         if appended is False:
             try:
                 tier = sppasSearchTier.phonetization(trs)
-                appended = self._append_phonetization(tier, trsfilename, audio_filename)
+                appended = self._append_phonetization(tier, trs_filename, audio_filename)
             except NoInputError:
                 appended = False
 
+        # Already tokenized (appended as an ortho transc.)
+        if appended is False:
+            try:
+                tier = sppasSearchTier.tokenization(trs)
+                appended = self._append_transcription(tier, trs_filename, audio_filename)
+            except NoInputError:
+                appended = False
+
+        # Orthographic transcription
         if appended is False:
             try:
                 tier = sppasSearchTier.transcription(trs)
-                appended = self._append_transcription(tier, trsfilename, audio_filename)
+                appended = self._append_transcription(tier, trs_filename, audio_filename)
             except NoInputError:
                 appended = False
 
         if appended is False:
-            logging.info("No tier was found and/or appended from file {!s:s}.".format(trsfilename))
+            logging.info("No tier was found and/or appended from file {!s:s}.".format(trs_filename))
 
         return appended
 
@@ -725,7 +738,7 @@ class sppasTrainingCorpus(object):
 
     # -----------------------------------------------------------------------
 
-    def _append_phonalign(self, tier, trsfilename, audio_filename):
+    def _append_phonalign(self, tier, trs_filename, audio_filename):
         """ Append a PhonAlign tier in the set of known data. """
 
         tier = self.map_phonemes(tier)
@@ -736,14 +749,14 @@ class sppasTrainingCorpus(object):
         outfile = os.path.basename(sf.set_random(root="track_aligned", add_today=False, add_pid=False))
 
         # Add the tier
-        res = self._append_tier(tier, outfile, trsfilename, audio_filename)
+        res = self._append_tier(tier, outfile, trs_filename, audio_filename)
         if res is True:
-            self.alignfiles[trsfilename] = os.path.join(self.datatrainer.get_storetrs(), outfile+".lab")
+            self.alignfiles[trs_filename] = os.path.join(self.datatrainer.get_storetrs(), outfile+".lab")
         return res
 
     # -----------------------------------------------------------------------
 
-    def _append_phonetization(self, tier, trsfilename, audio_filename):
+    def _append_phonetization(self, tier, trs_filename, audio_filename):
         """ Append a Phonetization tier in the set of known data. """
 
         # Map phonemes.
@@ -761,14 +774,14 @@ class sppasTrainingCorpus(object):
         outfile = os.path.basename(sf.set_random(root="track_phonetized", add_today=False, add_pid=False))
 
         # Add the tier
-        res = self._append_tier(tier, outfile, trsfilename, audio_filename)
+        res = self._append_tier(tier, outfile, trs_filename, audio_filename)
         if res is True:
-            self.phonfiles[trsfilename] = os.path.join(self.datatrainer.get_storetrs(), outfile+".lab")
+            self.phonfiles[trs_filename] = os.path.join(self.datatrainer.get_storetrs(), outfile+".lab")
         return res
 
     # -----------------------------------------------------------------------
 
-    def _append_transcription(self, tier, trsfilename, audio_filename):
+    def _append_transcription(self, tier, trs_filename, audio_filename):
         """ Append a Transcription tier in the set of known data. """
 
         # Fix current storage dir.
@@ -777,15 +790,15 @@ class sppasTrainingCorpus(object):
         outfile = os.path.basename(sf.set_random(root="track_transcribed", add_today=False, add_pid=False))
 
         # Add the tier
-        res = self._append_tier(tier, outfile, trsfilename, audio_filename, ext=".xra")
+        res = self._append_tier(tier, outfile, trs_filename, audio_filename, ext=".xra")
         if res is True:
             # no lab file created (it needs sppas... a vocab, a dict and an acoustic model).
-            self.transfiles[trsfilename] = os.path.join(self.datatrainer.get_storetrs(), outfile+".xra")
+            self.transfiles[trs_filename] = os.path.join(self.datatrainer.get_storetrs(), outfile+".xra")
         return res
 
     # -----------------------------------------------------------------------
 
-    def _append_tier(self, tier, outfile, trsfilename, audio_filename, ext=".lab"):
+    def _append_tier(self, tier, outfile, trs_filename, audio_filename, ext=".lab"):
         """ Append a Transcription (orthography) tier in the set of known data. """
 
         ret = self._add_tier(tier, outfile, ext)
@@ -794,15 +807,15 @@ class sppasTrainingCorpus(object):
             ret = self._add_audio(audio_filename, outfile)
             if ret is True:
 
-                logging.info('Files %s / %s appended as %s.' % (trsfilename, audio_filename, outfile))
-                self.audiofiles[trsfilename] = os.path.join(self.datatrainer.get_storewav(), outfile + ".wav")
-                self.mfcfiles[trsfilename] = os.path.join(self.datatrainer.get_storemfc(), outfile + ".mfc")
+                logging.info('Files %s / %s appended as %s.' % (trs_filename, audio_filename, outfile))
+                self.audiofiles[trs_filename] = os.path.join(self.datatrainer.get_storewav(), outfile + ".wav")
+                self.mfcfiles[trs_filename] = os.path.join(self.datatrainer.get_storemfc(), outfile + ".mfc")
                 return True
 
             else:
                 self._pop_tier(outfile)
 
-        logging.info('Files %s / %s rejected.' % (trsfilename, audio_filename))
+        logging.info('Files %s / %s rejected.' % (trs_filename, audio_filename))
         return False
 
     # -----------------------------------------------------------------------
@@ -1363,6 +1376,8 @@ class sppasHTKModelTrainer(object):
         # Annotate
         success = 0
         for trs_filename, trs_workfile in self.corpus.transfiles.items():
+            audio_work_file = self.corpus.audiofiles[trs_filename]
+
             # we are re-aligning...
             if trs_workfile.endswith(".lab"):
                 trs_workfile = trs_workfile.replace('.lab', '.xra')
@@ -1372,12 +1387,13 @@ class sppasHTKModelTrainer(object):
             try:
                 tier_input = sppasSearchTier.transcription(trs_input)
             except NoInputError:
-                logging.info(" ... [ERROR] "
-                             "No transcription tier for file: {:s}"
-                             "".format(trs_workfile))
-                continue
-
-            audio_work_file = self.corpus.audiofiles[trs_filename]
+                try:
+                    tier_input = sppasSearchTier.tokenization(trs_input)
+                except NoInputError:
+                    logging.info(" ... [ERROR] "
+                                 "No transcription tier for file: {:s}"
+                                 "".format(trs_workfile))
+                    continue
 
             # Annotate the tier: tokenization, phonetization, time-alignment
             try:
@@ -1386,24 +1402,24 @@ class sppasHTKModelTrainer(object):
                 logging.info(" ... [ERROR] "
                              "Text normalization failed for file {:s}. {:s}"
                              "".format(trs_workfile, str(e)))
-                # return False
-                continue
+                return False
+                # continue
             try:
                 tierphones = phonetizer.convert(tiertokens)
             except Exception as e:
                 logging.info(" ... [ERROR] "
                              "Phonetization failed for file {:s}. {:s}"
                              "".format(trs_workfile, str(e)))
-                # return False
-                continue
+                return False
+                # continue
             try:
                 trsalign = aligner.convert(tierphones, None, audio_work_file, alignerdir)
             except Exception as e:
                 logging.info(" ... [ERROR] "
                              "Alignment error failed file {:s}. {:s}"
                              "".format(trs_workfile, str(e)))
-                # return False
-                continue
+                return False
+                # continue
 
             # Get only the phonetization from the time-alignment
             tiera = trsalign.Find('PhonAlign')
