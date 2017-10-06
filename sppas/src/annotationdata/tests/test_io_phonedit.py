@@ -63,6 +63,9 @@ class TestPhonedit(unittest.TestCase):
                     self.assertEqual(a1.GetLocation().GetBegin(), a2.GetLocation().GetBegin())
                     self.assertEqual(a1.GetLocation().GetEnd(),   a2.GetLocation().GetEnd())
                 else:
-                    p1 = round(a1.GetLocation().GetPoint().GetMidpoint(),4)
-                    p2 = round(a2.GetLocation().GetPoint().GetMidpoint(),4)
-                    self.assertEqual(p1,p2)
+                    # mrk format does not support points but it supports degenerated intervals.
+                    p1 = a1.GetLocation().GetPoint()
+                    p2 = a2.GetLocation().GetBegin()
+                    p3 = a2.GetLocation().GetEnd()
+                    self.assertEqual(p1, p2)
+                    self.assertEqual(p1, p3)

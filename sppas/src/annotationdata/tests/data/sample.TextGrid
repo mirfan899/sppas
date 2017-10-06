@@ -2,7 +2,7 @@ File type = "ooTextFile"
 Object class = "TextGrid"
 
 xmin = 0.0
-xmax = 3.9809256396084027
+xmax = 2.328813
 tiers? <exists>
 size = 2
 item []:
@@ -19,13 +19,13 @@ item []:
     item [2]:
         class = "TextTier"
         name = "P-Tones"
-        xmin = 0
-        xmax = 3.9809256396084027
+        xmin = 1.883
+        xmax = 2.3
         points: size = 809
         points [1]:
-            time = 3.883
+            time = 1.883
             mark = "L"
         points [2]:
-            time = 3.9809256396084027
+            time = 2.3
             mark = "H*"
 

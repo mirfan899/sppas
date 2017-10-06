@@ -447,7 +447,7 @@ class XRA(Transcription):
         # Element Metadata
         if len(media.metadata.keys())>0:
             metadataRoot = ET.SubElement(mediaRoot, 'Metadata')
-            self.__format_metadata(metadataRoot, media.metadata)
+            self.__format_metadata(metadataRoot, media)
 
         # Element Content
         if len(media.content)>0:

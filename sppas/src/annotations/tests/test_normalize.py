@@ -229,7 +229,7 @@ class TestNormalizer(unittest.TestCase):
 
         wds = sppasVocabulary(vocabfra)
         wds.load_from_ascii(vocabcmn)
-        self.assertEquals(len(wds), 457922)
+        self.assertEquals(len(wds), 457921)
 
         #self.tok.set_vocab(wds)
         #splitswitch = self.tok.tokenize(u'et il m\'a dit : "《干脆就把那部蒙人的闲法给废了拉倒！》RT @laoshipukong : 27日"')

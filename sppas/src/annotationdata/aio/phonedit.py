@@ -125,10 +125,10 @@ class Phonedit(Transcription):
                         end = TimePoint(float(match.group(3)) / 1000)
                         # annotationdata does not support degenerated intervals.
                         if begin == end:
-                            end = TimePoint(float(match.group(3))+PHONEDIT_RADIUS / 1000)
-                            time = TimeInterval(begin, end)
-                        else:
-                            time = TimeInterval(begin, end)
+                            begin = TimePoint(begin.GetMidpoint() - PHONEDIT_RADIUS)
+                            end = TimePoint(end.GetMidpoint() + PHONEDIT_RADIUS)  # TimePoint(float(match.group(3))+PHONEDIT_RADIUS / 1000)
+                        # then... add the annotation
+                        time = TimeInterval(begin, end)
                         new_ann = Annotation(time, label)
                         if new_tier is not None:
                             # Add and not Append: because Phonedit supports overlaps!
@@ -164,9 +164,9 @@ class Phonedit(Transcription):
                         level, index_ann, ann.GetLabel().GetValue()))
                     if ann.GetLocation().IsPoint():
                         # Phonedit supports degenerated intervals
-                        begin = ann.GetLocation().GetPointMidpoint() * 1000
+                        begin = ann.GetLocation().GetPointMidpoint() * 1000.
                         end = begin
                     else:
-                        begin = ann.GetLocation().GetBeginMidpoint() * 1000
-                        end = ann.GetLocation().GetEndMidpoint() * 1000
+                        begin = ann.GetLocation().GetBeginMidpoint() * 1000.
+                        end = ann.GetLocation().GetEndMidpoint() * 1000.
                     fp.write("%f %f\n" % (begin, end))
