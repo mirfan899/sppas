@@ -51,19 +51,22 @@ class TestAudioPCM(unittest.TestCase):
 
     def test_set_get(self):
         """ Test open/close get_channels/get_audiofp. """
+
         a1 = audio_open(sample_1)
-        a2 = sppasAudioPCM()
-        a2.set(a1)
+        a3 = sppasAudioPCM()
+        a3.set(a1)
         x = a1.get_channels()
         y = a1.get_audiofp()
-        self.assertEqual(x, a2.get_channels())
-        self.assertEqual(y, a2.get_audiofp())
+        self.assertEqual(x, a3.get_channels())
+        self.assertEqual(y, a3.get_audiofp())
         a1.close()
         self.assertIsNone(a1.get_audiofp())
-        self.assertEqual(x, a2.get_channels())
-        self.assertEqual(y, a2.get_audiofp())
-        a2.close()
-        self.assertIsNone(a2.get_audiofp())
+        self.assertEqual(x, a3.get_channels())
+        self.assertEqual(y, a3.get_audiofp())
+        a3.close()
+        self.assertIsNone(a3.get_audiofp())
+
+    # -----------------------------------------------------------------------
 
     def test_channels(self):
         """ Test extract_channel/get_channel/append_channel/verify_channels/pop_channel/remove_channel. """

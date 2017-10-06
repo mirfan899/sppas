@@ -39,7 +39,7 @@ from sppas import encoding
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
 from . import ERROR_ID, WARNING_ID, OK_ID
-from .import t
+from . import t
 
 # ----------------------------------------------------------------------------
 
@@ -69,7 +69,9 @@ class sppasDiagnosis(object):
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      A class to diagnose if files are appropriate.
     
-    Check if files are valid for SPPAS automatic annotations.
+    A set of methods to check if files are valid for SPPAS automatic
+    annotations. Each method returns a status and a message depending on the
+    fact that the given file is matching the requirements.
 
     """
     EXPECTED_CHANNELS = 1
@@ -79,7 +81,7 @@ class sppasDiagnosis(object):
     # ------------------------------------------------------------------------
 
     def __init__(self):
-        """ SPPAS files diagnosis. """
+        """ Create a sppasDiagnosis instance. """
 
         pass
 
@@ -89,8 +91,8 @@ class sppasDiagnosis(object):
 
     @staticmethod
     def check_file(filename):
-        """ Return a status and a message depending on the fact that the file
-        is matching the requirements.
+        """ Check file of any type: audio or annotated file.
+        The extension of the filename is used to know the type of the file.
 
         :param filename: (str) name of the input file to diagnose.
         :returns: tuple with (status identifier, message)
@@ -111,8 +113,15 @@ class sppasDiagnosis(object):
 
     @staticmethod
     def check_audio_file(filename):
-        """ Return a status and a message depending on the fact that the 
-        file is matching the requirements.
+        """ Check an audio file.
+
+        Are verified:
+
+            1. the format of the file (error);
+            2. the number of channels (error);
+            3. the sample width (error or warning);
+            4. the framerate (error or warning;
+            5. the filename (warning).
 
         :param filename: (str) name of the input file
         :returns: tuple with (status identifier, message)
@@ -137,7 +146,7 @@ class sppasDiagnosis(object):
 
         if nc > sppasDiagnosis.EXPECTED_CHANNELS:
             status = ERROR_ID
-            message += MSG_AUDIO_CHANNELS_ERROR.format(number=audio.get_nchannels())
+            message += MSG_AUDIO_CHANNELS_ERROR.format(number=nc)
 
         if sp < sppasDiagnosis.EXPECTED_SAMPLE_WIDTH*8:
             status = ERROR_ID
@@ -179,8 +188,13 @@ class sppasDiagnosis(object):
 
     @staticmethod
     def check_trs_file(filename):
-        """ Return a status and a message depending on the fact that the file 
-        is matching the requirements.
+        """ Check an annotated file.
+
+        Are verified:
+
+            1. the format of the file (error);
+            2. the file encoding (error);
+            3. the filename (warning).
 
         :param filename: (string) name of the input file
         :returns: tuple with (status identifier, message)

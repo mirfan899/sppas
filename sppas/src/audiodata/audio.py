@@ -50,8 +50,6 @@
     analysis) per sample.
 
 """
-import struct
-
 from .audioframes import sppasAudioFrames
 from .audioconvert import sppasAudioConverter
 from .audiodataexc import AudioError, AudioDataError, ChannelIndexError, MixChannelError

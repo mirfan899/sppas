@@ -82,13 +82,9 @@ class AudioTypeError(TypeError):
 class AudioIOError(IOError):
     """ :ERROR 2010: Opening, reading or writing error. """
 
-    def __init__(self, message="", filename=None):
-        if filename:
-            self.parameter = IO_ERROR + \
-                             (t.gettext(IO_ERROR)).format(filename=filename, message=message)
-        else:
-            self.parameter = IO_ERROR + \
-                             (t.gettext(IO_ERROR)).format(filename="", message=message)
+    def __init__(self, message="", filename=""):
+        self.parameter = IO_ERROR + \
+                         (t.gettext(IO_ERROR)).format(filename=filename, message=message)
 
     def __str__(self):
         return repr(self.parameter)
@@ -99,7 +95,7 @@ class AudioIOError(IOError):
 class AudioDataError(Exception):
     """ :ERROR 2015: No data or corrupted data in the audio file {filename}. """
 
-    def __init__(self, filename):
+    def __init__(self, filename=""):
         self.parameter = DATA_ERROR + \
                          (t.gettext(DATA_ERROR)).format(filename=filename)
 

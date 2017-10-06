@@ -8,7 +8,6 @@ import shutil
 from sppas import RESOURCES_PATH, SAMPLES_PATH
 from sppas.src.utils.compare import sppasCompare
 from sppas.src.utils.fileutils import sppasFileUtils
-from sppas.src.utils.fileutils import setup_logging
 
 from ..acm.acmodelhtkio import sppasHtkIO
 from ..acm.htktrain import sppasHTKModelTrainer, sppasDataTrainer, \
