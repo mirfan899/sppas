@@ -157,3 +157,26 @@ Resources:
 - Web page updated, new tutorials available
 - Documentation updated
 - Better information about the licenses
+
+
+### SPPAS 1.9.1 (2017, 1st September)
+
+#### Programming:
+
+- Bug correction in the ELAN reader.
+- Bug correction with quotation marks of the Praat writer.
+
+#### Resources: 
+
+- Add an acoustic model for English, including laughter and noises.
+
+
+### SPPAS 1.9.2 (2017, 6th October)
+
+#### Programming:
+
+- Bug correction in the diagnosis of audio files.
+- Package "anndata" continued, in the scope of replacing "annotationdata".
+- Acoustic model training procedure debugged and improved, code cleaned, 
+  scripts updated, etc.
+

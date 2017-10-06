@@ -20,7 +20,7 @@ API of SPPAS!
 ### Read/Write annotated files
 
 We are being to Open/Read a file of any format (XRA, TextGrid, Elan, ...) 
-and store it into a `Transcription` object instance. Then, this latter
+and store it into a `Transcription` object instance. Then, the latter
 will be saved into another file.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines}

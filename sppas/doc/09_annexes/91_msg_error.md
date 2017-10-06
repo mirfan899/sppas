@@ -1,6 +1,3 @@
-# Appendix
-
-
 ## List of error messages
 
 Since version 1.9.0, SPPAS introduced a system for internationalization of the
@@ -9,6 +6,8 @@ to each of them in the packages.
 The following indicates the list of error messages that can occur while using 
 SPPAS.
 
+
+#### From "annotations" package
 
 :ERROR 1010: Unknown option with key {key}.
 
@@ -21,10 +20,14 @@ SPPAS.
 :ERROR 1050: Inconsistency between the number of intervals of the input tiers. Got: {:d} and {:d}.
 
 
+#### From "utils" package
+
 :ERROR 1210: The directory {dirname} does not exist.
 
 :ERROR 1220: The directory {dirname} does not contain relevant data.
 
+
+#### From "audiodata" package
 
 :ERROR 2000: No audio file is defined.
 
@@ -51,6 +54,8 @@ SPPAS.
 :ERROR 2080: Invalid frame rate {value}.
 
 
+#### From "calculus" package
+
 :ERROR 3010: Both vectors p and q must have the same length and must contain probabilities.
 
 :ERROR 3015: Value must range between 0 and 1. Got {:f}.
@@ -63,6 +68,8 @@ SPPAS.
 
 :ERROR 3040: Value {value} is out of range: expected value in range [{min_value},{max_value}].
 
+
+#### From "plugins" package
 
 :ERROR 4010: Missing plugin configuration file.
 
@@ -89,6 +96,27 @@ SPPAS.
 :ERROR 4080: No option with key {:s}.
 
 
+#### From "resources" package
+
+:ERROR 5005: Encoding error while trying to read the file: {name}.
+
+:ERROR 5010: Error while trying to open and read the file: {name}.
+
+:ERROR 5015: Read file failed at line number {number}: {string}.
+
+:ERROR 5020: The n value of n-grams pattern matching must range [1;{maximum}]. Got {observed}.
+
+:ERROR 5022: The gap value of pattern matching must range [0;{maximum}]. Got {observed}.
+
+:ERROR 5024: The score value of unigrams pattern matching must range [0;1]. Got {observed}.
+
+:ERROR 5030: The dump file can't have the same extension as the ASCII file ({extension}).
+
+:ERROR 5040: The count value must be positive. Got ({count}).
+
+
+#### From "structs" package
+
 :ERROR 6010: {meta} is not a known meta information.
 
 :ERROR 6020: Unknown resource type: expected file or directory. Got: {string}.
@@ -96,3 +124,16 @@ SPPAS.
 :ERROR 6024: The resource folder {dirname} does not exists.
 
 :ERROR 6028: The language must be "und" or one of the language list. Unknown language {lang}.
+
+
+#### From "models" package
+
+:ERROR 7010: Expected a {data_name} of type {expected_type}. Got {data_type} instead.
+
+:ERROR 7500: The file {!s:s} contains non UTF-8 characters: {:s}.
+
+:ERROR 7505: Fail formats: unrecognized file format {!s:s}.
+
+:ERROR 7510: Fail formats: the folder {!s:s} does not contain a known model.
+
+:ERROR 7515: No model found or empty model in {!s:s}.

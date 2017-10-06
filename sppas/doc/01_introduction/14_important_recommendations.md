@@ -22,7 +22,7 @@ documentation:
     - it is recommended to use only US-ASCII characters in file names (including the path)
 
 Other frame rates and bit rates are accepted: the audio file is converted in
-16 bits/16000Hz in a copy of the file then SPPAS is using this latter.
+16 bits/16000Hz in a copy of the file then SPPAS is using the latter.
 
 
 ### About automatic annotations
