@@ -65,8 +65,7 @@
 </div>
 <div id="TOC">
 <ul>
-<li><a href="#appendix">Appendix</a></li>
-<li><a href="#appendix-1">Appendix</a><ul>
+<li><a href="#appendix">Appendix</a><ul>
 <li><a href="#list-of-error-messages">List of error messages</a></li>
 <li><a href="#gnu-free-documentation-license">GNU Free Documentation License</a></li>
 </ul></li>
@@ -74,16 +73,18 @@
 </div>
 <hr />
 <h1 id="appendix"><a href="#appendix">Appendix</a></h1>
-<h1 id="appendix-1"><a href="#appendix-1">Appendix</a></h1>
 <h2 id="list-of-error-messages"><a href="#list-of-error-messages">List of error messages</a></h2>
 <p>Since version 1.9.0, SPPAS introduced a system for internationalization of the messages. In the same time, a quality and a number was assigned progressively to each of them in the packages. The following indicates the list of error messages that can occur while using SPPAS.</p>
+<h4 id="from-annotations-package"><a href="#from-annotations-package">From &quot;annotations&quot; package</a></h4>
 <p>:ERROR 1010: Unknown option with key {key}.</p>
 <p>:ERROR 1020: Empty input tier {name}.</p>
 <p>:ERROR 1030: Missing input tier. Please read the documentation.</p>
 <p>:ERROR 1040: Bad input tier type. Expected time-aligned intervals.</p>
 <p>:ERROR 1050: Inconsistency between the number of intervals of the input tiers. Got: {:d} and {:d}.</p>
+<h4 id="from-utils-package"><a href="#from-utils-package">From &quot;utils&quot; package</a></h4>
 <p>:ERROR 1210: The directory {dirname} does not exist.</p>
 <p>:ERROR 1220: The directory {dirname} does not contain relevant data.</p>
+<h4 id="from-audiodata-package"><a href="#from-audiodata-package">From &quot;audiodata&quot; package</a></h4>
 <p>:ERROR 2000: No audio file is defined.</p>
 <p>:ERROR 2005: Audio type error: not supported file format {extension}.</p>
 <p>:ERROR 2010: Opening, reading or writing error.</p>
@@ -96,12 +97,14 @@
 <p>:ERROR 2062: Channels have not the same number of frames.</p>
 <p>:ERROR 2070: Invalid sample width {value}.</p>
 <p>:ERROR 2080: Invalid frame rate {value}.</p>
+<h4 id="from-calculus-package"><a href="#from-calculus-package">From &quot;calculus&quot; package</a></h4>
 <p>:ERROR 3010: Both vectors p and q must have the same length and must contain probabilities.</p>
 <p>:ERROR 3015: Value must range between 0 and 1. Got {:f}.</p>
 <p>:ERROR 3016: Probabilities must sum to 1. Got {:f}.</p>
 <p>:ERROR 3025: Error while estimating Euclidian distances of rows and columns.</p>
 <p>:ERROR 3030: The given data must be defined or must not be empty.</p>
 <p>:ERROR 3040: Value {value} is out of range: expected value in range [{min_value},{max_value}].</p>
+<h4 id="from-plugins-package"><a href="#from-plugins-package">From &quot;plugins&quot; package</a></h4>
 <p>:ERROR 4010: Missing plugin configuration file.</p>
 <p>:ERROR 4014: Missing section {section_name} in the configuration file.</p>
 <p>:ERROR 4016: Missing option {:s} in section {:s} of the configuration file.</p>
@@ -114,10 +117,26 @@
 <p>:ERROR 4070: {command_name} is not a valid command on your operating system.</p>
 <p>:ERROR 4075: No command was defined for the system: {:s}. Supported systems of this plugin are: {:s}.&quot;&quot;&quot;</p>
 <p>:ERROR 4080: No option with key {:s}.</p>
+<h4 id="from-resources-package"><a href="#from-resources-package">From &quot;resources&quot; package</a></h4>
+<p>:ERROR 5005: Encoding error while trying to read the file: {name}.</p>
+<p>:ERROR 5010: Error while trying to open and read the file: {name}.</p>
+<p>:ERROR 5015: Read file failed at line number {number}: {string}.</p>
+<p>:ERROR 5020: The n value of n-grams pattern matching must range [1;{maximum}]. Got {observed}.</p>
+<p>:ERROR 5022: The gap value of pattern matching must range [0;{maximum}]. Got {observed}.</p>
+<p>:ERROR 5024: The score value of unigrams pattern matching must range [0;1]. Got {observed}.</p>
+<p>:ERROR 5030: The dump file can't have the same extension as the ASCII file ({extension}).</p>
+<p>:ERROR 5040: The count value must be positive. Got ({count}).</p>
+<h4 id="from-structs-package"><a href="#from-structs-package">From &quot;structs&quot; package</a></h4>
 <p>:ERROR 6010: {meta} is not a known meta information.</p>
 <p>:ERROR 6020: Unknown resource type: expected file or directory. Got: {string}.</p>
 <p>:ERROR 6024: The resource folder {dirname} does not exists.</p>
 <p>:ERROR 6028: The language must be &quot;und&quot; or one of the language list. Unknown language {lang}.</p>
+<h4 id="from-models-package"><a href="#from-models-package">From &quot;models&quot; package</a></h4>
+<p>:ERROR 7010: Expected a {data_name} of type {expected_type}. Got {data_type} instead.</p>
+<p>:ERROR 7500: The file {!s:s} contains non UTF-8 characters: {:s}.</p>
+<p>:ERROR 7505: Fail formats: unrecognized file format {!s:s}.</p>
+<p>:ERROR 7510: Fail formats: the folder {!s:s} does not contain a known model.</p>
+<p>:ERROR 7515: No model found or empty model in {!s:s}.</p>
 <h2 id="gnu-free-documentation-license"><a href="#gnu-free-documentation-license">GNU Free Documentation License</a></h2>
 <p>Version 1.3, 3 November 2008</p>
 <p>Copyright (C) 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc. <a href="http://fsf.org/">http://fsf.org/</a></p>
