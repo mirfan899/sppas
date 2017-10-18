@@ -33,12 +33,12 @@
 
 """
 import os
-import random
 import shutil
+import random
 from datetime import date
 
 from sppas.src.models.acm.tiedlist import sppasTiedList
-from sppas.src.utils.makeunicode import sppasUnicode
+from sppas.src.utils.makeunicode import sppasUnicode, u
 
 # ---------------------------------------------------------------------------
 
@@ -112,7 +112,7 @@ class BaseAligner(object):
         will infer if it is appropriate or not.
 
         """
-        if isinstance(infersp,bool) is False:
+        if isinstance(infersp, bool) is False:
             self._infersp = False
         else:
             self._infersp = infersp
@@ -125,27 +125,27 @@ class BaseAligner(object):
         :param entries: (list) List of missing entries into the tiedlist.
 
         """
-        tiedfile = os.path.join(self._model, "tiedlist")
-        if os.path.exists(tiedfile) is False:
+        tied_file = os.path.join(self._model, "tiedlist")
+        if os.path.exists(tied_file) is False:
             return []
 
         tie = sppasTiedList()
-        tie.load(tiedfile)
-        addentries = []
+        tie.read(tied_file)
+        add_entries = []
         for entry in entries:
             if tie.is_observed(entry) is False and tie.is_tied(entry) is False:
                 ret = tie.add_tied(entry)
                 if ret is True:
-                    addentries.append(entry)
+                    add_entries.append(entry)
 
-        if len(addentries) > 0:
+        if len(add_entries) > 0:
             today = str(date.today())
-            randval = str(int(random.random()*10000))
-            backuptiedfile = os.path.join(self._model, "tiedlist."+today+"."+randval)
-            shutil.copy(tiedfile, backuptiedfile)
-            tie.save(tiedfile)
+            rand_val = str(int(random.random()*10000))
+            backup_tied_file = os.path.join(self._model, "tiedlist." + today + "." + rand_val)
+            shutil.copy(tied_file, backup_tied_file)
+            tie.save(tied_file)
 
-        return addentries
+        return add_entries
 
     # ------------------------------------------------------------------------
 
@@ -166,7 +166,7 @@ class BaseAligner(object):
         :param tokens: (str) Tokenization
 
         """
-        tokens = unicode(tokens)
+        tokens = sppasUnicode(tokens).unicode()
         self._tokens = tokens
 
     # -----------------------------------------------------------------------
@@ -183,7 +183,10 @@ class BaseAligner(object):
         phones = sppasUnicode(self._phones).to_strip().split()
         tokens = sppasUnicode(self._tokens).to_strip().split()
         if len(tokens) != len(phones):
-            message = "Tokens alignment disabled: not the same number of tokens in tokenization (%d) and phonetization (%d)."%(len(self._tokens), len(self._phones))
+            message = "Tokens alignment disabled: " \
+                      "not the same number of tokens in tokenization (%d) " \
+                      "and phonetization (%d)."\
+                      % (len(self._tokens), len(self._phones))
             self._tokens = " ".join(["w_"+str(i) for i in range(len(self._phones))])
             return message
 
