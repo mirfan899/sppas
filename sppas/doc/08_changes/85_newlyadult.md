@@ -180,3 +180,16 @@ Resources:
 - Acoustic model training procedure debugged and improved, code cleaned, 
   scripts updated, etc.
 
+
+
+### SPPAS 1.9.3 (2017, 18th October)
+
+#### Programming:
+
+- Critical bug correction in Alignment: error when loading the tiedlist.
+- Correction of TextNormalization of broken words: "-" is now not removed.
+
+#### Resources: 
+
+- Italian pronunciation dictionary updated.
+- French vocabulary updated: list of compound words revised.

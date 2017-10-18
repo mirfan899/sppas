@@ -22,10 +22,11 @@ The "IPUs segmentation" automatic annotation can perform 3 actions:
 
 ### Silence/Speech segmentation
 
-The IPUs Segmentation annotation performs a silence detection from a
-recorded file. This segmentation provides an annotated file with one tier
-named "IPU". The silence intervals are labelled with the "#" symbol,
-as ipus intervals are labelled with "ipu_" followed by the IPU number.
+The IPUs Segmentation is a semi-automatic annotation process. It performs a 
+silence detection from a recorded file. This segmentation provides an annotated 
+file with one tier named "IPU". The silence intervals are labelled with the 
+"#" symbol, and IPUs intervals are labelled with "ipu_" followed by the IPU 
+number.
 
 The following parameters must be properly fixed:
 
@@ -75,9 +76,11 @@ the name of the result file.
  ...  ... [    OK    ] oriana1.xra
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The annotated file can be checked manually (preferably in SPPAS Visualizer tool or
-in Praat). If such values was not correct, then, delete the annotated file that was
-previously created, change the default values and re-annotate.
+The resulting annotated file has to be checked manually. 
+It can be viewed with the SPPAS Visualizer tool, or it can be viewed/revised with Praat. 
+
+If the option values were not relevant enough: delete the annotated file that was
+previously created, change such values and re-annotate.
 
 ![Result of IPUs Segmentation: silence detection](./etc/screenshots/ipu-seg-result1.png)
 

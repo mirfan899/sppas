@@ -117,6 +117,7 @@ class sppasTranscription(object):
         entry = re.sub(ur'\s+\([\w\xaa-\xff]+\)$', ' ', entry, re.UNICODE)
 
         entry = re.sub(ur'\s*\[([^,]+),([^,]+)\]', self.__replace, entry, re.UNICODE)
+
         return " ".join(entry.split())
 
     # ------------------------------------------------------------------
@@ -139,10 +140,10 @@ class sppasTranscription(object):
         _fentry = " " + u(entry) + " "
 
         if std is False:
-            # Stick unregular Liaisons to the previous token
+            # Stick un-regular liaisons to the previous token
             _fentry = re.sub(u' =([\w]+)=', ur'-\1', _fentry, re.UNICODE)
         else:
-            # Remove Liaisons
+            # Remove liaisons
             _fentry = re.sub(u' =([\w]+)=', ur' ', _fentry, re.UNICODE)
 
         # Laughing sequences
@@ -190,18 +191,19 @@ class sppasTranscription(object):
         _fentry = sppasUnicode(_fentry).to_strip()
 
         # Punctuations at the end of a token
-
         s = []
         entries = _fentry.split()
         for i, c in enumerate(entries):
-            # Check for the SAMPA sequence to assign properly "in_sampa"
-            if c.startswith("/") and c.endswith('/'):
-                in_sampa = True
-            else:
-                in_sampa = False
 
-            # if not in_sampa, add a whitespace if some punctuations are stick to a word
-            if in_sampa is False:
+            is_trunc = c.endswith("-")
+            # Check for the SAMPA sequence to assign properly "is_sampa"
+            if c.startswith("/") and c.endswith('/'):
+                is_sampa = True
+            else:
+                is_sampa = False
+                
+            # if not is_sampa, add a whitespace if some punctuations are stick to a word
+            if is_sampa is False:
 
                 # if there is a serie of punctuations at the beginning
                 while len(c) > 0 and category(c[0])[0] in ('P', 'S'):
@@ -210,16 +212,16 @@ class sppasTranscription(object):
 
                 # if there is a serie of punctuations at the end
                 end_punct = []
-                while len(c) > 0 and category(c[-1])[0] in ('P', 'S'):
-                    end_punct.append(c[-1])
-                    c = c[:-1]
+                if is_trunc is False:
+                    while len(c) > 0 and category(c[-1])[0] in ('P', 'S'):
+                        end_punct.append(c[-1])
+                        c = c[:-1]
                 if len(end_punct) == 1 and end_punct[0] == u("."):
                     s.append(c+u("."))
                 else:
                     s.append(c)
                     if len(end_punct) > 0:
                         s.extend(reversed(end_punct))
-
             else:
                 if len(s) == 0:
                     s.append(c)
