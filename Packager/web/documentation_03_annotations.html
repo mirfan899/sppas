@@ -61,7 +61,7 @@
 <div id="header">
 <h1 class="title">SPPAS Documentation</h1>
 <h2 class="author">Brigitte Bigi</h2>
-<h3 class="date">Version 1.9.1</h3>
+<h3 class="date">Version 1.9.2</h3>
 </div>
 <div id="TOC">
 <ul>
@@ -344,7 +344,7 @@ Extension de fichiers: .xra</code></pre>
 <p>Notice that all time values are indicated in seconds.</p>
 </blockquote>
 <h3 id="silencespeech-segmentation"><a href="#silencespeech-segmentation">Silence/Speech segmentation</a></h3>
-<p>The IPUs Segmentation annotation performs a silence detection from a recorded file. This segmentation provides an annotated file with one tier named &quot;IPU&quot;. The silence intervals are labelled with the &quot;#&quot; symbol, as ipus intervals are labelled with &quot;ipu_&quot; followed by the IPU number.</p>
+<p>The IPUs Segmentation is a semi-automatic annotation process. It performs a silence detection from a recorded file. This segmentation provides an annotated file with one tier named &quot;IPU&quot;. The silence intervals are labelled with the &quot;#&quot; symbol, and IPUs intervals are labelled with &quot;ipu_&quot; followed by the IPU number.</p>
 <p>The following parameters must be properly fixed:</p>
 <ul>
 <li><p>Minimum volume value (in seconds): If this value is set to zero, the minimum volume is automatically adjusted for each sound file. Try with it first, then if the automatic value is not correct, set it manually. The Procedure Outcome Report indicates the value the system choose. The AudioRoamer component can also be of great help: it indicates min, max and mean volume values of the sound.</p></li>
@@ -367,7 +367,8 @@ Extension de fichiers: .xra</code></pre>
  ...  ...  ... Threshold silence duration: 0.3
  ...  ...  ... Threshold speech duration:  0.5
  ...  ... [    OK    ] oriana1.xra</code></pre>
-<p>The annotated file can be checked manually (preferably in SPPAS Visualizer tool or in Praat). If such values was not correct, then, delete the annotated file that was previously created, change the default values and re-annotate.</p>
+<p>The resulting annotated file has to be checked manually. It can be viewed with the SPPAS Visualizer tool, or it can be viewed/revised with Praat.</p>
+<p>If the option values were not relevant enough: delete the annotated file that was previously created, change such values and re-annotate.</p>
 <figure>
 <img src="./etc/screenshots/ipu-seg-result1.png" alt="Result of IPUs Segmentation: silence detection" /><figcaption>Result of IPUs Segmentation: silence detection</figcaption>
 </figure>

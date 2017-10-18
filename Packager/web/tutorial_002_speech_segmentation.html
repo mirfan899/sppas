@@ -96,15 +96,14 @@
 </li>
 </ol>
 <blockquote>
-<p>All three tasks are fully-automatic, but each annotation output can be manually checked if desired.</p>
+<p>All three tasks are fully-automatic, but each annotation output should to be manually checked.</p>
 </blockquote>
 </section>
 <section class="slide level2">
 
-<h3 id="tokenization">Tokenization</h3>
+<h3 id="tokenization">TextNormalization</h3>
 <ul>
-<li>Tokenization is also known as &quot;Text Normalization&quot;.</li>
-<li>Tokenization is the process of segmenting a text into tokens.</li>
+<li>TextNormalization is the process of tokenizing a text.</li>
 <li>In principle, any system that deals with unrestricted text need the text to be normalized.</li>
 <li>Automatic text normalization is mostly dedicated to written text, in the NLP community
 <ul>
@@ -115,7 +114,7 @@
 </section>
 <section class="slide level2">
 
-<h3 id="tokenization-my-approach">Tokenization: my approach</h3>
+<h3 id="tokenization-my-approach">TextNormalization: my approach</h3>
 <ul>
 <li>I proposed a generic approach:
 <ul>
@@ -134,7 +133,7 @@
 </section>
 <section class="slide level2">
 
-<h3 id="tokenization-main-steps">Tokenization main steps</h3>
+<h3 id="tokenization-main-steps">TextNormalization main steps</h3>
 <ol type="1">
 <li>Split:
 <ul>
@@ -155,7 +154,7 @@
 </section>
 <section class="slide level2">
 
-<h3 id="tokenization-main-steps-continued">Tokenization main steps (continued)</h3>
+<h3 id="tokenization-main-steps-continued">TextNormalization main steps (continued)</h3>
 <ol start="3" type="1">
 <li>Segment into words:
 <ul>
@@ -173,7 +172,7 @@
 </section>
 <section class="slide level2">
 
-<h3 id="tokenization-main-steps-1">Tokenization main steps</h3>
+<h3 id="tokenization-main-steps-1">TextNormalization main steps</h3>
 <ol start="4" type="1">
 <li>Stick, i.e. concatenate strings into words
 <ul>
@@ -201,7 +200,7 @@
 </section>
 <section class="slide level2">
 
-<h3 id="tokenization-of-speech-transcription">Tokenization of speech transcription</h3>
+<h3 id="tokenization-of-speech-transcription">TextNormalization of speech transcription</h3>
 <ul>
 <li>Speech transcription includes speech phenomena like:
 <ul>
@@ -219,7 +218,7 @@
 </section>
 <section class="slide level2">
 
-<h3 id="tokenization-of-speech-transcription-example">Tokenization of speech transcription: example</h3>
+<h3 id="tokenization-of-speech-transcription-example">TextNormalization of speech transcription: example</h3>
 <figure>
 <audio src="./etc/media/CM-extract-toe.wav"  controls> </audio>
 </figure>
@@ -243,7 +242,7 @@
 </section>
 <section class="slide level2">
 
-<h3 id="tokenization-current-languages">Tokenization: current languages</h3>
+<h3 id="tokenization-current-languages">TextNormalization: current languages</h3>
 <ul>
 <li>French: 347k words</li>
 <li>English: 121k words</li>
@@ -264,7 +263,7 @@
 </section>
 <section class="slide level2">
 
-<h3 id="tokenization-adding-a-new-language">Tokenization: Adding a new language</h3>
+<h3 id="tokenization-adding-a-new-language">TextNormalization: Adding a new language</h3>
 <ol type="1">
 <li>add lexicons</li>
 <li>add the num2letter module</li>
