@@ -190,8 +190,8 @@ class IPUsTrs(object):
         """
         trstracks = []
         silences = []
-        self._units = []
-        self._names = []
+        self._units = list()
+        self._names = list()
 
         i = 0
         last = trstier.GetSize()
@@ -226,7 +226,16 @@ class IPUsTrs(object):
                         self._units.pop()
                     else:
                         sf = sppasFileUtils(aname[0].GetLabel().GetValue())
-                        self._names.append(sf.clear_whitespace())
+                        # We have to take care in case of duplicated names
+                        filename = sf.clear_whitespace()
+                        if len(filename) == 0:
+                            filename = "unnamed_track"
+                        new_name = filename
+                        idx = 2
+                        while new_name in self._names:
+                            new_name = u"%s_%.06d" % (filename, idx)
+                            idx += 1
+                        self._names.append(new_name)
 
             # Continue
             i += 1

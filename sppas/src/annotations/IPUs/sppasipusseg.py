@@ -45,6 +45,7 @@ from sppas.src.audiodata.autils import times2frames
 
 from .. import INFO_ID
 from ..baseannot import sppasBaseAnnotation
+from ..searchtier import sppasSearchTier
 from ..annotationsexc import AnnotationOptionError
 
 from .ipusaudio import IPUsAudio  # find silences/tracks from audio
@@ -207,22 +208,7 @@ class sppasIPUseg(sppasBaseAnnotation):
 
         # input is a time-aligned file
         if tier_idx is None:
-            trs_tier = None
-            # priority: try to find a tier with "trans" in its name
-            for tier in trs_input:
-                tier_name = tier.GetName().lower()
-                if "trans" in tier_name:
-                    trs_tier = tier
-                    break
-            if trs_tier is None:
-                # try other tier names
-                for tier in trs_input:
-                    tier_name = tier.GetName().lower()
-                    if "trs" in tier_name or "ortho" in tier_name or "toe" in tier_name or "ipu" in tier_name:
-                        trs_tier = tier
-                        break
-            if trs_tier is None:
-                raise IOError('No tier with transcription found.')
+            trs_tier = sppasSearchTier.transcription(trs_input)
         else:
             trs_tier = trs_input[tier_idx]
 
@@ -239,7 +225,7 @@ class sppasIPUseg(sppasBaseAnnotation):
             if "name" in tier_name or "file" in tier_name:
                 if self.logfile:
                     self.logfile.print_message("IPUs file names found: %s" % tier.GetName(), indent=3, status=INFO_ID)
-                tier.SetName('Name')
+                tier.SetName("Name")
                 trs_output.Append(tier)
                 break
 
