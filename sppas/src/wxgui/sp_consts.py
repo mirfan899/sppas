@@ -56,7 +56,7 @@ HELP_IDX_EXT = ".idx"
 
 FRAME_STYLE = wx.DEFAULT_FRAME_STYLE|wx.CLOSE_BOX
 FRAME_TITLE = " " + sppas.__name__ + " " + sppas.__version__ + " "
-DIALOG_STYLE = wx.CAPTION|wx.RESIZE_BORDER|wx.THICK_FRAME
+DIALOG_STYLE = wx.CAPTION|wx.RESIZE_BORDER
 
 DEFAULT_APP_NAME = sppas.__name__ + "Component"
 
