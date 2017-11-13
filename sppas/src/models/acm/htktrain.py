@@ -916,10 +916,15 @@ class sppasTrainingCorpus(object):
         if self.phonemap.is_key("sp") is False:
             self.phonemap.add('sp', '+')
 
-        if self.phonemap.is_key("gb") is False:
-            self.phonemap.add('gb', '*')
+        # if self.phonemap.is_key("gb") is False:
+        #     self.phonemap.add('gb', '*')
 
         self.phonemap.set_reverse(True)
+
+        # Update the list of monophones from the phonemap table.
+        for phoneme in self.phonemap:
+            if phoneme != "sp":
+                self.monophones.add(phoneme)
 
     # -----------------------------------------------------------------------
 
@@ -1087,11 +1092,12 @@ class sppasHTKModelInitializer(object):
     def create_models(self):
         """ Create an initial model for each phoneme.
 
-        Create a start model for each phoneme 
-        either from time-aligned data,
-        or use the prototype trained by HCompV (i.e. a flat-start-model),
-        or use the existing saved prototype,
-        or use the default prototype.
+        Create a start model for each phoneme:
+
+            - either from time-aligned data [TRAIN],
+            - or use the prototype trained by HCompV (i.e. a flat-start-model) [FLAT],
+            - or use the existing saved prototype [PROTO],
+            - or use the default prototype.
 
         """
         scp_file = self.trainingcorpus.get_scp(aligned=True, phonetized=False, transcribed=False)
@@ -1160,6 +1166,7 @@ class sppasHTKModelInitializer(object):
     def create_hmmdefs(self):
         """ Create an hmmdefs file from a set of separated hmm files. """
 
+        logging.info(" ... ... Create hmmdefs file with files: ")
         parser = sppasHtkIO()
 
         # Read the set of HMMs of the directory, and if any, read the macros.
