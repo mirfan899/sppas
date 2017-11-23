@@ -64,6 +64,7 @@ vowels = ["a","e","i","i:","o","u","y","A","E","I","M","O","Q","U","V","Y","a~",
 consonants = ["b","b_<","c","d","d`","f","g","g_<","h","j","k","l","l`","m","n","n`","p","q","r","r`","r\\", "rr",
               "s","s`","t","t`","v","w","x","z","z`","B","C","D","F","G","H","J","K","L","M","N","R","S","T","W","X","Z",
               "4","5","?","ts","tS","dz","dZ","tK","kp","Nm","rr","ss","ts_h","k_h","p_h","t_h","ts_hs","tss"]
+fillers = ["@@", "*", "fp"]
 
 # ----------------------------------------------------------------------------
 # Functions
@@ -196,15 +197,15 @@ def exec_Rscript(filenamed, filenames, filenamee, rscriptname, pdffilename):
     return ""
 
 
-def boxplot(deltaposB, deltaposE, deltaposD, extras, outname, vector, name):
+def boxplot(deltaposB, deltaposE, deltaposD, extras, out_name, vector, name):
     """ Create a PDF file with boxplots, but selecting only a subset of phonemes.
 
     :param vector: the list of phonemes
 
     """
-    filenamed = outname+"-delta-duration-"+name+".csv"
-    filenames = outname+"-delta-position-start-"+name+".csv"
-    filenamee = outname+"-delta-position-end-"+name+".csv"
+    filenamed = out_name+"-delta-duration-"+name+".csv"
+    filenames = out_name+"-delta-position-start-"+name+".csv"
+    filenamee = out_name+"-delta-position-end-"+name+".csv"
 
     fpb = codecs.open(filenames, "w", 'utf8')
     fpe = codecs.open(filenamee, "w", 'utf8')
@@ -220,12 +221,12 @@ def boxplot(deltaposB, deltaposE, deltaposD, extras, outname, vector, name):
                 fpb.write("%s,%f\n" % (etiquette, deltaposB[i]))
             if tag != -1:
                 fpe.write("%s,%f\n" % (etiquette, deltaposE[i]))
-            fpd.write("%s,%f\n" % (etiquette, deltadur[i]))
+            fpd.write("%s,%f\n" % (etiquette, delta_durationur[i]))
     fpb.close()
     fpe.close()
     fpd.close()
 
-    message = exec_Rscript(filenamed, filenames, filenamee, outname+".R", outname+"-delta-"+name+".pdf")
+    message = exec_Rscript(filenamed, filenames, filenamee, out_name+".R", out_name+"-delta-"+name+".pdf")
 
     os.remove(filenamed)
     os.remove(filenames)
@@ -285,10 +286,10 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 # Global variables
 
-idxreftier = args.tr - 1
-idxhyptier = args.th - 1
-files = []      # List of tuples: (reffilename, hypfilename)
-deltadur = []   # Duration of each phoneme
+idxref_tier = args.tr - 1
+idxhyp_tier = args.th - 1
+files = []      # List of tuples: (ref_filename, hyp_filename)
+delta_durationur = []   # Duration of each phoneme
 deltaposB = []  # Position of the beginning boundary of each phoneme
 deltaposE = []  # Position of the end boundary of each phoneme
 deltaposM = []  # Position of the center of each phoneme
@@ -297,49 +298,49 @@ extras = []     # List of tuples: (evaluated phoneme,hypothesis file names, a ta
 # ----------------------------------------------------------------------------
 # Prepare file names to be analyzed, as a list of tuples (ref,hyp)
 
-outpath = None
+out_path = None
 if args.o:
-    outpath = args.o
-    if not os.path.exists(outpath):
-        os.mkdir(outpath)
+    out_path = args.o
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
 
 if os.path.isfile(args.fh) and os.path.isfile(args.fr):
-    hypfilename, extension = os.path.splitext(args.fh)
-    outbasename = os.path.basename(hypfilename)
-    if outpath is None:
-        outpath = os.path.dirname(hypfilename)
-    outname = os.path.join(outpath, outbasename)
+    hyp_filename, extension = os.path.splitext(args.fh)
+    out_basename = os.path.basename(hyp_filename)
+    if out_path is None:
+        out_path = os.path.dirname(hyp_filename)
+    out_name = os.path.join(out_path, out_basename)
 
     files.append((os.path.basename(args.fr), os.path.basename(args.fh)))
-    refdir = os.path.dirname(args.fr)
-    hypdir = os.path.dirname(args.fh)
+    ref_directory = os.path.dirname(args.fr)
+    hyp_directory = os.path.dirname(args.fh)
 
 elif os.path.isdir(args.fh) and os.path.isdir(args.fr):
-    if outpath is None:
-        outpath = args.fh
-    outname = os.path.join(outpath, "phones")
+    if out_path is None:
+        out_path = args.fh
+    out_name = os.path.join(out_path, "phones")
 
-    refdir = args.fr
-    hypdir = args.fh
+    ref_directory = args.fr
+    hyp_directory = args.fh
 
-    reffiles = []
-    hypfiles = []
+    ref_files = []
+    hyp_files = []
     for fr in os.listdir(args.fr):
-        if os.path.isfile(os.path.join(refdir, fr)):
-            reffiles.append(fr)
+        if os.path.isfile(os.path.join(ref_directory, fr)):
+            ref_files.append(fr)
     for fh in os.listdir(args.fh):
-        if os.path.isfile(os.path.join(hypdir, fh)):
-            hypfiles.append(os.path.basename(fh))
+        if os.path.isfile(os.path.join(hyp_directory, fh)):
+            hyp_files.append(os.path.basename(fh))
 
-    for fr in reffiles:
-        basefr, extfr = os.path.splitext(fr)
-        if not extfr.lower() in sppas.src.annotationdata.aio.extensions:
+    for fr in ref_files:
+        base_fr, ext_fr = os.path.splitext(fr)
+        if not ext_fr.lower() in sppas.src.annotationdata.aio.extensions:
             continue
-        for fh in hypfiles:
-            basefh, extfh = os.path.splitext(fh)
-            if not extfh.lower() in sppas.src.annotationdata.aio.extensions:
+        for fh in hyp_files:
+            base_fh, ext_fh = os.path.splitext(fh)
+            if not ext_fh.lower() in sppas.src.annotationdata.aio.extensions:
                 continue
-            if fh.startswith(basefr):
+            if fh.startswith(base_fr):
                 files.append((fr, fh))
 
 else:
@@ -347,52 +348,64 @@ else:
     sys.exit(1)
 
 if not args.quiet:
-    print("Results will be stored in: {}".format(outname))
+    print("Results will be stored in: {}".format(out_name))
+
+if len(files) == 0:
+    print("No matching hyp/ref files. Nothing to do!")
+    sys.exit(1)
 
 # ----------------------------------------------------------------------------
 # Evaluate the delta from the hypothesis to the reference
 # Delta = T(hyp) - T(ref)
 
+if not args.quiet:
+    print("Results are evaluated on {:d} files: ".format(len(files)))
+
 for f in files:
 
-    fr = os.path.join(refdir, f[0])
-    fh = os.path.join(hypdir, f[1])
-    reftier, hyptier = get_tiers(fr, fh, idxreftier, idxhyptier)
-    if reftier is None or hyptier is None:
+    if not args.quiet:
+        print("    {:s}".format(os.path.basename(f[1])))
+
+    fr = os.path.join(ref_directory, f[0])
+    fh = os.path.join(hyp_directory, f[1])
+    ref_tier, hyp_tier = get_tiers(fr, fh, idxref_tier, idxhyp_tier)
+    if ref_tier is None or hyp_tier is None:
         print("[ INFO ] No aligned phonemes found in tiers. Nothing to do. ")
         continue
-    if reftier.GetSize() != hyptier.GetSize():
-        print("[ ERROR ] Hypothesis: {} -> {} vs Reference: {} -> {} phonemes.".format(f[1], hyptier.GetSize(), f[0], reftier.GetSize()))
+    if ref_tier.GetSize() != hyp_tier.GetSize():
+        print("[ ERROR ] Hypothesis: {} -> {} vs Reference: {} -> {} phonemes."
+              .format(f[1], hyp_tier.GetSize(), f[0], ref_tier.GetSize()))
         continue
     if not args.quiet:
-        print("[ OK ] Hypothesis: {} vs Reference: {} -> {} phonemes.".format(f[1], f[0], reftier.GetSize()))
+        print("[ OK ] Hypothesis: {} vs Reference: {} -> {} phonemes."
+              .format(f[1], f[0], ref_tier.GetSize()))
 
     # ----------------------------------------------------------------------------
     # Compare boundaries and durations of annotations.
 
     i = 0
-    imax = reftier.GetSize()-1
+    imax = ref_tier.GetSize()-1
 
-    for rann, hann in zip(reftier, hyptier):
-        etiquette = rann.GetLabel().GetValue()
+    for ref_ann, hyp_ann in zip(ref_tier, hyp_tier):
+        etiquette = ref_ann.GetLabel().GetValue()
         if etiquette == "#":
             continue
         # begin
-        rb = rann.GetLocation().GetBegin().GetValue()
-        hb = hann.GetLocation().GetBegin().GetValue()
-        deltab = hb-rb
+        rb = ref_ann.GetLocation().GetBegin().GetValue()
+        hb = hyp_ann.GetLocation().GetBegin().GetValue()
+        delta_start = hb-rb
         # end
-        re = rann.GetLocation().GetEnd().GetValue()
-        he = hann.GetLocation().GetEnd().GetValue()
-        deltae = he-re
+        re = ref_ann.GetLocation().GetEnd().GetValue()
+        he = hyp_ann.GetLocation().GetEnd().GetValue()
+        delta_end = he-re
         # middle
         rm = rb + (re-rb)/2.
         hm = hb + (he-hb)/2.
-        deltam = hm-rm
+        delta_center = hm-rm
         # duration
-        rd = rann.GetLocation().GetDuration().GetValue()
-        hd = hann.GetLocation().GetDuration().GetValue()
-        deltad = hd-rd
+        rd = ref_ann.GetLocation().GetDuration().GetValue()
+        hd = hyp_ann.GetLocation().GetDuration().GetValue()
+        delta_duration = hd-rd
 
         tag = 1
         if i == 0:
@@ -401,10 +414,10 @@ for f in files:
             tag = -1
 
         # Add new values into vectors, to evaluate the accuracy
-        deltaposB.append(deltab)
-        deltaposE.append(deltae)
-        deltaposM.append(deltam)
-        deltadur.append(deltad)
+        deltaposB.append(delta_start)
+        deltaposE.append(delta_end)
+        deltaposM.append(delta_center)
+        delta_durationur.append(delta_duration)
         extras.append((etiquette, fh, tag))
 
         i += 1
@@ -412,10 +425,10 @@ for f in files:
 # ----------------------------------------------------------------------------
 # Save delta values into output files
 
-fpb = codecs.open(os.path.join(outname)+"-delta-position-start.txt", "w", 'utf8')
-fpe = codecs.open(os.path.join(outname)+"-delta-position-end.txt", "w", 'utf8')
-fpm = codecs.open(os.path.join(outname)+"-delta-position-middle.txt", "w", 'utf8')
-fpd = codecs.open(os.path.join(outname)+"-delta-duration.txt",  "w", 'utf8')
+fpb = codecs.open(os.path.join(out_name)+"-delta-position-start.txt", "w", 'utf8')
+fpe = codecs.open(os.path.join(out_name)+"-delta-position-end.txt", "w", 'utf8')
+fpm = codecs.open(os.path.join(out_name)+"-delta-position-middle.txt", "w", 'utf8')
+fpd = codecs.open(os.path.join(out_name)+"-delta-duration.txt",  "w", 'utf8')
 
 fpb.write("Phone Delta Filename\n")
 fpe.write("Phone Delta Filename\n")
@@ -431,7 +444,7 @@ for i, extra in enumerate(extras):
     if tag != -1:
         fpe.write("%s %f %s\n" % (etiquette, deltaposE[i], filename))
     fpm.write("%s %f %s\n" % (etiquette, deltaposM[i], filename))
-    fpd.write("%s %f %s\n" % (etiquette, deltadur[i], filename))
+    fpd.write("%s %f %s\n" % (etiquette, delta_durationur[i], filename))
 
 fpb.close()
 fpe.close()
@@ -444,15 +457,15 @@ fpd.close()
 if not args.quiet:
     ubpa(deltaposB, "Start boundary", sys.stdout)
 
-with open(outname+"-eval-position-start.txt", "w") as fp:
+with open(out_name+"-eval-position-start.txt", "w") as fp:
     ubpa(deltaposB, "Start boundary position", fp)
-with open(outname+"-eval-position-end.txt", "w") as fp:
+with open(out_name+"-eval-position-end.txt", "w") as fp:
     ubpa(deltaposE, "End boundary position", fp)
-with open(outname+"-eval-position-middle.txt", "w") as fp:
-        ubpa(deltaposM, "Middle boundary position", fp)
+with open(out_name+"-eval-position-middle.txt", "w") as fp:
+    ubpa(deltaposM, "Middle boundary position", fp)
 
-with open(outname+"-eval-duration.txt") as fp:
-    ubpa(deltadur, "Duration", fp)
+with open(out_name+"-eval-duration.txt", "w") as fp:
+    ubpa(delta_durationur, "Duration", fp)
 
 # ----------------------------------------------------------------------------
 # Draw BoxPlots of the accuracy via an R script
@@ -460,21 +473,26 @@ with open(outname+"-eval-duration.txt") as fp:
 if test_R() is False:
     sys.exit(0)
 
-message = boxplot(deltaposB, deltaposE, deltadur, extras, outname, vowels, "vowels")
+message = boxplot(deltaposB, deltaposE, delta_durationur, extras, out_name, vowels, "vowels")
 if len(message) > 0 and not args.quiet:
     print("{:s}".format(message))
 
-message = boxplot(deltaposB, deltaposE, deltadur, extras, outname, consonants, "consonants")
+message = boxplot(deltaposB, deltaposE, delta_durationur, extras, out_name, consonants, "consonants")
+if len(message) > 0 and not args.quiet:
+    print("{:s}".format(message))
+
+message = boxplot(deltaposB, deltaposE, delta_durationur, extras, out_name, fillers, "fillers")
 if len(message) > 0 and not args.quiet:
     print("{:s}".format(message))
 
 others = []
+known = vowels+consonants+fillers
 for extra in extras:
     etiquette = extra[0]
-    if not (etiquette in vowels or etiquette in consonants or etiquette in others):
+    if not (etiquette in known or etiquette in others):
         others.append(etiquette)
 
 if len(others) > 0:
-    message = boxplot(deltaposB, deltaposE, deltadur, extras, outname, others, "others")
+    message = boxplot(deltaposB, deltaposE, delta_durationur, extras, out_name, others, "others")
     if len(message) > 0 and not args.quiet:
         print("{:s}".format(message))

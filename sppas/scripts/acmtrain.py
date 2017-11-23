@@ -72,6 +72,7 @@ def train(pron_dict,
     #  - protodir=None (in)
     #  - protofilename=DEFAULT_PROTO_FILENAME (out)
 
+    logging.info("Create a DataTrainer")
     datatrainer = sppasDataTrainer()
     # we could either use:
     #  datatrainer.create( workdir=args.t, protodir=args.p )
@@ -79,6 +80,7 @@ def train(pron_dict,
     datatrainer.fix_working_dir(workdir=working_dir)
     datatrainer.fix_proto(proto_dir=protos_dir)
     datatrainer.check()
+    logging.info(" ... [ OK ]")
 
     # ---------------------------------
     # 2. Create a Corpus Manager
@@ -87,6 +89,7 @@ def train(pron_dict,
     #   - converts the input annotated data into the HTK-specific data format;
     #   - codes the audio data.
 
+    logging.info("Create a CorpusManager")
     corpus = sppasTrainingCorpus(datatrainer, lang=lang)
     corpus.fix_resources(dict_file=pron_dict, mapping_file=mapping_table)
 
@@ -96,16 +99,25 @@ def train(pron_dict,
                 corpus.add_corpus(entry)
             else:
                 logging.info('[ WARNING ] Ignore the given entry: {!s:s}'.format(entry))
+    logging.info(" ... [ OK ]")
 
     # ---------------------------------
     # 3. Acoustic Model Training
 
+    logging.info("Create a ModelTrainer")
     trainer = sppasHTKModelTrainer(corpus)
     clean = False
     if args.t is None:
         clean = True
+
     trainer.training_recipe(outdir=output_dir, delete=clean, header_tree=tree_script)
 
+    if os.path.exists(output_dir):
+        acm_model = os.path.join(output_dir, "hmmdefs")
+        if os.path.exists(acm_model):
+            return output_dir
+
+    return None
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -160,7 +172,7 @@ parser.add_argument("-T",
                     metavar="tree",
                     required=False,
                     default=None,
-                    help="Tree LED script to train a triphone model.")
+                    help="Tree LED script to train a triphone model (NOT IMPLEMENTED YET).")
 
 parser.add_argument("--quiet", action='store_true', help="Disable the verbosity.")
 
@@ -178,11 +190,25 @@ if not args.quiet:
 else:
     setup_logging(None, None)
 
-train(pron_dict=args.r,
-      mapping_table=args.m,
-      protos_dir=args.p,
-      corpus_dir_list=args.i,
-      lang=args.l,
-      working_dir=args.t,
-      output_dir=args.o,
-      tree_script=args.T)
+
+if os.path.exists(args.o):
+    model = os.path.join(args.o, "hmmdefs")
+    if os.path.exists(model):
+        print("A model with name {:s} is already existing.".format(args.o))
+        sys.exit(1)
+
+logging.info("Train the model...")
+acm = train(pron_dict=args.r,
+            mapping_table=args.m,
+            protos_dir=args.p,
+            corpus_dir_list=args.i,
+            lang=args.l,
+            working_dir=args.t,
+            output_dir=args.o,
+            tree_script=args.T)
+
+if acm is not None:
+    logging.info("Train terminated successfully.")
+else:
+    logging.info("Train terminated with errors.")
+    sys.exit(1)
