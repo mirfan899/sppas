@@ -247,7 +247,7 @@ class sppasPhon(sppasBaseAnnotation):
         self.print_diagnosis(input_filename)
 
         # Get the tier to be phonetized.
-        pattern = "faked"
+        pattern = ""
         if self._options['usestdtokens'] is True:
             pattern = "std"
         trs_input = sppas.src.annotationdata.aio.read(input_filename)

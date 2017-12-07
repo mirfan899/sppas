@@ -107,7 +107,7 @@ class sppasSearchTier(object):
     # ------------------------------------------------------------------------
 
     @staticmethod
-    def tokenization(trs, pattern="faked"):
+    def tokenization(trs, pattern=""):
         """ Return the tier with tokenization.
 
         In case of EOT, several tiers with tokens are available.
@@ -118,10 +118,11 @@ class sppasSearchTier(object):
 
         """
         # Search with the pattern
-        for tier in trs:
-            tier_name = tier.GetName().lower()
-            if pattern in tier_name and "token" in tier_name:
-                return tier
+        if len(pattern) > 0:
+            for tier in trs:
+                tier_name = tier.GetName().lower()
+                if pattern in tier_name and "token" in tier_name:
+                    return tier
 
         # Search with known patterns
         if trs.GetSize() == 1:
@@ -133,7 +134,7 @@ class sppasSearchTier(object):
 
             for tier in trs:
                 tier_name = tier.GetName().lower()
-                if "faked" in tier_name and "token" in tier_name:
+                if tier_name == "tokens":
                     return tier
                 elif "std" in tier_name and "token" in tier_name:
                     std_tier = tier
