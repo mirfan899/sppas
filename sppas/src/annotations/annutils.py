@@ -77,6 +77,10 @@ def fix_workingdir(inputaudio=""):
             workdir = sf.set_random()
     else:
         workdir = os.path.splitext(inputaudio)[0]+"-temp"
+        i = 1
+        while os.path.exists(workdir) is True:
+            workdir = os.path.splitext(inputaudio)[0]+"-temp"+str(i)
+            i = i + 1
 
     os.mkdir(workdir)
     return workdir
