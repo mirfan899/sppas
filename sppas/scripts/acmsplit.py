@@ -44,7 +44,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.models.acm.acmodel import sppasAcModel
+from sppas.src.models.acm.acmodelhtkio import sppasHtkIO
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -56,12 +56,7 @@ parser = ArgumentParser(usage="%s -i hmmdef -o dir" % os.path.basename(PROGRAM),
 parser.add_argument("-i",
                     metavar="file",
                     required=True,
-                    help='Input file name (commonly hmmdefs)')
-
-parser.add_argument("-r",
-                    metavar="file",
-                    required=False,
-                    help='Optional: Input mapping file name (commonly monophones.repl).')
+                    help='Input file name (hmmdefs) or directory (hmmdefs+monophones.repl)')
 
 parser.add_argument("-o",
                     metavar="dir",
@@ -83,16 +78,16 @@ if not os.path.isdir(args.o):
     print("Error: {0} must be an existing directory.".format(args.o))
     sys.exit(1)
 
-if not os.path.isfile(args.i):
-    print("Error: {0] must be an acoustic model file (HTK-ASCII format).".format(args.i))
-    sys.exit(1)
+# ----------------------------------------------------------------------------
 
 if args.quiet is False:
     print("Loading AC:")
-acmodel1 = sppasAcModel()
-acmodel1.load_htk(args.i)
-if args.r:
-    acmodel1.load_phonesrepl(args.r)
+
+acmodel1 = sppasHtkIO()
+if os.path.isfile(args.i):
+    acmodel1.read(os.path.dirname(args.i), os.path.basename(args.i))
+else:
+    acmodel1.read(folder=args.i)
 if args.quiet is False:
     print("... done")
 
@@ -101,10 +96,11 @@ if args.quiet is False:
 acmodel = acmodel1.extract_monophones()
 acmodel.replace_phones()
 
-for hmm in acmodel.hmms:
+for hmm in acmodel.get_hmms():
 
     filename = os.path.join(args.o, hmm.name)
     filename = filename + ".hmm"
     if args.quiet is False:
         print("{:s}: {:s}".format(hmm.name, filename))
-    hmm.save(filename)
+    sppasHtkIO.write_hmm(hmm, filename)
+

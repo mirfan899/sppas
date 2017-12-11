@@ -57,14 +57,14 @@ class sppasPhoneSet(sppasVocabulary):
     """
     def __init__(self, filename=None):
         """ Create a sppasPhoneSet instance.
-        Add events to the list: laughter, dummy, noise, silence.
+        Add events to the list: laugh, dummy, noise, silence.
 
         :param filename (str) A file with 1 column containing the list of phonemes.
 
         """
         sppasVocabulary.__init__(self, filename, nodump=True, case_sensitive=True)
 
-        self.add("@@")
+        self.add("lg")
         self.add("dummy")
         self.add("gb")
         self.add("sil")
