@@ -101,7 +101,9 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 
 if not args.quiet:
-    setup_logging(1, None)
+    setup_logging(0, None)
+else:
+    setup_logging(30, None)
 
 # ----------------------------------------------------------------------------
 # Automatic Text Normalization is here:

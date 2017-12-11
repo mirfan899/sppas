@@ -47,11 +47,12 @@ from .utilsexc import NoDirectoryError
 # ----------------------------------------------------------------------------
 
 
-def setup_logging(log_level, filename=None):
+def setup_logging(log_level=15, filename=None):
     """ Setup default logger to log to stderr or and possible also to a file.
 
     :param log_level: Sets the threshold for this logger. Logging messages
-    which are less severe than this value will be ignored.
+    which are less severe than this value will be ignored. When NOTSET is
+    assigned, all messages are printed.
     :param filename: Specifies that a FileHandler be created, using the
     specified filename, rather than a StreamHandler.
 
@@ -66,6 +67,8 @@ def setup_logging(log_level, filename=None):
 
     """
     formatmsg = "%(asctime)s [%(levelname)s] %(message)s"
+    if log_level is None:
+        log_level = 15
 
     # Setup logging to file if filename is specified
     if filename is not None:
@@ -81,7 +84,7 @@ def setup_logging(log_level, filename=None):
         logging.getLogger().addHandler(console_handler)
 
     logging.getLogger().setLevel(log_level)
-    logging.info("Logging set up level=%s, filename=%s", log_level, filename)
+    logging.info("Logging set up level={:d}, filename={:s}".format(log_level, filename))
 
 # ----------------------------------------------------------------------------
 

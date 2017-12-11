@@ -100,7 +100,7 @@ for f in args.files:
 # Logging
 # ----------------------------------------------------------------------------
 
-log_level = 1
+log_level = 0
 log_file = None
 try:
     setup_logging(log_level, log_file)

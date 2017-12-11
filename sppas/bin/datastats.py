@@ -101,7 +101,7 @@ for f in args.files:
 # ----------------------------------------------------------------------------
 
 log_level = 1
-log_file  = None
+log_file = None
 try:
     setup_logging(log_level, log_file)
 except Exception:

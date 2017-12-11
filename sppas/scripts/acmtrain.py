@@ -186,10 +186,9 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 
 if not args.quiet:
-    setup_logging(1, None)
+    setup_logging(0, None)
 else:
-    setup_logging(None, None)
-
+    setup_logging(30, None)
 
 if os.path.exists(args.o):
     model = os.path.join(args.o, "hmmdefs")
