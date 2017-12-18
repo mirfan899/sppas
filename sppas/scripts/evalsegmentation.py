@@ -58,13 +58,14 @@ import sppas.src.annotationdata.aio
 # Constants
 # ----------------------------------------------------------------------------
 
-vowels = ["a","e","i","i:","o","u","y","A","E","I","M","O","Q","U","V","Y","a~","A~", "E~", "e~","i~","o~","O~","O:",
+vowels = ["a","e","i","i:","o","u","y","A","E","I","M","O","Q","U","V","Y","a~","A~","E~", "e~","i~","o~","O~","O:",
           "u~","U~","eu","EU","{","}","@","1","2","3","6","7","8","9","&","3:r","OI","@U","eI","ai","aI","au","aU",
-          "aj","aw","ei","ew","ia","ie","io","ja","je","jo","ju","oj","ou","ua","uo","wa","we","wi","wo","ya","ye","yu"]
+          "aj","aw","ei","ew","ia","ie","io","ja","je","jo","ju","oj","ou","ua","uo","wa","we","wi","wo","ya","ye","yu",
+          "A/","O/","U~/"]
 consonants = ["b","b_<","c","d","d`","f","g","g_<","h","j","k","l","l`","m","n","n`","p","q","r","r`","r\\", "rr",
               "s","s`","t","t`","v","w","x","z","z`","B","C","D","F","G","H","J","K","L","M","N","R","S","T","W","X","Z",
               "4","5","?","ts","tS","dz","dZ","tK","kp","Nm","rr","ss","ts_h","k_h","p_h","t_h","ts_hs","tss"]
-fillers = ["@@", "gb", "fp"]
+fillers = ["@@", "lg", "gb", "fp"]
 
 # ----------------------------------------------------------------------------
 # Functions
@@ -269,6 +270,13 @@ parser.add_argument("-th",
                     required=False,
                     help='Tier number of the hypothesis (default=1).')
 
+parser.add_argument("-d",
+                    metavar="delta",
+                    required=False,
+                    type=float,
+                    default=0.04,
+                    help='Delta max value for the UBPA estimation (default=0.02).')
+
 parser.add_argument("-o",
                     metavar="path",
                     required=False,
@@ -458,14 +466,14 @@ if not args.quiet:
     ubpa(deltaposB, "Start boundary", sys.stdout)
 
 with open(out_name+"-eval-position-start.txt", "w") as fp:
-    ubpa(deltaposB, "Start boundary position", fp)
+    ubpa(deltaposB, "Start boundary position", fp, delta_max=args.d, step=0.01)
 with open(out_name+"-eval-position-end.txt", "w") as fp:
-    ubpa(deltaposE, "End boundary position", fp)
+    ubpa(deltaposE, "End boundary position", fp, delta_max=args.d, step=0.01)
 with open(out_name+"-eval-position-middle.txt", "w") as fp:
-    ubpa(deltaposM, "Middle boundary position", fp)
+    ubpa(deltaposM, "Middle boundary position", fp, delta_max=args.d, step=0.01)
 
 with open(out_name+"-eval-duration.txt", "w") as fp:
-    ubpa(delta_durationur, "Duration", fp)
+    ubpa(delta_durationur, "Duration", fp, delta_max=args.d, step=0.01)
 
 # ----------------------------------------------------------------------------
 # Draw BoxPlots of the accuracy via an R script
