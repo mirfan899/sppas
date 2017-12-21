@@ -565,7 +565,7 @@ class sppasAlign(sppasBaseAnnotation):
                     a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.03)
                     nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
 
-                if a.GetLabel().GetValue() in ["*", "@@", "fp", "dummy"] and durnexta > 0.04:
+                if a.GetLabel().GetValue() in ["fp", "dummy"] and durnexta > 0.04:
                     a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.02)
                     nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
 
@@ -585,7 +585,7 @@ class sppasAlign(sppasBaseAnnotation):
                     a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.03)
                     nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
 
-                if a.GetLabel().GetValue() in ["*", "@", "euh", "dummy"] and durnexta > 0.04:
+                if a.GetLabel().GetValue() in ["euh", "dummy"] and durnexta > 0.04:
                     a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.02)
                     nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
 

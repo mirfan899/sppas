@@ -168,9 +168,13 @@ class sppasHtkIO(sppasBaseIO):
         # Write macros and hmms in the hmmdefs file
         filename = os.path.join(folder, filename)
         with open(filename, 'w') as f:
-            if self._macros:
-                f.write(sppasHtkIO._serialize_macros(self._macros))
-            if self._hmms:
+            if self._macros is not None:
+                if len(self._hmms) > 0:
+                    f.write(sppasHtkIO._serialize_macros(self._macros, variance=False, mean=False))
+                else:
+                    f.write(sppasHtkIO._serialize_macros(self._macros))
+
+            if len(self._hmms) > 0:
                 f.write(sppasHtkIO._serialize_hmms(self._hmms))
 
         # write tiedlist
@@ -291,7 +295,7 @@ class sppasHtkIO(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def _serialize_macros(macros):
+    def _serialize_macros(macros, options=True, transition=True, variance=True, mean=True, state=True, duration=True):
         """ Serialize macros into a string, in HTK-ASCII standard format.
 
         :param macros: (OrderedDict) Macros to save
@@ -303,33 +307,33 @@ class sppasHtkIO(sppasBaseIO):
         # First serialize the macros
         for macro in macros:
 
-            if macro.get('options', None):
+            if macro.get('options', None) and options is True:
                 result += '~o '
                 for option in macro['options']['definition']:
                     result += sppasHtkIO._serialize_option(option)
 
-            elif macro.get('transition', None):
+            elif macro.get('transition', None) and transition is True:
                 result += '~t "{}"\n'.format(macro['transition']['name'])
                 result += sppasHtkIO._serialize_transp(macro['transition']['definition'])
 
-            elif macro.get('variance', None):
+            elif macro.get('variance', None) and variance is True:
                 result += '~v "{}"\n'.format(macro['variance']['name'])
                 result += sppasHtkIO._serialize_variance(macro['variance']['definition'])
 
-            elif macro.get('state', None):
+            elif macro.get('state', None) and state is True:
                 result += '~s "{}"\n'.format(macro['state']['name'])
                 result += sppasHtkIO._serialize_stateinfo(macro['state']['definition'])
 
-            elif macro.get('mean', None):
+            elif macro.get('mean', None) and mean is True:
                 result += '~u "{}"\n'.format(macro['mean']['name'])
                 result += sppasHtkIO._serialize_mean(macro['mean']['definition'])
 
-            elif macro.get('duration', None):
+            elif macro.get('duration', None) and duration is True:
                 result += '~d "{}"\n'.format(macro['duration']['name'])
                 result += sppasHtkIO._serialize_duration(macro['duration']['definition'])
 
-            else:
-                raise NotImplementedError('Cannot serialize {}'.format(macro))
+            #else:
+            #    raise NotImplementedError('Cannot serialize {}'.format(macro))
 
         return result
 

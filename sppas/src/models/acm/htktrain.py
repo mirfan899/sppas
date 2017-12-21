@@ -868,7 +868,7 @@ class sppasTrainingCorpus(object):
             fp.write('%s %s\n' % (wav, mfc))
 
         cmfc = sppasChannelMFCC(formatter.get_channel())
-        cmfc.hcopy(self.datatrainer.features.wavconfigfile, tmpfile)
+        cmfc.hcopy(self.datatrainer.features.mfcconfigfile, tmpfile)
         os.remove(tmpfile)
 
         return True
@@ -1808,6 +1808,7 @@ class sppasHTKModelTrainer(object):
 
         model = self.get_current_model()
         macro = self.get_current_macro()
+        self.corpus.datatrainer.features.sourcekind = "WAV"
 
         if outdir is not None and model is not None:
             to_continue = True
@@ -1823,7 +1824,7 @@ class sppasHTKModelTrainer(object):
                     macro.write(outdir, DEFAULT_MACROS_FILENAME)
                 self.corpus.monophones.save(os.path.join(outdir, DEFAULT_MONOPHONES_FILENAME))
                 self.corpus.phonemap.save_as_ascii(os.path.join(outdir, DEFAULT_MAPPING_MONOPHONES_FILENAME))
-                self.corpus.datatrainer.features.write_wav_config(os.path.join(outdir, "config"))
+                self.corpus.datatrainer.features.write_config(os.path.join(outdir, "config"))
         elif model is None:
             model = sppasAcModel()
 

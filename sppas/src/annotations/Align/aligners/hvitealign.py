@@ -189,11 +189,13 @@ class HviteAligner(BaseAligner):
             raise OSError("HVite is not properly installed. See installation instructions for details.")
 
         if len(line[0]) > 0 and line[0].find("ERROR [") > -1:
-            raise OSError("HVite command failed.")
+            raise OSError("HVite command failed: {:s}".format(line[0]))
 
         # Check output file
         if os.path.isfile(outputalign) is False:
             raise Exception('HVite did not created an alignment file.')
+
+        return line[0]
 
     # -----------------------------------------------------------------------
 
@@ -208,12 +210,12 @@ class HviteAligner(BaseAligner):
         """
         outputalign = outputalign + "." + self._outext
 
-        self.run_hvite(inputwav, outputalign)
+        message = self.run_hvite(inputwav, outputalign)
 
         if os.path.isfile(outputalign):
             with codecs.open(outputalign, 'r', encoding) as f:
                 lines = f.readlines()
                 if len(lines) == 1:
-                    raise Exception(lines)
+                    raise Exception(message+"\n"+lines[0])
 
         return ""

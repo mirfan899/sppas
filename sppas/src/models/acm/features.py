@@ -154,7 +154,8 @@ class sppasAcFeatures(object):
     """
     def __init__(self):
         """ Create a sppasAcFeatures instance. """
-        
+
+        self.sourcekind = "MFC"   # either WAV or anything else!
         self.win_length_ms = 25   # The window length of the cepstral analysis in milliseconds
         self.win_shift_ms = 10    # The window shift of the cepstral analysis in milliseconds
         self.num_chans = 26       # Number of filterbank channels
@@ -165,8 +166,8 @@ class sppasAcFeatures(object):
         self.targetkind = "MFCC_0_D_N_Z"  # "MFCC_E_D_A_Z"
         self.nbmv = 25            # The number of means and variances. It's commonly either 25 or 39.
 
-        self.wavconfigfile = ""
-        self.configfile = ""
+        self.configfile = ""      # the file for HVite
+        self.mfcconfigfile = ""   # the file for HCopy
 
         self.framerate = 16000  # Hz
         self.sampwidth = 2      # 16 bits
@@ -183,13 +184,41 @@ class sppasAcFeatures(object):
         if os.path.exists(dirname) is False:
             os.mkdir(dirname)
 
-        self.write_wav_config(os.path.join(dirname, "wav_config"))
+        self.write_mfcconfig(os.path.join(dirname, "mfc_config"))
         self.write_config(os.path.join(dirname, "config"))
 
     # -----------------------------------------------------------------------
 
-    def write_wav_config(self, filename):
+    def write_config(self, filename):
         """ Write the wav config into a file.
+
+        :param filename: (str) Name of the file to save the features.
+
+        """
+        logging.info('Write wav config file: %s ' % filename)
+        with open(filename, "w") as fp:
+            if self.sourcekind == "WAV":
+                fp.write("SOURCEFORMAT = WAV\n")
+                fp.write("SOURCEKIND = WAVEFORM\n")
+                fp.write("SOURCERATE = %d\n" % ((1000./float(self.framerate))*10000))
+            fp.write("TARGETFORMAT = HTK\n")
+            fp.write("TARGETKIND = %s\n" % self.targetkind)
+            fp.write("TARGETRATE = %.1f\n" % (self.win_shift_ms*10000))
+            fp.write("SAVECOMPRESSED = T\n")
+            fp.write("SAVEWITHCRC = T\n")
+            fp.write("WINDOWSIZE = %.1f\n" % (self.win_length_ms*10000))
+            fp.write("USEHAMMING = T\n")
+            fp.write("PREEMCOEF = %f\n" % self.pre_em_coef)
+            fp.write("NUMCHANS = %d\n" % self.num_chans)
+            fp.write("CEPLIFTER = %d\n" % self.num_lift_ceps)
+            fp.write("NUMCEPS = %d\n" % self.num_ceps)
+            fp.write("ENORMALISE = F\n")
+        self.configfile = filename
+
+    # -----------------------------------------------------------------------
+
+    def write_mfcconfig(self, filename):
+        """ Write the wav config into a file. For HCopy only.
 
         :param filename: (str) Name of the file to save the features.
 
@@ -211,28 +240,4 @@ class sppasAcFeatures(object):
             fp.write("CEPLIFTER = %d\n" % self.num_lift_ceps)
             fp.write("NUMCEPS = %d\n" % self.num_ceps)
             fp.write("ENORMALISE = F\n")
-        self.wavconfigfile = filename
-
-    # -----------------------------------------------------------------------
-
-    def write_config(self, filename):
-        """ Write the config into a file.
-
-        :param filename: (str) Name of the file to save the features.
-
-        """
-        logging.info('Write config file: %s' % filename)
-        with open(filename, "w") as fp:
-            # fp.write("SOURCEFORMAT = WAV\n") ??? Required by HVite for alignment
-            fp.write("SOURCERATE = %d\n" % ((1000./float(self.framerate))*10000))
-            fp.write("TARGETKIND = %s\n" % self.targetkind)
-            fp.write("TARGETRATE = %.1f\n" % (self.win_shift_ms*100000))
-            fp.write("SAVECOMPRESSED = T\n")
-            fp.write("SAVEWITHCRC = T\n")
-            fp.write("WINDOWSIZE = %.1f\n" % (self.win_length_ms*100000))
-            fp.write("USEHAMMING = T\n")
-            fp.write("PREEMCOEF = %f\n" % self.pre_em_coef)
-            fp.write("NUMCHANS = %d\n" % self.num_chans)
-            fp.write("CEPLIFTER = %d\n" % self.num_lift_ceps)
-            fp.write("ENORMALISE = F\n")
-        self.configfile = filename
+        self.mfcconfigfile = filename
