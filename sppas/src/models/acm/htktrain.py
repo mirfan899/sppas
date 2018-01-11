@@ -584,6 +584,8 @@ class sppasTrainingCorpus(object):
                 trs_basename = trs_basename[:-5]
             if trs_basename.endswith("-token"):   # already tokenized
                 trs_basename = trs_basename[:-6]
+            if trs_basename.endswith("-merge"):   # several of them
+                trs_basename = trs_basename[:-6]
 
             for audio_filename in audio_files:
                 audio_basename = os.path.splitext(audio_filename)[0]
@@ -615,36 +617,32 @@ class sppasTrainingCorpus(object):
             logging.info("Error with file: {!s:s}: {:s}".format(trs_filename, str(e)))
             return False
 
+        appended = False
         # Already time-aligned phonemes
         try:
             tier = sppasSearchTier.aligned_phones(trs)
             appended = self._append_phonalign(tier, trs_filename, audio_filename)
         except NoInputError:
-            appended = False
+            pass
 
         # Already phonetized
-        if appended is False:
-            try:
-                tier = sppasSearchTier.phonetization(trs)
-                appended = self._append_phonetization(tier, trs_filename, audio_filename)
-            except NoInputError:
-                appended = False
+        try:
+            tier = sppasSearchTier.phonetization(trs)
+            appended = self._append_phonetization(tier, trs_filename, audio_filename)
+        except NoInputError:
+            pass
 
         # Already tokenized (appended as an ortho transc.)
-        if appended is False:
-            try:
-                tier = sppasSearchTier.tokenization(trs)
-                appended = self._append_transcription(tier, trs_filename, audio_filename)
-            except NoInputError:
-                appended = False
-
-        # Orthographic transcription
-        if appended is False:
+        try:
+            tier = sppasSearchTier.tokenization(trs)
+            appended = self._append_transcription(tier, trs_filename, audio_filename)
+        except NoInputError:
+            # Orthographic transcription
             try:
                 tier = sppasSearchTier.transcription(trs)
                 appended = self._append_transcription(tier, trs_filename, audio_filename)
             except NoInputError:
-                appended = False
+                pass
 
         if appended is False:
             logging.info("No tier was found and/or appended from file {!s:s}.".format(trs_filename))
@@ -752,6 +750,7 @@ class sppasTrainingCorpus(object):
         res = self._append_tier(tier, outfile, trs_filename, audio_filename)
         if res is True:
             self.alignfiles[trs_filename] = os.path.join(self.datatrainer.get_storetrs(), outfile+".lab")
+
         return res
 
     # -----------------------------------------------------------------------
@@ -762,11 +761,11 @@ class sppasTrainingCorpus(object):
         # Map phonemes.
         for ann in tier:
             label = ann.GetLabel().GetValue()
-            new_label = label.replace('sp', "sil")
-            new_label = self.phonemap.map(new_label, delimiters=[" ", "-", "|"])
+            label = label.replace('sp', "sil")
+            label = label.replace('+', "#")
+            new_label = self.phonemap.map(label, delimiters=[" ", "-", "|"])
             new_label = sppasTrainingCorpus._format_phonetization(new_label)
-            if label != new_label:
-                ann.GetLabel().SetValue(new_label)
+            ann.GetLabel().SetValue(new_label)
 
         # Fix current storage dir.
         self.datatrainer.fix_storage_dirs("phon")
@@ -777,6 +776,7 @@ class sppasTrainingCorpus(object):
         res = self._append_tier(tier, outfile, trs_filename, audio_filename)
         if res is True:
             self.phonfiles[trs_filename] = os.path.join(self.datatrainer.get_storetrs(), outfile+".lab")
+
         return res
 
     # -----------------------------------------------------------------------

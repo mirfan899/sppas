@@ -193,3 +193,17 @@ Resources:
 
 - Italian pronunciation dictionary updated.
 - French vocabulary updated: list of compound words revised.
+
+
+
+### SPPAS 1.9.4 (2018, 20th January)
+
+#### Programming:
+
+- Script to tran acoustic models updated
+- Script to evaluate alignments updated
+- Phonetization of standard tokens: bug correction of the search tier system
+
+#### Resources: 
+
+

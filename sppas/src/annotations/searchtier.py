@@ -94,12 +94,18 @@ class sppasSearchTier(object):
         """
         # Search for a tier starting with "phon"
         for tier in trs:
-            if tier.GetName().lower().startswith("phon") is True:
+            tier_name = tier.GetName().lower()
+            if "align" in tier_name:
+                continue
+            if tier_name.startswith("phon") is True:
                 return tier
 
         # Search for a tier containing "phon"
         for tier in trs:
-            if "phon" in tier.GetName().lower():
+            tier_name = tier.GetName().lower()
+            if "align" in tier_name:
+                continue
+            if "phon" in tier_name:
                 return tier
 
         raise NoInputError
@@ -134,6 +140,8 @@ class sppasSearchTier(object):
 
             for tier in trs:
                 tier_name = tier.GetName().lower()
+                if "align" in tier_name:
+                    continue
                 if tier_name == "tokens":
                     return tier
                 elif "std" in tier_name and "token" in tier_name:
@@ -160,11 +168,13 @@ class sppasSearchTier(object):
         """
         for tier in trs:
             if "align" in tier.GetName().lower() and "phon" in tier.GetName().lower():
+                import logging
+                logging.info("TIER: {:s}".format(tier.GetName()))
                 return tier
 
-        for tier in trs:
-            if "phon" in tier.GetName().lower():
-                return tier
+        # for tier in trs:
+        #    if "phones" in tier.GetName().lower():
+        #        return tier
 
         raise NoInputError
 
