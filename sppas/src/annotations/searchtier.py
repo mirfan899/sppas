@@ -168,8 +168,6 @@ class sppasSearchTier(object):
         """
         for tier in trs:
             if "align" in tier.GetName().lower() and "phon" in tier.GetName().lower():
-                import logging
-                logging.info("TIER: {:s}".format(tier.GetName()))
                 return tier
 
         # for tier in trs:

@@ -1,7 +1,25 @@
+! [] gb
+# [] #
+## [] gb
+$ [] gb
+% [] gb
+& [] i
+&(2) [] e n d
++ [] #
 * [] gb
-+ [] sil
-<unk> [] gb
-@ [] @@
++ [] #
+, [] gb
+- [] gb
+. [] #
+/ [] #
+: [] #
+; [] #
+</s> [] #
+<s> [] #
+<unk> [] dummy
+? [] #
+@ [] laugh
+_ [] gb
 _a [] a
 _a_b_c [] a b e s e
 _a_d_n [] a d e e n e
@@ -96,6 +114,7 @@ _x [] e k i s
 _x_e_q [] e k i s e k u
 _y [] i
 a [] a
+a(2) [] o
 aaron [] a a 4 o n
 ab [] a b
 abadía [] a b a d i a
@@ -127,6 +146,7 @@ abarque [] a b a 4 k e
 abarrotando [] a b a r o t a n d o
 abasolo [] a b a s o l o
 abastecen [] a b a s t e s e n
+abastecen(2) [] a b a s t e T e n
 abastecer [] a b a s t e s e 4
 abastecernos [] a b a s t e s e 4 n o s
 abastecimiento [] a b a s t e s i m i e n t o
@@ -148,6 +168,7 @@ aberchale [] a b e 4 t S a l e
 aberraciones [] a b e r a s i o n e s
 abierta [] a b i e 4 t a
 abierta(2) [] a b j e 4 t a
+abierta(3) [] a b j e 4 t a s
 abiertamente [] a b i e 4 t a m e n t e
 abiertas [] a b i e 4 t a s
 abiertas(2) [] a b j e 4 t a s
@@ -180,6 +201,8 @@ abordó [] a b o 4 d o
 aborta [] a b o 4 t a
 abortaban [] a b o 4 t a b a n
 abortada [] a b o 4 t a d a
+abortaron [] a b o 4 t a 4 o n
+abortaron(2) [] a b o 4 t a 4 o m
 aborto [] a b o 4 t o
 abortos [] a b o 4 t o s
 aborígenes [] a b o 4 i x e n e s
@@ -207,6 +230,7 @@ abrumadoramente [] a b 4 u m a d o 4 a m e n t e
 abruptos [] a b 4 u p t o s
 abría [] a b 4 i a
 absoluta [] a b s o l u t a
+absoluta(2) [] a f s o l u t a
 absolutamente [] a b s o l u t a m e n t e
 absoluto [] a b s o l u t o
 absolvió [] a b s o l b i o
@@ -280,20 +304,26 @@ acaudalados [] a k a u d a l a d o s
 accedido [] a k s e d i d o
 accesibles [] a k s e s i b l e s
 acceso [] a k s e s o
+acceso(2) [] a k T e s o
 accesos [] a k s e s o s
 accidentados [] a k s i d e n t a d o s
 accidentalmente [] a k s i d e n t a l m e n t e
 accidente [] a k s i d e n t e
 accidentes [] a k s i d e n t e s
 acciona [] a k s j o n a
+acciona(2) [] a k T j o n a
 accionar [] a k s i o n a 4
 acciones [] a k s j o n e s
 acciones(2) [] a k s i o n e s
 accionista [] a k s j o n i s t a
+accionista(2) [] a k T j o n i s t a
 accionistas [] a k s j o n i s t a s
 accionistas(2) [] a k s i o n i s t a s
-acción [] a k s j o n
-acción(2) [] a k s i o n
+accionistas(3) [] a k T j o n i s t a s
+acción [] a k T j o n
+acción(2) [] a k s j o n
+acción(3) [] a k s i o n
+acción(4) [] a T T j o n
 acecho [] a s e k o
 aceite [] a s e i t e
 acelerado [] a s e l e 4 a d o
@@ -304,6 +334,7 @@ acentuó [] a s e n t u o
 acentúa [] a s e n t u a
 acentúan [] a s e n t u a n
 acepta [] a s e p t a
+acepta(2) [] a T e p t a
 aceptable [] a s e p t a b l e
 aceptación [] a s e p t a s i o n
 aceptada [] a s e p t a d a
@@ -332,7 +363,8 @@ acercarnos [] a s e 4 k a 4 n o s
 acercaron [] a s e 4 k a 4 o n
 acercarse [] a s e 4 k a 4 s e
 acercará [] a s e 4 k a 4 a
-acercó [] a s e 4 k o
+acercó [] a T e 4 k o
+acercó(2) [] a s e 4 k o
 acerera [] a s e 4 e 4 a
 acereto [] a s e 4 e t o
 acero [] a s e 4 o
@@ -379,6 +411,7 @@ acompáñenos [] a k o m p a n j e n o s
 acondicionado [] a k o n d i s i o n a d o
 acondicionados [] a k o n d i s i o n a d o s
 acondicionamiento [] a k o n d i s j o n a m j e n t o
+acondicionamiento(2) [] a k o n d i T j o n a m j e n t o
 aconsejamos [] a k o n s e x a m o s
 aconsejan [] a k o n s e x a n
 aconsejo [] a k o n s e x o
@@ -422,6 +455,7 @@ acreedores [] a k 4 e e d o 4 e s
 acrobacias [] a k 4 o b a s i a s
 acróbatas [] a k 4 o b a t a s
 acs [] a s e e s e
+acs(2) [] a T e e s e
 acta [] a k t a
 actas [] a k t a s
 actitud [] a k t i t u d
@@ -495,12 +529,14 @@ acusa [] a k u s a
 acusaba [] a k u s a b a
 acusaciones [] a k u s a s j o n e s
 acusaciones(2) [] a k u s a s i o n e s
+acusaciones(3) [] a k u s a T j o n e s
 acusación [] a k u s a s i o n
 acusada [] a k u s a d a
 acusadas [] a k u s a d a s
 acusado [] a k u s a d o
 acusados [] a k u s a d o s
 acusan [] a k u s a n
+acusan(2) [] a k u s a m
 acusando [] a k u s a n d o
 acusar [] a k u s a 4
 acusara [] a k u s a 4 a
@@ -551,8 +587,10 @@ adelantarse [] a d e l a n t a 4 s e
 adelante [] a d e l a n t e
 adelanto [] a d e l a n t o
 adelantó [] a d e l a n t o
+adele [] a d e l
 adelle [] a d e l
 además [] a d e m a s
+además(2) [] e d e m a s
 adentro [] a d e n t 4 o
 adepo [] a d e p o
 adeptos [] a d e p t o s
@@ -569,6 +607,7 @@ adicción [] a d i k s i o n
 adicional [] a d i s i o n a l
 adicionales [] a d i s j o n a l e s
 adicionales(2) [] a d i s i o n a l e s
+adicionales(3) [] a d i T j o n a l e s
 adicionalmente [] a d i s i o n a l m e n t e
 adictivo [] a d i k t i b o
 adictos [] a d i k t o s
@@ -577,6 +616,8 @@ adiestramiento [] a d i e s t 4 a m i e n t o
 adilia [] a d i l i a
 adiós [] a d i o s
 adjudicaciones [] a d x u d i k a s j o n e s
+adjudicaciones(2) [] a x x u d i k a T j o n e s
+adjudicaciones(3) [] a d x u d i k a T j o n e s
 adjudicado [] a d x u d i k a d o
 adjudican [] a d x u d i k a n
 adjudicar [] a d x u d i k a 4
@@ -611,6 +652,7 @@ admitido [] a d m i t i d o
 admitidos [] a d m i t i d o s
 admitiendo [] a d m i t i e n d o
 admitir [] a d m i t i 4
+admitir(2) [] a T m i t i 4
 admitirá [] a d m i t i 4 a
 admitió [] a d m i t i o
 ado [] a d o
@@ -619,8 +661,10 @@ adoctrinando [] a d o k t 4 i n a n d o
 adolescencia [] a d o l e s e n s i a
 adolescente [] a d o l e s s e n t e
 adolescente(2) [] a d o l e s e n t e
+adolescente(3) [] a d o l e s T e n t e
 adolescentes [] a d o l e s s e n t e s
 adolescentes(2) [] a d o l e s e n t e s
+adolescentes(3) [] a d o l e s T e n t e s
 adolf [] a d o l f
 adolfo [] a d o l f o
 adonde [] a d o n d e
@@ -651,6 +695,8 @@ adquirir [] a d k i 4 i 4
 adquirió [] a d k i 4 i o
 adquisición [] a d k i s i s j o n
 adquisición(2) [] a d k i s i s i o n
+adquisición(3) [] a d k i s i T j o n
+adquisición(4) [] a T k i s i T j o n
 adrede [] a d 4 e d e
 adriana [] a d 4 i a n a
 adrián [] a d 4 i a n
@@ -677,6 +723,7 @@ adverso [] a d b e 4 s o
 adversos [] a d b e 4 s o s
 advertencia [] a d b e 4 t e n s j a
 advertencia(2) [] a d b e 4 t e n s i a
+advertencia(3) [] a d b e 4 t e n T j a
 advertencias [] a d b e 4 t e n s i a s
 advertido [] a d b e 4 t i d o
 advertidos [] a d b e 4 t i d o s
@@ -698,8 +745,9 @@ aerolínea [] a e 4 o l i n e a
 aerolíneas [] a e 4 o l i n e a s
 aeromoza [] a e 4 o m o s a
 aeromozas [] a e 4 o m o s a s
-aeroméxico [] a e 4 o m e k s i k o
-aeroméxico(2) [] a e 4 o m e x i k o
+aeroméxico [] a e 4 o m e x i k o
+aeroméxico(2) [] a e 4 o m e k s i k o
+aeroméxico(3) [] e e 4 o m e x i k o
 aeronave [] a e 4 o n a b e
 aeronaves [] a e 4 o n a b e s
 aeroperú [] a e 4 o p e 4 u
@@ -722,6 +770,7 @@ afectado [] a f e k t a d o
 afectados [] a f e k t a d o s
 afectan [] a f e k t a n
 afectando [] a f e k t a n d o
+afectando(2) [] a f e g t a n d o
 afectar [] a f e k t a 4
 afectarme [] a f e k t a 4 m e
 afectará [] a f e k t a 4 a
@@ -739,7 +788,9 @@ afianzadora [] a f i a n s a d o 4 a
 aficionado [] a f i s i o n a d o
 aficionados [] a f i s i o n a d o s
 afición [] a f i s i o n
-afiliación [] a f i l i a s i o n
+afiliación [] a f i l j a T j o m
+afiliación(2) [] a f i l i a s i o n
+afiliación(3) [] a f i l j a T j o n
 afiliadas [] a f i l i a d a s
 afiliado [] a f i l i a d o
 afiliado(2) [] a f i l j a d o
@@ -924,6 +975,7 @@ ahorro [] a o r o
 ahorros [] a o r o s
 ahuica [] a u i k a
 ahí [] a i
+ahí(2) [] i
 ai [] a i
 aichi [] a i t S i
 airada [] a i 4 a d a
@@ -958,6 +1010,9 @@ akaba [] a k a b a
 akbar [] a k b a 4
 akhmed [] a k m e d
 al [] a l
+al(2) [] a l a l
+al(3) [] a s
+al(4) [] n a l
 ala [] a l a
 alabado [] a l a b a d o
 alabama [] a l a b a m a
@@ -971,6 +1026,7 @@ alameda [] a l a m e d a
 alamino [] a l a m i n o
 alamoud [] a l a m o u d
 alan [] a l a n
+alani [] a l a n i
 alaqsa [] a l a s a
 alarcón [] a l a 4 k o n
 alargan [] a l a 4 g a n
@@ -1068,6 +1124,7 @@ alemanes [] a l e m a n e s
 alemania [] a l e m a n i a
 alembi [] a l e m b i
 alemán [] a l e m a n
+alemán(2) [] a l e m a 4
 alentadoras [] a l e n t a d o 4 a s
 alentadores [] a l e n t a d o 4 e s
 alentando [] a l e n t a n d o
@@ -1100,6 +1157,7 @@ algodón [] a l g o d o n
 alguien [] a l g i e n
 alguna [] a l g u n a
 algunas [] a l g u n a s
+algunas(2) [] a l g u n a
 alguno [] a l g u n o
 algunos [] a l g u n o s
 algún [] a l g u m
@@ -1129,6 +1187,8 @@ alimenta [] a l i m e n t a
 alimentación [] a l i m e n t a s j o m
 alimentación(2) [] a l i m e n t a s j o n
 alimentación(3) [] a l i m e n t a s i o n
+alimentación(4) [] a l i m e n t a T j o n
+alimentación(5) [] a l i m e n t a T j o m
 alimentada [] a l i m e n t a d a
 alimentado [] a l i m e n t a d o
 alimentar [] a l i m e n t a 4
@@ -1156,7 +1216,9 @@ allanaron [] a l j a n a 4 o n
 allegados [] a l j e g a d o s
 allison [] a l j i s o n
 allá [] a l j a
-allí [] a l j i
+allí [] a L i
+allí(2) [] a l j i
+allí(3) [] a j\ i
 alma [] a l m a
 almacenamiento [] a l m a s e n a m i e n t o
 almacenar [] a l m a s e n a 4
@@ -1269,6 +1331,7 @@ ambiguos [] a m b i g u o s
 ambivalente [] a m b i b a l e n t e
 ambos [] a m b o s
 ambulancia [] a m b u l a n s j a
+ambulancia(2) [] a m b u l a n T j a
 ambulancias [] a m b u l a n s i a s
 ambulante [] a m b u l a n t e
 ambulantes [] a m b u l a n t e s
@@ -1291,6 +1354,7 @@ amenazándole [] a m e n a s a n d o l e
 amenazó [] a m e n a s o
 ameno [] a m e n o
 american [] a m e 4 i k a n
+american(2) [] a m e 4 i k a m
 americana [] a m e 4 i k a n a
 americanas [] a m e 4 i k a n a s
 americanista [] a m e 4 i k a n i s t a
@@ -1337,6 +1401,7 @@ amplias [] a m p l i a s
 amplificaron [] a m p l i f i k a 4 o n
 amplio [] a m p l i o
 amplio(2) [] a m p l j o
+amplio(3) [] a m p j o
 amplios [] a m p l i o s
 amplió [] a m p l i o
 amplía [] a m p l i a
@@ -1345,6 +1410,9 @@ amplíe [] a m p l i e
 amputaciones [] a m p u t a s i o n e s
 amputado [] a m p u t a d o
 amsterdam [] a m s t e 4 d a m
+amsterdam(2) [] a m s t e 4 d a n
+amsterdam(3) [] a s t e 4 d a m
+amsterdam(4) [] a n s t e 4 d a m
 amurallada [] a m u 4 a l j a d a
 amán [] a m a n
 amén [] a m e n
@@ -1363,16 +1431,19 @@ analiza [] a n a l i s a
 analizada [] a n a l i s a d a
 analizadas [] a n a l i s a d a s
 analizado [] a n a l i s a d o
+analizado(2) [] a n a l i T a d o
 analizados [] a n a l i s a d o s
 analizamos [] a n a l i s a m o s
 analizan [] a n a l i s a n
 analizando [] a n a l i s a n d o
 analizar [] a n a l i s a 4
+analizar(2) [] a n a l i T a 4
 analizaremos [] a n a l i s a 4 e m o s
 analizaron [] a n a l i s a 4 o n
 analizarse [] a n a l i s a 4 s e
 analizará [] a n a l i s a 4 a
 analizarán [] a n a l i s a 4 a n
+analizarán(2) [] a n a l i T a 4 a n
 analizó [] a n a l i s o
 anaquel [] a n a k e l
 anarquistas [] a n a 4 k i s t a s
@@ -1383,6 +1454,7 @@ ancap [] a n k a p
 ancestral [] a n s e s t 4 a l
 ancestrales [] a n s e s t 4 a l e s
 ancha [] a n t S a
+ancha(2) [] a n tS a
 ancho [] a n t S o
 ancia [] a n s i a
 anciana [] a n s i a n a
@@ -1390,6 +1462,8 @@ anciano [] a n s i a n o
 ancianos [] a n s i a n o s
 anclado [] a n k l a d o
 and [] a n
+and(2) [] a m b
+and(3) [] a m
 anda [] a n d a
 andado [] a n d a d o
 andalucía [] a n d a l u s i a
@@ -1590,16 +1664,19 @@ anulara [] a n u l a 4 a
 anuló [] a n u l o
 anuncia [] a n u n s j a
 anuncia(2) [] a n u n s i a
+anuncia(3) [] a n u n T j a
 anunciaban [] a n u n s i a b a n
 anunciada [] a n u n s i a d a
 anunciadas [] a n u n s i a d a s
 anunciado [] a n u n s j a d o
 anunciado(2) [] a n u n s i a d o
+anunciado(3) [] a n u n T j a d o
 anunciados [] a n u n s i a d o s
 anuncian [] a n u n s i a n
 anunciando [] a n u n s i a n d o
 anunciar [] a n u n s j a 4
 anunciar(2) [] a n u n s i a 4
+anunciar(3) [] a n u n T j a 4
 anunciara [] a n u n s i a 4 a
 anunciaron [] a n u n s i a 4 o n
 anunciarse [] a n u n s i a 4 s e
@@ -1633,6 +1710,7 @@ aparatoso [] a p a 4 a t o s o
 aparcado [] a p a 4 k a d o
 aparece [] a p a 4 e s e
 aparecen [] a p a 4 e s e n
+aparecen(2) [] a p a 4 e T e n
 aparecer [] a p a 4 e s e 4
 aparecida [] a p a 4 e s i d a
 aparecidas [] a p a 4 e s i d a s
@@ -1746,7 +1824,10 @@ apoyará [] a p o j a 4 a
 apoyarán [] a p o j a 4 a n
 apoyaría [] a p o j a 4 i a
 apoyen [] a p o j e n
+apoyen(2) [] a p o j\ e l
+apoyen(3) [] a p o j\ e n
 apoyo [] a p o j o
+apoyo(2) [] a p o j\ o
 apoyos [] a p o j o s
 apoyándose [] a p o j a n d o s e
 apoyó [] a p o j o
@@ -1809,7 +1890,8 @@ aprovecharse [] a p 4 o b e t S a 4 s e
 aprovechará [] a p 4 o b e t S a 4 a
 aproveche [] a p 4 o b e t S e
 aprovechen [] a p 4 o b e t S e n
-aprovechó [] a p 4 o b e t S o
+aprovechó [] a p 4 o b e tS o
+aprovechó(2) [] a p 4 o b e t S o
 aproxima [] a p 4 o k s i m a
 aproximada [] a p 4 o k s i m a d a
 aproximadamente [] a p 4 o k s i m a d a m e n t e
@@ -1960,6 +2042,7 @@ arqueológicos [] a 4 k e o l o x i k o s
 arqueta [] a 4 k e t a
 arquidiócesis [] a 4 k i d i o s e s i s
 arquitecto [] a 4 k i t e k t o
+arquitecto(2) [] a 4 k i t e t o
 arquitectos [] a 4 k i t e k t o s
 arraigada [] a r a i g a d a
 arraigados [] a r a i g a d o s
@@ -2039,6 +2122,7 @@ artemisa [] a 4 t e m i s a
 arterial [] a 4 t e 4 i a l
 arterias [] a 4 t e 4 i a s
 artes [] a 4 t e s
+artes(2) [] a 4 t e
 artesanal [] a 4 t e s a n a l
 artesanías [] a 4 t e s a n i a s
 artificial [] a 4 t i f i s i a l
@@ -2058,6 +2142,7 @@ artísticas [] a 4 t i s t i k a s
 artístico [] a 4 t i s t i k o
 artísticos [] a 4 t i s t i k o s
 arzobispo [] a 4 s o b i s p o
+arzobispo(2) [] a 4 T o b i s p o
 arzú [] a 4 s u
 arácnido [] a 4 a k n i d o
 arévalo [] a 4 e b a l o
@@ -2169,9 +2254,13 @@ asiáticos [] a s i a t i k o s
 aslan [] a s l a n
 asociaciones [] a s o s j a s j o n e s
 asociaciones(2) [] a s o s i a s i o n e s
-asociación [] a s o s j a s j o m
-asociación(2) [] a s o s j a s j o n
-asociación(3) [] a s o s i a s i o n
+asociaciones(3) [] a s o T j a T j o n e s
+asociación [] a s o T j a T j o m
+asociación(2) [] a s o s j a s j o m
+asociación(3) [] a s o s j a s j o n
+asociación(4) [] a s o s i a s i o n
+asociación(5) [] a s o T a T j o m
+asociación(6) [] a s o T j a T j o n
 asociadas [] a s o s i a d a s
 asociado [] a s o s i a d o
 asociados [] a s o s i a d o s
@@ -2389,6 +2478,7 @@ aumento(2) [] a w m e n t o
 aumentos [] a u m e n t o s
 aumentó [] a u m e n t o
 aun [] a u n
+aun(2) [] a w n
 aunado [] a u n a d o
 aunados [] a u n a d o s
 aunque [] a u n k e
@@ -2440,6 +2530,7 @@ automóvil(2) [] a w t o m o b i l
 automóviles [] a u t o m o b i l e s
 autonomía [] a u t o n o m i a
 autonomía(2) [] a w t o n o m i a
+autonómica [] a w t o n o m i k a
 autonómicas [] a u t o n o m i k a s
 autopista [] a u t o p i s t a
 autoproclamado [] a u t o p 4 o k l a m a d o
@@ -2491,6 +2582,7 @@ avaló [] a b a l o
 avanc [] a b a n k
 avance [] a b a n s e
 avances [] a b a n s e s
+avances(2) [] a b a n T e s
 avantel [] a b a n t e l
 avanza [] a b a n s a
 avanzada [] a b a n s a d a
@@ -2543,14 +2635,15 @@ avisos [] a b i s o s
 avisándole [] a b i s a n d o l e
 avisó [] a b i s o
 aviv [] a b i b
-avión [] a b i o n
-avión(2) [] a b j o n
+avión [] a b j o n
+avión(2) [] a b i o n
 axila [] a k s i l a
 ay [] a i
 ayacucho [] a j a k u t S o
 ayala [] a j a l a
 ayapango [] a j a p a n g o
 ayer [] a j e 4
+ayer(2) [] a j\ e 4
 aymar [] a i m a 4
 ayu [] a j u
 ayuda [] a j u d a
@@ -2580,13 +2673,16 @@ ayuntamiento(2) [] a j u n t a m j e n t o
 ayuntamientos [] a j u n t a m j e n t o s
 azafatas [] a s a f a t a s
 azar [] a s a 4
-azcárate [] a s k a 4 a t e
+azar(2) [] a T a 4
+azcárate [] a T k a 4 a t e
+azcárate(2) [] a s k a 4 a t e
 azcárraga [] a s k a r a g a
 aziz [] a s i s
 azlan [] a s l a n
 aznar [] a s n a 4
 azores [] a s o 4 e s
 azota [] a s o t a
+azota(2) [] a T o t a
 azotado [] a s o t a d o
 azotados [] a s o t a d o s
 azotan [] a s o t a n
@@ -2595,6 +2691,7 @@ azote [] a s o t e
 azoteas [] a s o t e a s
 azotó [] a s o t o
 azpeitia [] a s p e j t j a
+azpeitia(2) [] a T p e j t j a
 azteca [] a s t e k a
 azucarera [] a s u k a 4 e 4 a
 azucarero [] a s u k a 4 e 4 o
@@ -2602,6 +2699,7 @@ azucareros [] a s u k a 4 e 4 o s
 azul [] a s u l
 azulejos [] a s u l e x o s
 azules [] a s u l e s
+azules(2) [] a T u l e s
 azúcar [] a s u k a 4
 aérea [] a e 4 e a
 aéreas [] a e 4 e a s
@@ -2609,6 +2707,7 @@ aéreo [] a e 4 e o
 aéreos [] a e 4 e o s
 aíns [] a i n s
 añade [] a n j a d e
+añade(2) [] a J a d e
 añaden [] a n j a d e n
 añadido [] a n j a d i d o
 añadiendo [] a n j a d i e n d o
@@ -2620,13 +2719,16 @@ añadió [] a n j a d i o
 añeja [] a n j e x a
 añito [] a n j i t o
 añitos [] a n j i t o s
-año [] a n j o
+año [] a J o
+año(2) [] a n j o
 añorga [] a n j o 4 g a
-años [] a n j o s
+años [] a J o s
+años(2) [] a n j o s
 aún [] a u m
 aún(2) [] a u n
 aúna [] a u n a
 b [] b
+b(2) [] b e
 ba [] b a
 babilonia [] b a b i l o n i a
 baby [] b a b i
@@ -2638,6 +2740,8 @@ baeza [] b a e s a
 bagdad [] b a g d a d
 bagdad(2) [] b a g d a g
 bagdad(3) [] b a g d a k
+bagdad(4) [] b a d d a k
+bagdad(5) [] b a x d a k
 baghlan [] b a g l a n
 bahad [] b a a d
 bahamas [] b a a m a s
@@ -2678,6 +2782,7 @@ balanza [] b a l a n s a
 balanzas [] b a l a n s a s
 balard [] b a l a 4 d
 balart [] b a l a 4 t
+balaruz [] b a l a r u T
 balas [] b a l a s
 balazo [] b a l a s o
 balazos [] b a l a s o s
@@ -2689,6 +2794,7 @@ balcánico [] b a l k a n i k o
 balderas [] b a l d e 4 a s
 baleado [] b a l e a d o
 baleados [] b a l e a d o s
+baleares [] b a l e a 4 e s
 balina [] b a l i n a
 balladares [] b a l j a d a 4 e s
 ballestero [] b a l j e s t e 4 o
@@ -2704,6 +2810,7 @@ baltimore [] b a l t i m o 4 e
 balán [] b a l a n
 bamba [] b a m b a
 ban [] b a n
+ban(2) [] b e n
 banano [] b a n a n o
 banc [] b a n k
 banca [] b a n k a
@@ -2711,6 +2818,7 @@ bancada [] b a n k a d a
 bancaria [] b a n k a 4 i a
 bancarias [] b a n k a 4 i a s
 bancario [] b a n k a 4 i o
+bancarios [] b a n k a 4 j o s
 bancarrota [] b a n k a r o t a
 banco [] b a n k o
 bancos [] b a n k o s
@@ -2749,6 +2857,8 @@ barbour [] b a 4 b o u 4
 barcas [] b a 4 k a s
 barcelona [] b a 4 s e l o n a
 barcelò [] b a 4 s e l o
+barcelò(2) [] b a 4 T e l o
+barceló [] b a 4 T e l o
 barco [] b a 4 k o
 barcos [] b a 4 k o s
 barda [] b a 4 d a
@@ -2839,6 +2949,7 @@ be(2) [] b e b e
 beatriz [] b e a t 4 i s
 beatríz [] b e a t 4 i s
 beaus [] b e a w s
+beaus(2) [] b e a u s
 beber [] b e b e 4
 bebida [] b e b i d a
 bebidas [] b e b i d a s
@@ -2864,6 +2975,8 @@ bell [] b e l j
 bella [] b e l j a
 bellaquería [] b e l j a k e 4 i a
 bellas [] b e l j a s
+bellas(2) [] b e j a s
+bellas(3) [] b e L a s
 belleza [] b e l j e s a
 bellezas [] b e l j e s a s
 belluga [] b e l j u g a
@@ -2922,7 +3035,9 @@ bertrand [] b e 4 t 4 a n d
 betancor [] b e t a n k o 4
 betancourt [] b e t a n k o u 4 t
 betancourt(2) [] b e t a n k u 4
+betancourt(3) [] b e t a n k u 4 t
 bethancourt [] b e t a n k u 4
+bethancourt(2) [] b e t a n k u 4 t
 bethesda [] b e t e s d a
 betty [] b e t t i
 bezamora [] b e s a m o 4 a
@@ -2968,6 +3083,9 @@ bioética [] b i o e t i k a
 bipartidista [] b i p a 4 t i d i s t a
 birmania [] b i 4 m a n i a
 birmingham [] b i 4 m i n g a n
+birmingham(2) [] b i b m i n g a n
+birmingham(3) [] b 4 i m i n x a m
+birmingham(4) [] b i 4 m i n g a m
 biscayne [] b i s k a i n e
 bisi [] b i s i
 bisima [] b i s i m a
@@ -2999,6 +3117,7 @@ bloqueo [] b l o k e o
 bloqueos [] b l o k e o s
 bloqueó [] b l o k e o
 blore [] b l o 4 e
+blues [] b l u s
 bláter [] b l a t e 4
 bob [] b o b
 bobby [] b o b b i
@@ -3041,6 +3160,7 @@ bolsillo [] b o l s i l j o
 bolsillos [] b o l s i l j o s
 bolt [] b o l
 bolt(2) [] b o l t
+bolt(3) [] b o l d
 bolígrafo [] b o l i g 4 a f o
 bomba [] b o m b a
 bombardeadas [] b o m b a 4 d e a d a s
@@ -3057,6 +3177,7 @@ bomberos [] b o m b e 4 o s
 bombo [] b o m b o
 boncalio [] b o n k a l i o
 bond [] b o n
+bond(2) [] b o n d
 bone [] b o n e
 bonilla [] b o n i l j a
 bonita [] b o n i t a
@@ -3130,6 +3251,7 @@ brecha [] b 4 e t S a
 brenda [] b 4 e n d a
 brennan [] b 4 e n n a n
 brent [] b 4 e n t
+brent(2) [] b 4 e n
 bretaña [] b 4 e t a n j a
 bretin [] b 4 e t i n
 breve [] b 4 e b e
@@ -3169,6 +3291,8 @@ bronx [] b 4 o n k s
 brote [] b 4 o t e
 brotes [] b 4 o t e s
 brothers [] b 4 o d e 4 s
+brothers(2) [] b 4 o d e 4
+brothers(3) [] b 4 o t e 4 s
 brown [] b 4 o u n
 brownback [] b 4 o u n b a k k
 broz [] b 4 o s
@@ -3301,6 +3425,7 @@ cabaña [] k a b a n j a
 cabañas [] k a b a n j a s
 cabe [] k a b e
 cabecera [] k a b e s e 4 a
+cabecera(2) [] k a b e T e 4 a
 cabecilla [] k a b e s i l a
 cabello [] k a b e l j o
 cabellos [] k a b e l j o s
@@ -3325,6 +3450,7 @@ cabría [] k a b 4 i a
 cabíamos [] k a b i a m o s
 cacería [] k a s e 4 i a
 cachemira [] k a t S e m i 4 a
+cachemira(2) [] k a tS e m i 4 a
 cachorritos [] k a t S o r i t o s
 cachorros [] k a t S o r o s
 caciquismo [] k a s i k i s m o
@@ -3345,6 +3471,8 @@ cafeterías [] k a f e t e 4 i a s
 café [] k a f e
 caguán [] k a g u a n
 cahalchoc [] k a a l t S o k
+cahn [] k a n
+cahn(2) [] k a m
 caibarinenses [] k a i b a 4 i n e n s e s
 caibarién [] k a i b a 4 i e n
 caimito [] k a i m i t o
@@ -3389,6 +3517,7 @@ calgary [] k a l g a 4 i
 cali [] k a l i
 calibre [] k a l i b 4 e
 calidad [] k a l i d a d
+calidad(2) [] k a l i d a
 calidez [] k a l i d e s
 caliente [] k a l i e n t e
 calientes [] k a l i e n t e s
@@ -3400,6 +3529,7 @@ calificada [] k a l i f i k a d a
 calificado [] k a l i f i k a d o
 calificados [] k a l i f i k a d o s
 califican [] k a l i f i k a n
+califican(2) [] k a l i f i k a m
 calificar [] k a l i f i k a 4
 calificaron [] k a l i f i k a 4 o n
 calificarán [] k a l i f i k a 4 a n
@@ -3424,6 +3554,8 @@ callejeras [] k a l j e x e 4 a s
 callejeros [] k a l j e x e 4 o s
 callejón [] k a l j e x o n
 calles [] k a l j e s
+calles(2) [] k a j e s
+calles(3) [] k a L e s
 calletana [] k a l j e t a n a
 calma [] k a l m a
 calmadamente [] k a l m a d a m e n t e
@@ -3457,6 +3589,7 @@ camaradas [] k a m a 4 a d a s
 camarero [] k a m a 4 e 4 o
 camarógrafo [] k a m a 4 o g 4 a f o
 camarógrafos [] k a m a 4 o g 4 a f o s
+camaño [] k a m a J o
 cambell [] k a m b e l j
 cambia [] k a m b i a
 cambia(2) [] k a m b j a
@@ -3514,7 +3647,8 @@ campamento [] k a m p a m e n t o
 campamentos [] k a m p a m e n t o s
 campanadas [] k a m p a n a d a s
 campas [] k a m p a s
-campaña [] k a m p a n j a
+campaña [] k a m p a J a
+campaña(2) [] k a m p a n j a
 campañas [] k a m p a n j a s
 campbell [] k a m p b e l j
 campea [] k a m p e a
@@ -3566,9 +3700,13 @@ cancillería [] k a n s i l e 4 i a
 cancillerías [] k a n s i l e 4 i a s
 canciochón [] k a n s i o t S o n
 canciones [] k a n s i o n e s
-canción [] k a n s j o m
-canción(2) [] k a n s j o n
-canción(3) [] k a n s i o n
+canción [] k a n T j o n
+canción(2) [] k a n s j o m
+canción(3) [] k a n s j o n
+canción(4) [] k a n s i o n
+canción(5) [] k a n T j o p
+canción(6) [] k a n T j o m
+canciónes [] k a n T j o n e s
 cancún [] k a n k u n
 candados [] k a n d a d o s
 candelaria [] k a n d e l a 4 i a
@@ -3623,6 +3761,8 @@ capellán [] k a p e l j a n
 capetillo [] k a p e t i l j o
 capi [] k a p i
 capilla [] k a p i l j a
+capilla(2) [] k a p i j a
+capilla(3) [] k a p i L a
 capital [] k a p i t a l
 capitales [] k a p i t a l e s
 capitalina [] k a p i t a l i n a
@@ -3700,6 +3840,7 @@ carece [] k a 4 e s e
 carecemos [] k a 4 e s e m o s
 carecen [] k a 4 e s e n
 carecer [] k a 4 e s e 4
+carecer(2) [] k a 4 e T e 4
 carecía [] k a 4 e s i a
 carecían [] k a 4 e s i a n
 carencia [] k a 4 e n s i a
@@ -3914,11 +4055,16 @@ cañones [] k a n j o n e s
 cañucal [] k a n j u k a l
 cañón [] k a n j o n
 caótica [] k a o t i k a
+cb [] T e b e
 ce [] s e
+ce(2) [] T e
+ce(3) [] T e e
 ceda [] s e d a
 cede [] s e d e
 ceden [] s e d e m
 ceden(2) [] s e d e n
+ceden(3) [] T e d e m
+ceden(4) [] T e d e n
 ceder [] s e d e 4
 cederemos [] s e d e 4 e m o s
 cederá [] s e d e 4 a
@@ -3932,19 +4078,24 @@ ceiba [] s e i b a
 celda [] s e l d a
 celdas [] s e l d a s
 celebra [] s e l e b 4 a
+celebra(2) [] T e l e b 4 a
 celebraciones [] s e l e b 4 a s j o n e s
 celebraciones(2) [] s e l e b 4 a s i o n e s
 celebración [] s e l e b 4 a s i o n
 celebrada [] s e l e b 4 a d a
 celebradas [] s e l e b 4 a d a s
 celebrado [] s e l e b 4 a d o
+celebrado(2) [] T e l e b 4 a d o
 celebrados [] s e l e b 4 a d o s
 celebran [] s e l e b 4 a n
 celebrando [] s e l e b 4 a n d o
 celebrar [] s e l e b 4 a 4
+celebrar(2) [] T e l e b 4 a l
+celebrar(3) [] T e l e b 4 a 4
 celebraron [] s e l e b 4 a 4 o n
 celebrarse [] s e l e b 4 a 4 s e
-celebrará [] s e l e b 4 a 4 a
+celebrará [] T e l e b 4 a 4 a
+celebrará(2) [] s e l e b 4 a 4 a
 celebrarán [] s e l e b 4 a 4 a n
 celebraría [] s e l e b 4 a 4 i a
 celebre [] s e l e b 4 e
@@ -3970,6 +4121,7 @@ censura [] s e n s u 4 a
 censuradas [] s e n s u 4 a d a s
 centavo [] s e n t a b o
 centavos [] s e n t a b o s
+centavos(2) [] T e n t a b o s
 centenar [] s e n t e n a 4
 centenares [] s e n t e n a 4 e s
 centenarias [] s e n t e n a 4 i a s
@@ -3983,12 +4135,14 @@ centralizado [] s e n t 4 a l i s a d o
 centralmente [] s e n t 4 a l m e n t e
 centrar [] s e n t 4 a 4
 centro [] s e n t 4 o
+centro(2) [] T e n t 4 o
 centroamericana [] s e n t 4 o a m e 4 i k a n a
 centroamericanas [] s e n t 4 o a m e 4 i k a n a s
 centroamericano [] s e n t 4 o a m e 4 i k a n o
 centroamericanos [] s e n t 4 o a m e 4 i k a n o s
 centroamérica [] s e n t 4 o a m e 4 i k a
 centros [] s e n t 4 o s
+centros(2) [] T e n t 4 o s
 centró [] s e n t 4 o
 centuria [] s e n t u 4 i a
 centígrados [] s e n t i g 4 a d o s
@@ -3997,6 +4151,7 @@ cepal [] s e p a l
 cer [] s e 4
 cera [] s e 4 a
 cerca [] s e 4 k a
+cerca(2) [] T e 4 k a
 cercana [] s e 4 k a n a
 cercanamente [] s e 4 k a n a m e n t e
 cercanas [] s e 4 k a n a s
@@ -4014,10 +4169,12 @@ cereal [] s e 4 e a l
 cereales [] s e 4 e a l e s
 ceremonia [] s e 4 e m o n j a
 ceremonia(2) [] s e 4 e m o n i a
+ceremonia(3) [] T e 4 e m o n j a
 ceremonias [] s e 4 e m o n i a s
 cerezo [] s e 4 e s o
 cerillos [] s e 4 i l j o s
 cero [] s e 4 o
+cero(2) [] T e 4 o
 cerrada [] s e 4 a d a
 cerradas [] s e 4 a d a s
 cerrado [] s e 4 a d o
@@ -4026,6 +4183,7 @@ cerraduras [] s e 4 a d u 4 a s
 cerrando [] s e 4 a n d o
 cerrar [] s e r a 4
 cerrar(2) [] s e 4 a 4
+cerrar(3) [] T e r a 4
 cerraran [] s e 4 a 4 a n
 cerrarla [] s e 4 a 4 l a
 cerrarnos [] s e 4 a 4 n o s
@@ -4051,14 +4209,18 @@ cervantes [] s e 4 b a n t e s
 cerveceros [] s e 4 b e s e 4 o s
 cervelló [] s e 4 b e l j o
 cerveza [] s e 4 b e s a
-cerón [] s e 4 o n
+cerón [] T e 4 o n
+cerón(2) [] s e 4 o n
+cerón(3) [] T e 4 o m
 cesan [] s e s a n
 cesar [] s e s a 4
 cesarán [] s e s a 4 a n
 cese [] s e s e
 cesen [] s e s e n
 cesta [] s e s t a
+cesta(2) [] T e s t a
 cestas [] s e s t a s
+cestas(2) [] T e s t a s
 cetro [] s e t 4 o
 cevallos [] s e b a l j o s
 chadash [] t S a d a s
@@ -4071,6 +4233,8 @@ chamarras [] t S a m a r a s
 chambe [] t S a m b e
 chamorro [] t S a m o r o
 champagne [] t S a m p a g n e
+champán [] tS a m p a m
+champán(2) [] tS a m p a n
 chan [] t S a n
 chantaje [] t S a n t a x e
 chantajee [] t S a n t a x e e
@@ -4166,7 +4330,8 @@ chuparse [] t S u p a 4 s e
 churruca [] t S u r u k a
 chávez [] t S a b e s
 ché [] t S e
-chófer [] t S o f e 4
+chófer [] tS o f e 4
+chófer(2) [] t S o f e 4
 cia [] s i a
 cibernético [] s i b e 4 n e t i k o
 cicatrices [] s i k a t 4 i s e s
@@ -4184,10 +4349,13 @@ cien [] s i e n
 ciencia [] s i e n s i a
 ciencias [] s j e n s j a s
 ciencias(2) [] s i e n s i a s
+ciencias(3) [] T j e n T j a s
 cienfuegos [] s i e n f u e g o s
 ciento [] s j e n t o
 ciento(2) [] e n t o s j
 ciento(3) [] s i e n t o
+ciento(4) [] T j e n t o
+ciento(5) [] 4 T j e n t o
 cientos [] s j e n t o s
 cientos(2) [] s i e n t o s
 científica [] s i e n t i f i k a
@@ -4200,6 +4368,7 @@ cierra [] s i e r a
 cierran [] s i e r a n
 cierre [] s j e r e
 cierre(2) [] s i e r e
+cierre(3) [] T j e r e
 cierres [] s i e r e s
 cierro [] s i e r o
 cierta [] s i e 4 t a
@@ -4209,9 +4378,12 @@ cierto [] s j e 4 t o
 cierto(2) [] s i e 4 t o
 ciertos [] s j e 4 t o s
 ciertos(2) [] s i e 4 t o s
+ciertos(3) [] T j e 4 t o s
 cifra [] s i f 4 a
+cifra(2) [] T i f 4 a
 cifraba [] s i f 4 a b a
 cifras [] s i f 4 a s
+cifras(2) [] T i f 4 a s
 cifuentes [] s i f u e n t e s
 cigarrillo [] s i g a r i l j o
 cigarrillos [] s i g a r i l j o s
@@ -4225,15 +4397,21 @@ cimentada [] s i m e n t a d a
 cincel [] s i n s e l
 cincinnati [] s i n s i n n a t i
 cinco [] s i n k o
+cinco(2) [] T i n k o
 cincueme [] s i n k u e m e
 cincuenta [] s i n k w e n t a
 cincuenta(2) [] s i n k u e n t a
+cincuenta(3) [] T i n k w e n t a
+cincuenta(4) [] T i n g w e n t a
 cindy [] s i n d i
 cine [] s i n e
+cine(2) [] T i n e
 cineasta [] s i n e a s t a
 cineastas [] s i n e a s t a s
 cinematografía [] s i n e m a t o g 4 a f i a
-cinematográfica [] s i n e m a t o g 4 a f i k a
+cinematográfica [] T i n e m a t o g 4 a f i k a
+cinematográfica(2) [] s i n e m a t o g 4 a f i k a
+cinematográfica(3) [] T i n e m a t o 4 4 a f i k a
 cinematográficas [] s i n e m a t o g 4 a f i k a s
 cinematográfico [] s i n e m a t o g 4 a f i k o
 cinta [] s i n t a
@@ -4255,7 +4433,9 @@ circulan [] s i 4 k u l a n
 circulando [] s i 4 k u l a n d o
 circulante [] s i 4 k u l a n t e
 circular [] s i 4 k u l a 4
-circularán [] s i 4 k u l a 4 a m
+circularán [] T i 4 k u l a 4 a n
+circularán(2) [] s i 4 k u l a 4 a m
+circularán(3) [] T i 4 k u l a 4 a m
 circulen [] s i 4 k u l e n
 circunscripciones [] s i 4 k u n s k 4 i p s i o n e s
 circunstancia [] s i 4 k u n s t a n s i a
@@ -4270,6 +4450,8 @@ cisneros [] s i s n e 4 o s
 cisniega [] s i s n i e g a
 cit [] s i t
 cita [] s i t a
+cita(2) [] T i t a
+cita(3) [] T i t e
 citaban [] s i t a b a n
 citada [] s i t a d a
 citadas [] s i t a d a s
@@ -4286,16 +4468,23 @@ citó [] s i t o
 ciu [] s j u
 ciudad [] s j u d a d
 ciudad(2) [] s i u d a d
+ciudad(3) [] T j u d a d
+ciudad(4) [] T e d a d
+ciudad(5) [] T j u d a T
+ciudad(6) [] T j u d a
 ciudadadana [] s i u d a d a d a n a
 ciudadana [] s j u d a d a n a
 ciudadana(2) [] s i u d a d a n a
+ciudadana(3) [] T j u d a d a n a
 ciudadano [] s i u d a d a n o
 ciudadanos [] s j u d a d a n o s
 ciudadanos(2) [] s i u d a d a n o s
 ciudadanía [] s i u d a d a n i a
 ciudades [] s j u d a d e s
 ciudades(2) [] s i u d a d e s
+ciudades(3) [] T j u d a d e s
 civil [] s i b i l
+civil(2) [] T i b i l
 civiles [] s i b i l e s
 civilización [] s i b i l i s a s i o n
 cizaña [] s i s a n j a
@@ -4368,8 +4557,9 @@ coaccionar [] k o a k s i o n a 4
 coadjutor [] k o a d x u t o 4
 coahuila [] k o a u i l a
 coaliciones [] k o a l i s i o n e s
-coalición [] k o a l i s j o n
-coalición(2) [] k o a l i s i o n
+coalición [] k o a l i T j o n
+coalición(2) [] k o a l i s j o n
+coalición(3) [] k o a l i s i o n
 coalidarían [] k o a l i d a 4 i a n
 coartada [] k o a 4 t a d a
 coartar [] k o a 4 t a 4
@@ -4400,6 +4590,7 @@ coca [] k o k a
 cocaína [] k o k a i n a
 cochabamba [] k o t S a b a m b a
 coche [] k o t S e
+coche(2) [] k o tS e
 cochera [] k o t S e 4 a
 coches [] k o t S e s
 cocidos [] k o s i d o s
@@ -4434,8 +4625,9 @@ coincidió [] k o i n s i d i o
 coinculpados [] k o i n k u l p a d o s
 cola [] k o l a
 colaboraba [] k o l a b o 4 a b a
-colaboración [] k o l a b o 4 a s j o n
-colaboración(2) [] k o l a b o 4 a s i o n
+colaboración [] k o l a b o 4 a T j o n
+colaboración(2) [] k o l a b o 4 a s j o n
+colaboración(3) [] k o l a b o 4 a s i o n
 colaborador [] k o l a b o 4 a d o 4
 colaboradores [] k o l a b o 4 a d o 4 e s
 colaboran [] k o l a b o 4 a n
@@ -4451,10 +4643,12 @@ colas [] k o l a s
 colchonetas [] k o l t S o n e t a s
 coldo [] k o l d o
 coldplay [] k o l p l e j
+coldplay(2) [] k o l d p l e j
 colección [] k o l e k s i o n
 colectiva [] k o l e k t i b a
 colectividad [] k o l e k t i b i d a d
 colectivo [] k o l e k t i b o
+colectivo(2) [] k o l e x t i b o
 colectivos [] k o l e k t i b o s
 colectándos [] k o l e k t a n d o s
 colega [] k o l e g a
@@ -4603,6 +4797,7 @@ comerciantes(2) [] k o m e 4 s i a n t e s
 comerciar [] k o m e 4 s i a 4
 comercio [] k o m e 4 s j o
 comercio(2) [] k o m e 4 s i o
+comercio(3) [] k o m e 4 T j o
 comercios [] k o m e 4 s i o s
 comerán [] k o m e 4 a n
 comestibles [] k o m e s t i b l e s
@@ -4624,6 +4819,7 @@ cometí [] k o m e t i
 comicio [] k o m i s i o
 comicios [] k o m i s j o s
 comicios(2) [] k o m i s i o s
+comicios(3) [] k o m i T j o s
 comida [] k o m i d a
 comidas [] k o m i d a s
 comido [] k o m i d o
@@ -4646,9 +4842,9 @@ comisionados [] k o m i s i o n a d o s
 comisiones [] k o m i s i o n e s
 comisiones(2) [] k o m i s j o n e s
 comisios [] k o m i s i o s
-comisión [] k o m i s i o n
-comisión(2) [] k o m i s j o m
-comisión(3) [] k o m i s j o n
+comisión [] k o m i s j o n
+comisión(2) [] k o m i s i o n
+comisión(3) [] k o m i s j o m
 comitiva [] k o m i t i b a
 comité [] k o m i t e
 comités [] k o m i t e s
@@ -4671,7 +4867,10 @@ comparativo [] k o m p a 4 a t i b o
 comparece [] k o m p a 4 e s e
 comparecencia [] k o m p a 4 e s e n s j a
 comparecencia(2) [] k o m p a 4 e s e n s i a
+comparecencia(3) [] k o m p a 4 e T e n T j a
+comparecencias [] k o m p a 4 e T e n T j a s
 comparecer [] k o m p a 4 e s e 4
+comparecer(2) [] k o m p a 4 e T e 4
 comparecerá [] k o m p a 4 e s e 4 a
 comparecido [] k o m p a 4 e s i d o
 comparecieron [] k o m p a 4 e s i e 4 o n
@@ -4697,8 +4896,10 @@ compatriotas [] k o m p a t 4 i o t a s
 compañera [] k o m p a n j e 4 a
 compañeras [] k o m p a n j e 4 a s
 compañero [] k o m p a n j e 4 o
-compañeros [] k o m p a n j e 4 o s
-compañía [] k o m p a n j i a
+compañeros [] k o m p a J e 4 o s
+compañeros(2) [] k o m p a n j e 4 o s
+compañía [] k o m p a J i a
+compañía(2) [] k o m p a n j i a
 compañías [] k o m p a n j i a s
 compensaciones [] k o m p e n s a s i o n e s
 compensación [] k o m p e n s a s i o n
@@ -4717,6 +4918,7 @@ competitividad [] k o m p e t i t i b i d a d
 competitivo [] k o m p e t i t i b o
 compitan [] k o m p i t a n
 compiten [] k o m p i t e n
+compitiendo [] k o m p i t j e n d o
 complace [] k o m p l a s e
 complacido [] k o m p l a s i d o
 complacientes [] k o m p l a s i e n t e s
@@ -4823,6 +5025,9 @@ comunicó [] k o m u n i k o
 comunidad [] k o m u n i d a
 comunidad(2) [] k o m u n i d a s
 comunidad(3) [] k o m u n i d a d
+comunidad(4) [] k o m u n i d a T
+comunidad(5) [] k o m n i a T
+comunidad(6) [] k o m u n i d a d #
 comunidades [] k o m u n i d a d e s
 comunismo [] k o m u n i s m o
 comunista [] k o m u n i s t a
@@ -4850,7 +5055,9 @@ concedida [] k o n s e d i d a
 concedido [] k o n s e d i d o
 concedió [] k o n s e d i o
 concejala [] k o n s e x a l a
+concejala(2) [] k o n T e x a l a
 concejales [] k o n s e x a l e s
+concejalía [] k o n T e x a l i a
 concelebró [] k o n s e l e b 4 o
 concentraciones [] k o n s e n t 4 a s i o n e s
 concentración [] k o n s e n t 4 a s i o n
@@ -4897,6 +5104,8 @@ conclusión [] k o n k l u s i o n
 concluya [] k o n k l u j a
 concluye [] k o n k l u j e
 concluyen [] k o n k l u j e n
+concluyente [] k o n k l u j e n t e
+concluyente(2) [] k o n k l u j\ e n t e
 concluyera [] k o n k l u j e 4 a
 concluyeron [] k o n k l u j e 4 o n
 concluyó [] k o n k l u j o
@@ -4946,6 +5155,7 @@ condene [] k o n d e n e
 condenó [] k o n d e n o
 condiciona [] k o n d i s j o n a
 condiciona(2) [] k o n d i s i o n a
+condiciona(3) [] k o n d i T j o n a
 condicionada [] k o n d i s i o n a d a
 condicional [] k o n d i s i o n a l
 condicionamientos [] k o n d i s i o n a m i e n t o s
@@ -4953,6 +5163,7 @@ condicionan [] k o n d i s i o n a n
 condicionarse [] k o n d i s i o n a 4 s e
 condiciones [] k o n d i s j o n e s
 condiciones(2) [] k o n d i s i o n e s
+condiciones(3) [] k o n d i T j o n e s
 condición [] k o n d i s i o n
 condolencias [] k o n d o l e n s i a s
 condominio [] k o n d o m i n i o
@@ -4990,6 +5201,8 @@ confeccionado [] k o n f e k s i o n a d o
 confederación [] k o n f e d e 4 a s i o n
 conferencia [] k o m f e 4 e n s j a
 conferencia(2) [] k o n f e 4 e n s i a
+conferencia(3) [] k o m f e 4 e n T j e
+conferencia(4) [] k o m f e 4 e n T j a
 conferencias [] k o n f e 4 e n s i a s
 confesar [] k o n f e s a 4
 confesaron [] k o n f e s a 4 o n
@@ -5025,7 +5238,8 @@ confirmando [] k o n f i 4 m a n d o
 confirmar [] k o n f i 4 m a 4
 confirmaron [] k o n f i 4 m a 4 o n
 confirmará [] k o n f i 4 m a 4 a
-confirmó [] k o n f i 4 m o
+confirmó [] k o m f i 4 m o
+confirmó(2) [] k o n f i 4 m o
 confiscada [] k o n f i s k a d a
 confiscadas [] k o n f i s k a d a s
 confiscado [] k o n f i s k a d o
@@ -5159,6 +5373,7 @@ consecuencia [] k o n s e k u e n s i a
 consecuencia(2) [] k o n s e k w e n s j a
 consecuencias [] k o n s e k u e n s i a s
 consecuencias(2) [] k o n s e k w e n s j a s
+consecuencias(3) [] k o n s e k w e n T j a s
 consecuente [] k o n s e k u e n t e
 consecutiva [] k o n s e k u t i b a
 consecutivas [] k o n s e k u t i b a s
@@ -5195,6 +5410,7 @@ conserve [] k o n s e 4 b e
 conservo [] k o n s e 4 b o
 consi [] k o n s i
 considera [] k o n s i d e 4 a
+considera(2) [] g o n s i d e 4 a
 consideraba [] k o n s i d e 4 a b a
 consideraban [] k o n s i d e 4 a b a n
 considerable [] k o n s i d e 4 a b l e
@@ -5264,6 +5480,8 @@ consternado [] k o n s t e 4 n a d o
 constitu [] k o n s t i t u
 constitucional [] k o n s t i t u s j o n a l
 constitucional(2) [] k o n s t i t u s i o n a l
+constitucional(3) [] k o s t i t u T j o n a l
+constitucional(4) [] k o n s t i t u T j o n a l
 constitucionales [] k o n s t i t u s i o n a l e s
 constitucionalista [] k o n s t i t u s i o n a l i s t a
 constitucionalmente [] k o n s t i t u s i o n a l m e n t e
@@ -5280,12 +5498,15 @@ constituyen [] k o n s t i t u j e n
 constituyó [] k o n s t i t u j o
 constribu [] k o n s t 4 i b u
 construcciones [] k o n s t 4 u k s i o n e s
-construcción [] k o n s t 4 u k s i o n
+construcción [] k o n s t 4 u k T j o n
+construcción(2) [] k o n s t 4 u k s i o n
+construcción(3) [] k o n s t 4 u g T j o n
 constructiva [] k o n s t 4 u k t i b a
 constructivas [] k o n s t 4 u k t i b a s
 constructor [] k o n s t 4 u k t o 4
 constructora [] k o n s t 4 u k t o 4 a
 constructora(2) [] k o s s t 4 u k t o 4 a
+constructora(3) [] k o s t 4 u k t o 4 a
 construida [] k o n s t 4 u i d a
 construidas [] k o n s t 4 u i d a s
 construido [] k o n s t 4 u i d o
@@ -5319,6 +5540,7 @@ contaba [] k o n t a b a
 contabilidad [] k o n t a b i l i d a d
 contabilizado [] k o n t a b i l i s a d o
 contabilizando [] k o n t a b i l i s a n d o
+contabilizando(2) [] k o n t a b i l i T a n d o
 contacta [] k o n t a k t a
 contactarse [] k o n t a k t a 4 s e
 contacto [] k o n t a k t o
@@ -5331,8 +5553,10 @@ contagia [] k o n t a x i a
 contagian [] k o n t a x i a n
 contagiaran [] k o n t a x i a 4 a n
 contagio [] k o n t a x i o
-contaminación [] k o n t a m i n a s j o n
-contaminación(2) [] k o n t a m i n a s i o n
+contaminación [] k o n t a m i n a T j o n
+contaminación(2) [] k o n t a m i n a s j o n
+contaminación(3) [] k o n t a m i n a s i o n
+contaminación(4) [] k o n t a m i n a T j o m
 contaminada [] k o n t a m i n a d a
 contaminadas [] k o n t a m i n a d a s
 contaminado [] k o n t a m i n a d o
@@ -5381,6 +5605,7 @@ contestataria [] k o n t e s t a t a 4 i a
 contesten [] k o n t e s t e n
 contestó [] k o n t e s t o
 contexto [] k o n t e k s t o
+contexto(2) [] k o n t e s t o
 contienda [] k o n t i e n d a
 contiendas [] k o n t i e n d a s
 contiene [] k o n t i e n e
@@ -5406,8 +5631,8 @@ continuando [] k o n t i n u a n d o
 continuar [] k o n t i n u a 4
 continuaremos [] k o n t i n u a 4 e m o s
 continuaron [] k o n t i n u a 4 o n
-continuará [] k o n t i n u a 4 a
-continuará(2) [] k o n t i n w a 4 a
+continuará [] k o n t i n w a 4 a
+continuará(2) [] k o n t i n u a 4 a
 continuarán [] k o n t i n u a 4 a n
 continuas [] k o n t i n u a s
 continuemos [] k o n t i n u e m o s
@@ -5447,6 +5672,7 @@ contrarevolucionarios [] k o n t 4 a 4 e b o l u s i o n a 4 i o s
 contraria [] k o n t 4 a 4 i a
 contrario [] k o n t 4 a 4 i o
 contrario(2) [] k o n t 4 a 4 j o
+contrario(3) [] k o n t 4 a 4 j a
 contrarios [] k o n t 4 a 4 j o s
 contrarrestar [] k o n t 4 a r e s t a 4
 contrarrevolucionaria [] k o n t 4 a r e b o l u s i o n a 4 i a
@@ -5525,6 +5751,8 @@ convencidas [] k o n b e n s i d a s
 convencido [] k o n b e n s i d o
 convencidos [] k o n b e n s i d o s
 convencional [] k o m b e n s j o n a l
+convencional(2) [] k o m b e n T j o n a l
+convencional(3) [] k o n b e n T j o n a l
 convencionales [] k o n b e n s i o n a l e s
 convenciones [] k o n b e n s i o n e s
 convención [] k o n b e n s i o n
@@ -5541,6 +5769,7 @@ convenir [] k o n b e n i 4
 convergencia [] k o n b e 4 x e n s i a
 conversaciones [] k o m b e 4 s a s j o n e s
 conversaciones(2) [] k o n b e 4 s a s i o n e s
+conversaciones(3) [] k o m b e 4 s a T j o n e s
 conversación [] k o n b e 4 s a s i o n
 conversamos [] k o n b e 4 s a m o s
 conversan [] k o n b e 4 s a n
@@ -5597,6 +5826,7 @@ cooperando [] k o o p e 4 a n d o
 cooperar [] k o o p e 4 a 4
 cooperaría [] k o o p e 4 a 4 i a
 cooperativas [] k o o p e 4 a t i b a s
+cooperativas(2) [] k o p e 4 a t i b a s
 cooperen [] k o o p e 4 e n
 cooperó [] k o o p e 4 o
 coordinaba [] k o o 4 d i n a b a
@@ -5670,7 +5900,8 @@ correctas [] k o r e k t a s
 correcto [] k o r e k t o
 correctos [] k o r e k t o s
 corredor [] k o r e d o 4
-correlación [] k o r e l a s j o n
+correlación [] k o r e l a T j o n
+correlación(2) [] k o r e l a s j o n
 corren [] k o r e m
 corren(2) [] k o r e n
 correo [] k o r e o
@@ -5760,6 +5991,7 @@ coti [] k o t i
 cotidianas [] k o t i d i a n a s
 cotidiano [] k o t i d i a n o
 cotizan [] k o t i s a n
+cotizan(2) [] k o t i T a n
 courí [] k o u 4 i
 cousteau [] k o u s t e a u
 covarrubias [] k o b a r u b i a s
@@ -5782,6 +6014,7 @@ creada [] k 4 e a d a
 creadas [] k 4 e a d a s
 creado [] k 4 e a d o
 creador [] k 4 e a d o 4
+creados [] k 4 e a d o s
 creamos [] k 4 e a m o s
 crean [] k 4 e a n
 creando [] k 4 e a n d o
@@ -5806,6 +6039,7 @@ crecientes [] k 4 e s i e n t e s
 crecieron [] k 4 e s i e 4 o n
 crecimiento [] k 4 e s i m j e n t o
 crecimiento(2) [] k 4 e s i m i e n t o
+crecimiento(3) [] k 4 e T i m j e n t o
 creció [] k 4 e s i o
 crecían [] k 4 e s i a n
 credenciales [] k 4 e d e n s i a l e s
@@ -5830,6 +6064,7 @@ crepúsculo [] k 4 e p u s k u l o
 crestón [] k 4 e s t o n
 creyendo [] k 4 e j e n d o
 creyentes [] k 4 e j e n t e s
+creyentes(2) [] k 4 e j\ e n t e s
 creyó [] k 4 e j o
 creía [] k 4 e i a
 creíamos [] k 4 e i a m o s
@@ -5865,6 +6100,7 @@ criticaba [] k 4 i t i k a b a
 criticada [] k 4 i t i k a d a
 criticado [] k 4 i t i k a d o
 critican [] k 4 i t i k a n
+critican(2) [] k 4 i t i k a m
 criticando [] k 4 i t i k a n d o
 criticar [] k 4 i t i k a 4
 criticaron [] k 4 i t i k a 4 o n
@@ -5939,6 +6175,7 @@ cualquiera(2) [] k w a l k j e 4 a
 cuan [] k u a n
 cuando [] k u a n d o
 cuando(2) [] k w a n d o
+cuando(3) [] k w a n d
 cuantas [] k u a n t a s
 cuantioso [] k u a n t i o s o
 cuantiosos [] k u a n t i o s o s
@@ -5965,8 +6202,10 @@ cuatro [] k u a t 4 o
 cuatro(2) [] k w a t 4 o
 cuatrocientas [] k u a t 4 o s i e n t a s
 cuatrocientas(2) [] k w a t 4 o s j e n t a s
+cuatrocientas(3) [] k w a t 4 o T j e n t a s
 cuatrocientos [] k u a t 4 o s i e n t o s
 cuatrocientos(2) [] k w a t 4 o s j e n t o s
+cuatrocientos(3) [] k w a t 4 o T j e n t o s
 cuatros [] k u a t 4 o s
 cuauhtémoc [] k u a u t e m o k
 cuba [] k u b a
@@ -6028,8 +6267,9 @@ cuestionario [] k u e s t i o n a 4 i o
 cuestionarlo [] k u e s t i o n a 4 l o
 cuestionaron [] k u e s t i o n a 4 o n
 cuestiones [] k u e s t i o n e s
-cuestión [] k u e s t i o n
-cuestión(2) [] k w e s t j o n
+cuestión [] k w e s t j o n
+cuestión(2) [] k u e s t i o n
+cuestión(3) [] k w e s t j o m
 cueva [] k u e b a
 cuevas [] k u e b a s
 cuida [] k u i d a
@@ -6123,7 +6363,9 @@ custodian [] k u s t o d i a n
 custodiando [] k u s t o d i a n d o
 cuya [] k u j a
 cuyas [] k u j a s
+cuyas(2) [] k u j\ a s
 cuyo [] k u j o
+cuyo(2) [] k u j\ o
 cuyos [] k u j o s
 cuzco [] k u s k o
 cuál [] k u a l
@@ -6131,6 +6373,7 @@ cuál(2) [] k w a l
 cuáles [] k u a l e s
 cuán [] k u a n
 cuándo [] k u a n d o
+cuándo(2) [] k w a n d o
 cuántas [] k u a n t a s
 cuánto [] k u a n t o
 cuántos [] k u a n t o s
@@ -6138,8 +6381,11 @@ cuéllar [] k u e l j a 4
 cuéntanos [] k u e n t a n o s
 cuña [] k u n j a
 cy [] k i
+cyndi [] s i n d i
+cyndi(2) [] T i n d i
 cynthia [] k i n t i a
-cáceres [] k a s e 4 e s
+cáceres [] k a T e 4 e s
+cáceres(2) [] k a s e 4 e s
 cálculo [] k a l k u l o
 cálculos [] k a l k u l o s
 cálidas [] k a l i d a s
@@ -6157,9 +6403,11 @@ cápsula [] k a p s u l a
 cápsulas [] k a p s u l a s
 cárcel [] k a 4 s e l
 cárceles [] k a 4 s e l e s
-cárdenas [] d e n a s k a 4
-cárdenas(2) [] k a 4 d e n a s
+cárdenas [] k a 4 d e n a s
+cárdenas(2) [] d e n a s k a 4
+cárdenas(3) [] k a n 4 d e n a s
 cáritas [] k a 4 i t a s
+cáñamo [] k a J a m o
 cédula [] s e d u l a
 célebre [] s e l e b 4 e
 célula [] s e l u l a
@@ -6185,6 +6433,7 @@ código [] k o d i g o
 cólera [] k o l e 4 a
 cómica [] k o m i k a
 cómics [] k o m i k s
+cómics(2) [] k o m i k
 cómo [] k o m o
 cómoda [] k o m o d a
 cómplice [] k o m p l i s e
@@ -6227,6 +6476,8 @@ dan [] d a n
 dana [] d a n a
 danaides [] d a n a i d e s
 dance [] d a n s
+dance(2) [] t a n s
+dance(3) [] d e n s
 dando [] d a n d o
 dang [] d a n g
 daniel [] d a n i e l
@@ -6237,6 +6488,7 @@ danny [] d a n n i
 danos [] d a n o s
 dante [] d a n t e
 danza [] d a n s a
+danza(2) [] d a n T a
 danzaba [] d a n s a b a
 danzan [] d a n s a n
 danzantes [] d a n s a n t e s
@@ -6283,6 +6535,9 @@ dañó [] d a n j o
 de [] d
 de(2) [] d e
 de(3) [] e d
+de(4) [] n d e
+de(5) [] d i
+de_&quot [] d e
 dea [] d e a
 deakin [] d e a k i n
 deambular [] d e a m b u l a 4
@@ -6339,6 +6594,7 @@ decapitada [] d e k a p i t a d a
 decaído [] d e k a i d o
 decena [] d e s e n a
 decenas [] d e s e n a s
+decenas(2) [] d e T e n a s
 decencia [] d e s e n s i a
 decenio [] d e s e n i o
 decente [] d e s e n t e
@@ -6348,6 +6604,7 @@ decepción [] d e s e p s i o n
 deceso [] d e s e s o
 decesos [] d e s e s o s
 decida [] d e s i d a
+decida(2) [] d e T i d a
 decidan [] d e s i d a n
 decide [] d e s i d e
 decidida [] d e s i d i d a
@@ -6362,8 +6619,12 @@ decidirá [] d e s i d i 4 a
 decidirán [] d e s i d i 4 a n
 decidió [] d e s i d j o
 decidió(2) [] d e s i d i o
+decidió(3) [] d e T i d j a
+decidió(4) [] d e T i d j o
 decidí [] d e s i d i
-decidía [] d e s i d i a
+decidía [] d e T i d i a
+decidía(2) [] d e s i d i a
+decidía(3) [] d e d i T i d i a
 decilitro [] d e s i l i t 4 o
 decimita [] d e s i m i t a
 decimonovena [] d e s i m o n o b e n a
@@ -6371,8 +6632,10 @@ decimoprimera [] d e s i m o p 4 i m e 4 a
 decimos [] d e s i m o s
 decimoséptima [] d e s i m o s e p t i m a
 decimotercera [] d e s i m o t e 4 s e 4 a
+decimotercera(2) [] d e T i m o t e 4 T e 4 a
 decimotercero [] d e s i m o t e 4 s e 4 o
 decir [] d e s i 4
+decir(2) [] d e T i 4
 decirle [] d e s i 4 l e
 decirles [] d e s i 4 l e s
 decirlo [] d e s i 4 l o
@@ -6391,6 +6654,7 @@ declamos [] d e k l a m o s
 declara [] d e k l a 4 a
 declaraciones [] d e k l a 4 a s j o n e s
 declaraciones(2) [] d e k l a 4 a s i o n e s
+declaraciones(3) [] d e k l a 4 a T j o n e s
 declaración [] d e k l a 4 a s i o n
 declarada [] d e k l a 4 a d a
 declaradas [] d e k l a 4 a d a s
@@ -6437,6 +6701,7 @@ dedicado [] d e d i k a d o
 dedicados [] d e d i k a d o s
 dedicamos [] d e d i k a m o s
 dedican [] d e d i k a n
+dedican(2) [] d e d i k a m
 dedicando [] d e d i k a n d o
 dedicar [] d e d i k a 4
 dedicaremos [] d e d i k a 4 e m o s
@@ -6479,8 +6744,9 @@ definamos [] d e f i n a m o s
 definan [] d e f i n a n
 define [] d e f i n e
 definen [] d e f i n e n
-definición [] d e f i n i s j o n
-definición(2) [] d e f i n i s i o n
+definición [] d e f i n i T j o n
+definición(2) [] d e f i n i s j o n
+definición(3) [] d e f i n i s i o n
 definido [] d e f i n i d o
 definiendo [] d e f i n i e n d o
 definir [] d e f i n i 4
@@ -6631,6 +6897,7 @@ demócrata [] d e m o k 4 a t a
 demócratas [] d e m o k 4 a t a s
 demógrafo [] d e m o g 4 a f o
 den [] d e n
+den(2) [] d e l
 denegadas [] d e n e g a d a s
 denesnera [] d e n e s n e 4 a
 deng [] d e n g
@@ -6653,6 +6920,7 @@ densas [] d e n s a s
 dentro [] d e n t 4 o
 denuncia [] d e n u n s j a
 denuncia(2) [] d e n u n s i a
+denuncia(3) [] d e n u n T j a
 denunciaba [] d e n u n s i a b a
 denunciadas [] d e n u n s i a d a s
 denunciado [] d e n u n s j a d o
@@ -6665,6 +6933,7 @@ denunciarlo [] d e n u n s i a 4 l o
 denunciaron [] d e n u n s i a 4 o n
 denuncias [] d e n u n s j a s
 denuncias(2) [] d e n u n s i a s
+denuncias(3) [] d e n u n T j a s
 denuncie [] d e n u n s i e
 denunció [] d e n u n s i o
 denver [] d e n b e 4
@@ -6715,6 +6984,7 @@ depredaciones [] d e p 4 e d a s i o n e s
 depresivo [] d e p 4 e s i b o
 depresión [] d e p 4 e s i o n
 depresión(2) [] d e p 4 e s j o n
+depresión(3) [] d e p 4 e s j o m
 deprimente [] d e p 4 i m e n t e
 depuesto [] d e p u e s t o
 depuración [] d e p u 4 a s i o n
@@ -6727,10 +6997,12 @@ depósitos [] d e p o s i t o s
 der [] d e 4
 dere [] d e 4 e
 derecha [] d e 4 e t S a
+derecha(2) [] d e 4 e tS a
 derechista [] d e 4 e t S i s t a
 derechito [] d e 4 e t S i t o
 derecho [] d e 4 e t S o
 derechos [] d e 4 e t S o s
+derechos(2) [] d e 4 e tS o s
 deriva [] d e 4 i b a
 derivadas [] d e 4 i b a d a s
 derivado [] d e 4 i b a d o
@@ -6801,6 +7073,7 @@ desamparo [] d e s a m p a 4 o
 desaparece [] d e s a p a 4 e s e
 desaparecen [] d e s a p a 4 e s e n
 desaparecer [] d e s a p a 4 e s e 4
+desaparecer(2) [] d e s a p a 4 e T e 4
 desaparecidas [] d e s a p a 4 e s i d a s
 desaparecido [] d e s a p a 4 e s i d o
 desaparecidos [] d e s a p a 4 e s i d o s
@@ -6818,6 +7091,9 @@ desarmó [] d e s a 4 m o
 desarrolla [] d e s a r o l j a
 desarrolladas [] d e s a r o l j a d a s
 desarrollado [] d e s a r o l j a d o
+desarrollado(2) [] d e s a r o j a d o
+desarrollado(3) [] d e s a r o L a d o
+desarrollado(4) [] d e s a r o j\ a d o
 desarrollados [] d e s a r o l j a d o s
 desarrollan [] d e s a r o l j a n
 desarrollando [] d e s a r o l j a n d o
@@ -6872,10 +7148,12 @@ descartó [] d e s k a 4 t o
 descender [] d e s e n d e 4
 descendido [] d e s s e n d i d o
 descendido(2) [] d e s e n d i d o
+descendido(3) [] d e s T e n d i d o
 descendiendo [] d e s e n d i e n d o
 descendieron [] d e s e n d i e 4 o n
 descendió [] d e s s e n d j o
 descendió(2) [] d e s e n d i o
+descendió(3) [] d e s T e n d j o
 descenso [] d e s e n s o
 descentralización [] d e s e n t 4 a l i s a s i o n
 descentralizar [] d e s e n t 4 a l i s a 4
@@ -6885,6 +7163,7 @@ descodificadores [] d e s k o d i f i k a d o 4 e s
 descolarizados [] d e s k o l a 4 i s a d o s
 descolgados [] d e s k o l g a d o s
 descolgaron [] d e s k o l g a 4 o n
+descolgaron(2) [] d e s k o l g a 4 o m
 descomposición [] d e s k o m p o s i s i o n
 desconcertaron [] d e s k o n s e 4 t a 4 o n
 desconcierto [] d e s k o n s i e 4 t o
@@ -6898,6 +7177,7 @@ desconfianzas [] d e s k o n f i a n s a s
 descongelado [] d e s k o n x e l a d o
 descongestionar [] d e s k o n x e s t i o n a 4
 desconoce [] d e s k o n o s e
+desconoce(2) [] d e s k o n o T e
 desconocemos [] d e s k o n o s e m o s
 desconocen [] d e s k o n o s e n
 desconocer [] d e s k o n o s e 4
@@ -7155,8 +7435,8 @@ desprendimiento [] d e s p 4 e n d i m i e n t o
 desprestigiada [] d e s p 4 e s t i x i a d a
 desprestigio [] d e s p 4 e s t i x i o
 desprotegidos [] d e s p 4 o t e x i d o s
-después [] d e s p u e s
-después(2) [] d e s p w e s
+después [] d e s p w e s
+después(2) [] d e s p u e s
 desquiciado [] d e s k i s i a d o
 desquiciar [] d e s k i s i a 4
 desquiciaron [] d e s k i s i a 4 o n
@@ -7191,8 +7471,10 @@ destinarían [] d e s t i n a 4 i a n
 destino [] d e s t i n o
 destinos [] d e s t i n o s
 destiny [] d e s t i n i
-destitución [] d e s t i t u s j o n
-destitución(2) [] d e s t i t u s i o n
+destitución [] d e s t i t u T j o n
+destitución(2) [] d e s t i t u s j o n
+destitución(3) [] d e s t i t u s i o n
+destitución(4) [] d e s t i t u T j o m
 destituida [] d e s t i t u i d a
 destituido [] d e s t i t u i d o
 destituidos [] d e s t i t u i d o s
@@ -7204,7 +7486,9 @@ destrozara [] d e s t 4 o s a 4 a
 destrozaron [] d e s t 4 o s a 4 o n
 destrozo [] d e s t 4 o s o
 destrozos [] d e s t 4 o s o s
-destrucción [] d e s t 4 u k s i o n
+destrucción [] d e s t 4 u k T j o n
+destrucción(2) [] d e s t 4 u k s i o n
+destrucción(3) [] d e s t 4 u T j o n
 destructiva [] d e s t 4 u k t i b a
 destructora [] d e s t 4 u k t o 4 a
 destruida [] d e s t 4 u i d a
@@ -7277,6 +7561,7 @@ determina [] d e t e 4 m i n a
 determinación [] d e t e 4 m i n a s i o n
 determinada [] d e t e 4 m i n a d a
 determinadas [] d e t e 4 m i n a d a s
+determinadas(2) [] d e t e m i n a d a s
 determinado [] d e t e 4 m i n a d o
 determinados [] d e t e 4 m i n a d o s
 determinan [] d e t e 4 m i n a n
@@ -7326,6 +7611,7 @@ devuelto [] d e b u e l t o
 devueltos [] d e b u e l t o s
 devuelva [] d e b u e l b a
 devuelve [] d e b u e l b e
+df [] d e e f e
 dhahrán [] d a 4 a n
 di [] d i
 diabetes [] d i a b e t e s
@@ -7360,11 +7646,16 @@ diarréicas [] d i a r e i k a s
 diaz [] d i a s
 dibujos [] d i b u x o s
 dice [] d i s e
+dice(2) [] d i T e
 dicen [] d i s e n
+dicen(2) [] d i T e n
+dicen(3) [] d i T e l
+dicen(4) [] d i T e m
 dices [] d i s e s
 dicha [] d i t S a
 dichas [] d i t S a s
 dicho [] d i t S o
+dicho(2) [] d i tS o
 dichos [] d i t S o s
 diciembre [] d i s j e m b 4 e
 diciembre(2) [] d i s i e m b 4 e
@@ -7395,13 +7686,17 @@ didanocina [] d i d a n o s i n a
 die [] d i e
 diecinueve [] d i e s i n u e b e
 diecinueve(2) [] d j e s i n w e b e
+diecinueve(3) [] d j e T i n w e b e
 dieciocho [] d i e s i o t S o
 dieciocho(2) [] d j e s j o t S o
+dieciocho(3) [] d j e T j o tS o
 diecis [] d i e s i s
 diecisiete [] d i e s i s i e t e
 diecisiete(2) [] d j e s i s j e t e
+diecisiete(3) [] d j e T i s j e t e
 dieciséis [] d i e s i s e i s
 dieciséis(2) [] d j e s i s e j s
+dieciséis(3) [] d j e T i s e j s
 diego [] d i e g o
 diente [] d i e n t e
 diera [] d i e 4 a
@@ -7412,6 +7707,8 @@ diestro [] d i e s t 4 o
 dietas [] d i e t a s
 diez [] d i e s
 diez(2) [] d j e s
+diez(3) [] d j e T
+diez(4) [] d j e
 diezmado [] d i e s m a d o
 difamaciones [] d i f a m a s i o n e s
 difamación [] d i f a m a s i o n
@@ -7444,7 +7741,8 @@ difundirse [] d i f u n d i 4 s e
 difusa [] d i f u s a
 difusión [] d i f u s i o n
 difícil [] d i f i s i l
-difíciles [] d i f i s i l e s
+difíciles [] d i f i T i l e s
+difíciles(2) [] d i f i s i l e s
 difícilmente [] d i f i s i l m e n t e
 diga [] d i g a
 digamos [] d i g a m o s
@@ -7470,6 +7768,7 @@ dilaciones [] d i l a s i o n e s
 dilación [] d i l a s i o n
 dilatando [] d i l a t a n d o
 dilaya [] d i l a j a
+dilaya(2) [] d i l a j\ a
 dilema [] d i l e m a
 dilemas [] d i l e m a s
 dili [] d i l i
@@ -7516,8 +7815,10 @@ diplomática [] d i p l o m a t i k a
 diplomáticas [] d i p l o m a t i k a s
 diplomático [] d i p l o m a t i k o
 diplomáticos [] d i p l o m a t i k o s
-diputación [] d i p u t a s j o m
-diputación(2) [] d i p u t a s j o n
+diputación [] d i p u t a T j o n
+diputación(2) [] d i p u t a s j o m
+diputación(3) [] d i p u t a s j o n
+diputación(4) [] d i p u t a T j o m
 diputada [] d i p u t a d a
 diputado [] d i p u t a d o
 diputados [] d i p u t a d o s
@@ -7590,6 +7891,7 @@ discusiones [] d i s k u s i o n e s
 discusión [] d i s k u s i o n
 discute [] d i s k u t e
 discuten [] d i s k u t e n
+discuten(2) [] d i s k u t e m
 discutido [] d i s k u t i d o
 discutidos [] d i s k u t i d o s
 discutiendo [] d i s k u t i e n d o
@@ -7633,6 +7935,7 @@ disidentes [] d i s i d e n t e s
 disimulo [] d i s i m u l o
 disminución [] d i s m i n u s i o n
 disminuido [] d i s m i n u i d o
+disminuido(2) [] d i s m i n w i d o
 disminuir [] d i s m i n u i 4
 disminuyan [] d i s m i n u j a n
 disminuye [] d i s m i n u j e
@@ -7644,6 +7947,8 @@ disney [] d i s n e i
 disney(2) [] d i s n e j
 disolución [] d i s o l u s j o n
 disolución(2) [] d i s o l u s i o n
+disolución(3) [] d i s o l u T j o n
+disolución(4) [] d i s o l u T j o m
 disolvieron [] d i s o l b i e 4 o n
 disolvió [] d i s o l b i o
 dispara [] d i s p a 4 a
@@ -7773,8 +8078,8 @@ divulgando [] d i b u l g a n d o
 divulgar [] d i b u l g a 4
 divulgó [] d i b u l g o
 diácono [] d i a k o n o
-diálogo [] d i a l o g o
-diálogo(2) [] d j a l o g o
+diálogo [] d j a l o g o
+diálogo(2) [] d i a l o g o
 diálogos [] d i a l o g o s
 diámetro [] d i a m e t 4 o
 diócesis [] d i o s e s i s
@@ -7788,6 +8093,7 @@ doblemente [] d o b l e m e n t e
 dobles [] d o b l e s
 doc [] d o k
 doce [] d o s e
+doce(2) [] d o T e
 docena [] d o s e n a
 docenas [] d o s e n a s
 docente [] d o s e n t e
@@ -7824,6 +8130,7 @@ doloroso [] d o l o 4 o s o
 domiciliaria [] d o m i s i l i a 4 i a
 domiciliario [] d o m i s i l i a 4 i o
 domicilio [] d o m i s i l i o
+domicilio(2) [] d o m i T i l j o
 domina [] d o m i n a
 dominada [] d o m i n a d a
 dominado [] d o m i n a d o
@@ -7878,8 +8185,11 @@ dorsal [] d o 4 s a l
 dos [] d o s
 dos(2) [] o s d
 doscientas [] d o s i e n t a s
+doscientas(2) [] d o s T j e n t a s
+doscientas(3) [] d o s T j e n t o s
 doscientos [] d o s s j e n t o s
 doscientos(2) [] d o s i e n t o s
+doscientos(3) [] d o s T j e n t o s
 dosis [] d o s i s
 dotaciones [] d o t a s i o n e s
 dotación [] d o t a s i o n
@@ -7937,7 +8247,7 @@ dulce [] d u l s e
 dulcineas [] d u l s i n e a s
 duma [] d u m a
 dumitrescu [] d u m i t 4 e s k u
-dummy [] dummy]
+dummy [] dummy
 duncan [] d u n k a n
 dunloy [] d u n l o i
 dupla [] d u p l a
@@ -7992,6 +8302,7 @@ díazbalart [] d i a s b a l a 4 t
 dígitos [] d i x i t o s
 dólar [] d o l a 4
 dólares [] d o l a 4 e s
+dólares(2) [] d o 4 e s
 dónde [] d o n d e
 dúo [] d u o
 e [] e
@@ -8013,7 +8324,8 @@ echen [] e t S e n
 echevarría [] e t S e b a r i a
 echeverri [] e t S e b e r i
 echeverría [] e t S e b e r i a
-echó [] e t S o
+echó [] e tS o
+echó(2) [] e t S o
 eco [] e k o
 ecoconferencia [] e k o k o n f e 4 e n s i a
 ecologista [] e k o l o x i s t a
@@ -8040,14 +8352,17 @@ ecue [] e k u e
 ecus [] e k u s
 ecónomo [] e k o n o m o
 edad [] e d a d
+edad(2) [] e d a T
 eddie [] e d d i e
 edelmiro [] e d e l m i 4 o
 edemio [] e d e m i o
 edes [] e d e s
 edgar [] e d g a 4
 ediciones [] e d i s i o n e s
-edición [] e d i s j o n
-edición(2) [] e d i s i o n
+edición [] e d i T j o n
+edición(2) [] e d i s j o n
+edición(3) [] e d i s i o n
+edición(4) [] e d i T j o m
 edicto [] e d i k t o
 edificaciones [] e d i f i k a s i o n e s
 edificación [] e d i f i k a s i o n
@@ -8057,6 +8372,7 @@ edificio [] e d i f i s j o
 edificio(2) [] e d i f i s i o
 edificios [] e d i f i s j o s
 edificios(2) [] e d i f i s i o s
+edificios(3) [] e d i f i T j o s
 editor [] e d i t o 4
 editora [] e d i t o 4 a
 editorial [] e d i t o 4 i a l
@@ -8065,7 +8381,9 @@ eduard [] e d u a 4 d
 eduardo [] e d u a 4 d o
 educa [] e d u k a
 educacional [] e d u k a s i o n a l
-educación [] e d u k a s i o n
+educación [] e d u k a T j o n
+educación(2) [] e d u k a s i o n
+educación(3) [] e d u k a T j o m
 educador [] e d u k a d o 4
 educadores [] e d u k a d o 4 e s
 educados [] e d u k a d o s
@@ -8104,6 +8422,7 @@ efedrina [] e f e d 4 i n a
 effenberg [] e f e n b e 4 g
 efgeni [] e f x e n i
 eficaces [] e f i k a s e s
+eficaces(2) [] e f i k a T e s
 eficacia [] e f i k a s j a
 eficacia(2) [] e f i k a s i a
 eficaz [] e f i k a s
@@ -8145,11 +8464,13 @@ ejemplificó [] e x e m p l i f i k o
 ejemplo [] e x e m p l o
 ejemplos [] e x e m p l o s
 ejerce [] e x e 4 s e
+ejerce(2) [] e x e 4 T e
 ejercen [] e x e 4 s e n
 ejercer [] e x e 4 s e 4
 ejercerá [] e x e 4 s e 4 a
 ejercicio [] e x e 4 s i s j o
 ejercicio(2) [] e x e 4 s i k i o
+ejercicio(3) [] e x e 4 T i T j o
 ejercicios [] e x e 4 s i k i o s
 ejercido [] e x e 4 s i d o
 ejerciendo [] e x e 4 s i e n d o
@@ -8166,6 +8487,11 @@ ekeus [] e k e u s
 el [] e l
 el(2) [] e s
 el(3) [] l e
+el(4) [] e p
+el(5) [] e n
+el(6) [] a l
+el(7) [] e 4
+el(8) [] e l e
 elaboración [] e l a b o 4 a s i o n
 elaborada [] e l a b o 4 a d a
 elaboradas [] e l a b o 4 a d a s
@@ -8179,6 +8505,8 @@ elaine [] e l a i n e
 elctorales [] e l k t o 4 a l e s
 elecciones [] e l e k s j o n e s
 elecciones(2) [] e l e k s i o n e s
+elecciones(3) [] e l e k T j o n e s
+elecciones(4) [] e l e T j o n e s
 elección [] e l e k s i o n
 electa [] e l e k t a
 electo [] e l e k t o
@@ -8247,9 +8575,15 @@ elizondo [] e l i s o n d o
 eljía [] e l x i a
 ella [] e l j a
 ellas [] e l j a s
+ellas(2) [] e L a s
+ellas(3) [] e j a s
 ello [] e l j o
+ello(2) [] e j o
+ello(3) [] e L o
 ellos [] e j o s
 ellos(2) [] e l j o s
+ellos(3) [] e j\ o s
+ellos(4) [] e L o s
 elocuentes [] e l o k u e n t e s
 elogiado [] e l o x i a d o
 elogian [] e l o x i a n
@@ -8284,6 +8618,7 @@ embarazadas [] e m b a 4 a s a d a s
 embarazarte [] e m b a 4 a s a 4 t e
 embarazo [] e m b a 4 a s o
 embarazos [] e m b a 4 a s o s
+embarazos(2) [] e m b a 4 a T o s
 embarazosos [] e m b a 4 a s o s o s
 embarcaciones [] e m b a 4 k a s i o n e s
 embarcados [] e m b a 4 k a d o s
@@ -8426,6 +8761,11 @@ en(2) [] e l
 en(3) [] e m
 en(4) [] e n
 en(5) [] n e
+en(6) [] a
+en(7) [] e p
+en(8) [] e s
+en(9) [] o l
+en(10) [] m
 enamora [] e n a m o 4 a
 enamorada [] e n a m o 4 a d a
 enamorados [] e n a m o 4 a d o s
@@ -8485,6 +8825,7 @@ encefálica [] e n s e f a l i k a
 encefálico [] e n s e f a l i k o
 encendedores [] e n s e n d e d o 4 e s
 encendida [] e n s e n d i d a
+encendida(2) [] e n T e n d i d a
 encendido [] e n s e n d i d o
 encendidos [] e n s e n d i d o s
 encendieron [] e n s e n d j e 4 o n
@@ -8575,6 +8916,7 @@ enfermarse [] e n f e 4 m a 4 s e
 enfermas [] e n f e 4 m a s
 enfermedad [] e m f e 4 m e d a d
 enfermedad(2) [] e n f e 4 m e d a d
+enfermedad(3) [] e m f e 4 m e d a T
 enfermedades [] e n f e 4 m e d a d e s
 enfermeras [] e n f e 4 m e 4 a s
 enfermería [] e n f e 4 m e 4 i a
@@ -8641,6 +8983,8 @@ enjuiciamiento [] e n x u i s i a m i e n t o
 enjuiciarlo [] e n x u i s i a 4 l o
 enjuiciará [] e n x u i s i a 4 a
 enlace [] e n l a s e
+enlace(2) [] e l l a T e
+enlace(3) [] e n l a T e
 enlatados [] e n l a t a d o s
 enlodar [] e n l o d a 4
 enloquecida [] e n l o k e s i d a
@@ -8716,6 +9060,7 @@ enterrar [] e n t e r a 4
 enterraron [] e n t e r a 4 o n
 enteró [] e n t e 4 o
 entidad [] e n t i d a d
+entidad(2) [] e n t i d a
 entidades [] e n t i d a d e s
 entiende [] e n t i e n d e
 entienden [] e n t i e n d e n
@@ -8723,6 +9068,7 @@ entiendo [] e n t i e n d o
 entierro [] e n t i e r o
 entonaron [] e n t o n a 4 o n
 entonces [] e n t o n s e s
+entonces(2) [] e n t o n T e s
 entorno [] e n t o 4 n o
 entorpece [] e n t o 4 p e s e
 entorpecer [] e n t o 4 p e s e 4
@@ -8868,6 +9214,7 @@ equivocarnos [] e k i b o k a 4 n o s
 equivocaron [] e k i b o k a 4 o n
 equivocó [] e k i b o k o
 er [] e 4
+er(2) [] e 4 i
 era [] e 4 a
 erakat [] e 4 a k a t
 eran [] e 4 a n
@@ -8894,6 +9241,7 @@ erradicarlo [] e r a d i k a 4 l o
 erradicarse [] e r a d i k a 4 s e
 errado [] e r a d o
 errar [] e r a 4
+erre [] e r e
 erritarrok [] e r i t a r o k
 error [] e r o 4
 errores [] e r o 4 e s
@@ -8904,6 +9252,7 @@ erupción [] e 4 u p s i o n
 erwin [] e 4 u i n
 es [] e s
 esa [] e s a
+esa(2) [] e s t a
 esas [] e s a s
 esbelta [] e s b e l t a
 esbozar [] e s b o s a 4
@@ -8959,6 +9308,7 @@ escenificaron [] e s e n i f i k a 4 o n
 escenografía [] e s e n o g 4 a f i a
 escepticismo [] e s e p t i s i s m o
 esclarecer [] e s k l a 4 e s e 4
+esclarecer(2) [] e s k l a 4 e T e 4
 esclarecidas [] e s k l a 4 e s i d a s
 esclarecimiento [] e s k l a 4 e s i m i e n t o
 esclarezcan [] e s k l a 4 e s k a n
@@ -9031,6 +9381,7 @@ escuchamos [] e s k u t S a m o s
 escuchan [] e s k u t S a n
 escuchando [] e s k u t S a n d o
 escuchar [] e s k u t S a 4
+escuchar(2) [] e s k u tS a 4
 escucharan [] e s k u t S a 4 a n
 escucharlo [] e s k u t S a 4 l o
 escucharon [] e s k u t S a 4 o n
@@ -9047,6 +9398,7 @@ escuela [] e s k u e l a
 escuela(2) [] e s k w e l a
 escuelas [] e s k u e l a s
 escuelas(2) [] e s k w e l a s
+escuelas(3) [] s k w e l a s
 escueto [] e s k u e t o
 esculturas [] e s k u l t u 4 a s
 escándalo [] e s k a n d a l o
@@ -9081,6 +9433,7 @@ espacio [] e s p a s j o
 espacio(2) [] e s p a s i o
 espacios [] e s p a s j o s
 espacios(2) [] e s p a s i o s
+espacios(3) [] e s p a T j o s
 espada [] e s p a d a
 espalda [] e s p a l d a
 espaldas [] e s p a l d a s
@@ -9089,14 +9442,20 @@ esparcidas [] e s p a 4 s i d a s
 esparciera [] e s p a 4 s i e 4 a
 esparcir [] e s p a 4 s i 4
 esparció [] e s p a 4 s i o
-españa [] e s p a n j a
+españa [] e s p a J a
+españa(2) [] e s p a n j a
 español [] e s p a n j o l
-española [] e s p a n j o l a
-españolas [] e s p a n j o l a s
-españoles [] e s p a n j o l e s
+española [] e s p a J o l a
+española(2) [] e s p a n j o l a
+españolas [] e s p a J o l a s
+españolas(2) [] e s p a n j o l a s
+españoles [] e s p a J o l e s
+españoles(2) [] e s p a n j o l e s
+españoles(3) [] s p a J o l e s
 espec [] e s p e k
 especial [] e s p e s j a l
 especial(2) [] e s p e s i a l
+especial(3) [] e s p e T j a l
 especiales [] e s p e s i a l e s
 especialidades [] e s p e s i a l i d a d e s
 especialista [] e s p e s i a l i s t a
@@ -9106,9 +9465,12 @@ especializada [] e s p e s i a l i s a d a
 especializado [] e s p e s i a l i s a d o
 especialmente [] e s p e s j a l m e n t e
 especialmente(2) [] e s p e s i a l m e n t e
+especialmente(3) [] e s p e T j a l m e n t e
 especie [] e s p e s i e
 especies [] e s p e s j e s
 especies(2) [] e s p e s i e s
+especies(3) [] s p e T j e s
+especies(4) [] e s p e T j e s
 especifica [] e s p e s i f i k a
 especificó [] e s p e s i f i k o
 espectacular [] e s p e k t a k u l a 4
@@ -9119,8 +9481,10 @@ espectáculo [] e s p e k t a k u l o
 espectáculos [] e s p e k t a k u l o s
 especula [] e s p e k u l a
 especulaciones [] e s p e k u l a s i o n e s
-especulación [] e s p e k u l a s j o n
-especulación(2) [] e s p e k u l a s i o n
+especulación [] e s p e k u l a T j o m
+especulación(2) [] e s p e k u l a s j o n
+especulación(3) [] e s p e k u l a s i o n
+especulación(4) [] e s p e k u l a T j o n
 especulado [] e s p e k u l a d o
 específica [] e s p e s i f i k a
 específicamente [] e s p e s i f i k a m e n t e
@@ -9142,6 +9506,7 @@ esperanzada [] e s p e 4 a n s a d a
 esperanzador [] e s p e 4 a n s a d o 4
 esperanzas [] e s p e 4 a n s a s
 esperar [] e s p e 4 a 4
+esperar(2) [] e s p 4 a 4
 esperarse [] e s p e 4 a 4 s e
 esperará [] e s p e 4 a 4 a
 esperarán [] e s p e 4 a 4 a n
@@ -9153,6 +9518,7 @@ espero [] e s p e 4 o
 esperándose [] e s p e 4 a n d o s e
 esperó [] e s p e 4 o
 espeso [] e s p e s o
+espiada [] e s p j a d a
 espiados [] e s p j a d o s
 espina [] e s p i n a
 espinoso [] e s p i n o s o
@@ -9180,6 +9546,8 @@ esquina [] e s k i n a
 esquinas [] e s k i n a s
 esquizofrenia [] e s k i s o f 4 e n j a
 esquizofrenia(2) [] e s k i s o f 4 e n i a
+esquizofrenia(3) [] e s k i T o f 4 e n j a
+esquizofrenia(4) [] e s k i T o f 4 e n i a
 esquí [] e s k i
 est [] e s t
 esta [] a e s t
@@ -9273,6 +9641,7 @@ estefan [] e s t e f a n
 estela [] e s t e l a
 estelar [] e s t e l a 4
 estelariza [] e s t e l a 4 i s a
+estelle [] e s t e l
 estemos [] e s t e m o s
 estereotipe [] e s t e 4 e o t i p e
 estereotipos [] e s t e 4 e o t i p o s
@@ -9301,6 +9670,8 @@ estocolmo [] e s t o k o l m o
 estomacales [] e s t o m a k a l e s
 estonia [] e s t o n j a
 estos [] e s t o s
+estos(2) [] e s t o d
+estos(3) [] e s t o 4
 estoy [] e s t o i
 estrado [] e s t 4 a d o
 estrafalaria [] e s t 4 a f a l a 4 i a
@@ -9344,6 +9715,7 @@ estreptomicina [] e s t 4 e p t o m i s i n a
 estriba [] e s t 4 i b a
 estribo [] e s t 4 i b o
 estricta [] e s t 4 i k t a
+estricta(2) [] e s t 4 i t t a
 estrictamente [] e s t 4 i k t a m e n t e
 estrictas [] e s t 4 i k t a s
 estricto [] e s t 4 i k t o
@@ -9371,6 +9743,8 @@ estudiar [] e s t u d i a 4
 estudiar(2) [] e s t u d j a 4
 estudiará [] e s t u d i a 4 a
 estudiarán [] e s t u d j a 4 a n
+estudiarán(2) [] e s t u d j a 4 a l
+estudiarán(3) [] e s t u d j a 4 a m
 estudio [] e s t u d i o
 estudio(2) [] e s t u d j o
 estudios [] e s t u d i o s
@@ -9389,9 +9763,12 @@ estuviese [] e s t u b i e s e
 estuvimos [] e s t u b i m o s
 estuvo [] e s t u b o
 está [] e s t a
+está(2) [] s t a
 estábamos [] e s t a b a m o s
-están [] e s t a m
-están(2) [] e s t a n
+están [] e s t a n
+están(2) [] e s t a m
+están(3) [] e s t a l
+están(4) [] e s t a
 estándar [] e s t a n d a 4
 estás [] e s t a s
 esté [] e s t e
@@ -9430,6 +9807,8 @@ europeas(2) [] e w 4 o p e a s
 europeo [] e u 4 o p e o
 europeos [] e u 4 o p e o s
 europeos(2) [] e w 4 o p e o s
+europeos(3) [] e e 4 o p e o s
+europeos(4) [] e w 4 o p e o
 euros [] e w 4 o s
 euskal [] e w s k a l
 eutanasia [] e u t a n a s i a
@@ -9449,6 +9828,7 @@ evaluaba [] e b a l u a b a
 evaluación [] e b a l u a s i o n
 evaluando [] e b a l u a n d o
 evaluando(2) [] e b a l w a n d o
+evaluando(3) [] e b a l o a n d o
 evaluar [] e b a l u a 4
 evaluarla [] e b a l u a 4 l a
 evaluará [] e b a l u a 4 a
@@ -9489,11 +9869,16 @@ exacerbar [] e k s a s e 4 b a 4
 exacta [] e k s a k t a
 exactamen [] e k s a k t a m e n
 exactamente [] e k s a k t a m e n t e
+exactamente(2) [] e s s a k t a m e n t e
+exactamente(3) [] e s a k t a m e n t e
+exactamente(4) [] e s a t a m e n t e
 exacto [] e k s a k t o
 exageraciones [] e k s a x e 4 a s i o n e s
 exageración [] e k s a x e 4 a s i o n
 exagerada [] e k s a x e 4 a d a
 exagerar [] e k s a x e 4 a 4
+exagerar(2) [] e s s a x e 4 a 4
+exagerar(3) [] e s a x e 4 a 4
 exaltados [] e k s a l t a d o s
 exaltar [] e k s a l t a 4
 examen [] e k s a m e n
@@ -9505,6 +9890,9 @@ examinará [] e k s a m i n a 4 a
 excampeón [] e k s k a m p e o n
 excarcelación [] e k s k a 4 s e l a s i o n
 exceda [] e k s s e d a
+exceda(2) [] e s s T e d a
+exceda(3) [] e k s T e d a
+exceda(4) [] e s T e d a
 excedente [] e k s s e d e n t e
 excederán [] e k s s e d e 4 a n
 excelente [] e k s s e l e n t e
@@ -9518,6 +9906,9 @@ excesivamente [] e k s s e s i b a m e n t e
 excesivo [] e k s s e s i b o
 excesivos [] e k s s e s i b o s
 exceso [] e k s s e s o
+exceso(2) [] e s s T e s o
+exceso(3) [] e k s T e s o
+exceso(4) [] e s T e s o
 excitó [] e k s s i t o
 exclamó [] e k s k l a m o
 excluidos [] e k s k l u i d o s
@@ -9543,6 +9934,7 @@ exhaustivamente [] e k s a u s t i b a m e n t e
 exhibe [] e k s i b e
 exhiben [] e k s i b e m
 exhiben(2) [] e k s i b e n
+exhiben(3) [] e s s i b e n
 exhibición [] e k s i b i s i o n
 exhibidores [] e k s i b i d o 4 e s
 exhibiendo [] e k s i b i e n d o
@@ -9555,6 +9947,8 @@ exhortan [] e k s o 4 t a n
 exhortos [] e k s o 4 t o s
 exhortó [] e k s o 4 t o
 exige [] e k s i x e
+exige(2) [] e s s i x e
+exige(3) [] e s i x e
 exigen [] e k s i x e n
 exigencia [] e k s i x e n s i a
 exigencias [] e k s i x e n s i a s
@@ -9581,9 +9975,15 @@ eximan [] e k s i m a n
 exista [] e k s i s t a
 existan [] e k s i s t a n
 existe [] e k s i s t e
+existe(2) [] e s s i s t e
+existe(3) [] e s i k s t e
 existen [] e k s i s t e n
+existen(2) [] e s s i s t e n
+existen(3) [] e s i s t e n
 existencia [] e k s i s t e n s j a
 existencia(2) [] e k s i s t e n s i a
+existencia(3) [] e s i s t e n T j a
+existencia(4) [] e k s i s t e n T j a
 existente [] e k s i s t e n t e
 existentes [] e k s i s t e n t e s
 existido [] e k s i s t i d o
@@ -9598,6 +9998,9 @@ exitoso [] e k s i t o s o
 exjefe [] e k s x e f e
 exministro [] e k s m i n i s t 4 o
 exoneraba [] e k s o n e 4 a b a
+exoneraba(2) [] e s s o n e 4 a b a
+exoneraba(3) [] e k s e n o 4 a b a
+exoneraba(4) [] e s o n e 4 a b a
 exonerados [] e k s o n e 4 a d o s
 exorbitantes [] e k s o 4 b i t a n t e s
 expanda [] e k s p a n d a
@@ -9615,9 +10018,13 @@ expectativas [] e k s p e k t a t i b a s
 expedición [] e k s p e d i s i o n
 expedido [] e k s p e d i d o
 expedientados [] e k s p e d j e n t a d o s
+expedientados(2) [] e s s p e d j e n t a d o s
+expedientados(3) [] e s p e d j e n t a d o s
 expediente [] e k s p e d i e n t e
 expedientes [] e k s p e d j e n t e s
 expedientes(2) [] e s p e d j e n t e s
+expedientes(3) [] e s s p e d j e n t e s
+expedientes(4) [] s p e d j e n t e s
 expedir [] e k s p e d i 4
 experie [] e k s p e 4 i e
 experiencia [] e k s p e 4 i e n s i a
@@ -9639,6 +10046,7 @@ expiró [] e k s p i 4 o
 explanada [] e k s p l a n a d a
 explica [] e k s p l i k a
 explica(2) [] e s p l i k a
+explica(3) [] e s s p l i k a
 explicaba [] e k s p l i k a b a
 explicaba(2) [] e s p l i k a b a
 explicaciones [] e k s p l i k a s i o n e s
@@ -9689,6 +10097,9 @@ exposiciones [] e k s p o s i s i o n e s
 exposición [] e k s p o s i s j o n
 exposición(2) [] e k s p o s i s i o n
 exposición(3) [] e s p o s i s j o n
+exposición(4) [] e s p o s i T j o n
+exposición(5) [] e s s p o s i T j o n
+exposición(6) [] e k s p o s i T j o n
 expre [] e k s p 4 e
 expresa [] e k s p 4 e s a
 expresada [] e k s p 4 e s a d a
@@ -9700,6 +10111,8 @@ expresamente(2) [] e s p 4 e s a m e n t e
 expresamos [] e k s p 4 e s a m o s
 expresando [] e k s p 4 e s a n d o
 expresar [] e k s p 4 e s a 4
+expresar(2) [] e s s p 4 e s a 4
+expresar(3) [] e s p 4 e s a 4
 expresarle [] e k s p 4 e s a 4 l e
 expresaron [] e k s p 4 e s a 4 o n
 expresarse [] e k s p 4 e s a 4 s e
@@ -9721,7 +10134,11 @@ expulsados [] e k s p u l s a d o s
 expulsar [] e k s p u l s a 4
 expulse [] e k s p u l s e
 expulsen [] e k s p u l s e n
-expulsión [] e k s p u l s i o n
+expulsión [] e k s p u l s j o m
+expulsión(2) [] e k s p u l s i o n
+expulsión(3) [] e s p u l s j o m
+expulsión(4) [] e k s p u s j o m
+expulsión(5) [] e k s p u l s j o n
 expulsó [] e k s p u l s o
 expuso [] e k s p u s o
 expósito [] e k s p o s i t o
@@ -9732,6 +10149,7 @@ exsecretario [] e k s s e k 4 e t a 4 i o
 exsubsecretario [] e k s s u b s e k 4 e t a 4 i o
 extender [] e k s t e n d e 4
 extender(2) [] e s t e n d e 4
+extender(3) [] e s s t e n d e 4
 extenderse [] e k s t e n d e 4 s e
 extenderá [] e k s t e n d e 4 a
 extendida [] e k s t e n d i d a
@@ -9762,8 +10180,12 @@ extiende [] e k s t i e n d e
 extienden [] e k s t i e n d e n
 extienden(2) [] e k s t j e n d e n
 extienden(3) [] e s t j e n d e n
-extinción [] e k s t i n s i o n
-extinción(2) [] e s t i n s j o n
+extinción [] e k s t i n T j o n
+extinción(2) [] e k s t i n s i o n
+extinción(3) [] e s t i n s j o n
+extinción(4) [] e s t i n T j o n
+extinción(5) [] e g s t i T j o n
+extinción(6) [] e k s t i n T j o m
 extinguidores [] e k s t i n g i d o 4 e s
 extintas [] e k s t i n t a s
 extinto [] e k s t i n t o
@@ -9774,6 +10196,10 @@ extitular [] e k s t i t u l a 4
 extorsión [] e k s t o 4 s i o n
 extra [] e k s t 4 a
 extracciones [] e k s t 4 a k s j o n e s
+extracciones(2) [] e s s t 4 a k T j o n e s
+extracciones(3) [] e k s t 4 a k T j o n e s
+extracciones(4) [] e s t 4 a k T j o n e s
+extracciones(5) [] e k s t 4 a T j o n e s
 extracción [] e k s t 4 a k s i o n
 extracomunitarios [] e k s t 4 a k o m u n i t a 4 j o s
 extradiciones [] e k s t 4 a d i s i o n e s
@@ -9792,6 +10218,7 @@ extranjera [] e k s t 4 a n x e 4 a
 extranjeras [] e k s t 4 a n x e 4 a s
 extranjero [] e k s t 4 a n x e 4 o
 extranjeros [] e k s t 4 a n x e 4 o s
+extranjeros(2) [] e s t 4 a n x e 4 o s
 extraordinaria [] e k s t 4 a o 4 d i n a 4 i a
 extraordinaria(2) [] e k s t 4 a o 4 d i n a 4 j a
 extraordinaria(3) [] e s t 4 a o 4 d i n a 4 j a
@@ -9799,6 +10226,7 @@ extraordinariamente [] e k s t 4 a o 4 d i n a 4 i a m e n t e
 extraordinarias [] e k s t 4 a o 4 d i n a 4 i a s
 extraordinario [] e k s t 4 a o 4 d i n a 4 i o
 extraordinario(2) [] e k s t 4 a o 4 d i n a 4 j o
+extraordinario(3) [] e s t 4 a o 4 d i n a 4 j o
 extraviar [] e k s t 4 a b i a 4
 extraña [] e k s t 4 a n j a
 extrañaría [] e k s t 4 a n j a 4 i a
@@ -9876,7 +10304,12 @@ fallecen [] f a l j e s e n
 fallecidas [] f a l j e s i d a s
 fallecido [] f a j e s i d o
 fallecido(2) [] f a l j e s i d o
+fallecido(3) [] f a j e T i d o
+fallecido(4) [] f a L e T i d o
+fallecido(5) [] f a j\ e T i d o
 fallecidos [] f a l j e s i d o s
+fallecidos(2) [] f a j e T i d o s
+fallecidos(3) [] f a L e T i d o s
 falleciendo [] f a l j e s i e n d o
 fallecieron [] f a l j e s i e 4 o n
 fallecimiento [] f a l j e s i m i e n t o
@@ -9926,6 +10359,9 @@ fanáticos [] f a n a t i k o s
 fara [] f a 4 a
 farc [] f a 4 s e
 farc(2) [] f a 4 k
+farc(3) [] f a 4 T e
+farc(4) [] f a 4 k e
+farc(5) [] f a 4
 farel [] f a 4 e l
 farfán [] f a 4 f a n
 fargo [] f a 4 g o
@@ -9979,6 +10415,7 @@ fe [] f e
 febrero [] f e b 4 e 4 o
 febres [] f e b 4 e s
 fecha [] f e t S a
+fecha(2) [] f e tS a
 fechado [] f e t S a d o
 fechas [] f e t S a s
 fechoría [] f e t S o 4 i a
@@ -10113,6 +10550,7 @@ filtraron [] f i l t 4 a 4 o n
 filtró [] f i l t 4 o
 filósofo [] f i l o s o f o
 fin [] f i n
+fin(2) [] f i m
 fina [] f i n a
 final [] f i n a l
 finales [] f i n a l e s
@@ -10131,6 +10569,8 @@ finalizará [] f i n a l i s a 4 a
 finalizó [] f i n a l i s o
 finalmente [] f i n a l m e n t e
 financiación [] f i n a n s i a s i o n
+financiación(2) [] f i n a n T j a T j o n
+financiación(3) [] f i n a n T j a T j o m
 financiadas [] f i n a n s i a d a s
 financiamiento [] f i n a n s i a m i e n t o
 financiando [] f i n a n s i a n d o
@@ -10139,8 +10579,10 @@ financiaron [] f i n a n s i a 4 o n
 financiará [] f i n a n s i a 4 a
 financiera [] f i n a n s i e 4 a
 financieras [] f i n a n s i e 4 a s
+financieras(2) [] f i n a n T j e 4 a s
 financiero [] f i n a n s j e 4 o
 financiero(2) [] f i n a n s i e 4 o
+financiero(3) [] f i n a n T j e 4 o
 financieros [] f i n a n s i e 4 o s
 financista [] f i n a n s i s t a
 finanza [] f i n a n s a
@@ -10249,6 +10691,7 @@ fomentar [] f o m e n t a 4
 fomento [] f o m e n t o
 fondo [] f o n d o
 fondos [] f o n d o s
+fonsi [] f o n s i
 fontibón [] f o n t i b o n
 forasti [] f o 4 a s t i
 ford [] f o 4 d
@@ -10349,6 +10792,7 @@ frambuesas [] f 4 a m b u e s a s
 fran [] f 4 a n
 francamente [] f 4 a n k a m e n t e
 francesa [] f 4 a n s e s a
+francesa(2) [] f 4 a n T e s a
 francesas [] f 4 a n s e s a s
 francesco [] f 4 a n s e s k o
 franceses [] f 4 a n s e s e s
@@ -10360,7 +10804,8 @@ franco [] f 4 a n k o
 francoalemán [] f 4 a n k o a l e m a n
 francos [] f 4 a n k o s
 francotiradores [] f 4 a n k o t i 4 a d o 4 e s
-francés [] f 4 a n s e s
+francés [] f 4 a n T e s
+francés(2) [] f 4 a n s e s
 franja [] f 4 a n x a
 franjo [] f 4 a n x o
 frank [] f 4 a n k
@@ -10465,6 +10910,7 @@ fuertes [] f u e 4 t e s
 fuerza [] f u e 4 s a
 fuerzas [] f u e 4 s a s
 fuerzas(2) [] f w e 4 s a s
+fuerzas(3) [] f w e 4 T a s
 fuese [] f u e s e
 fuesen [] f u e s e n
 fuga [] f u g a
@@ -10496,13 +10942,16 @@ fumigadores [] f u m i g a d o 4 e s
 fumo [] f u m o
 funciona [] f u n s j o n a
 funciona(2) [] f u n s i o n a
+funciona(3) [] f u n T j o n a
 funcionaba [] f u n s i o n a b a
 funcionado [] f u n s i o n a d o
 funcionamiento [] f u n s j o n a m j e n t o
 funcionamiento(2) [] f u n s i o n a m i e n t o
+funcionamiento(3) [] f u n T j o n a m j e n t o
 funcionan [] f u n s i o n a n
 funcionando [] f u n s j o n a n d o
 funcionando(2) [] f u n s i o n a n d o
+funcionando(3) [] f u n T j o n a n d o
 funcionar [] f u n s i o n a 4
 funcionaran [] f u n s i o n a 4 a n
 funcionaria [] f u n s i o n a 4 i a
@@ -10513,9 +10962,13 @@ funcione [] f u n s i o n e
 funcionen [] f u n s i o n e n
 funciones [] f u n s j o n e s
 funciones(2) [] f u n s i o n e s
+funciones(3) [] f u n T j o n e s
 función [] f u n s j o n
 función(2) [] f u n s i o n
-fundación [] f u n d a s i o n
+función(3) [] f u n T j o n
+función(4) [] f u n T j o m
+fundación [] f u n d a T j o n
+fundación(2) [] f u n d a s i o n
 fundada [] f u n d a d a
 fundador [] f u n d a d o 4
 fundadora [] f u n d a d o 4 a
@@ -10584,6 +11037,7 @@ gabinete [] g a b i n e t e
 gabiria [] g a b i 4 i a
 gabriel [] g a b 4 i e l
 gabriela [] g a b 4 i e l a
+gaga [] g a g a
 gagarin [] g a g a 4 i n
 gagmais [] g a g m a i s
 gainer [] g a i n e 4
@@ -10654,6 +11108,7 @@ garantizó [] g a 4 a n t i s o
 garantía [] g a 4 a n t i a
 garantías [] g a 4 a n t i a s
 garbanzos [] g a 4 b a n s o s
+garbanzos(2) [] g a 4 b a n T o s
 garber [] g a 4 b e 4
 garcía [] g a 4 s i a
 gardenias [] g a 4 d e n i a s
@@ -10705,6 +11160,7 @@ generador [] x e n e 4 a d o 4
 generadores [] x e n e 4 a d o 4 e s
 generados [] x e n e 4 a d o s
 general [] x e n e 4 a l
+general(2) [] x e n e a l
 generales [] x e n e 4 a l e s
 generalidad [] x e n e 4 a l i d a d
 generalizada [] x e n e 4 a l i s a d a
@@ -10752,7 +11208,9 @@ germano [] x e 4 m a n o
 germán [] x e 4 m a n
 gerry [] x e 4 i
 gerzog [] x e 4 s o g
-gestación [] x e s t a s i o n
+gestación [] x e s t a T j o n
+gestación(2) [] x e s t a s i o n
+gestación(3) [] x e s t a T j o m
 gestionar [] x e s t i o n a 4
 gestiones [] x e s t i o n e s
 gestiones(2) [] x e s t j o n e s
@@ -10800,6 +11258,7 @@ glamurosas [] g l a m u 4 o s a s
 glasnost [] g l a s n o s t
 glenn [] g l e n n
 global [] g l o b a l
+global(2) [] g o l o b a l
 globales [] g l o b a l e s
 globalización [] g l o b a l i s a s i o n
 globos [] g l o b o s
@@ -10839,6 +11298,8 @@ goleador [] g o l e a d o 4
 goleo [] g o l e o
 goles [] g o l e s
 golf [] g o l f
+golf(2) [] g o l e f e
+golf(3) [] g o l e f
 golfo [] g o l f o
 golochino [] g o l o t S i n o
 golpe [] g o l p e
@@ -10869,6 +11330,7 @@ gorras [] g o r a s
 gortari [] g o 4 t a 4 i
 gota [] g o t a
 goya [] g o j a
+goya(2) [] g o j\ a
 goza [] g o s a
 gozan [] g o s a n
 gozando [] g o s a n d o
@@ -10885,6 +11347,7 @@ grabó [] g 4 a b o
 gracia [] g 4 a s i a
 gracias [] g 4 a s j a s
 gracias(2) [] g 4 a s i a s
+gracias(3) [] g 4 a T j a s
 graciela [] g 4 a s i e l a
 graciosa [] g 4 a s i o s a
 grado [] g 4 a d o
@@ -10941,6 +11404,7 @@ grecia(2) [] g 4 e s i a
 green [] g 4 e e n
 gregorio [] g 4 e g o 4 i o
 gregorio(2) [] g 4 e g o 4 j o
+gregorio(3) [] g e o g o 4 j o
 gremial [] g 4 e m i a l
 gremio [] g 4 e m i o
 grey [] g 4 e i
@@ -11032,6 +11496,8 @@ guerra [] g e r a
 guerras [] g e r a s
 guerrero [] g e r e 4 o
 guerrilla [] g e r i l j a
+guerrilla(2) [] g e r i j a
+guerrilla(3) [] g e r i L a
 guerrillas [] g e r i l j a s
 guerrillera [] g e r i l j e 4 a
 guerrilleras [] g e r i l j e 4 a s
@@ -11081,6 +11547,8 @@ gómez [] g o m e s
 gótica [] g o t i k a
 güira [] g u i 4 a
 ha [] a
+ha(2) [] e
+ha(3) [] a n
 hab [] a b
 habana [] a b a n a
 habas [] a b a s
@@ -11143,15 +11611,21 @@ habían [] a b i a m
 habían(2) [] a b i a n
 hac [] a k
 hace [] a s e
+hace(2) [] a T e
+hace(3) [] a T i
 hacemos [] a s e m o s
 hacen [] a s e m
 hacen(2) [] a s e n
+hacen(3) [] a T e m
+hacen(4) [] a T e n
 hacendario [] a s e n d a 4 i o
 hacer [] a s e 4
+hacer(2) [] a T e 4
 hacerla [] a s e 4 l a
 hacerle [] a s e 4 l e
 hacerles [] a s e 4 l e s
 hacerlo [] a s e 4 l o
+hacerlo(2) [] a T e 4 l o
 hacerlos [] a s e 4 l o s
 hacerme [] a s e 4 m e
 hacernos [] a s e 4 n o s
@@ -11159,6 +11633,7 @@ hacerse [] a s e 4 s e
 haces [] a s e s
 hacia [] a s j a
 hacia(2) [] a s i a
+hacia(3) [] a T j a
 hacienda [] a s j e n d a
 hacienda(2) [] a s i e n d a
 haciendas [] a s i e n d a s
@@ -11207,6 +11682,11 @@ hammarberg [] a m m a 4 b e 4 g
 hamobai [] a m o b a i
 han [] a m
 han(2) [] a n
+han(3) [] a a
+han(4) [] a s
+han(5) [] a l
+han(6) [] a
+han(7) [] a a n
 hanbo [] a n b o
 hangar [] a n g a 4
 hani [] a n i
@@ -11240,7 +11720,9 @@ hawaii [] a u a i i
 hay [] a i
 hay(2) [] a j
 haya [] a j a
+haya(2) [] a j\ a
 hayan [] a j a n
+hayan(2) [] a j\ a n
 hayek [] a j e k
 hazlas [] a s l a s
 haznagora [] a s n a g o 4 a
@@ -11248,6 +11730,7 @@ he [] e
 hebrea [] e b 4 e a
 hebreo [] e b 4 e o
 hebrón [] e b 4 o n
+hebrón(2) [] e b 4 o m
 hecha [] e t S a
 hechas [] e t S a s
 hechizo [] e t S i s o
@@ -11384,6 +11867,7 @@ hit [] i t
 hitler [] i t l e 4
 hits [] i t s
 hizo [] i s o
+hizo(2) [] i T o
 ho [] o
 hoffman [] o f m a n
 hoffmanlaroche [] o f m a n l a 4 o t S e
@@ -11481,9 +11965,11 @@ hostil [] o s t i l
 hostiles [] o s t i l e s
 hostilidades [] o s t i l i d a d e s
 hotel [] o t e l
+hotel(2) [] o t e k
 houston [] o u s t o n
 hoy [] o i
 hoy(2) [] o j
+hoy(3) [] o j u
 hoya [] o j a
 huancayo [] u a n k a j o
 huarache [] u a 4 a t S e
@@ -11555,6 +12041,7 @@ huyendo [] u j e n d o
 huyeron [] u j e 4 o n
 huyó [] u j o
 huérfanos [] u e 4 f a n o s
+huésped [] w e s p e d
 huía [] u i a
 huían [] u i a n
 hyundai [] j u n d a i
@@ -11575,6 +12062,7 @@ ibarra [] i b a r a
 ibañez [] i b a n j e s
 iberdrola [] i b e 4 b 4 o l a
 iberdrola(2) [] i b e 4 d 4 o l a
+iberdrola(3) [] i b e d 4 o l a
 iberia [] i b e 4 i a
 iberoamericana [] i b e 4 o a m e 4 i k a n a
 iberoamericanos [] i b e 4 o a m e 4 i k a n o s
@@ -11589,6 +12077,7 @@ ichazo [] i t S a s o
 ida [] i d a
 idaho [] i d a o
 idea [] i d e a
+idea(2) [] i d e j a
 ideal [] i d e a l
 ideales [] i d e a l e s
 idealizar [] i d e a l i s a 4
@@ -11710,8 +12199,8 @@ impiden [] i m p i d e n
 impidieran [] i m p i d i e 4 a n
 impidieron [] i m p i d i e 4 o n
 impidiéndole [] i m p i d i e n d o l e
-impidió [] i m p i d i o
-impidió(2) [] i m p i d j o
+impidió [] i m p i d j o
+impidió(2) [] i m p i d i o
 implacable [] i m p l a k a b l e
 implante [] i m p l a n t e
 implantó [] i m p l a n t o
@@ -11778,7 +12267,9 @@ improbable [] i m p 4 o b a b l e
 improcedencia [] i m p 4 o s e d e n s i a
 improcedente [] i m p 4 o s e d e n t e
 improperios [] i m p 4 o p e 4 i o s
-improvisación [] i m p 4 o b i s a s j o n
+improvisación [] i m p 4 o b i s a T j o n
+improvisación(2) [] i m p 4 o b i s a s j o n
+improvisación(3) [] i m p 4 o b i s a T j o m
 improvisada [] i m p 4 o b i s a d a
 improvisar [] i m p 4 o b i s a 4
 imprudencia [] i m p 4 u d e n s i a
@@ -11861,6 +12352,7 @@ incita [] i n s i t a
 incitan [] i n s i t a n
 incitar [] i n s i t a 4
 inció [] i n s i o
+inclina [] i n k l i n a
 inclinaciones [] i n k l i n a s j o n e s
 inclinada [] i n k l i n a d a
 inclinadas [] i n k l i n a d a s
@@ -11877,6 +12369,7 @@ inclusive [] i n k l u s i b e
 incluso [] i n k l u s o
 incluya [] i n k l u j a
 incluye [] i n k l u j e
+incluye(2) [] i n k l u j\ e
 incluyen [] i n k l u j e n
 incluyendo [] i n k l u j e n d o
 incluyeron [] i n k l u j e 4 o n
@@ -11885,6 +12378,8 @@ incluía [] i n k l u i a
 incluían [] i n k l u i a n
 incluído [] i n k l u i d o
 incompatibilidad [] i n k o m p a t i b i l i d a d
+incompatibilidad(2) [] i n k o m p a t i b i l i d a
+incompatibilidad(3) [] i n k o p a t i b i l i d a d
 incompatible [] i n k o m p a t i b l e
 incompatibles [] i n k o m p a t i b l e s
 incomprehensión [] i n k o m p 4 e e n s i o n
@@ -12029,6 +12524,7 @@ indulto [] i n d u l t o
 indultos [] i n d u l t o s
 industria [] i n d u s t 4 i a
 industria(2) [] i n d u s t 4 j a
+industria(3) [] i n d u s t 4 j e
 industrial [] i n d u s t 4 i a l
 industriales [] i n d u s t 4 i a l e s
 industrializadas [] i n d u s t 4 i a l i s a d a s
@@ -12102,8 +12598,11 @@ informa [] i n f o 4 m a
 informaba [] i n f o 4 m a b a
 informaciones [] i m f o 4 m a s j o n e s
 informaciones(2) [] i n f o 4 m a s i o n e s
-información [] i m f o 4 m a s j o n
-información(2) [] i n f o 4 m a s i o n
+informaciones(3) [] i m f o 4 m a T j o n e s
+información [] i m f o 4 m a T j o n
+información(2) [] i m f o 4 m a s j o n
+información(3) [] i n f o 4 m a s i o n
+información(4) [] i m f o 4 m a T j o m
 informada [] i n f o 4 m a d a
 informado [] i m f o 4 m a d o
 informado(2) [] i n f o 4 m a d o
@@ -12180,9 +12679,13 @@ ingresos [] i n g 4 e s o s
 ingresó [] i n g 4 e s o
 ingrid [] i n g 4 i
 ingrid(2) [] i n g 4 i d
+ingrid(3) [] i n g 4 i b
 inhabilitación [] i n a b i l i t a s j o m
+inhabilitación(2) [] i n a b i l i t a T j o m
+inhabilitación(3) [] i n a b i l i t a T j o n
 inhabilitado [] i n a b i l i t a d o
 inhabilitados [] i n a b i l i t a d o s
+inhabilitar [] i n a b i l i t a 4
 inhabilitó [] i n a b i l i t o
 inhalan [] i n a l a n
 inhalar [] i n a l a 4
@@ -12200,6 +12703,7 @@ iniciada [] i n i s i a d a
 iniciadas [] i n i s i a d a s
 iniciado [] i n i s j a d o
 iniciado(2) [] i n i s i a d o
+iniciado(3) [] i n i T j a d o
 iniciados [] i n i s i a d o s
 inicial [] i n i s i a l
 iniciales [] i n i s j a l e s
@@ -12243,6 +12747,7 @@ inkatha [] i n k a t a
 inmediaciones [] i n m e d i a s i o n e s
 inmediata [] i n m e d i a t a
 inmediata(2) [] i n m e d j a t a
+inmediata(3) [] i m m e d j a t a
 inmediatamente [] i n m e d i a t a m e n t e
 inmediatas [] i n m e d i a t a s
 inmediato [] i n m e d i a t o
@@ -12433,8 +12938,9 @@ intencionado [] i n t e n s i o n a d o
 intencional [] i n t e n s i o n a l
 intencionalmente [] i n t e n s i o n a l m e n t e
 intenciones [] i n t e n s i o n e s
-intención [] i n t e n s j o n
-intención(2) [] i n t e n s i o n
+intención [] i n t e n T j o n
+intención(2) [] i n t e n s j o n
+intención(3) [] i n t e n s i o n
 intensa [] i n t e n s a
 intensamente [] i n t e n s a m e n t e
 intensas [] i n t e n s a s
@@ -12517,6 +13023,7 @@ interminable [] i n t e 4 m i n a b l e
 interna [] i n t e 4 n a
 internacional [] i n t e 4 n a s j o n a l
 internacional(2) [] i n t e 4 n a s i o n a l
+internacional(3) [] i n t e 4 n a T j o n a l
 internacionales [] i n t e 4 n a s i o n a l e s
 internacionalmente [] i n t e 4 n a s i o n a l m e n t e
 internado [] i n t e 4 n a d o
@@ -12560,13 +13067,17 @@ interrumpirán [] i n t e r u m p i 4 a n
 interrumpiría [] i n t e r u m p i 4 i a
 interrumpió [] i n t e r u m p i o
 interrupciones [] i n t e r u p s j o n e s
+interrupciones(2) [] i n t e r u f T j o n e s
+interrupciones(3) [] i n t e r u p T j o n e s
 interrupción [] i n t e r u p s i o n
 interruptor [] i n t e r u p t o 4
 intervalo [] i n t e 4 b a l o
 intervenciones [] i n t e 4 b e n s i o n e s
 intervencionista [] i n t e 4 b e n s i o n i s t a
-intervención [] i n t e 4 b e n s j o n
-intervención(2) [] i n t e 4 b e n s i o n
+intervención [] i n t e 4 b e n T j o n
+intervención(2) [] i n t e 4 b e n s j o n
+intervención(3) [] i n t e 4 b e n s i o n
+intervención(4) [] i n t e 4 b e n T j o m
 intervenga [] i n t e 4 b e n g a
 intervengan [] i n t e 4 b e n g a n
 intervenido [] i n t e 4 b e n i d o
@@ -12581,6 +13092,7 @@ interés [] i n t e 4 e s
 intestinas [] i n t e s t i n a s
 intifada [] i n t i f a d a
 intimidad [] i n t i m i d a d
+intimidad(2) [] i n t i m i d a T
 intimidada [] i n t i m i d a d a
 intimidados [] i n t i m i d a d o s
 intimidar [] i n t i m i d a 4
@@ -12596,8 +13108,11 @@ intranquilidad [] i n t 4 a n k i l i d a d
 intransigencia [] i n t 4 a n s i x e n s i a
 intriga [] i n t 4 i g a
 intrigado [] i n t 4 i g a d o
-introducción [] i n t 4 o d u k s j o n
-introducción(2) [] i n t 4 o d u k s i o n
+introducción [] i n t 4 o d u k T j o n
+introducción(2) [] i n t 4 o d u k s j o n
+introducción(3) [] i n t 4 o d u k s i o n
+introducción(4) [] i n t 4 o d u T T j o n
+introducción(5) [] i n t 4 o d u T j o n
 introduce [] i n t 4 o d u s e
 introducida [] i n t 4 o d u s i d a
 introducido [] i n t 4 o d u s i d o
@@ -12649,9 +13164,11 @@ investcom [] i n b e s t k o m
 investidura [] i n b e s t i d u 4 a
 investiga [] i n b e s t i g a
 investigaciones [] i n b e s t i g a s i o n e s
-investigación [] i m b e s t i g a s j o m
-investigación(2) [] i m b e s t i g a s j o n
-investigación(3) [] i n b e s t i g a s i o n
+investigación [] i m b e s t i g a T j o n
+investigación(2) [] i m b e s t i g a s j o m
+investigación(3) [] i m b e s t i g a s j o n
+investigación(4) [] i n b e s t i g a s i o n
+investigación(5) [] i m b e s t i g a T j o m
 investigadas [] i n b e s t i g a d a s
 investigado [] i n b e s t i g a d o
 investigador [] i n b e s t i g a d o 4
@@ -12778,8 +13295,9 @@ israel(2) [] i s r a e l
 israelita [] i s 4 a e l i t a
 israelitas [] i s 4 a e l i t a s
 israelopalestinas [] i s 4 a e l o p a l e s t i n a s
-israelí [] i s 4 a e l i
-israelí(2) [] i s r a e l i
+israelí [] i s r a e l i
+israelí(2) [] i s 4 a e l i
+israelí(3) [] i 4 r a e l i
 israelíes [] i s 4 a e l i e s
 israelípalestino [] i s 4 a e l i p a l e s t i n o
 isuélite [] i s u e l i t e
@@ -12795,10 +13313,13 @@ iusatel [] i u s a t e l
 ivanov [] i b a n o b
 ivar [] i b a 4
 ivonne [] i b o n n e
+iyí [] i j\ i
 izar [] i s a 4
 izetbegovic [] i s e t b e g o b i k
 izquierda [] i s k j e 4 d a
 izquierda(2) [] i s k i e 4 d a
+izquierda(3) [] i T k j e 4 d a
+izquierda(4) [] i k j e 4 d a
 izquierdista [] i s k i e 4 d i s t a
 izquierdistas [] i s k i e 4 d i s t a s
 izquierdo [] i s k i e 4 d o
@@ -12824,6 +13345,11 @@ jalisciense [] x a l i s i e n s e
 jalisco [] x a l i s k o
 jamaica [] x a m a i k a
 james [] x a m e s
+james(2) [] j\ e j s
+james(3) [] j\ e n s
+james(4) [] j\ e i m s
+james(5) [] j\ e j m s
+james(6) [] j\ a m e s
 jamás [] x a m a s
 jamón [] x a m o n
 jan [] x a n
@@ -12875,6 +13401,7 @@ jersey [] x e 4 s e i
 jerusalén [] x e 4 u s a l e n
 jerárquica [] x e 4 a 4 k i k a
 jerónimo [] x e 4 o n i m o
+jerónimo(2) [] x e 4 o e n i m o
 jesse [] x e s s e
 jessica [] x e s s i k a
 jessie [] x e s s i e
@@ -12907,6 +13434,7 @@ johns [] x o n s
 johnson [] x o n s o n
 jonas [] j o n a s
 jonas(2) [] x o n a s
+jonas(3) [] j\ o n a s
 jones [] x o n e s
 jonrones [] x o n r o n e s
 jonrón [] x o n r o n
@@ -12929,6 +13457,7 @@ josé [] x o s e
 josú [] x o s u
 jota [] x o t a
 joven [] x o b e n
+joven(2) [] x o b e m
 jovencita [] x o b e n s i t a
 jovencitas [] x o b e n s i t a s
 joy [] x o i
@@ -12937,7 +13466,9 @@ joão [] x o o
 ju [] x u
 juan [] x u a n
 juan(2) [] x w a n
+juan(3) [] x w a m
 juana [] x u a n a
+juanes [] x w a n e s
 juanito [] x u a n i t o
 jubilación [] x u b i l a s i o n
 jubilado [] x u b i l a d o
@@ -12946,6 +13477,7 @@ jubilosos [] x u b i l o s o s
 jubiló [] x u b i l o
 judicial [] x u d i s j a l
 judicial(2) [] x u d i s i a l
+judicial(3) [] x u d i T j a l
 judiciales [] x u d i s j a l e s
 judiciales(2) [] x u d i s i a l e s
 judía [] x u d i a
@@ -12955,6 +13487,7 @@ judíos [] x u d i o s
 jue [] x u e
 jueces [] x u e s e s
 jueces(2) [] x w e s e s
+jueces(3) [] x w e T e s
 juega [] x u e g a
 juegan [] x u e g a n
 juegen [] x u e x e n
@@ -12993,6 +13526,7 @@ julia [] x u l i a
 juliano [] x u l i a n o
 julieta [] x u l i e t a
 julio [] x u l i o
+juliz [] x u l i T
 julián [] x u l i a n
 jun [] x u n
 jungsoo [] x u n g s o o
@@ -13028,11 +13562,16 @@ jurídica [] x u 4 i d i k a
 jurídicamente [] x u 4 i d i k a m e n t e
 jurídico [] x u 4 i d i k o
 jurídicos [] x u 4 i d i k o s
+just [] j\ a s
+just(2) [] j\ u s
+just(3) [] x u s
+just(4) [] j a s
 justa [] x u s t a
 justamente [] x u s t a m e n t e
 justas [] x u s t a s
 justicia [] x u s t i s j a
 justicia(2) [] x u s t i s i a
+justicia(3) [] x u s t i T j a
 justifica [] x u s t i f i k a
 justificaciones [] x u s t i f i k a s i o n e s
 justificación [] x u s t i f i k a s i o n
@@ -13140,6 +13679,8 @@ kuwait [] k u u a i t
 kuwaití [] k u w a i t i
 kwazulunatal [] k u a s u l u n a t a l
 kwon [] k u o n
+kylie [] k i l i
+kylie(2) [] k a j l i
 kyrgyzstán [] k i 4 g i s s t a n
 l [] l
 la [] a l
@@ -13172,6 +13713,7 @@ lada [] l a d a
 lado [] l a d o
 lados [] l a d o s
 ladrones [] l a d 4 o n e s
+lady [] l e j d i
 lagarto [] l a g a 4 t o
 lago [] l a g o
 lagos [] l a g o s
@@ -13201,6 +13743,7 @@ lance [] l a n s e
 lanza [] l a n s a
 lanzada [] l a n s a d a
 lanzado [] l a n s a d o
+lanzado(2) [] l a n T a d o
 lanzador [] l a n s a d o 4
 lanzadores [] l a n s a d o 4 e s
 lanzados [] l a n s a d o s
@@ -13208,6 +13751,7 @@ lanzamiento [] l a n s a m j e n t o
 lanzamiento(2) [] l a n s a m i e n t o
 lanzan [] l a n s a n
 lanzando [] l a n s a n d o
+lanzando(2) [] l a n T a n d o
 lanzar [] l a n s a 4
 lanzarme [] l a n s a 4 m e
 lanzaron [] l a n s a 4 o n
@@ -13232,6 +13776,9 @@ larry [] l a r i
 las [] a s l
 las(2) [] l a
 las(3) [] l a s
+las(4) [] l a 4
+las(5) [] 4 a s
+las(6) [] l o s
 lastiman [] l a s t i m a n
 lastimosas [] l a s t i m o s a s
 lastra [] l a s t 4 a
@@ -13249,6 +13796,9 @@ latinoamericanos [] l a t i n o a m e 4 i k a n o s
 latinoamérica [] l a t i n o a m e 4 i k a
 latinos [] l a t i n o s
 laud [] l a u d
+lauper [] l a w p e 4
+lauper(2) [] l o p e 4
+lauper(3) [] l a u p e r
 laura [] l a u 4 a
 laurent [] l a u 4 e n t
 lausana [] l a u s a n a
@@ -13264,6 +13814,7 @@ layland [] l a i l a n d
 lazo [] l a s o
 lazos [] l a s o s
 le [] l e
+le(2) [] d l e
 leach [] l e a t S
 leal [] l e a l
 leales [] l e a l e s
@@ -13300,6 +13851,7 @@ legislados [] l e x i s l a d o s
 legislativa [] l e x i s l a t i b a
 legislativas [] l e x i s l a t i b a s
 legislativo [] l e x i s l a t i b o
+legislativo(2) [] l e x i l l a t i b o
 legislativos [] l e x i s l a t i b o s
 legislatura [] l e x i s l a t u 4 a
 legitimar [] l e x i t i m a 4
@@ -13330,6 +13882,7 @@ leo [] l e o
 leobardo [] l e o b a 4 d o
 leon [] l e o n
 leona [] l e o n a
+leona(2) [] l i o n a
 leonard [] l e o n a 4 d
 leonchino [] l e o n t S i n o
 leonel [] l e o n e l
@@ -13342,6 +13895,8 @@ lerner [] l e 4 n e 4
 leroy [] l e 4 o i
 les [] l e
 les(2) [] l e s
+les(3) [] l e 4
+les(4) [] 4 e s
 lesbianas [] l e s b j a n a s
 lescano [] l e s k a n o
 lesionadas [] l e s i o n a d a s
@@ -13378,6 +13933,8 @@ levemente [] l e b e m e n t e
 leves [] l e b e s
 levy [] l e b i
 lewis [] l e g w i s
+lewis(2) [] l e w i s
+lewis(3) [] l u i s
 ley [] l e i
 ley(2) [] l e j
 leyba [] l e i b a
@@ -13417,6 +13974,9 @@ liberarse [] l i b e 4 a 4 s e
 liberasociado [] l i b e 4 a s o s i a d o
 liberen [] l i b e 4 e n
 libertad [] l i b e 4 t a d
+libertad(2) [] l i b e 4 t a 4
+libertad(3) [] l i b e 4 t a T
+libertad(4) [] l i b e 4 t a
 libertades [] l i b e 4 t a d e s
 libertadores [] l i b e 4 t a d o 4 e s
 libertaria [] l i b e 4 t a 4 i a
@@ -13442,6 +14002,7 @@ libró [] l i b 4 o
 libán [] l i b a n
 licencia [] l i s e n s j a
 licencia(2) [] l i s e n s i a
+licencia(3) [] l i T e n T j a
 licenciada [] l i s e n s i a d a
 licenciado [] l i s e n s i a d o
 licencias [] l i s e n s i a s
@@ -13553,6 +14114,8 @@ llamada [] l j a m a d a
 llamadas [] l j a m a d a s
 llamado [] l j a m a d o
 llamados [] l j a m a d o s
+llamados(2) [] j a m a d o s
+llamados(3) [] L a m a d o s
 llamamiento [] l j a m a m i e n t o
 llamamos [] l j a m a m o s
 llaman [] l j a m a n
@@ -13576,21 +14139,31 @@ llantas [] l j a n t a s
 llaves [] l j a b e s
 llega [] j e g a
 llega(2) [] l j e g a
+llega(3) [] j\ e g a
+llega(4) [] L e g a
 llegaba [] l j e g a b a
 llegada [] l j e g a d a
 llegadas [] l j e g a d a s
 llegado [] l j e g a d o
+llegado(2) [] j\ e g a d o
+llegado(3) [] L e g a d o
 llegados [] l j e g a d o s
 llegamos [] l j e g a m o s
 llegan [] l j e g a n
 llegando [] l j e g a n d o
 llegar [] l j e g a 4
+llegar(2) [] L e g a 4
+llegar(3) [] j\ e g a 4
 llegara [] l j e g a 4 a
 llegaran [] l j e g a 4 a n
 llegaron [] l j e g a 4 o n
 llegarse [] l j e g a 4 s e
-llegará [] l j e g a 4 a
-llegarán [] l j e g a 4 a n
+llegará [] L e g a 4 a
+llegará(2) [] l j e g a 4 a
+llegará(3) [] j\ e g a 4 a
+llegarán [] L e g a 4 a n
+llegarán(2) [] l j e g a 4 a n
+llegarán(3) [] j e g a 4 a n
 llegaría [] l j e g a 4 i a
 llegase [] l j e g a s e
 llegue [] l j e g e
@@ -13610,6 +14183,8 @@ llevaba [] l j e b a b a
 llevaban [] l j e b a b a n
 llevada [] l j e b a d a
 llevadas [] l j e b a d a s
+llevadas(2) [] j\ e b a d a s
+llevadas(3) [] L e b a d a s
 llevado [] l j e b a d o
 llevados [] l j e b a d o s
 llevamos [] l j e b a m o s
@@ -13655,6 +14230,8 @@ loca [] l o k a
 local [] l o k a l
 locales [] l o k a l e s
 localidad [] l o k a l i d a d
+localidad(2) [] l o k a l i d a T
+localidad(3) [] l o k a l i d a
 localidades [] l o k a l i d a d e s
 localiza [] l o k a l i s a
 localización [] l o k a l i s a s i o n
@@ -13703,6 +14280,7 @@ lomas [] l o m a s
 lomelí [] l o m e l i
 lonchino [] l o n t S i n o
 londres [] l o n d 4 e s
+londres(2) [] l o m b 4 e s
 long [] l o n g
 longevidad [] l o n x e b i d a d
 loni [] l o n i
@@ -13715,6 +14293,8 @@ los(2) [] l o 4
 los(3) [] l o s
 los(4) [] o s l
 los(5) [] s l o
+los(6) [] 4 o s
+los(7) [] o s
 lote [] l o t e
 lotería [] l o t e 4 i a
 loto [] l o t o
@@ -13725,16 +14305,21 @@ lozano [] l o s a n o
 lu [] l u
 luanda [] l u a n d a
 luc [] l u k
+luc(2) [] l u g
+luc(3) [] l u tS
 luce [] l u s e
 lucerito [] l u s e 4 i t o
 luces [] l u s e s
+luces(2) [] l u T e s
 lucha [] l u t S a
+lucha(2) [] l u tS a
 luchado [] l u t S a d o
 luchador [] l u t S a d o 4
 luchadores [] l u t S a d o 4 e s
 luchan [] l u t S a n
 luchando [] l u t S a n d o
 luchar [] l u t S a 4
+lucharán [] l u tS a 4 a m
 lucharía [] l u t S a 4 i a
 luchas [] l u t S a s
 luche [] l u t S e
@@ -13754,6 +14339,7 @@ lugutu [] l u g u t u
 luigi [] l u i x i
 luis [] l u i s
 luis(2) [] l w i s
+luis(3) [] l u 4
 luisa [] l u i s a
 luisiana [] l u i s i a n a
 lujambio [] l u x a m b i o
@@ -13779,6 +14365,7 @@ lusaka [] l u s a k a
 lustros [] l u s t 4 o s
 luther [] l u t e 4
 luz [] l u s
+luz(2) [] l u T
 lyndon [] l i n d o n
 lynn [] l i n n
 lágrimas [] l a g 4 i m a s
@@ -13788,6 +14375,7 @@ lámparas [] l a m p a 4 a s
 láser [] l a s e 4
 lázaro [] l a s a 4 o
 lérida [] l e 4 i d a
+lérida(2) [] l e d i d a
 líbano [] l i b a n o
 líd [] l i d
 líder [] l i d e 4
@@ -13822,14 +14410,24 @@ madeleine [] m a d e l e i n e
 madera [] m a d e 4 a
 madiatizada [] m a d i a t i s a d a
 madison [] m a d i s o n
+madonna [] m a d o n a
 madrazo [] m a d 4 a s o
 madre [] m a d 4 e
+madre(2) [] m a b 4 e
 madres [] m a d 4 e s
 madrid [] m a d 4 i
 madrid(2) [] m a d 4 i d
-madrileña [] m a d 4 i l e n j a
+madrid(3) [] m a d 4 i T
+madrid(4) [] m a d 4 i s
+madrid(5) [] m a b 4 i
+madrileña [] m a d 4 i l e J a
+madrileña(2) [] m a d 4 i l e n j a
+madrileña(3) [] m a d e 4 i l e J a
 madrileño [] m a d 4 i l e n j o
+madrileño(2) [] m a d 4 i l e J o
 madrileños [] m a d 4 i l e n j o s
+madrileños(2) [] m a d 4 e l e J o s
+madrileños(3) [] m a d 4 i l e J o s
 madrugada [] m a d 4 u g a d a
 madson [] m a d s o n
 madura [] m a d u 4 a
@@ -13880,6 +14478,7 @@ mal [] m a l
 mala [] m a l a
 malabar [] m a l a b a 4
 malagueños [] m a l a g e n j o s
+malagueños(2) [] m a l a g e J o s
 malang [] m a l a n g
 malas [] m a l a s
 malasia [] m a l a s i a
@@ -13972,9 +14571,11 @@ mangueras [] m a n g e 4 a s
 manifestaba [] m a n i f e s t a b a
 manifestaban [] m a n i f e s t a b a n
 manifestaciones [] m a n i f e s t a s i o n e s
-manifestación [] m a n i f e s t a s j o m
-manifestación(2) [] m a n i f e s t a s j o n
-manifestación(3) [] m a n i f e s t a s i o n
+manifestación [] m a n i f e s t a T j o n
+manifestación(2) [] m a n i f e s t a s j o m
+manifestación(3) [] m a n i f e s t a s j o n
+manifestación(4) [] m a n i f e s t a s i o n
+manifestación(5) [] m a n i f e s t a T j o m
 manifestado [] m a n i f e s t a d o
 manifestando [] m a n i f e s t a n d o
 manifestantes [] m a n i f e s t a n t e s
@@ -14009,7 +14610,9 @@ manta [] m a n t a
 mantanzas [] m a n t a n s a s
 mantas [] m a n t a s
 mantendrá [] m a n t e n d 4 a
+mantendrá(2) [] m a n t e n b 4 a
 mantendrán [] m a n t e n d 4 a n
+mantendrán(2) [] m a n t e n b 4 a n
 mantendría [] m a n t e n d 4 i a
 mantendrían [] m a n t e n d 4 i a n
 mantenemos [] m a n t e n e m o s
@@ -14053,6 +14656,7 @@ maoísta [] m a o i s t a
 mapa [] m a p a
 mapamundi [] m a p a m u n d i
 mapas [] m a p a s
+mapfre [] m a f 4 e
 mapiripán [] m a p i 4 i p a n
 maquiavelo [] m a k i a b e l o
 maquillado [] m a k i l j a d o
@@ -14068,6 +14672,8 @@ maravilla [] m a 4 a b i l j a
 maravillas [] m a 4 a b i l j a s
 maravilloso [] m a 4 a b i l j o s o
 marañón [] m a 4 a n j o n
+marañón(2) [] m a 4 a J o n
+marañón(3) [] m a 4 a J o m
 marc [] m a 4 k
 marca [] m a 4 k a
 marcaba [] m a 4 k a b a
@@ -14085,11 +14691,13 @@ marcatel [] m a 4 k a t e l
 marcelino [] m a 4 s e l i n o
 marcelo [] m a 4 s e l o
 marcha [] m a 4 t S a
+marcha(2) [] m a 4 tS a
 marchan [] m a 4 t S a n
 marchar [] m a 4 t S a 4
 marcharnos [] m a 4 t S a 4 n o s
 marcharon [] m a 4 t S a 4 o n
 marchas [] m a 4 t S a s
+marchas(2) [] m a 4 tS a s
 marche [] m a 4 t S e
 marcia [] m a 4 s i a
 marcial [] m a 4 s i a l
@@ -14172,7 +14780,9 @@ marxista [] m a 4 k s i s t a
 mary [] m a 4 i
 maryland [] m a 4 i l a n d
 marzo [] m a 4 s o
+marzo(2) [] m a 4 T o
 maría [] m a 4 i a
+maría(2) [] m a 4 j a
 marítima [] m a 4 i t i m a
 marítimas [] m a 4 i t i m a s
 marítimo [] m a 4 i t i m o
@@ -14186,6 +14796,7 @@ mascota [] m a s k o t a
 mascotas [] m a s k o t a s
 masculino [] m a s k u l i n o
 masificación [] m a s i f i k a s j o n
+masificación(2) [] m a s i f i k a T j o n
 masiva [] m a s i b a
 masivas [] m a s i b a s
 masividad [] m a s i b i d a d
@@ -14252,7 +14863,9 @@ maya [] m a j a
 mayagüez [] m a j a g e s
 mayas [] m a j a s
 mayo [] m a j o
+mayo(2) [] m a j\ o
 mayor [] m a j o 4
+mayor(2) [] m a j\ o 4
 mayoreo [] m a j o 4 e o
 mayores [] m a j o 4 e s
 mayoritaria [] m a j o 4 i t a 4 i a
@@ -14260,7 +14873,8 @@ mayoritariamente [] m a j o 4 i t a 4 i a m e n t e
 mayoritario [] m a j o 4 i t a 4 i o
 mayoritarios [] m a j o 4 i t a 4 i o s
 mayormente [] m a j o 4 m e n t e
-mayoría [] m a j o 4 i a
+mayoría [] m a j\ o 4 i a
+mayoría(2) [] m a j o 4 i a
 mayra [] m a i 4 a
 maystone [] m a i s t o n e
 mayté [] m a i t e
@@ -14269,7 +14883,8 @@ mazatlán [] m a s a t l a n
 mazo [] m a s o
 maía [] m a i a
 maíz [] m a i s
-mañana [] m a n j a n a
+mañana [] m a J a n a
+mañana(2) [] m a n j a n a
 mañani [] m a n j a n i
 mcaffrey [] m k a f 4 e i
 mccarthy [] m k k a 4 t i
@@ -14295,8 +14910,11 @@ medel [] m e d e l
 medellín [] m e d e l j i n
 medero [] m e d e 4 o
 media [] m e d i a
-mediación [] m e d i a s i o n
-mediación(2) [] m e d j a s j o n
+media(2) [] m e d j a
+mediación [] m e d j a T j o n
+mediación(2) [] m e d j a T j o m
+mediación(3) [] m e d i a s i o n
+mediación(4) [] m e d j a s j o n
 mediadas [] m e d i a d a s
 mediador [] m e d i a d o 4
 mediadora [] m e d i a d o 4 a
@@ -14316,10 +14934,12 @@ mediatizada [] m e d i a t i s a d a
 medicamento [] m e d i k a m e n t o
 medicamentos [] m e d i k a m e n t o s
 medicina [] m e d i s i n a
+medicina(2) [] m e d i T i n a
 medicinales [] m e d i s i n a l e s
 medicinas [] m e d i s i n a s
 medida [] m e d i d a
 medidas [] m e d i d a s
+medidas(2) [] m e i d a s
 medido [] m e d i d o
 medimos [] m e d i m o s
 medina [] m e d i n a
@@ -14361,6 +14981,8 @@ melbourne [] m e l b o u 4 n e
 melchor [] m e l t S o 4
 melero [] m e l e 4 o
 melgarejo [] m e l g a 4 e x o
+melilla [] m e l i j a
+melilla(2) [] m e l i L a
 melissa [] m e l i s s a
 melnov [] m e l n o b
 melodía [] m e l o d i a
@@ -14458,6 +15080,9 @@ metas [] m e t a s
 mete [] m e t e
 meten [] m e t e n
 meteorológicas [] m e t e o 4 o l o x i k a s
+meteorológicas(2) [] m e t e 4 o l o x i k a s
+meteorológicas(3) [] m e t 4 o l o x i k a s
+meteorológicas(4) [] m e t e 4 i o l o x i k a s
 meteorológico [] m e t e o 4 o l o x i k o
 meteorológicos [] m e t e o 4 o l o x i k o s
 meter [] m e t e 4
@@ -14487,6 +15112,7 @@ mexicanoamericanos [] m e x i k a n o a m e 4 i k a n o s
 mexicanos [] m e x i k a n o s
 meyehualco [] m e j e u a l k o
 meyer [] m e j e 4
+meyer(2) [] m e j\ e 4
 meza [] m e s a
 mezcla [] m e s k l a
 mezcladas [] m e s k l a d a s
@@ -14576,8 +15202,13 @@ millonarios [] m i l j o n a 4 i o s
 millones [] m i j o n e s
 millones(2) [] m i l j o n e s
 millones(3) [] s m i l j o n e
+millones(4) [] m i j\ o n e s
+millones(5) [] m i L o n e s
 millán [] m i l j a n
 millón [] m i l j o n
+millón(2) [] m i j o n
+millón(3) [] m i L o m
+millón(4) [] m i L o n
 milosevic [] m i l o s e b i k
 milton [] m i l t o n
 milutinovic [] m i l u t i n o b i k
@@ -14606,6 +15237,14 @@ ministro [] m i n i s t 4 o
 ministros [] m i n i s t 4 o s
 minnesota [] m i n n e s o t a
 mino [] m i n o
+minogue [] m i n o x
+minogue(2) [] m i n o g
+minogue(3) [] m i n o s
+minogue(4) [] m i n o
+minogue(5) [] m i n o w e
+minogue(6) [] m i n o tS
+minogue(7) [] m i n o k
+minogue(8) [] m i n o u
 minoritarias [] m i n o 4 i t a 4 i a s
 minoritarios [] m i n o 4 i t a 4 i o s
 minoría [] m i n o 4 i a
@@ -14660,6 +15299,7 @@ misterios [] m i s t e 4 i o s
 misteriosa [] m i s t e 4 i o s a
 misterioso [] m i s t e 4 i o s o
 mitad [] m i t a d
+mitad(2) [] m i t a
 mitar [] m i t a 4
 mitigante [] m i t i g a n t e
 mitigar [] m i t i g a 4
@@ -14667,14 +15307,16 @@ mitin [] m i t i n
 mito [] m i t o
 mitología [] m i t o l o x i a
 mixta [] m i k s t a
-miércoles [] m i e 4 k o l e s
-miércoles(2) [] m j e 4 k o l e s
+miércoles [] m j e 4 k o l e s
+miércoles(2) [] m i e 4 k o l e s
 mlanlovac [] m l a n l o b a k
 mmh [] m m
 mn [] m n
 mo [] m o
 mobiliario [] m o b i l i a 4 i o
 mobutu [] m o b u t u
+moby [] m u b i
+moby(2) [] m o b i
 mochila [] m o t S i l a
 mociones [] m o s i o n e s
 moción [] m o s i o n
@@ -14742,6 +15384,7 @@ molinó [] m o l i n o
 momadi [] m o m a d i
 momento [] m o m e n t o
 momentos [] m o m e n t o s
+momentos(2) [] m o m e n t o
 momentánea [] m o m e n t a n e a
 momia [] m o m i a
 mon [] m o n
@@ -14775,6 +15418,8 @@ mont [] m o n t
 monta [] m o n t a
 montadas [] m o n t a d a s
 montagnier [] m o n t a n j e 4
+montagnier(2) [] m o n t a J e 4
+montagnier(3) [] m o n t a J e 4 e
 montaje [] m o n t a x e
 montajes [] m o n t a x e s
 montalbán [] m o n t a l b a n
@@ -14805,6 +15450,7 @@ monzón [] m o n s o n
 monóxido [] m o n o k s i d o
 moon [] m o o n
 moon(2) [] m u n
+moon(3) [] m o n
 mora [] m o 4 a
 morada [] m o 4 a d a
 moral [] m o 4 a l
@@ -14898,6 +15544,7 @@ moya [] m o j a
 muammar [] m u a m m a 4
 mubarak [] m u b a 4 a k
 mucha [] m u t S a
+mucha(2) [] m u tS a
 muchacha [] m u t S a t S a
 muchachas [] m u t S a t S a s
 muchacho [] m u t S a t S o
@@ -14907,6 +15554,7 @@ muchas [] m u t S a s
 muchedumbre [] m u t S e d u m b 4 e
 muchinga [] m u t S i n g a
 mucho [] m u t S o
+mucho(2) [] m u tS o
 muchos [] m u t S o s
 muchísima [] m u t S i s i m a
 muchísimas [] m u t S i s i m a s
@@ -15029,14 +15677,18 @@ máquina [] m a k i n a
 máquinas [] m a k i n a s
 márgenes [] m a 4 x e n e s
 márquez [] m a 4 k e s
-más [] m a 4
-más(2) [] m a s
+más [] m a s
+más(2) [] m a 4
+más(3) [] m a
 máscara [] m a s k a 4 a
 máscaras [] m a s k a 4 a s
 mátenlo [] m a t e n l o
 máxima [] m a k s i m a
+máxima(2) [] m a s s i m a
+máxima(3) [] m a k s i m o
 máximas [] m a k s i m a s
 máximo [] m a k s i m o
+máximo(2) [] m a s s i m o
 máximos [] m a k s i m o s
 médica [] m e d i k a
 médicas [] m e d i k a s
@@ -15090,6 +15742,7 @@ nacimiento [] n a s i m i e n t o
 nacimientos [] n a s i m i e n t o s
 nacional [] n a s j o n a l
 nacional(2) [] n a s i o n a l
+nacional(3) [] n a T j o n a l
 nacionales [] n a s i o n a l e s
 nacionalidad [] n a s i o n a l i d a d
 nacionalidades [] n a s i o n a l i d a d e s
@@ -15101,6 +15754,7 @@ nacionalizada [] n a s i o n a l i s a d a
 nacionalizó [] n a s i o n a l i s o
 naciones [] n a s j o n e s
 naciones(2) [] n a s i o n e s
+naciones(3) [] n a T j o n e s
 naciste [] n a s i s t e
 nació [] n a s i o
 nación [] n a s i o n
@@ -15159,6 +15813,8 @@ nave [] n a b e
 navegación [] n a b e g a s i o n
 naves [] n a b e s
 navidad [] n a b i d a d
+navidad(2) [] n a b i d a s
+navidad(3) [] n a b i d a
 navideño [] n a b i d e n j o
 navolato [] n a b o l a t o
 navío [] n a b i o
@@ -15171,6 +15827,8 @@ nazismo [] n a s i s m o
 nba [] n b a
 nbc [] n b k
 ne [] n e
+ne(2) [] n i
+ne(3) [] n j u
 necaxa [] n e k a k s a
 necesaria [] n e s e s a 4 i a
 necesariamente [] n e s e s a 4 i a m e n t e
@@ -15179,6 +15837,8 @@ necesario [] n e s e s a 4 i o
 necesarios [] n e s e s a 4 i o s
 necesarísimo [] n e s e s a 4 i s i m o
 necesidad [] n e s e s i d a d
+necesidad(2) [] n e T e s i d a t
+necesidad(3) [] n e T e s i d a d
 necesidades [] n e s e s i d a d e s
 necesita [] n e s e s i t a
 necesitaba [] n e s e s i t a b a
@@ -15189,7 +15849,8 @@ necesitamos [] n e s e s i t a m o s
 necesitan [] n e s e s i t a n
 necesitar [] n e s e s i t a 4
 necesitaron [] n e s e s i t a 4 o n
-necesitará [] n e s e s i t a 4 a
+necesitará [] n e T e s i t a 4 a
+necesitará(2) [] n e s e s i t a 4 a
 necesitarán [] n e s e s i t a 4 a n
 necesite [] n e s e s i t e
 necmettin [] n e k m e t t i n
@@ -15212,6 +15873,7 @@ negativo [] n e g a t i b o
 negativos [] n e g a t i b o s
 negligencia [] n e g l i x e n s j a
 negligencia(2) [] n e g l i x e n s i a
+negligencia(3) [] n e g l i x e n T j a
 negligencias [] n e g l i x e n s i a s
 negligente [] n e g l i x e n t e
 negociable [] n e g o s i a b l e
@@ -15269,6 +15931,7 @@ neto [] n e t o
 netzahualcóyotl [] n e t s a u a l k o j o t l
 neumonía [] n e u m o n i a
 neuronales [] n e w 4 o n a l e s
+neuronales(2) [] n e w 4 o n a l e s
 neutral [] n e u t 4 a l
 neutralizar [] n e u t 4 a l i s a 4
 nevada [] n e b a d a
@@ -15312,8 +15975,8 @@ nilo [] n i l o
 ningu [] n i n g u
 ninguna [] n i n g u n a
 ninguno [] n i n g u n o
-ningún [] n i n g u m
-ningún(2) [] n i n g u n
+ningún [] n i n g u n
+ningún(2) [] n i n g u m
 nipona [] n i p o n a
 nipones [] n i p o n e s
 nipón [] n i p o n
@@ -15334,6 +15997,7 @@ niños [] n i n j o s
 no [] n o
 nobel [] n o b e l
 noche [] n o t S e
+noche(2) [] n o tS e
 nochebuena [] n o t S e b u e n a
 noches [] n o t S e s
 nocivos [] n o s i b o s
@@ -15356,6 +16020,7 @@ nombró [] n o m b 4 o
 nomenclatura [] n o m e n k l a t u 4 a
 nominaciones [] n o m i n a s j o n e s
 nominaciones(2) [] n o m i n a s i o n e s
+nominaciones(3) [] n o m i n a T j o n e s
 nominación [] n o m i n a s i o n
 nominados [] n o m i n a d o s
 nominal [] n o m i n a l
@@ -15409,6 +16074,7 @@ notar [] n o t a 4
 notas [] n o t a s
 noticia [] n o t i s j a
 noticia(2) [] n o t i s i a
+noticia(3) [] n o t i T j a
 noticiario [] n o t i s i a 4 i o
 noticias [] n o t i s i a s
 noticiero [] n o t i s i e 4 o
@@ -15424,13 +16090,16 @@ notifique [] n o t i f i k e
 notimex [] n o t i m e k s
 notorio [] n o t o 4 i o
 noté [] n o t e
+notó [] n o t o
 novas [] n o b a s
 novecient [] n o b e s i e n t
 novecientas [] n o b e s i e n t a s
 noveciento [] n o b e s i e n t o
 novecientos [] n o b e s j e n t o s
 novecientos(2) [] n o b e s i e n t o s
+novecientos(3) [] n o b e T j e n t o s
 novedad [] n o b e d a d
+novedad(2) [] n o b e d a
 novedades [] n o b e d a d e s
 novedosa [] n o b e d o s a
 novedoso [] n o b e d o s o
@@ -15481,6 +16150,7 @@ nuevo [] n u e b o
 nuevo(2) [] n w e b o
 nuevos [] n u e b o s
 nuevos(2) [] n w e b o s
+nuevos(3) [] n o b o s
 nulidad [] n u l i d a d
 nulo [] n u l o
 numeración [] n u m e 4 a s i o n
@@ -15505,6 +16175,8 @@ níger [] n i x e 4
 núcleo [] n u k l e o
 número [] n u m e 4 o
 números [] n u m e 4 o s
+números(2) [] n u m e 4 o 4
+números(3) [] n u m e 4 o
 núñez [] n u n j e s
 o [] o
 o'donnel [] o d o n n e l
@@ -15530,6 +16202,7 @@ objetivas [] o b x e t i b a s
 objetividad [] o b x e t i b i d a d
 objetivo [] o b x e t i b o
 objetivo(2) [] o x e t i b o
+objetivo(3) [] o x x e t i b o
 objetivos [] o b x e t i b o s
 objeto [] o b x e t o
 objetos [] o b x e t o s
@@ -15577,6 +16250,7 @@ observar [] o b s e 4 b a 4
 observaremos [] o b s e 4 b a 4 e m o s
 observaron [] o b s e 4 b a 4 o n
 observatorio [] o b s e 4 b a t o 4 j o
+observatorio(2) [] o s s e 4 b a t o 4 j o
 obsesionada [] o b s e s i o n a d a
 obsesiones [] o b s e s i o n e s
 obsesivo [] o b s e s i b o
@@ -15596,6 +16270,8 @@ obstáculo [] o b s t a k u l o
 obstáculos [] o b s t a k u l o s
 obtención [] o b t e n s i o n
 obtener [] o b t e n e 4
+obtener(2) [] o p t e n e 4
+obtener(3) [] o x t e n e 4
 obtengan [] o b t e n g a n
 obtenida [] o b t e n i d a
 obtenidas [] o b t e n i d a s
@@ -15606,6 +16282,8 @@ obtiene [] o b t i e n e
 obtienen [] o b t i e n e n
 obtusa [] o b t u s a
 obtuvieron [] o b t u b j e 4 o n
+obtuvieron(2) [] o s t u b j e 4 o n
+obtuvieron(3) [] o f t u b j e 4 o n
 obtuvo [] o b t u b o
 obvia [] o b b i a
 obviamente [] o b b i a m e n t e
@@ -15621,8 +16299,10 @@ ocasionando [] o k a s i o n a n d o
 ocasionaron [] o k a s i o n a 4 o n
 ocasiones [] o k a s i o n e s
 ocasionó [] o k a s i o n o
-ocasión [] o k a s i o n
-ocasión(2) [] o k a s j o n
+ocasión [] o k a s j o n
+ocasión(2) [] o k a s i o n
+ocasión(3) [] a k a s j o n
+ocasión(4) [] o k a s j o m
 ocaña [] o k a n j a
 ocañas [] o k a n j a s
 occidental [] o k s i d e n t a l
@@ -15633,12 +16313,16 @@ occisos [] o k s i s o s
 oceanográfico [] o s e a n o g 4 a f i k o
 oceanógrafo [] o s e a n o g 4 a f o
 ochenta [] o t S e n t a
+ochenta(2) [] o tS e n t a
 ocho [] o t S o
+ocho(2) [] o tS o
+ocho(3) [] e tS o
 ochoa [] o t S o a
 ochocientas [] o t S o s i e n t a s
 ochocientos [] o t S o s j e n t o s
 ochocientos(2) [] o t S o s i e n t o s
 ocio [] o s j o
+ocio(2) [] o T j o
 ociosos [] o s i o s o s
 oción [] o s i o n
 octava [] o k t a b a
@@ -15656,6 +16340,7 @@ ocupaba [] o k u p a b a
 ocupaban [] o k u p a b a n
 ocupación [] o k u p a s j o n
 ocupación(2) [] o k u p a s i o n
+ocupación(3) [] o k u p a T j o n
 ocupada [] o k u p a d a
 ocupadas [] o k u p a d a s
 ocupado [] o k u p a d o
@@ -15680,6 +16365,7 @@ ocurridas [] o k u r i d a s
 ocurrido [] o k u r i d o
 ocurridos [] o k u r i d o s
 ocurriendo [] o k u r i e n d o
+ocurriendo(2) [] o k u r j e n d o
 ocurrieron [] o k u r i e 4 o n
 ocurriese [] o k u r i e s e
 ocurrir [] o k u r i 4
@@ -15723,9 +16409,11 @@ oficializados [] o f i s i a l i s a d o s
 oficializar [] o f i s i a l i s a 4
 oficialmente [] o f i s i a l m e n t e
 oficiar [] o f i s i a 4
-oficiará [] o f i s j a 4 a
+oficiará [] o f i T j a 4 a
+oficiará(2) [] o f i s j a 4 a
 oficina [] o f i s i n a
 oficinas [] o f i s i n a s
+oficinas(2) [] o f i T i n a s
 oficinista [] o f i s i n i s t a
 oficinistas [] o f i s i n i s t a s
 oficio [] o f i s i o
@@ -15733,8 +16421,10 @@ oficios [] o f i s i o s
 oficioso [] o f i s i o s o
 ofició [] o f i s i o
 ofrece [] o f 4 e s e
+ofrece(2) [] o f 4 e T e
 ofrecemos [] o f 4 e s e m o s
 ofrecen [] o f 4 e s e n
+ofrecen(2) [] o f 4 e T e n
 ofrecer [] o f 4 e s e 4
 ofreceremos [] o f 4 e s e 4 e m o s
 ofrecerle [] o f 4 e s e 4 l e
@@ -15746,6 +16436,7 @@ ofrecería [] o f 4 e s e 4 i a
 ofrecida [] o f 4 e s i d a
 ofrecidas [] o f 4 e s i d a s
 ofrecido [] o f 4 e s i d o
+ofrecido(2) [] o f 4 e T i d o
 ofreciendo [] o f 4 e s i e n d o
 ofrecieron [] o f 4 e s i e 4 o n
 ofrecimiento [] o f 4 e s i m i e n t o
@@ -15811,6 +16502,7 @@ oms [] o m s
 omán [] o m a n
 on [] o n
 once [] o n s e
+once(2) [] o n T e
 onda [] o n d a
 ondulatoria [] o n d u l a t o 4 i a
 onu [] o n u
@@ -15822,6 +16514,8 @@ opcionado [] o p s i o n a d o
 opcional [] o p s i o n a l
 opciones [] o p s j o n e s
 opciones(2) [] o p s i o n e s
+opciones(3) [] a o p T j o n e s
+opciones(4) [] o p T j o n e s
 opción [] o p s i o n
 opep [] o p e p
 opera [] o p e 4 a
@@ -15847,6 +16541,7 @@ opinaron [] o p i n a 4 o n
 opiniones [] o p i n i o n e s
 opinión [] o p i n i o n
 opinión(2) [] o p i n j o n
+opinión(3) [] o p i n j o m
 opino [] o p i n o
 opinó [] o p i n o
 opondrá [] o p o n d 4 a
@@ -15860,9 +16555,11 @@ oportunidad [] o p o 4 t u n i d a d
 oportunidades [] o p o 4 t u n i d a d e s
 oportunista [] o p o 4 t u n i s t a
 oportuno [] o p o 4 t u n o
-oposición [] o p o s i s j o m
-oposición(2) [] o p o s i s j o n
-oposición(3) [] o p o s i s i o n
+oposición [] o p o s i T j o n
+oposición(2) [] o p o s i s j o m
+oposición(3) [] o p o s i s j o n
+oposición(4) [] o p o s i s i o n
+oposición(5) [] o p o s i T j o m
 opositor [] o p o s i t o 4
 opositora [] o p o s i t o 4 a
 opositores [] o p o s i t o 4 e s
@@ -15895,6 +16592,7 @@ orbitador [] o 4 b i t a d o 4
 orbital [] o 4 b i t a l
 ordaz [] o 4 d a s
 orden [] o 4 d e n
+orden(2) [] o 4 d e m
 ordena [] o 4 d e n a
 ordenación [] o 4 d e n a s i o n
 ordenada [] o 4 d e n a d a
@@ -15922,11 +16620,13 @@ organismo [] o 4 g a n i s m o
 organismos [] o 4 g a n i s m o s
 organizaciones [] o 4 g a n i s a s j o n e s
 organizaciones(2) [] o 4 g a n i s a s i o n e s
-organización [] o 4 g a n i s a s j o n
-organización(2) [] o 4 g a n i s a s i o n
+organización [] o 4 g a n i T a T j o n
+organización(2) [] o 4 g a n i s a s j o n
+organización(3) [] o 4 g a n i s a s i o n
 organizada [] o 4 g a n i s a d a
 organizadas [] o 4 g a n i s a d a s
 organizado [] o 4 g a n i s a d o
+organizado(2) [] o 4 g a n i T a d o
 organizador [] o 4 g a n i s a d o 4
 organizadora [] o 4 g a n i s a d o 4 a
 organizadores [] o 4 g a n i s a d o 4 e s
@@ -16026,12 +16726,15 @@ otorgaron [] o t o 4 g a 4 o n
 otorgará [] o t o 4 g a 4 a
 otorguen [] o t o 4 g e n
 otorgó [] o t o 4 g o
-otoño [] o t o n j o
+otoño [] o t o J o
+otoño(2) [] o t o n j o
 otra [] o t 4 a
 otras [] o t 4 a s
 otro [] o t 4 o
+otro(2) [] o t 4 o a
 otrora [] o t 4 o 4 a
 otros [] o t 4 o s
+otros(2) [] o t o s
 oveja [] o b e x a
 ovejas [] o b e x a s
 oviedo [] o b i e d o
@@ -16062,6 +16765,7 @@ paciencia [] p a s i e n s i a
 paciente [] p a s i e n t e
 pacientes [] p a s j e n t e s
 pacientes(2) [] p a s i e n t e s
+pacientes(3) [] p a T j e n t e s
 pacifi [] p a s i f i
 pacificación [] p a s i f i k a s i o n
 pacificado [] p a s i f i k a d o
@@ -16196,6 +16900,8 @@ panorama [] p a n o 4 a m a
 panorámica [] p a n o 4 a m i k a
 pantalla [] p a n t a l j a
 pantallas [] p a n t a l j a s
+pantallas(2) [] p a n t a j\ a s
+pantallas(3) [] p a n t a L a s
 pantalones [] p a n t a l o n e s
 panteón [] p a n t e o n
 paola [] p a o l a
@@ -16215,6 +16921,7 @@ paquito [] p a k i t o
 par [] p a 4
 para [] a p a 4
 para(2) [] p a 4 a
+para(3) [] p 4 a
 paracaidistas [] p a 4 a k a i d i s t a s
 parada [] p a 4 a d a
 paradero [] p a 4 a d e 4 o
@@ -16245,8 +16952,11 @@ paramilitar [] p a 4 a m i l i t a 4
 paramilitares [] p a 4 a m i l i t a 4 e s
 paranoia [] p a 4 a n o i a
 parapolicial [] p a 4 a p o l i s j a l
+parapolicial(2) [] p a 4 a p o l i T j a l
 parapoliciales [] p a 4 a p o l i s j a l e s
+parapoliciales(2) [] p a 4 a p o l i T j a l e s
 parar [] p a 4 a 4
+parar(2) [] p a 4 a
 pararlas [] p a 4 a 4 l a s
 pararon [] p a 4 a 4 o n
 parasitarias [] p a 4 a s i t a 4 i a s
@@ -16309,6 +17019,7 @@ participaban [] p a 4 t i s i p a b a n
 participación [] p a 4 t i s i p a s i o n
 participado [] p a 4 t i s i p a d o
 participan [] p a 4 t i s i p a n
+participan(2) [] p a 4 t i T i p a n
 participando [] p a 4 t i s i p a n d o
 participantes [] p a 4 t i s i p a n t e s
 participar [] p a 4 t i s i p a 4
@@ -16333,6 +17044,7 @@ partidarios [] p a 4 t i d a 4 i o s
 partidas [] p a 4 t i d a s
 partidista [] p a 4 t i d i s t a
 partido [] p a 4 t i d o
+partido(2) [] p a 4 d i d o
 partidos [] p a 4 t i d o s
 partiendo [] p a 4 t i e n d o
 partir [] p a 4 t i 4
@@ -16484,6 +17196,8 @@ pedir [] p e d i 4
 pedirle [] p e d i 4 l e
 pedirles [] p e d i 4 l e s
 pedirá [] p e d i 4 a
+pedirán [] p e d i 4 a n
+pedirán(2) [] p e d i 4 a m
 pedradas [] p e d 4 a d a s
 pedregal [] p e d 4 e g a l
 pedro [] p e d 4 o
@@ -16501,6 +17215,7 @@ pekinés [] p e k i n e s
 pekín [] p e k i n
 pelaez [] p e l a e s
 peldaño [] p e l d a n j o
+peldaño(2) [] p e l d a J o
 pelea [] p e l e a
 peleado [] p e l e a d o
 pelean [] p e l e a n
@@ -16512,6 +17227,7 @@ peletería [] p e l e t e 4 i a
 peleó [] p e l e o
 peligra [] p e l i g 4 a
 peligro [] p e l i g 4 o
+peligro(2) [] p e l i g o
 peligros [] p e l i g 4 o s
 peligrosa [] p e l i g 4 o s a
 peligrosamente [] p e l i g 4 o s a m e n t e
@@ -16577,6 +17293,7 @@ pentágono [] p e n t a g o n o
 península [] p e n i n s u l a
 peor [] p e o 4
 peores [] p e o 4 e s
+pepe [] p e p e
 pepino [] p e p i n o
 pepita [] p e p i t a
 pepín [] p e p i n
@@ -16642,6 +17359,9 @@ peregrinos [] p e 4 e g 4 i n o s
 perejaume [] p e 4 a j a w m e
 perejaume(2) [] p e 4 e j a w m a
 perejaume(3) [] p e 4 e j a w m e
+perejaume(4) [] p e 4 e j\ a w m a
+perejaume(5) [] p e 4 e j\ a w m e
+perejaume(6) [] p e 4 a j\ a w m e
 perera [] p e 4 e 4 a
 peres [] p e 4 e s
 perestroika [] p e 4 e s t 4 o i k a
@@ -16673,6 +17393,7 @@ periodistas [] p e 4 i o d i s t a s
 periodo [] p e 4 i o d o
 periodo(2) [] p e 4 j o d o
 periodos [] p e 4 j o d o s
+periodos(2) [] p e 4 i j o d o s
 periodística [] p e 4 i o d i s t i k a
 periodísticas [] p e 4 i o d i s t i k a s
 periodístico [] p e 4 i o d i s t i k o
@@ -16732,6 +17453,7 @@ permítame [] p e 4 m i t a m e
 pernambuco [] p e 4 n a m b u k o
 pernell [] p e 4 n e l j
 pero [] p e 4 o
+pero(2) [] p e 4 a
 perpetrado [] p e 4 p e t 4 a d o
 perpetrados [] p e 4 p e t 4 a d o s
 perpetran [] p e 4 p e t 4 a n
@@ -16836,9 +17558,12 @@ petersburgo [] p e t e 4 s b u 4 g o
 peterson [] p e t e 4 s o n
 peticiones [] p e t i s j o n e s
 peticiones(2) [] p e t i s i o n e s
+peticiones(3) [] p e t i T j o n e s
 petición [] p e t i s j o m
 petición(2) [] p e t i s j o n
 petición(3) [] p e t i s i o n
+petición(4) [] p e t i T j o n
+petición(5) [] p e t i T j o m
 petit [] p e t i t
 petitorio [] p e t i t o 4 i o
 petrogal [] p e t 4 o g a l
@@ -17025,6 +17750,8 @@ plantearíamos [] p l a n t e a 4 i a m o s
 planteen [] p l a n t e e n
 plantel [] p l a n t e l
 plantilla [] p l a n t i l j a
+plantilla(2) [] p l a n t i j a
+plantilla(3) [] p l a n t i L a
 plantó [] p l a n t o
 plantón [] p l a n t o n
 plasma [] p l a s m a
@@ -17053,6 +17780,7 @@ playa [] p l a j a
 playas [] p l a j a s
 plaza [] p l a s a
 plazas [] p l a s a s
+plazas(2) [] p l a T a s
 plazo [] p l a s o
 plazos [] p l a s o s
 plebiscito [] p l e b i s i t o
@@ -17088,9 +17816,11 @@ po [] p o
 poblacional [] p o b l a s i o n a l
 poblaciones [] p o b l a s j o n e s
 poblaciones(2) [] p o b l a s i o n e s
-población [] p o b l a s j o m
-población(2) [] p o b l a s j o n
-población(3) [] p o b l a s i o n
+población [] p o b l a T j o n
+población(2) [] p o b l a s j o m
+población(3) [] p o b l a s j o n
+población(4) [] p o b l a s i o n
+población(5) [] p o b l a T j o m
 poblada [] p o b l a d a
 pobladas [] p o b l a d a s
 poblado [] p o b l a d o
@@ -17120,12 +17850,16 @@ poderse [] p o d e 4 s e
 podido [] p o d i d o
 podremos [] p o d 4 e m o s
 podrá [] p o d 4 a
+podrá(2) [] p o b 4 a
 podrán [] p o d 4 a m
 podrán(2) [] p o d 4 a n
+podrán(3) [] p o b 4 a
 podrás [] p o d 4 a s
 podría [] p o d 4 i a
 podríamos [] p o d 4 i a m o s
 podrían [] p o d 4 i a n
+podrían(2) [] p o 4 i a n
+podrían(3) [] p o d 4 i a m
 podía [] p o d i a
 podíamos [] p o d i a m o s
 podían [] p o d i a n
@@ -17148,9 +17882,13 @@ policiacas [] p o l i s i a k a s
 policiacos [] p o l i s i a k o s
 policial [] p o l i s j a l
 policial(2) [] p o l i s i a l
+policial(3) [] p o l i T j a l
 policiales [] p o l i s j a l e s
 policiales(2) [] p o l i s i a l e s
-policía [] p o l i s i a
+policiales(3) [] p o l i T j a l e s
+policía [] p o l i T i a
+policía(2) [] p o l i s i a
+policía(3) [] p o l i T i
 policíaco [] p o l i s i a k o
 policíacos [] p o l i s i a k o s
 policías [] p o l i s i a s
@@ -17197,9 +17935,11 @@ pontífice [] p o n t i f i s e
 ponía [] p o n i a
 ponían [] p o n i a n
 pop [] p o p
+pop(2) [] p o
 popayán [] p o p a j a n
 popocatépetl [] p o p o k a t e p e t l
 popular [] p o p u l a 4
+popular(2) [] b o p u l a 4
 populares [] p o p u l a 4 e s
 popularidad [] p o p u l a 4 i d a d
 popularmente [] p o p u l a 4 m e n t e
@@ -17209,13 +17949,16 @@ poquitico [] p o k i t i k o
 poquito [] p o k i t o
 por [] o 4 p
 por(2) [] p o 4
+por(3) [] p o
 porcentaje [] p o 4 s e n t a x e
 porcentajes [] p o 4 s e n t a x e s
+porcentajes(2) [] p o 4 T e n t a x e s
 porciento [] p o 4 s i e n t o
 porfirio [] p o 4 f i 4 i o
 pormenores [] p o 4 m e n o 4 e s
 pornográficos [] p o 4 n o g 4 a f i k o s
 porque [] p o 4 k e
+porque(2) [] p o 4 g e
 porquería [] p o 4 k e 4 i a
 porqué [] p o 4 k e
 porras [] p o r a s
@@ -17227,6 +17970,8 @@ portadoras [] p o 4 t a d o 4 a s
 portar [] p o 4 t a 4
 portavoces [] p o 4 t a b o s e s
 portavoz [] p o 4 t a b o s
+portavoz(2) [] p o 4 t a b o d
+portavoz(3) [] p o 4 t a b o T
 porter [] p o 4 t e 4
 portero [] p o 4 t e 4 o
 porteño [] p o 4 t e n j o
@@ -17257,9 +18002,11 @@ posiblemente [] p o s i b l e m e n t e
 posibles [] p o s i b l e s
 posicionar [] p o s i s i o n a 4
 posicionarse [] p o s i s j o n a 4 s e
+posicionarse(2) [] p o s i T j o n a 4 s e
 posiciones [] p o s i s i o n e s
-posición [] p o s i s j o n
-posición(2) [] p o s i s i o n
+posición [] p o s i T j o n
+posición(2) [] p o s i s j o n
+posición(3) [] p o s i s i o n
 positiva [] p o s i t i b a
 positivamente [] p o s i t i b a m e n t e
 positivas [] p o s i t i b a s
@@ -17319,9 +18066,11 @@ pottigier [] p o t t i x i e 4
 powell [] p o u e l j
 pozo [] p o s o
 pozos [] p o s o s
+pozos(2) [] p o T o s
 pozuelito [] p o s u e l i t o
 poéticas [] p o e t i k a s
 pp [] p e p e
+pp(2) [] e p p e
 pr [] p 4
 practicada [] p 4 a k t i k a d a
 practicado [] p 4 a k t i k a d o
@@ -17349,20 +18098,25 @@ precautoria [] p 4 e k a u t o 4 i a
 precedente [] p 4 e s e d e n t e
 precedentes [] p 4 e s e d e n t e s
 precedida [] p 4 e s e d i d a
+precedida(2) [] p 4 e T e d i d a
 precedido [] p 4 e s e d i d o
 preciado [] p 4 e s i a d o
 precio [] p 4 e s j o
 precio(2) [] p 4 e s i o
+precio(3) [] p 4 e T j o
 precios [] p 4 e s j o s
 precios(2) [] p 4 e s i o s
+precios(3) [] p 4 e T j o s
 precioso [] p 4 e s i o s o
 precipicio [] p 4 e s i p i s i o
 precipitaciones [] p 4 e s i p i t a s i o n e s
 precipitadamente [] p 4 e s i p i t a d a m e n t e
+precipitadamente(2) [] p 4 e T i p i t a d a m e n t e
 precipitó [] p 4 e s i p i t o
 precisa [] p 4 e s i s a
 precisado [] p 4 e s i s a d o
 precisamente [] p 4 e s i s a m e n t e
+precisamente(2) [] p 4 e T i s a m e n t e
 precisar [] p 4 e s i s a 4
 precisará [] p 4 e s i s a 4 a
 precise [] p 4 e s i s e
@@ -17450,10 +18204,12 @@ preocupan [] p 4 e o k u p a n
 preocupando [] p 4 e o k u p a n d o
 preocupante [] p 4 e o k u p a n t e
 preocupantes [] p 4 e o k u p a n t e s
+preocupantes(2) [] p 4 o k u p a n t e s
 preocupar [] p 4 e o k u p a 4
 preocuparnos [] p 4 e o k u p a 4 n o s
 preocuparse [] p 4 e o k u p a 4 s e
 preocuparte [] p 4 e o k u p a 4 t e
+preocuparte(2) [] p 4 e k u p a 4 t e
 preocupo [] p 4 e o k u p o
 preolímpico [] p 4 e o l i m p i k o
 preorganizado [] p 4 e o 4 g a n i s a d o
@@ -17486,12 +18242,14 @@ prepárese [] p 4 e p a 4 e s e
 prerrequisito [] p 4 e r e k i s i t o
 presa [] p 4 e s a
 presagian [] p 4 e s a x j a n
+presagian(2) [] p 4 e s a x j a l
 presagiar [] p 4 e s a x i a 4
 presagio [] p 4 e s a x i o
 presagios [] p 4 e s a x i o s
 presbiteriana [] p 4 e s b i t e 4 i a n a
 presencia [] p 4 e s e n s j a
 presencia(2) [] p 4 e s e n s i a
+presencia(3) [] p 4 e s e n T j a
 presencialmente [] p 4 e s e n s i a l m e n t e
 presenciar [] p 4 e s e n s i a 4
 presenció [] p 4 e s e n s i o
@@ -17505,6 +18263,7 @@ presentado [] p 4 e s e n t a d o
 presentados [] p 4 e s e n t a d o s
 presentamos [] p 4 e s e n t a m o s
 presentan [] p 4 e s e n t a n
+presentan(2) [] p 4 e s e n t a m
 presentando [] p 4 e s e n t a n d o
 presentar [] p 4 e s e n t a 4
 presentara [] p 4 e s e n t a 4 a
@@ -17527,8 +18286,10 @@ presi [] p 4 e s i
 preside [] p 4 e s i d e
 presidencia [] p 4 e s i d e n s j a
 presidencia(2) [] p 4 e s i d e n s i a
+presidencia(3) [] p 4 e s i d e n T j a
 presidencial [] p 4 e s i d e n s j a l
 presidencial(2) [] p 4 e s i d e n s i a l
+presidencial(3) [] p 4 e s i d e n T j a l
 presidenciales [] p 4 e s i d e n s i a l e s
 presidencialismo [] p 4 e s i d e n s i a l i s m o
 presidencialista [] p 4 e s i d e n s i a l i s t a
@@ -17539,8 +18300,8 @@ presidido [] p 4 e s i d i d o
 presidio [] p 4 e s i d i o
 presidir [] p 4 e s i d i 4
 presidirá [] p 4 e s i d i 4 a
-presidió [] p 4 e s i d i o
-presidió(2) [] p 4 e s i d j o
+presidió [] p 4 e s i d j o
+presidió(2) [] p 4 e s i d i o
 presiento [] p 4 e s i e n t o
 presiona [] p 4 e s i o n a
 presionados [] p 4 e s i o n a d o s
@@ -17606,11 +18367,14 @@ pretexto [] p 4 e t e k s t o
 pretoria [] p 4 e t o 4 i a
 prevalecerá [] p 4 e b a l e s e 4 a
 prevalezca [] p 4 e b a l e s k a
-prevaricación [] p 4 e b a 4 i k a s j o m
-prevaricación(2) [] p 4 e b a 4 i k a s j o n
+prevaricación [] p 4 e b a 4 i k a T j o n
+prevaricación(2) [] p 4 e b a 4 i k a s j o m
+prevaricación(3) [] p 4 e b a 4 i k a s j o n
+prevaricación(4) [] p 4 e b a 4 i k a T j o m
 prevea [] p 4 e b e a
 prevee [] p 4 e b e e
-prevención [] p 4 e b e n s i o n
+prevención [] p 4 e b e n T j o n
+prevención(2) [] p 4 e b e n s i o n
 prevenible [] p 4 e b e n i b l e
 prevenibles [] p 4 e b e n i b l e s
 prevenido [] p 4 e b e n i d o
@@ -17656,15 +18420,19 @@ primeramente [] p 4 i m e 4 a m e n t e
 primeras [] p 4 i m e 4 a s
 primero [] p 4 i m e 4 o
 primeros [] p 4 i m e 4 o s
+primeros(2) [] p 4 i m e 4 o 4
 primicia [] p 4 i m i s i a
 primitivo [] p 4 i m i t i b o
 primo [] p 4 i m o
 primordial [] p 4 i m o 4 d i a l
 prince [] p 4 i n s e
 princesa [] p 4 i n s e s a
+princesa(2) [] p 4 i n T e s a
 principal [] p 4 i n s i p a l
 principales [] p 4 i n s i p a l e s
+principales(2) [] p 4 i n T i p a l e s
 principalmente [] p 4 i n s i p a l m e n t e
+principalmente(2) [] p 4 i n T i p a l m e n t e
 principio [] p 4 i n s i p j o
 principio(2) [] p 4 i n s i p i o
 principios [] p 4 i n s i p i o s
@@ -17698,6 +18466,8 @@ priístas [] p 4 i i s t a s
 pro [] p 4 o
 prob [] p 4 o b
 probabilidad [] p 4 o b a b i l i d a d
+probabilidad(2) [] p 4 o b a b i l i d a T
+probabilidad(3) [] p 4 o b a b i l i d a
 probabilidades [] p 4 o b a b i l i d a d e s
 probable [] p 4 o b a b l e
 probablemente [] p 4 o b a b l e m e n t e
@@ -17718,6 +18488,7 @@ problemón [] p 4 o b l e m o n
 probó [] p 4 o b o
 proceda [] p 4 o s e d a
 procede [] p 4 o s e d e
+procede(2) [] p 4 o T e d e
 proceden [] p 4 o s e d e n
 procedencia [] p 4 o s e d e n s i a
 procedente [] p 4 o s e d e n t e
@@ -17758,7 +18529,10 @@ prodigio [] p 4 o d i x i o
 producciones [] p 4 o d u k s i o n e s
 producción [] p 4 o d u k s j o n
 producción(2) [] p 4 o d u k s i o n
+producción(3) [] p 4 o d u k T j o n
+producción(4) [] p 4 u d u T j o n
 produce [] p 4 o d u s e
+produce(2) [] p 4 o d u T e
 producen [] p 4 o d u s e n
 producido [] p 4 o d u s i d o
 producidos [] p 4 o d u s i d o s
@@ -17777,6 +18551,7 @@ productora [] p 4 o d u k t o 4 a
 productoras [] p 4 o d u k t o 4 a s
 productores [] p 4 o d u k t o 4 e s
 productos [] p 4 o d u k t o s
+productos(2) [] p 4 o d u t o s
 produjera [] p 4 o d u x e 4 a
 produjeron [] p 4 o d u x e 4 o n
 produjo [] p 4 o d u x o
@@ -17953,6 +18728,7 @@ propinaron [] p 4 o p i n a 4 o n
 propinó [] p 4 o p i n o
 propio [] p 4 o p i o
 propio(2) [] p 4 o p j o
+propio(3) [] p 4 o p 4 j o
 propios [] p 4 o p i o s
 propon [] p 4 o p o n
 propondrá [] p 4 o p o n d 4 a
@@ -18041,6 +18817,7 @@ protestando [] p 4 o t e s t a n d o
 protestante [] p 4 o t e s t a n t e
 protestantes [] p 4 o t e s t a n t e s
 protestar [] p 4 o t e s t a 4
+protestar(2) [] p 4 o d e s t a 4
 protestaron [] p 4 o t e s t a 4 o n
 protestas [] p 4 o t e s t a s
 proteínas [] p 4 o t e i n a s
@@ -18062,11 +18839,14 @@ proviene [] p 4 o b i e n e
 provienen [] p 4 o b i e n e n
 provincia [] p 4 o b i n s j a
 provincia(2) [] p 4 o b i n s i a
+provincia(3) [] p 4 o b i n T j a
 provincial [] p 4 o b i n s j a l
 provincial(2) [] p 4 o b i n s i a l
 provinciales [] p 4 o b i n s i a l e s
+provinciales(2) [] p 4 o b i n T j a l e s
 provincianos [] p 4 o b i n s i a n o s
 provincias [] p 4 o b i n s i a s
+provincias(2) [] p 4 o b i n T j a s
 provinicial [] p 4 o b i n i s i a l
 provisional [] p 4 o b i s i o n a l
 provisionales [] p 4 o b i s i o n a l e s
@@ -18106,6 +18886,8 @@ proyectando [] p 4 o j e k t a n d o
 proyectil [] p 4 o j e k t i l
 proyectiles [] p 4 o j e k t i l e s
 proyecto [] p 4 o j e k t o
+proyecto(2) [] p 4 o j\ e k t o
+proyecto(3) [] p 4 o j\ e t o
 proyectos [] p 4 o j e k t o s
 prudencia [] p 4 u d e n s i a
 prudencial [] p 4 u d e n s i a l
@@ -18118,6 +18900,7 @@ pruebe [] p 4 u e b e
 pruneda [] p 4 u n e d a
 práctica [] p 4 a k t i k a
 prácticamente [] p 4 a k t i k a m e n t e
+prácticamente(2) [] p 4 a x t i k a m e n t e
 prácticas [] p 4 a k t i k a s
 práctico [] p 4 a k t i k o
 prácticos [] p 4 a k t i k o s
@@ -18135,12 +18918,17 @@ próspero [] p 4 o s p e 4 o
 próstata [] p 4 o s t a t a
 prótesis [] p 4 o t e s i s
 próxima [] p 4 o k s i m a
+próxima(2) [] p 4 o s s i m a
+próxima(3) [] p 4 o s i m a
 próximamente [] p 4 o k s i m a m e n t e
+próximamente(2) [] p 4 o s s i m a m e n t e
 próximas [] p 4 o k s i m a s
 próximo [] p 4 o k s i m o
 próximo(2) [] p 4 o s i m o
 próximo(3) [] p 4 o s s i m o
 próximos [] p 4 o k s i m o s
+próximos(2) [] p 4 o s s i m o s
+próximos(3) [] p 4 o s i m o s
 ps [] p s
 psicología [] p s i k o l o x i a
 psicológica [] p s i k o l o x i k a
@@ -18150,6 +18938,7 @@ psicológico [] p s i k o l o x i k o
 psiquiatría [] p s i k i a t 4 i a
 psiquiátrico [] p s i k i a t 4 i k o
 psoe [] p e s o e
+psoe(2) [] s o e
 pss [] p s s
 pubitis [] p u b i t i s
 publica [] p u b l i k a
@@ -18165,7 +18954,10 @@ publicaran [] p u b l i k a 4 a n
 publicaron [] p u b l i k a 4 o n
 publicarse [] p u b l i k a 4 s e
 publicidad [] p u b l i s i d a d
+publicidad(2) [] p u b l i T i d a T
+publicidad(3) [] p u b l i T i d a d
 publicitaria [] p u b l i s i t a 4 j a
+publicitaria(2) [] p u b l i T i t a 4 j a
 publicitario [] p u b l i s i t a 4 i o
 publicó [] p u b l i k o
 pude [] p u d e
@@ -18299,6 +19091,8 @@ qu [] k
 qua [] k u a
 que [] e k
 que(2) [] k e
+que(3) [] k i
+que(4) [] k e a e
 quebradas [] k e b 4 a d a s
 quebradita [] k e b 4 a d i t a
 quebrantado [] k e b 4 a n t a d o
@@ -18344,8 +19138,14 @@ quemó [] k e m o
 quepa [] k e p a
 querejazu [] k e 4 e x a s u
 querella [] k e 4 e l j a
+querella(2) [] k e 4 e j a
+querella(3) [] k e 4 e L a
+querella(4) [] k 4 e L a
 querellado [] k e 4 e l j a d o
 querellado(2) [] k 4 e l j a d o
+querellado(3) [] k e 4 e j a d o
+querellado(4) [] k e 4 e L a d o
+querellado(5) [] k 4 e L a d o
 querellar [] k e 4 e l j a 4
 queremos [] k e 4 e m o s
 querer [] k e 4 e 4
@@ -18371,6 +19171,7 @@ quiera [] k i e 4 a
 quieran [] k i e 4 a n
 quieran(2) [] k j e 4 a m
 quieran(3) [] k j e 4 a n
+quieran(4) [] k j e 4 e m
 quieras [] k i e 4 a s
 quiere [] k i e 4 e
 quiere(2) [] k j e 4 e
@@ -18383,6 +19184,7 @@ quijano [] k i x a n o
 quijote [] k i x o t e
 quimioterapia [] k i m i o t e 4 a p i a
 quince [] k i n s e
+quince(2) [] k i n T e
 quincena [] k i n s e n a
 quincuagésimo [] k i n k u a x e s i m o
 quinientas [] k i n i e n t a s
@@ -18429,7 +19231,8 @@ quito [] k i t o
 quitársela [] k i t a 4 s e l a
 quitó [] k i t o
 quiyuya [] k i j u i a
-quizá [] k i s a
+quizá [] k i T a
+quizá(2) [] k i s a
 quizás [] k i s a s
 quién [] k i e n
 quién(2) [] k j e n
@@ -18443,6 +19246,8 @@ químicas [] k i m i k a s
 químico [] k i m i k o
 químicos [] k i m i k o s
 quíntuple [] k i n t u p l e
+r [] e r e
+r y b [] e r e i b e
 ra [] r a
 rabani [] r a b a n i
 rabbani [] r a b b a n i
@@ -18563,6 +19368,7 @@ razas [] r a s a s
 razonables [] r a s o n a b l e s
 razone [] r a s o n e
 razones [] r a s o n e s
+razones(2) [] r a T o n e s
 razón [] r a s o n
 raíces [] r a i s e s
 raíz [] r a i s
@@ -18605,6 +19411,7 @@ realizaba [] r e a l i s a b a
 realizaban [] r e a l i s a b a n
 realización [] r e a l i s a s i o n
 realizada [] r e a l i s a d a
+realizada(2) [] r e a l i T a d a
 realizadas [] r e a l i s a d a s
 realizado [] r e a l i s a d o
 realizador [] r e a l i s a d o 4
@@ -18613,18 +19420,24 @@ realizamos [] r e a l i s a m o s
 realizan [] r e a l i s a n
 realizando [] r e a l i s a n d o
 realizar [] r e a l i s a 4
+realizar(2) [] r e a l i T a 4
 realizara [] r e a l i s a 4 a
 realizaran [] r e a l i s a 4 a n
 realizarla [] r e a l i s a 4 l a
 realizaron [] r e a l i s a 4 o n
+realizaron(2) [] r e a l i T a 4 o n
 realizarse [] r e a l i s a 4 s e
 realizará [] r e a l i s a 4 a
+realizará(2) [] r e a l i T a 4 a
 realizarán [] r e a l i s a 4 a m
 realizarán(2) [] r e a l i s a 4 a n
+realizarán(3) [] r e a l i T a 4 a m
+realizarán(4) [] r e a l i T a 4 a n
 realizarían [] r e a l i s a 4 i a n
 realizas [] r e a l i s a s
 realizársele [] r e a l i s a 4 s e l e
-realizó [] r e a l i s o
+realizó [] r e a l i T o
+realizó(2) [] r e a l i s o
 realmente [] r e a l m e n t e
 reanudación [] r e a n u d a s i o n
 reanudado [] r e a n u d a d o
@@ -18685,10 +19498,12 @@ rechazado [] r e t S a s a d o
 rechazan [] r e t S a s a n
 rechazando [] r e t S a s a n d o
 rechazar [] r e t S a s a 4
+rechazar(2) [] r e tS a T a 4
 rechazarla [] r e t S a s a 4 l a
 rechazarlo [] r e t S a s a 4 l o
 rechazaría [] r e t S a s a 4 i a
 rechazo [] r e t S a s o
+rechazo(2) [] r e tS a T o
 rechazos [] r e t S a s o s
 rechazó [] r e t S a s o
 reciba [] r e s i b a
@@ -18706,6 +19521,7 @@ recibieron [] r e s i b i e 4 o n
 recibimiento [] r e s i b i m i e n t o
 recibimos [] r e s i b i m o s
 recibir [] r e s i b i 4
+recibir(2) [] r e T i b i 4
 recibirla [] r e s i b i 4 l a
 recibirlo [] r e s i b i 4 l o
 recibirme [] r e s i b i 4 m e
@@ -18843,7 +19659,9 @@ recreativa [] r e k 4 e a t i b a
 recriminación [] r e k 4 i m i n a s i o n
 recrudecer [] r e k 4 u d e s e 4
 recta [] r e k t a
-rectificación [] r e k t i f i k a s j o n
+rectificación [] r e k t i f i k a T j o n
+rectificación(2) [] r e k t i f i k a s j o n
+rectificación(3) [] r e t t i f i k a T j o n
 rectificó [] r e k t i f i k o
 rectifique [] r e k t i f i k e
 recto [] r e k t o
@@ -18873,6 +19691,7 @@ recurre [] r e k u r e
 recurren [] r e k u r e n
 recurrente [] r e k u r e n t e
 recurrieron [] r e k u r j e 4 o n
+recurrieron(2) [] r e k u 4 j e 4 o n
 recurrir [] r e k u r i 4
 recurrió [] r e k u r j o
 recurso [] r e k u 4 s o
@@ -18913,9 +19732,13 @@ reducido [] r e d u s i d o
 reducidos [] r e d u s i d o s
 reduciendo [] r e d u s j e n d o
 reduciendo(2) [] r e d u s i e n d o
+reduciendo(3) [] r e d u T j e n d o
+reduciendo(4) [] e r u d T j e n d o
 reducir [] r e d u s i 4
+reducir(2) [] r e d u T i 4
 reducirse [] r e d u s i 4 s e
-reducirá [] r e d u s i 4 a
+reducirá [] r e d u T i 4 a
+reducirá(2) [] r e d u s i 4 a
 reduciría [] r e d u s i 4 i a
 reducto [] r e d u k t o
 redujeron [] r e d u x e 4 o n
@@ -18948,6 +19771,7 @@ reexportados [] r e e k s p o 4 t a d o s
 refacciones [] r e f a k s i o n e s
 referencia [] r e f e 4 e n s j a
 referencia(2) [] r e f e 4 e n s i a
+referencia(3) [] r e f e 4 e n T j a
 referencias [] r e f e 4 e n s i a s
 referendo [] r e f e 4 e n d o
 referente [] r e f e 4 e n t e
@@ -19007,6 +19831,7 @@ refrigerador [] r e f 4 i x e 4 a d o 4
 refrán [] r e f 4 a n
 refuerza [] r e f u e 4 s a
 refuerzo [] r e f w e 4 s o
+refuerzo(2) [] r e f w e 4 T o
 refuerzos [] r e f u e 4 s o s
 refugiado [] r e f u x i a d o
 refugiados [] r e f u x i a d o s
@@ -19036,6 +19861,7 @@ regirse [] r e x i 4 s e
 regirá [] r e x i 4 a
 regirán [] r e x i 4 a n
 registra [] r e x i s t 4 a
+registra(2) [] r e x i s t a
 registraba [] r e x i s t 4 a b a
 registrada [] r e x i s t 4 a d a
 registradas [] r e x i s t 4 a d a s
@@ -19152,6 +19978,7 @@ relacionar [] r e l a s i o n a 4
 relaciones [] r e l a s i o n e s
 relación [] r e l a s j o n
 relación(2) [] r e l a s i o n
+relación(3) [] r e l a T j o n
 relajar [] r e l a x a 4
 relajo [] r e l a x o
 relanzamiento [] r e l a n s a m i e n t o
@@ -19179,6 +20006,8 @@ reliquia [] r e l i k i a
 rellenando [] r e l j e n a n d o
 rellenar [] r e l j e n a 4
 rellenarse [] r e l j e n a 4 s e
+rellenarse(2) [] r e j e n a 4 s e
+rellenarse(3) [] r e L e n a 4 s e
 relocalizados [] r e l o k a l i s a d o s
 reloj [] r e l o x
 relojes [] r e l o x e s
@@ -19263,8 +20092,9 @@ renuncias [] r e n u n s i a s
 renunció [] r e n u n s i o
 rené [] r e n e
 reo [] r e o
-reorganización [] r e o 4 g a n i s a s j o n
-reorganización(2) [] r e o 4 g a n i s a s i o n
+reorganización [] r e o 4 g a n i T a T j o n
+reorganización(2) [] r e o 4 g a n i s a s j o n
+reorganización(3) [] r e o 4 g a n i s a s i o n
 reorientación [] r e o 4 i e n t a s i o n
 reorientar [] r e o 4 i e n t a 4
 repagado [] r e p a g a d o
@@ -19383,6 +20213,7 @@ reproductivos [] r e p 4 o d u k t i b o s
 reprograma [] r e p 4 o g 4 a m a
 reprogramado [] r e p 4 o g 4 a m a d o
 reprogramar [] r e p 4 o g 4 a m a 4
+repsol [] r e p s o l
 republicana [] r e p u b l i k a n a
 republicanas [] r e p u b l i k a n a s
 republicano [] r e p u b l i k a n o
@@ -19444,6 +20275,8 @@ reside [] r e s i d e
 residen [] r e s i d e n
 residencia [] r e s i d e n s j a
 residencia(2) [] r e s i d e n s i a
+residencia(3) [] r e s i d e n T j a
+residencia(4) [] r e s i d e n T j e
 residenciales [] r e s i d e n s i a l e s
 residencias [] r e s i d e n s i a s
 residente [] r e s i d e n t e
@@ -19462,8 +20295,10 @@ resistido [] r e s i s t i d o
 resistiendo [] r e s i s t i e n d o
 resistir [] r e s i s t i 4
 resoluciones [] r e s o l u s i o n e s
-resolución [] r e s o l u s j o n
-resolución(2) [] r e s o l u s i o n
+resolución [] r e s o l u T j o n
+resolución(2) [] r e s o l u s j o n
+resolución(3) [] r e s o l u s i o n
+resolución(4) [] r e s u l u T j o n
 resolver [] r e s o l b e 4
 resolverlo [] r e s o l b e 4 l o
 resolverlos [] r e s o l b e 4 l o s
@@ -19504,6 +20339,8 @@ respetando [] r e s p e t a n d o
 respetar [] r e s p e t a 4
 respetarlo [] r e s p e t a 4 l o
 respetarán [] r e s p e t a 4 a n
+respetarán(2) [] r e s p e t 4 a n
+respetarán(3) [] r e s p e k t a 4 a n
 respetaría [] r e s p e t a 4 i a
 respete [] r e s p e t e
 respeten [] r e s p e t e n
@@ -19532,6 +20369,7 @@ respondía [] r e s p o n d i a
 respondían [] r e s p o n d i a n
 responsabilidad [] r e s p o n s a b i l i d a
 responsabilidad(2) [] r e s p o n s a b i l i d a d
+responsabilidad(3) [] r e s p o n s a b i l i j a T
 responsabilidades [] r e s p o n s a b i l i d a d e s
 responsabilizamos [] r e s p o n s a b i l i s a m o s
 responsabilizaron [] r e s p o n s a b i l i s a 4 o n
@@ -19540,6 +20378,7 @@ responsable [] r e s p o n s a b l e
 responsablemente [] r e s p o n s a b l e m e n t e
 responsables [] r e s p o n s a b l e s
 respsol [] r e p s o l
+respsol(2) [] r e f s o l
 respuesta [] r e s p u e s t a
 respuestas [] r e s p u e s t a s
 resta [] r e s t a
@@ -19560,6 +20399,8 @@ restaura [] r e s t a u 4 a
 restauración [] r e s t a u 4 a s i o n
 restauración(2) [] r e s t a w 4 a s j o m
 restauración(3) [] r e s t a w 4 a s j o n
+restauración(4) [] r e s t a w 4 a T j o m
+restauración(5) [] r e s t a w 4 a T j o n
 restauran [] r e s t a u 4 a n
 restaurante [] r e s t a u 4 a n t e
 restaurantes [] r e s t a u 4 a n t e s
@@ -19600,6 +20441,7 @@ resultarían [] r e s u l t a 4 i a n
 resulte [] r e s u l t e
 resulten [] r e s u l t e n
 resultó [] r e s u l t o
+resultó(2) [] r e s u t o
 resumen [] r e s u m e n
 resumidero [] r e s u m i d e 4 o
 resumiendo [] r e s u m i e n d o
@@ -19682,14 +20524,15 @@ reuniones(2) [] r e w n j o n e s
 reunir [] r e u n i 4
 reunirse [] r e u n i 4 s e
 reunirse(2) [] r e w n i 4 s e
+reunirse(3) [] r e w n i s s e
 reunirá [] r e u n i 4 a
 reunirán [] r e u n i 4 a n
 reuniría [] r e u n i 4 i a
 reuniéndose [] r e u n i e n d o s e
 reunió [] r e u n i o
-reunión [] r e n j o n
-reunión(2) [] r e u n i o n
-reunión(3) [] r e w n j o n
+reunión [] r e w n j o n
+reunión(2) [] r e n j o n
+reunión(3) [] r e u n i o n
 reuní [] r e u n i
 reunían [] r e u n i a n
 reuter [] r e u t e 4
@@ -19774,9 +20617,13 @@ reñidas [] r e n j i d a s
 reñir [] r e n j i 4
 reúna [] r e u n a
 reúnan [] r e u n a n
+reúnan(2) [] r e u n e n
+reúnan(3) [] a r e u n a n
 reúne [] r e u n e
 reúnen [] r e u n e n
 reúnete [] r e u n e t e
+rhythm [] r i m
+ri [] r i
 riachuelos [] r i a t S u e l o s
 ribalta [] r i b a l t a
 rica [] r i k a
@@ -19807,6 +20654,11 @@ rigiendo [] r i x i e n d o
 rigiera [] r i x i e 4 a
 rigor [] r i g o 4
 rigurosas [] r i g u 4 o s a s
+rihanna [] 4 i j a n a
+rihanna(2) [] 4 i n a n a
+rihanna(3) [] 4 i a n a
+rihanna(4) [] 4 j a n a
+rihanna(5) [] r i a n a
 rija [] r i x a
 rilio [] r i l i o
 rima [] r i m a
@@ -19872,6 +20724,7 @@ rocas [] r o k a s
 rocatti [] r o k a t t i
 rocha [] r o t S a
 rock [] r o k k
+rock(2) [] r o k
 rockeros [] r o k k e 4 o s
 rockies [] r o k k i e s
 rocky [] r o k k i
@@ -19898,7 +20751,10 @@ rodman [] r o d m a n
 rodney [] r o d n e i
 rodolfo [] r o d o l f o
 rodrigo [] r o d 4 i g o
-rodríguez [] r o d 4 i g e s
+rodríguez [] r o d 4 i g e T
+rodríguez(2) [] r o d 4 i g e s
+rodríguez(3) [] r o b 4 i g e T
+rodríguez(4) [] r o d 4 i g e d
 roedores [] r o e d o 4 e s
 rogamos [] r o g a m o s
 roger [] r o x e 4
@@ -20033,6 +20889,9 @@ rutina [] r u t i n a
 rutinaria [] r u t i n a 4 i a
 ruy [] r u i
 ruz [] r u s
+ruz(2) [] r u T
+ruz(3) [] r u tS
+ruz(4) [] r u t
 ruíz [] r u i s
 ryan [] r i a n
 ryder [] r i d e 4
@@ -20135,6 +20994,7 @@ saldos [] s a l d o s
 saldremos [] s a l d 4 e m o s
 saldrá [] s a l d 4 a
 saldrán [] s a l d 4 a n
+saldrán(2) [] s a l b 4 a n
 saldrían [] s a l d 4 i a n
 sale [] s a l e
 salen [] s a l e n
@@ -20239,8 +21099,9 @@ sancionar [] s a n s i o n a 4
 sancionará [] s a n s i o n a 4 a
 sancione [] s a n s i o n e
 sanciones [] s a n s i o n e s
-sancionó [] s a n s j o n o
-sancionó(2) [] s a n s i o n o
+sancionó [] s a n T j o n o
+sancionó(2) [] s a n s j o n o
+sancionó(3) [] s a n s i o n o
 sanción [] s a n s i o n
 sancti [] s a n k t i
 sanders [] s a n d e 4 s
@@ -20337,6 +21198,7 @@ scott [] s k o t t
 scotty [] s k o t t i
 se [] s
 se(2) [] s e
+se(3) [] e e
 sea [] s e a
 seamos [] s e a m o s
 sean [] s e a n
@@ -20401,7 +21263,8 @@ seguimos [] s e g i m o s
 seguir [] s e g i 4
 seguiremos [] s e g i 4 e m o s
 seguirá [] s e g i 4 a
-seguirán [] s e g i 4 a n
+seguirán [] s e g i 4 a m
+seguirán(2) [] s e g i 4 a n
 seguirían [] s e g i 4 i a n
 segunda [] s e g u n d a
 segundo [] s e g u n d o
@@ -20410,14 +21273,16 @@ segura [] s e g u 4 a
 seguramente [] s e g u 4 a m e n t e
 seguras [] s e g u 4 a s
 seguridad [] s e g u 4 i d a d
+seguridad(2) [] s e g u 4 i d a s
+seguridad(3) [] s e g u 4 i d a
 seguro [] s e g u 4 o
 seguros [] s e g u 4 o s
 seguía [] s e g i a
 seguían [] s e g i a n
 seguídamente [] s e g i d a m e n t e
-según [] s e g u l
-según(2) [] s e g u m
-según(3) [] s e g u n
+según [] s e g u n
+según(2) [] s e g u l
+según(3) [] s e g u m
 seicientos [] s e i s i e n t o s
 seinfeld [] s e i n f e l d
 seiroku [] s e i 4 o k u
@@ -20434,8 +21299,9 @@ seleccionan [] s e l e k s i o n a n
 seleccionar [] s e l e k s i o n a 4
 selecciones [] s e l e k s i o n e s
 seleccionó [] s e l e k s i o n o
-selección [] s e l e k s j o n
-selección(2) [] s e l e k s i o n
+selección [] s e l e k T j o n
+selección(2) [] s e l e k s j o n
+selección(3) [] s e l e k s i o n
 selectivo [] s e l e k t i b o
 selecto [] s e l e k t o
 selectos [] s e l e k t o s
@@ -20505,6 +21371,7 @@ sentarse [] s e n t a 4 s e
 sentarán [] s e n t a 4 a n
 sentencia [] s e n t e n s j a
 sentencia(2) [] s e n t e n s i a
+sentencia(3) [] s e n t e n T j a
 sentenciado [] s e n t e n s i a d o
 sentencias [] s e n t e n s i a s
 sentenció [] s e n t e n s i o
@@ -20583,8 +21450,10 @@ serrano [] s e r a n o
 service [] s e 4 b i s e
 servicio [] s e 4 b i s j o
 servicio(2) [] s e 4 b i s i o
+servicio(3) [] s e 4 b i T j o
 servicios [] s e 4 b i s j o s
 servicios(2) [] s e 4 b i s i o s
+servicios(3) [] s e 4 b i T j o s
 servido [] s e 4 b i d o
 servir [] s e 4 b i 4
 servirá [] s e 4 b i 4 a
@@ -20609,6 +21478,7 @@ setecientas(2) [] s e t e s i e n t a s
 setecientos [] s e t e s j e n t o s
 setecientos(2) [] s e t e s i e n t o s
 setenta [] s e t e n t a
+setenta(2) [] s t e n t a
 setién [] s e t i e n
 seto [] s e t o
 setín [] s e t i n
@@ -20638,6 +21508,7 @@ señalaba [] s e n j a l a b a
 señalaban [] s e n j a l a b a n
 señaladas [] s e n j a l a d a s
 señalado [] s e n j a l a d o
+señalado(2) [] s e J a l a d o
 señalados [] s e n j a l a d o s
 señalamientos [] s e n j a l a m i e n t o s
 señalamientos(2) [] s e n j a l a m j e n t o s
@@ -20781,6 +21652,7 @@ simultáneamente [] s i m u l t a n e a m e n t e
 simultáneos [] s i m u l t a n e o s
 simón [] s i m o n
 sin [] s i n
+sin(2) [] d s i n
 sinaloa [] s i n a l o a
 sinaloense [] s i n a l o e n s e
 sinceramente [] s i n s e 4 a m e n t e
@@ -20795,6 +21667,7 @@ sine [] s i n e
 sinfín [] s i n f i n
 singapur [] s i n g a p u 4
 single [] s i n g e l
+single(2) [] s i n g l e
 singular [] s i n g u l a 4
 siniestra [] s i n i e s t 4 a
 siniestrado [] s i n i e s t 4 a d o
@@ -20842,8 +21715,10 @@ sito [] s i t o
 situaba [] s i t u a b a
 situaciones [] s i t u a s i o n e s
 situaciones(2) [] s i t w a s j o n e s
-situación [] s i t u a s i o n
-situación(2) [] s i t w a s j o n
+situaciones(3) [] s i t w a T j o n e s
+situación [] s i t w a T j o n
+situación(2) [] s i t u a s i o n
+situación(3) [] s i t w a s j o n
 situada [] s i t u a d a
 situada(2) [] s i t w a d a
 situadas [] s i t u a d a s
@@ -20912,8 +21787,10 @@ soc [] s o k
 socarrás [] s o k a r a s
 socavando [] s o k a b a n d o
 social [] s o s i a l
+social(2) [] s o T j a l
 sociales [] s o s j a l e s
 sociales(2) [] s o s i a l e s
+sociales(3) [] s o T j a l e s
 socialismo [] s o s i a l i s m o
 socialista [] s o s i a l i s t a
 socialistas [] s o s i a l i s t a s
@@ -20922,6 +21799,8 @@ sociedad [] s o s i e d a d
 sociedades [] s o s i e d a d e s
 socio [] s o s i o
 sociodemográfico [] s o s j o d e m o g 4 a f i k o
+sociodemográfico(2) [] s o T j o d e m o o 4 a f i k o
+sociodemográfico(3) [] s o T j o d e m o g 4 a f i k o
 socioeconómicas [] s o s i o e k o n o m i k a s
 socioeconómico [] s o s i o e k o n o m i k o
 socioeconómicos [] s o s i o e k o n o m i k o s
@@ -20929,6 +21808,7 @@ sociología [] s o s i o l o x i a
 sociológica [] s o s i o l o x i k a
 socios [] s o s j o s
 socios(2) [] s o s i o s
+socios(3) [] s o T j o s
 sociólogo [] s o s i o l o g o
 socorristas [] s o k o r i s t a s
 socorro [] s o k o r o
@@ -20980,6 +21860,8 @@ solicitándoles [] s o l i s i t a n d o l e s
 solicitó [] s o l i s i t o
 solidaria [] s o l i d a 4 i a
 solidaridad [] s o l i d a 4 i d a d
+solidaridad(2) [] s o l i d a 4 i d a T
+solidaridad(3) [] s o l i d a d i d a d
 solidario [] s o l i d a 4 i o
 solidarizen [] s o l i d a 4 i s e n
 solidarizó [] s o l i d a 4 i s o
@@ -20989,6 +21871,8 @@ solo [] s o l o
 solomon [] s o l o m o n
 solos [] s o l o s
 soloyov [] s o l o j o b
+soltera [] s o l t e 4 a
+solteras [] s o l t e 4 a s
 soltero [] s o l t e 4 o
 solucionaba [] s o l u s i o n a b a
 solucionada [] s o l u s i o n a d a
@@ -20998,6 +21882,7 @@ solucionarse [] s o l u s i o n a 4 s e
 solucione [] s o l u s i o n e
 soluciones [] s o l u s j o n e s
 soluciones(2) [] s o l u s i o n e s
+soluciones(3) [] s o l u T j o n e s
 solucionó [] s o l u s i o n o
 solución [] s o l u s i o n
 solventes [] s o l b e n t e s
@@ -21024,6 +21909,7 @@ somos [] s o m o s
 somoza [] s o m o s a
 son [] s o m
 son(2) [] s o n
+son(3) [] s o l
 sonado [] s o n a d o
 sonantes [] s o n a n t e s
 sonar [] s o n a 4
@@ -21048,6 +21934,7 @@ soportó [] s o p o 4 t o
 sordas [] s o 4 d a s
 sordomudos [] s o 4 d o m u d o s
 sordos [] s o 4 d o s
+soria [] s o 4 j a
 soriano [] s o 4 i a n o
 sorlozano [] s o 4 l o s a n o
 sorprende [] s o 4 p 4 e n d e
@@ -21078,6 +21965,8 @@ sospechan [] s o s p e t S a n
 sospechar [] s o s p e t S a 4
 sospechas [] s o s p e t S a s
 sospechosas [] s o s p e t S o s a s
+sospechosas(2) [] s o s p e tS o s a d
+sospechosas(3) [] s o s p e tS o s a s
 sospechoso [] s o s p e t S o s o
 sospechosos [] s o s p e t S o s o s
 sostendrá [] s o s t e n d 4 a
@@ -21144,6 +22033,7 @@ stricker [] s t 4 i k k e 4
 stroessner [] s t 4 o e s s n e 4
 styron [] s t i 4 o n
 stéfeny [] e s t e f e n i
+stéfeny(2) [] e s t e f a n i
 su [] s u
 su(2) [] u s
 suaves [] s u a b e s
@@ -21196,6 +22086,8 @@ subprocuradoría [] s u b p 4 o k u 4 a d o 4 i a
 subprocuraduría [] s u b p 4 o k u 4 a d u 4 i a
 subraya [] s u b 4 a j a
 subrayado [] s u b 4 a j a d o
+subrayado(2) [] s u 4 4 a j a d o
+subrayado(3) [] s u b 4 a j\ a d o
 subrayando [] s u b 4 a j a n d o
 subrayar [] s u b 4 a j a 4
 subrayaron [] s u b 4 a j a 4 o n
@@ -21288,6 +22180,7 @@ sufi [] s u f i
 suficiencia [] s u f i s i e n s i a
 suficiente [] s u f i s j e n t e
 suficiente(2) [] s u f i s i e n t e
+suficiente(3) [] s u f i T j e n t e
 suficientemente [] s u f i s i e n t e m e n t e
 suficientes [] s u f i s j e n t e s
 suficientes(2) [] s u f i s i e n t e s
@@ -21393,6 +22286,7 @@ supercomputadoras [] s u p e 4 k o m p u t a d o 4 a s
 supere [] s u p e 4 e
 superficie [] s u p e 4 f i s j e
 superficie(2) [] s u p e 4 f i s i e
+superficie(3) [] s u p e 4 f i T j e
 superior [] s u p e 4 i o 4
 superior(2) [] s u p e 4 j o 4
 superiora [] s u p e 4 i o 4 a
@@ -21469,6 +22363,7 @@ suroeste [] s u 4 o e s t e
 sursur [] s u 4 s u 4
 surtido [] s u 4 t i d o
 sus [] s u s
+sus(2) [] s u d s
 susan [] s u s a n
 susana [] s u s a n a
 susceptible [] s u s e p t i b l e
@@ -21501,6 +22396,7 @@ sustancia [] s u s t a n s i a
 sustancial [] s u s t a n s i a l
 sustanciales [] s u s t a n s j a l e s
 sustanciales(2) [] s u s t a n s i a l e s
+sustanciales(3) [] s u s t a n T j a l e s
 sustancialmente [] s u s t a n s i a l m e n t e
 sustancias [] s u s t a n s i a s
 sustantiva [] s u s t a n t i b a
@@ -21546,6 +22442,7 @@ séptima [] s e p t i m a
 séptimas [] s e p t i m a s
 séptimo [] s e p t i m o
 sí [] s i
+sí(2) [] s e
 símbolo [] s i m b o l o
 símbolos [] s i m b o l o s
 síndrome [] s i n d 4 o m e
@@ -21609,15 +22506,17 @@ talla [] t a l j a
 tallas [] t a l j a s
 taller [] t a l j e 4
 talleres [] t a l j e 4 e s
+talleres(2) [] t a j e 4 e s
+talleres(3) [] t a L e 4 e s
 tam [] t a m
 tamaulipas [] t a m a u l i p a s
 tamayo [] t a m a j o
 tamaño [] t a m a n j o
 tamaños [] t a m a n j o s
 tambalea [] t a m b a l e a
-también [] t a m b i e n
-también(2) [] t a m b j e m
-también(3) [] t a m b j e n
+también [] t a m b j e n
+también(2) [] t a m b i e n
+también(3) [] t a m b j e m
 tambores [] t a m b o 4 e s
 tamp [] t a m p
 tampa [] t a m p a
@@ -21644,6 +22543,8 @@ tapia [] t a p i a
 taponamos [] t a p o n a m o s
 tapones [] t a p o n e s
 taquilla [] t a k i l j a
+taquilla(2) [] t a k i j\ a
+taquilla(3) [] t a k i L a
 taquillera [] t a k i l j e 4 a
 taquilleras [] t a k i l j e 4 a s
 taquillero [] t a k i l j e 4 o
@@ -21686,6 +22587,7 @@ tayabacoa [] t a j a b a k o a
 taylor [] t a i l o 4
 tazón [] t a s o n
 te [] t e
+te(2) [] t e t e
 teaple [] t e a p l e
 teat [] t e a t
 teatro [] t e a t 4 o
@@ -21712,6 +22614,7 @@ tejidos [] t e x i d o s
 tel [] t e l
 tela [] t e l a
 telecinco [] t e l e s i n k o
+telecinco(2) [] t e l e T i n k o
 telecom [] t e l e k o m
 telecomunicaciones [] t e l e k o m u n i k a s i o n e s
 teleconferencia [] t e l e k o n f e 4 e n s i a
@@ -21735,8 +22638,9 @@ televisiones [] t e l e b i s i o n e s
 televisiva [] t e l e b i s i b a
 televisivas [] t e l e b i s i b a s
 televisivos [] t e l e b i s i b o s
-televisión [] t e l e b i s i o n
-televisión(2) [] t e l e b i s j o n
+televisión [] t e l e b i s j o n
+televisión(2) [] t e l e b i s i o n
+televisión(3) [] t e l e b i s j o m
 televisora [] t e l e b i s o 4 a
 televisoras [] t e l e b i s o 4 a s
 televisores [] t e l e b i s o 4 e s
@@ -21790,6 +22694,7 @@ tena [] t e n a
 tenacidad [] t e n a s i d a d
 tenango [] t e n a n g o
 tendencia [] t e n d e n s i a
+tendencia(2) [] t e n d e n T j a
 tendencias [] t e n d e n s i a s
 tendido [] t e n d i d o
 tendiente [] t e n d i e n t e
@@ -21821,8 +22726,9 @@ tenorio [] t e n o 4 j o
 tensa [] t e n s a
 tensiones [] t e n s i o n e s
 tensiones(2) [] t e n s j o n e s
-tensión [] t e n s i o n
-tensión(2) [] t e n s j o n
+tensión [] t e n s j o n
+tensión(2) [] t e n s i o n
+tensión(3) [] t e n s j o m
 tenso [] t e n s o
 tentación [] t e n t a s i o n
 tentadora [] t e n t a d o 4 a
@@ -21842,11 +22748,13 @@ tequisquiapan [] t e k i s k i a p a n
 terada [] t e 4 a d a
 tercer [] t e 4 s e 4
 tercera [] t e 4 s e 4 a
+tercera(2) [] t e 4 T e 4 a
 terceras [] t e 4 s e 4 a s
 tercero [] t e 4 s e 4 o
 terceros [] t e 4 s e 4 o s
 tercio [] t e 4 s j o
 tercio(2) [] t e 4 s i o
+tercio(3) [] t e 4 T j o
 tercios [] t e 4 s i o s
 terco [] t e 4 k o
 tere [] t e 4 e
@@ -21956,6 +22864,7 @@ tiene(2) [] t j e n e
 tienen [] t i e n e n
 tienen(2) [] t j e n e m
 tienen(3) [] t j e n e n
+tienen(4) [] t j e n e l
 tienes [] t i e n e s
 tierra [] t i e r a
 tierras [] t i e r a s
@@ -22024,6 +22933,7 @@ todd [] t o d d
 todo [] t o d o
 todos [] t o d o
 todos(2) [] t o d o s
+todos(3) [] t o d o l
 tokio [] t o k i o
 tolerado [] t o l e 4 a d o
 tolerancia [] t o l e 4 a n s i a
@@ -22119,6 +23029,7 @@ townsend [] t o u n s e n d
 toxicómanos [] t o k s i k o m a n o s
 tra [] t 4 a
 trabaja [] t 4 a b a x a
+trabaja(2) [] t 4 a b a x a 4
 trabajaba [] t 4 a b a x a b a
 trabajaban [] t 4 a b a x a b a n
 trabajado [] t 4 a b a x a d o
@@ -22200,6 +23111,7 @@ transbordador [] t 4 a n s b o 4 d a d o 4
 transcripción [] t 4 a n s k 4 i p s i o n
 transcurre [] t 4 a n s k u r e
 transcurrido [] t 4 a n s k u r i d o
+transcurrido(2) [] t 4 a s k u r i d o
 transcurrir [] t 4 a n s k u r i 4
 transcurso [] t 4 a n s k u 4 s o
 transeúntes [] t 4 a n s e u n t e s
@@ -22269,6 +23181,7 @@ transportistas [] t 4 a n s p o 4 t i s t a s
 transportó [] t 4 a n s p o 4 t o
 trapo [] t 4 a p o
 tras [] t 4 a s
+tras(2) [] t 4 a
 trascendencia [] t 4 a s e n d e n s i a
 trascendental [] t 4 a s e n d e n t a l
 trascendentales [] t 4 a s e n d e n t a l e s
@@ -22313,6 +23226,8 @@ trataremos [] t 4 a t a 4 e m o s
 trataron [] t 4 a t a 4 o n
 tratará [] t 4 a t a 4 a
 tratarán [] t 4 a t a 4 a n
+tratarán(2) [] t a t a 4 a n
+tratarán(3) [] t 4 a t a 4 a m
 tratas [] t 4 a t a s
 tratativas [] t 4 a t a t i b a s
 trate [] t 4 a t e
@@ -22340,12 +23255,14 @@ traído [] t 4 a i d o
 traídos [] t 4 a i d o s
 tre [] t 4 e
 trece [] t 4 e s e
+trece(2) [] t 4 e T e
 trecientas [] t 4 e s i e n t a s
 trecientos [] t 4 e s i e n t o s
 tregua [] t 4 e g u a
 treinta [] t 4 e i n t a
 treinta(2) [] t 4 e j n t a
 treinta(3) [] t 4 e n t a
+treinta(4) [] t e n t a
 treintena [] t 4 e i n t e n a
 treintena(2) [] t 4 e j n t e n a
 trejo [] t 4 e x o
@@ -22357,10 +23274,13 @@ tren [] t 4 e n
 trenes [] t 4 e n e s
 trepidante [] t 4 e p i d a n t e
 tres [] t 4 e s
+tres(2) [] t 4 e l m s
 trescientas [] t 4 e s s j e n t a s
 trescientas(2) [] t 4 e s i e n t a s
+trescientas(3) [] t 4 e s T j e n t a s
 trescientos [] t 4 e s s j e n t o s
 trescientos(2) [] t 4 e s i e n t o s
+trescientos(3) [] t 4 e s T j e n t o s
 tribal [] t 4 i b a l
 tribunal [] t 4 i b u n a l
 tribunales [] t 4 i b u n a l e s
@@ -22455,6 +23375,7 @@ turismos [] t u 4 i s m o s
 turista [] t u 4 i s t a
 turistas [] t u 4 i s t a s
 turno [] t u 4 n o
+turno(2) [] t u r n o
 turquino [] t u 4 k i n o
 turquía [] t u 4 k i a
 turrón [] t u r o n
@@ -22482,8 +23403,9 @@ táctico [] t a k t i k o
 tápese [] t a p e s e
 técnica [] t e k n i k a
 técnicamente [] t e k n i k a m e n t e
-técnicas [] t e k n i k a
-técnicas(2) [] t e k n i k a s
+técnicas [] t e k n i k a s
+técnicas(2) [] t e k n i k a
+técnicas(3) [] t e k n i k a 4
 técnico [] t e k n i k o
 técnicos [] t e k n i k o s
 téllez [] t e l j e s
@@ -22539,6 +23461,8 @@ uluzárraga [] u l u s a r a g a
 umbral [] u m b 4 a l
 un [] u m
 un(2) [] u n
+un(3) [] u l
+un(4) [] u s
 una [] a u n
 una(2) [] n a u
 una(3) [] u n a
@@ -22552,6 +23476,8 @@ unen [] u n e n
 unicef [] u n i s e f
 unida [] u n i d a
 unidad [] u n i d a d
+unidad(2) [] u n i d a
+unidad(3) [] u n i d a T
 unidades [] u n i d a d e s
 unidas [] u n i d a s
 unido [] u n i d o
@@ -22581,6 +23507,8 @@ universalismo [] u n i b e 4 s a l i s m o
 universalización [] u n i b e 4 s a l i s a s i o n
 universalmente [] u n i b e 4 s a l m e n t e
 universidad [] u n i b e 4 s i d a d
+universidad(2) [] u n i b e 4 s i d a T
+universidad(3) [] u n i b e 4 s i d a
 universidades [] u n i b e 4 s i d a d e s
 universitaria [] u n i b e 4 s i t a 4 i a
 universitarias [] u n i b e 4 s i t a 4 i a s
@@ -22591,9 +23519,10 @@ universitarios [] u n i b e 4 s i t a 4 i o s
 universo [] u n i b e 4 s o
 univisión [] u n i b i s i o n
 unió [] u n i o
-unión [] u n i o n
-unión(2) [] u n j o m
-unión(3) [] u n j o n
+unión [] u n j o m
+unión(2) [] u n j o n
+unión(3) [] u n i o n
+unión(4) [] a n j o n
 unk [] gb
 uno [] u n o
 unos [] u n o s
@@ -22603,6 +23532,7 @@ ural [] u 4 a l
 urbana [] u 4 b a n a
 urbanas [] u 4 b a n a s
 urbanizaciones [] u 4 b a n i s a s j o n e s
+urbanizaciones(2) [] u 4 b a n i T a T j o n e s
 urbano [] u 4 b a n o
 urbanos [] u 4 b a n o s
 urbanística [] u 4 b a n i s t i k a
@@ -22670,6 +23600,7 @@ utilizamos [] u t i l i s a m o s
 utilizan [] u t i l i s a n
 utilizando [] u t i l i s a n d o
 utilizar [] u t i l i s a 4
+utilizar(2) [] u t i l i T a 4
 utilizarlo [] u t i l i s a 4 l o
 utilizarlos [] u t i l i s a 4 l o s
 utilizaron [] u t i l i s a 4 o n
@@ -22686,6 +23617,8 @@ va [] b a
 vaca [] b a k a
 vacaciones [] b a k a s j o n e s
 vacaciones(2) [] b a k a s i o n e s
+vacaciones(3) [] b a k a T e n e l
+vacaciones(4) [] b a k a T j o n e s
 vacante [] b a k a n t e
 vacas [] b a k a s
 vaciaron [] b a s i a 4 o n
@@ -22740,6 +23673,7 @@ valorando [] b a l o 4 a n d o
 valorar [] b a l o 4 a 4
 valorarlo [] b a l o 4 a 4 l o
 valoren [] b a l o 4 e n
+valoren(2) [] b a l o 4 e m
 valores [] b a l o 4 e s
 valores(2) [] l o 4 e s b a
 valos [] b a l o s
@@ -22769,6 +23703,7 @@ variados [] b a 4 i a d o s
 variar [] b a 4 i a 4
 varias [] b a 4 i a s
 varias(2) [] b a 4 j a s
+varias(3) [] b a 4 j e s
 variedad [] b a 4 i e d a d
 varilla [] b a 4 i l j a
 varios [] b a 4 i o s
@@ -22786,6 +23721,7 @@ vasto [] b a s t o
 vaticano [] b a t i k a n o
 vaticinios [] b a t i s i n i o s
 vaya [] b a j a
+vaya(2) [] b a j\ a
 vayamos [] b a j a m o s
 vayan [] b a j a n
 vayas [] b a j a s
@@ -22793,11 +23729,14 @@ ve [] b e
 vea [] b e a
 vean [] b e a n
 veces [] b e s e s
+veces(2) [] b e T e s
 vecina [] b e s i n a
 vecinas [] b e s i n a s
 vecindario [] b e s i n d a 4 i o
 vecino [] b e s i n o
+vecino(2) [] b e T i n o
 vecinos [] b e s i n o s
+vecinos(2) [] b e T i n o s
 vector [] b e k t o 4
 vedado [] b e d a d o
 vededores [] b e d e d o 4 e s
@@ -22821,10 +23760,11 @@ veintes [] b e i n t e s
 veinticinc [] b e i n t i s i n k
 veinticinco [] b e i n t i s i n k o
 veinticinco(2) [] b e j n t i s i n k o
+veinticinco(3) [] b e j n t i T i n k o
 veinticuatro [] b e i n t i k u a t 4 o
 veinticuatro(2) [] b e j n t i k w a t 4 o
-veintidós [] b e i n t i d o s
-veintidós(2) [] b e j n t i d o s
+veintidós [] b e j n t i d o s
+veintidós(2) [] b e i n t i d o s
 veintinueve [] b e i n t i n u e b e
 veintiocho [] b e i n t i o t S o
 veintiocho(2) [] b e j n t j o t S o
@@ -22863,6 +23803,7 @@ vemos [] b e m o s
 ven [] b e n
 vence [] b e n s e
 vencedor [] b e n s e d o 4
+vencedor(2) [] b e n T e d o 4
 vencedora [] b e n s e d o 4 a
 vencemos [] b e n s e m o s
 vencer [] b e n s e 4
@@ -22989,8 +23930,8 @@ versace [] b e 4 s a s e
 versalles [] b e 4 s a l j e s
 verse [] b e 4 s e
 versiones [] b e 4 s i o n e s
-versión [] b e 4 s i o n
-versión(2) [] b e 4 s j o n
+versión [] b e 4 s j o n
+versión(2) [] b e 4 s i o n
 versos [] b e 4 s o s
 versus [] b e 4 s u s
 versículos [] b e 4 s i k u l o s
@@ -23027,6 +23968,7 @@ veterano [] b e t e 4 a n o
 veteranos [] b e t e 4 a n o s
 veto [] b e t o
 vez [] b e s
+vez(2) [] b e T
 veía [] b e i a
 veíamos [] b e i a m o s
 vi [] b i
@@ -23034,6 +23976,7 @@ viabilizar [] b i a b i l i s a 4
 viable [] b i a b l e
 viaja [] b i a x a
 viaja(2) [] b j a x a
+viaja(3) [] b j a x a n
 viajaba [] b i a x a b a
 viajaba(2) [] b j a x a b a
 viajaban [] b i a x a b a n
@@ -23063,6 +24006,7 @@ vibraciones [] b i b 4 a s i o n e s
 vibración [] b i b 4 a s i o n
 vice [] b i s e
 vicealcalde [] b i s e a l k a l d e
+vicealcalde(2) [] b i T e a l k a l d e
 vicealmirante [] b i s e a l m i 4 a n t e
 vicegobernador [] b i s e g o b e 4 n a d o 4
 viceinspector [] b i s e i n s p e k t o 4
@@ -23072,7 +24016,9 @@ vicepresidencia [] b i s e p 4 e s i d e n s i a
 vicepresidencias [] b i s e p 4 e s i d e n s i a s
 vicepresidenta [] b i s e p 4 e s i d e n t a
 vicepresidente [] b i s e p 4 e s i d e n t e
+vicepresidente(2) [] b i T e p 4 e s i d e n t e
 vicepresidentes [] b i s e p 4 e s i d e n t e s
+vicepresidentes(2) [] b i T e p 4 e s i d e n t e s
 viceprimer [] b i s e p 4 i m e 4
 vicesecretario [] b i s e s e k 4 e t a 4 i o
 viciado [] b i s i a d o
@@ -23122,6 +24068,7 @@ vigilada [] b i x i l a d a
 vigilan [] b i x i l a n
 vigilancia [] b i x i l a n s j a
 vigilancia(2) [] b i x i l a n s i a
+vigilancia(3) [] b i x i l a n T j a
 vigilando [] b i x i l a n d o
 vigilar [] b i x i l a 4
 vigile [] b i x i l e
@@ -23188,6 +24135,7 @@ violar [] b i o l a 4
 violaron [] b i o l a 4 o n
 violencia [] b i o l e n s i a
 violencia(2) [] b j o l e n s j a
+violencia(3) [] b j o l e n T j a
 violenta [] b i o l e n t a
 violentamente [] b i o l e n t a m e n t e
 violentas [] b i o l e n t a s
@@ -23332,13 +24280,16 @@ volvieron [] b o l b i e 4 o n
 volvimos [] b o l b i m o s
 volvió [] b o l b i o
 volví [] b o l b i
+volvía [] b o l b i a
 von [] b o n
 vorágine [] b o 4 a x i n e
 vos [] b o s
 vosotros [] b o s o t 4 o s
 vota [] b o t a
-votación [] b o t a s j o n
-votación(2) [] b o t a s i o n
+votación [] b o t a T j o n
+votación(2) [] b o t a s j o n
+votación(3) [] b o t a s i o n
+votación(4) [] b o t a T j o m
 votado [] b o t a d o
 votan [] b o t a n
 votantes [] b o t a n t e s
@@ -23387,6 +24338,8 @@ víctima [] b i k t i m a
 víctimas [] b i k t i m a s
 víctor [] b i k t o 4
 vídeo [] b i d e o
+vídeo(2) [] b i d j o
+vídeo(3) [] b i d i o
 vínculo [] b i n k u l o
 vínculos [] b i n k u l o s
 víspera [] b i s p e 4 a
@@ -23412,6 +24365,8 @@ washington [] u a s i n g t o n
 wasmosy [] u a s m o s i
 waterworld [] u a t e 4 u o 4 l d
 wayne [] g w e j n
+wayne(2) [] g w a j n
+wayne(3) [] g w i j n
 we [] u e
 wehby [] u e b i
 wei [] u e i
@@ -23425,6 +24380,8 @@ wembley [] u e m b l e i
 west [] g w e s t
 west(2) [] u e s t
 west(3) [] w e s t
+west(4) [] g w e s
+west(5) [] w e s
 westindor [] u e s t i n d o 4
 westwood [] u e s t u o o d
 whisky [] u i s k i
@@ -23455,7 +24412,10 @@ xiutepec [] k s i u t e p e k
 xochimilco [] k s o t S i m i l k o
 y [] i
 y(2) [] j
+y(3) [] n i
+y(4) [] b
 ya [] j a
+ya(2) [] j\ a
 yabrán [] j a b 4 a n
 yafa [] j a f a
 yamamoto [] j a m a m o t o
@@ -23479,6 +24439,7 @@ yevgeny [] j e b x e n i
 yijoret [] j i x o 4 e t
 yitzhak [] j i t s a k
 yo [] j o
+yo(2) [] j\ o
 yodada [] j o d a d a
 yodo [] j o d o
 yolanda [] j o l a n d a
@@ -23514,6 +24475,7 @@ zanahorias [] s a n a o 4 i a s
 zapata [] s a p a t a
 zapatazo [] s a p a t a s o
 zapatero [] s a p a t e 4 o
+zapatero(2) [] T a p a t e 4 o
 zapatista [] s a p a t i s t a
 zapatistas [] s a p a t i s t a s
 zapatos [] s a p a t o s
@@ -23530,7 +24492,10 @@ zhemin [] s e m i n
 zhirinovsky [] s i 4 i n o b s k i
 zhuo [] s u o
 zia [] s j a
+zia(2) [] T j a
 ziad [] s j a d
+ziad(2) [] T j a d
+ziad(3) [] T j a
 zimbabwe [] s i m b a b u e
 zipizape [] s i p i s a p e
 zoiris [] s o i 4 i s
@@ -23548,14 +24513,20 @@ zurich [] s u 4 i t S
 zárate [] s a 4 a t e
 zócalo [] s o k a l o
 àngels [] a n j e l s
+àngels(2) [] a n j\ e 4
+àngels(3) [] a n j\ e l s
 ábrego [] a b 4 e g o
 ácido [] a s i d o
 áfrica [] a f 4 i k a
 ágata [] a g a t a
+ágata(2) [] a g a t a j\ a
+álaba [] a l a b a
 álava [] a l a b a
 álbum [] a l b u m
+álbum(2) [] a l b u n
 álgido [] a l x i d o
-álvarez [] a l b a 4 e s
+álvarez [] a l b a 4 e T
+álvarez(2) [] a l b a 4 e s
 álvaro [] a l b a 4 o
 ámbito [] a m b i t o
 ámbitos [] a m b i t o s
@@ -23574,6 +24545,7 @@ zócalo [] s o k a l o
 árboles [] a 4 b o l e s
 área [] a 4 e a
 áreas [] a 4 e a s
+áreas(2) [] a 4 i a s
 ávila [] a b i l a
 ébano [] e b a n o
 ébola [] e b o l a
@@ -23603,7 +24575,8 @@ zócalo [] s o k a l o
 éxitos [] e k s i t o s
 éxodo [] e k s o d o
 índice [] i n d i s e
-índices [] i n d i s e s
+índices [] i n d i T e s
+índices(2) [] i n d i s e s
 índole [] i n d o l e
 ínfimo [] i n f i m o
 íngrid [] i n g 4 i d
@@ -23613,6 +24586,7 @@ zócalo [] s o k a l o
 íntimo [] i n t i m o
 ítalo [] i t a l o
 íñigo [] i n j i g o
+íñigo(2) [] i J i g o
 ómnibus [] o m n i b u s
 óptica [] o p t i k a
 óptimo [] o p t i m o
