@@ -194,16 +194,24 @@ Resources:
 - Italian pronunciation dictionary updated.
 - French vocabulary updated: list of compound words revised.
 
+#### Known bugs:
+
+- Spanish alignment does not work: corrupted acoustic model
 
 
 ### SPPAS 1.9.4 (2018, 20th January)
 
 #### Programming:
 
-- Script to tran acoustic models updated
+- Script to train acoustic models updated
 - Script to evaluate alignments updated
-- Phonetization of standard tokens: bug correction of the search tier system
+- Bug corrections of the search tier system
 
 #### Resources: 
+
+- Spanish:
+    
+    - new pronunciation dictionary
+    - new acoustic model
 
 

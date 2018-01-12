@@ -1,15 +1,15 @@
-! [] gb
+! [] *
 # [] #
-## [] gb
-$ [] gb
-% [] gb
+## [] *
+$ [] *
+% [] *
 & [] i
 &(2) [] e n d
 + [] #
-* [] gb
+* [] *
 + [] #
-, [] gb
-- [] gb
+, [] *
+- [] *
 . [] #
 / [] #
 : [] #
@@ -18,8 +18,8 @@ $ [] gb
 <s> [] #
 <unk> [] dummy
 ? [] #
-@ [] laugh
-_ [] gb
+@ [] lg
+_ [] *
 _a [] a
 _a_b_c [] a b e s e
 _a_d_n [] a d e e n e
@@ -23523,7 +23523,7 @@ unión [] u n j o m
 unión(2) [] u n j o n
 unión(3) [] u n i o n
 unión(4) [] a n j o n
-unk [] gb
+unk [] *
 uno [] u n o
 unos [] u n o s
 unánime [] u n a n i m e
