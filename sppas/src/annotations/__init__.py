@@ -64,7 +64,9 @@ SYMBOLS = {
     '#': "silence",
     '+': "pause",
     '*': "noise",
-    '@': "laugh",
-    '@@': "laugh",
+    'gb': "noise",
+    '@': "laughter",
+    '@@': "laughter",
+    'lg': "laughter",
     'dummy': 'dummy'
 }

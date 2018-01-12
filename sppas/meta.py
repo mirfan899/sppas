@@ -36,7 +36,7 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Metadata about SPPAS.
 
     See https://github.com/boisgera/about
@@ -45,10 +45,10 @@
 
 """
 metadata = dict(
-    __version__="1.9.3",
+    __version__="1.9.4",
     __author__="Brigitte Bigi",
     __contact__="brigite.bigi@gmail.com",
-    __copyright__="Copyright (C) 2011-2017 Brigitte Bigi",
+    __copyright__="Copyright (C) 2011-2018 Brigitte Bigi",
     __license__="GNU Public License, version 3",
     __docformat__='reStructedText en',
     __name__="SPPAS",

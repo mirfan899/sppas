@@ -181,7 +181,6 @@ Resources:
   scripts updated, etc.
 
 
-
 ### SPPAS 1.9.3 (2017, 18th October)
 
 #### Programming:
@@ -199,7 +198,7 @@ Resources:
 - Spanish alignment does not work: corrupted acoustic model
 
 
-### SPPAS 1.9.4 (2018, 20th January)
+### SPPAS 1.9.4 (2018, 15th January)
 
 #### Programming:
 

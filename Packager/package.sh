@@ -416,6 +416,7 @@ function fct_test_api {
     fct_perform_unittest "resources"
     fct_perform_unittest "plugins"
     fct_perform_unittest "structs"
+    fct_perform_unittest "utils"
 
     echo " ######### ############################ ######### " >> $LOG_DIAGNOSIS
     echo >> $LOG_DIAGNOSIS
@@ -425,8 +426,8 @@ function fct_test_api {
 # Main function for the diagnosis
 function fct_diagnosis {
     fct_echo_title "${PROGRAM_NAME} - Diagnosis"
-    #fct_test_api
-    #fct_test_bin
+    fct_test_api
+    fct_test_bin
     fct_compare_sppas_results
     echo "Check out the $LOG_DIAGNOSIS file for details."
 }
