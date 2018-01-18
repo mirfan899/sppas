@@ -29,12 +29,15 @@
         ---------------------------------------------------------------------
 
     src.models.slm.arpaio.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import codecs
 
 from sppas import encoding
+
+from ..modelsexc import ModelsDataTypeError
+from ..modelsexc import ArpaFileError
 
 # ---------------------------------------------------------------------------
 
@@ -53,9 +56,9 @@ class sppasArpaIO(object):
 
     """
     def __init__(self):
-        """ Create an sppasArpaIO instance. """
+        """ Create a sppasArpaIO instance without model. """
 
-        self.slm = None
+        self.__slm = None
 
     # -----------------------------------------------------------------------
 
@@ -66,9 +69,9 @@ class sppasArpaIO(object):
 
         """
         if not (isinstance(slm, list) and all([isinstance(m, list) for m in slm])):
-            raise TypeError('Expected a list of lists of tuples.')
+            raise ModelsDataTypeError("slm", "list of lists of tuples", type(slm))
 
-        self.slm = slm
+        self.__slm = slm
 
     # -----------------------------------------------------------------------
 
@@ -82,7 +85,7 @@ class sppasArpaIO(object):
         with codecs.open(filename, 'r', encoding) as f:
             lines = f.readlines()
 
-        self.slm = []
+        self.__slm = []
         n = 0
         lm = []
         for line in lines:
@@ -93,14 +96,14 @@ class sppasArpaIO(object):
                 break
             elif line.startswith('\\') and "data" not in line:
                 if n > 0:
-                    self.slm.append(lm)
+                    self.__slm.append(lm)
                 n += 1
                 lm = []
             elif n > 0:
                 # split line into columns
                 cols = line.split()
                 if len(cols) < n+1:
-                    raise ValueError('Unexpected line: %s' % line)
+                    raise ArpaFileError(line)
                 # probability is the first column
                 proba = float(cols[0])
                 # the n- following columns are the ngram
@@ -112,8 +115,9 @@ class sppasArpaIO(object):
                 lm.append((tokenseq, proba, bow))
 
         if n > 0:
-            self.slm.append(lm)
-        return self.slm
+            self.__slm.append(lm)
+
+        return self.__slm
 
     # -----------------------------------------------------------------------
 
@@ -122,31 +126,31 @@ class sppasArpaIO(object):
 
         The ARPA format:
 
-             \data\
+            \data\
              ngram 1=nb1
              ngram 2=nb2
-             ...
+             . . .
              ngram N=nbN
 
              \1-grams:
              p(a_z)  a_z  bow(a_z)
-             ...
+             . . .
 
              \2-grams:
              p(a_z)  a_z  bow(a_z)
-             ...
+             . . .
 
-             \N-grams:
+             \n-grams:
              p(a_z)  a_z
-             ...
+             . . .
 
              \end\
 
         :param filename: (str) File where to save the model.
 
         """
-        with codecs.open(filename, 'w', encoding) as f:
-            if self.slm is not None:
+        if self.__slm is not None:
+            with codecs.open(filename, 'w', encoding) as f:
                 f.write(self._serialize_slm())
 
     # -----------------------------------------------------------------------
@@ -160,7 +164,7 @@ class sppasArpaIO(object):
 
         """
         result = self._serialize_header()
-        for n, m in enumerate(self.slm):
+        for n, m in enumerate(self.__slm):
             new_ngram = sppasArpaIO._serialize_ngram(m, n+1)
             result = result + new_ngram
         result += sppasArpaIO._serialize_footer()
@@ -180,7 +184,7 @@ class sppasArpaIO(object):
 
         """
         r = "\\data\\ \n"
-        for i, m in enumerate(self.slm):
+        for i, m in enumerate(self.__slm):
             r += "ngram " + str(i+1) + "=" + str(len(m)) + "\n"
         r += "\n"
 
@@ -198,6 +202,7 @@ class sppasArpaIO(object):
 
         """
         r = "\\"+str(order)+"-grams: \n"
+
         for (wseq, lp, bo) in model:
             r += str(round(lp, 6)) + "\t" + wseq
             if bo is not None:

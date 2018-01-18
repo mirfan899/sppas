@@ -48,10 +48,15 @@ from sppas.src.utils.maketext import translate
 t = translate("models")
 
 from .acm.hmm import sppasHMM, HMMInterpolation
+from .slm import sppasArpaIO, sppasNgramCounter, sppasNgramsModel, sppasSLM
 
 # ---------------------------------
 
 __all__ = [
     "sppasHMM",
-    "HMMInterpolation"
+    "HMMInterpolation",
+    "sppasArpaIO",
+    "sppasNgramCounter",
+    "sppasNgramsModel",
+    "sppasSLM"
 ]

@@ -16,6 +16,11 @@ from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.utils.compare import sppasCompare
 from sppas.src.utils.fileutils import sppasFileUtils
 
+from ..modelsexc import NgramOrderValueError
+from ..modelsexc import NgramCountValueError
+from ..modelsexc import NgramMethodNameError
+from ..modelsexc import ModelsDataTypeError
+
 # ---------------------------------------------------------------------------
 
 TEMP = sppasFileUtils().set_random()
@@ -40,6 +45,11 @@ class TestNgramCounter(unittest.TestCase):
 
     def tearDown(self):
         shutil.rmtree(TEMP)
+
+    def testInit(self):
+        with self.assertRaises(NgramOrderValueError):
+            m = sppasNgramCounter(0)
+            m = sppasNgramCounter(100)
 
     def testAppendSentence1(self):
         ngramcounter = sppasNgramCounter()  # default is unigram
@@ -152,6 +162,17 @@ class TestNgramsModel(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(TEMP)
 
+    def testInit(self):
+        with self.assertRaises(NgramOrderValueError):
+            m = sppasNgramsModel(0)
+            m = sppasNgramsModel(100)
+        m = sppasNgramsModel(1)
+        with self.assertRaises(NgramCountValueError):
+            m.set_min_count(0)
+            m.set_min_count("a")
+        with self.assertRaises(NgramMethodNameError):
+            p = m.probabilities(method="toto")
+
     def testCount(self):
         model = sppasNgramsModel(2)
         model.count(self.corpusfile)
@@ -169,7 +190,7 @@ class TestNgramsModel(unittest.TestCase):
         self.assertEqual(ngramcounter.get_count('d b'), 1)
         self.assertEqual(ngramcounter.get_count('d c'), 2)
         self.assertEqual(ngramcounter.get_count(START_SENT_SYMBOL+' a'), 3)
-        self.assertEqual(ngramcounter.get_count('b '+END_SENT_SYMBOL), 3)
+        self.assertEqual(ngramcounter.get_count('b ' + END_SENT_SYMBOL), 3)
 
     def testShave(self):
         model = sppasNgramsModel(2)
@@ -345,12 +366,17 @@ class TestSLM(unittest.TestCase):
         shutil.rmtree(TEMP)
 
     def testARPA(self):
+        arpaio = sppasArpaIO()
+        with self.assertRaises(ModelsDataTypeError):
+            arpaio.set("toto")
+            arpaio.set([])
+            arpaio.set([[], 0])
+
         fn1 = os.path.join(TEMP, "model1.arpa")
         fn2 = os.path.join(TEMP, "model2.arpa")
         model = sppasNgramsModel(3)
         model.count(self.corpusfile)
         probas = model.probabilities("logml")
-        arpaio = sppasArpaIO()
         arpaio.set(probas)
         arpaio.save(fn1)
 

@@ -1,5 +1,5 @@
 # English translation for SPPAS
-# Copyright (c) 2011-2017 Brigitte Bigi
+# Copyright (c) 2011-2018 Brigitte Bigi
 # This file is distributed under the same license as the SPPAS package.
 # Brigitte Bigi <brigitte.bigi@gmail.com>
 #
@@ -17,9 +17,6 @@ msgstr ""
 "Language: en_US\n"
 "X-Generator: Poedit 1.8.11\n"
 
-msgid ":ERROR 7010: "
-msgstr "Expected a {data_name} of type {expected_type}. Got {data_type} instead."
-
 msgid ":ERROR 7500: "
 msgstr "The file {!s:s} contains non UTF-8 characters: {:s}."
 
@@ -31,3 +28,18 @@ msgstr "Fail formats: the folder {!s:s} does not contain a known model."
 
 msgid ":ERROR 7515: "
 msgstr "No model found or empty model in {!s:s}."
+
+msgid ":ERROR 7010: "
+msgstr "Expected a {data_name} of type {expected_type}. Got {data_type} instead."
+
+msgid ":ERROR 7110: "
+msgstr "Expected an ngram order value between {min_value} and {max_value}. Got {got_value} instead."
+
+msgid ":ERROR 7120: "
+msgstr "Expected a minimum count value of {min_value}. Got {got_value} instead."
+
+msgid ":ERROR 7130: "
+msgstr "Expected a known name of the method. Got {got_name} instead."
+
+msgid ":ERROR 7210: "
+msgstr "Expected a standard arpa file. Error with line: {line}."

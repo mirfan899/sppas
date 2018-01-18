@@ -32,6 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+from ..modelsexc import ModelsDataTypeError
 from .arpaio import sppasArpaIO
 
 # ---------------------------------------------------------------------------
@@ -48,7 +49,7 @@ class sppasSLM(object):
 
     """
     def __init__(self):
-        """ Create a sppasSLM instance. """
+        """ Create a sppasSLM instance without model. """
 
         self.model = None
 
@@ -61,7 +62,7 @@ class sppasSLM(object):
 
         """
         if not (isinstance(model, list) and all([isinstance(m, list) for m in model])):
-            raise TypeError('Expected a list of tuples.')
+            raise ModelsDataTypeError("slm", "list of lists of tuples", type(model))
 
         self.model = model
 
@@ -91,7 +92,7 @@ class sppasSLM(object):
     # -----------------------------------------------------------------------
 
     def evaluate(self, filename):
-        raise NotImplementedError
+        raise NotImplementedError("The method 'evaluate' of sppasSLM is not implemented yet. Any help is welcome!")
 
     # -----------------------------------------------------------------------
 
@@ -106,4 +107,4 @@ class sppasSLM(object):
 
         :param other: (sppasSLM)
         """
-        raise NotImplementedError
+        raise NotImplementedError("The method 'interpolate' of sppasSLM is not implemented yet. Any help is welcome!")

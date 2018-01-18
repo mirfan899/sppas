@@ -39,6 +39,10 @@ from sppas import unk_stamp
 import sppas.src.annotationdata.aio
 from sppas.src.resources.vocab import sppasVocabulary
 
+from ..modelsexc import NgramOrderValueError
+from ..modelsexc import NgramCountValueError
+from ..modelsexc import NgramMethodNameError
+
 # ---------------------------------------------------------------------------
 
 MAX_ORDER = 20
@@ -112,9 +116,9 @@ class sppasNgramsModel(object):
 
         """
         n = int(norder)
-        if n < 1:
-            raise ValueError('Expected order between 1 and %d. '
-                             'Got: %d.' % (MAX_ORDER, n))
+        if n < 1 or n > MAX_ORDER:
+            raise NgramOrderValueError(1, MAX_ORDER, n)
+
         self.order = n
         self._ngramcounts = []
 
@@ -181,8 +185,8 @@ class sppasNgramsModel(object):
         """
         self._create_counters()
 
-        for ngramcounter in self._ngramcounts:
-            ngramcounter.count(*datafiles)
+        for ngram_counter in self._ngramcounts:
+            ngram_counter.count(*datafiles)
 
         # We already fixed a count threshold
         if self.mincount > 1:
@@ -198,9 +202,9 @@ class sppasNgramsModel(object):
         """
         self._create_counters()
 
-        for ngramcounter in self._ngramcounts:
+        for ngram_counter in self._ngramcounts:
             for sentence in sentences:
-                ngramcounter.append_sentence(sentence)
+                ngram_counter.append_sentence(sentence)
 
     # -----------------------------------------------------------------------
 
@@ -213,8 +217,7 @@ class sppasNgramsModel(object):
         """
         value = int(value)
         if value < 1:
-            raise Exception('Expected a count value > 1. '
-                            'Got %d' % value)
+            raise NgramCountValueError(1, value)
 
         # We already have counts
         if len(self._ngramcounts) > 0:
@@ -263,8 +266,7 @@ class sppasNgramsModel(object):
         if method == "logml":
             return self._probas_as_ml(tolog=True)
 
-        raise ValueError('Expected a method name. '
-                         'Got: %s' % method)
+        raise NgramMethodNameError(method)
 
     # -----------------------------------------------------------------------
     # Private
@@ -277,8 +279,8 @@ class sppasNgramsModel(object):
         """
         if len(self._ngramcounts) != self.order:
             for n in range(self.order):
-                ngramcounter = sppasNgramCounter(n+1, self.wrdlist)
-                self._ngramcounts.append(ngramcounter)
+                ngram_counter = sppasNgramCounter(n+1, self.wrdlist)
+                self._ngramcounts.append(ngram_counter)
 
     # -----------------------------------------------------------------------
 
@@ -391,9 +393,8 @@ class sppasNgramCounter(object):
 
         """
         n = int(n)
-        if n < 1:
-            raise ValueError('Expected order between 1 and %d. '
-                             'Got: %d.' % (MAX_ORDER, n))
+        if n < 1 or n > MAX_ORDER:
+            raise NgramOrderValueError(1, MAX_ORDER, n)
 
         self._n = n   # n-gram order to count
         self._ss = START_SENT_SYMBOL

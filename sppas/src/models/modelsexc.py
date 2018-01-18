@@ -44,6 +44,10 @@ MIO_ENCODING_ERROR = ":ERROR 7500: "
 MIO_FILE_FORMAT_ERROR = ":ERROR 7505: "
 MIO_FOLDER_ERROR = ":ERROR 7510: "
 MIO_FILE_ERROR = ":ERROR 7515: "
+NGRAM_ORDER_VALUE_ERROR = ":ERROR 7110: "
+NGRAM_COUNT_VALUE_ERROR = ":ERROR 7120: "
+NGRAM_METHOD_NAME_ERROR = ":ERROR 7130: "
+ARPA_FILE_ERROR = ":ERROR 7210: "
 
 # -----------------------------------------------------------------------
 
@@ -118,6 +122,67 @@ class MioFolderError(IOError):
     def __init__(self, folder):
         self.parameter = MIO_FOLDER_ERROR + \
                          (t.gettext(MIO_FOLDER_ERROR)).format(folder)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class NgramOrderValueError(ValueError):
+    """ :ERROR 7110: NGRAM_ORDER_VALUE_ERROR
+    Expected an ngram order value between {min_value} and {max_value}. Got {got_value} instead.
+
+    """
+    def __init__(self, min_value, max_value, got_value):
+        self.parameter = NGRAM_ORDER_VALUE_ERROR + \
+                         (t.gettext(NGRAM_ORDER_VALUE_ERROR)).format(min_value=min_value,
+                                                                     max_value=max_value,
+                                                                     got_value=got_value)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class NgramCountValueError(ValueError):
+    """ :ERROR 7120: NGRAM_COUNT_VALUE_ERROR
+    Expected a minimum count value of {min_value}. Got {got_value} instead.
+
+    """
+    def __init__(self, min_value, got_value):
+        self.parameter = NGRAM_COUNT_VALUE_ERROR + \
+                         (t.gettext(NGRAM_COUNT_VALUE_ERROR)).format(min_value=min_value,
+                                                                     got_value=got_value)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class NgramMethodNameError(NameError):
+    """ :ERROR 7130: NGRAM_METHOD_NAME_ERROR
+    Expected a known name of the method. Got {got_name} instead.
+    """
+    def __init__(self, got_name):
+        self.parameter = NGRAM_METHOD_NAME_ERROR + \
+                         (t.gettext(NGRAM_METHOD_NAME_ERROR)).format(got_name=got_name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class ArpaFileError(IOError):
+    """ :ERROR 7210: ARPA_FILE_ERROR
+    Expected a standard arpa file. Error with line: {line}.
+    """
+    def __init__(self, line):
+        self.parameter = ARPA_FILE_ERROR + \
+                         (t.gettext(ARPA_FILE_ERROR)).format(line=line)
 
     def __str__(self):
         return repr(self.parameter)
