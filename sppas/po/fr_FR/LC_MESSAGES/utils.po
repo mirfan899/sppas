@@ -1,5 +1,5 @@
 # French translation for SPPAS
-# Copyright (c) 2011-2017 Brigitte Bigi
+# Copyright (c) 2011-2018 Brigitte Bigi
 # This file is distributed under the same license as the SPPAS package.
 # Brigitte Bigi <brigitte.bigi@gmail.com>
 #
@@ -16,6 +16,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
 "X-Generator: Poedit 1.8.11\n"
+
+msgid ":ERROR 7010: "
+msgstr "Pour {data_name}, le type {expected_type} était attendu, au lieu du type {data_type}."
 
 msgid ":ERROR 1210: "
 msgstr "Le dossier {dirname} n'existe pas."

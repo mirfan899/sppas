@@ -89,6 +89,8 @@ else:
 
 # ---------------------------------------------------------------------------
 
+from .utilsexc import UtilsDataTypeError
+
 
 class sppasUnicode(object):
     """
@@ -103,9 +105,11 @@ class sppasUnicode(object):
     def __init__(self, entry):
         """ Create a sppasUnicode instance.
 
-        :param entry: (str or unicode or bytes)
+        :param entry: (str or unicode or bytes in python 2)
 
         """
+        if isinstance(entry, (binary_type, text_type)) is False:
+            raise UtilsDataTypeError(entry, "str", type(entry))
         self._entry = entry
 
     # -----------------------------------------------------------------------

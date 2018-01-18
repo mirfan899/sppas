@@ -41,6 +41,7 @@
 
 """
 import unittest
+import sys
 
 from ..makeunicode import sppasUnicode
 from ..makeunicode import u, b, basestring
@@ -160,6 +161,14 @@ LowerDict['Ỹ'] = u('ỹ')
 
 class TestMakeUnicode(unittest.TestCase):
 
+    def test_init(self):
+        sppasUnicode("")
+        sppasUnicode("é")
+        with self.assertRaises(TypeError):
+            sppasUnicode(1)
+        with self.assertRaises(TypeError):
+            sppasUnicode(True)
+
     def test_clear_whitespace(self):
         s = "  ée  àa  çc  "
         self.assertEqual(sppasUnicode(s).clear_whitespace(), u("ée_àa_çc"))
@@ -181,8 +190,15 @@ class TestMakeUnicode(unittest.TestCase):
         #print(b(u(s)))
 
     def test_basestring(self):
-        self.assertTrue(isinstance('toto', basestring))
-        self.assertTrue(isinstance(u('toto'), basestring))
-        self.assertTrue(isinstance(b('toto'), basestring))
-        self.assertFalse(isinstance(True, basestring))
-        self.assertFalse(isinstance(5, basestring))
+        if sys.version_info < (3,):
+            self.assertTrue(isinstance('toto', basestring))
+            self.assertTrue(isinstance(u('toto'), basestring))
+            self.assertTrue(isinstance(b('toto'), basestring))
+            self.assertFalse(isinstance(True, basestring))
+            self.assertFalse(isinstance(5, basestring))
+        else:
+            self.assertTrue(isinstance('toto', str))
+            self.assertTrue(isinstance(u('toto'), str))
+            self.assertTrue(isinstance(b('toto'), bytes))
+            self.assertFalse(isinstance(True, str))
+            self.assertFalse(isinstance(5, str))

@@ -57,6 +57,7 @@ class TestCtrlVocab(unittest.TestCase):
         self.assertTrue(voc_int.add(sppasTag(1, "int")))
         self.assertTrue(voc_int.add(sppasTag(2, "int")))
         self.assertTrue(voc_int.contains(sppasTag(2, "int")))
+        self.assertFalse(voc_int.contains(sppasTag(2, "str")))
         self.assertFalse(voc_int.contains(sppasTag(2)))
 
     def test_remove(self):

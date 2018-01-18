@@ -30,7 +30,7 @@ msgid ":ERROR 7515: "
 msgstr "Aucun modèle n'est trouvé ou le modèle est vide: {!s:s}."
 
 msgid ":ERROR 7010: "
-msgstr "Pour {data_name}, le type {expected_type} été attendu, au lieu du type {data_type}."
+msgstr "Pour {data_name}, le type {expected_type} était attendu, au lieu du type {data_type}."
 
 msgid ":ERROR 7110: "
 msgstr "{got_value} n'est pas une valeur correcte pour un modèle n-gram. Elle doit être comprise entre {min_value} et {max_value}."

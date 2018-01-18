@@ -56,17 +56,3 @@ INFO_ID = 3
 IGNORE_ID = 2
 WARNING_ID = 1
 OK_ID = 0
-
-# ---------------------------------------------------------------------------
-# Symbols used by SPPAS annotations to represent an event:
-
-SYMBOLS = {
-    '#': "silence",
-    '+': "pause",
-    '*': "noise",
-    'gb': "noise",
-    '@': "laughter",
-    '@@': "laughter",
-    'lg': "laughter",
-    'dummy': 'dummy'
-}

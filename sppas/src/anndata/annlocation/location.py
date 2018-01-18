@@ -32,6 +32,19 @@
     src.anndata.annloc.location.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    sppasLocation allows to store a set of localizations with their scores.
+    This class is using a list of lists, i.e. a list of pairs (localization,
+    score). This is the best compromise between memory usage, speed and
+    readability... because:
+
+    >>> import sys
+    >>> sys.getsizeof(None)
+    >>> 16
+    >>> sys.getsizeof(list())
+    >>> 72
+    >>> sys.getsizeof(dict())
+    >>> 280
+
 """
 from ..anndataexc import AnnDataTypeError
 from .localization import sppasBaseLocalization
@@ -113,7 +126,60 @@ class sppasLocation(object):
                 if self.is_disjoint() != localization.is_disjoint():
                     raise AnnDataTypeError(localization, "sppasDisjoint")
 
-            self.__localizations.append((localization, score))
+            self.__localizations.append([localization, score])
+
+    # -----------------------------------------------------------------------
+
+    def remove(self, localization):
+        """ Remove a localization of the list.
+
+        :param localization: (sppasLocalization) the loc to be removed of the list.
+
+        """
+        if isinstance(localization, sppasBaseLocalization) is False:
+            raise AnnDataTypeError(localization, "sppasBaseLocalization")
+
+        if len(self.__localizations) == 1:
+            self.__localizations = list()
+        else:
+            for l in self.__localizations:
+                if l[0] == localization:
+                    self.__localizations.remove(l)
+
+    # -----------------------------------------------------------------------
+
+    def get_score(self, loc):
+        """ Return the score of a localization or None if it is not in the location.
+
+        :param loc: (sppasLocalization)
+        :return: score: (float)
+
+        """
+        if not isinstance(loc, sppasBaseLocalization):
+            raise AnnDataTypeError(loc, "sppasLocalization")
+
+        for l in self.__localizations:
+            if l[0] == loc:
+                return l[1]
+
+        return None
+
+    # -----------------------------------------------------------------------
+
+    def set_score(self, loc, score):
+        """ Set a score to a given localization.
+
+        :param loc: (sppasLocalization)
+        :param score: (float)
+
+        """
+        if not isinstance(loc, sppasBaseLocalization):
+            raise AnnDataTypeError(loc, "sppasLocalization")
+
+        if self.__localizations is not None:
+            for i, l in enumerate(self.__localizations):
+                if l[0] == loc:
+                    self.__localizations[i][1] = score
 
     # -----------------------------------------------------------------------
 
@@ -127,14 +193,14 @@ class sppasLocation(object):
         if len(self.__localizations) == 1:
             return self.__localizations[0][0]
 
-        _maxt = self.__localizations[0][0]
-        _maxscore = self.__localizations[0][1]
+        _max_t = self.__localizations[0][0]
+        _max_score = self.__localizations[0][1]
         for (t, s) in reversed(self.__localizations):
-            if _maxscore is None or (s is not None and s > _maxscore):
-                _maxscore = s
-                _maxt = t
+            if _max_score is None or (s is not None and s > _max_score):
+                _max_score = s
+                _max_t = t
 
-        return _maxt.copy()
+        return _max_t.copy()
 
     # -----------------------------------------------------------------------
 
@@ -170,6 +236,8 @@ class sppasLocation(object):
         else:
             return any([l[0].is_bound(point) for l in self.__localizations])
 
+    # -----------------------------------------------------------------------
+    # Overloads
     # -----------------------------------------------------------------------
 
     def __repr__(self, *args, **kwargs):

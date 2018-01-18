@@ -75,13 +75,12 @@ class sppasDisjoint(sppasBaseLocalization):
         :param other: (sppasDisjoint)
 
         """
-        if isinstance(other, (sppasDisjoint, sppasInterval)) is False:
-            raise AnnDataTypeError(other, "sppasDisjoint, sppasInterval")
-
-        if isinstance(other, sppasInterval) is False:
+        if isinstance(other, sppasDisjoint) is True:
+            self.set_intervals(other.get_intervals())
+        elif isinstance(other, sppasInterval) is True:
             self.set_intervals([other])
         else:
-            self.set_intervals(other.get_intervals())
+            raise AnnDataTypeError(other, "sppasDisjoint or sppasInterval")
 
     # -----------------------------------------------------------------------
 

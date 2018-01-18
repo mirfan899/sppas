@@ -93,3 +93,19 @@ except AttributeError:  # Python 2.7
 
 # Default symbols used by annotations and resources
 unk_stamp = "<UNK>"
+
+# ---------------------------------------------------------------------------
+# Symbols used by SPPAS to represent an event:
+
+SYMBOLS = {
+    '#': "silence",
+    'sil': "silence",
+    '+': "pause",
+    'sp': "pause",
+    '*': "noise",
+    'gb': "noise",
+    '@': "laughter",
+    '@@': "laughter",
+    'lg': "laughter",
+    'dummy': 'dummy'
+}

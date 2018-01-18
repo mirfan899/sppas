@@ -59,9 +59,12 @@ class TestTier(unittest.TestCase):
         self.assertTrue(voc.add(sppasTag("example")))
         self.assertTrue(voc.add(sppasTag("comparison")))
         self.assertTrue(voc.add(sppasTag("gap filling with sound")))
-        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3))), sppasLabel(sppasTag("definition")))
-        a2 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(6), sppasPoint(7))), sppasLabel(sppasTag("gap filling with sound")))
-        a3 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(7), sppasPoint(9))), sppasLabel(sppasTag("biz")))
+        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3))),
+                             sppasLabel(sppasTag("definition")))
+        a2 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(6), sppasPoint(7))),
+                             sppasLabel(sppasTag("gap filling with sound")))
+        a3 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(7), sppasPoint(9))),
+                             sppasLabel(sppasTag("biz")))
         # assign a ctrl_vocab after appending annotations
         tiercv = sppasTier()
         tiercv.set_ctrl_vocab(voc)
@@ -310,7 +313,7 @@ class TestTier(unittest.TestCase):
                          sppasInterval(sppasPoint(2.4), sppasPoint(4.)),   # 7
                          sppasInterval(sppasPoint(2.5), sppasPoint(3.))    # 8
                          ]
-        annotations = [sppasAnnotation(sppasLocation(t), sppasLabel(sppasTag(i))) for i, t in enumerate(localizations)]
+        annotations = [sppasAnnotation(sppasLocation(t), sppasLabel(sppasTag(i), "int")) for i, t in enumerate(localizations)]
         for i, a in enumerate(annotations):
             tier.add(a)
             self.assertEqual(len(tier), i + 1)

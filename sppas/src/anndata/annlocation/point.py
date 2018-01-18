@@ -183,7 +183,7 @@ class sppasPoint(sppasBaseLocalization):
 
         """
         if radius is not None:
-            if type(radius) != type(self.__midpoint):
+            if sppasPoint.check_types(self.__midpoint, radius) is False:
                 raise AnnDataTypeError(radius, str(type(self.__midpoint)))
 
             if isinstance(radius, float):
@@ -206,6 +206,19 @@ class sppasPoint(sppasBaseLocalization):
                 radius = self.__midpoint
     
         self.__radius = radius
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def check_types(midpoint, radius):
+        """ True only if midpoint and radius are both of the same types.
+
+        :param midpoint: any kind of data
+        :param radius: any kind of data
+        :return: Boolean
+
+        """
+        return isinstance(radius, type(midpoint))
 
     # -----------------------------------------------------------------------
 

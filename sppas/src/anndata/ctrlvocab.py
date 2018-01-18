@@ -122,7 +122,8 @@ class sppasCtrlVocab(object):
     # -----------------------------------------------------------------------
 
     def contains(self, tag):
-        """ Test if a tag is already in the controlled vocabulary.
+        """ Test if a tag is in the controlled vocabulary.
+        Attention: Do not check the instance but the data content of the tag.
 
         :param tag: (sppasTag) the tag to check.
         :returns: Boolean
@@ -131,7 +132,12 @@ class sppasCtrlVocab(object):
         if isinstance(tag, sppasTag) is False:
             raise AnnDataTypeError(tag, "sppasTag")
 
-        return tag in self.__entries
+        for entry in self.__entries:
+            if tag == entry:
+                # compare the content and the type...
+                return True
+
+        return False
 
     # -----------------------------------------------------------------------
 

@@ -32,9 +32,21 @@
     src.anndata.annlabel.label.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    sppasLabel allows to store a set of sppasTags with their scores.
+    This class is using a list of lists, i.e. a list of pairs (tag, score).
+    This is the best compromise between memory usage, speed and
+    readability... because:
+
+    >>> import sys
+    >>> sys.getsizeof(None)
+    >>> 16
+    >>> sys.getsizeof(list())
+    >>> 72
+    >>> sys.getsizeof(dict())
+    >>> 280
+
 """
 from ..anndataexc import AnnDataTypeError
-
 from .tag import sppasTag
 
 # ----------------------------------------------------------------------------
@@ -46,7 +58,7 @@ class sppasLabel(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Represents the label of an Annotation.
 
     A label is a list of possible sppasTag(), represented as a UNICODE string.
@@ -60,7 +72,7 @@ class sppasLabel(object):
         :param score: (float)
 
         """
-        self.__tags = list()
+        self.__tags = None
         self.__fct = max
 
         if tag is not None:
@@ -100,8 +112,8 @@ class sppasLabel(object):
         :param score: (float)
 
         """
-        text = sppasTag(content, data_type)
-        self.append(text, score)
+        tag = sppasTag(content, data_type)
+        self.append(tag, score)
 
     # -----------------------------------------------------------------------
 
@@ -115,7 +127,9 @@ class sppasLabel(object):
         if not isinstance(tag, sppasTag):
             raise AnnDataTypeError(tag, "sppasTag")
 
-        self.__tags.append((tag, score))
+        if self.__tags is None:
+            self.__tags = list()
+        self.__tags.append([tag, score])
 
     # -----------------------------------------------------------------------
 
@@ -128,9 +142,32 @@ class sppasLabel(object):
         if not isinstance(tag, sppasTag):
             raise AnnDataTypeError(tag, "sppasTag")
 
-        for (t, s) in self.__tags:
-            if t == tag:
-                self.__tags.remove((t, s))
+        if self.__tags is not None:
+            if len(self.__tags) == 1:
+                self.__tags = None
+            else:
+                for t in self.__tags:
+                    if t[0] == tag:
+                        self.__tags.remove(t)
+
+    # -----------------------------------------------------------------------
+
+    def get_score(self, tag):
+        """ Return the score of a tag or None if tag is not in the label.
+
+        :param tag: (sppasTag)
+        :return: score: (float)
+
+        """
+        if not isinstance(tag, sppasTag):
+            raise AnnDataTypeError(tag, "sppasTag")
+
+        if self.__tags is not None:
+            for t in self.__tags:
+                if t[0] == tag:
+                    return t[1]
+
+        return None
 
     # -----------------------------------------------------------------------
 
@@ -144,9 +181,10 @@ class sppasLabel(object):
         if not isinstance(tag, sppasTag):
             raise AnnDataTypeError(tag, "sppasTag")
 
-        for (t, s) in self.__tags:
-            if t == tag:
-                s = score
+        if self.__tags is not None:
+            for i, t in enumerate(self.__tags):
+                if t[0] == tag:
+                    self.__tags[i][1] = score
 
     # -----------------------------------------------------------------------
 
@@ -156,7 +194,7 @@ class sppasLabel(object):
         :returns: (sppasTag or None)
 
         """
-        if len(self.__tags) == 0:
+        if self.__tags is None:
             return None
 
         if len(self.__tags) == 1:
@@ -173,11 +211,11 @@ class sppasLabel(object):
 
     # -----------------------------------------------------------------------
 
-    def contains(self, tag, function='exact'):
+    def contains(self, tag, search_function='exact'):
         """ Return True if the label contains a given tag.
 
         :param tag: (sppasTag)
-        :param function: Search function
+        :param search_function: (str) Can be one of the followings:
                 -    exact (str): exact match
                 -    iexact (str): Case-insensitive exact match
                 -    startswith (str):
@@ -191,10 +229,12 @@ class sppasLabel(object):
                 -    lower (str): is lower than
 
         """
+        if self.__tags is None:
+            return False
         if not isinstance(tag, sppasTag):
             raise AnnDataTypeError(tag, "sppasTag")
 
-        if function == "exact" or function == "equal":
+        if search_function == "exact" or search_function == "equal":
             return any([tag == t[0] for t in self.__tags])
 
         if tag.get_type() == "str":
@@ -203,26 +243,26 @@ class sppasLabel(object):
             for t, s in self.__tags:
                 unicode_content = t.get_content()
                 lunicode_content = unicode_content.lower()
-                if function == "iexact" and lunicode_content == lsearch_unicode_content:
+                if search_function == "iexact" and lunicode_content == lsearch_unicode_content:
                     return True
-                elif function == "startswith" and unicode_content.startswith(search_unicode_content):
+                elif search_function == "startswith" and unicode_content.startswith(search_unicode_content):
                     return True
-                elif function == "istartswith" and lunicode_content.startswith(lsearch_unicode_content):
+                elif search_function == "istartswith" and lunicode_content.startswith(lsearch_unicode_content):
                     return True
-                elif function == "endswith" and unicode_content.endswith(search_unicode_content):
+                elif search_function == "endswith" and unicode_content.endswith(search_unicode_content):
                     return True
-                elif function == "iendswith" and lunicode_content.endswith(lsearch_unicode_content):
+                elif search_function == "iendswith" and lunicode_content.endswith(lsearch_unicode_content):
                     return True
-                elif function == "contains" and search_unicode_content in unicode_content:
+                elif search_function == "contains" and search_unicode_content in unicode_content:
                     return True
-                elif function == "icontains" and lsearch_unicode_content in lunicode_content:
+                elif search_function == "icontains" and lsearch_unicode_content in lunicode_content:
                     return True
 
         elif tag.get_type() in ["float", "int"]:
             for t, s in self.__tags:
-                if function == "greater" and t.get_typed_content() > tag.get_typed_content():
+                if search_function == "greater" and t.get_typed_content() > tag.get_typed_content():
                     return True
-                if function == "lower" and t.get_typed_content() < tag.get_typed_content():
+                if search_function == "lower" and t.get_typed_content() < tag.get_typed_content():
                     return True
 
         return False
@@ -233,42 +273,55 @@ class sppasLabel(object):
 
     def __repr__(self):
         st = ""
-        for t, s in self.__tags:
-            st += "sppasTag({!s:s}, score={:s}), ".format(t, s)
+        if self.__tags is not None:
+            for t, s in self.__tags:
+                st += "sppasTag({!s:s}, score={:s}), ".format(t, s)
         return st
 
     # -----------------------------------------------------------------------
 
     def __str__(self):
         st = ""
-        for t, s in self.__tags:
-            st += "{!s:s}, {:s} ; ".format(t, s)
+        if self.__tags is not None:
+            for t, s in self.__tags:
+                st += "{!s:s}, {:s} ; ".format(t, s)
         return st
 
     # -----------------------------------------------------------------------
 
     def __iter__(self):
-        for t in self.__tags:
-            yield t
+        if self.__tags is not None:
+            for t in self.__tags:
+                yield t
 
     # -----------------------------------------------------------------------
 
     def __getitem__(self, i):
-        return self.__tags[i]
+        if self.__tags is not None:
+            return self.__tags[i]
+        else:
+            raise IndexError(i)
 
     # -----------------------------------------------------------------------
 
     def __len__(self):
-        return len(self.__tags)
+        if self.__tags is not None:
+            return len(self.__tags)
+        return 0
 
     # -----------------------------------------------------------------------
 
     def __eq__(self, other):
-        if other is None:
-            return False
-        if len(self.__tags) != len(other):
-            return False
-        for (l1, l2) in zip(self.__tags, other):
-            if l1[0] != l2[0] or l1[1] != l2[1]:
+        if self is not None:
+            if other is None:
                 return False
-        return True
+            if len(self.__tags) != len(other):
+                return False
+            for (l1, l2) in zip(self.__tags, other):
+                if l1[0] != l2[0] or l1[1] != l2[1]:
+                    return False
+            return True
+        else:
+            if other is None:
+                return True
+        return False

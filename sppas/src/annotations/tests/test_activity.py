@@ -3,9 +3,9 @@
 import unittest
 
 from sppas import unk_stamp
+from sppas import SYMBOLS
 from sppas.src.annotationdata import Transcription
 from ..Align.activity import sppasActivity
-from .. import SYMBOLS
 
 # ---------------------------------------------------------------------------
 

@@ -57,7 +57,7 @@ from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
-import aioutils
+from aioutils import fill_gaps, merge_overlapping_annotations
 from .basetrs import sppasBaseIO
 
 # ----------------------------------------------------------------------------
@@ -359,8 +359,8 @@ class sppasTextGrid(sppasBasePraat):
                     tier.create_annotation(sppasLocation(sppasInterval(min_point, max_point)))
 
                 if tier.is_interval() is True:
-                    tier = aioutils.fill_gaps(tier, min_point, max_point)
-                    tier = aioutils.merge_overlapping_annotations(tier)
+                    tier = fill_gaps(tier, min_point, max_point)
+                    tier = merge_overlapping_annotations(tier)
                     format_annotation = sppasTextGrid.__format_interval_annotation
                 else:
                     format_annotation = sppasTextGrid.__format_point_annotation

@@ -253,7 +253,20 @@ class sppasInterval(sppasBaseLocalization):
 
     @staticmethod
     def check_types(begin, end):
-        return type(begin.get_midpoint()) == type(end.get_midpoint())
+        """ True only if begin and end are both the same types of sppasPoint().
+
+        :param begin: any kind of data
+        :param end: any kind of data
+        :return: Boolean
+
+        """
+        try:
+            begin.get_midpoint()
+            end.get_midpoint()
+        except AttributeError:
+            return False
+
+        return isinstance(begin.get_midpoint(), type(end.get_midpoint()))
 
     # -----------------------------------------------------------------------
     # Overloads
@@ -270,7 +283,7 @@ class sppasInterval(sppasBaseLocalization):
     def __contains__(self, other):
         """ Return True if the given data is contained in the interval.
 
-        :param tp: (sppasInterval, sppasPoint, int, float) the point to verify.
+        :param other: (sppasInterval, sppasPoint, int, float) the point to verify.
 
         """
         if isinstance(other, (sppasInterval, sppasPoint, float, int,)) is False:

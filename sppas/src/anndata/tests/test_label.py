@@ -29,6 +29,10 @@ class TestTag(unittest.TestCase):
         self.assertNotEqual(text.get_typed_content(), textstr.get_typed_content())
         self.assertEqual(text.get_content(), textstr.get_content())
 
+        text = sppasTag(2)
+        self.assertEqual(text.get_typed_content(), "2")
+        self.assertEqual(text.get_type(), "str")
+
         # float value
         text = sppasTag(2.10, tag_type="float")
         textstr = sppasTag("2.1")
@@ -36,6 +40,10 @@ class TestTag(unittest.TestCase):
         self.assertEqual(text.get_content(), u("2.1"))
         self.assertNotEqual(text.get_typed_content(), textstr.get_typed_content())
         self.assertEqual(text.get_content(), textstr.get_content())
+
+        text = sppasTag(2.1)
+        self.assertEqual(text.get_typed_content(), "2.1")
+        self.assertEqual(text.get_type(), "str")
 
         # boolean value
         text = sppasTag("1", tag_type="bool")
@@ -72,17 +80,16 @@ class TestEvents(unittest.TestCase):
         label = sppasLabel(sppasTag("#"))
         text = label.get_best()
         self.assertTrue(text.is_silence())
-        self.assertFalse(text.is_silence() is False)
 
     def test_IsPause(self):
         label = sppasLabel(sppasTag("+"))
         self.assertTrue(label.get_best().is_pause())
-        self.assertFalse(label.get_best().is_pause() is False)
 
     def test_IsNoise(self):
         label = sppasLabel(sppasTag("*"))
         self.assertTrue(label.get_best().is_noise())
-        self.assertFalse(label.get_best().is_noise() is False)
+        label = sppasLabel(sppasTag("gb"))
+        self.assertTrue(label.get_best().is_noise())
 
 # ---------------------------------------------------------------------------
 
@@ -127,3 +134,10 @@ class TestLabel(unittest.TestCase):
         self.assertTrue(label == sppasLabel(sppasTag(""), score=0.5))
         self.assertFalse(label == sppasLabel(sppasTag(""), score=0.7))
         self.assertFalse(label == sppasLabel(sppasTag("a"), score=0.5))
+
+    def test_set_score(self):
+        tag = sppasTag("toto")
+        label = sppasLabel(tag, score=0.5)
+        self.assertEqual(label.get_score(tag), 0.5)
+        label.set_score(tag, 0.8)
+        self.assertEqual(label.get_score(tag), 0.8)

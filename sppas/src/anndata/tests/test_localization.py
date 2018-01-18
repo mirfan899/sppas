@@ -35,6 +35,12 @@ class TestPoint(unittest.TestCase):
         with self.assertRaises(AnnDataTypeError):
             point.set_radius(0)
 
+    def test_check_types(self):
+        self.assertTrue(sppasPoint.check_types(2, 2))
+        self.assertFalse(sppasPoint.check_types(2.0, 2))
+        self.assertFalse(sppasPoint.check_types(2, 2.0))
+        self.assertFalse(sppasPoint.check_types(2, sppasPoint(1)))
+
 # ---------------------------------------------------------------------------
 
 
@@ -386,6 +392,15 @@ class TestFrameInterval(unittest.TestCase):
         """
         with self.assertRaises(IntervalBoundsError):
             sppasInterval(self.point1000, self.point1000)
+
+    def test_check_types(self):
+        """
+        Accept begin/end only if both are sppasPoint().
+        """
+        self.assertTrue(sppasInterval.check_types(self.point1000, sppasPoint(7, 1)))
+        self.assertFalse(sppasInterval.check_types(self.point1000, sppasPoint(7.0, 1.0)))
+        self.assertFalse(sppasInterval.check_types(self.point1000, 2))
+        self.assertFalse(sppasInterval.check_types(2, 2))
 
     def test_set_begin(self):
         """

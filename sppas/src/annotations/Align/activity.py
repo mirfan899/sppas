@@ -33,15 +33,15 @@
 
 """
 from sppas import unk_stamp
+from sppas import SYMBOLS
+
 from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.ptime.interval import TimeInterval
 from sppas.src.annotationdata.annotation import Annotation
 from sppas.src.annotationdata.label.label import Label
 from sppas.src.annotationdata.aio.utils import fill_gaps, unfill_gaps
-
 from sppas.src.utils.makeunicode import sppasUnicode
 
-from .. import SYMBOLS
 from ..searchtier import sppasSearchTier
 
 # ---------------------------------------------------------------------------
