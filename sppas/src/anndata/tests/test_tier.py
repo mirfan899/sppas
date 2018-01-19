@@ -87,6 +87,29 @@ class TestTier(unittest.TestCase):
         with self.assertRaises(CtrlVocabContainsError):
             tiercv[0].add_tag(sppasTag("error"))
 
+    def test_create_ctrl_vocab(self):
+        tier_cv = sppasTier("toto")
+        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3))),
+                             sppasLabel(sppasTag("A")))
+        a2 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(6), sppasPoint(7))),
+                             sppasLabel(tag=[sppasTag("B"), sppasTag("C")]))
+        tier_cv.append(a1)
+        tier_cv.append(a2)
+        tier_cv.create_ctrl_vocab()
+        ctrl = tier_cv.get_ctrl_vocab()
+        self.assertIsNotNone(ctrl)
+        self.assertEqual(ctrl.get_name(), tier_cv.get_name())
+        self.assertEqual(len(ctrl), 3)
+        self.assertTrue(ctrl.contains(sppasTag("A")))
+        self.assertTrue(ctrl.contains(sppasTag("B")))
+        self.assertTrue(ctrl.contains(sppasTag("C")))
+        self.assertFalse(ctrl.contains(sppasTag("false")))
+
+        with self.assertRaises(CtrlVocabContainsError):
+            tier_cv[0].add_tag(sppasTag("error"))
+        with self.assertRaises(CtrlVocabContainsError):
+            tier_cv[0].set_best_tag(sppasTag("error"))
+
     def test_ann_is_empty(self):
         tier = sppasTier()
         self.assertTrue(tier.is_empty())
@@ -515,7 +538,7 @@ class TestTier(unittest.TestCase):
         index = tier.near(sppasPoint(1.7), direction=1)
         self.assertEqual(index, 1)
 
-    def test_start_end(self):
+    def test_start_end_points(self):
         tier = sppasTier()
         self.assertEqual(tier.get_first_point(), None)
         self.assertEqual(tier.get_last_point(), None)
@@ -525,6 +548,13 @@ class TestTier(unittest.TestCase):
         a = sppasAnnotation(sppasLocation(sppasPoint(3.)))
         tier.add(a)
         self.assertEqual(tier.get_last_point(), 3.)
+
+    def test_start_end_intervals(self):
+        tier = sppasTier()
+        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(2.)))))
+        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(4.), sppasPoint(5.)))))
+        self.assertEqual(tier.get_first_point(), 1.)
+        self.assertEqual(tier.get_last_point(), 5.)
 
     def test_get_all_points(self):
         tier = sppasTier()

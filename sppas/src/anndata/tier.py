@@ -850,6 +850,29 @@ class sppasTier(sppasMetaData):
             self.__parent.validate_annotation_location(self, location)
 
     # -----------------------------------------------------------------------
+    # Utils
+    # -----------------------------------------------------------------------
+
+    def create_ctrl_vocab(self, name=None):
+        """ Create (or re-create) the controlled vocabulary from the list of
+        already existing annotation labels.
+        The current controlled vocabulary is deleted.
+
+        :param name: (str) Name of the controlled vocabulary. The name of
+        the tier is used by default.
+
+        """
+        if name is None:
+            name = self.__name
+        self.__ctrl_vocab = sppasCtrlVocab(name)
+
+        for ann in self.__ann:
+            label = ann.get_label()
+            if label is not None:
+                for tag, score in label:
+                    self.__ctrl_vocab.add(tag)
+
+    # -----------------------------------------------------------------------
     # Private
     # -----------------------------------------------------------------------
 

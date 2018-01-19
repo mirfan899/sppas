@@ -498,6 +498,26 @@ class sppasTranscription(sppasMetaData):
             raise AnnDataIndexError(index)
 
     # ------------------------------------------------------------------------
+
+    def get_max_loc(self):
+        """ Return the sppasPoint with the highest value through all tiers. """
+
+        if self.is_empty():
+            return None
+
+        max_point = None
+        for tier in self:
+            last_loc = tier.get_last_point()
+            if last_loc.is_point():
+                last_point = last_loc
+            else:
+                last_point = last_loc.get_end()
+            if max_point is None or last_point > max_point:
+                max_point = last_point
+
+        return max_point
+
+    # ------------------------------------------------------------------------
     # Overloads
     # ------------------------------------------------------------------------
 

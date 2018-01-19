@@ -69,7 +69,7 @@ class sppasLabel(object):
         """ Creates a new Label instance.
 
         :param tag: (sppasTag or list of sppasTag)
-        :param score: (float)
+        :param score: (float or list of float)
 
         """
         self.__tags = None
@@ -77,8 +77,12 @@ class sppasLabel(object):
 
         if tag is not None:
             if isinstance(tag, list):
-                for t in tag:
-                    self.append(t, 1./len(tag))
+                if isinstance(score, list) and len(tag) == len(score):
+                    for t, s in zip(tag, score):
+                        self.append(t, s)
+                else:
+                    for t in tag:
+                        self.append(t, 1./len(tag))
             else:
                 self.append(tag, score)
 

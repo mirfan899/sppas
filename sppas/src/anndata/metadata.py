@@ -57,6 +57,17 @@ class sppasMetaData(object):
 
     # ------------------------------------------------------------------------
 
+    def is_meta_key(self, entry):
+        """ Check if an entry is a key in the list of metadata.
+
+        :param entry: (str) Entry to check
+        :return: (Boolean)
+
+        """
+        return entry in self.__metadata
+
+    # ------------------------------------------------------------------------
+
     def get_meta(self, key):
         """ Return the value of the given key.
         Return an empty string if key if not a key of metadata.

@@ -98,6 +98,8 @@ class sppasRawText(sppasBaseIO):
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      SPPAS raw text reader and writer.
 
+    RawText does not support multiple tiers.
+    RawText accepts no tiers.
     RawText does not support alternatives labels nor locations. Only the ones
     with the best score are saved.
     RawText can save only one tier.

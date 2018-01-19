@@ -57,7 +57,7 @@ from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
-from aioutils import fill_gaps, merge_overlapping_annotations
+from .aioutils import fill_gaps, merge_overlapping_annotations
 from .basetrs import sppasBaseIO
 
 # ----------------------------------------------------------------------------
@@ -69,8 +69,8 @@ class sppasBasePraat(sppasBaseIO):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Base class for readers and writers or Praat files.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Base class for readers and writers of Praat files.
     
     """
     @staticmethod
@@ -183,6 +183,8 @@ class sppasTextGrid(sppasBasePraat):
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      SPPAS TextGrid reader and writer.
 
+    TextGrid supports multiple tiers in a file.
+    TextGrid does not support empty files (file with no tiers).
     TextGrid does not support alternatives labels nor locations. Only the ones
     with the best score are saved.
     TextGrid does not support controlled vocabularies.
@@ -192,6 +194,8 @@ class sppasTextGrid(sppasBasePraat):
     TextGrid supports points and intervals. It does not support disjoint intervals.
     TextGrid does not support alternative tags (here called "text").
     TextGrid does not support radius.
+
+    Both "short TextGrid" and "long TextGrid" file formats are supported.
 
     """
     @staticmethod
