@@ -117,8 +117,9 @@ class sppasAnnotation(sppasMetaData):
 
         """
         if parent is not None:
-            parent.validate_annotation_label(self.__label)
             parent.validate_annotation_location(self.__location)
+            if self.__label is not None:
+                parent.validate_annotation_label(self.__label)
 
         self.__parent = parent
 

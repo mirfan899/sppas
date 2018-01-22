@@ -43,6 +43,14 @@ from datetime import datetime
 
 import sppas
 from .basetrs import sppasBaseIO
+from ..annlabel.label import sppasLabel
+from ..annlabel.tag import sppasTag
+from sppas.src.utils.makeunicode import sppasUnicode
+
+# ----------------------------------------------------------------------------
+
+MAX_CLASS_TAGS = 20
+MAX_ATTRIBUTES_TAGS = 20
 
 # ----------------------------------------------------------------------------
 
@@ -96,6 +104,9 @@ class sppasARFF(sppasBaseIO):
             name = self.__class__.__name__
         sppasBaseIO.__init__(self, name)
 
+        self.__max_class_tags = 10
+        self.__max_attributes_tags = MAX_ATTRIBUTES_TAGS
+
         self._accept_multi_tiers = True
         self._accept_no_tiers = False
         self._accept_metadata = True
@@ -113,6 +124,40 @@ class sppasARFF(sppasBaseIO):
 
     # -----------------------------------------------------------------
 
+    def get_max_class_tags(self):
+        """ Return the maximum number of tags for the class. """
+
+        return self.__max_class_tags
+
+    # -----------------------------------------------------------------
+
+    def set_max_class_tags(self, nb_tags):
+        """ Set the maximum number of tags for a class.
+
+        :param nb_tags: (int) Size of the controlled vocabulary of the
+        class tier
+
+        """
+        self.check_max_class_tags(nb_tags)
+        self.__max_class_tags = nb_tags
+
+    # -----------------------------------------------------------------
+
+    def check_max_class_tags(self, nb_tags):
+        """ Check the maximum number of tags for the class.
+
+        :param nb_tags: (int) Size of the controlled vocabulary of the
+        class tier
+
+        """
+        nb_tags = int(nb_tags)
+        if nb_tags < 2:
+            raise ValueError("The class must have at least 2 different tags.")
+        if nb_tags > MAX_CLASS_TAGS:
+            raise ValueError("The class must have at max {:d} different tags.".format(self.__max_class_tags))
+
+    # -----------------------------------------------------------------
+
     def write(self, filename):
         """ Write a RawText file.
 
@@ -121,9 +166,13 @@ class sppasARFF(sppasBaseIO):
         """
         with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
 
-            if self.is_empty() is True:
-                return
+            # Check the annotation tags.
+            self.validate_annotations()
 
+            # Check if the metadata are properly fixed.
+            self.validate()
+
+            # OK, we are ready to write
             sppasARFF._write_header(fp)
             self._write_metadata(fp)
             self._write_relation(fp)
@@ -131,6 +180,94 @@ class sppasARFF(sppasBaseIO):
             self._write_data(fp)
 
             fp.close()
+
+    # -----------------------------------------------------------------
+
+    def validate_annotations(self):
+        """ Convert annotation tags to be compatible. """
+
+        # Delete the existing controlled vocabularies and convert tags
+        for tier in self:
+            if tier.is_meta_key("weka_attribute") or tier.is_meta_key("weka_class"):
+                if tier.get_ctrl_vocab() is not None:
+                    tier.set_ctrl_vocab(None)
+            for ann in tier:
+                # we should test if tags are of type 'str'
+                if ann.get_label() is not None:
+                    label = ann.get_label()
+                    for tag, score in label:
+                        new_tag = sppasTag(sppasUnicode(tag.get_content()).clear_whitespace())
+                        ann.remove_tag(tag)
+                        label.append(new_tag, score)
+
+        # Set the controlled vocabularies
+        self._create_ctrl_vocab()
+
+    # -----------------------------------------------------------------
+
+    def validate(self):
+        """ Check the tiers to verify if everything is ok:
+
+            1. A class is defined: "weka_class" in the metadata of a tier
+            2. Attributes are fixed: "weka_attribute" in the metadata of at least one tier
+
+        Raises ValueError if something is wrong.
+
+        """
+        if self.is_empty() is True:
+            raise ValueError("Empty transcription. Nothing to do!")
+        if len(self) == 1:
+            raise ValueError("The transcription must contain at least 2 tiers.")
+
+        has_class = None
+        has_attribute = list()
+        for tier in self:
+            if tier.is_meta_key("weka_class"):
+                has_class = tier
+            if tier.is_meta_key("weka_attribute"):
+                has_attribute.append(tier)
+                if tier.is_meta_key("weka_class"):
+                    raise ValueError("A tier can be either an attribute or "
+                                     "the class. It can't be both.")
+
+        if has_class is None:
+            raise ValueError("The transcription must contain a class.")
+        if len(has_attribute) == 0:
+            raise ValueError("The transcription must contain attributes.")
+
+        if has_class.is_empty():
+            raise ValueError("The class tier must contain annotations.")
+        self.check_max_class_tags(self.__max_class_tags)
+
+        for tier in has_attribute:
+            if tier.is_empty():
+                raise ValueError("The attributes tier {:s} must contain annotations.".format(tier.get_name()))
+
+        has_time_slice = False
+        if self.is_meta_key("weka_instance_step") is False:
+            for tier in self:
+                if tier.is_meta_key("weka_instance_anchor"):
+                    has_time_slice = True
+        else:
+            try:
+                time = float(self.get_meta("weka_instance_step"))
+            except ValueError:
+                raise ValueError("The instance step must be a numerical value. "
+                                 "Not {:s}".format(self.get_meta("weka_instance_step")))
+            has_time_slice = True
+        if has_time_slice is False:
+            raise ValueError("No instance time step nor anchor tier defined.")
+
+    # -----------------------------------------------------------------
+    # Private
+    # -----------------------------------------------------------------
+
+    def _create_ctrl_vocab(self):
+        """ Fix the controlled vocabularies of attribute tiers.
+        """
+        for tier in self:
+            if tier.is_meta_key("weka_attribute") or tier.is_meta_key("weka_class"):
+                tier.create_ctrl_vocab()
 
     # -----------------------------------------------------------------
 
@@ -160,7 +297,7 @@ class sppasARFF(sppasBaseIO):
     def _write_relation(self, fp):
         """ Write the relation of the ARFF file. """
 
-        fp.write("@RELATION {:s}".format(self.get_name()))
+        fp.write("@RELATION {:s}\n".format(self.get_name()))
         fp.write("\n")
 
     # -----------------------------------------------------------------
@@ -170,15 +307,16 @@ class sppasARFF(sppasBaseIO):
         Attributes are corresponding to the controlled vocabulary.
         They are the list of possible tags of the annotations, except
         for the numerical ones.
+
+        It is supposed that the transcription has been already validated.
+
         """
-        has_attributes = False
         for tier in self:
             is_att = False
             is_numeric = False
             if tier.is_meta_key("weka_attribute"):
-                has_attributes = True
                 is_att = True
-                is_numeric = tier.get_meta("weka_attribute")
+                is_numeric = "numeric" in tier.get_meta("weka_attribute").lower()
 
             if is_att is False:
                 continue
@@ -188,27 +326,24 @@ class sppasARFF(sppasBaseIO):
                 fp.write("@ATTRIBUTES {:s} NUMERIC".format(tier.get_name()))
                 fp.write("\n")
             else:
-                # The controlled vocabulary
-                fp.write("@ATTRIBUTES {:s} {".format(tier.get_name()))
-                for tag in tier.get_ctrl_vocab():
-                    fp.write("{:s} ".format(tag.get_content()))
-                fp.write("}\n")
+                # Either a generic "string" or we can explicitly fix the list
+                if len(tier.get_ctrl_vocab()) > self.__max_attributes_tags:
+                    fp.write("@ATTRIBUTES {:s} STRING".format(tier.get_name()))
+                    fp.write("\n")
+                else:
+                    # The controlled vocabulary
+                    fp.write("@ATTRIBUTES {:s} {{".format(tier.get_name()))
+                    for tag in tier.get_ctrl_vocab():
+                        fp.write("{:s} ".format(tag.get_content()))
+                    fp.write("}\n")
 
-        if has_attributes is False:
-            raise ValueError("No attribute tier was defined.")
-
-        has_class = False
         for tier in self:
             if tier.is_meta_key("weka_class"):
-                has_class = True
                 # The controlled vocabulary
                 fp.write("@ATTRIBUTES class {")
                 for tag in tier.get_ctrl_vocab():
                     fp.write("{:s} ".format(tag.get_content()))
                 fp.write("}\n\n")
-
-        if has_class is False:
-            raise ValueError("No class tier was defined.")
 
     # -----------------------------------------------------------------
 
@@ -225,11 +360,11 @@ class sppasARFF(sppasBaseIO):
             max_time = 0
             for tier in self:
                 if tier.is_meta_key("weka_class"):
-                    time_value = tier.get_first_point()
+                    time_value = tier.get_first_point().get_midpoint()
                     max_time = tier.get_last_point()
 
             while time_value < max_time:
-                intervals.append(time_value)
+                intervals.append((time_value, time_value + time_step))
                 time_value += time_step
 
         else:
@@ -247,10 +382,8 @@ class sppasARFF(sppasBaseIO):
                                 (localization.get_begin().get_midpoint(),
                                  localization.get_end().get_midpoint()))
                     break
-        if len(intervals) == 0:
-            raise ValueError("No instance time step nor anchor tier defined.")
 
-        for (b, e) in intervals:
+        for b, e in intervals:
             self._write_data_instance(b, e, fp)
 
     # -----------------------------------------------------------------

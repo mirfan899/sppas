@@ -58,6 +58,7 @@ from .praat import sppasTextGrid  #, PitchTier, IntensityTier
 # from .annotationpro import Antx
 # from .xtrans import Xtrans
 # from .audacity import Audacity
+from .weka import sppasARFF
 
 # ----------------------------------------------------------------------------
 
@@ -75,6 +76,7 @@ class sppasRW(object):
     TRANSCRIPTION_TYPES = OrderedDict()
     TRANSCRIPTION_TYPES["xra"] = sppasXRA
     TRANSCRIPTION_TYPES["textgrid"] = sppasTextGrid
+    TRANSCRIPTION_TYPES["arff"] = sppasARFF
         # "eaf": Elan,
         # "trs": Transcriber,
         # "mrk": Phonedit,
