@@ -64,6 +64,13 @@ parser.add_argument("-c",
                     type=str,
                     help='The class tier name.')
 
+parser.add_argument("-C",
+                    metavar="classtags",
+                    required=False,
+                    type=int,
+                    default=10,
+                    help='Extend the maximum number of possible tags of the class (default: 10).')
+
 parser.add_argument("-t",
                     metavar="value",
                     required=False,
@@ -93,9 +100,27 @@ instance_group.add_argument("-s",
                             type=float,
                             help='Time step to create instances.')
 
+parser.add_argument("-u",
+                    metavar="uncertaintag",
+                    required=False,
+                    type=str,
+                    default="?",
+                    help='Tag that is used into annotations for an uncertain label. (default: ?)')
+
+parser.add_argument("-e",
+                    metavar="emptytag",
+                    required=False,
+                    type=str,
+                    default="none",
+                    help='Tag to be used for un-labelled annotations. (default: none)')
+
 parser.add_argument("--probas",
                     action='store_true',
                     help="Enable the conversion of annotations into distribution of probabilities.")
+
+parser.add_argument("--xra",
+                    action='store_true',
+                    help="Also export an xra file.")
 
 parser.add_argument("--quiet",
                     action='store_true',
@@ -138,6 +163,8 @@ if args.t:
         else:
             print("{:d} is not a valid tier number.".format(tier_number))
             sys.exit(1)
+
+if args.n:
     for tier_name in args.n:
         tier = trs.find(tier_name)
         if tier is not None:
@@ -168,7 +195,23 @@ if args.s:
     trs.set_meta("weka_instance_step", str(args.s))
 
 # ----------------------------------------------------------------------------
+# Meta-data, to configure how the data will have to be interpreted
+
+if args.e:
+    trs.set_meta("empty_annotation_tag", args.e)
+
+if args.u:
+    trs.set_meta("uncertain_annotation_tag", args.u)
+
+if args.C:
+    trs.set_meta("max_class_tags", str(args.C))
+
+# ----------------------------------------------------------------------------
 
 name, extension = os.path.splitext(args.i)
 parser.set_filename(name + ".arff")
 parser.write(trs)
+
+if args.xra:
+    parser.set_filename(name + "-export.xra")
+    parser.write(trs)
