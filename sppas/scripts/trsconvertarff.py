@@ -198,13 +198,13 @@ if args.s:
 # Meta-data, to configure how the data will have to be interpreted
 
 if args.e:
-    trs.set_meta("empty_annotation_tag", args.e)
+    trs.set_meta("weka_empty_annotation_tag", args.e)
 
 if args.u:
-    trs.set_meta("uncertain_annotation_tag", args.u)
+    trs.set_meta("weka_uncertain_annotation_tag", args.u)
 
 if args.C:
-    trs.set_meta("max_class_tags", str(args.C))
+    trs.set_meta("weka_max_class_tags", str(args.C))
 
 # ----------------------------------------------------------------------------
 
