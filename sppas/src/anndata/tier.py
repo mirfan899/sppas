@@ -596,7 +596,7 @@ class sppasTier(sppasMetaData):
     def mindex(self, moment, bound=0):
         """ Return the index of the interval containing the given moment, or -1.
         If the tier contains more than one annotation at the same moment,
-        the method returns the first one.
+        the method returns the first one (i.e. the one which started at first).
         Only for tier with intervals or disjoint.
 
         :param moment: (sppasPoint)
@@ -604,6 +604,7 @@ class sppasTier(sppasMetaData):
             - 0 to exclude bounds of the interval.
             - -1 to include begin bound.
             - +1 to include end bound.
+            - others: the midpoint of moment is strictly inside
         :returns: (int) Index of the annotation containing a moment
 
         """
@@ -613,14 +614,17 @@ class sppasTier(sppasMetaData):
         for i, a in enumerate(self.__ann):
             b = a.get_lowest_localization()
             e = a.get_highest_localization()
-            if bound < 0:
+            if bound == -1:
                 if b <= moment < e:
                     return i
-            elif bound > 0:
+            elif bound == 1:
                 if b < moment <= e:
                     return i
-            else:
+            elif bound == 0:
                 if b < moment < e:
+                    return i
+            else:
+                if b < moment.get_midpoint() < e:
                     return i
 
         return -1

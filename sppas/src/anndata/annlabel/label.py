@@ -279,7 +279,7 @@ class sppasLabel(object):
         st = ""
         if self.__tags is not None:
             for t, s in self.__tags:
-                st += "sppasTag({!s:s}, score={:s}), ".format(t, s)
+                st += "sppasTag({!s:s}, score={!s:s}), ".format(t, s)
         return st
 
     # -----------------------------------------------------------------------
@@ -288,7 +288,7 @@ class sppasLabel(object):
         st = ""
         if self.__tags is not None:
             for t, s in self.__tags:
-                st += "{!s:s}, {:s} ; ".format(t, s)
+                st += "{!s:s}, {!s:s} ; ".format(t, s)
         return st
 
     # -----------------------------------------------------------------------

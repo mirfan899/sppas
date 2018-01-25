@@ -59,6 +59,7 @@ from .praat import sppasTextGrid  #, PitchTier, IntensityTier
 # from .xtrans import Xtrans
 # from .audacity import Audacity
 from .weka import sppasARFF
+from .weka import sppasXRFF
 
 # ----------------------------------------------------------------------------
 
@@ -77,6 +78,7 @@ class sppasRW(object):
     TRANSCRIPTION_TYPES["xra"] = sppasXRA
     TRANSCRIPTION_TYPES["textgrid"] = sppasTextGrid
     TRANSCRIPTION_TYPES["arff"] = sppasARFF
+    TRANSCRIPTION_TYPES["xrff"] = sppasXRFF
         # "eaf": Elan,
         # "trs": Transcriber,
         # "mrk": Phonedit,

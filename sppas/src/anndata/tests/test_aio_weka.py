@@ -16,6 +16,7 @@ from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
 
 from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.utils.makeunicode import u
 
 # ---------------------------------------------------------------------------
 
@@ -28,6 +29,7 @@ DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 class TestWEKA(unittest.TestCase):
     """
     Represents a WEKA instance test sets.
+
     """
     def test_members(self):
         weka = sppasWEKA()
@@ -48,6 +50,8 @@ class TestWEKA(unittest.TestCase):
 
         self.assertEqual(weka._uncertain_annotation_tag, "?")
         self.assertEqual(weka._epsilon_proba, 0.001)
+
+    # -----------------------------------------------------------------
 
     def test_setters(self):
         weka = sppasWEKA()
@@ -79,7 +83,11 @@ class TestWEKA(unittest.TestCase):
         with self.assertRaises(ValueError):
             weka.set_uncertain_annotation_tag(" \n")
 
+    # -----------------------------------------------------------------
+
     def test_check_metadata(self):
+        """ Check the metadata and fix the variable members. """
+
         weka = sppasWEKA()
         t = sppasTranscription()
         weka.set(t)
@@ -109,14 +117,22 @@ class TestWEKA(unittest.TestCase):
         with self.assertRaises(ValueError):
             weka.check_metadata()
 
+    # -----------------------------------------------------------------
+
     def test_validate_annotations(self):
+        """ Prepare data to be compatible. """
+
         weka = sppasWEKA()
         t = sppasTranscription()
         weka.set(t)
         tier1 = t.create_tier("The name")
         # TODO
 
+    # -----------------------------------------------------------------
+
     def test_validate(self):
+        """ Check the tiers to verify if everything is ok. """
+
         weka = sppasWEKA()
         t = sppasTranscription()
         weka.set(t)
@@ -156,7 +172,11 @@ class TestWEKA(unittest.TestCase):
         # yes! it sounds good!
         weka.validate()
 
+    # -----------------------------------------------------------------
+
     def test_tier_is_attribute(self):
+        """ Check if a tier is an attribute for the classification. """
+
         t = sppasTranscription()
         tier1 = t.create_tier(name="tier1")
         is_att, is_num = sppasWEKA._tier_is_attribute(tier1)
@@ -171,7 +191,11 @@ class TestWEKA(unittest.TestCase):
         self.assertTrue(is_att)
         self.assertTrue(is_num)
 
+    # -----------------------------------------------------------------
+
     def test_get_class_tier(self):
+        """ Return the tier which is the class. """
+
         weka = sppasWEKA()
         t = sppasTranscription()
         weka.set(t)
@@ -180,7 +204,11 @@ class TestWEKA(unittest.TestCase):
         tier1.set_meta("weka_class", "")
         self.assertEqual(weka._get_class_tier(), tier1)
 
+    # -----------------------------------------------------------------
+
     def test_get_anchor_tier(self):
+        """ Return the tier which will be used to create the instances. """
+
         weka = sppasWEKA()
         t = sppasTranscription()
         weka.set(t)
@@ -189,21 +217,171 @@ class TestWEKA(unittest.TestCase):
         tier1.set_meta("weka_instance_anchor", "")
         self.assertEqual(weka._get_anchor_tier(), tier1)
 
+    # -----------------------------------------------------------------
+
     def test_get_label(self):
-        # TODO
-        pass
+        """ Return the sppasLabel() at the given time in the given tier.
+            Return the empty label if no label was assigned at the given time.
+        """
+        empty = sppasLabel(sppasTag("none"))
+        weka = sppasWEKA()
+        t = sppasTranscription()
+        weka.set(t)
+        tier = t.create_tier(name="tier")
+        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.)))))
+        tier.add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2.5), sppasPoint(4.))),
+                                 sppasLabel(sppasTag('toto'))))
+        self.assertEqual(weka._get_label(sppasPoint(0.), tier), empty)
+        self.assertEqual(weka._get_label(sppasPoint(1.), tier), empty)
+        self.assertEqual(weka._get_label(sppasPoint(2.), tier), empty)
+        self.assertEqual(weka._get_label(sppasPoint(3.), tier), sppasLabel(sppasTag('toto')))
+        self.assertEqual(weka._get_label(sppasPoint(4.), tier), empty)
+        self.assertEqual(weka._get_label(sppasPoint(5.), tier), empty)
+        tier[0].add_tag(sppasTag('titi'))
+        self.assertEqual(weka._get_label(sppasPoint(2.), tier), sppasLabel(sppasTag('titi')))
+        self.assertEqual(weka._get_label(sppasPoint(2.5), tier), sppasLabel(sppasTag('titi')))
+        self.assertEqual(weka._get_label(sppasPoint(2.6), tier), sppasLabel(sppasTag('titi')))
+        self.assertEqual(weka._get_label(sppasPoint(3.), tier), sppasLabel(sppasTag('toto')))
+
+    # -----------------------------------------------------------------
 
     def test_get_tag(self):
-        # TODO
-        pass
+        """ Return the sppasTag() of at the given time in the given tier. """
+
+        empty = sppasTag("none")
+        weka = sppasWEKA()
+        t = sppasTranscription()
+        weka.set(t)
+        tier = t.create_tier(name="tier")
+        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.)))))
+        self.assertEqual(weka._get_tag(sppasPoint(2.), tier), empty)
+        tier[0].add_tag(sppasTag('titi'))
+        self.assertEqual(weka._get_tag(sppasPoint(2.), tier), sppasTag('titi'))
+        tier[0].add_tag(sppasTag('toto'))
+        self.assertEqual(weka._get_tag(sppasPoint(2.), tier), sppasTag('titi'))
+        tier[0].add_tag(sppasTag('tata'), score=0.5)
+        self.assertEqual(weka._get_tag(sppasPoint(2.), tier), sppasTag('tata'))
+        tier[0].get_label().set_score(sppasTag('titi'), 1.)
+        self.assertEqual(weka._get_tag(sppasPoint(2.), tier), sppasTag('titi'))
+        tier[0].get_label().set_score(sppasTag('titi'), "a")
+        tier[0].get_label().set_score(sppasTag('tata'), "b")
+        tier[0].get_label().set_score(sppasTag('toto'), "c")
+        self.assertEqual(weka._get_tag(sppasPoint(2.), tier), sppasTag('toto'))
+
+    # -----------------------------------------------------------------
+
+    def test_fix_all_possible_instance_steps(self):
+        """ Fix all the possible time-points of the instances. """
+
+        t = sppasTranscription()
+        tier = t.create_tier(name="tier")
+        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(2.)))))
+        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(4.), sppasPoint(5.))),
+                                    sppasLabel(sppasTag("toto"))))
+        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(5.), sppasPoint(6.))),
+                                    sppasLabel(sppasTag("none"))))
+
+        all_points = sppasWEKA._fix_all_possible_instance_steps(0., 10., time_step=0.01)  # phoneme frames
+        self.assertEqual(len(all_points), 1000)
+        all_points = sppasWEKA._fix_all_possible_instance_steps(0., 10., time_step=0.04)  # video frames
+        self.assertEqual(len(all_points), 250)
+
+        all_points = sppasWEKA._fix_all_possible_instance_steps(0., 10., anchor_tier=tier)
+        self.assertEqual(len(all_points), 2)
+        self.assertTrue(sppasPoint(4.5, 0.5) in all_points)
+        self.assertTrue(sppasPoint(5.5, 0.5) in all_points)
+
+    # -----------------------------------------------------------------
 
     def test_fix_instance_steps(self):
-        # TODO
-        pass
+        """ Fix the time-points to create the instances and the
+            tag of the class to predict by the classification system.
+        """
+        weka = sppasWEKA()
+        t = sppasTranscription()
+        weka.set(t)
+        tier = t.create_tier(name="tier")
+        tier.set_meta('weka_class', '')
+        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(2.)))))
+        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(4.), sppasPoint(5.))),
+                                    sppasLabel(sppasTag("toto"))))
+        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(5.), sppasPoint(6.))),
+                                    sppasLabel(sppasTag("none"))))
+
+        weka.set_meta('weka_instance_step', '0.1')
+        all_points = sppasWEKA._fix_all_possible_instance_steps(1., 6., time_step=0.1)
+        self.assertEqual(len(all_points), 50)
+        instances = weka._fix_instance_steps()
+        self.assertEqual(len(instances), 10)  # only "toto", with 10 steps
+
+        weka.pop_meta('weka_instance_step')
+        instances = weka._fix_instance_steps()
+        self.assertEqual(len(instances), 0)
+
+        tier.set_meta('weka_instance_anchor', '')
+        instances = weka._fix_instance_steps()
+        self.assertEqual(len(instances), 1)  # only "toto
+        self.assertEqual(instances[0], (sppasPoint(4.5, 0.5), "toto"))
+
+    # -----------------------------------------------------------------
 
     def test_scores_to_probas(self):
-        # TODO
+        """ Convert scores of a label to probas. """
+
         pass
+
+    # -----------------------------------------------------------------
+
+    def test_fix_data_instance(self):
+        """ Fix the data content of an instance. """
+
+        weka = sppasWEKA()
+        t = sppasTranscription()
+        tier1 = t.create_tier(name="tier1")
+        tier2 = t.create_tier(name="tier2")
+        tier3 = t.create_tier(name="tier3")
+        weka.set(t)
+        weka.set_meta("weka_instance_step", "0.1")
+        tier1.set_meta("weka_class", "")
+        tier2.set_meta("weka_attribute", "string")
+        # tier3.set_meta("weka_attribute", "numeric")
+
+        tier1.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(2.)))))
+        tier1.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(4.), sppasPoint(5.))),
+                                     sppasLabel(sppasTag("toto"))))
+        tier1.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(5.), sppasPoint(6.))),
+                                     sppasLabel(sppasTag("none"))))
+        tier1.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(7.), sppasPoint(10.))),
+                                     sppasLabel(sppasTag("titi"))))
+
+        tier2.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3)))))
+        tier2.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(3), sppasPoint(5))),
+                                     sppasLabel(sppasTag('a'))))
+        tier2.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(8), sppasPoint(10))),
+                                     sppasLabel(sppasTag('b'))))
+
+        tier3.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3))),
+                                     sppasLabel(sppasTag('b'))))
+        tier3.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(3), sppasPoint(5))),
+                                     sppasLabel(sppasTag('a'))))
+        tier3.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(8), sppasPoint(10))),
+                                     sppasLabel(sppasTag('b'))))
+        tier1.create_ctrl_vocab()
+        tier2.create_ctrl_vocab()
+        tier3.create_ctrl_vocab()
+
+        instance_steps = weka._fix_instance_steps()
+        for point, class_str in instance_steps:
+            data = weka._fix_data_instance(point)
+            if 4. < point < 5.:
+                self.assertEqual(class_str, "toto")
+                self.assertEqual(data[0], u("a"))
+            elif 7. < point < 8.:
+                self.assertEqual(class_str, "titi")
+                self.assertEqual(data[0], u("none"))
+            elif 8. < point < 10.:
+                self.assertEqual(class_str, "titi")
+                self.assertEqual(data[0], u("b"))
 
 # ---------------------------------------------------------------------------
 
@@ -286,10 +464,30 @@ class TestARFF(unittest.TestCase):
 
     def test_write_data(self):
         """ Write the list of attributes. """
+
         arff = sppasARFF()
-        arff.set(self.trs)
-        arff.set_meta("weka_instance_step", "0.04")
-        self.tier1.set_meta("weka_class", "")
-        self.tier2.set_meta("weka_attribute", "numeric")
+        t = sppasTranscription()
+        tier1 = t.create_tier(name="tier1")
+        tier2 = t.create_tier(name="tier2")
+        arff.set(t)
+        arff.set_meta("weka_instance_step", "0.1")
+        tier1.set_meta("weka_class", "")
+        tier2.set_meta("weka_attribute", "numeric")
         output = io.BytesIO()
+
+        tier1.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(2.)))))
+        tier1.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(4.), sppasPoint(5.))),
+                                     sppasLabel(sppasTag("toto"))))
+        tier1.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(5.), sppasPoint(6.))),
+                                     sppasLabel(sppasTag("none"))))
+        tier1.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(7.), sppasPoint(10.))),
+                                     sppasLabel(sppasTag("titi"))))
+        tier2.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3)))))
+        tier2.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(3), sppasPoint(5)))))
+        tier2.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(8), sppasPoint(10)))))
+
+        tier1.create_ctrl_vocab()
+        tier2.create_ctrl_vocab()
         arff._write_data(output)
+
+        # print output.getvalue()

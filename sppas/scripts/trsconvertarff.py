@@ -114,6 +114,13 @@ parser.add_argument("-e",
                     default="none",
                     help='Tag to be used for un-labelled annotations. (default: none)')
 
+parser.add_argument("-E",
+                    metavar="emptyclasstag",
+                    required=False,
+                    type=str,
+                    default="none",
+                    help='Tag to be used for un-labelled annotations in the class. (default: none)')
+
 parser.add_argument("--probas",
                     action='store_true',
                     help="Enable the conversion of annotations into distribution of probabilities.")
@@ -121,6 +128,10 @@ parser.add_argument("--probas",
 parser.add_argument("--xra",
                     action='store_true',
                     help="Also export an xra file.")
+
+parser.add_argument("--xrff",
+                    action='store_true',
+                    help="Export into the XRFF file format instead of the ARFF one.")
 
 parser.add_argument("--quiet",
                     action='store_true',
@@ -200,6 +211,9 @@ if args.s:
 if args.e:
     trs.set_meta("weka_empty_annotation_tag", args.e)
 
+if args.E:
+    trs.set_meta("weka_empty_annotation_class_tag", args.E)
+
 if args.u:
     trs.set_meta("weka_uncertain_annotation_tag", args.u)
 
@@ -209,7 +223,12 @@ if args.C:
 # ----------------------------------------------------------------------------
 
 name, extension = os.path.splitext(args.i)
-parser.set_filename(name + ".arff")
+
+if not args.xrff:
+    parser.set_filename(name + ".arff")
+else:
+    parser.set_filename(name + ".xrff")
+
 parser.write(trs)
 
 if args.xra:

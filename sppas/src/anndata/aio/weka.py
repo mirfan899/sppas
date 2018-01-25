@@ -50,9 +50,11 @@
 
     ARFF format description is at the following URL:
     http://weka.wikispaces.com/ARFF+(book+version)
-    It's currently the only file format supported by SPPAS.
 
-    :TODO: Support of XRFF file format.
+    XRFF format description is at the following URL:
+    http://weka.wikispaces.com/XRFF
+
+    Sparse option is not supported by both writers.
 
 """
 import codecs
@@ -100,6 +102,7 @@ class sppasWEKA(sppasBaseIO):
         self._max_class_tags = MAX_CLASS_TAGS
         self._max_attributes_tags = MAX_ATTRIBUTES_TAGS
         self._empty_annotation_tag = "none"
+        self._empty_annotation_class_tag = None
         self._uncertain_annotation_tag = "?"
         self._epsilon_proba = 0.001
 
@@ -211,6 +214,25 @@ class sppasWEKA(sppasBaseIO):
 
     # -----------------------------------------------------------------
 
+    def set_empty_annotation_class_tag(self, tag_str=None):
+        """ Fix the annotation tag that will be used to replace
+        empty annotations in the class tier.
+
+        :param tag_str: (str or None) None is used to NOT fill
+        unlabelled annotations, so to ignore them in the data.
+
+        """
+        if tag_str is None:
+            self._empty_annotation_class_tag = None
+        else:
+            tag_str = sppasUnicode(tag_str).clear_whitespace()
+            if len(tag_str) > 0:
+                self._empty_annotation_class_tag = tag_str
+            else:
+                raise ValueError('{:s} is not a valid tag.'.format(tag_str))
+
+    # -----------------------------------------------------------------
+
     def set_uncertain_annotation_tag(self, tag_str):
         """ Fix the annotation tag that is used in the annotations to
         mention an uncertain label.
@@ -240,6 +262,9 @@ class sppasWEKA(sppasBaseIO):
         if self.is_meta_key("weka_empty_annotation_tag") is True:
             self.set_empty_annotation_tag(self.get_meta("weka_empty_annotation_tag"))
 
+        if self.is_meta_key("weka_empty_annotation_class_tag") is True:
+            self.set_empty_annotation_class_tag(self.get_meta("weka_empty_annotation_class_tag"))
+
         if self.is_meta_key("weka_uncertain_annotation_tag") is True:
             self.set_uncertain_annotation_tag(self.get_meta("weka_uncertain_annotation_tag"))
 
@@ -249,7 +274,8 @@ class sppasWEKA(sppasBaseIO):
         """ Prepare data to be compatible.
 
         Convert tier names.
-        Delete the existing controlled vocabularies and convert tags.
+        Delete the existing controlled vocabularies and convert tags
+        (fill empty tags, replace whitespace by underscores).
 
         """
         for tier in self:
@@ -273,9 +299,13 @@ class sppasWEKA(sppasBaseIO):
                                 # Replace whitespace by underscore and check for an empty tag.
                                 tag_text = sppasUnicode(tag.get_content()).clear_whitespace()
                                 if len(tag_text) == 0:
+                                    # The tag is empty. We have to fill it (or not).
                                     if tier.is_meta_key("weka_class") is False:
-                                        # The tag is empty. We have to fill it.
                                         tag_text = self._empty_annotation_tag
+                                    else:
+                                        if self._empty_annotation_class_tag is not None:
+                                            tag_text = self._empty_annotation_class_tag
+
                                 new_tag = sppasTag(tag_text)
                                 # Set the new version of the tag to the label
                                 if new_tag != tag:
@@ -360,6 +390,9 @@ class sppasWEKA(sppasBaseIO):
         :returns: (is attribute, is numeric)
 
         """
+        if tier.is_meta_key("weka_class"):
+            return False, False
+
         is_att = False
         is_numeric = False
         if tier.is_meta_key("weka_attribute"):
@@ -394,11 +427,13 @@ class sppasWEKA(sppasBaseIO):
 
     def _get_label(self, localization, tier):
         """ Return the sppasLabel() at the given time in the given tier.
+        Return the empty label if no label was assigned at the given time.
 
         TODO: return a sppasLabel() with all sppasTag and their scores
         depending on the observed tags during the localization (i.e.
         during the period including the vagueness) and not only at the
         midpoint of the localization.
+        And in the same idea, we have to deal with overlapping annotations.
 
         :param localization: (sppasPoint)
         :param tier: (sppasTier)
@@ -406,54 +441,59 @@ class sppasWEKA(sppasBaseIO):
         :returns: sppasLabel()
 
         """
-        mindex = tier.mindex(localization)
+        # Find the annotation at the given time.
+        # Return the first one in case of overlapping annotations.
+        mindex = tier.mindex(localization, bound=10)
+
+        # Fix the label to be returned: the observed one or an empty one
         if mindex != -1:
-            return tier[mindex].get_label()
+            label = tier[mindex].get_label()
+            if label is not None and label.get_best().is_empty() is False:
+                return label
 
         return sppasLabel(sppasTag(self._empty_annotation_tag))
 
     # -----------------------------------------------------------------
 
     def _get_tag(self, localization, tier):
-        """ Return the best sppasTag() of at the given time in the given tier.
+        """ Return the sppasTag() of at the given time in the given tier.
 
         :param localization: (sppasPoint)
         :param tier: (sppasTier)
 
-        :returns: sppasTag()
+        :returns: sppasTag() with the highest score or an empty one
 
         """
-        label = self._get_label(localization, tier)
-        if label is None:
-            return sppasTag(self._empty_annotation_tag)
-        return label.get_best()
+        return self._get_label(localization, tier).get_best()
 
     # -----------------------------------------------------------------
 
-    def _fix_instance_steps(self):
-        """ Fix the time-points to create the instances and the
-        tag of the class to predict by the classification system.
+    @staticmethod
+    def _fix_all_possible_instance_steps(start_time,
+                                         end_time,
+                                         time_step=None,
+                                         anchor_tier=None):
+        """ Fix all the possible time-points of the instances.
 
-        :returns: List of (sppasPoint, tag content)
+        If an anchor tier is given, only labelled annotations are used
+        to create the instances.
+
+        :param start_time: (float)
+        :param end_time: (float)
+        :param time_step: (float)
+        :param anchor_tier: (sppasTier)
+
+        :returns: list of sppasPoint()
 
         """
-        # The instances are created only if the class is labelled.
-        class_tier = self._get_class_tier()
-
-        # The localization point to start the instances
-        time_value = class_tier.get_first_point().get_midpoint()
-
-        # The localization point to finish the instances
-        max_time = class_tier.get_last_point()
-
         # Create the list of all possible points for the instances
         all_points = list()
 
         # A timer is used to fix the steps
-        if self.is_meta_key("weka_instance_step") is True:
-            time_step = float(self.get_meta("weka_instance_step"))
+        if time_step is not None:
+            time_value = start_time
 
-            while time_value < max_time:
+            while (time_value + (time_step/2.)) < end_time:
                 # Fix the anchor point of the instance
                 midpoint = time_value + (time_step/2.)
                 radius = time_step/2.
@@ -462,29 +502,60 @@ class sppasWEKA(sppasBaseIO):
                 time_value += time_step
 
         # An anchor class is used to fix the steps
-        else:
-            anchor_tier = self._get_anchor_tier()
-
+        # Only labelled annotations are selected
+        elif anchor_tier is not None:
             for ann in anchor_tier:
-                localization = ann.get_highest_localization()
-                if localization.is_point():
-                    all_points.append(localization)
-                else:
-                    # Fix the anchor point of the instance
-                    duration = localization.get_duration()
-                    midpoint = \
-                        localization.get_begin().get_midpoint() + \
-                        (duration.get_value()/2.)
-                    radius = (duration.get_value() + duration.get_margin()) / 2.
-                    all_points.append(sppasPoint(midpoint, radius))
+                localization = ann.get_location().get_best()
+                label = ann.get_label()
+                if label is not None:
+                    if localization.is_point():
+                        all_points.append(localization)
+                    else:
+                        # Fix the anchor point of the instance
+                        duration = localization.duration()
+                        midpoint = \
+                            localization.get_begin().get_midpoint() + \
+                            (duration.get_value()/2.)
+                        radius = (duration.get_value() + duration.get_margin()) / 2.
+
+                        all_points.append(sppasPoint(midpoint, radius))
+
+        return all_points
+
+    # -----------------------------------------------------------------
+
+    def _fix_instance_steps(self):
+        """ Fix the time-points to create the instances and the
+        tag of the class to predict by the classification system.
+
+        The instances are created only for the labelled annotations of
+        the class tier.
+
+        :returns: List of (sppasPoint, tag content)
+
+        """
+        class_tier = self._get_class_tier()
+        # The localization point to start the instances
+        begin = class_tier.get_first_point().get_midpoint()
+        # The localization point to finish the instances
+        end = class_tier.get_last_point().get_midpoint()
+
+        # Fix the list of candidates for the instance points
+        time_step = None
+        if self.is_meta_key("weka_instance_step") is True:
+            time_step = float(self.get_meta("weka_instance_step"))
+        anchor_tier = self._get_anchor_tier()
+        all_points = self._fix_all_possible_instance_steps(begin, end, time_step, anchor_tier)
 
         # Create the list of points for the instances
         instance_points = list()
         for point in all_points:
-            # Fix the tag to predict by the classification system
+
+            # Fix the tag which have to be predicted
             class_tag = self._get_tag(point, class_tier)
+
             # Append only if the class was labelled
-            if class_tag != sppasTag(self._empty_annotation_tag):
+            if class_tag.get_content() != self._empty_annotation_tag:
                 instance_points.append((point, class_tag.get_content()))
 
         return instance_points
@@ -493,7 +564,7 @@ class sppasWEKA(sppasBaseIO):
 
     @staticmethod
     def _scores_to_probas(label):
-        """ Convert scores to probas. """
+        """ Convert scores of a label to probas. """
 
         function_score = label.get_function_score()
         if function_score is min:
@@ -502,10 +573,67 @@ class sppasWEKA(sppasBaseIO):
                 label.set_score(tag, -score)
             label.set_function_score(max)
 
-        total = float(sum(label.get_score(tag) for tag in label))
-        for tag in label:
-            score = label.get_score(tag)
-            label.set_score(tag, float(score) / total)
+        total = float(sum(score for tag, score in label if score is not None))
+        for tag, score in label:
+            if score is not None:
+                label.set_score(tag, float(score) / total)
+
+    # -----------------------------------------------------------------
+
+    def _fix_data_instance(self, point):
+        """ Fix the data content of an instance.
+
+        Create the instance at the given point with annotations of all
+        attribute tiers, followed by the class.
+
+        To be fixed:
+
+            - tiers with points
+            - tiers with boolean tags
+            - tiers with int/float tags: should be converted to labels
+
+        :param point: (sppasPoint) The moment to be used
+        :returns: list of attributes (str)
+
+        """
+        instances_data = list()
+        for tier in self:
+
+            is_att, is_numeric = sppasWEKA._tier_is_attribute(tier)
+            if is_att is False:
+                continue
+
+            if is_numeric is True:
+
+                label = self._get_label(point, tier)
+
+                # Scores of observed tags are converted to probabilities
+                self._scores_to_probas(label)
+
+                # Score of un-observed tags are all set to an epsilon probability
+                nb_eps_tags = len(tier.get_ctrl_vocab()) - len(label)
+                epsilon = self._epsilon_proba
+                if tier.is_meta_key('weka_epsilon'):
+                    epsilon = float(tier.get_meta('weka_epsilon'))
+                # ... if an uncertain tag is observed
+                if label.contains(sppasTag(self._uncertain_annotation_tag)) is True:
+                    score = label.get_score(sppasTag(self._uncertain_annotation_tag))
+                    nb_eps_tags += 1
+                    epsilon = score / float(nb_eps_tags)
+                    label.remove(sppasTag(self._uncertain_annotation_tag))
+
+                # All possible tags are written
+                for tag in tier.get_ctrl_vocab():
+                    proba = epsilon
+                    if label.contains(tag) is True:
+                        proba = label.get_score(tag) - (nb_eps_tags * epsilon)
+                    instances_data.append(proba)
+            else:
+
+                tag = self._get_tag(point, tier)
+                instances_data.append(tag.get_content())
+
+        return instances_data
 
 # ----------------------------------------------------------------------------
 
@@ -624,6 +752,33 @@ class sppasARFF(sppasWEKA):
 
     # -----------------------------------------------------------------
 
+    @staticmethod
+    def _write_attributes_ctrl_vocab(tier, fp, is_class=False):
+        """ Write the controlled vocabulary in an attribute set.
+
+        :param tier: (sppasTier)
+        :param fp: FileDescription
+
+        """
+        # Prepare the list of strings to write
+        tags = list()
+        for tag in tier.get_ctrl_vocab():
+            tags.append(tag.get_content())
+
+        # Write the name of the attribute serie
+        fp.write("@ATTRIBUTES ")
+        if is_class is True:
+            fp.write("class ")
+        else:
+            fp.write("{:s} ".format(tier.get_name()))
+
+        # Write the attributes
+        fp.write("{")
+        fp.write("{:s}".format(",".join(tags)))
+        fp.write("}\n")
+
+    # -----------------------------------------------------------------
+
     def _write_attributes(self, fp):
         """ Write the attributes of the ARFF file.
         Attributes are corresponding to the controlled vocabulary.
@@ -651,20 +806,10 @@ class sppasARFF(sppasWEKA):
                 if len(tier.get_ctrl_vocab()) > self._max_attributes_tags:
                     fp.write("@ATTRIBUTES {:s} STRING\n".format(tier.get_name()))
                 else:
-                    # The controlled vocabulary
-                    fp.write("@ATTRIBUTES {:s} {{".format(tier.get_name()))
-                    for tag in tier.get_ctrl_vocab():
-                        fp.write("{:s} ".format(tag.get_content()))
-                    fp.write("}\n")
+                    sppasARFF._write_attributes_ctrl_vocab(tier, fp)
 
-        for tier in self:
-
-            if tier.is_meta_key("weka_class"):
-                # The controlled vocabulary
-                fp.write("@ATTRIBUTES class {")
-                for tag in tier.get_ctrl_vocab():
-                    fp.write("{:s} ".format(tag.get_content()))
-                fp.write("}\n")
+        tier = self._get_class_tier()
+        sppasARFF._write_attributes_ctrl_vocab(tier, fp, is_class=True)
 
         fp.write("\n")
 
@@ -675,18 +820,6 @@ class sppasARFF(sppasWEKA):
         Data are the tags of the annotations or distributions of
         probabilities.
 
-        """
-        steps = self._fix_instance_steps()
-
-        fp.write("@DATA\n")
-        for point, class_str in steps:
-            self._write_data_instance(point, class_str, fp)
-
-    # -----------------------------------------------------------------
-
-    def _write_data_instance(self, point, class_str, fp):
-        """ Write an instance of the data content of the ARFF file.
-
         * Each instance is represented on a single line, with carriage
         returns denoting the end of the instance.
         * Attribute values for each instance are delimited by commas.
@@ -695,16 +828,130 @@ class sppasARFF(sppasWEKA):
         * Values of string and nominal attributes are case sensitive,
         and any that contain space must be quoted
 
-        - tiers with points
-        - tiers with boolean tags
-        - tiers with int/float tags: should be converted to labels
+        :param fp: FileDescriptor
 
         """
-        fp.write(str(point))
-        fp.write(";")
+        fp.write("@DATA\n")
 
-        # Create the instance of the interval with annotations of all
-        # attribute tiers, followed by the class.
+        for point, class_str in self._fix_instance_steps():
+            data_instances = self._fix_data_instance(point)
+            for attribute in data_instances:
+                fp.write(attribute)
+                fp.write(",")
+            fp.write(str(class_str))
+            fp.write("\n")
+
+# ----------------------------------------------------------------------------
+
+
+class sppasXRFF(sppasWEKA):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      SPPAS XRFF writer.
+
+    XML-based format of WEKA software tool.
+
+    """
+    @staticmethod
+    def detect(filename):
+        try:
+            with codecs.open(filename, 'r', 'utf-8') as fp:
+                for i in range(200):
+                    line = fp.readline()
+                    if "<dataset " in line.lower():
+                        return True
+        except Exception:
+            return False
+
+        return False
+
+    # -----------------------------------------------------------------
+
+    def __init__(self, name=None):
+        """ Initialize a new sppasXRFF instance.
+
+        :param name: (str) This transcription name.
+
+        """
+        if name is None:
+            name = self.__class__.__name__
+        sppasWEKA.__init__(self, name)
+
+    # -----------------------------------------------------------------
+    # Write data
+    # -----------------------------------------------------------------
+
+    def write(self, filename):
+        """ Write a RawText file.
+
+        :param filename: (str)
+
+        """
+        with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
+
+            # Check metadata
+            self.check_metadata()
+
+            # Check the annotation tags.
+            self.validate_annotations()
+
+            # Check if the metadata are properly fixed.
+            self.validate()
+
+            # OK, we are ready to write
+            fp.write('<?xml version="1.0" encoding="utf-8"?>\n')
+            fp.write("\n")
+            fp.write('<dataset name="{:s}" />\n'.format(self.get_name()))
+            fp.write("\n")
+            fp.write('<header>\n')
+            self._write_attributes(fp)
+            fp.write('</header>\n')
+            fp.write('\n')
+            fp.write('<body>\n')
+            self._write_instances(fp)
+            fp.write('</body>\n')
+
+            fp.close()
+
+    # -----------------------------------------------------------------
+    # Private
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def _write_attribute_ctrl_vocab(tier, fp, is_class=False):
+        """ Write the controlled vocabulary in an attribute set.
+
+        :param tier: (sppasTier)
+        :param fp: FileDescription
+        :param is_class: (boolean)
+
+        """
+        fp.write('        <attribute ')
+        if is_class is True:
+            fp.write('class="yes" ')
+        fp.write('name="{:s}" type="nominal">\n'.format(tier.get_name()))
+        fp.write('            <labels>\n')
+        for tag in tier.get_ctrl_vocab():
+            fp.write("            <label>{:s}</label>\n".format(tag.get_content()))
+        fp.write('            </labels>\n')
+        fp.write('        </attribute>\n')
+
+    # -----------------------------------------------------------------
+
+    def _write_attributes(self, fp):
+        """ Write the attributes of the ARFF file.
+        Attributes are corresponding to the controlled vocabulary.
+        They are the list of possible tags of the annotations, except
+        for the numerical ones.
+
+        It is supposed that the transcription has been already validated.
+
+        """
+        fp.write('    <attributes>\n')
         for tier in self:
 
             is_att, is_numeric = sppasWEKA._tier_is_attribute(tier)
@@ -712,32 +959,46 @@ class sppasARFF(sppasWEKA):
                 continue
 
             if is_numeric is True:
-
-                label = self._get_label(point, tier)
-
-                # Scores of observed tags are converted to probabilities
-                self._scores_to_probas(label)
-
-                # Score of un-observed tags are all set to an epsilon probability
-                nb_eps_tags = len(tier.get_ctrl_vocab()) - len(label)
-                epsilon = self._epsilon_proba
-                if tier.is_meta_key('weka_epsilon'):
-                    epsilon = float(tier.get_meta('weka_epsilon'))
-                # ... if an uncertain tag is observed
-                if label.contains(sppasTag(self._uncertain_annotation_tag)) is True:
-                    score = label.get_score(sppasTag(self._uncertain_annotation_tag))
-                    nb_eps_tags += 1
-                    epsilon = score / float(nb_eps_tags)
-                    label.remove(sppasTag(self._uncertain_annotation_tag))
-
-                # All possible tags are written
+                # Tags will be converted to probabilities
                 for tag in tier.get_ctrl_vocab():
-                    proba = epsilon
-                    if label.contains(tag) is True:
-                        proba = label.get_score(tag) - (nb_eps_tags*epsilon)
-                    fp.write(proba)
+                    # Do not write an uncertain label in that situation.
+                    if tag.get_content() != self._uncertain_annotation_tag:
+                        attribute_name = tier.get_name() + "-" + tag.get_content()
+                        fp.write('        <attribute name="{:s}" type="numeric" />\n'.format(attribute_name))
             else:
-                tag = self._get_tag(point, tier)
-                fp.write(tag.get_content()+",")
+                # Either a generic "string" or we can explicitly fix the list
+                if len(tier.get_ctrl_vocab()) > self._max_attributes_tags:
+                    fp.write('        <attribute name="{:s}" type="nominal" />\n'.format(tier.get_name()))
+                else:
+                    # The controlled vocabulary
+                    fp.write('        <attribute name="{:s}" type="nominal">'.format(tier.get_name()))
+                    fp.write('            <labels>\n')
+                    for tag in tier.get_ctrl_vocab():
+                        fp.write("            <label>{:s}</label>\n".format(tag.get_content()))
+                    fp.write('            </labels>\n')
+                    fp.write('        </attribute>\n')
 
-        fp.write(class_str + "\n")
+        tier = self._get_class_tier()
+        self._write_attribute_ctrl_vocab(tier, fp, is_class=True)
+
+        fp.write('    </attributes>\n')
+
+    # -----------------------------------------------------------------
+
+    def _write_instances(self, fp):
+        """ Write the data content of the XRFF file.
+        Data are the tags of the annotations or distributions of
+        probabilities.
+
+        :param fp: FileDescriptor
+
+        """
+        fp.write("    <instances>\n")
+        for point, class_str in self._fix_instance_steps():
+            data_instances = self._fix_data_instance(point)
+            fp.write("        <instance>\n")
+            for attribute in data_instances:
+                fp.write("            <value>{!s:s}</value>\n".format(attribute))
+            fp.write("            <value>{!s:s}</value>\n".format(class_str))
+            fp.write("        </instance>\n")
+        fp.write("    </instances>\n")
