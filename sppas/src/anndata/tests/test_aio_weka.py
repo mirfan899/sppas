@@ -1,12 +1,10 @@
 # -*- coding:utf-8 -*-
-import sys
 import unittest
 import os.path
 import shutil
 import io
 
-import sppas
-from ..aio.weka import sppasWEKA, sppasARFF
+from ..aio.weka import sppasWEKA, sppasARFF, sppasXRFF
 from ..transcription import sppasTranscription
 from ..annlocation.interval import sppasInterval
 from ..annlocation.point import sppasPoint
@@ -126,7 +124,8 @@ class TestWEKA(unittest.TestCase):
         t = sppasTranscription()
         weka.set(t)
         tier1 = t.create_tier("The name")
-        # TODO
+
+        # TODO: unittest of validate_annotations() method.
 
     # -----------------------------------------------------------------
 
@@ -223,11 +222,14 @@ class TestWEKA(unittest.TestCase):
         """ Return the sppasLabel() at the given time in the given tier.
             Return the empty label if no label was assigned at the given time.
         """
+
         empty = sppasLabel(sppasTag("none"))
         weka = sppasWEKA()
         t = sppasTranscription()
         weka.set(t)
-        tier = t.create_tier(name="tier")
+
+        # Interval tier
+        tier = t.create_tier(name="tierIntervals")
         tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.)))))
         tier.add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2.5), sppasPoint(4.))),
                                  sppasLabel(sppasTag('toto'))))
@@ -242,6 +244,18 @@ class TestWEKA(unittest.TestCase):
         self.assertEqual(weka._get_label(sppasPoint(2.5), tier), sppasLabel(sppasTag('titi')))
         self.assertEqual(weka._get_label(sppasPoint(2.6), tier), sppasLabel(sppasTag('titi')))
         self.assertEqual(weka._get_label(sppasPoint(3.), tier), sppasLabel(sppasTag('toto')))
+
+        # Point tier
+        tierp = t.create_tier(name="tierPoints")
+        tierp.append(sppasAnnotation(sppasLocation(sppasPoint(1.))))
+        tierp.append(sppasAnnotation(sppasLocation(sppasPoint(5.)),
+                                     sppasLabel(sppasTag('H*'))))
+        tierp.append(sppasAnnotation(sppasLocation(sppasPoint(12.)),
+                                     sppasLabel()))
+        self.assertEqual(weka._get_label(sppasPoint(0.), tierp), empty)
+        self.assertEqual(weka._get_label(sppasPoint(1.), tierp), empty)
+        self.assertEqual(weka._get_label(sppasPoint(12.), tierp), empty)
+        self.assertEqual(weka._get_label(sppasPoint(5.), tierp), sppasLabel(sppasTag('H*')))
 
     # -----------------------------------------------------------------
 
@@ -297,6 +311,7 @@ class TestWEKA(unittest.TestCase):
         """ Fix the time-points to create the instances and the
             tag of the class to predict by the classification system.
         """
+
         weka = sppasWEKA()
         t = sppasTranscription()
         weka.set(t)
@@ -328,7 +343,63 @@ class TestWEKA(unittest.TestCase):
     def test_scores_to_probas(self):
         """ Convert scores of a label to probas. """
 
-        pass
+        self.assertFalse(sppasWEKA._scores_to_probas(None))
+        self.assertFalse(sppasWEKA._scores_to_probas(sppasLabel()))
+
+        # only one tag, without score (the most common situation)
+        tag = sppasTag("")
+        label = sppasLabel(tag)
+        self.assertTrue(sppasWEKA._scores_to_probas(label))
+        self.assertEqual(label.get_score(tag), 1.)
+
+        # only one tag, with a score (numerical or string)
+        tag = sppasTag("")
+        label = sppasLabel(tag, 3)
+        self.assertTrue(sppasWEKA._scores_to_probas(label))
+        self.assertEqual(label.get_score(tag), 1.)
+        label = sppasLabel(tag, "A")
+        self.assertTrue(sppasWEKA._scores_to_probas(label))
+        self.assertEqual(label.get_score(tag), 1.)
+
+        # several tags, all with scores
+        tag1 = sppasTag("a")
+        tag2 = sppasTag("b")
+        tag3 = sppasTag("c")
+        label = sppasLabel(tag1, 3)
+        label.append(tag2, 2)
+        label.append(tag3, 5)
+        self.assertTrue(sppasWEKA._scores_to_probas(label))
+        self.assertEqual(label.get_score(tag1), 0.3)
+        self.assertEqual(label.get_score(tag2), 0.2)
+        self.assertEqual(label.get_score(tag3), 0.5)
+
+        # several tags, all without scores
+        label = sppasLabel(tag1)
+        label.append(tag2)
+        self.assertTrue(sppasWEKA._scores_to_probas(label))
+        self.assertEqual(label.get_score(tag1), 0.5)
+        self.assertEqual(label.get_score(tag2), 0.5)
+
+        # several tags, some without scores
+        label = sppasLabel(tag1, 7)
+        label.append(tag2, 2)
+        label.append(tag3)    # score will be 1
+        self.assertTrue(sppasWEKA._scores_to_probas(label))
+        self.assertEqual(label.get_score(tag1), 0.7)
+        self.assertEqual(label.get_score(tag2), 0.2)
+        self.assertEqual(label.get_score(tag3), 0.1)
+
+        # several tags, with "min" function
+        # several tags, some without scores
+        label = sppasLabel(tag1, 7)
+        label.append(tag2, 2)
+        label.append(tag3)    # score will be 1
+        label.set_function_score(min)
+
+        self.assertTrue(sppasWEKA._scores_to_probas(label))
+        self.assertEqual(round(label.get_score(tag1), 2), 0.2)
+        self.assertEqual(round(label.get_score(tag2), 2), 0.7)
+        self.assertEqual(round(label.get_score(tag3), 2), 0.1)
 
     # -----------------------------------------------------------------
 
@@ -344,7 +415,7 @@ class TestWEKA(unittest.TestCase):
         weka.set_meta("weka_instance_step", "0.1")
         tier1.set_meta("weka_class", "")
         tier2.set_meta("weka_attribute", "string")
-        # tier3.set_meta("weka_attribute", "numeric")
+        tier3.set_meta("weka_attribute", "numeric")
 
         tier1.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(2.)))))
         tier1.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(4.), sppasPoint(5.))),
@@ -386,9 +457,12 @@ class TestWEKA(unittest.TestCase):
 # ---------------------------------------------------------------------------
 
 
-class TestARFF(unittest.TestCase):
+class TestFileFormats(unittest.TestCase):
     """
-    Represents an ARFF file, the native format of WEKA.
+    Represents an ARFF or XRFF file, the native formats of WEKA.
+
+    TODO: test XRFF output.
+
     """
     def setUp(self):
         if os.path.exists(TEMP) is False:
@@ -402,9 +476,11 @@ class TestARFF(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(TEMP)
 
+    # -----------------------------------------------------------------
+
     def test_write_header(self):
-        """ Write the creator, etc. in the header of the ARFF file.
-        """
+        """ Write the creator, etc. in the header of an ARFF file. """
+
         output = io.BytesIO()
         arff = sppasARFF()
         arff.set(self.trs)
@@ -417,9 +493,12 @@ class TestARFF(unittest.TestCase):
         self.assertTrue("author" in lines)
         self.assertTrue("license" in lines)
 
+    # -----------------------------------------------------------------
+
     def test_write_meta(self):
         """ Write the metadata of the Transcription object
-        in the header of the ARFF file.
+        in the header of an ARFF file.
+
         """
         arff = sppasARFF()
         arff.set(self.trs)
@@ -436,8 +515,12 @@ class TestARFF(unittest.TestCase):
         self.assertTrue("weka_instance_step" in lines)
         self.assertTrue("0.04" in lines)
 
+    # -----------------------------------------------------------------
+
     def test_write_relation(self):
         """ Write the name of the relation. """
+
+        # test ARFF
         arff = sppasARFF()
         arff.set(self.trs)
         output = io.BytesIO()
@@ -447,8 +530,12 @@ class TestARFF(unittest.TestCase):
         self.assertTrue("@RELATION" in lines)
         self.assertTrue(self.trs.get_name() in lines)
 
+    # -----------------------------------------------------------------
+
     def test_write_attributes(self):
         """ Write the list of attributes. """
+
+        # test ARFF
         arff = sppasARFF()
         arff.set(self.trs)
         output = io.BytesIO()
@@ -462,19 +549,20 @@ class TestARFF(unittest.TestCase):
         # self.assertTrue(self.tier1.get_name() in lines)
         # self.assertTrue(self.tier2.get_name() in lines)
 
+        # test XRFF
+        xrff = sppasXRFF()
+        arff.set(self.trs)
+        output = io.BytesIO()
+        arff._write_relation(output)
+
+    # -----------------------------------------------------------------
+
     def test_write_data(self):
         """ Write the list of attributes. """
 
-        arff = sppasARFF()
         t = sppasTranscription()
         tier1 = t.create_tier(name="tier1")
         tier2 = t.create_tier(name="tier2")
-        arff.set(t)
-        arff.set_meta("weka_instance_step", "0.1")
-        tier1.set_meta("weka_class", "")
-        tier2.set_meta("weka_attribute", "numeric")
-        output = io.BytesIO()
-
         tier1.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(2.)))))
         tier1.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(4.), sppasPoint(5.))),
                                      sppasLabel(sppasTag("toto"))))
@@ -485,9 +573,25 @@ class TestARFF(unittest.TestCase):
         tier2.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3)))))
         tier2.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(3), sppasPoint(5)))))
         tier2.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(8), sppasPoint(10)))))
-
         tier1.create_ctrl_vocab()
         tier2.create_ctrl_vocab()
-        arff._write_data(output)
 
-        # print output.getvalue()
+        weka = sppasWEKA()
+        weka.set(t)
+        weka.set_meta("weka_instance_step", "0.1")
+        tier1.set_meta("weka_class", "")
+        tier2.set_meta("weka_attribute", "numeric")
+
+        # test ARFF
+        arff = sppasARFF()
+        arff.set(weka)
+        output = io.BytesIO()
+        arff._write_data(output)
+        # TODO: test output.getvalue() content
+
+        # test XRFF (with the same data exactly!)
+        xrff = sppasXRFF()
+        xrff.set(weka)
+        output = io.BytesIO()
+        xrff._write_instances(output)
+        # TODO: test output.getvalue() content

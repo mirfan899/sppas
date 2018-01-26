@@ -32,17 +32,9 @@
     src.anndata.aio.weka.py
     ~~~~~~~~~~~~~~~~~~~~~~~
 
-    Writers for file formats of WEKA software:
-    Weka is a collection of machine learning algorithms for data mining tasks.
-
+    Writers for file formats of WEKA software. Weka is a collection of machine
+    learning algorithms for data mining tasks.
     https://www.cs.waikato.ac.nz/ml/weka/
-
-    A file for weka has the following structure:
-
-        1. Several lines starting by '%' with any kind of comment,
-        2. The name of the relation,
-        3. The set of attributes,
-        4. The set of instances.
 
     WEKA is supporting 2 file formats:
         - ARFF: a simple ASCII file,
@@ -50,11 +42,24 @@
 
     ARFF format description is at the following URL:
     http://weka.wikispaces.com/ARFF+(book+version)
+    An ARFF file for WEKA has the following structure:
+
+        1. Several lines starting by '%' with any kind of comment,
+        2. The name of the relation,
+        3. The set of attributes,
+        4. The set of instances.
 
     XRFF format description is at the following URL:
     http://weka.wikispaces.com/XRFF
 
-    Sparse option is not supported by both writers.
+    This class is limited to:
+        1. Only the writers are implemented. No readers.
+        2. Sparse option is not supported by both writers.
+        3. XRFF output file is not gzipped.
+        4. XRFF format supports the followings that are not currently
+        implemented into this class:
+            - attribute weights;
+            - instance weights.
 
 """
 import codecs
@@ -87,6 +92,26 @@ class sppasWEKA(sppasBaseIO):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      SPPAS Base writer for ARFF and XRFF formats.
+
+    The following metadata of the Transcription object can be defined:
+        - weka_instance_step: time step for the data instances. Do not
+        define if "weka_instance_anchor" is set to a tier.
+        - weka_max_class_tags
+        - weka_max_attributes_tags
+        - weka_empty_annotation_tag
+        - weka_empty_annotation_class_tag
+        - weka_uncertain_annotation_tag
+
+    The following metadata can be defined in the tiers:
+        - weka_attribute: is fixed if the tier will be used as attribute
+        (i.e. its data will be part of the instances). The value can
+        be "numeric" to use distributions of probabilities or
+        "label" to use the annotation labels in the vector of parameters.
+        - weka_class: is fixed to the tier with the annotation labels to
+         be inferred by the classification system. No matter of the value.
+        - weka_instance_anchor: is fixed if the tier has to be used to
+        define the time intervals of the instances.
+        - weka_epsilon: probability of an un-observed tag.
 
     """
     def __init__(self, name=None):
@@ -429,12 +454,6 @@ class sppasWEKA(sppasBaseIO):
         """ Return the sppasLabel() at the given time in the given tier.
         Return the empty label if no label was assigned at the given time.
 
-        TODO: return a sppasLabel() with all sppasTag and their scores
-        depending on the observed tags during the localization (i.e.
-        during the period including the vagueness) and not only at the
-        midpoint of the localization.
-        And in the same idea, we have to deal with overlapping annotations.
-
         :param localization: (sppasPoint)
         :param tier: (sppasTier)
 
@@ -443,12 +462,20 @@ class sppasWEKA(sppasBaseIO):
         """
         # Find the annotation at the given time.
         # Return the first one in case of overlapping annotations.
-        mindex = tier.mindex(localization, bound=10)
+        if tier.is_point() is True:
+            mindex = tier.index(localization)
+        else:
+            mindex = tier.mindex(localization, bound=10)
+            # TODO: return a sppasLabel() with all sppasTag and their scores
+            # depending on the observed tags during the localization (i.e.
+            # during the period including the vagueness) and not only at the
+            # midpoint of the localization.
+            # And in the same idea, we have to deal with overlapping annotations.
 
         # Fix the label to be returned: the observed one or an empty one
         if mindex != -1:
             label = tier[mindex].get_label()
-            if label is not None and label.get_best().is_empty() is False:
+            if label is not None and len(label) > 0 and label.get_best().is_empty() is False:
                 return label
 
         return sppasLabel(sppasTag(self._empty_annotation_tag))
@@ -566,17 +593,51 @@ class sppasWEKA(sppasBaseIO):
     def _scores_to_probas(label):
         """ Convert scores of a label to probas. """
 
+        if label is None:
+            return False
+        if len(label) == 0:
+            return False
+
+        modified = False
+        # Check is the function to compare scores is "max"
         function_score = label.get_function_score()
         if function_score is min:
-            for tag in label:
-                score = label.get_score(tag)
-                label.set_score(tag, -score)
+            for tag, score in label:
+                if score is not None:
+                    label.set_score(tag, 1./score)
             label.set_function_score(max)
+            modified = True
 
-        total = float(sum(score for tag, score in label if score is not None))
-        for tag, score in label:
-            if score is not None:
+        # Convert "None" scores into a numerical value
+        # then convert numerical values into probabilities.
+        if len(label) == 1:
+            tag, score = label[0]
+            label.set_score(tag, 1.)
+            modified = True
+
+        else:
+            # Search for the minimum score
+            min_score = None
+            for tag, score in label:
+                if score is not None:
+                    if min_score is None or min_score > score:
+                        min_score = score
+            if min_score is None:
+                # None of the tags had a score.
+                min_score = 2.
+
+            # Assign a score to the tags if needed
+            for tag, score in label:
+                if score is None:
+                    label.set_score(tag, min_score / 2.)
+
+            # Convert scores to probabilities
+            total = float(sum(score for tag, score in label if score is not None))
+            for tag, score in label:
                 label.set_score(tag, float(score) / total)
+                modified = True
+
+        return modified
 
     # -----------------------------------------------------------------
 
@@ -627,7 +688,7 @@ class sppasWEKA(sppasBaseIO):
                     proba = epsilon
                     if label.contains(tag) is True:
                         proba = label.get_score(tag) - (nb_eps_tags * epsilon)
-                    instances_data.append(proba)
+                    instances_data.append(str(proba))
             else:
 
                 tag = self._get_tag(point, tier)
@@ -646,20 +707,6 @@ class sppasARFF(sppasWEKA):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      SPPAS ARFF writer.
-
-    The following metadata of the Transcription object can be defined:
-        - weka_instance_step: time step for the data instances. Do not
-        define if "weka_instance_anchor" is set to a tier.
-
-    The following metadata can be defined in the tiers:
-        - weka_attribute: is fixed if the tier will be used as attribute
-        (i.e. its data will be part of the instances). The value can
-        be "numeric" to use distributions of probabilities or
-        "label" to use the annotation labels in the vector of parameters.
-        - weka_class: is fixed to the tier with the annotation labels to
-         be inferred by the classification system. No matter of the value.
-        - weka_instance_anchor: is fixed if the tier has to be used to
-        define the time intervals of the instances.
 
     """
     @staticmethod

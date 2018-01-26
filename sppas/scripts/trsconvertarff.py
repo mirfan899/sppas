@@ -30,10 +30,10 @@
 
         ---------------------------------------------------------------------
 
-    scripts.trsconvert.py
+    scripts.trsconvertarff.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    ... a script to export annotations files.
+    ... a script to export annotations files into WEKA file format.
 
 """
 import sys
@@ -50,8 +50,9 @@ from sppas.src.anndata.aio.readwrite import sppasRW
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
-                        description="... a script to export annotations files.")
+parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM),
+                        description="... a script to export annotations files "
+                                    "into WEKA file format (arff, xrff).")
 
 parser.add_argument("-i",
                     metavar="file",
