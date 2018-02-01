@@ -30,9 +30,9 @@
         ---------------------------------------------------------------------
 
     src.anndata.aio.text.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
-    Text reader and writer.
+    Text readers and writers: raw text, column-based text, csv.
 
 """
 import codecs
@@ -52,44 +52,153 @@ from .basetrs import sppasBaseIO
 
 # ----------------------------------------------------------------------------
 
-
-def make_point(data):
-    """ Convert data into the appropriate type.
-
-    :param data: (str)
-    :returns: data converted into int, float or unchanged.
-
-    """
-    if data.isdigit():
-        return int(data)
-    try:
-        d = float(data)
-    except Exception:
-        d = data
-    return d
+COLUMN_SEPARATORS = [' ', ',', ';', ':', '\t']
 
 # ----------------------------------------------------------------------------
 
 
-def format_quotation_marks(text):
-    """ Clean text data...
-
-    :param text: (str)
-    :returns: the text without initial and final quotation mark.
+class sppasBaseText(sppasBaseIO):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      SPPAS base text reader and writer.
 
     """
-    if len(text) >= 2 and text.startswith('"') and text.endswith('"'):
-        text = text[1:-1]
+    def __init__(self, name=None):
+        """ Initialize a new sppasBaseText instance.
 
-    if len(text) >= 2 and text.startswith("'") and text.endswith("'"):
-        text = text[1:-1]
+        :param name: (str) This transcription name.
 
-    return text
+        """
+        if name is None:
+            name = self.__class__.__name__
+        sppasBaseIO.__init__(self, name)
+
+        self._accept_multi_tiers = True
+        self._accept_no_tiers = True
+        self._accept_metadata = False
+        self._accept_ctrl_vocab = False
+        self._accept_media = False
+        self._accept_hierarchy = False
+        self._accept_point = True
+        self._accept_interval = True
+        self._accept_disjoint = False
+        self._accept_alt_localization = False
+        self._accept_alt_tag = False
+        self._accept_radius = False
+        self._accept_gaps = True
+        self._accept_overlaps = True
+        self._accept_gaps = True
+        self._accept_overlaps = True
+
+    # ----------------------------------------------------------------------------
+
+    @staticmethod
+    def make_point(data):
+        """ Convert data into the appropriate digit type, or not.
+
+        :param data: (any type)
+        :returns: data converted into int, float or unchanged.
+
+        """
+        if data.isdigit():
+            return int(data)
+        try:
+            d = float(data)
+        except Exception:
+            d = data
+
+        return d
+
+    # ----------------------------------------------------------------------------
+
+    @staticmethod
+    def format_quotation_marks(text):
+        """ Remove initial and final quotation mark.
+
+        :param text: (str)
+        :returns: the text without initial and final quotation mark.
+
+        """
+        if len(text) >= 2 and text.startswith('"') and text.endswith('"'):
+            text = text[1:-1]
+
+        if len(text) >= 2 and text.startswith("'") and text.endswith("'"):
+            text = text[1:-1]
+
+        return text
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def split_lines(lines, separator=" "):
+        """ Split the lines with the given separator.
+
+        :param lines: (list) List of lines
+        :param separator: (char) a character used to separate columns of the lines
+        :returns: List of columns (list) or None
+
+        """
+        columns = list()
+        nb_col = -1
+        for line in lines:
+            line = line.strip()
+            if len(line) == 0:
+                continue
+            split_line = line.split(separator)
+            if nb_col == -1:
+                nb_col = len(split_line)
+            if nb_col != len(split_line):
+                return None
+            columns.append(split_line)
+
+        return columns
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def fix_location(content_begin, content_end):
+        """ Fix the location from the content of the data.
+
+        :param content_begin: (str) The content of a column representing
+        the begin of a localization.
+        :param content_end: (str) The content of a column representing
+        the end of a localization.
+        :returns: sppasLocation or None
+
+        """
+        begin = sppasBaseText.format_quotation_marks(content_begin)
+        end = sppasBaseText.format_quotation_marks(content_end)
+
+        has_begin = len(begin.strip()) > 0
+        has_end = len(end.strip()) > 0
+
+        if has_begin and has_end:
+            b = sppasBaseText.make_point(begin)
+            e = sppasBaseText.make_point(end)
+            if b == e:
+                localization = sppasPoint(b)
+            else:
+                localization = sppasInterval(sppasPoint(b), sppasPoint(e))
+
+        elif has_begin:
+            localization = sppasPoint(sppasBaseText.make_point(begin))
+
+        elif has_end:
+            localization = sppasPoint(sppasBaseText.make_point(end))
+
+        else:
+            return None
+
+        return sppasLocation(localization)
 
 # ----------------------------------------------------------------------------
 
 
-class sppasRawText(sppasBaseIO):
+class sppasRawText(sppasBaseText):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -115,11 +224,12 @@ class sppasRawText(sppasBaseIO):
     @staticmethod
     def detect(filename):
         try:
-            with codecs.open(filename, 'r', 'utf-8') as fp:
+            with codecs.open(filename, 'r', encoding) as fp:
                 fp.readline()
                 pass
         except Exception:
             return False
+
         return True
 
     # -----------------------------------------------------------------
@@ -132,29 +242,18 @@ class sppasRawText(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBaseIO.__init__(self, name)
+        sppasBaseText.__init__(self, name)
 
         self._accept_multi_tiers = False
-        self._accept_no_tiers = True
-        self._accept_metadata = False
-        self._accept_ctrl_vocab = False
-        self._accept_media = False
-        self._accept_hierarchy = False
-        self._accept_point = True
-        self._accept_interval = True
-        self._accept_disjoint = False
-        self._accept_alt_localization = False
-        self._accept_alt_tag = False
-        self._accept_radius = False
-        self._accept_gaps = True
-        self._accept_overlaps = True
-        self._accept_gaps = True
-        self._accept_overlaps = True
 
     # -----------------------------------------------------------------
 
     def read(self, filename):
         """ Read a raw file and fill the Transcription.
+        The file can be a simple raw text (without location information).
+        It can also be a column-based (table-style) file, so that each
+        column represents the annotation of a tier (1st and 2nd tiers
+        are indicating the location).
 
         :param filename: (str)
 
@@ -162,24 +261,26 @@ class sppasRawText(sppasBaseIO):
         with codecs.open(filename, 'r', encoding) as fp:
             lines = fp.readlines()
 
-        # Tab-delimited??
-        tdf = True
-        for line in lines:
-            tab = line.split('\t')
-            if len(tab) != 3:
-                tdf = False
+        # Column-delimited??
+        nb_col = 0
+        columns = None
+        sep = None
+        for separator in COLUMN_SEPARATORS:
+            columns = sppasBaseText.split_lines(lines, separator)
+            if columns is not None and len(columns) > 0 and len(columns[0]) > nb_col:
+                sep = separator
+        if sep is not None:
+            columns = sppasBaseText.split_lines(lines, separator)
 
-        if tdf is False:
+        if columns is None:
             self.__format_raw_lines(lines)
 
+        if len(columns) == 0:
+            return
+        if len(columns[0]) == 1:
+            self.__format_raw_lines(lines)
         else:
-            trs = sppasCSV()
-            rows = []
-            for line in lines:
-                row = "Transcription\t" + line
-                rows.append(row)
-            trs.format_columns_lines(rows, "\t")
-            self.set(trs)
+            self.__format_columns(columns)
 
     # -----------------------------------------------------------------
 
@@ -213,6 +314,34 @@ class sppasRawText(sppasBaseIO):
                 label = sppasLabel(sppasTag(line))
                 tier.create_annotation(location, label)
                 n += 1
+
+    # -----------------------------------------------------------------
+
+    def __format_columns(self, columns):
+        """ Format columns of a column-based text.
+
+        :param columns: (list) List of columns (list).
+
+        - 1st column: the begin localization (required)
+        - 2nd column: the end localization (required)
+        - 3rd column: the label of the 1st tier (optional)
+        - 4th column: the label of the 2nd tier (optional)
+        - ...
+
+        """
+        nb_col = len(columns[0])
+        # Create the tiers (one tier per column) but
+        # the name of the tiers are unknown...
+        self.create_tier('RawTranscription')
+        for i in range(3, nb_col):
+            self.create_tier('Tier-{:d}'.format(i-2))
+
+        # Create the annotations of the tiers
+        for instance in columns:
+            location = sppasBaseText.fix_location(instance[0], instance[1])
+            for i in range(2, nb_col):
+                label = sppasLabel(sppasTag(instance[i]))
+                self[i-2].create_annotation(location, label)
 
     # -----------------------------------------------------------------
 
@@ -257,7 +386,7 @@ class sppasRawText(sppasBaseIO):
 # ----------------------------------------------------------------------------
 
 
-class sppasCSV(sppasBaseIO):
+class sppasCSV(sppasBaseText):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -288,19 +417,28 @@ class sppasCSV(sppasBaseIO):
         :param name: (str) This transcription name.
 
         """
-        sppasBaseIO.__init__(self, name)
+        sppasBaseText.__init__(self, name)
+
+        self._accept_multi_tiers = True
 
     # -----------------------------------------------------------------
 
-    def read(self, filename, separator=','):
-        """ Read a CSV file in UTF-8 signed encoding.
+    def read(self, filename, separator=',', signed=True):
+        """ Read a CSV file.
 
         :param filename: (str)
         :param separator: (char)
+        :param signed: (bool) Indicate if the encoding is UTF-8 signed.
+        If False, the default encoding is used.
 
         """
-        with codecs.open(filename, "r", 'utf-8-sig') as fp:
+        enc = encoding
+        if signed is True:
+            enc = 'utf-8-sig'
+
+        with codecs.open(filename, "r", enc) as fp:
             lines = fp.readlines()
+            fp.close()
 
         if len(lines) > 0:
             self.format_columns_lines(lines, separator)
@@ -309,6 +447,8 @@ class sppasCSV(sppasBaseIO):
 
     def format_columns_lines(self, lines, separator):
         """ Append lines content into self.
+
+        It doesn't suppose that the file is sorted by tiers
 
         :param lines: (list)
         :param separator: (char)
@@ -320,47 +460,38 @@ class sppasCSV(sppasBaseIO):
             if len(row) < 4:
                 raise AioLineFormatError(i+1, line)
 
-            name = format_quotation_marks(row[0])
-            begin = format_quotation_marks(row[1])
-            end = format_quotation_marks(row[2])
-            text = format_quotation_marks(" ".join(row[3:]))
-
-            # The following code does not suppose that the file is sorted by tiers
+            # Fix the name of the tier (column 1)
+            name = sppasBaseText.format_quotation_marks(row[0])
             tier = self.find(name)
             if tier is None:
                 tier = self.create_tier(name)
 
-            has_begin = len(begin.strip()) > 0
-            has_end = len(end.strip()) > 0
+            # Fix the location (columns 2 and 3)
+            location = sppasBaseText.fix_location(row[1], row[2])
+            if location is None:
+                raise AioLineFormatError(i + 1, line)
 
-            if has_begin and has_end:
-                b = make_point(begin)
-                e = make_point(end)
-                if b == e:
-                    localization = sppasPoint(b)
-                else:
-                    localization = sppasInterval(sppasPoint(b), sppasPoint(e))
+            # Fix the label (the other columns)
+            text = sppasBaseText.format_quotation_marks(" ".join(row[3:]))
 
-            elif has_begin:
-                localization = sppasPoint(make_point(begin))
-
-            elif has_end:
-                localization = sppasPoint(make_point(end))
-
-            else:
-                raise AioLineFormatError(i+1, line)
-
-            tier.create_annotation(sppasLocation(localization), sppasLabel(sppasTag(text)))
+            # Add the new annotation
+            tier.create_annotation(location, sppasLabel(sppasTag(text)))
 
     # -----------------------------------------------------------------
 
-    def write(self, filename):
-        """ Write a CSV file in UTF-8 signed encoding.
+    def write(self, filename, signed=True):
+        """ Write a CSV file.
 
         :param filename: (str)
+        :param signed: (bool) Indicate if the encoding is UTF-8 signed.
+        If False, the default encoding is used.
 
         """
-        with codecs.open(filename, 'w', 'utf-8-sig', buffering=8096) as fp:
+        enc = encoding
+        if signed is True:
+            enc = 'utf-8-sig'
+
+        with codecs.open(filename, 'w', enc, buffering=8096) as fp:
 
             for tier in self._tiers:
 
