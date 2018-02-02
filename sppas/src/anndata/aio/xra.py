@@ -30,9 +30,9 @@
         ---------------------------------------------------------------------
 
     src.anndata.aio.xra.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~
 
-    SPPAS XRA reader and writer.
+    SPPAS native XRA reader and writer.
 
 """
 import logging
