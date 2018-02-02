@@ -19,7 +19,8 @@ class TestPoint(unittest.TestCase):
         pass
 
     def test_init(self):
-        point = sppasPoint(0)
+        point = sppasPoint(0)    # int is identified
+        point = sppasPoint("0")  # converted to float
         self.assertEqual(point.get_midpoint(), 0)
         self.assertEqual(point.get_radius(), None)
         point = sppasPoint(0.)
@@ -29,8 +30,6 @@ class TestPoint(unittest.TestCase):
             point = sppasPoint(0, 0.)
         with self.assertRaises(AnnDataTypeError):
             point = sppasPoint(0., 0)
-        with self.assertRaises(AnnDataTypeError):
-            point = sppasPoint("0")
         point = sppasPoint(0.)
         with self.assertRaises(AnnDataTypeError):
             point.set_radius(0)
@@ -133,6 +132,8 @@ class TestTimePoint(unittest.TestCase):
         with self.assertRaises(AnnDataNegValueError):
             point0.set_midpoint(-5)
         with self.assertRaises(AnnDataNegValueError):
+            point0.set_radius(-5.)
+        with self.assertRaises(AnnDataTypeError):
             point0.set_radius(-5)
 
 # ---------------------------------------------------------------------------

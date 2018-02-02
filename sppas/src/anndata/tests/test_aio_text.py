@@ -48,10 +48,11 @@ class TestBaseText(unittest.TestCase):
     def test_make_point(self):
         """ Convert data into the appropriate digit type, or not. """
 
-        self.assertEqual(3., sppasBaseText.make_point("3.0"))
-        self.assertEqual(3., sppasBaseText.make_point("3."))
-        self.assertEqual(3, sppasBaseText.make_point("3"))
-        self.assertEqual("3a", sppasBaseText.make_point("3a"))
+        self.assertEqual(sppasPoint(3., 0.001), sppasBaseText.make_point("3.0"))
+        self.assertEqual(sppasPoint(3., 0.001), sppasBaseText.make_point("3."))
+        self.assertEqual(sppasPoint(3), sppasBaseText.make_point("3"))
+        with self.assertRaises(TypeError):
+            sppasBaseText.make_point("3a")
 
     # -----------------------------------------------------------------
 

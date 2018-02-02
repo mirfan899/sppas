@@ -35,6 +35,8 @@
     Localization of a point in time, frame, etc.
 
 """
+from sppas.src.utils.makeunicode import text_type, binary_type
+
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AnnDataNegValueError
 
@@ -147,24 +149,27 @@ class sppasPoint(sppasBaseLocalization):
         :param midpoint: (float, int) is the new midpoint value.
 
         """
-        if isinstance(midpoint, float):
-            try:
-                self.__midpoint = float(midpoint)
-                if self.__midpoint < 0.:
-                    self.__midpoint = 0.
-                    raise AnnDataNegValueError(midpoint)
-            except TypeError:
-                raise AnnDataTypeError(midpoint, "float")
-        elif isinstance(midpoint, int):
+        if isinstance(midpoint, (int, float, text_type, binary_type)) is False:
+            raise AnnDataTypeError(midpoint, "float, int")
+
+        if isinstance(midpoint, (int, text_type, binary_type)) is True:
             try:
                 self.__midpoint = int(midpoint)
                 if self.__midpoint < 0:
+                    # Assign a value, just in case this exception will be ignored...
                     self.__midpoint = 0
                     raise AnnDataNegValueError(midpoint)
-            except TypeError:
-                raise AnnDataTypeError(midpoint, "int")
-        else:
+                return
+            except ValueError:
+                pass  # will try with float...
+
+        try:
+            self.__midpoint = float(midpoint)
+        except ValueError:
             raise AnnDataTypeError(midpoint, "float, int")
+        if self.__midpoint < 0.:
+            self.__midpoint = 0.
+            raise AnnDataNegValueError(midpoint)
 
     # -----------------------------------------------------------------------
 

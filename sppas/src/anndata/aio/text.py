@@ -98,20 +98,17 @@ class sppasBaseText(sppasBaseIO):
 
     @staticmethod
     def make_point(data):
-        """ Convert data into the appropriate digit type, or not.
+        """ Convert data into the appropriate sppasPoint().
+        No radius if data is an integer. A default radius of 0.001 if data is a
+        float.
 
         :param data: (any type)
-        :returns: data converted into int, float or unchanged.
+        :returns: sppasPoint().
 
         """
         if data.isdigit():
-            return int(data)
-        try:
-            d = float(data)
-        except Exception:
-            d = data
-
-        return d
+            return sppasPoint(int(data))
+        return sppasPoint(data, radius=0.001)
 
     # ----------------------------------------------------------------------------
 
@@ -180,15 +177,15 @@ class sppasBaseText(sppasBaseIO):
             b = sppasBaseText.make_point(begin)
             e = sppasBaseText.make_point(end)
             if b == e:
-                localization = sppasPoint(b)
+                localization = b
             else:
-                localization = sppasInterval(sppasPoint(b), sppasPoint(e))
+                localization = sppasInterval(b, e)
 
         elif has_begin:
-            localization = sppasPoint(sppasBaseText.make_point(begin))
+            localization = sppasBaseText.make_point(begin)
 
         elif has_end:
-            localization = sppasPoint(sppasBaseText.make_point(end))
+            localization = sppasBaseText.make_point(end)
 
         else:
             return None
