@@ -29,19 +29,23 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.aio.text.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.anndata.aio.xtrans.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Text reader and writer.
+    Xtrans reader and writer.
+
+    https://www.ldc.upenn.edu/language-resources/tools/xtrans
+
+    XTrans is a multi-platform, multilingual, multi-channel transcription tool
+    that supports manual transcription and annotation of audio recordings.
+    Last version of Xtrans was released in 2009.
 
 """
 import codecs
-import re
 
 from sppas import encoding
 
 from ..anndataexc import AioLineFormatError
-from ..annotation import sppasAnnotation
 from ..media import sppasMedia
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
@@ -54,38 +58,34 @@ from .basetrs import sppasBaseIO
 # ----------------------------------------------------------------------------
 
 
-class sppasXtrans(sppasBaseIO):
+class sppasTDF(sppasBaseIO):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      SPPAS TDF reader and writer.
 
-    https://www.ldc.upenn.edu/language-resources/tools/xtrans
+    This class implements only a TDF reader, not a writer.
+    TDF is a Tab-Delimited Format. It contains 13 columns but SPPAS only
+    extracts 8 of them.
 
-    XTrans is a multi-platform, multilingual, multi-channel transcription tool
-    that supports manual transcription and annotation of audio recordings.
-    Last version of Xtrans was distributed in 2009.
-
-    This class implements only a Xtrans reader, not a writer.
-
-    Xtrans does not support alternatives labels nor locations. Only the ones
+    TDF does not support alternatives labels nor locations. Only the ones
     with the best score are saved.
-    Xtrans can save several tiers.
-    Xtrans does not support controlled vocabularies.
-    Xtrans does not support hierarchy.
-    Xtrans does not support metadata.
-    Xtrans supports media assignment.
-    Xtrans supports intervals only.
-    Xtrans does not support alternative tags.
-    Xtrans does not support radius.
+    TDF can save several tiers.
+    TDF does not support controlled vocabularies.
+    TDF does not support hierarchy.
+    TDF does not support metadata.
+    TDF supports media assignment.
+    TDF supports intervals only.
+    TDF does not support alternative tags.
+    TDF does not support radius.
 
     """
     @staticmethod
     def detect(filename):
-        with codecs.open(filename, 'r', 'utf-8') as fp:
+        with codecs.open(filename, 'r', encoding) as fp:
             lines = fp.readlines()
             for line in lines:
                 if line.startswith(";;"):
@@ -100,12 +100,15 @@ class sppasXtrans(sppasBaseIO):
 
     @staticmethod
     def make_point(midpoint):
+        """ In TDF, the localization is a time value, so a float. """
+
+        midpoint = float(midpoint)
         return sppasPoint(midpoint, radius=0.005)
 
     # -----------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new Xtrans instance.
+        """ Initialize a new sppasTDF instance.
 
         :param name: (str) This transcription name.
 
@@ -140,58 +143,87 @@ class sppasXtrans(sppasBaseIO):
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'r', 'utf-8') as fp:
+        with codecs.open(filename, 'r', encoding) as fp:
             lines = fp.readlines()
+            fp.close()
 
-            row_names = lines[0].split('\t')
-            lines.pop(0)
+        if len(lines) < 2:
+            return
 
-            # Extract rows, create tiers and metadata.
-            for i, line in enumerate(lines):
+        first_line = lines[0]
+        lines.pop(0)
+        self._extract_lines(first_line, lines)
 
-                # a comment
-                if line.startswith(';;'):
-                    continue
+    # -----------------------------------------------------------------
 
-                # a tab-delimited line
-                line = line.split('\t')
-                if len(line) < 10:
-                    raise AioLineFormatError(i+1, line)
+    def _extract_lines(self, first_line, lines):
+        """ Extract the content of the TDF file.
 
-                try:
-                    # index raises a ValueError if the string is missing
-                    channel = line[row_names.index('channel;int')]
-                    speaker = line[row_names.index('speaker;unicode')]
-                    speaker_type = line[row_names.index('speakerType;unicode')]
-                    speaker_dialect = line[row_names.index('speakerDialect;unicode')]
-                    tag_str = line[row_names.index('transcript;unicode')]
-                    begin_str = line[row_names.index('start;float')]
-                    end_str = line[row_names.index('end;float')]
-                    media_url = line[row_names.index('file;unicode')].strip()
-                except ValueError:
-                    raise AioLineFormatError(i+1, line)
+        :param first_line: The first line of the TDF file (name of the columns)
+        :param lines: the content of the file
 
-                # check for the tier (find it or create it)
-                tier_name = speaker + '-' + channel
-                tier = self.find(tier_name)
-                if tier is None:
+        """
+        # The 1st line indicates the names of the columns.
+        column_names = first_line.split('\t')
 
-                    media = None
-                    idt = media_url.strip()
-                    for m in self._media:
-                        if m.get_filename() == idt:
-                            media = m
-                    if media is None:
-                        media = sppasMedia(media_url)
+        # Find indexes of the relevant information
+        try:
+            # index function raises a ValueError if the string is missing
+            channel = column_names.index('channel;int')
+            speaker = column_names.index('speaker;unicode')
+            speaker_type = column_names.index('speakerType;unicode')
+            speaker_dialect = column_names.index('speakerDialect;unicode')
+            tag = column_names.index('transcript;unicode')
+            begin = column_names.index('start;float')
+            end = column_names.index('end;float')
+            media_url = column_names.index('file;unicode')
+        except ValueError:
+            raise AioLineFormatError(1, first_line)
 
-                    tier = self.create_tier(tier_name, media=media)
-                    tier.metadata["mediaChannel"] = channel
-                    tier.metadata["speakerName"] = speaker
-                    tier.metadata["speakerType"] = speaker_type
-                    tier.metadata["speakerDialect"] = speaker_dialect
+        # Extract rows, create tiers and metadata.
+        for i, line in enumerate(lines):
 
-                # Add the new annotation
-                label = sppasLabel(sppasTag(tag_str))
-                location = sppasLocation(sppasInterval(sppasXtrans.make_point(float(begin_str)),
-                                                       sppasXtrans.make_point(float(end_str))))
-                tier.create_annotation(location, label)
+            # a comment
+            if line.startswith(';;'):
+                continue
+
+            # a tab-delimited line
+            line = line.split('\t')
+            if len(line) < 10:
+                raise AioLineFormatError(i + 1, line)
+
+            # check for the tier (find it or create it)
+            tier_name = line[speaker] + '-' + line[channel]
+            tier = self.find(tier_name)
+            if tier is None:
+
+                # Create the media linked to the tier
+                media = self._create_media(line[media_url].strip())
+
+                # Create the tier and set metadata
+                tier = self.create_tier(tier_name, media=media)
+                tier.set_meta("media_channel", line[channel])
+                tier.set_meta("speaker_name", line[speaker])
+                tier.set_meta("speaker_type", line[speaker_type])
+                tier.set_meta("speaker_dialect", line[speaker_dialect])
+
+            # Add the new annotation
+            label = sppasLabel(sppasTag(line[tag]))
+            location = sppasLocation(sppasInterval(sppasTDF.make_point(line[begin]),
+                                                   sppasTDF.make_point(line[end])))
+            tier.create_annotation(location, label)
+
+    # -----------------------------------------------------------------
+
+    def _create_media(self, media_name):
+        """ Return the media of the given name (create it if necessary). """
+
+        media = None
+        idt = media_name
+        for m in self._media:
+            if m.get_filename() == idt:
+                media = m
+        if media is None:
+            media = sppasMedia(idt)
+
+        return media

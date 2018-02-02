@@ -56,7 +56,7 @@ from .praat import sppasTextGrid  #, PitchTier, IntensityTier
 # from .elan import Elan
 # from .anvil import Anvil
 # from .annotationpro import Antx
-# from .xtrans import Xtrans
+from .xtrans import sppasTDF
 # from .audacity import Audacity
 from .weka import sppasARFF
 from .weka import sppasXRFF
@@ -90,12 +90,12 @@ class sppasRW(object):
         # "stm": SegmentTimeMark,
         # "anvil": Anvil,
         # "antx": Antx,
-        # "tdf": Xtrans,
         # "aup": Audacity,
         # "csv": CSV,
         # "intensitytier": IntensityTier,
         # "pitchtier": PitchTier,
         # "hz": HzPitch,
+    TRANSCRIPTION_TYPES["tdf"] = sppasTDF
     TRANSCRIPTION_TYPES["txt"] = sppasRawText
 
     # -----------------------------------------------------------------------
