@@ -46,6 +46,7 @@ import codecs
 from sppas import encoding
 
 from ..anndataexc import AioLineFormatError
+from ..anndataexc import AnnDataTypeError
 from ..media import sppasMedia
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
@@ -102,7 +103,11 @@ class sppasTDF(sppasBaseIO):
     def make_point(midpoint):
         """ In TDF, the localization is a time value, so a float. """
 
-        midpoint = float(midpoint)
+        try:
+            midpoint = float(midpoint)
+        except ValueError:
+            raise AnnDataTypeError(midpoint, "float")
+
         return sppasPoint(midpoint, radius=0.005)
 
     # -----------------------------------------------------------------

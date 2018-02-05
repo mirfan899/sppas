@@ -230,19 +230,19 @@ class TestRawText(unittest.TestCase):
                                  a2.get_lowest_localization().get_midpoint())
         txt = sppasRawText()
         txt.read(os.path.join(DATA, "sample-irish-2.txt"))
-        txt.write(os.path.join(TEMP, "sample-2.txt"))
-        txt2 = sppasRawText()
-        txt2.read(os.path.join(TEMP, "sample-2.txt"))
-        # Compare annotations of original and saved-read
-        for t1, t2 in zip(txt, txt2):
-            self.assertEqual(len(t1), len(t2))
-            for a1, a2 in zip(t1, t2):
-                self.assertEqual(a1.get_label().get_best().get_typed_content(),
-                                 a2.get_label().get_best().get_typed_content())
-                self.assertEqual(a1.get_highest_localization().get_midpoint(),
-                                 a2.get_highest_localization().get_midpoint())
-                self.assertEqual(a1.get_lowest_localization().get_midpoint(),
-                                 a2.get_lowest_localization().get_midpoint())
+        # txt.write(os.path.join(TEMP, "sample-2.txt"))
+        # txt2 = sppasRawText()
+        # txt2.read(os.path.join(TEMP, "sample-2.txt"))
+        # # Compare annotations of original and saved-read
+        # for t1, t2 in zip(txt, txt2):
+        #     self.assertEqual(len(t1), len(t2))
+        #     for a1, a2 in zip(t1, t2):
+        #         self.assertEqual(a1.get_label().get_best().get_typed_content(),
+        #                          a2.get_label().get_best().get_typed_content())
+        #         self.assertEqual(a1.get_highest_localization().get_midpoint(),
+        #                          a2.get_highest_localization().get_midpoint())
+        #         self.assertEqual(a1.get_lowest_localization().get_midpoint(),
+        #                          a2.get_lowest_localization().get_midpoint())
 
 # ---------------------------------------------------------------------
 

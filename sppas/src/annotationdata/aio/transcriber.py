@@ -36,7 +36,7 @@
 # ---------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__ = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 
@@ -44,6 +44,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
+import codecs
 import xml.etree.cElementTree as ET
 
 from ..transcription import Transcription
@@ -120,7 +121,7 @@ class Transcriber(Transcription):
 
         begin = turnBegin
 
-        # handle text direcltly inside the Turn
+        # handle text directly inside the Turn
         if turnRoot.text.strip() != '':
             # create new annotation without end
             prevAnnotation = Annotation(TimeInterval(TimePoint(begin),

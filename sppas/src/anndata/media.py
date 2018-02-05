@@ -120,3 +120,9 @@ class sppasMedia(sppasMetaData):
         self.__content = u(content)
 
     # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
+
+    def __repr__(self):
+        return "Media: {:s} url={:s} mime={:s}" \
+               "".format(self.__name, self.__url, self.__mime)

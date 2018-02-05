@@ -44,7 +44,7 @@ class TestTDF(unittest.TestCase):
 
         self.assertEqual(sppasPoint(3., 0.005), sppasTDF.make_point("3.0"))
         self.assertEqual(sppasPoint(3., 0.005), sppasTDF.make_point("3"))
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             sppasTDF.make_point("a")
 
     # -----------------------------------------------------------------
