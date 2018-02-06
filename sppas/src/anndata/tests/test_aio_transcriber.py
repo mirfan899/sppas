@@ -2,12 +2,8 @@
 
 import unittest
 import os.path
-import shutil
 import xml.etree.cElementTree as ET
 
-from sppas.src.utils.fileutils import sppasFileUtils
-
-from ..anndataexc import AioMultiTiersError
 from ..aio.transcriber import sppasTRS
 from ..annlocation.point import sppasPoint
 from ..annlabel.tag import sppasTag
@@ -169,11 +165,8 @@ class TestBaseText(unittest.TestCase):
         for section_root in root.iter('Section'):
             trs._parse_section_attributes(section_root, sections)
 
-        self.assertEqual(len(trs), 3)
-        dummies = trs.find('Dummies')
+        self.assertEqual(len(trs), 2)
         self.assertIsNotNone(topics)
-        self.assertIsNotNone(dummies)
-        self.assertTrue(len(dummies), 1)
         self.assertTrue(len(topics), 1)
         self.assertTrue(len(sections), 4)
 
@@ -195,10 +188,11 @@ class TestBaseText(unittest.TestCase):
         trs.create_tier('Trans-spk1')
         trs.create_tier('Trans-spk2')
         trs.create_tier('Topics')
+        trs.create_tier('Turns')
         for turn_root in root.iter('Turn'):
             trs._parse_turn_attributes(turn_root)
 
-        self.assertEqual(len(trs), 6)
+        self.assertEqual(len(trs), 7)
         tier = trs.find('TurnChannel')
         self.assertIsNotNone(tier)
         self.assertEqual(len(tier), 1)
@@ -294,14 +288,45 @@ class TestBaseText(unittest.TestCase):
 
         # Spk1
         spk1 = trs.find('Trans-sp1')
-        self.assertEqual(len(spk1), 11)
-        print "SPK1:"
-        for ann in spk1:
-            print ann
+        self.assertEqual(len(spk1), 9)
 
         # Spk2
         spk2 = trs.find('Trans-sp2')
         self.assertEqual(len(spk2), 2)
-        print "SPK2:"
-        for ann in spk2:
-            print ann
+
+        # No speaker
+        spk0 = trs.find('Trans-NoSpeaker')
+        self.assertEqual(len(spk0), 1)
+
+    # -----------------------------------------------------------------
+
+    def test_read_example(self):
+        """ Real-life file. """
+
+        trs = sppasTRS()
+        trs.read(os.path.join(DATA, "20000410_0930_1030_rfi_fm_dga.trs"))
+
+        # One episode in the example
+        episodes = trs.find('Episodes')
+        self.assertIsNotNone(episodes)
+        self.assertEqual(len(episodes), 1)
+
+        # topic
+        topics = trs.find('Topics')
+        self.assertIsNotNone(topics)
+        self.assertEqual(len(topics), 8)
+
+        # sections
+        sections = trs.find('Sections')
+        self.assertIsNotNone(sections)
+        self.assertEqual(len(sections), 15)
+
+        # turns
+        turns = trs.find('Turns')
+        self.assertIsNotNone(turns)
+        self.assertEqual(len(turns), 208)
+
+        # No speaker
+        spk0 = trs.find('Trans-NoSpeaker')
+        self.assertEqual(len(spk0), 26)
+
