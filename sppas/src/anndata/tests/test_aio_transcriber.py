@@ -18,7 +18,7 @@ DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 # ---------------------------------------------------------------------------
 
 
-class TestBaseText(unittest.TestCase):
+class TestTranscriber(unittest.TestCase):
     """
     Base text is mainly made of utility methods.
     """
