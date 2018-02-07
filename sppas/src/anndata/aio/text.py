@@ -91,8 +91,6 @@ class sppasBaseText(sppasBaseIO):
         self._accept_radius = False
         self._accept_gaps = True
         self._accept_overlaps = True
-        self._accept_gaps = True
-        self._accept_overlaps = True
 
     # ----------------------------------------------------------------------------
 

@@ -59,6 +59,7 @@ SUBTITLE_RADIUS = 0.005
 
 # ----------------------------------------------------------------------------
 
+
 def SubTimePoint(time):
     return TimePoint(time, SUBTITLE_RADIUS)
 
@@ -71,8 +72,8 @@ class SubRip(Transcription):
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
     @summary: Represents one of the subtitles file formats.
-    """
 
+    """
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """
         Creates a new Transcription instance.
