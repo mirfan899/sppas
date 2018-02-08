@@ -51,7 +51,7 @@ from .praat import sppasTextGrid  #, PitchTier, IntensityTier
 # from .transcriber import Transcriber
 # from .phonedit import Phonedit
 # from .htk import HTKLabel, MasterLabel
-# from .subtitle import SubRip, SubViewer
+from .subtitle import sppasSubRip, sppasSubViewer
 # from .sclite import TimeMarkedConversation, SegmentTimeMark
 # from .elan import Elan
 # from .anvil import Anvil
@@ -79,22 +79,22 @@ class sppasRW(object):
     TRANSCRIPTION_TYPES["textgrid"] = sppasTextGrid
     TRANSCRIPTION_TYPES["arff"] = sppasARFF
     TRANSCRIPTION_TYPES["xrff"] = sppasXRFF
-        # "eaf": Elan,
-        # "trs": Transcriber,
-        # "mrk": Phonedit,
-        # "lab": HTKLabel,
-        # "mlf": MasterLabel,
-        # "srt": SubRip,
-        # "sub": SubViewer,
-        # "ctm": TimeMarkedConversation,
-        # "stm": SegmentTimeMark,
-        # "anvil": Anvil,
-        # "antx": Antx,
-        # "aup": Audacity,
-        # "csv": CSV,
-        # "intensitytier": IntensityTier,
-        # "pitchtier": PitchTier,
-        # "hz": HzPitch,
+    # "eaf": Elan,
+    # "trs": Transcriber,
+    # "mrk": Phonedit,
+    # "lab": HTKLabel,
+    # "mlf": MasterLabel,
+    TRANSCRIPTION_TYPES["srt"] = sppasSubRip
+    TRANSCRIPTION_TYPES["sub"] = sppasSubViewer,
+    # "ctm": TimeMarkedConversation,
+    # "stm": SegmentTimeMark,
+    # "anvil": Anvil,
+    # "antx": Antx,
+    # "aup": Audacity,
+    # "csv": CSV,
+    # "intensitytier": IntensityTier,
+    # "pitchtier": PitchTier,
+    # "hz": HzPitch,
     TRANSCRIPTION_TYPES["tdf"] = sppasTDF
     TRANSCRIPTION_TYPES["txt"] = sppasRawText
 

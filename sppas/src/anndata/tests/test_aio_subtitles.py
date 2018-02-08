@@ -59,6 +59,40 @@ class TestBaseSubtitle(unittest.TestCase):
         with self.assertRaises(TypeError):
             sppasBaseSubtitles.make_point("3a")
 
+    # -----------------------------------------------------------------
+
+    def test_serialize_location(self):
+        """ Test location -> timestamps. """
+
+        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
+        self.assertEqual(sppasSubRip._serialize_location(a1),
+                         "00:00:01,000 --> 00:00:03,500\n")
+
+        a2 = sppasAnnotation(sppasLocation(sppasPoint(1.)))
+        self.assertEqual(sppasSubRip._serialize_location(a2),
+                         "00:00:01,000 --> 00:00:02,000\n")
+
+        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3))))
+        self.assertEqual(sppasSubRip._serialize_location(a1),
+                         "00:00:01,000 --> 00:00:03,000\n")
+
+        a2 = sppasAnnotation(sppasLocation(sppasPoint(1)))
+        self.assertEqual(sppasSubRip._serialize_location(a2),
+                         "00:00:01,000 --> 00:00:02,000\n")
+
+    # -----------------------------------------------------------------
+
+    def test_serialize_label(self):
+        """ Test label -> caption. """
+
+        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))),
+                             sppasLabel(sppasTag("")))
+        self.assertEqual(sppasSubRip._serialize_label(a1), "\n")
+
+        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))),
+                             sppasLabel(sppasTag("label")))
+        self.assertEqual(sppasSubRip._serialize_label(a1), "label\n")
+
 # ---------------------------------------------------------------------
 
 
@@ -91,27 +125,6 @@ class TestSubRip(unittest.TestCase):
 
     # -----------------------------------------------------------------
 
-    def test_serialize_location(self):
-        """ Test location -> timestamps. """
-
-        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
-        self.assertEqual(sppasSubRip._serialize_location(a1),
-                         "00:00:01,000 --> 00:00:03,500\n")
-
-        a2 = sppasAnnotation(sppasLocation(sppasPoint(1.)))
-        self.assertEqual(sppasSubRip._serialize_location(a2),
-                         "00:00:01,000 --> 00:00:02,000\n")
-
-        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3))))
-        self.assertEqual(sppasSubRip._serialize_location(a1),
-                         "00:00:01,000 --> 00:00:03,000\n")
-
-        a2 = sppasAnnotation(sppasLocation(sppasPoint(1)))
-        self.assertEqual(sppasSubRip._serialize_location(a2),
-                         "00:00:01,000 --> 00:00:02,000\n")
-
-    # -----------------------------------------------------------------
-
     def test_serialize_metadata(self):
         """ Test metadata -> position. """
 
@@ -123,19 +136,6 @@ class TestSubRip(unittest.TestCase):
         a1.set_meta("position_pixel_X2", "100")
         a1.set_meta("position_pixel_Y2", "200")
         self.assertEqual(sppasSubRip._serialize_metadata(a1), "X1:10 Y1:20 X2:100 Y2:200\n")
-
-    # -----------------------------------------------------------------
-
-    def test_serialize_label(self):
-        """ Test label -> caption. """
-
-        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))),
-                             sppasLabel(sppasTag("")))
-        self.assertEqual(sppasSubRip._serialize_label(a1), "\n")
-
-        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))),
-                             sppasLabel(sppasTag("label")))
-        self.assertEqual(sppasSubRip._serialize_label(a1), "label\n")
 
     # -----------------------------------------------------------------
 
@@ -166,6 +166,15 @@ class TestSubViewer(unittest.TestCase):
     Represents a SubViewer reader/writer.
 
     """
+    def setUp(self):
+        if os.path.exists(TEMP) is False:
+            os.mkdir(TEMP)
+
+    def tearDown(self):
+        shutil.rmtree(TEMP)
+
+    # -----------------------------------------------------------------
+
     def test_read(self):
         """ Test of reading a SUB sample file. """
 
@@ -173,6 +182,7 @@ class TestSubViewer(unittest.TestCase):
         txt.read(os.path.join(DATA, "sample.sub"))
         self.assertTrue(txt.is_meta_key('file_reader'))
         self.assertEqual(txt.get_meta('file_reader'), "sppasSubViewer")
+        self.assertEqual(txt.get_meta('annotator_name'), "FK")
 
         self.assertEqual(len(txt), 1)
         self.assertEqual(len(txt[0]), 6)
@@ -180,3 +190,32 @@ class TestSubViewer(unittest.TestCase):
         self.assertEqual(sppasPoint(34.80), txt[0].get_last_point())
         self.assertFalse("[br]" in txt[0][0].get_label().get_best().get_content())
         self.assertTrue("amet, consectetur" in txt[0][0].get_label().get_best().get_content())
+
+    # -----------------------------------------------------------------
+
+    def test_serialize_header(self):
+        """ Test metadata -> header. """
+
+        txt = sppasSubViewer()
+        header = txt._serialize_header()
+        self.assertEqual(len(header.split('\n')), 14)
+
+    # -----------------------------------------------------------------
+
+    def test_write(self):
+        """ """
+        sub = sppasSubViewer()
+        tier = sub.create_tier(name="tierIntervals")
+
+        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.)))))
+        tier.add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2.5), sppasPoint(4.))),
+                                 sppasLabel(sppasTag('toto'))))
+
+        sub.write(os.path.join(TEMP, "sample.sub"))
+        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample.sub")))
+        self.assertGreater(os.stat(os.path.join(TEMP, "sample.sub")).st_size, 0)
+
+        with open(os.path.join(TEMP, "sample.sub")) as fp:
+            lines = fp.readlines()
+
+        self.assertEqual(len(lines), 16)

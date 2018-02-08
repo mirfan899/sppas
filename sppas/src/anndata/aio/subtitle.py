@@ -148,6 +148,40 @@ class sppasBaseSubtitles(sppasBaseIO):
 
         return text
 
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def _serialize_location(ann):
+        """ Extract location to serialize the timestamps. """
+
+        if ann.location_is_point() is False:
+            begin = sppasBaseSubtitles._format_time(
+                ann.get_lowest_localization().get_midpoint())
+            end = sppasBaseSubtitles._format_time(
+                ann.get_highest_localization().get_midpoint())
+
+        else:
+            # SubRip does not support point based annotation
+            # so we'll make a 1 second subtitle
+            begin = sppasBaseSubtitles._format_time(
+                ann.get_lowest_localization().get_midpoint())
+            end = sppasBaseSubtitles._format_time(
+                ann.get_highest_localization().get_midpoint() + 1.)
+
+        return '{:s} --> {:s}\n'.format(begin, end)
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def _serialize_label(ann):
+        """ Extract the best tag to serialize the caption on screen. """
+
+        tag_content = ann.get_best_tag().get_content()
+        tag_content += "\n"
+
+        return tag_content
+
+
 # ----------------------------------------------------------------------------
 
 
@@ -226,7 +260,6 @@ class sppasSubRip(sppasBaseSubtitles):
         """ Parse a single subtitle.
 
         :param lines: (list) the lines of a subtitle (index, timestamps, label)
-        :param tier: (sppasTier)
 
         """
         if len(lines) < 3:
@@ -282,11 +315,11 @@ class sppasSubRip(sppasBaseSubtitles):
                     # first line: the number of the annotation
                     subtitle += str(number) + "\n"
                     # 2nd line: the timestamps
-                    subtitle += sppasSubRip._serialize_location(ann)
+                    subtitle += sppasBaseSubtitles._serialize_location(ann)
                     # 3rd line: optionally the position on screen
                     subtitle += sppasSubRip._serialize_metadata(ann)
                     # the text
-                    subtitle += sppasSubRip._serialize_label(ann)
+                    subtitle += sppasBaseSubtitles._serialize_label(ann)
                     # a blank line
                     subtitle += "\n"
 
@@ -295,28 +328,6 @@ class sppasSubRip(sppasBaseSubtitles):
                     number += 1
 
             fp.close()
-
-    # -----------------------------------------------------------------
-
-    @staticmethod
-    def _serialize_location(ann):
-        """ Extract location to serialize the timestamps. """
-
-        if ann.location_is_point() is False:
-            begin = sppasBaseSubtitles._format_time(
-                ann.get_lowest_localization().get_midpoint())
-            end = sppasBaseSubtitles._format_time(
-                ann.get_highest_localization().get_midpoint())
-
-        else:
-            # SubRip does not support point based annotation
-            # so we'll make a 1 second subtitle
-            begin = sppasBaseSubtitles._format_time(
-                ann.get_lowest_localization().get_midpoint())
-            end = sppasBaseSubtitles._format_time(
-                ann.get_highest_localization().get_midpoint() + 1.)
-
-        return '{:s} --> {:s}\n'.format(begin, end)
 
     # -----------------------------------------------------------------
 
@@ -336,18 +347,6 @@ class sppasSubRip(sppasBaseSubtitles):
                         text += "X1:{:s} Y1:{:s} X2:{:s} Y2:{:s}\n" \
                                 "".format(x1, y1, x2, y2)
         return text
-
-    # -----------------------------------------------------------------
-
-    @staticmethod
-    def _serialize_label(ann):
-        """ Extract the best tag to serialize the caption on screen. """
-
-        tag_content = ann.get_best_tag().get_content()
-        tag_content += "\n"
-        # we could also add HTML tags...
-
-        return tag_content
 
 # ----------------------------------------------------------------------------
 
@@ -457,7 +456,6 @@ class sppasSubViewer(sppasBaseSubtitles):
         """ Parse a single subtitle.
 
         :param lines: (list) the lines of a subtitle (index, timestamps, label)
-        :param tier: (sppasTier)
 
         """
         if len(lines) < 2:
@@ -475,3 +473,86 @@ class sppasSubViewer(sppasBaseSubtitles):
         tag = sppasTag(sppasBaseSubtitles._format_text(text))
 
         return sppasAnnotation(sppasLocation(time), sppasLabel(tag))
+
+    # -----------------------------------------------------------------
+
+    def write(self, filename):
+        """ Write a transcription into a file.
+
+        :param filename: (str)
+
+        """
+        if len(self) != 1:
+            raise AioMultiTiersError("SubViewer")
+
+        with codecs.open(filename, 'w', encoding, buffering=8096) as fp:
+
+            fp.write(self._serialize_header())
+            if self.is_empty() is False:
+                for ann in self[0]:
+
+                    # no label defined, or empty label -> no subtitle!
+                    if ann.get_best_tag().is_empty():
+                        continue
+
+                    # the timestamps
+                    subtitle = sppasBaseSubtitles._serialize_location(ann)
+                    subtitle = subtitle.replace(",", ".")
+                    subtitle = subtitle.replace(" --> ", ",")
+                    # the text
+                    subtitle += sppasBaseSubtitles._serialize_label(ann)
+                    # a blank line
+                    subtitle += "\n"
+
+                    # next!
+                    fp.write(subtitle)
+
+            fp.close()
+
+    # -----------------------------------------------------------------
+
+    def _serialize_header(self):
+        """ Convert metadata into an header.
+        [INFORMATION]
+        [TITLE]SubViewer file example
+        [AUTHOR]FK
+        [SOURCE]FK
+        [PRG]gedit
+        [FILEPATH]/extdata
+        [DELAY]0
+        [CD TRACK]0
+        [COMMENT]
+        [END INFORMATION]
+        [SUBTITLE]
+        [COLF]&HFFFFFF,[STYLE]bd,[SIZE]18,[FONT]Arial
+        """
+        header = "[INFORMATION]"
+        header += "\n"
+        header += "[TITLE]"
+        header += self.get_name()
+        header += "\n"
+        header += "[AUTHOR]"
+        if self.is_meta_key("annotator_name"):
+            header += self.get_meta("annotator_name")
+        header += "\n"
+        header += "[SOURCE]"
+        header += "\n"
+        header += "[PRG]"
+        header += "\n"
+        header += "[FILEPATH]"
+        header += "\n"
+        header += "[DELAY]"
+        header += "\n"
+        header += "[CD TRACK]"
+        header += "\n"
+        header += "[COMMENT]"
+        header += "\n"
+        header += "[END INFORMATION]"
+        header += "\n"
+        header += "[SUBTITLE]"
+        header += "\n"
+        header += "[COLF]&HFFFFFF,[STYLE]bd,[SIZE]18,[FONT]Arial"
+        header += "\n"
+        header += "\n"
+
+        return header
