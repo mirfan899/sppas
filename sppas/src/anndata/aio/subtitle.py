@@ -30,9 +30,10 @@
         ---------------------------------------------------------------------
 
     src.anndata.aio.subtitle.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+import os
 import codecs
 import datetime
 
@@ -143,6 +144,8 @@ class sppasBaseSubtitles(sppasBaseIO):
         text = text.replace('</font>', '')
         text = text.replace('</FONT>', '')
 
+        text = text.replace('[br]', '\n')
+
         return text
 
 # ----------------------------------------------------------------------------
@@ -155,12 +158,11 @@ class sppasSubRip(sppasBaseSubtitles):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS writer for SRT format.
+    :summary:      SPPAS reader/writer for SRT format.
 
     The SubRip text file format (SRT) is used by the SubRip program to save
     subtitles ripped from video files or DVDs.
     It is free software, released under the GNU GPL.
-
 
     Each subtitle is represented as a group of lines. Subtitles are separated
     subtitles by a blank line.
@@ -193,10 +195,11 @@ class sppasSubRip(sppasBaseSubtitles):
         with codecs.open(filename, 'r', encoding) as fp:
 
             tier = self.create_tier('Trans-SubRip')
-            line = ''
+            line = fp.next()
+            lines = list()
 
             # Ignore an optional header (or blank lines)
-            while line.strip().isdigit() is False:
+            while line.strip()[0:1].isdigit() is False:
                 line = fp.next()
 
             # Content of the file
@@ -234,7 +237,7 @@ class sppasSubRip(sppasBaseSubtitles):
         time = sppasInterval(sppasBaseSubtitles.make_point(start),
                              sppasBaseSubtitles.make_point(stop))
 
-        # Insert the subtitle into the tier (without label)
+        # create the annotation without label
         a = sppasAnnotation(sppasLocation(time), sppasLabel())
 
         # optional position (in pixels), saved as metadata of the annotation
@@ -345,3 +348,130 @@ class sppasSubRip(sppasBaseSubtitles):
         # we could also add HTML tags...
 
         return tag_content
+
+# ----------------------------------------------------------------------------
+
+
+class sppasSubViewer(sppasBaseSubtitles):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      SPPAS reader/writer for SUB format.
+
+    The SubViewer text file format (SUB) is used by the SubViewer program to
+    save subtitles of videos.
+
+    """
+    def __init__(self, name=None):
+        """ Initialize a new sppasBaseSubtitles instance.
+
+        :param name: (str) This transcription name.
+
+        """
+        if name is None:
+            name = self.__class__.__name__
+        sppasBaseSubtitles.__init__(self, name)
+
+    # -----------------------------------------------------------------
+
+    def read(self, filename):
+        """ Read a SUB file and fill the Transcription.
+
+        :param filename: (str)
+
+        """
+        self.set_meta('file_reader', self.__class__.__name__)
+        self.set_meta('file_name', os.path.basename(filename))
+        self.set_meta('file_path', os.path.dirname(filename))
+        self.set_meta('file_ext', os.path.splitext(filename)[1])
+        now = datetime.datetime.now()
+        self.set_meta('file_date', "{:d}-{:d}-{:d}".format(now.year, now.month, now.day))
+
+        with codecs.open(filename, 'r', encoding) as fp:
+
+            tier = self.create_tier('Trans-SubViewer')
+            lines = list()
+            line = fp.next()
+
+            # Header
+            while line.strip()[0:1].isdigit() is False:
+                lines.append(line.strip())
+                line = fp.next()
+            self._parse_header(lines)
+
+            # Content of the file
+            try:
+                while True:
+                    lines = list()
+                    while line.strip() != '':
+                        lines.append(line.strip())
+                        line = fp.next()
+                    a = sppasSubViewer._parse_subtitle(lines)
+                    if a is not None:
+                        tier.append(a)
+                    line = fp.next()
+            except StopIteration:
+                a = sppasSubViewer._parse_subtitle(lines)
+                if a is not None:
+                    tier.append(a)
+            fp.close()
+
+    # -----------------------------------------------------------------
+
+    def _parse_header(self, lines):
+        """ Parse the header lines to get metadata.
+
+        [INFORMATION]
+        [TITLE]SubViewer file example
+        [AUTHOR]FK
+        [SOURCE]FK
+        [PRG]gedit
+        [FILEPATH]/extdata
+        [DELAY]0
+        [CD TRACK]0
+        [COMMENT]
+        [END INFORMATION]
+        [SUBTITLE]
+        [COLF]&HFFFFFF,[STYLE]bd,[SIZE]18,[FONT]Arial
+
+        """
+        for line in lines:
+            if line.startswith('[TITLE]'):
+                self.set_name(line[7:])
+            elif line.startswith('[AUTHOR]'):
+                self.set_meta('annotator_name', line[8:])
+            elif line.startswith('[PRG]'):
+                self.set_meta("prg_editor_name", line[4:])
+            elif line.startswith('[FILEPATH]'):
+                self.set_meta("file_path", line[:10])
+            elif line.startswith('[DELAY]'):
+                self.set_meta("media_shift_delay", line[:7])
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def _parse_subtitle(lines):
+        """ Parse a single subtitle.
+
+        :param lines: (list) the lines of a subtitle (index, timestamps, label)
+        :param tier: (sppasTier)
+
+        """
+        if len(lines) < 2:
+            return None
+
+        # time stamps
+        time_stamp = lines[0].replace(",", " ")
+        time_stamp = time_stamp.replace(".", ",")
+        start, stop = map(sppasBaseSubtitles._parse_time, time_stamp.split())
+        time = sppasInterval(sppasBaseSubtitles.make_point(start),
+                             sppasBaseSubtitles.make_point(stop))
+
+        # label
+        text = " ".join(lines[1:])
+        tag = sppasTag(sppasBaseSubtitles._format_text(text))
+
+        return sppasAnnotation(sppasLocation(time), sppasLabel(tag))

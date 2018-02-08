@@ -9,8 +9,8 @@ from sppas.src.utils.fileutils import sppasFileUtils
 from ..anndataexc import AioMultiTiersError
 from ..aio.subtitle import sppasBaseSubtitles
 from ..aio.subtitle import sppasSubRip
+from ..aio.subtitle import sppasSubViewer
 
-from ..transcription import sppasTranscription
 from ..annlocation.interval import sppasInterval
 from ..annlocation.point import sppasPoint
 from ..annlabel.label import sppasTag
@@ -157,3 +157,26 @@ class TestSubRip(unittest.TestCase):
             lines = fp.readlines()
 
         self.assertEqual(len(lines), 4)
+
+# ---------------------------------------------------------------------
+
+
+class TestSubViewer(unittest.TestCase):
+    """
+    Represents a SubViewer reader/writer.
+
+    """
+    def test_read(self):
+        """ Test of reading a SUB sample file. """
+
+        txt = sppasSubViewer()
+        txt.read(os.path.join(DATA, "sample.sub"))
+        self.assertTrue(txt.is_meta_key('file_reader'))
+        self.assertEqual(txt.get_meta('file_reader'), "sppasSubViewer")
+
+        self.assertEqual(len(txt), 1)
+        self.assertEqual(len(txt[0]), 6)
+        self.assertEqual(sppasPoint(22.5), txt[0].get_first_point())
+        self.assertEqual(sppasPoint(34.80), txt[0].get_last_point())
+        self.assertFalse("[br]" in txt[0][0].get_label().get_best().get_content())
+        self.assertTrue("amet, consectetur" in txt[0][0].get_label().get_best().get_content())
