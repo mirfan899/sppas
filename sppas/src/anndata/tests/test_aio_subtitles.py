@@ -180,8 +180,6 @@ class TestSubViewer(unittest.TestCase):
 
         txt = sppasSubViewer()
         txt.read(os.path.join(DATA, "sample.sub"))
-        self.assertTrue(txt.is_meta_key('file_reader'))
-        self.assertEqual(txt.get_meta('file_reader'), "sppasSubViewer")
         self.assertEqual(txt.get_meta('annotator_name'), "FK")
 
         self.assertEqual(len(txt), 1)

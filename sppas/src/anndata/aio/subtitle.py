@@ -33,7 +33,6 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import os
 import codecs
 import datetime
 
@@ -382,13 +381,6 @@ class sppasSubViewer(sppasBaseSubtitles):
         :param filename: (str)
 
         """
-        self.set_meta('file_reader', self.__class__.__name__)
-        self.set_meta('file_name', os.path.basename(filename))
-        self.set_meta('file_path', os.path.dirname(filename))
-        self.set_meta('file_ext', os.path.splitext(filename)[1])
-        now = datetime.datetime.now()
-        self.set_meta('file_date', "{:d}-{:d}-{:d}".format(now.year, now.month, now.day))
-
         with codecs.open(filename, 'r', encoding) as fp:
 
             tier = self.create_tier('Trans-SubViewer')

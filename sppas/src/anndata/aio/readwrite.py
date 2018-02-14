@@ -36,8 +36,10 @@
 
 """
 import os.path
+import datetime
 from collections import OrderedDict
 
+import sppas
 from sppas.src.utils.makeunicode import u
 
 from ..anndataexc import AioEncodingError
@@ -48,7 +50,7 @@ from .text import sppasRawText
 # from .text import CSV
 from .praat import sppasTextGrid  #, PitchTier, IntensityTier
 # from .signaix import HzPitch
-# from .transcriber import Transcriber
+from .transcriber import sppasTRS
 # from .phonedit import Phonedit
 # from .htk import HTKLabel, MasterLabel
 from .subtitle import sppasSubRip, sppasSubViewer
@@ -57,7 +59,7 @@ from .subtitle import sppasSubRip, sppasSubViewer
 # from .anvil import Anvil
 # from .annotationpro import Antx
 from .xtrans import sppasTDF
-# from .audacity import Audacity
+from .audacity import sppasAudacity
 from .weka import sppasARFF
 from .weka import sppasXRFF
 
@@ -79,22 +81,22 @@ class sppasRW(object):
     TRANSCRIPTION_TYPES["textgrid"] = sppasTextGrid
     TRANSCRIPTION_TYPES["arff"] = sppasARFF
     TRANSCRIPTION_TYPES["xrff"] = sppasXRFF
-    # "eaf": Elan,
-    # "trs": Transcriber,
-    # "mrk": Phonedit,
-    # "lab": HTKLabel,
-    # "mlf": MasterLabel,
+    # TRANSCRIPTION_TYPES["eaf"] = Elan,
+    TRANSCRIPTION_TYPES["trs"] = sppasTRS
+    # TRANSCRIPTION_TYPES["mrk"] = Phonedit,
+    # TRANSCRIPTION_TYPES["lab"] = HTKLabel
+    # TRANSCRIPTION_TYPES["mlf"] = MasterLabel
     TRANSCRIPTION_TYPES["srt"] = sppasSubRip
-    TRANSCRIPTION_TYPES["sub"] = sppasSubViewer,
-    # "ctm": TimeMarkedConversation,
-    # "stm": SegmentTimeMark,
-    # "anvil": Anvil,
-    # "antx": Antx,
-    # "aup": Audacity,
-    # "csv": CSV,
-    # "intensitytier": IntensityTier,
-    # "pitchtier": PitchTier,
-    # "hz": HzPitch,
+    TRANSCRIPTION_TYPES["sub"] = sppasSubViewer
+    # TRANSCRIPTION_TYPES["ctm"] = TimeMarkedConversation,
+    # TRANSCRIPTION_TYPES["stm"] = SegmentTimeMark,
+    # TRANSCRIPTION_TYPES["anvil"] = Anvil,
+    # TRANSCRIPTION_TYPES["antx"] = Antx,
+    TRANSCRIPTION_TYPES["aup"] = sppasAudacity
+    # TRANSCRIPTION_TYPES["csv"] = CSV,
+    # TRANSCRIPTION_TYPES["intensitytier"] = IntensityTier,
+    # TRANSCRIPTION_TYPES["pitchtier"] = PitchTier,
+    # TRANSCRIPTION_TYPES["hz"] = HzPitch,
     TRANSCRIPTION_TYPES["tdf"] = sppasTDF
     TRANSCRIPTION_TYPES["txt"] = sppasRawText
 
@@ -152,6 +154,18 @@ class sppasRW(object):
                 raise
 
         try:
+            # Add metadata about SPPAS
+            sppasRW.add_sppas_metadata(trs)
+
+            # Add metadata about the file
+            trs.set_meta('file_reader', trs.__class__.__name__)
+            trs.set_meta('file_name', os.path.basename(self.__filename))
+            trs.set_meta('file_path', os.path.dirname(self.__filename))
+            trs.set_meta('file_ext', os.path.splitext(self.__filename)[1])
+            now = datetime.datetime.now()
+            trs.set_meta('file_read_date', "{:d}-{:d}-{:d}".format(now.year, now.month, now.day))
+
+            # Read the file content dans store into a Trancription()
             trs.read(self.__filename)
         except UnicodeError as e:
             raise AioEncodingError(self.__filename, str(e))
@@ -193,7 +207,7 @@ class sppasRW(object):
             try:
                 if file_reader.detect(filename) is True:
                     return file_reader()
-            except Exception:
+            except:
                 continue
         return sppasRawText()
 
@@ -208,9 +222,33 @@ class sppasRW(object):
         trs_rw = sppasRW.create_trs_from_extension(self.__filename)
         trs_rw.set(transcription)
 
+        # Add metadata about SPPAS
+        sppasRW.add_sppas_metadata(trs_rw)
+
+        # Add metadata about the file
+        trs_rw.set_meta('file_writer', trs_rw.__class__.__name__)
+        trs_rw.set_meta('file_name', os.path.basename(self.__filename))
+        trs_rw.set_meta('file_path', os.path.dirname(self.__filename))
+        trs_rw.set_meta('file_ext', os.path.splitext(self.__filename)[1])
+        now = datetime.datetime.now()
+        trs_rw.set_meta('file_write_date', "{:d}-{:d}-{:d}".format(now.year, now.month, now.day))
+
         try:
             trs_rw.write(self.__filename)
         except UnicodeError as e:
             raise AioEncodingError(self.__filename, str(e))
         except Exception:
             raise
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def add_sppas_metadata(trs):
+        """ Add metadata about SPPAS. """
+
+        trs.set_meta('software_name', sppas.__name__)
+        trs.set_meta('software_version', sppas.__version__)
+        trs.set_meta('software_url', sppas.__url__)
+        trs.set_meta('software_author', sppas.__author__)
+        trs.set_meta('software_contact', sppas.__contact__)
+        trs.set_meta('software_copyright', sppas.__copyright__)

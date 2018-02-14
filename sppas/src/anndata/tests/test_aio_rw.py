@@ -31,6 +31,9 @@ class TestAIO(unittest.TestCase):
     def test_read_write(self):
         parser = sppasRW(os.path.join(DATA, "sample-1.1.xra"))
         trs_r = parser.read(heuristic=False)
+        self.assertTrue(trs_r.is_meta_key('file_reader'))
+        self.assertEqual(trs_r.get_meta('file_reader'), "sppasXRA")
+
         parser.set_filename(os.path.join(TEMP, "sampléà-1.3.xra"))
         parser.write(trs_r)
         self.assertTrue(os.path.exists(os.path.join(TEMP, u("sampléà-1.3.xra"))))
