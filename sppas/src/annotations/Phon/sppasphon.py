@@ -206,11 +206,10 @@ class sppasPhon(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def convert(self, tier):
-        """ Phonetize all annotation of a tokenized tier.
+        """ Phonetize annotations of a tokenized tier.
 
-        :param tier: (Tier) Tier that contains the orthographic transcription
-        previously tokenized.
-        :returns: A tier with name "Phonetization"
+        :param tier: (Tier) the orthographic transcription previously tokenized.
+        :returns: (Tier) phonetized tier with name "Phonetization"
 
         """
         new_tier = Tier("Phonetization")
@@ -226,7 +225,10 @@ class sppasPhon(sppasBaseAnnotation):
                     # In case the pronunciation dictionary were not properly fixed.
                     text.SetValue("sil")
 
-                elif text.IsEmpty() is False and text.IsSilence() is False:
+                elif text.IsSilence() is True:
+                    text.SetValue("#")
+
+                elif text.IsEmpty() is False:
                     phon = self.phonetize(text.GetValue())
                     text.SetValue(phon)
 

@@ -32,7 +32,7 @@
     src.annotations.phonetize.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Dictionnary-based phonetization.
+    Dictionary-based phonetization.
 
 """
 import re
@@ -153,9 +153,11 @@ class sppasDictPhonetizer(object):
         if len(entry) == 0:
             return ""
 
-        # Specific strings used in the CID transcription...
-        # CID is Corpus of Interactional Data, http://sldr.org/sldr000720
-        if entry.startswith(u("gpd_")) is True or entry.startswith(u("gpf_")) is True:
+        # Specific strings used in the CID transcriptions...
+        # CID is Corpus of Interactionnal Data, http://sldr.org/sldr000720
+        if entry.startswith(u("gpf_")) is True:
+            return "sil"
+        if entry.startswith(u("gpd_")) is True:
             return ""
 
         # Specific strings used in SPPAS IPU segmentation...
@@ -188,6 +190,7 @@ class sppasDictPhonetizer(object):
         tab = list()
 
         for entry in tokens:
+            entry = entry.strip()
             phon = self._pdict.get_unkstamp()
             status = OK_ID
 
@@ -223,7 +226,8 @@ class sppasDictPhonetizer(object):
                             phon = self._pdict.get_unkstamp()
                             status = ERROR_ID
 
-            tab.append((entry, phon, status))
+            if len(phon) > 0:
+                tab.append((entry, phon, status))
 
         return tab
 
@@ -234,7 +238,7 @@ class sppasDictPhonetizer(object):
 
         :param utterance: (str) is the utterance to phonetize.
         :param phonunk: (bool) Phonetize unknown words (or not).
-        :param delimiter: (char) The character to use as tokens separator in utterance.
+        :param delimiter: (char) The character to be used as token separator in utterance.
 
         :returns: A string with the phonetization of the given utterance.
 
@@ -242,10 +246,13 @@ class sppasDictPhonetizer(object):
         if len(delimiter) > 1:
             raise TypeError('Delimiter must be a character.')
 
-        tab = self.get_phon_tokens(utterance.split(delimiter), phonunk)
+        su = sppasUnicode(utterance)
+        utt = su.to_strip()
+        tab = self.get_phon_tokens(utt.split(delimiter), phonunk)
         tab_phon = [t[1] for t in tab]
+        phonetization = delimiter.join(tab_phon)
 
-        return delimiter.join(tab_phon).strip()
+        return phonetization.strip()
 
     # -----------------------------------------------------------------------
     # Private

@@ -12,11 +12,16 @@ from ..Phon.phonetize import sppasDictPhonetizer
 from ..Phon.dagphon import sppasDAGPhonetizer
 from ..Phon.phonunk import sppasPhonUnk
 from ..Phon.sppasphon import sppasPhon
+from sppas.src.annotationdata.tier import Tier
+from sppas.src.annotationdata.annotation import Annotation
+from sppas.src.annotationdata.ptime.interval import TimeInterval
+from sppas.src.annotationdata.ptime.point import TimePoint
+from sppas.src.annotationdata.label.label import Label
 
 # ---------------------------------------------------------------------------
 
 
-class TestDictPhon( unittest.TestCase ):
+class TestDictPhon(unittest.TestCase):
 
     def setUp(self):
         self.dd = sppasDictPron()
@@ -30,7 +35,9 @@ class TestDictPhon( unittest.TestCase ):
         self.assertEqual(self.grph.get_phon_entry("<>"), "")
         self.assertEqual(self.grph.get_phon_entry("<a>"), "a")
         self.assertEqual(self.grph.get_phon_entry("gpd_1"), "")
-        self.assertEqual(self.grph.get_phon_entry("gpf_1"), "")
+        self.assertEqual(self.grph.get_phon_entry("gpf_1"), "sil")
+        self.assertEqual(self.grph.get_phon_entry("gpf_1 "), "sil")
+        self.assertEqual(self.grph.get_phon_entry(" gpf_13 "), "sil")
         self.assertEqual(self.grph.get_phon_entry("ipu_1"), "")
         self.assertEqual(self.grph.get_phon_entry("ipu"), unk_stamp)
         self.assertEqual(self.grph.get_phon_entry("gpd"), unk_stamp)
@@ -40,8 +47,10 @@ class TestDictPhon( unittest.TestCase ):
         self.assertEqual(self.grph.get_phon_entry("a-a"), unk_stamp)
 
     def test_get_phon_tokens(self):
-        self.assertEqual(self.grph.get_phon_tokens([' \n \t']), [(' \n \t', '', OK_ID)])
+        self.assertEqual(self.grph.get_phon_tokens([' \n \t']), [])
         self.assertEqual(self.grph.get_phon_tokens(['a']), [('a', 'a', OK_ID)])
+        self.assertEqual(self.grph.get_phon_tokens(['gpf_1']), [('gpf_1', 'sil', OK_ID)])
+        self.assertEqual(self.grph.get_phon_tokens(['gpd_1']), [])
         self.assertEqual(self.grph.get_phon_tokens(['a', 'b']), [('a', 'a', OK_ID), ('b', 'b', OK_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['a-a', 'b']), [('a-a', 'a-a', WARNING_ID), ('b', 'b', OK_ID)])
         self.assertEqual(self.grph.get_phon_tokens(['a-']), [('a-', 'a', WARNING_ID)])
@@ -54,18 +63,19 @@ class TestDictPhon( unittest.TestCase ):
 
     def test_phonetize(self):
         with self.assertRaises(TypeError):
-            self.grph.phonetize('A',delimiter="_-")
-        self.assertEqual( self.grph.phonetize(' \n \t'), "")
-        self.assertEqual( self.grph.phonetize('a'), "a")
-        self.assertEqual( self.grph.phonetize('a b a c'), "a b a c")
-        self.assertEqual( self.grph.phonetize('a b a c d'), "a b a c "+unk_stamp)
-        self.assertEqual( self.grph.phonetize('a + a'), "a sp a")
-        self.assertEqual( self.grph.phonetize('A B C'), "a b c")
-        self.assertEqual( self.grph.phonetize('A_B_C', delimiter="_"), "a_b_c")
-        self.assertEqual( self.grph.phonetize("a'b-a c"), "a-b-a c")
-        self.assertEqual( self.grph.phonetize("ipu_4 a'b-a c"), "a-b-a c")
-        self.assertEqual( self.grph.phonetize("gpd_4 a'b-a + c"), "a-b-a sp c")
-        self.assertEqual( self.grph.phonetize("gpd_4 aa'b-a"), "a-a-b-a")
+            self.grph.phonetize('A', delimiter="_-")
+        self.assertEqual(self.grph.phonetize(' \n \t'), "")
+        self.assertEqual(self.grph.phonetize('a'), "a")
+        self.assertEqual(self.grph.phonetize('a b a c'), "a b a c")
+        self.assertEqual(self.grph.phonetize('a b a c d'), "a b a c "+unk_stamp)
+        self.assertEqual(self.grph.phonetize('a + a'), "a sp a")
+        self.assertEqual(self.grph.phonetize('A B C'), "a b c")
+        self.assertEqual(self.grph.phonetize('A_B_C', delimiter="_"), "a_b_c")
+        self.assertEqual(self.grph.phonetize("a'b-a c"), "a-b-a c")
+        self.assertEqual(self.grph.phonetize("ipu_4 a'b-a c"), "a-b-a c")
+        self.assertEqual(self.grph.phonetize("gpd_4 a'b-a + c"), "a-b-a sp c")
+        self.assertEqual(self.grph.phonetize("gpd_4 aa'b-a"), "a-a-b-a")
+        self.assertEqual(self.grph.phonetize("gpf_4 "), "sil")
 
     def test_map_entry(self):
         mapt = sppasMapping()
@@ -73,7 +83,7 @@ class TestDictPhon( unittest.TestCase ):
         mapt.add('b', 'B')
         mapt.add('b', 'v')
         mapt.add('a-c', 'a-C')
-        self.grph.set_maptable( mapt )
+        self.grph.set_maptable(mapt)
         self.assertEqual(self.grph._map_phonentry("c"), "c")
         self.assertEqual(self.grph._map_phonentry("a"), "a|A")
         self.assertEqual(self.grph._map_phonentry("b"), "B|b|v")
@@ -142,9 +152,9 @@ class TestSppasPhon(unittest.TestCase):
 
     def setUp(self):
         dictfile = os.path.join(RESOURCES_PATH, "dict", "eng.dict")
-        mapfile  = os.path.join(RESOURCES_PATH, "dict", "eng-fra.map")
-        self.sp  = sppasPhon( dictfile )
-        self.spl = sppasPhon( dictfile, mapfile )
+        mapfile = os.path.join(RESOURCES_PATH, "dict", "eng-fra.map")
+        self.sp = sppasPhon(dictfile)
+        self.spl = sppasPhon(dictfile, mapfile)
 
     def test_phonetize(self):
         self.sp.set_unk(True)
@@ -154,9 +164,29 @@ class TestSppasPhon(unittest.TestCase):
         self.assertEqual(self.sp.phonetize("THE BANCI THE"), "D-@|D-V|D-i: b-{-N-k-aI D-@|D-V|D-i:")
         self.assertEqual(self.sp.phonetize("#"), "sil")
         self.assertEqual(self.sp.phonetize("+"), "sil")
+        self.assertEqual(self.sp.phonetize("  gpf_12  "), "sil")
+        self.assertEqual(self.sp.phonetize("   gpd_1   +  "), "sil")
         self.assertEqual(self.sp.phonetize("é à"), unk_stamp)
-        self.sp.set_unk(False) # do not try to phonetize if missing of the dict
+        self.sp.set_unk(False)  # do not try to phonetize if missing of the dict
         self.assertEqual(self.sp.phonetize("THE BANCI THE"), unk_stamp)
+
+    def test_phonetize_tier(self):
+        self.sp.set_unk(True)
+        self.sp.set_usestdtokens(False)
+        tier = Tier("Tokenization")
+        tier.Add(Annotation(TimeInterval(TimePoint(0.), TimePoint(4.2375)),
+                            Label("gpd_1    the  ")))
+        tier.Add(Annotation(TimeInterval(TimePoint(4.2375), TimePoint(4.6466)),
+                            Label("gpf_1")))
+        tier.Add(Annotation(TimeInterval(TimePoint(4.6466), TimePoint(5.2)),
+                            Label("ipu_2  he")))
+
+        phon = self.sp.convert(tier)
+        self.assertEqual(phon[0].GetLabel().GetValue(), "D-@|D-V|D-i:")
+        self.assertEqual(phon[1].GetLabel().GetValue(), "#")
+        self.assertEqual(phon[2].GetLabel().GetValue(), "h-i:")
+
+    # -----------------------------------------------------------------------
 
     def test_phonetize_learners(self):
         self.sp.set_unk(True)
@@ -172,6 +202,8 @@ class TestPhonUnk(unittest.TestCase):
     def setUp(self):
         d = {'a':'a|aa', 'b':'b', 'c':'c|cc', 'abb':'abb', 'bac':'bac'}
         self.p = sppasPhonUnk(d)
+
+    # -----------------------------------------------------------------------
 
     def test_phon(self):
         self.assertEqual(self.p.get_phon('abba'), "abb-a|abb-aa")

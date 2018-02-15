@@ -88,3 +88,6 @@ msgstr "Unexpected format string at line {:d}: '{!s:s}'."
 
 msgid ":ERROR 1525: "
 msgstr "The file format {!s:s} does not support to save empty tiers: {:s}."
+
+msgid ":ERROR 1530: "
+msgstr "The file format {!s:s} does not support tiers with {:s}."

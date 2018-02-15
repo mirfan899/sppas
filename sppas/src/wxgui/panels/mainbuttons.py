@@ -106,7 +106,7 @@ class MainMenuPanel(wx.Panel):
         elif ide == ID_EXT_BUG:
             wx.BeginBusyCursor()
             try:
-                webbrowser.open("https://github.com/brigittebigi/sppas/issues/",1)
+                webbrowser.open("https://github.com/brigittebigi/sppas/issues/", 1)
             except:
                 pass
             wx.EndBusyCursor()
@@ -160,7 +160,7 @@ class MainTitlePanel(wx.Panel):
     def OnButtonClick(self, evt):
         wx.BeginBusyCursor()
         try:
-            webbrowser.open("https://www.sppas.org/", 1)
+            webbrowser.open(sppas.__url__, 1)
         except:
             pass
         wx.EndBusyCursor()

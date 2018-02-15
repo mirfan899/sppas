@@ -90,4 +90,7 @@ msgid ":ERROR 1520: "
 msgstr "Format de la ligne {:d} inconnu : '{!s:s}'."
 
 msgid ":ERROR 1525: "
-msgstr "Le format de fichier {:s} ne supporte pas la sauvegarde de tiers vides: {:s}."
+msgstr "Le format de fichier {!s:s} ne supporte pas la sauvegarde de tiers vides: {:s}."
+
+msgid ":ERROR 1530: "
+msgstr "Le format de fichier {!s:s} ne gère pas les tiers avec {:s}."

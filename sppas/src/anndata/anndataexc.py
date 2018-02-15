@@ -64,6 +64,7 @@ AIO_MULTI_TIERS_ERROR = ":ERROR 1510: "
 AIO_NO_TIERS_ERROR = ":ERROR 1515: "
 AIO_LINE_FORMAT_ERROR = ":ERROR 1520: "
 AIO_EMPTY_TIER_ERROR = ":ERROR 1525: "
+AIO_LOCATION_TYPE_ERROR = ":ERROR 1530: "
 
 # -----------------------------------------------------------------------
 
@@ -429,3 +430,16 @@ class AioEmptyTierError(IOError):
         return repr(self.parameter)
 
 # -----------------------------------------------------------------------
+
+
+class AioLocationTypeError(TypeError):
+    """ :ERROR 1530: AIO_LOCATION_TYPE_ERROR
+    The file format {!s:s} does not support tiers with {:s}.
+
+    """
+    def __init__(self, file_format, location_type):
+        self.parameter = AIO_EMPTY_TIER_ERROR + \
+                         (t.gettext(AIO_EMPTY_TIER_ERROR)).format(file_format, location_type)
+
+    def __str__(self):
+        return repr(self.parameter)
