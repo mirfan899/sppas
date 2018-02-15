@@ -104,8 +104,12 @@ class sppasBaseText(sppasBaseIO):
         :returns: sppasPoint().
 
         """
-        if data.isdigit():
-            return sppasPoint(int(data))
+        try:
+            if data.isdigit():
+                return sppasPoint(int(data))
+        except AttributeError:
+            # data is not a string
+            pass
         return sppasPoint(data, radius=0.001)
 
     # ----------------------------------------------------------------------------
@@ -265,7 +269,7 @@ class sppasRawText(sppasBaseText):
             if columns is not None and len(columns) > 0 and len(columns[0]) > nb_col:
                 sep = separator
         if sep is not None:
-            columns = sppasBaseText.split_lines(lines, separator)
+            columns = sppasBaseText.split_lines(lines, sep)
 
         if columns is None:
             self.__format_raw_lines(lines)
@@ -322,6 +326,9 @@ class sppasRawText(sppasBaseText):
         - 3rd column: the label of the 1st tier (optional)
         - 4th column: the label of the 2nd tier (optional)
         - ...
+        or
+        - the label is in the 1st column
+        - 2nd/3rd columns are begin/end
 
         """
         nb_col = len(columns[0])
@@ -333,10 +340,15 @@ class sppasRawText(sppasBaseText):
 
         # Create the annotations of the tiers
         for instance in columns:
-            location = sppasBaseText.fix_location(instance[0], instance[1])
-            for i in range(2, nb_col):
-                label = sppasLabel(sppasTag(instance[i]))
-                self[i-2].create_annotation(location, label)
+            if nb_col == 3 and instance[0].isdigit() is False:
+                location = sppasBaseText.fix_location(instance[1], instance[2])
+                label = sppasLabel(sppasTag(instance[0]))
+                self[0].create_annotation(location, label)
+            else:
+                location = sppasBaseText.fix_location(instance[0], instance[1])
+                for i in range(2, nb_col):
+                    label = sppasLabel(sppasTag(instance[i]))
+                    self[i-2].create_annotation(location, label)
 
     # -----------------------------------------------------------------
 

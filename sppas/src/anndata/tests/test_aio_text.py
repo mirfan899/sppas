@@ -178,6 +178,21 @@ class TestRawText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_read3(self):
+        """ Column-based transcription. """
+
+        txt = sppasRawText()
+        txt.read(os.path.join(DATA, "sample-3.txt"))
+        self.assertEqual(len(txt), 1)
+        self.assertEqual(len(txt[0]), 18)
+        self.assertEqual(txt[0].get_name(), "RawTranscription")
+        for i in range(1, 18, 2):
+            self.assertEqual(txt[0][i].get_label().get_best().get_content(), 'sil')
+        for i in range(0, 18, 2):
+            self.assertEqual(txt[0][i].get_label().get_best().get_content(), 'speech')
+
+    # -----------------------------------------------------------------
+
+    def test_read3(self):
         txt = sppasCSV()
         txt.read(os.path.join(DATA, "sample-irish.csv"))
         self.assertEqual(len(txt), 2)
