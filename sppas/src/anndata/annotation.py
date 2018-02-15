@@ -146,9 +146,15 @@ class sppasAnnotation(sppasMetaData):
         If no label was previously assigned, returns an empty tag.
 
         """
+        # No label defined
         if self.__label is None:
             return sppasTag("")
-        return self.__label.get_best()
+        # No tag in the label
+        tag = self.__label.get_best()
+        if tag is None:
+            return sppasTag("")
+
+        return tag
 
     # -----------------------------------------------------------------------
 

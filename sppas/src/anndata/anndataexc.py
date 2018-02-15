@@ -438,8 +438,8 @@ class AioLocationTypeError(TypeError):
 
     """
     def __init__(self, file_format, location_type):
-        self.parameter = AIO_EMPTY_TIER_ERROR + \
-                         (t.gettext(AIO_EMPTY_TIER_ERROR)).format(file_format, location_type)
+        self.parameter = AIO_LOCATION_TYPE_ERROR + \
+                         (t.gettext(AIO_LOCATION_TYPE_ERROR)).format(file_format, location_type)
 
     def __str__(self):
         return repr(self.parameter)
