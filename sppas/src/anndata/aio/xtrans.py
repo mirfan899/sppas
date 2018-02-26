@@ -89,7 +89,7 @@ class sppasTDF(sppasBaseIO):
         with codecs.open(filename, 'r', encoding) as fp:
             lines = fp.readlines()
             for line in lines:
-                if line.startswith(";;"):
+                if sppasTDF.is_comment(line):
                     continue
                 tab = line.split('\t')
                 if len(tab) < 10:  # expected is 13
@@ -109,6 +109,19 @@ class sppasTDF(sppasBaseIO):
             raise AnnDataTypeError(midpoint, "float")
 
         return sppasPoint(midpoint, radius=0.005)
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def is_comment(line):
+        """ Check if the line is a comment.
+
+        :param line: (str)
+        :return: boolean
+
+        """
+        line = line.strip()
+        return line.startswith(";;")
 
     # -----------------------------------------------------------------
 
@@ -189,7 +202,7 @@ class sppasTDF(sppasBaseIO):
         for i, line in enumerate(lines):
 
             # a comment
-            if line.startswith(';;'):
+            if sppasTDF.is_comment(line):
                 continue
 
             # a tab-delimited line
