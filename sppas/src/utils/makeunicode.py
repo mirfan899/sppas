@@ -62,34 +62,38 @@ if sys.version_info < (3,):
 
     text_type = unicode
     binary_type = str
+    basestring = basestring
 
     def u(x):
-        return x.decode(encoding)
-        # return codecs.unicode_escape_decode(x)[0]
+        # here we take care to not raise "AttributeError", like:
+        # AttributeError: 'int' object has no attribute 'decode'
+        s = str(x)
+        return s.decode(encoding)
 
     def b(x):
-        return x.encode(encoding)
-
-    basestring = basestring
+        s = str(x)
+        return s.encode(encoding)
 
 else:
     """ Unicode conversion for Python > 3.2 """
 
     text_type = str
     binary_type = bytes
+    basestring = str
 
     def u(x):
-        return x
+        return str(x)
 
     def b(x):
-        return x.encode(encoding)
-        # return codecs.utf_8_encode(x)[0]
+        s = str(x)
+        return s.encode(encoding)
 
-    basestring = str
 
 # ---------------------------------------------------------------------------
 
 from .utilsexc import UtilsDataTypeError
+
+# ---------------------------------------------------------------------------
 
 
 class sppasUnicode(object):

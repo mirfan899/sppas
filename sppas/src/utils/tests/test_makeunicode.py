@@ -158,36 +158,29 @@ LowerDict['Ỵ'] = u('ỵ')
 LowerDict['Ỷ'] = u('ỷ')
 LowerDict['Ỹ'] = u('ỹ')
 
+# ---------------------------------------------------------------------------
 
-class TestMakeUnicode(unittest.TestCase):
 
-    def test_init(self):
-        sppasUnicode("")
-        sppasUnicode("é")
-        with self.assertRaises(TypeError):
-            sppasUnicode(1)
-        with self.assertRaises(TypeError):
-            sppasUnicode(True)
+class TestMethods(unittest.TestCase):
+    """ Test u and b methods. """
 
-    def test_clear_whitespace(self):
-        s = "  ée  àa  çc  "
-        self.assertEqual(sppasUnicode(s).clear_whitespace(), u("ée_àa_çc"))
-
-    def test_to_ascii(self):
-        s = "  ée  àa  çc  "
-        self.assertEqual(sppasUnicode(s).to_ascii(), u("  _e  _a  _c  "))
-
-    def test_lower(self):
-        for key, value in LowerDict.items():
-            self.assertEqual(value, sppasUnicode(key).to_lower())
-
-    def test_strip(self):
-        self.assertEqual(sppasUnicode('  \n Ỹ  \t\r   ỏ  ').to_strip(), u('Ỹ ỏ'))
+    def test_u(self):
+        if sys.version_info < (3,):
+            self.assertEqual(u("a string"), u"a string")
+            self.assertEqual(u(3), u"3")
+        else:
+            self.assertEqual(u("a string"), "a string")
+            self.assertEqual(u(3), str(3))
 
     def test_b(self):
-        s = "  ée  àa  çc  "
-        #print(u(s))
-        #print(b(u(s)))
+        if sys.version_info < (3,):
+            self.assertEqual(b("a string"), "a string")
+            self.assertEqual(b(3), "3")
+        else:
+            self.assertEqual(b("a string"), b"a string")
+            self.assertEqual(b(3), b"3")
+
+    # -----------------------------------------------------------------------
 
     def test_basestring(self):
         if sys.version_info < (3,):
@@ -202,3 +195,41 @@ class TestMakeUnicode(unittest.TestCase):
             self.assertTrue(isinstance(b('toto'), bytes))
             self.assertFalse(isinstance(True, str))
             self.assertFalse(isinstance(5, str))
+
+# ---------------------------------------------------------------------------
+
+
+class TestMakeUnicode(unittest.TestCase):
+    """ Make a string as unicode and operates on it. """
+
+    def test_init(self):
+        sppasUnicode("")
+        sppasUnicode("é")
+        with self.assertRaises(TypeError):
+            sppasUnicode(1)
+        with self.assertRaises(TypeError):
+            sppasUnicode(True)
+
+    # -----------------------------------------------------------------------
+
+    def test_clear_whitespace(self):
+        s = "  ée  àa  çc  "
+        self.assertEqual(sppasUnicode(s).clear_whitespace(), u("ée_àa_çc"))
+
+    # -----------------------------------------------------------------------
+
+    def test_to_ascii(self):
+        s = "  ée  àa  çc  "
+        self.assertEqual(sppasUnicode(s).to_ascii(), u("  _e  _a  _c  "))
+
+    # -----------------------------------------------------------------------
+
+    def test_lower(self):
+        for key, value in LowerDict.items():
+            self.assertEqual(value, sppasUnicode(key).to_lower())
+
+    # -----------------------------------------------------------------------
+
+    def test_strip(self):
+        self.assertEqual(sppasUnicode('  \n Ỹ  \t\r   ỏ  ').to_strip(), u('Ỹ ỏ'))
+        self.assertEqual(sppasUnicode('\t \t').to_strip(), u(''))
