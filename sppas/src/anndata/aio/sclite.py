@@ -48,10 +48,11 @@ import re
 
 from sppas import encoding
 
-from ..anndataexc import AioMultiTiersError
+from sppas.src.utils.makeunicode import sppasUnicode
 from ..anndataexc import AioLocationTypeError
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioLineFormatError
+from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
@@ -60,6 +61,8 @@ from ..annlabel.tag import sppasTag
 from ..media import sppasMedia
 
 from .basetrs import sppasBaseIO
+
+# ---------------------------------------------------------------------------
 
 
 class sppasBaseSclite(sppasBaseIO):
@@ -70,6 +73,8 @@ class sppasBaseSclite(sppasBaseIO):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      SPPAS base sclite reader and writer.
+
+    * * * * * * Current version does not support alternations. * * * * * *
 
     """
     def __init__(self, name=None):
@@ -82,11 +87,11 @@ class sppasBaseSclite(sppasBaseIO):
             name = self.__class__.__name__
         sppasBaseIO.__init__(self, name)
 
-        self._accept_multi_tiers = False
+        self._accept_multi_tiers = True
         self._accept_no_tiers = True
         self._accept_metadata = False
         self._accept_ctrl_vocab = False
-        self._accept_media = False
+        self._accept_media = True
         self._accept_hierarchy = False
         self._accept_point = False
         self._accept_interval = True
@@ -120,7 +125,8 @@ class sppasBaseSclite(sppasBaseIO):
         :return: boolean
 
         """
-        line = line.strip()
+        sp = sppasUnicode(line)
+        line = sp.to_strip()
         return line.startswith(";;")
 
 # ----------------------------------------------------------------------------
@@ -160,6 +166,27 @@ class sppasCTM(sppasBaseSclite):
     Lines beginning with ';;' are considered comments and are ignored.
     Blank lines are also ignored.
 
+    * * *  NOT IMPLEMENTED * * *
+    Alternations are also accepted in CTM like for example:
+        ;;
+        7654 A * * <ALT_BEGIN>
+        7654 A 12.00 0.34 UM
+        7654 A * * <ALT>
+        7654 A 12.00 0.34 UH
+        7654 A * * <ALT_END>
+        ;;
+        5555 A * * <ALT_BEGIN>
+        5555 A 222.77 0.32 BYEBYE
+        5555 A * * <ALT>
+        5555 A 222.78 0.12 BYE
+        5555 A 222.93 0.16 BYE
+        5555 A * * <ALT_END>
+        ;;
+        5555 A * * <ALT_BEGIN>
+        5555 A 186.32 0.01 D-
+        5555 A * * <ALT>
+        5555 A * * <ALT_END>
+
     """
     @staticmethod
     def detect(filename):
@@ -167,16 +194,18 @@ class sppasCTM(sppasBaseSclite):
             with codecs.open(filename, 'r', encoding) as fp:
                 lines = fp.readlines()
                 for line in lines:
+                    line = line.strip()
                     if sppasBaseSclite.is_comment(line) is True:
                         continue
+                    if len(line) == 0:
+                        continue
                     tab = line.split()
-                    if len(tab) < 5 or len(tab) > 6:  # expected is 5 or 6
+                    if len(tab) < 4 or len(tab) > 6:  # expected is 4 to 6
                         return False
-            return True
         except Exception:
-            pass
+            return False
 
-        return False
+        return True
 
     # -----------------------------------------------------------------
 
@@ -192,6 +221,80 @@ class sppasCTM(sppasBaseSclite):
 
     # -----------------------------------------------------------------
 
+    @staticmethod
+    def check_line(line, line_number=0):
+        """ Check whether a line is correct or not.
+
+        :param line: (str)
+        :param line_number: (int)
+        :return: (bool)
+
+        """
+        # Ignore comments
+        if sppasBaseSclite.is_comment(line):
+            return False
+
+        # Ignore blank lines
+        if len(line) == 0:
+            return False
+
+        # a column-delimited line
+        tab_line = line.split()
+        if len(tab_line) < 4 or len(tab_line) > 6:
+            raise AioLineFormatError(line_number, line)
+
+        # an alternation
+        if tab_line[2] != "*":
+            float(tab_line[2])  # begin
+            float(tab_line[3])  # duration
+
+        return True
+
+    # -----------------------------------------------------------------
+
+    def get_tier(self, line):
+        """ Return the tier related to the given line.
+        Find the tier or create it
+
+        :param line: (str)
+        :return: (bool)
+
+        """
+        tab_line = line.split()
+        tier_name = tab_line[0] + "-" + tab_line[1]
+        tier = self.find(tier_name)
+        if tier is None:
+            # Create the media linked to the tier
+            media = self._create_media(tab_line[0].strip())
+
+            # Create the tier and set metadata
+            tier = self.create_tier(tier_name, media=media)
+            tier.set_meta("media_channel", tab_line[1])
+
+        return tier
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def get_score(line):
+        """ Return the score of the label of a given line.
+
+        :param line: (str)
+        :return: (float) or None if no score is given
+
+        """
+        tab_line = line.split()
+        score = None
+        if len(tab_line) > 5:
+            try:
+                score = float(tab_line[-1])
+            except ValueError:
+                pass
+
+        return score
+
+    # -----------------------------------------------------------------
+
     def read(self, filename):
         """ Read a ctm file and fill the Transcription.
         It creates a tier for each channel observed in the file.
@@ -203,44 +306,66 @@ class sppasCTM(sppasBaseSclite):
             lines = fp.readlines()
             fp.close()
 
+        self._serialize_lines(lines)
+
+    # -----------------------------------------------------------------
+
+    def _serialize_lines(self, lines):
+        """ Fill the transcription from the lines of the CTM file. """
+
+        in_alt = False
+        alternates = list()
+
         # Extract rows, create tiers and metadata.
         for i, line in enumerate(lines):
 
-            # Ignore comments
-            if sppasBaseSclite.is_comment(line):
+            # format and check the line
+            line = sppasUnicode(line).to_strip()
+            if sppasCTM.check_line(line, i+1) is False:
                 continue
 
-            # a column-delimited line
-            line = line.split()
-            if len(line) < 6:
-                raise AioLineFormatError(i + 1, line)
-
             # check for the tier (find it or create it)
-            tier_name = "channel-" + line[1]
-            tier = self.find(tier_name)
-            if tier is None:
-                # Create the media linked to the tier
-                media = self._create_media(line[0].strip())
+            tier = self.get_tier(line)
 
-                # Create the tier and set metadata
-                tier = self.create_tier(tier_name, media=media)
-                tier.set_meta("media_channel", line[1])
+            tab_line = line.strip().split()
+            wavname, channel, begin, duration, word = tab_line[:5]
 
-            # the core of the word
-            score = None
-            if len(line) == 6:
-                try:
-                    score = float(line[5])
-                except ValueError:
-                    pass
+            # the score of the word
+            score = sppasCTM.get_score(line)
 
-            # Add the new annotation
-            label = sppasLabel(sppasTag(line[4]), score)
-            begin = float(line[2])
-            end = begin + float(line[3])
-            location = sppasLocation(sppasInterval(sppasBaseSclite.make_point(begin),
-                                                   sppasBaseSclite.make_point(end)))
-            tier.create_annotation(location, label)
+            # check for an alternative annotation
+            if begin == "*":
+                if word == "<ALT_BEGIN>":
+                    alternates = list()
+                    in_alt = True
+                    sppasCTM._add_alt_annotations(tier, alternates)
+                elif word == "<ALT>":
+                    # we add the alternations into the tier
+                    for ann in alternates:
+                        tier.add(ann)
+                    alternates = list()
+                else:
+                    alternates = list()
+                    in_alt = False
+                    # we SHOULD add the alternations into the tier
+                    # sppasCTM._add_alt_annotations(tier, alternates)
+                continue
+
+            ann = sppasCTM._create_annotation(begin, duration, word, score)
+            if in_alt is False:
+                tier.add(ann)
+            else:
+                alternates.append(ann)
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def _add_alt_annotations(tier, ann):
+        """ Add the annotations into the tier. """
+        try:
+            tier.add(ann)
+        except Exception:
+            pass
 
     # -----------------------------------------------------------------
 
@@ -257,6 +382,20 @@ class sppasCTM(sppasBaseSclite):
 
         return media
 
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def _create_annotation(begin, duration, word, score):
+        """ Return the annotation corresponding to data of a line. """
+
+        word = sppasUnicode(word).clear_whitespace()
+        label = sppasLabel(sppasTag(word), score)
+        begin = float(begin)
+        end = begin + float(duration)
+        location = sppasLocation(sppasInterval(sppasBaseSclite.make_point(begin),
+                                               sppasBaseSclite.make_point(end)))
+        return sppasAnnotation(location, label)
+
     # ------------------------------------------------------------------------
 
     def write(self, filename):
@@ -265,12 +404,15 @@ class sppasCTM(sppasBaseSclite):
         :param filename: (str)
 
         """
+        raise NotImplementedError
         with codecs.open(filename, 'w', encoding, buffering=8096) as fp:
 
-            if self.is_empty() is False:
-                for ann in self[0]:
+            for tier in self:
+                waveform = "a"
+                channel = "A"
+                for ann in tier:
                     if ann.get_best_tag().is_empty() is False:
-                        line = "" #  ""{:s} {:s} ".format(waveform, channel)
+                        line = "{:s} {:s} ".format(waveform, channel)
                         line += sppasCTM._serialize_annotation(ann)
                         line += "\n"
                         fp.write(line)
