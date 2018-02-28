@@ -52,9 +52,9 @@ from .praat import sppasTextGrid  #, PitchTier, IntensityTier
 # from .signaix import HzPitch
 from .transcriber import sppasTRS
 # from .phonedit import Phonedit
-# from .htk import HTKLabel, MasterLabel
+from .htk import sppasLab
 from .subtitle import sppasSubRip, sppasSubViewer
-# from .sclite import TimeMarkedConversation, SegmentTimeMark
+from .sclite import sppasCTM
 # from .elan import Elan
 # from .anvil import Anvil
 # from .annotationpro import Antx
@@ -72,7 +72,7 @@ class sppasRW(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Main parser of annotated data.
 
     """
@@ -84,19 +84,19 @@ class sppasRW(object):
     # TRANSCRIPTION_TYPES["eaf"] = Elan,
     TRANSCRIPTION_TYPES["trs"] = sppasTRS
     # TRANSCRIPTION_TYPES["mrk"] = Phonedit,
-    # TRANSCRIPTION_TYPES["lab"] = HTKLabel
+    TRANSCRIPTION_TYPES["lab"] = sppasLab
     # TRANSCRIPTION_TYPES["mlf"] = MasterLabel
     TRANSCRIPTION_TYPES["srt"] = sppasSubRip
     TRANSCRIPTION_TYPES["sub"] = sppasSubViewer
-    # TRANSCRIPTION_TYPES["ctm"] = TimeMarkedConversation,
-    # TRANSCRIPTION_TYPES["stm"] = SegmentTimeMark,
-    # TRANSCRIPTION_TYPES["anvil"] = Anvil,
-    # TRANSCRIPTION_TYPES["antx"] = Antx,
+    TRANSCRIPTION_TYPES["ctm"] = sppasCTM
+    # TRANSCRIPTION_TYPES["stm"] = SegmentTimeMark
+    # TRANSCRIPTION_TYPES["anvil"] = Anvil
+    # TRANSCRIPTION_TYPES["antx"] = Antx
     TRANSCRIPTION_TYPES["aup"] = sppasAudacity
-    # TRANSCRIPTION_TYPES["csv"] = CSV,
-    # TRANSCRIPTION_TYPES["intensitytier"] = IntensityTier,
-    # TRANSCRIPTION_TYPES["pitchtier"] = PitchTier,
-    # TRANSCRIPTION_TYPES["hz"] = HzPitch,
+    # TRANSCRIPTION_TYPES["csv"] = CSV
+    # TRANSCRIPTION_TYPES["intensitytier"] = IntensityTier
+    # TRANSCRIPTION_TYPES["pitchtier"] = PitchTier
+    # TRANSCRIPTION_TYPES["hz"] = HzPitch
     TRANSCRIPTION_TYPES["tdf"] = sppasTDF
     TRANSCRIPTION_TYPES["txt"] = sppasRawText
 

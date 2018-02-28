@@ -192,7 +192,7 @@ class TestRawText(unittest.TestCase):
 
     # -----------------------------------------------------------------
 
-    def test_read3(self):
+    def test_read_csv(self):
         txt = sppasCSV()
         txt.read(os.path.join(DATA, "sample-irish.csv"))
         self.assertEqual(len(txt), 2)

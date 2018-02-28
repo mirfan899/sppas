@@ -42,11 +42,18 @@
     File formats description:
     http://www1.icsi.berkeley.edu/Speech/docs/sctk-1.2/infmts.htm#ctm_fmt_name_0
 
+    Remark:
+    =======
+
+    Because comments are possible, this class uses this function as an
+    opportunity to store metadata.
+
 """
 import codecs
-import re
+import os.path
+import datetime
 
-from sppas import encoding
+import sppas
 
 from sppas.src.utils.makeunicode import sppasUnicode
 from ..anndataexc import AioLocationTypeError
@@ -72,9 +79,9 @@ class sppasBaseSclite(sppasBaseIO):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS base sclite reader and writer.
+    :summary:      SPPAS base Sclite reader and writer.
 
-    * * * * * * Current version does not support alternations. * * * * * *
+    * * * * * Current version does not fully support alternations. * * * * *
 
     """
     def __init__(self, name=None):
@@ -129,6 +136,25 @@ class sppasBaseSclite(sppasBaseIO):
         line = sp.to_strip()
         return line.startswith(";;")
 
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def serialize_header():
+        """ Create a comment with the metadata to be written. """
+
+        comment = ";; \n"
+        comment += ";; software_name={:s}\n".format(sppas.__name__)
+        comment += ";; software_version={:s}\n".format(sppas.__version__)
+        comment += ";; software_url={:s}\n".format(sppas.__url__)
+        comment += ";; software_contact={:s}\n".format(sppas.__contact__)
+        comment += ";; software_copyright={:s}\n".format(sppas.__copyright__)
+        comment += ";; \n"
+        now = datetime.datetime.now()
+        comment += ";; file_write_date={:d}-{:d}-{:d}\n" \
+                   "".format(now.year, now.month, now.day)
+
+        return comment
+
 # ----------------------------------------------------------------------------
 
 
@@ -138,12 +164,12 @@ class sppasCTM(sppasBaseSclite):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      SPPAS ctm reader and writer.
 
-    This is the reader/writer the time marked conversation input files to be
-    used for scoring the output of speech recognizers via the NIST sclite()
-    program.
+    This is the reader/writer of the time marked conversation input files to
+    be used for scoring the output of speech recognizers via the NIST sclite()
+    program. This file format is as follow (in BNF):
 
     CTM :== <F> <C> <BT> <DUR> word [ <CONF> ]
 
@@ -163,11 +189,15 @@ class sppasCTM(sppasBaseSclite):
     The file must be sorted by the first three columns: the first and the
     second in ASCII order, and the third by a numeric order.
 
-    Lines beginning with ';;' are considered comments and are ignored.
+    Lines beginning with ';;' are considered comments and ignored by sclite.
     Blank lines are also ignored.
 
     * * *  NOT IMPLEMENTED * * *
-    Alternations are also accepted in CTM like for example:
+    ============================
+
+    Alternations are also accepted in some extended CTM.
+    Examples:
+
         ;;
         7654 A * * <ALT_BEGIN>
         7654 A 12.00 0.34 UM
@@ -190,20 +220,69 @@ class sppasCTM(sppasBaseSclite):
     """
     @staticmethod
     def detect(filename):
+        """ Check whether a file is of CTM format or not.
+
+        :param filename: (str) Name of the file to check.
+        :returns: (bool)
+
+        """
+        # Open and load the content.
         try:
-            with codecs.open(filename, 'r', encoding) as fp:
+            with codecs.open(filename, 'r', sppas.encoding) as fp:
                 lines = fp.readlines()
-                for line in lines:
-                    line = line.strip()
-                    if sppasBaseSclite.is_comment(line) is True:
-                        continue
-                    if len(line) == 0:
-                        continue
-                    tab = line.split()
-                    if len(tab) < 4 or len(tab) > 6:  # expected is 4 to 6
-                        return False
-        except Exception:
+                fp.close()
+        except IOError:
+            # can't open the file
             return False
+        except UnicodeDecodeError:
+            # can't open with SPPAS default encoding
+            return False
+
+        # Check each line
+        for line in lines:
+            line = line.strip()
+            try:
+                # a comment, a blank line, an annotation
+                sppasCTM.check_line(line)
+            except AioLineFormatError:
+                # not the right number of columns
+                return False
+            except ValueError:
+                # can't convert begin/duration into float
+                return False
+
+        return True
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def check_line(line, line_number=0):
+        """ Check whether a line is an annotation or not.
+        Raises AioLineFormatError() or ValueError() in case of a
+        malformed line.
+
+        :param line: (str)
+        :param line_number: (int)
+        :return: (bool)
+
+        """
+        # Comment
+        if sppasBaseSclite.is_comment(line):
+            return False
+
+        # Blank line
+        if len(line) == 0:
+            return False
+
+        # A column-delimited line
+        tab_line = line.split()
+        if len(tab_line) < 4 or len(tab_line) > 6:
+            raise AioLineFormatError(line_number, line)
+
+        # An alternation
+        if tab_line[2] != "*":
+            float(tab_line[2])  # begin
+            float(tab_line[3])  # duration
 
         return True
 
@@ -219,50 +298,22 @@ class sppasCTM(sppasBaseSclite):
             name = self.__class__.__name__
         sppasBaseSclite.__init__(self, name)
 
-    # -----------------------------------------------------------------
-
-    @staticmethod
-    def check_line(line, line_number=0):
-        """ Check whether a line is correct or not.
-
-        :param line: (str)
-        :param line_number: (int)
-        :return: (bool)
-
-        """
-        # Ignore comments
-        if sppasBaseSclite.is_comment(line):
-            return False
-
-        # Ignore blank lines
-        if len(line) == 0:
-            return False
-
-        # a column-delimited line
-        tab_line = line.split()
-        if len(tab_line) < 4 or len(tab_line) > 6:
-            raise AioLineFormatError(line_number, line)
-
-        # an alternation
-        if tab_line[2] != "*":
-            float(tab_line[2])  # begin
-            float(tab_line[3])  # duration
-
-        return True
-
+    # ------------------------------------------------------------------------
+    # Reader
     # -----------------------------------------------------------------
 
     def get_tier(self, line):
         """ Return the tier related to the given line.
-        Find the tier or create it
+        Find the tier or create it.
 
         :param line: (str)
-        :return: (bool)
+        :return: (sppasTier)
 
         """
         tab_line = line.split()
         tier_name = tab_line[0] + "-" + tab_line[1]
         tier = self.find(tier_name)
+
         if tier is None:
             # Create the media linked to the tier
             media = self._create_media(tab_line[0].strip())
@@ -297,73 +348,101 @@ class sppasCTM(sppasBaseSclite):
 
     def read(self, filename):
         """ Read a ctm file and fill the Transcription.
-        It creates a tier for each channel observed in the file.
+        It creates a tier for each media-channel observed in the file.
 
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'r', encoding) as fp:
+        with codecs.open(filename, 'r', sppas.encoding) as fp:
             lines = fp.readlines()
             fp.close()
 
-        self._serialize_lines(lines)
+        self._parse_lines(lines)
 
     # -----------------------------------------------------------------
 
-    def _serialize_lines(self, lines):
+    def _parse_lines(self, lines):
         """ Fill the transcription from the lines of the CTM file. """
 
-        in_alt = False
-        alternates = list()
+        # the number of the current alternation
+        in_alt = 0
+        # the annotations of the alternations
+        alternates = dict()
+        # the current tier to fill
+        tier = None
 
         # Extract rows, create tiers and metadata.
         for i, line in enumerate(lines):
-
-            # format and check the line
             line = sppasUnicode(line).to_strip()
+
+            # a comment can contain metadata
+            if sppasBaseSclite.is_comment(line):
+                if tier is None:
+                    self._parse_comment(line, self)
+                else:
+                    self._parse_comment(line, tier)
+            # ignore comments and blank lines
             if sppasCTM.check_line(line, i+1) is False:
                 continue
 
             # check for the tier (find it or create it)
             tier = self.get_tier(line)
 
+            # extract information of this annotation
             tab_line = line.strip().split()
             wavname, channel, begin, duration, word = tab_line[:5]
-
-            # the score of the word
             score = sppasCTM.get_score(line)
 
             # check for an alternative annotation
             if begin == "*":
                 if word == "<ALT_BEGIN>":
-                    alternates = list()
-                    in_alt = True
-                    sppasCTM._add_alt_annotations(tier, alternates)
+                    alternates = dict()
+                    in_alt = 1
+                    alternates[in_alt] = list()
                 elif word == "<ALT>":
-                    # we add the alternations into the tier
-                    for ann in alternates:
-                        tier.add(ann)
-                    alternates = list()
+                    in_alt += 1
+                    alternates[in_alt] = list()
                 else:
-                    alternates = list()
-                    in_alt = False
-                    # we SHOULD add the alternations into the tier
-                    # sppasCTM._add_alt_annotations(tier, alternates)
-                continue
-
-            ann = sppasCTM._create_annotation(begin, duration, word, score)
-            if in_alt is False:
-                tier.add(ann)
+                    # todo: we SHOULD add ALL the alternations into the tier
+                    # but we add only the first one...
+                    sppasCTM._add_alt_annotations(tier, alternates[1])
+                    # re-init
+                    alternates = dict()
+                    in_alt = 0
             else:
-                alternates.append(ann)
+                ann = sppasCTM._create_annotation(begin, duration, word, score)
+                if in_alt == 0:
+                    tier.add(ann)
+                else:
+                    alternates[in_alt].append(ann)
 
     # -----------------------------------------------------------------
 
     @staticmethod
-    def _add_alt_annotations(tier, ann):
-        """ Add the annotations into the tier. """
+    def _parse_comment(comment, meta_object):
+        """ Parse a comment and eventually fill metadata. """
+
+        comment = comment.replace(";;", "")
+        comment = comment.strip()
+        if '=' in comment:
+            tab_comment = comment.split('=')
+            if len(tab_comment) == 2:
+                meta_key = tab_comment[0].strip()
+                meta_val = tab_comment[1].strip()
+                meta_object.set_meta(meta_key, meta_val)
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def _add_alt_annotations(tier, annotations):
+        """ Add the annotations into the tier.
+
+        :TODO: deal with annotation alternations.
+
+        """
         try:
-            tier.add(ann)
+            for ann in annotations:
+                tier.add(ann)
         except Exception:
             pass
 
@@ -397,6 +476,8 @@ class sppasCTM(sppasBaseSclite):
         return sppasAnnotation(location, label)
 
     # ------------------------------------------------------------------------
+    # Writer
+    # ------------------------------------------------------------------------
 
     def write(self, filename):
         """ Write a transcription into a file.
@@ -404,41 +485,121 @@ class sppasCTM(sppasBaseSclite):
         :param filename: (str)
 
         """
-        raise NotImplementedError
-        with codecs.open(filename, 'w', encoding, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
 
-            for tier in self:
-                waveform = "a"
+            # write an header with the metadata
+            fp.write(self._serialize_header(filename))
+
+            for i, tier in enumerate(self):
+
+                # fix the name of the waveform (for 1st column)
+                waveform = "waveform-"+str(i)
+                if tier.get_media() is not None:
+                    waveform = os.path.basename(tier.get_media().get_filename())
+
+                # fix the name of the channel (for 2nd column)
                 channel = "A"
+                if tier.is_meta_key('media_channel'):
+                    channel = tier.get_meta('media_channel')
+
+                # serialize annotations
                 for ann in tier:
-                    if ann.get_best_tag().is_empty() is False:
-                        line = "{:s} {:s} ".format(waveform, channel)
-                        line += sppasCTM._serialize_annotation(ann)
-                        line += "\n"
-                        fp.write(line)
+                    if ann.get_location().is_point():
+                        raise AioLocationTypeError('Sclite CTM', 'points')
+                    fp.write(sppasCTM._serialize_annotation(ann, waveform, channel))
+
+                # write the metadata of this tier
+                fp.write(sppasCTM._serialize_metadata(tier))
+                fp.write('\n')
 
             fp.close()
 
     # -----------------------------------------------------------------
 
+    def _serialize_header(self, filename):
+        """ Serialize the header of a CTM file with metadata. """
+
+        header = sppasBaseSclite.serialize_header()
+        header += ";; file_writer={:s}\n".format(self.__class__.__name__)
+        header += ";; file_name={:s}\n".format(os.path.basename(filename))
+        header += ";; file_path={:s}\n".format(os.path.dirname(filename))
+        header += ";; file_ext={:s}\n".format(os.path.splitext(filename)[1])
+        header += ";;\n"
+        header += sppasCTM._serialize_metadata(self)
+        header += ";;\n"
+
+        return header
+
+    # -----------------------------------------------------------------
+
     @staticmethod
-    def _serialize_annotation(ann):
-        """ Convert an annotation into a line for CTM files.
+    def _serialize_metadata(meta_object):
+        """ Serialize the metadata of an object in a multi-lines comment. """
+
+        meta_keys = ["file_write_date", "file_writer", "file_name", "file_path", "file_ext"]
+        comment = ""
+        for meta in meta_object.get_meta_keys():
+            if "software" not in meta and meta not in meta_keys:
+                comment += ';; {:s}={:s}\n'.format(meta, meta_object.get_meta(meta))
+
+        return comment
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def _serialize_annotation(ann, waveform, channel):
+        """ Convert an annotation into lines for CTM files.
+
+        Empty labels are replaced by "@".
 
         :param ann: (sppasAnnotation)
         :returns: (str)
 
         """
-        # no label defined, or empty label
-        if ann.get_best_tag().is_empty():
-            return ""
-        if ann.get_location().is_point():
-            raise AioLocationTypeError('Sclite CTM', 'points')
+        # fix location information
+        begin = ann.get_location().get_best().get_begin().get_midpoint()
+        duration = ann.get_location().get_best().get_end().get_midpoint() - begin
 
-        tag_content = ann.get_best_tag().get_content()
-        begin = ann.get_lowest_localization().get_midpoint()
-        duration = ann.get_highest_localization().get_midpoint() - begin
-        return "{:f} {:f} {:s}\n".format(begin, duration, tag_content)
+        # no label
+        if ann.get_label() is None:
+            content = sppasCTM._serialize_tag(waveform, channel, begin, duration, sppasTag(""))
+
+        # only one tag in the label: no alternation
+        elif len(ann.get_label()) == 1:
+            tag = ann.get_best_tag()
+            score = ann.get_label().get_score(tag)
+            content = sppasCTM._serialize_tag(waveform, channel, begin, duration, tag, score)
+
+        # label with alternation tags
+        else:
+            content = "{:s} {:s} * * <ALT_BEGIN>\n".format(waveform, channel)
+            for tag, score in ann.get_label():
+                content += sppasCTM._serialize_tag(waveform, channel, begin, duration, tag, score)
+                content += "{:s} {:s} * * <ALT>\n".format(waveform, channel)
+            content = content[:-2]
+            content += "_END>\n"
+
+        return content
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def _serialize_tag(waveform, channel, begin, duration, tag, score=None):
+        """ Convert a tag with its score into a line for CTM files. """
+
+        if tag.is_empty():
+            tag_content = "@"
+        else:
+            tag_content = tag.get_content()
+
+        # serialize the content
+        content = "{:s} {:s} {:s} {:s} {:s}" \
+                  "".format(waveform, channel, str(begin), str(duration), tag_content)
+        if score is not None:
+            content += " {:s}" \
+                       "".format(str(score))
+
+        return content+"\n"
 
 # ----------------------------------------------------------------------------
 
@@ -490,7 +651,7 @@ class sppasSTM(sppasBaseSclite):
     @staticmethod
     def detect(filename):
         try:
-            with codecs.open(filename, 'r', encoding) as fp:
+            with codecs.open(filename, 'r', sppas.encoding) as fp:
                 lines = fp.readlines()
                 for line in lines:
                     if sppasBaseSclite.is_comment(line) is True:
