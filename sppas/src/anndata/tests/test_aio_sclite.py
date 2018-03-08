@@ -45,10 +45,11 @@ import os.path
 import shutil
 
 from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.utils.makeunicode import u
 
-from ..anndataexc import AioMultiTiersError
 from ..aio.sclite import sppasBaseSclite
 from ..aio.sclite import sppasCTM
+from ..aio.sclite import sppasSTM
 from ..anndataexc import AioLineFormatError
 
 from ..annlocation.interval import sppasInterval
@@ -110,6 +111,99 @@ class TestBaseSclite(unittest.TestCase):
         self.assertFalse(sppasBaseSclite.is_comment("; not a comment"))
         self.assertFalse(sppasBaseSclite.is_comment("2"))
 
+    # -----------------------------------------------------------------
+
+    def test_create_media(self):
+        """ Return the media of the given name (create it if necessary)."""
+
+        trs = sppasBaseSclite()
+        self.assertEqual(len(trs.get_media_list()), 0)
+
+        media = sppasBaseSclite.create_media("filename.wav", trs)
+        self.assertEqual(len(trs.get_media_list()), 1)
+        self.assertEqual(trs.get_media_list()[0], media)
+        self.assertEqual(media.get_filename(), "filename.wav")
+
+        media2 = sppasBaseSclite.create_media("filename.wav", trs)
+        self.assertEqual(len(trs.get_media_list()), 1)
+        self.assertEqual(media2, media)
+
+    # -----------------------------------------------------------------
+
+    def test_load(self):
+        """ Load a file into lines. """
+
+        lines = sppasBaseSclite.load(os.path.join(DATA, "sample.ctm"))
+        self.assertEqual(len(lines), 45)
+
+        with self.assertRaises(UnicodeDecodeError):
+            sppasBaseSclite.load(os.path.join(DATA, "sample-utf16.TextGrid"))
+
+        with self.assertRaises(IOError):
+            sppasBaseSclite.load(os.path.join(DATA, "not-exists"))
+
+    # -----------------------------------------------------------------
+
+    def test_parse_comment(self):
+        """ Parse a comment and eventually fill metadata. """
+
+        ctm = sppasCTM()
+        line = ";; this is a simple comment."
+        sppasBaseSclite._parse_comment(line, ctm)
+        self.assertEqual(len(ctm.get_meta_keys()), 0)
+
+        line = ";; meta_key=meta_value"
+        sppasBaseSclite._parse_comment(line, ctm)
+        self.assertEqual(len(ctm.get_meta_keys()), 1)
+        self.assertEqual(ctm.get_meta("meta_key"), "meta_value")
+
+        line = ";; \t meta key whitespace   =   meta value\t whitespace   "
+        sppasBaseSclite._parse_comment(line, ctm)
+        self.assertEqual(len(ctm.get_meta_keys()), 2)
+        self.assertEqual(ctm.get_meta("meta key whitespace"), "meta value whitespace")
+
+    # -----------------------------------------------------------------
+
+    def test_serialize_header(self):
+        """ Create a comment with the metadata to be written. """
+
+        ctm = sppasCTM()
+        lines = sppasBaseSclite.serialize_header("sample.ctm", ctm)
+        self.assertEqual(len(lines.split('\n')), 15)
+
+        ctm = sppasCTM()
+        ctm.set_meta("meta_key", "meta_value")
+        lines = sppasBaseSclite.serialize_header("sample.ctm", ctm)
+        self.assertEqual(len(lines.split('\n')), 16)
+
+    # -----------------------------------------------------------------
+
+    def test_serialize_header_private(self):
+        """ Create a comment with the metadata to be written. """
+
+        header = sppasBaseSclite._serialize_header().split("\n")
+        self.assertEqual(len(header), 9)
+        for i in range(8):
+            self.assertTrue(header[i].startswith(";;"))
+
+    # -----------------------------------------------------------------
+
+    def test_serialize_metadata_private(self):
+        """ Serialize the metadata of an object in a multi-lines comment. """
+
+        ctm = sppasCTM()
+        line = sppasBaseSclite._serialize_metadata(ctm)
+        self.assertEqual("", line)
+
+        ctm = sppasCTM()
+        ctm.set_meta("meta_key", "meta_value")
+        line = sppasBaseSclite._serialize_metadata(ctm)
+        self.assertEqual(";; meta_key=meta_value\n", line)
+
+        stm = sppasSTM()
+        stm.set_meta("meta key whitespace", "meta value\t whitespace  ")
+        line = sppasBaseSclite._serialize_metadata(stm)
+        self.assertEqual(";; meta key whitespace=meta value whitespace\n", line)
 
 # ---------------------------------------------------------------------------
 
@@ -156,6 +250,12 @@ class TestScliteCTM(unittest.TestCase):
             sppasCTM.check_line("not enough columns")
         with self.assertRaises(AioLineFormatError):
             sppasCTM.check_line("too many columns that should be less than 7")
+        with self.assertRaises(ValueError):
+            sppasCTM.check_line("waveform channel begin 2.0 word")
+        with self.assertRaises(ValueError):
+            sppasCTM.check_line("waveform channel 1.9 duration word")
+
+        self.assertTrue(sppasCTM.check_line("waveform channel 1.3 2.0 word"))
 
     # -----------------------------------------------------------------
     # read
@@ -202,26 +302,6 @@ class TestScliteCTM(unittest.TestCase):
         self.assertEqual(sppasCTM.get_score("D_NONE 1 108.74 0.31 SO 3"), 3.)
         # normal score with an error in writing the word!
         self.assertEqual(sppasCTM.get_score("D_NONE 1 108.74 0.31 SO SO SO 3"), 3.)
-
-    # -----------------------------------------------------------------
-
-    def test_parse_comment(self):
-        """ Parse a comment and eventually fill metadata. """
-
-        ctm = sppasCTM()
-        line = ";; this is a simple comment."
-        sppasCTM._parse_comment(line, ctm)
-        self.assertEqual(len(ctm.get_meta_keys()), 0)
-
-        line = ";; meta_key=meta_value"
-        sppasCTM._parse_comment(line, ctm)
-        self.assertEqual(len(ctm.get_meta_keys()), 1)
-        self.assertEqual(ctm.get_meta("meta_key"), "meta_value")
-
-        line = ";; \t meta key whitespace   =   meta value\t whitespace   "
-        sppasCTM._parse_comment(line, ctm)
-        self.assertEqual(len(ctm.get_meta_keys()), 2)
-        self.assertEqual(ctm.get_meta("meta key whitespace"), "meta value whitespace")
 
     # -----------------------------------------------------------------
 
@@ -402,39 +482,6 @@ class TestScliteCTM(unittest.TestCase):
 
     # -----------------------------------------------------------------
 
-    def test_serialize_metadata(self):
-        """ Serialize the metadata of an object in a multi-lines comment. """
-
-        ctm = sppasCTM()
-        line = sppasCTM._serialize_metadata(ctm)
-        self.assertEqual("", line)
-
-        ctm = sppasCTM()
-        ctm.set_meta("meta_key", "meta_value")
-        line = sppasCTM._serialize_metadata(ctm)
-        self.assertEqual(";; meta_key=meta_value\n", line)
-
-        ctm = sppasCTM()
-        ctm.set_meta("meta key whitespace", "meta value\t whitespace  ")
-        line = sppasCTM._serialize_metadata(ctm)
-        self.assertEqual(";; meta key whitespace=meta value whitespace\n", line)
-
-    # -----------------------------------------------------------------
-
-    def test_serialize_header(self):
-        """ Serialize the header of a CTM file with metadata. """
-
-        ctm = sppasCTM()
-        lines = ctm._serialize_header("sample.ctm")
-        self.assertEqual(len(lines.split('\n')), 15)
-
-        ctm = sppasCTM()
-        ctm.set_meta("meta_key", "meta_value")
-        lines = ctm._serialize_header("sample.ctm")
-        self.assertEqual(len(lines.split('\n')), 16)
-
-    # -----------------------------------------------------------------
-
     def test_read_write(self):
         """ Write a transcription into a file. """
 
@@ -455,3 +502,266 @@ class TestScliteCTM(unittest.TestCase):
         self.assertEqual(len(ctm2[1]), 3)
         self.assertEqual(len(ctm2[2]), 6)
         self.assertEqual(len(ctm2[3]), 6)
+
+# ---------------------------------------------------------------------------
+
+
+class TestScliteSTM(unittest.TestCase):
+    """
+    STM file format, from Sclite tool.
+
+    """
+    def setUp(self):
+        if os.path.exists(TEMP) is False:
+            os.mkdir(TEMP)
+
+    def tearDown(self):
+        shutil.rmtree(TEMP)
+
+    # -----------------------------------------------------------------
+
+    def test_detect(self):
+        """ Test the file format detection method. """
+
+        for filename in os.listdir(DATA):
+            f = os.path.join(DATA, filename)
+            if filename.endswith('.stm'):
+                self.assertTrue(sppasSTM.detect(f))
+            else:
+                self.assertFalse(sppasSTM.detect(f))
+
+    # -----------------------------------------------------------------
+
+    def test_check_line(self):
+        """ Check whether a line is correct or not. """
+
+        # Ignore comments
+        self.assertFalse(sppasSTM.check_line(";;"))
+        self.assertFalse(sppasSTM.check_line(";; comment"))
+        self.assertFalse(sppasSTM.check_line("   \t ;; comment"))
+
+        # Blank line
+        self.assertFalse(sppasSTM.check_line(""))
+
+        # malformed line: not enough columns
+        with self.assertRaises(AioLineFormatError):
+            sppasSTM.check_line("not enough columns if five")
+
+        # malformed line: column 4 and 5 are time markers
+        with self.assertRaises(ValueError):
+            sppasSTM.check_line("waveform channel speaker begin 3.0 label")
+        with self.assertRaises(ValueError):
+            sppasSTM.check_line("waveform channel speaker 3.0 end label")
+
+        self.assertTrue(sppasSTM.check_line("waveform channel speaker 3.0 4.0 label"))
+
+    # -----------------------------------------------------------------
+    # read
+    # -----------------------------------------------------------------
+
+    def test_get_tier(self):
+        """ Return the tier related to the given line. """
+
+        stm = sppasSTM()
+
+        # a tier will be created
+        line = "D_NONE 1 A 108.74 0.31 SO"
+        tier = stm.get_tier(line)
+        self.assertIsNotNone(tier)
+        self.assertEqual(tier.get_name(), "D_NONE-1-A")
+        self.assertEqual(len(stm), 1)
+
+        # the same tier is returned
+        line = "D_NONE 1 A 109.05 0.2 FULL"
+        tier = stm.get_tier(line)
+        self.assertIsNotNone(tier)
+        self.assertEqual(tier.get_name(), "D_NONE-1-A")
+        self.assertEqual(len(stm), 1)
+        self.assertEqual(tier.get_meta("media_channel"), "1")
+        self.assertEqual(tier.get_meta("speaker_id"), "A")
+
+        # a new tier is created
+        line = "D_NONE 1 B 1.0 0.2 JAVA 0.98"
+        tier = stm.get_tier(line)
+        self.assertIsNotNone(tier)
+        self.assertEqual(tier.get_name(), "D_NONE-1-B")
+        self.assertEqual(len(stm), 2)
+        self.assertEqual(tier.get_meta("media_channel"), "1")
+        self.assertEqual(tier.get_meta("speaker_id"), "B")
+
+    # -----------------------------------------------------------------
+
+    def test_create_annotation(self):
+        """ Return the annotation corresponding to data of a line. """
+
+        stm = sppasSTM()
+        tier = stm.create_tier("test")
+
+        sppasSTM._create_annotation(1, 2, "utterance", tier)
+        self.assertEqual(len(tier), 1)
+        ann = tier[0]
+        self.assertEqual(ann.get_location().get_best().get_begin().get_midpoint(), 1.)
+        self.assertEqual(ann.get_location().get_best().get_end().get_midpoint(), 2)
+        self.assertEqual(ann.get_label().get_best().get_content(), "utterance")
+
+    # -----------------------------------------------------------------
+
+    def test_parse_lines(self):
+        """ Fill the transcription from the lines of the STM file. """
+
+        # 1 media, 1 channel, 1 speaker: the basic (... with a gap and an overlap)
+        # ----------------------------------------
+
+        lines = list()
+        lines.append("D_NONE 1 A 108.74 109.05 THIS")
+        lines.append("D_NONE 1 A 109.05 109.30 IS")
+        lines.append("D_NONE 1 A 109.25 109.40 AN")
+        lines.append("D_NONE 1 A 109.53 109.69 EXAMPLE")
+
+        stm = sppasSTM()
+        stm._parse_lines(lines)
+        self.assertEqual(len(stm), 1)
+        self.assertEqual(stm[0].get_name(), "D_NONE-1-A")
+        self.assertEqual(len(stm[0]), 4)
+        self.assertEqual(stm[0][0].get_label().get_best().get_content(), "THIS")
+        self.assertEqual(stm[0][1].get_label().get_best().get_content(), "IS")
+        self.assertEqual(stm[0][2].get_label().get_best().get_content(), "AN")
+        self.assertEqual(stm[0][3].get_label().get_best().get_content(), "EXAMPLE")
+        self.assertEqual(stm[0][0].get_location().get_best().get_begin(), sppasPoint(108.74))
+        self.assertEqual(stm[0][0].get_location().get_best().get_end(), sppasPoint(109.05))
+        self.assertEqual(stm[0][1].get_location().get_best().get_begin(), sppasPoint(109.05))
+        self.assertEqual(stm[0][1].get_location().get_best().get_end(), sppasPoint(109.30))
+        self.assertEqual(stm[0][2].get_location().get_best().get_begin(), sppasPoint(109.25))
+        self.assertEqual(stm[0][2].get_location().get_best().get_end(), sppasPoint(109.40))
+        self.assertEqual(stm[0][3].get_location().get_best().get_begin(), sppasPoint(109.53))
+        self.assertEqual(stm[0][3].get_location().get_best().get_end(), sppasPoint(109.69))
+
+        # 1 media, 2 channels, 1 speaker
+        # ------------------------------
+
+        lines = list()
+        lines.append("D_NONE 1 A 108.74 109.05 THIS")
+        lines.append("D_NONE 1 A 109.05 109.30 IS")
+        lines.append("D_NONE 1 A 109.25 109.40 AN")
+        lines.append("D_NONE 1 A 109.53 109.69 EXAMPLE")
+        lines.append("D_NONE 2 A 109.8 110.2 YEP")
+
+        stm = sppasSTM()
+        stm._parse_lines(lines)
+        self.assertEqual(len(stm), 2)
+        self.assertEqual(stm[0].get_name(), "D_NONE-1-A")
+        self.assertEqual(stm[1].get_name(), "D_NONE-2-A")
+        self.assertEqual(len(stm[0]), 4)
+        self.assertEqual(len(stm[1]), 1)
+        self.assertEqual(stm[1][0].get_label().get_best().get_content(), "YEP")
+        self.assertEqual(stm[1][0].get_location().get_best().get_begin(), sppasPoint(109.8))
+        self.assertEqual(stm[1][0].get_location().get_best().get_end(), sppasPoint(110.2))
+
+        # 2 medias, 1 channel, 1 speaker
+        # -------------------------------
+
+        lines = list()
+        lines.append("D_WAV 1 A 108.74 109.05 THIS")
+        lines.append("D_WAV 1 A 109.05 109.30 IS")
+        lines.append("D_WAV 1 A 109.25 109.40 AN")
+        lines.append("D_WAV 1 A 109.53 109.69 EXAMPLE")
+        lines.append("D_NONE 1 A 109.8 110.20 YEP")
+
+        stm = sppasSTM()
+        stm._parse_lines(lines)
+        self.assertEqual(len(stm), 2)
+        self.assertEqual(stm[0].get_name(), "D_WAV-1-A")
+        self.assertEqual(stm[1].get_name(), "D_NONE-1-A")
+        self.assertEqual(len(stm[0]), 4)
+        self.assertEqual(len(stm[1]), 1)
+        self.assertEqual(stm[1][0].get_label().get_best().get_content(), "YEP")
+        self.assertEqual(stm[1][0].get_location().get_best().get_begin(), sppasPoint(109.8))
+        self.assertEqual(stm[1][0].get_location().get_best().get_end(), sppasPoint(110.2))
+
+    # -----------------------------------------------------------------
+
+    def test_read(self):
+        """ Sample stm. """
+
+        stm = sppasSTM()
+        stm.read(os.path.join(DATA, "sample.stm"))
+        self.assertEqual(len(stm), 2)
+        self.assertEqual(len(stm.get_media_list()), 1)
+        self.assertEqual(stm[0].get_name(), "ma_0029-1-A")
+        self.assertEqual(stm[1].get_name(), "ma_0029-2-B")
+        self.assertEqual(len(stm[0]), 4)
+        self.assertEqual(len(stm[1]), 6)
+        self.assertEqual(stm[1][0].get_label().get_best().get_content(), u("对 因为"))
+
+    # -----------------------------------------------------------------
+    # write
+    # -----------------------------------------------------------------
+
+    def test_serialize_label(self):
+        """ Convert a label into a string. """
+
+        s = sppasSTM._serialize_label(None)
+        self.assertEqual(s, "IGNORE_TIME_SEGMENT_IN_SCORING")
+
+        s = sppasSTM._serialize_label(sppasLabel())
+        self.assertEqual(s, "IGNORE_TIME_SEGMENT_IN_SCORING")
+
+        tag = sppasTag("")
+        label = sppasLabel(tag)
+        s = sppasSTM._serialize_label(label)
+        self.assertEqual(s, "IGNORE_TIME_SEGMENT_IN_SCORING")
+
+        tag = sppasTag("toto")
+        label = sppasLabel(tag)
+        s = sppasSTM._serialize_label(label)
+        self.assertEqual(s, "toto")
+
+        tag1 = sppasTag("uh")
+        tag2 = sppasTag("um")
+        label = sppasLabel([tag1, tag2])
+        s = sppasSTM._serialize_label(label)
+        self.assertEqual(s, "{ uh / um }")
+
+    # -----------------------------------------------------------------
+
+    def test_serialize_annotation(self):
+        """ Convert an annotation into lines for STM files. """
+
+        # annotation without label
+        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
+        line = sppasSTM._serialize_annotation(a1, "WAV", "1", "A")
+        self.assertEqual("WAV 1 A 1.0 3.5 IGNORE_TIME_SEGMENT_IN_SCORING\n", line)
+
+        # annotation with 1 tag in the label
+        a2 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))),
+                             sppasLabel(sppasTag("label")))
+        line = sppasSTM._serialize_annotation(a2, "WAV", "1", "A")
+        self.assertEqual("WAV 1 A 1.0 3.5 label\n", line)
+
+        # annotation with 2 tags + scores
+        a3 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))),
+                             sppasLabel([sppasTag("label"), sppasTag("level")],
+                                        [0.60, 0.4]))
+        line = sppasSTM._serialize_annotation(a3, "WAV", "1", "A")
+        self.assertEqual("WAV 1 A 1.0 3.5 { label / level }\n", line)
+
+    # -----------------------------------------------------------------
+
+    def test_read_write(self):
+        """ Write a transcription into a file. """
+
+        stm = sppasSTM()
+        stm.read(os.path.join(DATA, "sample.stm"))
+        self.assertEqual(len(stm), 2)
+        stm.write(os.path.join(TEMP, "sample.stm"))
+
+        stm2 = sppasSTM()
+        stm2.read(os.path.join(TEMP, "sample.stm"))
+
+        self.assertEqual(len(stm2), 2)
+        self.assertEqual(len(stm2.get_media_list()), 1)
+        self.assertEqual(stm2[0].get_name(), "ma_0029-1-A")
+        self.assertEqual(stm2[1].get_name(), "ma_0029-2-B")
+        self.assertEqual(len(stm2[0]), 4)
+        self.assertEqual(len(stm2[1]), 6)
+        self.assertEqual(stm2[1][0].get_label().get_best().get_content(), u("对 因为"))

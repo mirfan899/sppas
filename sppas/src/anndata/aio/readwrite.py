@@ -53,8 +53,10 @@ from .praat import sppasTextGrid  #, PitchTier, IntensityTier
 from .transcriber import sppasTRS
 # from .phonedit import Phonedit
 from .htk import sppasLab
-from .subtitle import sppasSubRip, sppasSubViewer
+from .subtitle import sppasSubRip
+from .subtitle import sppasSubViewer
 from .sclite import sppasCTM
+from .sclite import sppasSTM
 # from .elan import Elan
 # from .anvil import Anvil
 # from .annotationpro import Antx
@@ -85,11 +87,10 @@ class sppasRW(object):
     TRANSCRIPTION_TYPES["trs"] = sppasTRS
     # TRANSCRIPTION_TYPES["mrk"] = Phonedit,
     TRANSCRIPTION_TYPES["lab"] = sppasLab
-    # TRANSCRIPTION_TYPES["mlf"] = MasterLabel
     TRANSCRIPTION_TYPES["srt"] = sppasSubRip
     TRANSCRIPTION_TYPES["sub"] = sppasSubViewer
     TRANSCRIPTION_TYPES["ctm"] = sppasCTM
-    # TRANSCRIPTION_TYPES["stm"] = SegmentTimeMark
+    TRANSCRIPTION_TYPES["stm"] = sppasSTM
     # TRANSCRIPTION_TYPES["anvil"] = Anvil
     # TRANSCRIPTION_TYPES["antx"] = Antx
     TRANSCRIPTION_TYPES["aup"] = sppasAudacity

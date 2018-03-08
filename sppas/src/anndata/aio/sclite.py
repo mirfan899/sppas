@@ -139,8 +139,25 @@ class sppasBaseSclite(sppasBaseIO):
     # -----------------------------------------------------------------
 
     @staticmethod
-    def serialize_header():
+    def serialize_header(filename, meta_object):
         """ Create a comment with the metadata to be written. """
+
+        header = sppasBaseSclite._serialize_header()
+        header += ";; file_writer={:s}\n".format(meta_object.__class__.__name__)
+        header += ";; file_name={:s}\n".format(os.path.basename(filename))
+        header += ";; file_path={:s}\n".format(os.path.dirname(filename))
+        header += ";; file_ext={:s}\n".format(os.path.splitext(filename)[1])
+        header += ";;\n"
+        header += sppasBaseSclite._serialize_metadata(meta_object)
+        header += ";;\n"
+
+        return header
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def _serialize_header():
+        """ Serialize the header of a Sclite file with SPPAS information. """
 
         comment = ";; \n"
         comment += ";; software_name={:s}\n".format(sppas.__name__)
@@ -154,6 +171,80 @@ class sppasBaseSclite(sppasBaseIO):
                    "".format(now.year, now.month, now.day)
 
         return comment
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def _serialize_metadata(meta_object):
+        """ Serialize the metadata of an object in a multi-lines comment. """
+
+        meta_keys = ["file_write_date", "file_writer", "file_name", "file_path", "file_ext"]
+        comment = ""
+        for meta in meta_object.get_meta_keys():
+            if "software" not in meta and meta not in meta_keys:
+                comment += ';; {:s}={:s}\n'.format(meta, meta_object.get_meta(meta))
+
+        return comment
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def create_media(media_name, meta_object):
+        """ Return the media of the given name (create it if necessary).
+
+        :param media_name: (str) Name (url) of the media to search/create
+        :param meta_object: (sppasTranscription)
+        :returns: (sppasMedia)
+
+        """
+        media = None
+        idt = media_name
+        # Search the media in the object
+        for m in meta_object.get_media_list():
+            if m.get_filename() == idt:
+                media = m
+        if media is None:
+            # Create a new media
+            media = sppasMedia(idt)
+            # Add the newly created media in the given object
+            meta_object.add_media(media)
+
+        return media
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def load(filename):
+        """ Load a file into lines.
+
+        :param filename: (str)
+        :returns: list of lines (str)
+
+        """
+        with codecs.open(filename, 'r', sppas.encoding) as fp:
+            lines = fp.readlines()
+            fp.close()
+
+        return lines
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def _parse_comment(comment, meta_object):
+        """ Parse a comment and eventually fill metadata.
+
+        :param comment: (str) A line of a file
+        :param meta_object: (sppasMeta)
+
+        """
+        comment = comment.replace(";;", "")
+        comment = comment.strip()
+        if '=' in comment:
+            tab_comment = comment.split('=')
+            if len(tab_comment) == 2:
+                meta_key = tab_comment[0].strip()
+                meta_val = tab_comment[1].strip()
+                meta_object.set_meta(meta_key, meta_val)
 
 # ----------------------------------------------------------------------------
 
@@ -316,7 +407,7 @@ class sppasCTM(sppasBaseSclite):
 
         if tier is None:
             # Create the media linked to the tier
-            media = self._create_media(tab_line[0].strip())
+            media = sppasBaseSclite.create_media(tab_line[0].strip(), self)
 
             # Create the tier and set metadata
             tier = self.create_tier(tier_name, media=media)
@@ -353,11 +444,7 @@ class sppasCTM(sppasBaseSclite):
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'r', sppas.encoding) as fp:
-            lines = fp.readlines()
-            fp.close()
-
-        self._parse_lines(lines)
+        self._parse_lines(sppasBaseSclite.load(filename))
 
     # -----------------------------------------------------------------
 
@@ -378,9 +465,9 @@ class sppasCTM(sppasBaseSclite):
             # a comment can contain metadata
             if sppasBaseSclite.is_comment(line):
                 if tier is None:
-                    self._parse_comment(line, self)
+                    sppasBaseSclite._parse_comment(line, self)
                 else:
-                    self._parse_comment(line, tier)
+                    sppasBaseSclite._parse_comment(line, tier)
             # ignore comments and blank lines
             if sppasCTM.check_line(line, i+1) is False:
                 continue
@@ -419,21 +506,6 @@ class sppasCTM(sppasBaseSclite):
     # -----------------------------------------------------------------
 
     @staticmethod
-    def _parse_comment(comment, meta_object):
-        """ Parse a comment and eventually fill metadata. """
-
-        comment = comment.replace(";;", "")
-        comment = comment.strip()
-        if '=' in comment:
-            tab_comment = comment.split('=')
-            if len(tab_comment) == 2:
-                meta_key = tab_comment[0].strip()
-                meta_val = tab_comment[1].strip()
-                meta_object.set_meta(meta_key, meta_val)
-
-    # -----------------------------------------------------------------
-
-    @staticmethod
     def _add_alt_annotations(tier, annotations):
         """ Add the annotations into the tier.
 
@@ -445,21 +517,6 @@ class sppasCTM(sppasBaseSclite):
                 tier.add(ann)
         except Exception:
             pass
-
-    # -----------------------------------------------------------------
-
-    def _create_media(self, media_name):
-        """ Return the media of the given name (create it if necessary). """
-
-        media = None
-        idt = media_name
-        for m in self._media:
-            if m.get_filename() == idt:
-                media = m
-        if media is None:
-            media = sppasMedia(idt)
-
-        return media
 
     # -----------------------------------------------------------------
 
@@ -488,7 +545,7 @@ class sppasCTM(sppasBaseSclite):
         with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
 
             # write an header with the metadata
-            fp.write(self._serialize_header(filename))
+            fp.write(sppasBaseSclite.serialize_header(filename, self))
 
             for i, tier in enumerate(self):
 
@@ -509,40 +566,10 @@ class sppasCTM(sppasBaseSclite):
                     fp.write(sppasCTM._serialize_annotation(ann, waveform, channel))
 
                 # write the metadata of this tier
-                fp.write(sppasCTM._serialize_metadata(tier))
+                fp.write(sppasBaseSclite._serialize_metadata(tier))
                 fp.write('\n')
 
             fp.close()
-
-    # -----------------------------------------------------------------
-
-    def _serialize_header(self, filename):
-        """ Serialize the header of a CTM file with metadata. """
-
-        header = sppasBaseSclite.serialize_header()
-        header += ";; file_writer={:s}\n".format(self.__class__.__name__)
-        header += ";; file_name={:s}\n".format(os.path.basename(filename))
-        header += ";; file_path={:s}\n".format(os.path.dirname(filename))
-        header += ";; file_ext={:s}\n".format(os.path.splitext(filename)[1])
-        header += ";;\n"
-        header += sppasCTM._serialize_metadata(self)
-        header += ";;\n"
-
-        return header
-
-    # -----------------------------------------------------------------
-
-    @staticmethod
-    def _serialize_metadata(meta_object):
-        """ Serialize the metadata of an object in a multi-lines comment. """
-
-        meta_keys = ["file_write_date", "file_writer", "file_name", "file_path", "file_ext"]
-        comment = ""
-        for meta in meta_object.get_meta_keys():
-            if "software" not in meta and meta not in meta_keys:
-                comment += ';; {:s}={:s}\n'.format(meta, meta_object.get_meta(meta))
-
-        return comment
 
     # -----------------------------------------------------------------
 
@@ -635,10 +662,10 @@ class sppasSTM(sppasBaseSclite):
         transcript -> The transcript can take on two forms:
             1) a whitespace separated list of words, or
             2) the string "IGNORE_TIME_SEGMENT_IN_SCORING".
-            The list of words can contain an transcript alternation using
+            The list of words can contain a transcript alternation using
             the following BNF format:
                 ALTERNATE :== "{" <text> ALT+ "}"
-                ALT :== "/" <text>
+                ALT :== "|" <text>
                 TEXT :== 1 thru n words | "@" | ALTERNATE
 
     The file must be sorted by the first and second columns in ASCII order,
@@ -650,20 +677,69 @@ class sppasSTM(sppasBaseSclite):
     """
     @staticmethod
     def detect(filename):
+        """ Check whether a file is of STM format or not.
+
+        :param filename: (str) Name of the file to check.
+        :returns: (bool)
+
+        """
+        # Open and load the content.
         try:
             with codecs.open(filename, 'r', sppas.encoding) as fp:
                 lines = fp.readlines()
-                for line in lines:
-                    if sppasBaseSclite.is_comment(line) is True:
-                        continue
-                    tab = line.split()
-                    if len(tab) < 6:
-                        return False
-            return True
-        except Exception:
-            pass
+                fp.close()
+        except IOError:
+            # can't open the file
+            return False
+        except UnicodeDecodeError:
+            # can't open with SPPAS default encoding
+            return False
 
-        return False
+        # Check each line
+        for line in lines:
+            line = line.strip()
+            try:
+                # a comment, a blank line, an annotation
+                sppasSTM.check_line(line)
+            except AioLineFormatError:
+                # not the right number of columns
+                return False
+            except ValueError:
+                # can't convert begin/end into float
+                return False
+
+        return True
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def check_line(line, line_number=0):
+        """ Check whether a line is an annotation or not.
+        Raises AioLineFormatError() or ValueError() in case of a
+        malformed line.
+
+        :param line: (str)
+        :param line_number: (int)
+        :return: (bool)
+
+        """
+        # Comment
+        if sppasBaseSclite.is_comment(line):
+            return False
+
+        # Blank line
+        if len(line) == 0:
+            return False
+
+        # A column-delimited line
+        tab_line = line.split()
+        if len(tab_line) < 6:
+            raise AioLineFormatError(line_number, line)
+
+        float(tab_line[3])  # begin
+        float(tab_line[4])  # end
+
+        return True
 
     # -----------------------------------------------------------------
 
@@ -677,3 +753,186 @@ class sppasSTM(sppasBaseSclite):
             name = self.__class__.__name__
         sppasBaseSclite.__init__(self, name)
 
+    # -----------------------------------------------------------------------
+    # Reader
+    # -----------------------------------------------------------------------
+
+    def get_tier(self, line):
+        """ Return the tier related to the given line.
+        Find the tier or create it.
+
+        :param line: (str)
+        :return: (sppasTier)
+
+        """
+        tab_line = line.split()
+        tier_name = tab_line[0] + "-" + tab_line[1] + "-" + tab_line[2]
+        tier = self.find(tier_name)
+
+        if tier is None:
+            # Create the media linked to the tier
+            media = sppasBaseSclite.create_media(tab_line[0].strip(), self)
+
+            # Create the tier and set metadata
+            tier = self.create_tier(tier_name, media=media)
+            tier.set_meta("media_channel", tab_line[1])
+            tier.set_meta("speaker_id", tab_line[2])
+
+        return tier
+
+    # -----------------------------------------------------------------
+
+    def read(self, filename):
+        """ Read a ctm file and fill the Transcription.
+        It creates a tier for each media-channel observed in the file.
+
+        :param filename: (str)
+
+        """
+        self._parse_lines(sppasBaseSclite.load(filename))
+
+    # -----------------------------------------------------------------
+
+    def _parse_lines(self, lines):
+        """ Fill the transcription from the lines of the STM file. """
+
+        # the current tier to fill
+        tier = None
+
+        # Extract rows, create tiers and metadata.
+        for i, line in enumerate(lines):
+            line = sppasUnicode(line).to_strip()
+
+            # a comment can contain metadata
+            if sppasBaseSclite.is_comment(line):
+                if tier is None:
+                    sppasBaseSclite._parse_comment(line, self)
+                else:
+                    sppasBaseSclite._parse_comment(line, tier)
+            # ignore comments and blank lines
+            if sppasSTM.check_line(line, i+1) is False:
+                continue
+
+            # check for the tier (find it or create it)
+            tier = self.get_tier(line)
+
+            # extract information of this annotation
+            tab_line = line.split()
+            sppasSTM._create_annotation(tab_line[3],
+                                        tab_line[4],
+                                        " ".join(tab_line[5:]),
+                                        tier)
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def _create_annotation(begin, end, utterance, tier):
+        """ Add into the tier the annotation corresponding to data of a line. """
+
+        utterance = sppasUnicode(utterance).to_strip()
+        label = sppasLabel(sppasTag(utterance))
+
+        location = sppasLocation(sppasInterval(sppasBaseSclite.make_point(begin),
+                                               sppasBaseSclite.make_point(end)))
+        tier.create_annotation(location, label)
+
+    # ------------------------------------------------------------------------
+    # Writer
+    # ------------------------------------------------------------------------
+
+    def write(self, filename):
+        """ Write a transcription into a file.
+
+        :param filename: (str)
+
+        """
+        with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
+
+            # write an header with the metadata
+            fp.write(sppasBaseSclite.serialize_header(filename, self))
+
+            for i, tier in enumerate(self):
+
+                # fix the name of the waveform (for 1st column)
+                waveform = "waveform-"+str(i)
+                if tier.get_media() is not None:
+                    waveform = os.path.basename(tier.get_media().get_filename())
+
+                # fix the name of the channel (for 2nd column)
+                channel = "A"
+                if tier.is_meta_key('media_channel'):
+                    channel = tier.get_meta('media_channel')
+
+                # fix the speaker
+                speaker = "A"
+                if tier.is_meta_key('speaker_id'):
+                    speaker = tier.get_meta('speaker_id')
+                elif tier.is_meta_key('speaker_name'):
+                    speaker = tier.get_meta('speaker_name')
+
+                # serialize annotations
+                for ann in tier:
+                    if ann.get_location().is_point():
+                        raise AioLocationTypeError('Sclite STM', 'points')
+                    fp.write(sppasSTM._serialize_annotation(ann, waveform, channel, speaker))
+
+                # write the metadata of this tier
+                fp.write(sppasBaseSclite._serialize_metadata(tier))
+                fp.write('\n')
+
+            fp.close()
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def _serialize_annotation(ann, waveform, channel, speaker):
+        """ Convert an annotation into lines for STM files.
+
+        Empty labels are replaced by "IGNORE_TIME_SEGMENT_IN_SCORING".
+
+        :param ann: (sppasAnnotation)
+        :returns: (str)
+
+        """
+        # fix location information
+        begin = ann.get_location().get_best().get_begin().get_midpoint()
+        end = ann.get_location().get_best().get_end().get_midpoint()
+
+        # fix label information
+        content = sppasSTM._serialize_label(ann.get_label())
+
+        return "{wav} {cha} {spk} {beg} {end} {lab}\n".format(
+            wav=waveform,
+            cha=channel,
+            spk=speaker,
+            beg=str(begin),
+            end=str(end),
+            lab=content
+        )
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def _serialize_label(label):
+        """ Convert a label into a string. """
+
+        if label is None:
+            return "IGNORE_TIME_SEGMENT_IN_SCORING"
+
+        if label.get_best() is None:
+            return "IGNORE_TIME_SEGMENT_IN_SCORING"
+
+        if label.get_best().is_empty():
+            return "IGNORE_TIME_SEGMENT_IN_SCORING"
+
+        if len(label) == 1:
+            return label.get_best().get_content()
+
+        content = "{ "
+        for tag, score in label:
+            content += tag.get_content()
+            content += " / "
+        content = content[:-2]
+        content += "}"
+
+        return content
