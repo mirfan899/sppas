@@ -86,7 +86,7 @@ class sppasBaseLocalization(object):
     # ---------------------------------------------------------------------
 
     def is_point(self):
-        """ Return True if this object is an instance of sppasTimePoint or sppasFramePoint.
+        """ Return True if this object is an instance of sppasPoint.
         Should be overridden.
 
         """
@@ -95,7 +95,7 @@ class sppasBaseLocalization(object):
     # ---------------------------------------------------------------------
 
     def is_interval(self):
-        """ Return True if this object is an instance of sppasTimeInterval or sppasFrameInterval.
+        """ Return True if this object is an instance of sppasInterval.
         Should be overridden.
 
         """
@@ -104,7 +104,7 @@ class sppasBaseLocalization(object):
     # ---------------------------------------------------------------------
 
     def is_disjoint(self):
-        """ Return True if this object is an instance of sppasTimeDisjoint or sppasFrameDisjoint.
+        """ Return True if this object is an instance of sppasDisjoint.
         Should be overridden.
 
         """

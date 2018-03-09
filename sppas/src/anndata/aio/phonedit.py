@@ -1,0 +1,337 @@
+# -*- coding: UTF-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
+
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.anndata.aio.phonedit.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    PHONEDIT Signaix is a software for the analysis of sound, aerodynamic,
+    articulatory and electro-physiological signals developed by the Parole
+    et Langage Laboratory, Aix-en-Provence, France.
+    It provides a complete environment for the recording, the playback, the
+    display, the analysis, the labeling of multi-parametric data.
+
+    http://www.lpl-aix.fr/~lpldev/phonedit/
+
+"""
+import codecs
+try:  # python 3
+    from configparser import ConfigParser as SafeConfigParser
+except ImportError:  # python 2
+    from ConfigParser import SafeConfigParser
+from datetime import datetime
+
+import sppas
+
+from sppas.src.utils.makeunicode import u
+from ..anndataexc import AnnDataTypeError
+from ..annlocation.location import sppasLocation
+from ..annlocation.point import sppasPoint
+from ..annlocation.interval import sppasInterval
+from ..annlabel.label import sppasLabel
+from ..annlabel.tag import sppasTag
+
+from .basetrs import sppasBaseIO
+
+# ----------------------------------------------------------------------------
+
+
+class sppasBasePhonedit(sppasBaseIO):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Class for readers and writers of Phonedit files.
+
+    """
+    def __init__(self, name=None):
+        """ Initialize a new sppasBaseSclite instance.
+
+        :param name: (str) This transcription name.
+
+        """
+        if name is None:
+            name = self.__class__.__name__
+        sppasBaseIO.__init__(self, name)
+
+        self._accept_multi_tiers = True
+        self._accept_no_tiers = False
+        self._accept_metadata = False
+        self._accept_ctrl_vocab = False
+        self._accept_media = False
+        self._accept_hierarchy = False
+        self._accept_point = True
+        self._accept_interval = True
+        self._accept_disjoint = False
+        self._accept_alt_localization = False
+        self._accept_alt_tag = False
+        self._accept_radius = False
+        self._accept_gaps = True
+        self._accept_overlaps = True
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
+    def _parse(filename):
+        """ Parse a MRK configuration file.
+
+        :param filename: (string) Configuration file name.
+
+        """
+        parser = SafeConfigParser()
+
+        # Open the file
+        with codecs.open(filename, "r", encoding="ISO-8859-1") as f:
+            try:  # python 3
+                parser.read_file(f)
+            except:  # python 2
+                parser.readfp(f)
+
+        return parser
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def _parse_metadata(meta_list, meta_object):
+        """ Parse the metadata and append into an object.
+
+        :param meta_list: (list) tuples with (key,value)
+        :param meta_object: (sppasMeta)
+
+        """
+        for entry in meta_list:
+            meta_object.set_meta(entry[0], entry[1])
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def make_point(midpoint):
+        """ In Phonedit, the localization is a time value, so a float. """
+
+        try:
+            midpoint = float(midpoint)
+        except ValueError:
+            raise AnnDataTypeError(midpoint, "float")
+
+        return sppasPoint(midpoint / 1000., radius=0.0005)
+
+
+# ----------------------------------------------------------------------------
+
+
+class sppasMRK(sppasBasePhonedit):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Class for reader and writer of Phonedit MRK file.
+
+    Example of the old format:
+
+        [DSC_LEVEL_AA]
+        DSC_LEVEL_NAME="transcription"
+        DSC_LEVEL_CREATION_DATE=2018/03/09 09:57:07
+        DSC_LEVEL_LASTMODIF_DATE=2018/03/09 09:57:07
+        DSC_LEVEL_SOFTWARE=Phonedit Application 4.2.0.8
+        [LBL_LEVEL_AA]
+        LBL_LEVEL_AA_000000= "#" 0.000000 2497.100755
+        LBL_LEVEL_AA_000001= "ipu_1" 2497.100755 5683.888038
+        LBL_LEVEL_AA_000002= "#" 5683.888038 5743.602653
+        LBL_LEVEL_AA_000003= "ipu_2" 5743.602653 8460.595544
+
+    The new MRK format includes sections for time slots.
+
+    """
+    @staticmethod
+    def detect(filename):
+        """ Check whether a file is of CTM format or not.
+
+        :param filename: (str) Name of the file to check.
+        :returns: (bool)
+
+        """
+        try:
+            parser = sppasBasePhonedit._parse(filename)
+        except Exception:
+            return False
+        return True
+
+    # -----------------------------------------------------------------------
+
+    def __init__(self, name=None):
+        """ Initialize a new sppasBaseSclite instance.
+
+        :param name: (str) This transcription name.
+
+        """
+        if name is None:
+            name = self.__class__.__name__
+        sppasBasePhonedit.__init__(self, name)
+
+    # -----------------------------------------------------------------------
+    # reader
+    # -----------------------------------------------------------------------
+
+    def read(self, filename):
+        """ Read a Phonedit mark file.
+
+        :param filename: intput filename.
+
+        """
+        parser = self._parse(filename)
+
+        # Extract metadata and create tiers
+        for section_name in parser.sections():
+            if section_name == "Information":
+                sppasBasePhonedit._parse_metadata(parser.items(section_name), self)
+            if "DSC_LEVEL_" in section_name:
+                self._parse_level(parser.items(section_name), section_name)
+
+        # Extract annotations with time values
+        for section_name in parser.sections():
+            if "LBL_LEVEL_" in section_name:
+                self._parse_labels(parser.items(section_name))
+
+    # ------------------------------------------------------------------------
+
+    def _parse_level(self, data_list, level_id):
+        """ Parse a section DSC_LEVEL_ .
+        Creates a tier with the level name and add metadata.
+
+        """
+        # Fix the name of the tier.
+        level_name = "unknown"
+        for entry in data_list:
+            if "dsc_level_name" == entry[0]:
+                level_name = entry[1]
+                level_name = level_name[1:-1]
+                del entry
+
+        # Create the tier
+        tier = self.create_tier(level_name)
+        # override the default "id" by the name of the section
+        tier.set_meta("id", level_id)
+        # extract metadata for this tier
+        sppasBasePhonedit._parse_metadata(data_list, tier)
+
+    # ------------------------------------------------------------------------
+
+    def _parse_labels(self, data_list):
+        """ Parse labels of a section LBL_LEVEL_ . """
+
+        for entry in data_list:
+            key = entry[0].upper()
+            line = entry[1]
+
+            # Which tier is concerned?
+            tier = None
+            for t in self:
+                tier_id = t.get_meta('id')
+                tier_id = tier_id.replace('DSC', 'LBL')
+                if key.startswith(tier_id) is True:
+                    tier = t
+                    break
+            if tier is None:
+                # something went wrong... 
+                tier = self.create_tier(key)
+
+            # Extract the content of the annotation
+            tab_line = line.split()
+
+            # ... localization
+            begin = float(tab_line[-2])
+            end = float(tab_line[-1])
+            if begin < end:
+                localization = sppasInterval(
+                    sppasBasePhonedit.make_point(begin),
+                    sppasBasePhonedit.make_point(end))
+            else:
+                localization = sppasBasePhonedit.make_point(begin)
+
+            # ... tag text
+            content = " ".join(tab_line[:-2])
+            # Remove the " at the beginning and at the end of the string
+            content = u(content[1:-1])
+
+            # Create/Add the annotation into the tier
+            ann = tier.create_annotation(sppasLocation(localization),
+                                         sppasLabel(sppasTag(content)))
+    
+            # override the default "id" by the name of the attribute
+            ann.set_meta("id", key)
+
+    # ------------------------------------------------------------------------
+    # writer
+    # ------------------------------------------------------------------------
+
+    def write(self, filename):
+        """ Write a Phonedit mark file.
+
+        :param filename: output filename.
+        :param encoding: encoding.
+
+        """
+        code_a = ord("A")
+        last_modified = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+
+        with codecs.open(filename, mode="w", encoding="ISO-8859-1") as fp:
+
+            for index_tier, tier in enumerate(self):
+                point = tier.is_point()
+
+                # Write information about the tier
+                level = "LEVEL_{:s}{:s}".format(
+                            chr(code_a + index_tier / 26),
+                            chr(code_a + index_tier % 26))
+                fp.write("[DSC_{:s}]\n".format(level))
+                fp.write("DSC_LEVEL_NAME=\"{:s}\"\n".format(tier.get_name()))
+                fp.write("DSC_LEVEL_SOFTWARE={:s} {:s}\n".format(sppas.__name__, sppas.__version__))
+                fp.write("DSC_LEVEL_LASTMODIF_DATE={:s}\n".format(last_modified))
+
+                # Write annotations
+                fp.write("[LBL_{:s}]\n".format(level))
+                for index_ann, ann in enumerate(tier):
+
+                    fp.write("LBL_{:s}_{:06d}=\"{:s}\"".format(
+                        level, index_ann, ann.get_label().get_best().get_content()))
+                    if point:
+                        # Phonedit supports degenerated intervals (instead of points)
+                        b = ann.get_lowest_localization().get_midpoint() * 1000.
+                        e = b
+                    else:
+                        b = ann.get_lowest_localization().get_midpoint() * 1000.
+                        e = ann.get_highest_localization().get_midpoint() * 1000.
+                    fp.write(" {:s} {:s}\n".format(str(b), str(e)))
+
+            fp.close()

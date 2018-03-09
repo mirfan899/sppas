@@ -615,6 +615,10 @@ class sppasXRA(sppasBaseIO):
         :param annotation: (sppasAnnotation)
 
         """
+        # to be tested:
+        # metadata_root = ET.SubElement(annotation_root, 'Metadata')
+        # sppasXRA.__format_metadata(metadata_root, annotation)
+
         location_root = ET.SubElement(annotation_root, 'Location')
         sppasXRA.__format_location(location_root, annotation.get_location())
 

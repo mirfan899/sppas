@@ -150,16 +150,16 @@ class TestBaseSclite(unittest.TestCase):
         ctm = sppasCTM()
         line = ";; this is a simple comment."
         sppasBaseSclite._parse_comment(line, ctm)
-        self.assertEqual(len(ctm.get_meta_keys()), 0)
+        self.assertEqual(len(ctm.get_meta_keys()), 1)  # id
 
         line = ";; meta_key=meta_value"
         sppasBaseSclite._parse_comment(line, ctm)
-        self.assertEqual(len(ctm.get_meta_keys()), 1)
+        self.assertEqual(len(ctm.get_meta_keys()), 2)
         self.assertEqual(ctm.get_meta("meta_key"), "meta_value")
 
         line = ";; \t meta key whitespace   =   meta value\t whitespace   "
         sppasBaseSclite._parse_comment(line, ctm)
-        self.assertEqual(len(ctm.get_meta_keys()), 2)
+        self.assertEqual(len(ctm.get_meta_keys()), 3)
         self.assertEqual(ctm.get_meta("meta key whitespace"), "meta value whitespace")
 
     # -----------------------------------------------------------------
@@ -169,12 +169,12 @@ class TestBaseSclite(unittest.TestCase):
 
         ctm = sppasCTM()
         lines = sppasBaseSclite.serialize_header("sample.ctm", ctm)
-        self.assertEqual(len(lines.split('\n')), 15)
+        self.assertEqual(len(lines.split('\n')), 16)
 
         ctm = sppasCTM()
         ctm.set_meta("meta_key", "meta_value")
         lines = sppasBaseSclite.serialize_header("sample.ctm", ctm)
-        self.assertEqual(len(lines.split('\n')), 16)
+        self.assertEqual(len(lines.split('\n')), 17)
 
     # -----------------------------------------------------------------
 
@@ -193,17 +193,17 @@ class TestBaseSclite(unittest.TestCase):
 
         ctm = sppasCTM()
         line = sppasBaseSclite._serialize_metadata(ctm)
-        self.assertEqual("", line)
+        self.assertEqual(len(line.split("\n")), 2)  # id
 
         ctm = sppasCTM()
         ctm.set_meta("meta_key", "meta_value")
         line = sppasBaseSclite._serialize_metadata(ctm)
-        self.assertEqual(";; meta_key=meta_value\n", line)
+        self.assertTrue(";; meta_key=meta_value\n" in line)
 
         stm = sppasSTM()
         stm.set_meta("meta key whitespace", "meta value\t whitespace  ")
         line = sppasBaseSclite._serialize_metadata(stm)
-        self.assertEqual(";; meta key whitespace=meta value whitespace\n", line)
+        self.assertTrue(";; meta key whitespace=meta value whitespace\n" in line)
 
 # ---------------------------------------------------------------------------
 

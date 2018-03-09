@@ -32,7 +32,7 @@
     src.anndata.annloc.point.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Localization of a point in time, frame, etc.
+    Localization of a point in time, frame, or any numerical representation.
 
 """
 from sppas.src.utils.makeunicode import text_type, binary_type

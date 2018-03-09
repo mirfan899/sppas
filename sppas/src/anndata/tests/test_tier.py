@@ -34,6 +34,15 @@ class TestTier(unittest.TestCase):
         self.assertEqual(tierI.get_meta('key'), tierP.get_meta('key'))
         self.assertEqual(tierI.get_meta('toto'), '')
 
+    # -----------------------------------------------------------------------
+
+    def test_init(self):
+        ann = sppasTier()
+        self.assertEqual(len(ann.get_meta_keys()), 1)
+        self.assertTrue(ann.is_meta_key("id"))
+
+    # -----------------------------------------------------------------------
+
     def test_name(self):
         tierP = sppasTier()
         self.assertEqual(len(tierP.get_name()), 36)

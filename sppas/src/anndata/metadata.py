@@ -36,6 +36,7 @@
 from collections import OrderedDict
 
 from sppas.src.utils.makeunicode import sppasUnicode
+from sppas.src.utils.fileutils import sppasGUID
 
 # ---------------------------------------------------------------------------
 
@@ -53,7 +54,12 @@ class sppasMetaData(object):
 
     """
     def __init__(self):
+        """ Create a sppasMetaData instance.
+        Add a GUID in the dictionary of metadata, with key "id".
+
+        """
         self.__metadata = OrderedDict()
+        self.__metadata["id"] = sppasGUID().get()
 
     # ------------------------------------------------------------------------
 

@@ -1,4 +1,45 @@
-# -*- coding:utf-8 -*-
+# -*- coding: UTF-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
+
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.anndata.tests.test_annotation.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Test the sppasAnnotation instance.
+
+"""
 
 import unittest
 
@@ -21,6 +62,15 @@ class TestAnnotation(unittest.TestCase):
         self.it = sppasInterval(self.p1, self.p2)
         self.annotationI = sppasAnnotation(sppasLocation(self.it), sppasLabel(sppasTag(" \t\t  être être   être  \n ")))
         self.annotationP = sppasAnnotation(sppasLocation(self.p1), sppasLabel(sppasTag("mark")))
+
+    # -----------------------------------------------------------------------
+
+    def test_init(self):
+        ann = sppasAnnotation(sppasLocation(self.it), None)
+        self.assertEqual(len(ann.get_meta_keys()), 1)
+        self.assertTrue(ann.is_meta_key("id"))
+
+    # -----------------------------------------------------------------------
 
     def test_get_begin(self):
         with self.assertRaises(AttributeError):

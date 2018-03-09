@@ -505,13 +505,13 @@ class TestFileFormats(unittest.TestCase):
         output = io.BytesIO()
         arff._write_metadata(output)
         lines = output.getvalue()
-        self.assertEqual(len(lines.split("\n")), 3)  # 2 blank lines
+        self.assertEqual(len(lines.split("\n")), 4)  # 2 blank lines + id
 
         arff.set_meta("weka_instance_step", "0.04")
         output = io.BytesIO()
         arff._write_metadata(output)
         lines = output.getvalue()
-        self.assertEqual(len(lines.split("\n")), 4)  # 2 blank lines + 1 meta data
+        self.assertEqual(len(lines.split("\n")), 5)  # 2 blank lines + 1 meta data + id
         self.assertTrue("weka_instance_step" in lines)
         self.assertTrue("0.04" in lines)
 
