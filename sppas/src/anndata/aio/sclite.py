@@ -51,7 +51,6 @@
 """
 import codecs
 import os.path
-import datetime
 
 import sppas
 
@@ -65,14 +64,13 @@ from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
-from ..media import sppasMedia
 
-from .basetrs import sppasBaseIO
+from .text import sppasBaseText
 
 # ---------------------------------------------------------------------------
 
 
-class sppasBaseSclite(sppasBaseIO):
+class sppasBaseSclite(sppasBaseText):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -92,8 +90,9 @@ class sppasBaseSclite(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBaseIO.__init__(self, name)
+        sppasBaseText.__init__(self, name)
 
+        # override all
         self._accept_multi_tiers = True
         self._accept_no_tiers = True
         self._accept_metadata = False
@@ -113,8 +112,10 @@ class sppasBaseSclite(sppasBaseIO):
 
     @staticmethod
     def make_point(midpoint):
-        """ In Sclite, the localization is a time value, so a float. """
+        """ In Sclite, the localization is a time value, so always a float.
+        Override the sppasBaseText.
 
+        """
         try:
             midpoint = float(midpoint)
         except ValueError:
@@ -122,129 +123,6 @@ class sppasBaseSclite(sppasBaseIO):
 
         return sppasPoint(midpoint, radius=0.005)
 
-    # -----------------------------------------------------------------
-
-    @staticmethod
-    def is_comment(line):
-        """ Check if the line is a comment.
-
-        :param line: (str)
-        :return: boolean
-
-        """
-        sp = sppasUnicode(line)
-        line = sp.to_strip()
-        return line.startswith(";;")
-
-    # -----------------------------------------------------------------
-
-    @staticmethod
-    def serialize_header(filename, meta_object):
-        """ Create a comment with the metadata to be written. """
-
-        header = sppasBaseSclite._serialize_header()
-        header += ";; file_writer={:s}\n".format(meta_object.__class__.__name__)
-        header += ";; file_name={:s}\n".format(os.path.basename(filename))
-        header += ";; file_path={:s}\n".format(os.path.dirname(filename))
-        header += ";; file_ext={:s}\n".format(os.path.splitext(filename)[1])
-        header += ";;\n"
-        header += sppasBaseSclite._serialize_metadata(meta_object)
-        header += ";;\n"
-
-        return header
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def _serialize_header():
-        """ Serialize the header of a Sclite file with SPPAS information. """
-
-        comment = ";; \n"
-        comment += ";; software_name={:s}\n".format(sppas.__name__)
-        comment += ";; software_version={:s}\n".format(sppas.__version__)
-        comment += ";; software_url={:s}\n".format(sppas.__url__)
-        comment += ";; software_contact={:s}\n".format(sppas.__contact__)
-        comment += ";; software_copyright={:s}\n".format(sppas.__copyright__)
-        comment += ";; \n"
-        now = datetime.datetime.now()
-        comment += ";; file_write_date={:d}-{:d}-{:d}\n" \
-                   "".format(now.year, now.month, now.day)
-
-        return comment
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def _serialize_metadata(meta_object):
-        """ Serialize the metadata of an object in a multi-lines comment. """
-
-        meta_keys = ["file_write_date", "file_writer", "file_name", "file_path", "file_ext"]
-        comment = ""
-        for meta in meta_object.get_meta_keys():
-            if "software" not in meta and meta not in meta_keys:
-                comment += ';; {:s}={:s}\n'.format(meta, meta_object.get_meta(meta))
-
-        return comment
-
-    # -----------------------------------------------------------------
-
-    @staticmethod
-    def create_media(media_name, meta_object):
-        """ Return the media of the given name (create it if necessary).
-
-        :param media_name: (str) Name (url) of the media to search/create
-        :param meta_object: (sppasTranscription)
-        :returns: (sppasMedia)
-
-        """
-        media = None
-        idt = media_name
-        # Search the media in the object
-        for m in meta_object.get_media_list():
-            if m.get_filename() == idt:
-                media = m
-        if media is None:
-            # Create a new media
-            media = sppasMedia(idt)
-            # Add the newly created media in the given object
-            meta_object.add_media(media)
-
-        return media
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def load(filename):
-        """ Load a file into lines.
-
-        :param filename: (str)
-        :returns: list of lines (str)
-
-        """
-        with codecs.open(filename, 'r', sppas.encoding) as fp:
-            lines = fp.readlines()
-            fp.close()
-
-        return lines
-
-    # -----------------------------------------------------------------
-
-    @staticmethod
-    def _parse_comment(comment, meta_object):
-        """ Parse a comment and eventually fill metadata.
-
-        :param comment: (str) A line of a file
-        :param meta_object: (sppasMeta)
-
-        """
-        comment = comment.replace(";;", "")
-        comment = comment.strip()
-        if '=' in comment:
-            tab_comment = comment.split('=')
-            if len(tab_comment) == 2:
-                meta_key = tab_comment[0].strip()
-                meta_val = tab_comment[1].strip()
-                meta_object.set_meta(meta_key, meta_val)
 
 # ----------------------------------------------------------------------------
 
@@ -407,7 +285,7 @@ class sppasCTM(sppasBaseSclite):
 
         if tier is None:
             # Create the media linked to the tier
-            media = sppasBaseSclite.create_media(tab_line[0].strip(), self)
+            media = sppasBaseText.create_media(tab_line[0].strip(), self)
 
             # Create the tier and set metadata
             tier = self.create_tier(tier_name, media=media)

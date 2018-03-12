@@ -110,8 +110,7 @@ class TestMRK(unittest.TestCase):
             os.mkdir(TEMP)
 
     def tearDown(self):
-        #shutil.rmtree(TEMP)
-        pass
+        shutil.rmtree(TEMP)
 
     # -----------------------------------------------------------------
 
@@ -156,7 +155,6 @@ class TestMRK(unittest.TestCase):
         self.assertEqual(len(mrk), 2)
         mrk.write(os.path.join(TEMP, "sample.mrk"))
 
-        print "FILE=", os.path.join(TEMP, "sample.mrk")
         mrk2 = sppasMRK()
         mrk2.read(os.path.join(TEMP, "sample.mrk"))
         self.assertEqual(len(mrk2), 2)

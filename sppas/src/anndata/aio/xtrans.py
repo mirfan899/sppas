@@ -47,19 +47,18 @@ from sppas import encoding
 
 from ..anndataexc import AioLineFormatError
 from ..anndataexc import AnnDataTypeError
-from ..media import sppasMedia
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
-from .basetrs import sppasBaseIO
+from .text import sppasBaseText
 
 # ----------------------------------------------------------------------------
 
 
-class sppasTDF(sppasBaseIO):
+class sppasTDF(sppasBaseText):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -86,14 +85,31 @@ class sppasTDF(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
-        with codecs.open(filename, 'r', encoding) as fp:
-            lines = fp.readlines()
-            for line in lines:
-                if sppasTDF.is_comment(line):
-                    continue
-                tab = line.split('\t')
-                if len(tab) < 10:  # expected is 13
-                    return False
+        """ Check whether a file is of TDF format or not.
+
+        :param filename: (str) Name of the file to check.
+        :returns: (bool)
+
+        """
+        # Open and load the content.
+        try:
+            with codecs.open(filename, 'r', sppas.encoding) as fp:
+                lines = fp.readlines()
+                fp.close()
+        except IOError:
+            # can't open the file
+            return False
+        except UnicodeDecodeError:
+            # can't open with SPPAS default encoding
+            return False
+
+        # Check each line
+        for line in lines:
+            if sppasTDF.is_comment(line):
+                continue
+            tab = line.split('\t')
+            if len(tab) < 10:  # expected is 13
+                return False
 
         return True
 
@@ -101,27 +117,16 @@ class sppasTDF(sppasBaseIO):
 
     @staticmethod
     def make_point(midpoint):
-        """ In TDF, the localization is a time value, so a float. """
+        """ In Xtrans, the localization is a time value, so always a float.
+        Override the sppasBaseText.
 
+        """
         try:
             midpoint = float(midpoint)
         except ValueError:
             raise AnnDataTypeError(midpoint, "float")
 
         return sppasPoint(midpoint, radius=0.005)
-
-    # -----------------------------------------------------------------
-
-    @staticmethod
-    def is_comment(line):
-        """ Check if the line is a comment.
-
-        :param line: (str)
-        :return: boolean
-
-        """
-        line = line.strip()
-        return line.startswith(";;")
 
     # -----------------------------------------------------------------
 
@@ -133,8 +138,9 @@ class sppasTDF(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBaseIO.__init__(self, name)
+        sppasBaseText.__init__(self, name)
 
+        # override all
         self._accept_multi_tiers = True
         self._accept_no_tiers = True
         self._accept_metadata = False
@@ -155,19 +161,17 @@ class sppasTDF(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a tdf file and fill the Transcription.
+        """ Read a raw file and fill the Transcription.
         It creates a tier for each speaker-channel observed in the file.
 
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'r', encoding) as fp:
-            lines = fp.readlines()
-            fp.close()
-
+        lines = sppasBaseText.load(filename)
         if len(lines) < 2:
             return
 
+        # The first line is the name of the columns
         first_line = lines[0]
         lines.pop(0)
         self._extract_lines(first_line, lines)
@@ -201,8 +205,12 @@ class sppasTDF(sppasBaseIO):
         # Extract rows, create tiers and metadata.
         for i, line in enumerate(lines):
 
-            # a comment
-            if sppasTDF.is_comment(line):
+            # ignore blank lines
+            if len(line) == 0:
+                continue
+            # a comment can contain metadata
+            if sppasBaseText.is_comment(line):
+                sppasBaseText._parse_comment(line, self)
                 continue
 
             # a tab-delimited line
@@ -216,7 +224,7 @@ class sppasTDF(sppasBaseIO):
             if tier is None:
 
                 # Create the media linked to the tier
-                media = self._create_media(line[media_url].strip())
+                media = sppasBaseText.create_media(line[media_url].strip(), self)
 
                 # Create the tier and set metadata
                 tier = self.create_tier(tier_name, media=media)
@@ -230,18 +238,3 @@ class sppasTDF(sppasBaseIO):
             location = sppasLocation(sppasInterval(sppasTDF.make_point(line[begin]),
                                                    sppasTDF.make_point(line[end])))
             tier.create_annotation(location, label)
-
-    # -----------------------------------------------------------------
-
-    def _create_media(self, media_name):
-        """ Return the media of the given name (create it if necessary). """
-
-        media = None
-        idt = media_name
-        for m in self._media:
-            if m.get_filename() == idt:
-                media = m
-        if media is None:
-            media = sppasMedia(idt)
-
-        return media

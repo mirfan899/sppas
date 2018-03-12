@@ -1,5 +1,45 @@
-# -*- coding:utf-8 -*-
+# -*- coding: UTF-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.anndata.tests.test_aio_text
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Test the reader/writer of SPPAS for TXT files.
+
+"""
 import unittest
 import os.path
 import shutil
@@ -78,19 +118,25 @@ class TestBaseText(unittest.TestCase):
         self.assertIsNone(sppasBaseText.split_lines(['a;a;a', 'b;b'], ";"))
 
         lines = list()
-        lines.append("7.887	10.892	Go maith anois a mhac. Anois cé acub?	0")
-        lines.append("11.034	12.343	Tá neart ábhair ansin anois agat.	1")
+        lines.append("7.887\t10.892\tGo maith anois a mhac. Anois cé acub?\t0")
+        lines.append("11.034\t12.343\tTá neart ábhair ansin anois agat.\t1")
         columns = sppasBaseText.split_lines(lines, separator=" ")
         self.assertIsNone(columns)
+
+        print "C'EST ICI:"
         columns = sppasBaseText.split_lines(lines, separator="\t")
+        self.assertIsNotNone(columns)
         self.assertEqual(len(columns), 2)     # 2 lines
         self.assertEqual(len(columns[0]), 4)  # 4 columns in each line
         self.assertEqual(columns[1][0], "11.034")
         self.assertEqual(columns[1][1], "12.343")
         self.assertEqual(columns[1][2], "Tá neart ábhair ansin anois agat.")
         self.assertEqual(columns[1][3], "1")
+
         lines.append(' ')
+        lines.append(';; comment')
         columns = sppasBaseText.split_lines(lines, separator="\t")
+        self.assertIsNotNone(columns)
         self.assertEqual(len(columns), 2)     # 2 lines
         self.assertEqual(len(columns[0]), 4)  # 4 columns in each line
 
