@@ -155,6 +155,7 @@ class TestSubRip(unittest.TestCase):
 
         with open(os.path.join(TEMP, "sample.srt")) as fp:
             lines = fp.readlines()
+            fp.close()
 
         self.assertEqual(len(lines), 4)
 

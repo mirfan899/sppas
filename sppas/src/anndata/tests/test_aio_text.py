@@ -102,6 +102,7 @@ class TestBaseText(unittest.TestCase):
         self.assertEqual("ab", sppasBaseText.format_quotation_marks("ab"))
         self.assertEqual("ab", sppasBaseText.format_quotation_marks('"ab"'))
         self.assertEqual("ab", sppasBaseText.format_quotation_marks("'ab'"))
+        self.assertEqual("ab", sppasBaseText.format_quotation_marks(' "ab" '))
         self.assertEqual("", sppasBaseText.format_quotation_marks(""))
         self.assertEqual("'", sppasBaseText.format_quotation_marks("'"))
 
@@ -123,7 +124,6 @@ class TestBaseText(unittest.TestCase):
         columns = sppasBaseText.split_lines(lines, separator=" ")
         self.assertIsNone(columns)
 
-        print "C'EST ICI:"
         columns = sppasBaseText.split_lines(lines, separator="\t")
         self.assertIsNotNone(columns)
         self.assertEqual(len(columns), 2)     # 2 lines
@@ -164,6 +164,111 @@ class TestBaseText(unittest.TestCase):
 
         # None
         self.assertIsNone(sppasBaseText.fix_location("", ""))
+
+    # -----------------------------------------------------------------
+
+    def test_is_comment(self):
+        """ Check if the line is a comment. """
+
+        self.assertTrue(sppasBaseText.is_comment(";;"))
+        self.assertTrue(sppasBaseText.is_comment(";; comment"))
+        self.assertTrue(sppasBaseText.is_comment("   \t ;; comment"))
+        self.assertFalse(sppasBaseText.is_comment("; not a comment"))
+        self.assertFalse(sppasBaseText.is_comment("2"))
+
+    # -----------------------------------------------------------------
+
+    def test_create_media(self):
+        """ Return the media of the given name (create it if necessary)."""
+
+        trs = sppasBaseText()
+        self.assertEqual(len(trs.get_media_list()), 0)
+
+        media = sppasBaseText.create_media("filename.wav", trs)
+        self.assertEqual(len(trs.get_media_list()), 1)
+        self.assertEqual(trs.get_media_list()[0], media)
+        self.assertEqual(media.get_filename(), "filename.wav")
+
+        media2 = sppasBaseText.create_media("filename.wav", trs)
+        self.assertEqual(len(trs.get_media_list()), 1)
+        self.assertEqual(media2, media)
+
+    # -----------------------------------------------------------------
+
+    def test_load(self):
+        """ Load a file into lines. """
+
+        lines = sppasBaseText.load(os.path.join(DATA, "sample.ctm"))
+        self.assertEqual(len(lines), 45)
+
+        with self.assertRaises(UnicodeDecodeError):
+            sppasBaseText.load(os.path.join(DATA, "sample-utf16.TextGrid"))
+
+        with self.assertRaises(IOError):
+            sppasBaseText.load(os.path.join(DATA, "not-exists"))
+
+    # -----------------------------------------------------------------
+
+    def test_parse_comment(self):
+        """ Parse a comment and eventually fill metadata. """
+
+        ctm = sppasRawText()
+        line = ";; this is a simple comment."
+        sppasBaseText._parse_comment(line, ctm)
+        self.assertEqual(len(ctm.get_meta_keys()), 1)  # id
+
+        line = ";; meta_key=meta_value"
+        sppasBaseText._parse_comment(line, ctm)
+        self.assertEqual(len(ctm.get_meta_keys()), 2)
+        self.assertEqual(ctm.get_meta("meta_key"), "meta_value")
+
+        line = ";; \t meta key whitespace   =   meta value\t whitespace   "
+        sppasBaseText._parse_comment(line, ctm)
+        self.assertEqual(len(ctm.get_meta_keys()), 3)
+        self.assertEqual(ctm.get_meta("meta key whitespace"), "meta value whitespace")
+
+    # -----------------------------------------------------------------
+
+    def test_serialize_header(self):
+        """ Create a comment with the metadata to be written. """
+
+        ctm = sppasRawText()
+        lines = sppasBaseText.serialize_header("sample.ctm", ctm)
+        self.assertEqual(len(lines.split('\n')), 16)
+
+        ctm = sppasRawText()
+        ctm.set_meta("meta_key", "meta_value")
+        lines = sppasBaseText.serialize_header("sample.ctm", ctm)
+        self.assertEqual(len(lines.split('\n')), 17)
+
+    # -----------------------------------------------------------------
+
+    def test_serialize_header_private(self):
+        """ Create a comment with the metadata to be written. """
+
+        header = sppasBaseText._serialize_header().split("\n")
+        self.assertEqual(len(header), 9)
+        for i in range(8):
+            self.assertTrue(header[i].startswith(";;"))
+
+    # -----------------------------------------------------------------
+
+    def test_serialize_metadata_private(self):
+        """ Serialize the metadata of an object in a multi-lines comment. """
+
+        ctm = sppasRawText()
+        line = sppasBaseText._serialize_metadata(ctm)
+        self.assertEqual(len(line.split("\n")), 2)  # id
+
+        ctm = sppasRawText()
+        ctm.set_meta("meta_key", "meta_value")
+        line = sppasBaseText._serialize_metadata(ctm)
+        self.assertTrue(";; meta_key=meta_value\n" in line)
+
+        stm = sppasRawText()
+        stm.set_meta("meta key whitespace", "meta value\t whitespace  ")
+        line = sppasBaseText._serialize_metadata(stm)
+        self.assertTrue(";; meta key whitespace=meta value whitespace\n" in line)
 
 # ---------------------------------------------------------------------
 
@@ -238,15 +343,6 @@ class TestRawText(unittest.TestCase):
 
     # -----------------------------------------------------------------
 
-    def test_read_csv(self):
-        txt = sppasCSV()
-        txt.read(os.path.join(DATA, "sample-irish.csv"))
-        self.assertEqual(len(txt), 2)
-        self.assertEqual(len(txt[0]), 5)
-        self.assertEqual(len(txt[1]), 5)
-
-    # -----------------------------------------------------------------
-
     def test_write(self):
         txt = sppasRawText()
         txt.write(os.path.join(TEMP, "sample.txt"))
@@ -259,17 +355,6 @@ class TestRawText(unittest.TestCase):
         txt.create_tier()
         with self.assertRaises(AioMultiTiersError):
             txt.write(os.path.join(TEMP, "sample.txt"))
-
-        # Empty files:
-        csv = sppasCSV()
-        csv.write(os.path.join(TEMP, "sample.csv"))
-        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample.csv")))
-        self.assertEqual(os.stat(os.path.join(TEMP, "sample.csv")).st_size, 0)
-
-        csv.create_tier()
-        csv.write(os.path.join(TEMP, "sample2.csv"))
-        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample2.csv")))
-        self.assertEqual(os.stat(os.path.join(TEMP, "sample2.csv")).st_size, 0)
 
     # -----------------------------------------------------------------
 
@@ -291,19 +376,8 @@ class TestRawText(unittest.TestCase):
                                  a2.get_lowest_localization().get_midpoint())
         txt = sppasRawText()
         txt.read(os.path.join(DATA, "sample-irish-2.txt"))
-        # txt.write(os.path.join(TEMP, "sample-2.txt"))
-        # txt2 = sppasRawText()
-        # txt2.read(os.path.join(TEMP, "sample-2.txt"))
-        # # Compare annotations of original and saved-read
-        # for t1, t2 in zip(txt, txt2):
-        #     self.assertEqual(len(t1), len(t2))
-        #     for a1, a2 in zip(t1, t2):
-        #         self.assertEqual(a1.get_label().get_best().get_typed_content(),
-        #                          a2.get_label().get_best().get_typed_content())
-        #         self.assertEqual(a1.get_highest_localization().get_midpoint(),
-        #                          a2.get_highest_localization().get_midpoint())
-        #         self.assertEqual(a1.get_lowest_localization().get_midpoint(),
-        #                          a2.get_lowest_localization().get_midpoint())
+        with self.assertRaises(AioMultiTiersError):
+            txt.write(os.path.join(TEMP, "sample-2.txt"))
 
 # ---------------------------------------------------------------------
 
@@ -311,7 +385,28 @@ class TestRawText(unittest.TestCase):
 class TestCSVText(unittest.TestCase):
     """
     Represents a CSV reader/writer.
+
     """
+    def setUp(self):
+        if os.path.exists(TEMP) is False:
+            os.mkdir(TEMP)
+
+    def tearDown(self):
+        shutil.rmtree(TEMP)
+
+    # -----------------------------------------------------------------
+
+    def test_detect(self):
+        """ Test the file format detection method. """
+
+        for filename in os.listdir(DATA):
+            f = os.path.join(DATA, filename)
+            if filename.endswith('.csv'):
+                self.assertTrue(sppasCSV.detect(f))
+            else:
+                self.assertFalse(sppasCSV.detect(f))
+
+    # -----------------------------------------------------------------
 
     def test_members(self):
         txt = sppasCSV()
@@ -329,3 +424,87 @@ class TestCSVText(unittest.TestCase):
         self.assertFalse(txt.radius_support())
         self.assertTrue(txt.gaps_support())
         self.assertTrue(txt.overlaps_support())
+
+    # -----------------------------------------------------------------
+
+    def test_format_lines(self):
+        """ Append lines content into self. """
+
+        csv = sppasCSV()
+        lines = list()
+        lines.append('"transcript"\t"7.887"\t"10.892"\t"Go maith anois a mhac. Anois cé acub?"')
+        lines.append('"transcript"\t"11.034"\t"12.343"\t"Tá neart ábhair ansin anois agat."')
+        csv.format_columns_lines(lines)
+        self.assertEqual(len(csv), 1)
+        self.assertEqual(csv[0].get_name(), "transcript")
+        self.assertEqual(len(csv[0]), 2)
+
+        csv = sppasCSV()
+        lines = list()
+        lines.append('"transcript";"7.887";"10.892";"Go maith anois a mhac. Anois cé acub?"')
+        lines.append('"transcript";"11.034";"12.343";"Tá neart ábhair ansin anois agat."')
+        csv.format_columns_lines(lines)
+        self.assertEqual(len(csv), 1)
+        self.assertEqual(csv[0].get_name(), "transcript")
+        self.assertEqual(len(csv[0]), 2)
+
+        csv = sppasCSV()
+        lines = list()
+        lines.append('"transcript","7.887","10.892","Go maith anois a mhac. Anois cé acub?"')
+        lines.append('"transcript","11.034","12.343","Tá neart, ábhair, ansin anois agat."')
+        csv.format_columns_lines(lines)
+        self.assertEqual(len(csv), 1)
+        self.assertEqual(csv[0].get_name(), "transcript")
+        self.assertEqual(len(csv[0]), 2)
+
+    # -----------------------------------------------------------------
+
+    def test_read(self):
+        txt = sppasCSV()
+        txt.read(os.path.join(DATA, "sample-irish.csv"))
+        self.assertEqual(len(txt), 2)
+        self.assertEqual(len(txt[0]), 5)
+        self.assertEqual(len(txt[1]), 5)
+
+    # -----------------------------------------------------------------
+
+    def test_write(self):
+
+        # Empty files:
+        csv = sppasCSV()
+        csv.write(os.path.join(TEMP, "sample.csv"))
+        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample.csv")))
+        self.assertEqual(os.stat(os.path.join(TEMP, "sample.csv")).st_size, 0)
+
+        csv.create_tier()
+        csv.write(os.path.join(TEMP, "sample2.csv"))
+        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample2.csv")))
+        self.assertEqual(os.stat(os.path.join(TEMP, "sample2.csv")).st_size, 0)
+
+        csv[0].create_annotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
+        csv.write(os.path.join(TEMP, "sample3.csv"))
+        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample3.csv")))
+        with open(os.path.join(TEMP, "sample3.csv")) as fp:
+            lines = fp.readlines()
+            fp.close()
+        self.assertEqual(len(lines), 1)
+
+    # -----------------------------------------------------------------
+
+    def test_read_write(self):
+        txt = sppasCSV()
+        txt.read(os.path.join(DATA, "sample-irish.csv"))
+        txt.write(os.path.join(TEMP, "sample-irish.csv"))
+        txt2 = sppasCSV()
+        txt2.read(os.path.join(TEMP, "sample-irish.csv"))
+
+        # Compare annotations of original and saved-read
+        for t1, t2 in zip(txt, txt2):
+            self.assertEqual(len(t1), len(t2))
+            for a1, a2 in zip(t1, t2):
+                self.assertEqual(a1.get_label().get_best().get_typed_content(),
+                                 a2.get_label().get_best().get_typed_content())
+                self.assertEqual(a1.get_highest_localization().get_midpoint(),
+                                 a2.get_highest_localization().get_midpoint())
+                self.assertEqual(a1.get_lowest_localization().get_midpoint(),
+                                 a2.get_lowest_localization().get_midpoint())

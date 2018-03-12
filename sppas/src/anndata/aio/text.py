@@ -140,6 +140,7 @@ class sppasBaseText(sppasBaseIO):
         :returns: the text without initial and final quotation mark.
 
         """
+        text = sppasUnicode(text).to_strip()
         if len(text) >= 2:
             if (text.startswith('"') and text.endswith('"')) \
               or (text.startswith("'") and text.endswith("'")):
@@ -330,6 +331,46 @@ class sppasBaseText(sppasBaseIO):
 
         return media
 
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def get_lines_columns(lines):
+        """ Column-delimited? Search for the relevant separator.
+
+        :param lines: (list of str)
+        :returns: lines (list) of columns (list of str)
+
+        """
+        nb_col = 0
+        columns = None
+        sep = None
+
+        for separator in COLUMN_SEPARATORS:
+            columns = sppasBaseText.split_lines(lines, separator)
+            if columns is not None and len(columns) > 0 and len(columns[0]) > nb_col:
+                sep = separator
+        if sep is not None:
+            columns = sppasBaseText.split_lines(lines, sep)
+
+        return columns
+
+    # -----------------------------------------------------------------
+
+    @staticmethod
+    def _serialize_label(label):
+        """ Convert a label into a string. """
+
+        if label is None:
+            return ""
+
+        if label.get_best() is None:
+            return ""
+
+        if label.get_best().is_empty():
+            return ""
+
+        return label.get_best().get_content()
+
 # ----------------------------------------------------------------------------
 
 
@@ -408,16 +449,7 @@ class sppasRawText(sppasBaseText):
     def _parse_lines(self, lines):
         """ Fill the transcription from the lines of the TXT file. """
 
-        # Column-delimited? Search for the relevant separator.
-        nb_col = 0
-        columns = None
-        sep = None
-        for separator in COLUMN_SEPARATORS:
-            columns = sppasBaseText.split_lines(lines, separator)
-            if columns is not None and len(columns) > 0 and len(columns[0]) > nb_col:
-                sep = separator
-        if sep is not None:
-            columns = sppasBaseText.split_lines(lines, sep)
+        columns = sppasBaseText.get_lines_columns(lines)
 
         if columns is None:
             self.__format_raw_lines(lines)
@@ -542,20 +574,18 @@ class sppasRawText(sppasBaseText):
                 return
 
             if tier.get_name() == "RawTranscription":
-                for annotation in tier:
-                    fp.write(annotation.get_label().get_best().get_content() + '\n')
+                for ann in tier:
+                    t = sppasBaseText._serialize_label(ann.get_label())
+                    fp.write(t + '\n')
             else:
-                for annotation in tier:
-                    if annotation.get_label() is None:
-                        t = ""
-                    else:
-                        t = annotation.get_label().get_best().get_content()
+                for ann in tier:
+                    t = sppasBaseText._serialize_label(ann.get_label())
                     if point:
-                        mp = annotation.get_lowest_localization().get_midpoint()
+                        mp = ann.get_lowest_localization().get_midpoint()
                         fp.write("{}\t\t{}\n".format(mp, t))
                     else:
-                        b = annotation.get_lowest_localization().get_midpoint()
-                        e = annotation.get_highest_localization().get_midpoint()
+                        b = ann.get_lowest_localization().get_midpoint()
+                        e = ann.get_highest_localization().get_midpoint()
                         fp.write("{}\t{}\t{}\n".format(b, e, t))
 
             fp.close()
@@ -575,16 +605,31 @@ class sppasCSV(sppasBaseText):
     """
     @staticmethod
     def detect(filename):
+        """ Check whether a file is of CSV format or not.
+
+        :param filename: (str) Name of the file to check.
+        :returns: (bool)
+
+        """
         csv_line = re.compile(
             '^(("([^"]|"")*"|[^",]*),)+("([^"]|"")*"|[^",]*)$')
 
-        with codecs.open(filename, 'r', sppas.encoding) as fp:
-            detected = True
-            for i in range(1, 10):
-                if not csv_line.match(fp.next()):
-                    detected = False
+        # Open and load the content.
+        try:
+            with codecs.open(filename, 'r', sppas.encoding) as fp:
+                lines = fp.readlines()
+                fp.close()
+        except IOError:
+            # can't open the file
+            return False
+        except UnicodeDecodeError:
+            # can't open with SPPAS default encoding
+            return False
 
-        return detected
+        for line in lines:
+            if not csv_line.match(line):
+                return False
+        return True
 
     # -----------------------------------------------------------------
 
@@ -594,13 +639,15 @@ class sppasCSV(sppasBaseText):
         :param name: (str) This transcription name.
 
         """
+        if name is None:
+            name = self.__class__.__name__
         sppasBaseText.__init__(self, name)
 
         self._accept_multi_tiers = True
 
     # -----------------------------------------------------------------
 
-    def read(self, filename, separator=',', signed=True):
+    def read(self, filename, signed=True):
         """ Read a CSV file.
 
         :param filename: (str)
@@ -618,41 +665,83 @@ class sppasCSV(sppasBaseText):
             fp.close()
 
         if len(lines) > 0:
-            self.format_columns_lines(lines, separator)
+            self.format_columns_lines(lines)
 
     # -----------------------------------------------------------------
 
-    def format_columns_lines(self, lines, separator):
-        """ Append lines content into self.
+    @staticmethod
+    def is_number(s):
+        try:
+            float(s)
+            return True
+        except ValueError:
+            pass
 
-        It doesn't suppose that the file is sorted by tiers
+        try:
+            import unicodedata
+            unicodedata.numeric(s)
+            return True
+        except (TypeError, ValueError):
+            pass
+
+        return False
+
+    # -----------------------------------------------------------------
+
+    def format_columns_lines(self, lines):
+        """ Append lines content into self.
+        The algorithm doesn't suppose that the file is sorted by tiers
 
         :param lines: (list)
-        :param separator: (char)
 
         """
-        for i, line in enumerate(lines):
+        for separator in COLUMN_SEPARATORS:
 
-            row = line.split(separator)
-            if len(row) < 4:
-                raise AioLineFormatError(i+1, line)
+            i = 0
+            for line in lines:
 
-            # Fix the name of the tier (column 1)
-            name = sppasBaseText.format_quotation_marks(row[0])
-            tier = self.find(name)
-            if tier is None:
-                tier = self.create_tier(name)
+                row = line.split(separator)
+                if len(row) < 4:
+                    continue
 
-            # Fix the location (columns 2 and 3)
-            location = sppasBaseText.fix_location(row[1], row[2])
-            if location is None:
-                raise AioLineFormatError(i + 1, line)
+                col1 = sppasBaseText.format_quotation_marks(row[0])
+                col2 = sppasBaseText.format_quotation_marks(row[1])
+                col3 = sppasBaseText.format_quotation_marks(row[2])
+                content = sppasBaseText.format_quotation_marks(" ".join(row[3:]))
 
-            # Fix the label (the other columns)
-            text = sppasBaseText.format_quotation_marks(" ".join(row[3:]))
+                if sppasCSV.is_number(col1) and sppasCSV.is_number(col2):
+                    begin = col1
+                    end = col2
+                    tier_name = col3
+                elif sppasCSV.is_number(col2) and sppasCSV.is_number(col3):
+                    begin = col2
+                    end = col3
+                    tier_name = col1
+                else:
+                    continue
 
-            # Add the new annotation
-            tier.create_annotation(location, sppasLabel(sppasTag(text)))
+                # Fix the name of the tier (column 1)
+                tier = self.find(tier_name)
+                if tier is None:
+                    tier = self.create_tier(tier_name)
+
+                # Fix the location (columns 2 and 3)
+                location = sppasBaseText.fix_location(begin, end)
+                if location is None:
+                    continue
+
+                # Add the new annotation
+                tier.create_annotation(location, sppasLabel(sppasTag(content)))
+
+                i += 1
+
+            # we have found the good separator
+            if i == len(lines):
+                return separator
+
+        # we failed to find a separator to get the same number of columns
+        # in each line
+        raise AioLineFormatError(1, lines[0])
 
     # -----------------------------------------------------------------
 
@@ -675,16 +764,13 @@ class sppasCSV(sppasBaseText):
                 name = tier.get_name()
                 point = tier.is_point()
 
-                for annotation in tier:
-                    t = annotation.get_label().get_best().get_content()
+                for ann in tier:
+                    content = sppasRawText._serialize_label(ann.get_label())
                     if point:
-                        mp = annotation.get_lowest_localization().get_midpoint()
-                        fp.write('"{}",{},,"{}"\n'.format(name, mp, t))
-                        print('"{}",{},,"{}"\n'.format(name, mp, t))
+                        mp = ann.get_lowest_localization().get_midpoint()
+                        fp.write('"{}",{},,"{}"\n'.format(name, mp, content))
                     else:
-                        b = annotation.get_lowest_localization().get_midpoint()
-                        e = annotation.get_highest_localization().get_midpoint()
-                        fp.write('"{}",{},{},"{}"\n'.format(name, b, e, t))
-                        print('"{}",{},{},"{}"\n'.format(name, b, e, t))
-
+                        b = ann.get_lowest_localization().get_midpoint()
+                        e = ann.get_highest_localization().get_midpoint()
+                        fp.write('"{}",{},{},"{}"\n'.format(name, b, e, content))
             fp.close()
