@@ -53,6 +53,12 @@ class TestTag(unittest.TestCase):
         self.assertNotEqual(text.get_typed_content(), textstr.get_typed_content())
         self.assertEqual(text.get_content(), textstr.get_content())
 
+        # Expect errors:
+        with self.assertRaises(TypeError):
+            sppasTag("uh uhm", tag_type="float")
+        with self.assertRaises(TypeError):
+            sppasTag("uh uhm", tag_type="int")
+
     def test_set(self):
         text = sppasTag("test")
         text.set_content("toto")
@@ -99,7 +105,7 @@ class TestLabel(unittest.TestCase):
     def test_unicode(self):
         label = sppasLabel(sppasTag("être"))
 
-    def test_labeltype(self):
+    def test_label_type(self):
         label = sppasLabel(sppasTag(2, "int"))
         self.assertIsInstance(str(label.get_best()), str)
         self.assertIsInstance(label.get_best().get_content(), text_type)
@@ -119,6 +125,15 @@ class TestLabel(unittest.TestCase):
 
         label.append(sppasTag("score1.0"), score=1.0)
         self.assertEqual(label.get_best().get_content(), u("score1.0"))
+
+        # expect error (types inconsistency):
+        text1 = sppasTag(2.1)
+        self.assertEqual(text1.get_type(), "str")
+        text2 = sppasTag(2.10, tag_type="float")
+        self.assertEqual(text2.get_type(), "float")
+        label.append(text1, score=0.8)
+        with self.assertRaises(TypeError):
+            label.append(text2, score=0.2)
 
     def test_is_empty(self):
         label = sppasLabel(sppasTag(""), score=0.5)

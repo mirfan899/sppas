@@ -145,14 +145,20 @@ class sppasTag(object):
         if tag_type is not None:
             if tag_type in ["float", "int", "bool"]:
                 if tag_type == "float":
-                    tag_content = float(tag_content)
-                elif tag_type == "int":
-                    tag_content = int(tag_content)
-                else:
-                    tag_content = bool(tag_content)
+                    try:
+                        tag_content = float(tag_content)
+                    except ValueError:
+                        raise AnnDataTypeError(tag_content, "float")
 
-                if isinstance(tag_content, (float, int, bool)) is False:
-                    raise AnnDataTypeError(tag_content, tag_type)
+                elif tag_type == "int":
+                    try:
+                        tag_content = int(tag_content)
+                    except ValueError:
+                        raise AnnDataTypeError(tag_content, "int")
+
+                else:
+                    # always works. Never raises ValueError!
+                    tag_content = bool(tag_content)
 
         # we systematically convert unknown data into strings
         tag_content = str(tag_content)

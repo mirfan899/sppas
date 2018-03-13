@@ -133,7 +133,8 @@ class sppasAnnotation(sppasMetaData):
 
         """
         if self.__parent is not None:
-            self.__parent.validate_annotation_label(self.__label)
+            if self.__label is not None:
+                self.__parent.validate_annotation_label(self.__label)
             self.__parent.validate_annotation_location(self.__location)
 
     # -----------------------------------------------------------------------
@@ -209,7 +210,8 @@ class sppasAnnotation(sppasMetaData):
         :param tag: (sppasTag) the tag to be removed of the list.
 
         """
-        self.__label.remove(tag)
+        if self.__label is not None:
+            self.__label.remove(tag)
 
     # -----------------------------------------------------------------------
 
@@ -225,6 +227,42 @@ class sppasAnnotation(sppasMetaData):
         if reverse is False:
             return r
         return not r
+
+    # -----------------------------------------------------------------------
+
+    def label_is_string(self):
+        """ Return True if the type of the tags of a label are str or unicode. """
+
+        if self.__label is None:
+            return False
+        return self.__label.is_string()
+
+    # -----------------------------------------------------------------------
+
+    def label_is_float(self):
+        """ Return True if the tags are float values """
+
+        if self.__label is None:
+            return False
+        return self.__label.is_float()
+
+    # -----------------------------------------------------------------------
+
+    def label_is_int(self):
+        """ Return True if the tags are integer values """
+
+        if self.__label is None:
+            return False
+        return self.__label.is_int()
+
+    # -----------------------------------------------------------------------
+
+    def label_is_bool(self):
+        """ Return True if the tags are integer values """
+
+        if self.__label is None:
+            return False
+        return self.__label.is_bool()
 
     # -----------------------------------------------------------------------
 

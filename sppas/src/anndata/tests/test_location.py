@@ -18,11 +18,16 @@ class TestLocation(unittest.TestCase):
         loc2 = sppasPoint(1.8)
 
         location0 = sppasLocation(loc0)
-        location1 = sppasLocation(loc1, score=0.5)
         self.assertEqual(len(location0), 1)
         location0.append(loc2)
         self.assertEqual(len(location0), 2)
         self.assertEqual(location0.get_best(), loc0)
+
+        location1 = sppasLocation(loc0, score=0.5)
+
+        # expect error (types inconsistency)
+        with self.assertRaises(TypeError):
+            location1.append(sppasInterval(loc0, loc2), score=0.5)
 
     def test_get(self):
         location = sppasLocation(sppasPoint(1))

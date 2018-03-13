@@ -135,8 +135,8 @@ class TestTier(unittest.TestCase):
         self.assertTrue(tierP.is_point())
         self.assertFalse(tierP.is_interval())
         self.assertFalse(tierP.is_disjoint())
-        with self.assertRaises(TypeError):
-            tierP.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1),sppasPoint(2)))))
+        with self.assertRaises(AnnDataTypeError):
+            tierP.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(2)))))
         tierI = sppasTier()
         tierI.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(2)))))
         self.assertFalse(tierI.is_point())

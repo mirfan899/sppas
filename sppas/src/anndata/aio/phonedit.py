@@ -52,6 +52,8 @@ import sppas
 
 from sppas.src.utils.makeunicode import u
 from ..anndataexc import AnnDataTypeError
+from ..anndataexc import AioMultiTiersError
+from ..anndataexc import AioEmptyTierError
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
@@ -102,7 +104,7 @@ class sppasBasePhonedit(sppasBaseIO):
 
     @staticmethod
     def _parse(filename):
-        """ Parse a MRK configuration file.
+        """ Parse a configuration file.
 
         :param filename: (string) Configuration file name.
 
@@ -333,5 +335,132 @@ class sppasMRK(sppasBasePhonedit):
                         b = ann.get_lowest_localization().get_midpoint() * 1000.
                         e = ann.get_highest_localization().get_midpoint() * 1000.
                     fp.write(" {:s} {:s}\n".format(str(b), str(e)))
+
+            fp.close()
+
+# ----------------------------------------------------------------------------
+
+
+class sppasSignaix(sppasBaseIO):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Class for reader and writer of F0 values from LPL-Signaix.
+
+    """
+    @staticmethod
+    def detect(filename):
+        """ Check whether a file is of CTM format or not.
+
+        :param filename: (str) Name of the file to check.
+        :returns: (bool)
+
+        """
+        with open(filename, "r") as fp:
+            for line in fp.readline():
+                try:
+                    float(line)
+                except ValueError:
+                    return False
+        return True
+
+    # -----------------------------------------------------------------------
+
+    def __init__(self, name=None):
+        """ Initialize a new sppasBaseSclite instance.
+
+        :param name: (str) This transcription name.
+
+        """
+        if name is None:
+            name = self.__class__.__name__
+        sppasBaseIO.__init__(self, name)
+
+        self._accept_multi_tiers = False
+        self._accept_no_tiers = False
+        self._accept_metadata = False
+        self._accept_ctrl_vocab = False
+        self._accept_media = False
+        self._accept_hierarchy = False
+        self._accept_point = True
+        self._accept_interval = False
+        self._accept_disjoint = False
+        self._accept_alt_localization = False
+        self._accept_alt_tag = False
+        self._accept_radius = False
+        self._accept_gaps = False
+        self._accept_overlaps = False
+
+    # -----------------------------------------------------------------------
+
+    def read(self, filename, delta=0.01):
+        """ Read a file with Pitch values sampled at delta seconds.
+        The file contains one value at a line.
+
+        If the audio file is 30 seconds long and delta is 0.01, we expect:
+        100 * 30 = 3,000 lines in the file
+
+        :param filename: (str) intput filename.
+        :param delta: (float) sampling of the file. Default is one F0
+        value each 10ms, so 100 values / second
+
+        """
+        with open(filename, "r") as fp:
+            lines = fp.readlines()
+            fp.close()
+
+        tier = self.create_tier("Pitch")
+
+        # The reference time point of each interval is the middle.
+        # The radius allows to cover the delta range.
+        radius = delta / 2.
+        # Start time
+        current_time = delta / 2.
+        for line in lines:
+            location = sppasLocation(sppasPoint(current_time, radius))
+            label = sppasLabel(sppasTag(line, tag_type='float'))
+            tier.create_annotation(location, label)
+            current_time += delta
+
+    # -----------------------------------------------------------------------
+
+    def write(self, filename):
+        """ Write a file with pitch values.
+
+        :param filename: (str) output filename
+
+        """
+        if len(self) != 1:
+            raise AioMultiTiersError("Signaix-Pitch")
+        tier = self[0]
+
+        # we expect a not empty tier
+        if self.is_empty() is True:
+            raise AioEmptyTierError(".hz", tier.get_name())
+
+        # we expect a tier with only sppasPoint
+        if tier.is_point() is False:
+            raise AnnDataTypeError(tier.get_name(), "location point")
+
+        # check if the tier is really pitch values
+        # or at least, float values sampled at a delta time.
+        delta = 0.
+        previous = 0.
+        for ann in tier:
+
+            tag_type = ann.get_label().get_best().get_type()
+            if tag_type != "float":
+                raise AnnDataTypeError(tier.get_name(), "float")
+            if previous == 0.:
+                previous = ann.get_location()
+            pass
+
+        # ok. write the data into the file.
+        with open(filename, "w", buffering=8096) as fp:
+            for ann in tier:
+                fp.write("{:s}\n".format(ann.get_label().get_best().get_content()))
 
             fp.close()

@@ -133,6 +133,12 @@ class sppasLabel(object):
 
         if self.__tags is None:
             self.__tags = list()
+
+        # check types consistency.
+        if len(self.__tags) > 0:
+            if self.__tags[0][0].get_type() != tag.get_type():
+                raise AnnDataTypeError(tag, self.__tags[0][0].get_type())
+
         self.__tags.append([tag, score])
 
     # -----------------------------------------------------------------------
@@ -270,6 +276,58 @@ class sppasLabel(object):
                     return True
 
         return False
+
+    # -----------------------------------------------------------------------
+
+    def is_string(self):
+        """ Return True if tags are string or unicode.
+        Return False if no tag is set.
+
+        """
+        if self.__tags is None:
+                return False
+        if len(self.__tags) == 0:
+            return False
+        return self.__tags[0][0].get_type() == "str"
+
+    # -----------------------------------------------------------------------
+
+    def is_float(self):
+        """ Return True if tags are ot type "float".
+        Return False if no tag is set.
+
+        """
+        if self.__tags is None:
+            return False
+        if len(self.__tags) == 0:
+            return False
+        return self.__tags[0][0].get_type() == "float"
+
+    # -----------------------------------------------------------------------
+
+    def is_int(self):
+        """ Return True if tags are ot type "int".
+        Return False if no tag is set.
+
+        """
+        if self.__tags is None:
+            return False
+        if len(self.__tags) == 0:
+            return False
+        return self.__tags[0][0].get_type() == "int"
+
+    # -----------------------------------------------------------------------
+
+    def is_bool(self):
+        """ Return True if tags are ot type "bool".
+        Return False if no tag is set.
+
+        """
+        if self.__tags is None:
+            return False
+        if len(self.__tags) == 0:
+            return False
+        return self.__tags[0][0].get_type() == "bool"
 
     # -----------------------------------------------------------------------
     # Overloads

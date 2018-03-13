@@ -422,7 +422,7 @@ class sppasTier(sppasMetaData):
         if len(self.__ann) == 0:
             return False
 
-        return self.__ann[0].get_location().get_best().is_disjoint()
+        return self.__ann[0].get_location().is_disjoint()
 
     # -----------------------------------------------------------------------
 
@@ -432,7 +432,7 @@ class sppasTier(sppasMetaData):
         if len(self.__ann) == 0:
             return False
 
-        return self.__ann[0].get_location().get_best().is_interval()
+        return self.__ann[0].get_location().is_interval()
 
     # -----------------------------------------------------------------------
 
@@ -442,7 +442,7 @@ class sppasTier(sppasMetaData):
         if len(self.__ann) == 0:
             return False
 
-        return self.__ann[0].get_location().get_best().is_point()
+        return self.__ann[0].get_location().is_point()
 
     # -----------------------------------------------------------------------
 
@@ -755,6 +755,62 @@ class sppasTier(sppasMetaData):
     # Labels
     # -----------------------------------------------------------------------
 
+    def is_string(self):
+        """ All label tags are string or unicode. """
+
+        if len(self.__ann) == 0:
+            return False
+
+        for ann in self.__ann:
+            if ann.get_label() is not None:
+                return ann.label_is_string()
+
+        return False
+
+    # -----------------------------------------------------------------------
+
+    def is_float(self):
+        """ All label tags are float values. """
+
+        if len(self.__ann) == 0:
+            return False
+
+        for ann in self.__ann:
+            if ann.get_label() is not None:
+                return ann.label_is_float()
+
+        return False
+
+    # -----------------------------------------------------------------------
+
+    def is_int(self):
+        """ All label tags are integer values. """
+
+        if len(self.__ann) == 0:
+            return False
+
+        for ann in self.__ann:
+            if ann.get_label() is not None:
+                return ann.label_is_int()
+
+        return False
+
+    # -----------------------------------------------------------------------
+
+    def is_bool(self):
+        """ All label tags are boolean values. """
+
+        if len(self.__ann) == 0:
+            return False
+
+        for ann in self.__ann:
+            if ann.get_label() is not None:
+                return ann.label_is_bool()
+
+        return False
+
+    # -----------------------------------------------------------------------
+
     def search(self, tags, pos=0, forward=True, any_tag=True, function='exact', reverse=False):
         """ Return the index in the tier of the first annotation whose a tag matches.
 
@@ -813,6 +869,7 @@ class sppasTier(sppasMetaData):
 
         # Check if annotation is relevant for this tier
         #  - same localization type?
+        #  - same label type?
         #  - label consistency
         #  - location consistency
         if len(self.__ann) > 0:
@@ -822,6 +879,13 @@ class sppasTier(sppasMetaData):
                 raise AnnDataTypeError(annotation, "sppasInterval")
             if annotation.location_is_disjoint() is True and self.is_disjoint() is False:
                 raise AnnDataTypeError(annotation, "sppasDisjoint")
+
+            if annotation.get_label() is not None:
+                # perhaps the tier has no label! this is the first...
+
+                # else:
+                if annotation.label_is_string() is True and self.is_string() is False:
+                    pass
 
         # Assigning a parent will validate the label and the location
         annotation.set_parent(self)
