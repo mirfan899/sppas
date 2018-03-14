@@ -43,7 +43,6 @@ import xml.etree.cElementTree as ET
 
 from .basetrs import sppasBaseIO
 from ..anndataexc import AnnDataTypeError
-from ..media import sppasMedia
 from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
@@ -68,10 +67,13 @@ class sppasAudacity(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
-        with open(filename, 'r') as it:
-            it.next()
-            doctype_line = it.next().strip()
-            it.close()
+        try:
+            with open(filename, 'r') as it:
+                it.next()
+                doctype_line = it.next().strip()
+                it.close()
+        except IOError:
+            return False
 
         return 'audacityproject' in doctype_line
 
@@ -85,6 +87,7 @@ class sppasAudacity(sppasBaseIO):
             midpoint = float(midpoint)
         except ValueError:
             raise AnnDataTypeError(midpoint, "float")
+
         return sppasPoint(midpoint, radius=0.0005)
 
     # -----------------------------------------------------------------

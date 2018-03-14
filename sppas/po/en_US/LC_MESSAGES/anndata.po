@@ -71,8 +71,11 @@ msgstr "The tier '{:s}' can't be added into the hierarchy: a tier can't be its o
 msgid ":ERROR 1178: "
 msgstr "The tier can't be added into the hierarchy: '{:s}' is a parent of '{:s}'"
 
+msgid ":ERROR 1400: "
+msgstr "No such file: '{!s:s}'."
+
 msgid ":ERROR 1500: "
-msgstr "The file {!s:s} contains non UTF-8 characters: {:s}."
+msgstr "The file {filename} contains non {encoding} characters: {error}."
 
 msgid ":ERROR 1505: "
 msgstr "Fail formats: unrecognized extension for file {!s:s}."

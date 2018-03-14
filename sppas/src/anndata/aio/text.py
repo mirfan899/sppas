@@ -43,6 +43,8 @@ import re
 import sppas
 from sppas.src.utils.makeunicode import sppasUnicode
 
+from ..anndataexc import AioError
+from ..anndataexc import AioEncodingError
 from ..anndataexc import AioMultiTiersError
 from ..anndataexc import AioLineFormatError
 from ..annlocation.location import sppasLocation
@@ -187,16 +189,22 @@ class sppasBaseText(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def load(filename):
+    def load(filename, file_encoding=sppas.encoding):
         """ Load a file into lines.
 
         :param filename: (str)
+        :param file_encoding: (str)
         :returns: list of lines (str)
 
         """
-        with codecs.open(filename, 'r', sppas.encoding) as fp:
-            lines = fp.readlines()
-            fp.close()
+        try:
+            with codecs.open(filename, 'r', file_encoding) as fp:
+                lines = fp.readlines()
+                fp.close()
+        except IOError:
+            raise AioError(filename)
+        except UnicodeDecodeError:
+            raise AioEncodingError(filename, "", sppas.encoding)
 
         return lines
 
@@ -441,7 +449,7 @@ class sppasRawText(sppasBaseText):
         :param filename: (str)
 
         """
-        lines = sppasRawText.load(filename)
+        lines = sppasRawText.load(filename, sppas.encoding)
         self._parse_lines(lines)
 
     # -----------------------------------------------------------------
@@ -660,10 +668,7 @@ class sppasCSV(sppasBaseText):
         if signed is True:
             enc = 'utf-8-sig'
 
-        with codecs.open(filename, "r", enc) as fp:
-            lines = fp.readlines()
-            fp.close()
-
+        lines = sppasRawText.load(filename, enc)
         if len(lines) > 0:
             self.format_columns_lines(lines)
 

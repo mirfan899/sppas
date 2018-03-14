@@ -58,6 +58,7 @@ HIERARCHY_PARENT_TIER_ERROR = ":ERROR 1174: "
 HIERARCHY_CHILD_TIER_ERROR = ":ERROR 1176: "
 HIERARCHY_ANCESTOR_TIER_ERROR = ":ERROR 1178: "
 
+AIO_ERROR = ":ERROR 1400: "
 AIO_ENCODING_ERROR = ":ERROR 1500: "
 AIO_FILE_EXTENSION_ERROR = ":ERROR 1505: "
 AIO_MULTI_TIERS_ERROR = ":ERROR 1510: "
@@ -338,18 +339,36 @@ class HierarchyAncestorTierError(ValueError):
     def __str__(self):
         return repr(self.parameter)
 
+# -----------------------------------------------------------------------
+# AIO
+# -----------------------------------------------------------------------
+
+
+class AioError(IOError):
+    """ :ERROR 1400: AIO_ERROR
+    No such file: '{!s:s}'.
+
+    """
+    def __init__(self, filename):
+        self.parameter = AIO_ERROR + \
+                         (t.gettext(AIO_ERROR)).format(filename)
+
+    def __str__(self):
+        return repr(self.parameter)
 
 # -----------------------------------------------------------------------
 
 
 class AioEncodingError(UnicodeDecodeError):
     """ :ERROR 1500: AIO_ENCODING_ERROR
-    The file {!s:s} contains non UTF-8 characters: {:s}.
+    The file {filename} contains non {encoding} characters: {error}.
 
     """
-    def __init__(self, filename, error):
+    def __init__(self, filename, error, encoding="UTF-8"):
         self.parameter = AIO_ENCODING_ERROR + \
-                         (t.gettext(AIO_ENCODING_ERROR)).format(filename, error)
+                         (t.gettext(AIO_ENCODING_ERROR)).format(filename=filename,
+                                                                error=error,
+                                                                encoding=encoding)
 
     def __str__(self):
         return repr(self.parameter)

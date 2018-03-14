@@ -169,7 +169,7 @@ class sppasRW(object):
             # Read the file content dans store into a Trancription()
             trs.read(self.__filename)
         except UnicodeError as e:
-            raise AioEncodingError(self.__filename, str(e))
+            raise AioEncodingError(filename=self.__filename, error=str(e))
         except Exception:
             raise
 

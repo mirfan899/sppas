@@ -54,6 +54,7 @@ from sppas.src.utils.makeunicode import u
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioMultiTiersError
 from ..anndataexc import AioEmptyTierError
+from ..anndataexc import AioError
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
@@ -76,7 +77,7 @@ class sppasBasePhonedit(sppasBaseIO):
 
     """
     def __init__(self, name=None):
-        """ Initialize a new sppasBaseSclite instance.
+        """ Initialize a new sppasBasePhonedit instance.
 
         :param name: (str) This transcription name.
 
@@ -112,11 +113,16 @@ class sppasBasePhonedit(sppasBaseIO):
         parser = SafeConfigParser()
 
         # Open the file
-        with codecs.open(filename, "r", encoding="ISO-8859-1") as f:
-            try:  # python 3
-                parser.read_file(f)
-            except:  # python 2
-                parser.readfp(f)
+        try:
+            with codecs.open(filename, "r", encoding="ISO-8859-1") as f:
+                try:  # python 3
+                    parser.read_file(f)
+                except:  # python 2
+                    parser.readfp(f)
+        except IOError:
+            raise AioError(filename)
+        except UnicodeDecodeError:
+            raise
 
         return parser
 
@@ -359,18 +365,22 @@ class sppasSignaix(sppasBaseIO):
         :returns: (bool)
 
         """
-        with open(filename, "r") as fp:
-            for line in fp.readline():
-                try:
-                    float(line)
-                except ValueError:
-                    return False
+        try:
+            with open(filename, "r") as fp:
+                for line in fp.readline():
+                    try:
+                        float(line)
+                    except ValueError:
+                        return False
+        except IOError:
+            return False
+
         return True
 
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasBaseSclite instance.
+        """ Initialize a new sppasSignaix instance.
 
         :param name: (str) This transcription name.
 
@@ -408,9 +418,13 @@ class sppasSignaix(sppasBaseIO):
         value each 10ms, so 100 values / second
 
         """
-        with open(filename, "r") as fp:
-            lines = fp.readlines()
-            fp.close()
+        delta = float(delta)
+        try:
+            with open(filename, "r") as fp:
+                lines = fp.readlines()
+                fp.close()
+        except IOError:
+            raise AioError(filename)
 
         tier = self.create_tier("Pitch")
 

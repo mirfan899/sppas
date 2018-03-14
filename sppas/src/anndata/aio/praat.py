@@ -139,10 +139,21 @@ class sppasBasePraat(sppasBaseIO):
 
     @staticmethod
     def detect(filename, file_class):
-        with codecs.open(filename, 'r', encoding) as it:
-            file_type = sppasBasePraat.parse_string(it)
-            object_class = sppasBasePraat.parse_string(it)
-            return file_type == "ooTextFile" and object_class == file_class
+        """ Parse a configuration file.
+
+        :param filename: (string) Configuration file name.
+        :param file_class: (str)
+
+        """
+        try:
+            with codecs.open(filename, 'r', encoding) as it:
+                file_type = sppasBasePraat.parse_string(it)
+                object_class = sppasBasePraat.parse_string(it)
+                return file_type == "ooTextFile" and object_class == file_class
+        except IOError:
+            return False
+        except UnicodeDecodeError:
+            return False
 
     # -----------------------------------------------------------------
 
@@ -200,6 +211,11 @@ class sppasTextGrid(sppasBasePraat):
     """
     @staticmethod
     def detect(filename):
+        """ Parse a configuration file.
+
+        :param filename: (string) Configuration file name.
+
+        """
         return sppasBasePraat.detect(filename, "TextGrid")
 
     # -----------------------------------------------------------------
@@ -250,7 +266,9 @@ class sppasTextGrid(sppasBasePraat):
             except StopIteration:
                 pass
                 # FIXME: we should probably warn the user
-                #       that his file has invalid size values
+                #       that the file has invalid size values
+
+            it.close()
 
     # -----------------------------------------------------------------
 

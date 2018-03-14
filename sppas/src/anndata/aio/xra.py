@@ -63,7 +63,7 @@ class sppasXRA(sppasBaseIO):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      SPPAS XRA reader and writer.
 
     xra files are the native file format of the GPL tool SPPAS.
@@ -71,8 +71,17 @@ class sppasXRA(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
-        tree = ET.parse(filename)
-        root = tree.getroot()
+        """ Check whether a file is of XRA format or not.
+
+        :param filename: (str) Name of the file to check.
+        :returns: (bool)
+
+        """
+        try:
+            tree = ET.parse(filename)
+            root = tree.getroot()
+        except IOError:
+            return False
         return root.find('Tier') is not None
 
     # -----------------------------------------------------------------

@@ -49,6 +49,7 @@ from sppas.src.utils.makeunicode import u
 
 from ..aio.phonedit import sppasBasePhonedit
 from ..aio.phonedit import sppasMRK
+from ..aio.phonedit import sppasSignaix
 
 
 from ..annlocation.interval import sppasInterval
@@ -98,6 +99,8 @@ class TestBasePhonedit(unittest.TestCase):
         self.assertEqual(sppasPoint(3), sppasBasePhonedit.make_point("3000"))
         with self.assertRaises(TypeError):
             sppasBasePhonedit.make_point("3a")
+
+# ---------------------------------------------------------------------------
 
 
 class TestMRK(unittest.TestCase):
@@ -168,3 +171,33 @@ class TestMRK(unittest.TestCase):
                 self.assertEqual(ann.get_label().get_best().get_content(), u("ipu_"+str((i/2)+1)))
             else:
                 self.assertEqual(ann.get_label().get_best().get_content(), u("#"))
+
+# ---------------------------------------------------------------------------
+
+
+class TestSignaix(unittest.TestCase):
+    """
+    Test reader/writer of MRK files.
+
+    """
+    def setUp(self):
+        if os.path.exists(TEMP) is False:
+            os.mkdir(TEMP)
+
+    def tearDown(self):
+        shutil.rmtree(TEMP)
+
+    # -----------------------------------------------------------------------
+
+    def test_detect(self):
+        """ Test the file format detection method. """
+
+        for filename in os.listdir(DATA):
+            f = os.path.join(DATA, filename)
+            if filename.endswith('.hz'):
+                self.assertTrue(sppasSignaix.detect(f))
+            else:
+                self.assertFalse(sppasSignaix.detect(f))
+
+    # -----------------------------------------------------------------------
+

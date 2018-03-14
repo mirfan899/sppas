@@ -57,7 +57,7 @@ msgid ":ERROR 1152: "
 msgstr "Impossible de supprimer '{:s}' qui n'est pas dans '{:s}'."
 
 msgid ":ERROR 1160: "
-msgstr "'{:s} n'est pas une tier de '{:s}'. Cette tier ne peut pas être incluse dans la hierarchie."
+msgstr "'{:s} n'est pas une tier de '{:s}'. Cette tier ne peut pas être incluse dans la hiérarchie."
 
 msgid ":ERROR 1170: "
 msgstr "Alignement temporel entre tiers impossible: '{:s}' n'est pas un sur-ensemble de '{:s}'."
@@ -66,25 +66,28 @@ msgid ":ERROR 1172: "
 msgstr "Association temporelle entre tiers impossible: '{:s}' et '{:s}' n'ont pas toutes leurs valeurs temporelles identiques."
 
 msgid ":ERROR 1174: "
-msgstr "La tier ne peut pas être ajoutée dans la hierarchie: '{:s}' a déjà un lien de type {:s} avec sa tier parent '{:s}'."
+msgstr "La tier ne peut pas être ajoutée dans la hiérarchie car '{:s}' a déjà un lien de type {:s} avec sa tier parent '{:s}'."
 
 msgid ":ERROR 1176: "
-msgstr "La tier '{:s}' ne peut pas être ajoutée dans la hierarchie: une tier ne peut pas être son propre enfant."
+msgstr "La tier '{:s}' ne peut pas être ajoutée dans la hiérarchie car une tier ne peut pas être son propre enfant."
 
 msgid ":ERROR 1178: "
-msgstr "La tier ne peut pas être ajoutée dans la hierarchie: '{:s}' est un parent de '{:s}'"
+msgstr "La tier ne peut pas être ajoutée dans la hiérarchie car '{:s}' est un parent de '{:s}'"
+
+msgid ":ERROR 1400: "
+msgstr "Le fichier {!s:s} n'existe pas."
 
 msgid ":ERROR 1500: "
-msgstr "Le fichier {!s:s} contient des caractères invalides pour l'encodage UTF-8: {:s}."
+msgstr "Le fichier {filename} contient des caractères invalides pour l'encodage {encoding}: {error}."
 
 msgid ":ERROR 1505: "
-msgstr "L'extension du fichier {:s} n'est pas une extension connue."
+msgstr "L'extension du fichier {!s:s} n'est pas une extension connue."
 
 msgid ":ERROR 1510: "
-msgstr "Le format du fichier {:s} ne supporte pas le multi-tiers."
+msgstr "Le format du fichier {!s:s} ne supporte pas le multi-tiers."
 
 msgid ":ERROR 1515: "
-msgstr "Le format de fichier {:s} ne supporte pas la sauvegarde sans aucune tier."
+msgstr "Le format de fichier {!s:s} ne supporte pas la sauvegarde sans aucune tier."
 
 msgid ":ERROR 1520: "
 msgstr "Format de la ligne {:d} inconnu : '{!s:s}'."

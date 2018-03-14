@@ -34,11 +34,12 @@
 
 
 """
-import os.path
 import codecs
 
 from sppas import encoding
 
+from ..anndataexc import AioError
+from ..anndataexc import AioEncodingError
 from ..anndataexc import AioMultiTiersError
 from ..anndataexc import AioLocationTypeError
 from ..annlocation.location import sppasLocation
@@ -186,9 +187,21 @@ class sppasLab(sppasBaseHTK):
     """
     @staticmethod
     def detect(filename):
-        with codecs.open(filename, 'r', encoding) as fp:
-            line = fp.readline()
-            fp.close()
+        """ Check whether a file is of HTK-Lab format or not.
+
+        :param filename: (str) Name of the file to check.
+        :returns: (bool)
+
+        """
+        try:
+            with codecs.open(filename, 'r', encoding) as fp:
+                line = fp.readline()
+                fp.close()
+        except IOError:
+            return False
+        except UnicodeDecodeError:
+            return False
+
         # the first line contains at least 2 columns
         tab = line.split()
         if len(tab) < 2:
@@ -221,47 +234,52 @@ class sppasLab(sppasBaseHTK):
         :param filename:
 
         """
-        with codecs.open(filename, 'r', encoding) as fp:
+        try:
+            with codecs.open(filename, 'r', encoding) as fp:
+                lines = fp.readlines()
+                fp.close()
+        except IOError:
+            raise AioError(filename)
+        except UnicodeDecodeError:
+            raise AioEncodingError(filename, "")
 
-            tier = self.create_tier('Trans-MLF')
-            label = ""
-            prev_end = sppasBaseHTK.make_point(0)
+        tier = self.create_tier('Trans-MLF')
+        label = ""
+        prev_end = sppasBaseHTK.make_point(0)
 
-            for line in fp:
-                line = line.strip().split()
+        for line in lines:
+            line = line.strip().split()
 
-                has_begin = len(line) > 0 and line[0].isdigit()
-                has_end = len(line) > 1 and line[1].isdigit()
+            has_begin = len(line) > 0 and line[0].isdigit()
+            has_end = len(line) > 1 and line[1].isdigit()
 
-                if has_begin and has_end:
-                    if len(label) > 0:
-                        time = sppasInterval(prev_end, sppasBaseHTK.make_point(line[0]))
-                        tier.create_annotation(sppasLocation(time), sppasLabel(sppasTag(label)))
+            if has_begin and has_end:
+                if len(label) > 0:
+                    time = sppasInterval(prev_end, sppasBaseHTK.make_point(line[0]))
+                    tier.create_annotation(sppasLocation(time), sppasLabel(sppasTag(label)))
 
-                    time = sppasInterval(sppasBaseHTK.make_point(line[0]),
-                                         sppasBaseHTK.make_point(line[1]))
+                time = sppasInterval(sppasBaseHTK.make_point(line[0]),
+                                     sppasBaseHTK.make_point(line[1]))
 
-                    label = line[2]
-                    score = None
-                    if len(line) > 3:
-                        try:
-                            score = float(line[3])
-                        except ValueError:
-                            # todo: auxiliary labels or comment
-                            pass
+                label = line[2]
+                score = None
+                if len(line) > 3:
+                    try:
+                        score = float(line[3])
+                    except ValueError:
+                        # todo: auxiliary labels or comment
+                        pass
 
-                    tier.create_annotation(sppasLocation(time), sppasLabel(sppasTag(label), score))
-                    label = ""
-                    prev_end = sppasBaseHTK.make_point(line[1])
+                tier.create_annotation(sppasLocation(time), sppasLabel(sppasTag(label), score))
+                label = ""
+                prev_end = sppasBaseHTK.make_point(line[1])
 
-                elif has_begin:
-                    label = label + " " + " ".join(line[1])
-                    # todo: auxiliary labels or comment
+            elif has_begin:
+                label = label + " " + " ".join(line[1])
+                # todo: auxiliary labels or comment
 
-                else:
-                    label = label + " " + " ".join(line)
-
-            fp.close()
+            else:
+                label = label + " " + " ".join(line)
 
     # ------------------------------------------------------------------------
 
@@ -282,87 +300,3 @@ class sppasLab(sppasBaseHTK):
                         fp.write(sppasBaseHTK._serialize_annotation(ann))
 
             fp.close()
-
-# ----------------------------------------------------------------------------
-
-
-class sppasMasterLabel(sppasBaseHTK):
-    """
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS MLF reader and writer: Not Implemented.
-
-    MLF files are "Master Label Files".
-    An MLF is a file containing a sequence of patterns, each pattern
-    either points to a subdirectory to search for a label file or
-    has a definition immediately following it (terminated by a period
-    on a single line.  The file must start with the MLF id.
-
-        #!MLF!#
-        "pattern1" -> "subdir1"
-        "pattern2" => "subdir2"
-        "pattern3"
-        0   100 sil
-        101 205 bah
-        206 300 sil
-        .
-        "pattern4"
-        etc
-
-    where -> denotes a simple search ie the name of the file matching
-    pattern1 must be in subdir1; => denotes a full search so that some
-    part of the file's path matching pattern2 must be in subdir2
-
-    Currently, SPPAS supports only to read one file at a time.
-    MLF files can't be fully supported for reading.
-
-    """
-    @staticmethod
-    def detect(filename):
-        with codecs.open(filename, 'r', encoding) as fp:
-            line = fp.readline()
-            fp.close()
-        return "#!MLF!#" in line
-
-    # -----------------------------------------------------------------
-
-    def __init__(self, name=None):
-        """ Initialize a new sppasMLF instance.
-
-        :param name: (str) This transcription name.
-
-        """
-        if name is None:
-            name = self.__class__.__name__
-        sppasBaseHTK.__init__(self, name)
-
-    # ------------------------------------------------------------------------
-
-    def write(self, filename):
-        """ Write a transcription into a file.
-
-        :param filename: (str)
-
-        """
-        if len(self) != 1:
-            raise AioMultiTiersError("MasterLabel")
-
-        with codecs.open(filename, 'w', encoding, buffering=8096) as fp:
-
-            # write the header
-            fp.write("# !MLF!#\n")
-            # write the filename
-            fp.write('"*/{:s}"\n'.format(os.path.basename(filename)))
-
-            # write the annotations
-            if self.is_empty() is False:
-                for ann in self[0]:
-                    if ann.get_best_tag().is_empty() is False:
-                        fp.write(sppasBaseHTK._serialize_annotation(ann))
-
-            fp.write(".\n")
-            fp.close()
-

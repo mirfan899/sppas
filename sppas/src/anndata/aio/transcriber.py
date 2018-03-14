@@ -100,12 +100,18 @@ class sppasTRS(sppasBaseIO):
         """ Detect if filename if of TRS type.
 
         :param filename:
-        :return:
+        :return: (bool)
+
         """
-        with codecs.open(filename, 'r', "ISO-8859-1") as it:
-            it.next()
-            doctype_line = it.next().strip()
-            it.close()
+        try:
+            with codecs.open(filename, 'r', "ISO-8859-1") as it:
+                it.next()
+                doctype_line = it.next().strip()
+                it.close()
+        except IOError:
+            return False
+        except UnicodeDecodeError:
+            return False
 
         return '<!DOCTYPE Trans SYSTEM "trans' in doctype_line
 
