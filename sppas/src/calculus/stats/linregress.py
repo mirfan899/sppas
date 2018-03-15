@@ -36,7 +36,7 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     The goal of linear regression is to fit a line to a set of points.
     Equation of the line is y = mx + b
@@ -45,8 +45,6 @@
     Function list
     =============
 
-        - slope
-        - intercept
         - gradient_descent_linear_regression
         - tga_linear_regression
         - tansey_linear_regression
@@ -54,38 +52,6 @@
 """
 from .central import fmean
 from .central import fsum
-
-# ---------------------------------------------------------------------------
-
-
-def slope(p1, p2):
-    """ Estimates the slope between 2 points.
-
-    :param p1: (tuple) first point as (x1, y1)
-    :param p2: (tuple) second point as (x2, y2)
-    :returns: float value
-    
-    """
-    x = float(p2[0] - p1[0])
-    y = float(p2[1] - p1[1])
-
-    return y/x
-
-# ---------------------------------------------------------------------------
-
-
-def intercept(p1, p2):
-    """ Estimates the intercept between 2 points.
-
-    :param p1: (tuple) first point as (x1, y1)
-    :param p2: (tuple) second point as (x2, y2)
-    :returns: float value
-    
-    """
-    m = slope(p1, p2)
-    b = p2[1] - (m * p2[0])
-    
-    return b
 
 # ---------------------------------------------------------------------------
 

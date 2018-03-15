@@ -37,6 +37,7 @@ import random
 import time
 
 from ..geometry.distances import squared_euclidian, euclidian, manathan, minkowski, chi_squared
+from ..geometry.linear_fct import slope_intercept, linear_fct, linear_values
 from ..calculusexc import VectorsError
 
 # ---------------------------------------------------------------------------
@@ -47,8 +48,74 @@ def random_vectors(size):
     y = [random.randint(0, 100) for i in range(size)]
     return x, y
 
+# ---------------------------------------------------------------------------
 
-class TestGeometry(unittest.TestCase):
+
+class TestGeometryLinearFct(unittest.TestCase):
+
+    def test_slope_intercept(self):
+        """ Returns the slope and the intercept. """
+
+        a, b = slope_intercept(p1=(1, 1), p2=(3, 3))
+        self.assertEqual(a, 1.)
+        self.assertEqual(b, 0.)
+
+        a, b = slope_intercept(p1=(1, 1), p2=(30., 30.))
+        self.assertEqual(a, 1.)
+        self.assertEqual(b, 0.)
+
+        a, b = slope_intercept(p1=(1, 2), p2=(2., 3.))
+        self.assertEqual(a, 1.)
+        self.assertEqual(b, 1.)
+
+        # errors
+        with self.assertRaises(Exception):
+            slope_intercept(p1=("a", "b"), p2=(30., 30.))
+        with self.assertRaises(Exception):
+            slope_intercept(p1=(1, 1), p2=(1, 1))
+
+    # -----------------------------------------------------------------------
+
+    def test_linear_fct(self):
+        """ Return f(x) of the linear function f(x) = ax + b. """
+
+        y = linear_fct(2, 1., 0.)
+        self.assertEqual(y, 2.)
+
+        y = linear_fct(2, 1., 2.)
+        self.assertEqual(y, 4.)
+
+    # -----------------------------------------------------------------------
+
+    def test_linear_values(self):
+        """ Estimates the values between 2 points, step-by-step. """
+
+        y_values = linear_values(2, p1=(2, 2), p2=(8., 8.))
+        self.assertEqual(len(y_values), 4)
+        self.assertEqual(y_values[0], 2.)
+        self.assertEqual(y_values[1], 4.)
+        self.assertEqual(y_values[2], 6.)
+        self.assertEqual(y_values[3], 8.)
+
+        y_values = linear_values(2.5, p1=(2, 2), p2=(8., 8.))
+        self.assertEqual(len(y_values), 4)
+        self.assertEqual(y_values[0], 2.)   # p1. x=2
+        self.assertEqual(y_values[1], 4.5)  # p1+delta, x=4.5
+        self.assertEqual(y_values[2], 7.)   # p2+delta, x=7
+        self.assertEqual(y_values[3], 8.)   # p2. x=8.
+
+        y_values = linear_values(0.01, p1=(0, 0), p2=(1., 1.))
+        self.assertEqual(len(y_values), 101)
+        self.assertEqual(y_values[100], 1.)
+
+        y_values = linear_values(0.01, p1=(0, 0), p2=(20000., 20000.))
+        self.assertEqual(len(y_values), 2000001)
+        self.assertEqual(y_values[200000], 2000.)
+
+# ---------------------------------------------------------------------------
+
+
+class TestGeometryDistances(unittest.TestCase):
 
     def test_distances(self):
         x = (1.0, 0.0)

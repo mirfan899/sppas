@@ -50,7 +50,6 @@ from .text import sppasCSV
 from .sclite import sppasCTM
 from .sclite import sppasSTM
 from .xtrans import sppasTDF
-from .audacity import sppasAudacity
 from .praat import sppasTextGrid
 #from .praat import sppasPitchTier
 #from .praat import sppasIntensityTier
@@ -59,12 +58,13 @@ from .phonedit import sppasSignaix
 from .htk import sppasLab
 from .subtitle import sppasSubRip
 from .subtitle import sppasSubViewer
+from .weka import sppasARFF
+from .weka import sppasXRFF
 from .transcriber import sppasTRS
+from .audacity import sppasAudacity
 # from .elan import Elan
 # from .anvil import Anvil
 # from .annotationpro import Antx
-from .weka import sppasARFF
-from .weka import sppasXRFF
 from .xra import sppasXRA
 
 # ----------------------------------------------------------------------------
