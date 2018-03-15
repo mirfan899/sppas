@@ -45,25 +45,27 @@ from sppas.src.utils.makeunicode import u
 from ..anndataexc import AioEncodingError
 from ..anndataexc import AioFileExtensionError
 
-from .xra import sppasXRA
 from .text import sppasRawText
-# from .text import CSV
-from .praat import sppasTextGrid  #, PitchTier, IntensityTier
-# from .signaix import HzPitch
-from .transcriber import sppasTRS
-# from .phonedit import Phonedit
+from .text import sppasCSV
+from .sclite import sppasCTM
+from .sclite import sppasSTM
+from .xtrans import sppasTDF
+from .audacity import sppasAudacity
+from .praat import sppasTextGrid
+#from .praat import sppasPitchTier
+#from .praat import sppasIntensityTier
+from .phonedit import sppasMRK
+from .phonedit import sppasSignaix
 from .htk import sppasLab
 from .subtitle import sppasSubRip
 from .subtitle import sppasSubViewer
-from .sclite import sppasCTM
-from .sclite import sppasSTM
+from .transcriber import sppasTRS
 # from .elan import Elan
 # from .anvil import Anvil
 # from .annotationpro import Antx
-from .xtrans import sppasTDF
-from .audacity import sppasAudacity
 from .weka import sppasARFF
 from .weka import sppasXRFF
+from .xra import sppasXRA
 
 # ----------------------------------------------------------------------------
 
@@ -85,7 +87,8 @@ class sppasRW(object):
     TRANSCRIPTION_TYPES["xrff"] = sppasXRFF
     # TRANSCRIPTION_TYPES["eaf"] = Elan,
     TRANSCRIPTION_TYPES["trs"] = sppasTRS
-    # TRANSCRIPTION_TYPES["mrk"] = Phonedit,
+    TRANSCRIPTION_TYPES["mrk"] = sppasMRK
+    TRANSCRIPTION_TYPES["hz"] = sppasSignaix
     TRANSCRIPTION_TYPES["lab"] = sppasLab
     TRANSCRIPTION_TYPES["srt"] = sppasSubRip
     TRANSCRIPTION_TYPES["sub"] = sppasSubViewer
@@ -93,11 +96,10 @@ class sppasRW(object):
     TRANSCRIPTION_TYPES["stm"] = sppasSTM
     # TRANSCRIPTION_TYPES["anvil"] = Anvil
     # TRANSCRIPTION_TYPES["antx"] = Antx
-    TRANSCRIPTION_TYPES["aup"] = sppasAudacity
-    # TRANSCRIPTION_TYPES["csv"] = CSV
     # TRANSCRIPTION_TYPES["intensitytier"] = IntensityTier
     # TRANSCRIPTION_TYPES["pitchtier"] = PitchTier
-    # TRANSCRIPTION_TYPES["hz"] = HzPitch
+    TRANSCRIPTION_TYPES["csv"] = sppasCSV
+    TRANSCRIPTION_TYPES["aup"] = sppasAudacity
     TRANSCRIPTION_TYPES["tdf"] = sppasTDF
     TRANSCRIPTION_TYPES["txt"] = sppasRawText
 

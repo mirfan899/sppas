@@ -119,10 +119,9 @@ class sppasBasePhonedit(sppasBaseIO):
                     parser.read_file(f)
                 except:  # python 2
                     parser.readfp(f)
-        except IOError:
+        except Exception:
+            # MissingSectionHeaderError
             raise AioError(filename)
-        except UnicodeDecodeError:
-            raise
 
         return parser
 
@@ -357,6 +356,26 @@ class sppasSignaix(sppasBaseIO):
     :summary:      Class for reader and writer of F0 values from LPL-Signaix.
 
     """
+
+    @staticmethod
+    def is_number(s):
+        try:
+            float(s)
+            return True
+        except ValueError:
+            pass
+
+        try:
+            import unicodedata
+            unicodedata.numeric(s)
+            return True
+        except (TypeError, ValueError):
+            pass
+
+        return False
+
+    # -----------------------------------------------------------------
+
     @staticmethod
     def detect(filename):
         """ Check whether a file is of CTM format or not.
@@ -367,11 +386,11 @@ class sppasSignaix(sppasBaseIO):
         """
         try:
             with open(filename, "r") as fp:
-                for line in fp.readline():
-                    try:
-                        float(line)
-                    except ValueError:
-                        return False
+                for line in fp.readlines():
+                    line = line.strip()
+                    if len(line) > 0:
+                        if sppasSignaix.is_number(line) is False:
+                            return False
         except IOError:
             return False
 
@@ -434,6 +453,11 @@ class sppasSignaix(sppasBaseIO):
         # Start time
         current_time = delta / 2.
         for line in lines:
+            # ignore blank lines
+            line = line.strip()
+            if len(line) == 0:
+                continue
+            # create an annotation from the given line
             location = sppasLocation(sppasPoint(current_time, radius))
             label = sppasLabel(sppasTag(line, tag_type='float'))
             tier.create_annotation(location, label)
@@ -461,20 +485,23 @@ class sppasSignaix(sppasBaseIO):
 
         # check if the tier is really pitch values
         # or at least, float values sampled at a delta time.
-        delta = 0.
-        previous = 0.
-        for ann in tier:
+        if tier.is_float() is False:
+            raise AnnDataTypeError(tier.get_name(), "float")
 
-            tag_type = ann.get_label().get_best().get_type()
-            if tag_type != "float":
-                raise AnnDataTypeError(tier.get_name(), "float")
-            if previous == 0.:
-                previous = ann.get_location()
-            pass
+        if len(tier) > 1:
+            delta = tier[1].get_location().get_best().get_midpoint() - \
+                    tier[0].get_location().get_best().get_midpoint()
+            delta = round(delta, 6)
+            for i in range(1, len(tier)):
+
+                current_delta = tier[i].get_location().get_best().get_midpoint() - \
+                                tier[i-1].get_location().get_best().get_midpoint()
+                current_delta = round(current_delta, 6)
+                if delta != current_delta:
+                    raise AnnDataTypeError(tier.get_name(), "points in delta range")
 
         # ok. write the data into the file.
         with open(filename, "w", buffering=8096) as fp:
             for ann in tier:
                 fp.write("{:s}\n".format(ann.get_label().get_best().get_content()))
-
             fp.close()

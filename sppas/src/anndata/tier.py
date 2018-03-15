@@ -303,29 +303,34 @@ class sppasTier(sppasMetaData):
         try:
             self.append(annotation)
         except Exception:
-            index = self.mindex(annotation.get_lowest_localization(), bound=0)
-
             if annotation.location_is_point():
-                if self.__ann[index].get_location() == annotation.get_location():
-                    raise TierAddError(index)
+                index = self.index(annotation.get_lowest_localization())
+                if index != -1:
+                    if self.__ann[index].get_lowest_localization().get_midpoint() == annotation.get_lowest_localization().get_midpoint():
+                        raise TierAddError(index)
+                else:
+                    index = self.near(annotation.get_lowest_localization(), direction=-1)
                 self.__ann.insert(index + 1, annotation)
                 return index + 1
 
-            # We go further to look at the next localizations until the begin is smaller.
-            while index + 1 < len(self.__ann) and \
-                    self.__ann[index + 1].get_lowest_localization() < annotation.get_lowest_localization():
-                index += 1
-            # We go further to look at the next localizations until the end is smaller.
-            while index + 1 < len(self.__ann) and \
-                    self.__ann[index + 1].get_lowest_localization() == annotation.get_lowest_localization() and \
-                    self.__ann[index + 1].get_highest_localization() < annotation.get_highest_localization():
-                index += 1
+            else:
+                index = self.mindex(annotation.get_lowest_localization(), bound=0)
 
-            if self.__ann[index].get_location() == annotation.get_location():
-                raise TierAddError(index)
+                # We go further to look at the next localizations until the begin is smaller.
+                while index + 1 < len(self.__ann) and \
+                        self.__ann[index + 1].get_lowest_localization() < annotation.get_lowest_localization():
+                    index += 1
+                # We go further to look at the next localizations until the end is smaller.
+                while index + 1 < len(self.__ann) and \
+                        self.__ann[index + 1].get_lowest_localization() == annotation.get_lowest_localization() and \
+                        self.__ann[index + 1].get_highest_localization() < annotation.get_highest_localization():
+                    index += 1
 
-            self.__ann.insert(index + 1, annotation)
-            return index + 1
+                if self.__ann[index].get_location() == annotation.get_location():
+                    raise TierAddError(index)
+
+                self.__ann.insert(index + 1, annotation)
+                return index + 1
 
         return len(self.__ann) - 1
 

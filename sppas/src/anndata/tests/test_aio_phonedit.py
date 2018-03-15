@@ -201,3 +201,57 @@ class TestSignaix(unittest.TestCase):
 
     # -----------------------------------------------------------------------
 
+    def test_members(self):
+
+            txt = sppasSignaix()
+            self.assertFalse(txt.multi_tiers_support())
+            self.assertFalse(txt.no_tiers_support())
+            self.assertFalse(txt.metadata_support())
+            self.assertFalse(txt.ctrl_vocab_support())
+            self.assertFalse(txt.media_support())
+            self.assertFalse(txt.hierarchy_support())
+            self.assertTrue(txt.point_support())
+            self.assertFalse(txt.interval_support())
+            self.assertFalse(txt.disjoint_support())
+            self.assertFalse(txt.alternative_localization_support())
+            self.assertFalse(txt.alternative_tag_support())
+            self.assertFalse(txt.radius_support())
+            self.assertFalse(txt.gaps_support())
+            self.assertFalse(txt.overlaps_support())
+
+    # -----------------------------------------------------------------------
+
+    def test_read(self):
+        """ Test file reader. """
+
+        hz = sppasSignaix()
+        hz.read(os.path.join(DATA, "sample.hz"))
+        self.assertEqual(len(hz), 1)
+        self.assertEqual(len(hz.get_media_list()), 0)
+        self.assertEqual(hz[0].get_name(), u("Pitch"))
+        self.assertTrue(hz[0].is_point())
+        self.assertTrue(hz[0].is_float())
+
+    # -----------------------------------------------------------------
+    # write
+    # -----------------------------------------------------------------
+
+    def test_read_write(self):
+        """ Write a transcription into a file. """
+
+        hz = sppasSignaix()
+        hz.read(os.path.join(DATA, "sample.hz"))
+        hz.write(os.path.join(TEMP, "sample.hz"))
+
+        hz2 = sppasSignaix()
+        hz2.read(os.path.join(TEMP, "sample.hz"))
+
+        self.assertEqual(len(hz2), 1)
+        self.assertEqual(len(hz2.get_media_list()), 0)
+        self.assertEqual(hz2[0].get_name(), u("Pitch"))
+        self.assertTrue(hz2[0].is_point())
+        self.assertTrue(hz2[0].is_float())
+        self.assertEqual(len(hz[0]), len(hz2[0]))
+        for a1, a2 in zip(hz[0], hz2[0]):
+            self.assertEqual(a1.get_label(), a2.get_label())
+            self.assertEqual(a1.get_location(), a2.get_location())

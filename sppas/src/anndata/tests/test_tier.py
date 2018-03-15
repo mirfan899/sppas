@@ -6,6 +6,7 @@ import random
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import CtrlVocabContainsError
 
+from ..anndataexc import TierAddError
 from ..annlocation.location import sppasLocation
 from ..annlocation.disjoint import sppasDisjoint
 from ..annlocation.interval import sppasInterval
@@ -237,7 +238,7 @@ class TestTier(unittest.TestCase):
         self.assertEqual(nb, 0)
         self.assertEqual(len(tier), 3)
 
-    def test_add(self):
+    def test_add_interval(self):
         tier = sppasTier()
         localizations = [sppasInterval(sppasPoint(1.), sppasPoint(2.)),
                          sppasInterval(sppasPoint(1.5), sppasPoint(2.)),
@@ -253,14 +254,31 @@ class TestTier(unittest.TestCase):
         for i, a in enumerate(annotations):
             tier.add(a)
             self.assertEqual(len(tier), i+1)
-        tierrandom = sppasTier()
+
+        tier_random = sppasTier()
         random.shuffle(annotations)
         for i, a in enumerate(annotations):
-            tierrandom.add(a)
-            self.assertEqual(len(tierrandom), i+1)
-        self.assertEqual(len(tier), len(tierrandom))
-        for a, ar in zip(tier, tierrandom):
+            tier_random.add(a)
+            self.assertEqual(len(tier_random), i+1)
+        self.assertEqual(len(tier), len(tier_random))
+        for a, ar in zip(tier, tier_random):
             self.assertTrue(a is ar)
+
+    def test_add_point(self):
+        tier = sppasTier()
+        localizations = [sppasPoint(1.),
+                         sppasPoint(1.5),
+                         sppasPoint(1.8, radius=0.2),
+                         sppasPoint(2.),
+                         sppasPoint(2.4, radius=0.2),
+                         sppasPoint(2.5),
+                         ]
+        annotations = [sppasAnnotation(sppasLocation(t)) for t in localizations]
+        for i, a in enumerate(annotations):
+            tier.add(a)
+            self.assertEqual(len(tier), i+1)
+        with self.assertRaises(TierAddError):
+            tier.add(sppasAnnotation(sppasLocation(localizations[0])))
 
     def test_pop(self):
         tier = sppasTier()
