@@ -315,12 +315,14 @@ class sppasMRK(sppasBasePhonedit):
         with codecs.open(filename, mode="w", encoding="ISO-8859-1") as fp:
 
             for index_tier, tier in enumerate(self):
-                point = tier.is_point()
 
-                # Write information about the tier
+                # fix information about this tier/level
+                point = tier.is_point()
                 level = "LEVEL_{:s}{:s}".format(
                             chr(code_a + index_tier / 26),
                             chr(code_a + index_tier % 26))
+
+                # Write information about the tier
                 fp.write("[DSC_{:s}]\n".format(level))
                 fp.write("DSC_LEVEL_NAME=\"{:s}\"\n".format(tier.get_name()))
                 fp.write("DSC_LEVEL_SOFTWARE={:s} {:s}\n".format(sppas.__name__, sppas.__version__))
@@ -359,6 +361,12 @@ class sppasSignaix(sppasBaseIO):
 
     @staticmethod
     def is_number(s):
+        """ Check whether a string is a number or not.
+
+        :param s: (str or unicode)
+        :returns: (bool)
+
+        """
         try:
             float(s)
             return True
@@ -472,8 +480,11 @@ class sppasSignaix(sppasBaseIO):
 
         """
         if len(self) != 1:
-            raise AioMultiTiersError("Signaix-Pitch")
-        tier = self[0]
+            tier = self.find("Pitch", case_sensitive=False)
+            if tier is None:
+                raise AioMultiTiersError("Signaix-Pitch")
+        else:
+            tier = self[0]
 
         # we expect a not empty tier
         if self.is_empty() is True:

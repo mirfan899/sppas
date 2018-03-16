@@ -499,6 +499,28 @@ class sppasTranscription(sppasMetaData):
 
     # ------------------------------------------------------------------------
 
+    def get_min_loc(self):
+        """ Return the sppasPoint with the lowest value through all tiers. """
+
+        if self.is_empty():
+            return None
+
+        min_point = None
+        for tier in self:
+            if tier.is_empty():
+                continue
+            first_loc = tier.get_first_point()
+            if first_loc.is_point():
+                first_point = first_loc
+            else:
+                first_point = first_loc.get_begin()
+            if min_point is None or first_point < min_point:
+                min_point = first_point
+
+        return min_point
+
+    # ------------------------------------------------------------------------
+
     def get_max_loc(self):
         """ Return the sppasPoint with the highest value through all tiers. """
 
@@ -507,6 +529,8 @@ class sppasTranscription(sppasMetaData):
 
         max_point = None
         for tier in self:
+            if tier.is_empty():
+                continue
             last_loc = tier.get_last_point()
             if last_loc.is_point():
                 last_point = last_loc

@@ -82,7 +82,7 @@ class sppasRW(object):
     """
     TRANSCRIPTION_TYPES = OrderedDict()
     TRANSCRIPTION_TYPES["xra"] = sppasXRA
-    TRANSCRIPTION_TYPES["textgrid"] = sppasTextGrid
+    # TRANSCRIPTION_TYPES["textgrid"] = sppasTextGrid
     TRANSCRIPTION_TYPES["arff"] = sppasARFF
     TRANSCRIPTION_TYPES["xrff"] = sppasXRFF
     # TRANSCRIPTION_TYPES["eaf"] = Elan,

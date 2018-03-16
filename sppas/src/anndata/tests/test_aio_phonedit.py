@@ -51,13 +51,7 @@ from ..aio.phonedit import sppasBasePhonedit
 from ..aio.phonedit import sppasMRK
 from ..aio.phonedit import sppasSignaix
 
-
-from ..annlocation.interval import sppasInterval
 from ..annlocation.point import sppasPoint
-from ..annlabel.tag import sppasTag
-from ..annlabel.label import sppasLabel
-from ..annotation import sppasAnnotation
-from ..annlocation.location import sppasLocation
 
 # ---------------------------------------------------------------------------
 
