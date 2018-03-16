@@ -1,0 +1,51 @@
+File type = "ooTextFile"
+Object class = "IntensityTier"
+
+xmin = 0 
+xmax = 2.3288125 
+points: size = 15 
+points [1]:
+    number = 0.14955725450270457 
+    value = 63.9508199083125 
+points [2]:
+    number = 0.26344703308933626 
+    value = 50.50530190819943 
+points [3]:
+    number = 0.37081826433332016 
+    value = 70.80050075631262 
+points [4]:
+    number = 0.5190722811783322 
+    value = 65.90005546179373 
+points [5]:
+    number = 0.5798455013049285 
+    value = 65.14460828792758 
+points [6]:
+    number = 0.8062843534311804 
+    value = 73.1083520199968 
+points [7]:
+    number = 0.8506738478654645 
+    value = 71.83750882668295 
+points [8]:
+    number = 1.0950280220458533 
+    value = 70.02239821403725 
+points [9]:
+    number = 1.2616300466051986 
+    value = 68.88027324494728 
+points [10]:
+    number = 1.459687652971859 
+    value = 65.81729504470346 
+points [11]:
+    number = 1.612656820365065 
+    value = 62.65562255635791 
+points [12]:
+    number = 1.7684928237449116 
+    value = 54.794998449047476 
+points [13]:
+    number = 1.888694880861875 
+    value = 62.14787596450004 
+points [14]:
+    number = 2.004417342495838 
+    value = 66.9563565968938 
+points [15]:
+    number = 2.207358614984231 
+    value = 68.4382218481018 
