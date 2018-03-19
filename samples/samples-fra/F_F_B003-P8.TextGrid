@@ -19,7 +19,9 @@ item []:
         intervals [2]:
             xmin = 2.4971007546
             xmax = 5.6838880379
-            text = "ipu_1 hier soir j'ai ouvert la porte d'entrée pour laisser chort- sortir le chat"
+            text = "ipu_1 hier soir j'ai 
+			ouvert la porte d'entrée 
+			pour laisser chort- sortir le chat"
         intervals [3]:
             xmin = 5.6838880379
             xmax = 5.7436026532

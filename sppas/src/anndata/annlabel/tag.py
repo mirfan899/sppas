@@ -272,10 +272,14 @@ class sppasTag(object):
         return "{!s:s} ({!s:s})".format(b(self.get_content()), self.get_type())
 
     def __eq__(self, other):
-        return self.get_typed_content() == other.get_typed_content()
+        if isinstance(other, sppasTag):
+            return self.get_typed_content() == other.get_typed_content()
+        return False
 
     def __hash__(self):
         return hash((self.__tag_content, self.__tag_type))
 
     def __ne__(self, other):
-        return self.get_typed_content() != other.get_typed_content()
+        if isinstance(other, sppasTag):
+            return self.get_typed_content() != other.get_typed_content()
+        return True

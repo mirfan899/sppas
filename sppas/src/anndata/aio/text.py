@@ -204,7 +204,7 @@ class sppasBaseText(sppasBaseIO):
         except IOError:
             raise AioError(filename)
         except UnicodeDecodeError:
-            raise AioEncodingError(filename, "", sppas.encoding)
+            raise AioEncodingError(filename, "", file_encoding)
 
         return lines
 

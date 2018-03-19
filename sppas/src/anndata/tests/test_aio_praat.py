@@ -45,6 +45,7 @@ import os.path
 import shutil
 
 from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.utils.makeunicode import u
 
 from ..anndataexc import AioLineFormatError
 from ..anndataexc import AioEmptyTierError
@@ -57,6 +58,7 @@ from ..annlocation.point import sppasPoint
 from ..annlabel.tag import sppasTag
 from ..annlabel.label import sppasLabel
 from ..annotation import sppasAnnotation
+from ..tier import sppasTier
 from ..annlocation.location import sppasLocation
 
 # ---------------------------------------------------------------------------
@@ -96,6 +98,8 @@ class TestBasePraat(unittest.TestCase):
         self.assertEqual(sppasPoint(3., 0.005), sppasBasePraat.make_point("3.0"))
         self.assertEqual(sppasPoint(3., 0.005), sppasBasePraat.make_point("3."))
         self.assertEqual(sppasPoint(3), sppasBasePraat.make_point("3"))
+        self.assertEqual(sppasPoint(0.), sppasBasePraat.make_point("0."))
+
         with self.assertRaises(TypeError):
             sppasBasePraat.make_point("3a")
 
@@ -151,11 +155,53 @@ class TestBasePraat(unittest.TestCase):
     def test_parse_string(self):
         """ Parse a float value from a line of a Praat formatted file. """
 
+        # long standard
+        text = sppasBasePraat._parse_string('class = "IntervalTier"\n')
+        self.assertEqual(text, "IntervalTier")
+        text = sppasBasePraat._parse_string('File type = "TextGrid"\n')
+        self.assertEqual(text, "TextGrid")
+        text = sppasBasePraat._parse_string('name = "TierName"\n')
+        self.assertEqual(text, "TierName")
         text = sppasBasePraat._parse_string(' \t text = "a b c"\n')
         self.assertEqual(text, "a b c")
 
+        # short standard
+        text = sppasBasePraat._parse_string('"IntervalTier"\n')
+        self.assertEqual(text, "IntervalTier")
+        text = sppasBasePraat._parse_string(' "a b c"\n')
+        self.assertEqual(text, "a b c")
+
+        # long standard with "
+        text = sppasBasePraat._parse_string(' \t text = "a ""b"" c"\n')
+        self.assertEqual(text, 'a "b" c')
+
+        # short standard with "
+        text = sppasBasePraat._parse_string('"a ""b"" c"\n')
+        self.assertEqual(text, 'a "b" c')
+
+        # long, empty text
         text = sppasBasePraat._parse_string(' \t text = "   "\n')
-        self.assertEqual(text, "   ")
+        self.assertEqual(text, "")
+
+        # short, empty text
+        text = sppasBasePraat._parse_string('"   "\n')
+        self.assertEqual(text, "")
+
+        # long, multi-line, first-line
+        text = sppasBasePraat._parse_string(' \t text = "the guy     \n')
+        self.assertEqual(text, 'the guy')
+
+        # short, multi-line, first-line
+        text = sppasBasePraat._parse_string('"the guy    \n')
+        self.assertEqual(text, 'the guy')
+
+        # long&short, multi-line, middle-line
+        text = sppasBasePraat._parse_string('and the other guy     \n')
+        self.assertEqual(text, 'and the other guy')
+
+        # long&short, multi-line, last-line
+        text = sppasBasePraat._parse_string('and the last ""ONE""."\n')
+        self.assertEqual(text, 'and the last "ONE".')
 
     # -----------------------------------------------------------------
 
@@ -183,88 +229,463 @@ class TestBasePraat(unittest.TestCase):
         line = sppasBasePraat._serialize_label_text(sppasLabel(sppasTag("toto")))
         self.assertEqual(line, '\t\ttext = "toto"\n')
 
+        line = sppasBasePraat._serialize_label_text(sppasLabel(sppasTag('"toto"')))
+        self.assertEqual(line, '\t\ttext = """toto"""\n')
+
+        line = sppasBasePraat._serialize_label_text(sppasLabel(sppasTag('This is "toto" and "titi"')))
+        self.assertEqual(line, '\t\ttext = "This is ""toto"" and ""titi"""\n')
+
     # -----------------------------------------------------------------
 
     def test_serialize_label_value(self):
         """ Convert a label with a numerical value into a string. """
+
         line = sppasBasePraat._serialize_label_value(sppasLabel())
-        self.assertEqual(line, '\t\tvalue = \n')
+        self.assertIsNone(line)
 
         line = sppasBasePraat._serialize_label_value(sppasLabel(sppasTag("")))
-        self.assertEqual(line, '\t\tvalue = ""\n')
+        self.assertIsNone(line)
 
         line = sppasBasePraat._serialize_label_value(sppasLabel(sppasTag("2")))
-        self.assertEqual(line, '\t\tvalue = "2"\n')
+        self.assertEqual(line, '\t\tvalue = 2\n')
+
+        line = sppasBasePraat._serialize_label_value(sppasLabel(sppasTag("2", tag_type="float")))
+        self.assertEqual(line, '\t\tvalue = 2.0\n')
 
 # ---------------------------------------------------------------------------
-#
-#
-# class TestTextGrid(unittest.TestCase):
-#
-#     def setUp(self):
-#         if os.path.exists(TEMP) is False:
-#             os.mkdir(TEMP)
-#
-#     def tearDown(self):
-#         shutil.rmtree(TEMP)
-#
-#     # -----------------------------------------------------------------------
-#
-#     def test_members(self):
-#         tg = sppasTextGrid()
-#         self.assertTrue(tg.multi_tiers_support())
-#         self.assertFalse(tg.no_tiers_support())
-#         self.assertFalse(tg.metadata_support())
-#         self.assertFalse(tg.ctrl_vocab_support())
-#         self.assertFalse(tg.media_support())
-#         self.assertFalse(tg.hierarchy_support())
-#         self.assertTrue(tg.point_support())
-#         self.assertTrue(tg.interval_support())
-#         self.assertFalse(tg.disjoint_support())
-#         self.assertFalse(tg.alternative_localization_support())
-#         self.assertFalse(tg.alternative_tag_support())
-#         self.assertFalse(tg.radius_support())
-#         self.assertFalse(tg.gaps_support())
-#         self.assertFalse(tg.overlaps_support())
-#
-#     # -----------------------------------------------------------------------
-#
-#     def test_read(self):
-#         txt = sppasTextGrid()
-#         txt.read(os.path.join(DATA, "sample.TextGrid"))
-#         self.assertEqual(len(txt), 2)
-#         self.assertEqual(txt[0].get_name(), "transcription")
-#         self.assertEqual(txt[1].get_name(), "P-Tones")
-#         self.assertEqual(len(txt[0]), 4)
-#         self.assertEqual(len(txt[1]), 2)
-#
-#     # -----------------------------------------------------------------------
-#
-#     def test_write(self):
-#         txt = sppasTextGrid()
-#         with self.assertRaises(AioNoTiersError):
-#             txt.write(os.path.join(TEMP, "sample.txt"))
-#         self.assertFalse(os.path.exists(os.path.join(TEMP, "sample.txt")))
-#         txt.create_tier()
-#         with self.assertRaises(AioEmptyTierError):
-#             txt.write(os.path.join(TEMP, "sample.txt"))
-#
-#     # -----------------------------------------------------------------------
-#
-#     def test_read_write(self):
-#         txt = sppasTextGrid()
-#         txt.read(os.path.join(DATA, "sample.TextGrid"))
-#         txt.write(os.path.join(TEMP, "sample.TextGrid"))
-#         txt2 = sppasTextGrid()
-#         txt2.read(os.path.join(TEMP, "sample.TextGrid"))
-#         self.assertEqual(len(txt), len(txt2))
-#         # Compare annotations of original and saved-read
-#         for t1, t2 in zip(txt, txt2):
-#             self.assertEqual(len(t1), len(t2))
-#             for a1, a2 in zip(t1, t2):
-#                 self.assertEqual(a1.get_label().get_best().get_typed_content(),
-#                                  a2.get_label().get_best().get_typed_content())
-#                 self.assertEqual(a1.get_highest_localization().get_midpoint(),
-#                                  a2.get_highest_localization().get_midpoint())
-#                 self.assertEqual(a1.get_lowest_localization().get_midpoint(),
-#                                  a2.get_lowest_localization().get_midpoint())
+
+
+class TestTextGrid(unittest.TestCase):
+
+    def setUp(self):
+        if os.path.exists(TEMP) is False:
+            os.mkdir(TEMP)
+
+    def tearDown(self):
+        shutil.rmtree(TEMP)
+
+    # -----------------------------------------------------------------------
+
+    def test_members(self):
+        tg = sppasTextGrid()
+        self.assertTrue(tg.multi_tiers_support())
+        self.assertFalse(tg.no_tiers_support())
+        self.assertFalse(tg.metadata_support())
+        self.assertFalse(tg.ctrl_vocab_support())
+        self.assertFalse(tg.media_support())
+        self.assertFalse(tg.hierarchy_support())
+        self.assertTrue(tg.point_support())
+        self.assertTrue(tg.interval_support())
+        self.assertFalse(tg.disjoint_support())
+        self.assertFalse(tg.alternative_localization_support())
+        self.assertFalse(tg.alternative_tag_support())
+        self.assertFalse(tg.radius_support())
+        self.assertFalse(tg.gaps_support())
+        self.assertFalse(tg.overlaps_support())
+
+    # -----------------------------------------------------------------------
+
+    def test_detect(self):
+        """ Test the file format detection method. """
+
+        for filename in os.listdir(DATA):
+            f = os.path.join(DATA, filename)
+            if filename.endswith(sppasTextGrid().default_extension):
+                self.assertTrue(sppasTextGrid.detect(f))
+            elif filename.endswith(".heuristic"):
+                self.assertTrue(sppasTextGrid.detect(f))
+            else:
+                self.assertFalse(sppasTextGrid.detect(f))
+
+    # -----------------------------------------------------------------------
+
+    def test_parse_tier_long(self):
+        """ Test the read of a tier. """
+
+        tier_content = 'item [1]:\n'\
+                       '  class = "IntervalTier"\n'\
+                       '  name = "transcription"\n'\
+                       '  xmin = 0.000000\n'\
+                       '  xmax = 5.6838880379\n'\
+                       '  intervals: size = 2\n'\
+                       '  intervals [1]:\n' \
+                       '    xmin = 0.0\n' \
+                       '    xmax = 2.4971007546\n' \
+                       '    text = "gpf_0"\n' \
+                       '  intervals [2]:\n' \
+                       '    xmin = 2.4971007546\n' \
+                       '    xmax = 5.6838880379\n' \
+                       '    text = "hier soir j\'ai ouvert la\n' \
+                       'porte d\'entrée pour laisser chort- sortir le chat"\n'
+
+        lines = tier_content.split("\n")
+        txt = sppasTextGrid()
+        txt._parse_tier(lines, 1, is_long=True)
+        self.assertEqual(len(txt), 1)
+        self.assertEqual(txt[0].get_name(), "transcription")
+        self.assertEqual(len(txt[0]), 2)
+
+        with self.assertRaises(AioLineFormatError):
+            txt._parse_tier(lines, 2, is_long=True)
+
+        tier_content = 'item [1]:\n'\
+                       '  class = "TextTier"\n'\
+                       '  name = "INTSINT"\n'\
+                       '  xmin = 0.153845\n'\
+                       '  xmax = 0.2446326069\n'\
+                       '  intervals: size = 2\n'\
+                       '  points [1]:\n' \
+                       '    time = 0.1538453443\n' \
+                       '    mark = "M"\n' \
+                       '  points [2]:\n' \
+                       '    time = 0.2446326069\n' \
+                       '    mark = "T"\n'\
+                       'item [2]:\n' \
+                       '  class = "TextTier"\n'
+        lines = tier_content.split("\n")
+        txt = sppasTextGrid()
+        txt._parse_tier(lines, 1, is_long=True)
+        self.assertEqual(len(txt), 1)
+        self.assertEqual(txt[0].get_name(), "INTSINT")
+        self.assertEqual(len(txt[0]), 2)
+
+    # -----------------------------------------------------------------------
+
+    def test_parse_tier_short(self):
+        """ Test the parsing of a tier. """
+
+        tier_content = '"IntervalTier"\n'\
+                       '"transcription"\n'\
+                       '0\n'\
+                       '21.3471\n'\
+                       '11\n'\
+                       '0\n'\
+                       '2.4971007546\n'\
+                       '"gpf_0"\n' \
+                       '2.4971007546\n'\
+                       '5.6838880379\n'\
+                       '"ipu_1 hier soir j\'ai ouvert la\n'\
+                       'porte d\'entrée pour laisser chort- sortir le chat"\n'
+        lines = tier_content.split("\n")
+        txt = sppasTextGrid()
+        txt._parse_tier(lines, 0, is_long=False)
+        self.assertEqual(len(txt), 1)
+        self.assertEqual(txt[0].get_name(), "transcription")
+        self.assertEqual(len(txt[0]), 2)
+
+        with self.assertRaises(AioLineFormatError):
+            txt._parse_tier(lines, 1, is_long=False)
+
+        tier_content = '"TextTier"\n'\
+                       '"INTSINT"\n'\
+                       '0.153845\n'\
+                       '0.2446326069\n'\
+                       '2\n'\
+                       '0.1538453443\n' \
+                       '"M"\n' \
+                       '0.2446326069\n' \
+                       '"T"\n'
+        lines = tier_content.split("\n")
+        txt = sppasTextGrid()
+        txt._parse_tier(lines, 0, is_long=False)
+        self.assertEqual(len(txt), 1)
+        self.assertEqual(txt[0].get_name(), "INTSINT")
+        self.assertEqual(len(txt[0]), 2)
+
+    # -----------------------------------------------------------------------
+
+    def test_parse_annotation_long(self):
+        """ Test the parsing of an annotation. """
+
+        ann_content = '    xmin = 0.0\n' \
+                      '    xmax = 2.4971007546\n' \
+                      '    text = "gpf_0"\n'
+        lines = ann_content.split("\n")
+        ann, nb = sppasTextGrid._parse_annotation(lines, 0, True)
+        self.assertEqual(nb, 3)
+        self.assertEqual(sppasInterval(
+            sppasTextGrid.make_point(0.),
+            sppasTextGrid.make_point(2.4971007546)
+        ), ann.get_location().get_best())
+        self.assertEqual(sppasTag("gpf_0"), ann.get_label().get_best())
+
+        ann_content = '  intervals [2]:\n' \
+                      '    xmin = 2.4971007546\n' \
+                      '    xmax = 5.6838880379\n' \
+                      '    text = "hier soir j\'ai ouvert la \n'\
+                      'porte d\'entrée pour laisser chort- sortir le ""chat"""\n'
+        lines = ann_content.split("\n")
+        ann, nb = sppasTextGrid._parse_annotation(lines, 1, True)
+        self.assertEqual(nb, 5)
+        self.assertEqual(sppasInterval(
+                            sppasTextGrid.make_point(2.4971007546),
+                            sppasTextGrid.make_point(5.6838880379)),
+                         ann.get_location().get_best())
+        self.assertEqual(u('hier soir j\'ai ouvert la porte d\'entrée '
+                           'pour laisser chort- sortir le "chat"'),
+                         ann.get_label().get_best().get_content())
+
+        ann_content = 'points [1]:\n'\
+                      '    number = 0.054406250000000066\n'\
+                      '    value = "Top"\n'
+        lines = ann_content.split("\n")
+        ann, nb = sppasTextGrid._parse_annotation(lines, 1, False)
+        self.assertEqual(sppasTextGrid.make_point(0.054406250000000066),
+                         ann.get_location().get_best())
+        self.assertEqual(sppasTag("Top"), ann.get_label().get_best())
+
+    # -----------------------------------------------------------------------
+
+    def test_parse_annotation_short(self):
+        """ Test the parsing of an annotation. """
+
+        ann_content = '0.0\n' \
+                      '2.4971007546\n' \
+                      '"gpf_0"\n'
+        lines = ann_content.split("\n")
+        ann, nb = sppasTextGrid._parse_annotation(lines, 0, True)
+        self.assertEqual(nb, 3)
+        self.assertEqual(sppasInterval(
+            sppasTextGrid.make_point(0.),
+            sppasTextGrid.make_point(2.4971007546)
+        ), ann.get_location().get_best())
+        self.assertEqual(sppasTag("gpf_0"), ann.get_label().get_best())
+
+        ann_content = '2.4971007546\n' \
+                      '5.6838880379\n' \
+                      '"hier soir j\'ai ouvert la \n'\
+                      'porte d\'entrée pour laisser chort- sortir le ""chat"""\n'
+        lines = ann_content.split("\n")
+        ann, nb = sppasTextGrid._parse_annotation(lines, 0, True)
+        self.assertEqual(nb, 4)
+        self.assertEqual(sppasInterval(
+            sppasTextGrid.make_point(2.4971007546),
+            sppasTextGrid.make_point(5.6838880379)), ann.get_location().get_best())
+        self.assertEqual(u('hier soir j\'ai ouvert la porte d\'entrée '
+                           'pour laisser chort- sortir le "chat"'),
+                         ann.get_label().get_best().get_content())
+
+    # -----------------------------------------------------------------------
+
+    def test_parse_localization_long(self):
+        """ Test parse_localization of a long TextGrid. """
+
+        # interval
+        ann_content = '    xmin = 0.0\n' \
+                      '    xmax = 2.4971007546\n' \
+                      '    text = "gpf_0"\n'
+        lines_i = ann_content.split("\n")
+        loc, nb = sppasTextGrid._parse_localization(lines_i, 0, True)
+        self.assertEqual(sppasInterval(
+            sppasTextGrid.make_point(0.),
+            sppasTextGrid.make_point(2.4971007546)
+        ), loc)
+        self.assertEqual(nb, 2)
+
+        # point
+        ann_content = '        number = 0.054406250000000066\n'\
+                      '        value = 62.49343439812383\n'
+        lines_p = ann_content.split("\n")
+        loc, nb = sppasTextGrid._parse_localization(lines_p, 0, False)
+        self.assertEqual(sppasTextGrid.make_point(0.054406250000000066), loc)
+        self.assertEqual(nb, 1)
+
+    # -----------------------------------------------------------------------
+
+    def test_parse_localization_short(self):
+        """ Test parse_localization of a long TextGrid. """
+
+        # interval
+        ann_content = '0.0\n' \
+                      '2.4971007546\n' \
+                      '"gpf_0"\n'
+        lines_i = ann_content.split("\n")
+        loc, nb = sppasTextGrid._parse_localization(lines_i, 0, True)
+        self.assertEqual(sppasInterval(
+            sppasTextGrid.make_point(0.),
+            sppasTextGrid.make_point(2.4971007546)
+        ), loc)
+        self.assertEqual(nb, 2)
+
+        # point
+        ann_content = '0.054406250000000066\n'\
+                      '"Top"\n'
+        lines_p = ann_content.split("\n")
+        loc, nb = sppasTextGrid._parse_localization(lines_p, 0, False)
+        self.assertEqual(sppasTextGrid.make_point(0.054406250000000066), loc)
+        self.assertEqual(nb, 1)
+
+    # -----------------------------------------------------------------------
+
+    def test_parse_text_short(self):
+        """ Test text parser. """
+
+        # standard tag
+        ann_content = '0.0\n' \
+                      '2.4971007546\n' \
+                      '"gpf_0"\n'
+        lines_i = ann_content.split("\n")
+        tag, nb = sppasTextGrid._parse_text(lines_i, 2)
+        self.assertEqual(sppasTag("gpf_0"), tag)
+        self.assertEqual(nb, 3)
+
+        # multi-lines tag
+        ann_content = '0.0\n' \
+                      '2.4971007546\n' \
+                      '"hier soir j\'ai ouvert la\n' \
+                      'porte d\'entrée\n'\
+                      'pour laisser chort- sortir le ""chat"""\n'
+        lines = ann_content.split("\n")
+        tag, nb = sppasTextGrid._parse_text(lines, 2)
+        self.assertEqual(sppasTag('hier soir j\'ai ouvert la porte d\'entrée pour laisser chort- sortir le "chat"'), tag)
+        self.assertEqual(nb, 5)
+
+        with self.assertRaises(AioLineFormatError):
+            ann_content = '0.0\n' \
+                          '2.4971007546\n' \
+                          '"hier soir j\'ai ouvert la\n' \
+                          'porte d\'entrée\n'
+            lines = ann_content.split("\n")
+            sppasTextGrid._parse_text(lines, 2)
+
+    # -----------------------------------------------------------------------
+
+    def test_parse_text_long(self):
+        """ Test text parser. """
+
+        # standard tag
+        ann_content = '\t\txmin = 0.0\n' \
+                      '\t\txmax = 2.4971007546\n' \
+                      '\t\ttext = "gpf_0"\n'
+        lines_i = ann_content.split("\n")
+        tag, nb = sppasTextGrid._parse_text(lines_i, 2)
+        self.assertEqual(sppasTag("gpf_0"), tag)
+        self.assertEqual(nb, 3)
+
+        # multi-lines tag
+        ann_content = '\t\txmin = 0.0\n' \
+                      '\t\txmax = 2.4971007546\n' \
+                      '\t\ttext = "hier soir j\'ai ouvert la\n' \
+                      'porte d\'entrée\n' \
+                      'pour laisser chort- sortir le ""chat"""\n'
+        lines = ann_content.split("\n")
+        tag, nb = sppasTextGrid._parse_text(lines, 2)
+        self.assertEqual(
+            sppasTag('hier soir j\'ai ouvert la porte d\'entrée pour laisser chort- sortir le "chat"'), tag)
+        self.assertEqual(nb, 5)
+
+        with self.assertRaises(AioLineFormatError):
+            ann_content = '\t\txmin = 0.0\n' \
+                          '\t\txmax = 2.4971007546\n' \
+                          '\t\ttext = "hier soir j\'ai ouvert la\n' \
+                          'porte d\'entrée\n'
+            lines = ann_content.split("\n")
+            sppasTextGrid._parse_text(lines, 2)
+
+    # -----------------------------------------------------------------------
+
+    def test_read(self):
+        txt = sppasTextGrid()
+        txt.read(os.path.join(DATA, "sample.TextGrid"))
+        self.assertEqual(len(txt), 2)
+        self.assertEqual(txt[0].get_name(), "transcription")
+        self.assertEqual(txt[1].get_name(), "P-Tones")
+        self.assertEqual(len(txt[0]), 4)
+        self.assertEqual(len(txt[1]), 2)
+
+    # -----------------------------------------------------------------------
+    # Writer
+    # -----------------------------------------------------------------------
+
+    def test_serialize_textgrid_header(self):
+        """ Create a string with the header of the textgrid. """
+
+        header = sppasTextGrid._serialize_textgrid_header(xmin=0.,
+                                                          xmax=10.,
+                                                          size=3)
+        lines = header.split("\n")
+        self.assertEqual(len(lines), 9)
+        self.assertTrue('File type = "ooTextFile"' in lines[0])
+        self.assertTrue('Object class = "TextGrid"' in lines[1])
+        self.assertTrue('xmin = 0.' in lines[3])
+        self.assertTrue('xmax = 10.' in lines[4])
+        self.assertTrue('tiers? <exists>' in lines[5])
+        self.assertTrue('size = 3' in lines[6])
+        self.assertTrue('item []:' in lines[7])
+
+    # -----------------------------------------------------------------------
+
+    def test_serialize_tier_header(self):
+        """ Create the string with the header for a new tier. """
+
+        tier = sppasTier('toto')
+        with self.assertRaises(AioEmptyTierError):
+            sppasTextGrid._serialize_tier_header(tier, 0)
+
+        tier.create_annotation(sppasLocation(sppasPoint(10.)))
+        header = sppasTextGrid._serialize_tier_header(tier, 1)
+        lines = header.split("\n")
+        self.assertEqual(len(lines), 7)
+        self.assertTrue('item [1]:' in lines[0])
+        self.assertTrue('class = "TextTier"' in lines[1])
+        self.assertTrue('name = "toto"' in lines[2])
+        self.assertTrue('xmin = 10.' in lines[3])
+        self.assertTrue('xmax = 10.' in lines[4])
+        self.assertTrue('intervals: size = 1' in lines[5])
+
+        tier.create_annotation(sppasLocation(sppasPoint(20.)),
+                               sppasLabel(sppasTag("T")))
+        header = sppasTextGrid._serialize_tier_header(tier, 1)
+        lines = header.split("\n")
+        self.assertEqual(len(lines), 7)
+        self.assertTrue('item [1]:' in lines[0])
+        self.assertTrue('class = "TextTier"' in lines[1])
+        self.assertTrue('name = "toto"' in lines[2])
+        self.assertTrue('xmin = 10.' in lines[3])
+        self.assertTrue('xmax = 20.' in lines[4])
+        self.assertTrue('intervals: size = 2' in lines[5])
+
+    # -----------------------------------------------------------------------
+
+    def test_serialize_point_annotation(self):
+        """ Converts an annotation consisting of points to the TextGrid format. """
+
+        ann = sppasAnnotation(sppasLocation(sppasPoint(0.881936360608634579)))
+        ann_content = sppasTextGrid._serialize_point_annotation(ann, 3)
+        lines = ann_content.split("\n")
+        self.assertEqual(len(lines), 4)
+        self.assertTrue('points [3]:' in lines[0])
+        self.assertTrue('time = 0.881936360' in lines[1])
+        self.assertTrue('mark = ""' in lines[2])
+
+    # -----------------------------------------------------------------------
+
+    def test_write(self):
+        txt = sppasTextGrid()
+        with self.assertRaises(AioNoTiersError):
+            txt.write(os.path.join(TEMP, "sample.txt"))
+        self.assertFalse(os.path.exists(os.path.join(TEMP, "sample.txt")))
+        txt.create_tier()
+        with self.assertRaises(AioNoTiersError):
+            txt.write(os.path.join(TEMP, "sample.txt"))
+
+    # -----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+
+    def test_read_write(self):
+        txt = sppasTextGrid()
+        txt.read(os.path.join(DATA, "sample.TextGrid"))
+        txt.write(os.path.join(TEMP, "sample.TextGrid"))
+        txt2 = sppasTextGrid()
+        txt2.read(os.path.join(TEMP, "sample.TextGrid"))
+        self.assertEqual(len(txt), len(txt2))
+        # Compare annotations of original and saved-read
+        for t1, t2 in zip(txt, txt2):
+            self.assertEqual(len(t1), len(t2))
+            for a1, a2 in zip(t1, t2):
+                self.assertEqual(a1.get_label().get_best().get_typed_content(),
+                                 a2.get_label().get_best().get_typed_content())
+                self.assertEqual(a1.get_highest_localization().get_midpoint(),
+                                 a2.get_highest_localization().get_midpoint())
+                self.assertEqual(a1.get_lowest_localization().get_midpoint(),
+                                 a2.get_lowest_localization().get_midpoint())

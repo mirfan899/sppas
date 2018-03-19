@@ -57,10 +57,9 @@ class TestAIO(unittest.TestCase):
             for entry in ctrl1:
                 self.assertTrue(ctrl2.contains(entry))
 
-    def test_read_write_with_errors(self):
+        # Praat reader also accepts UTF-16
         parser = sppasRW(os.path.join(DATA, "sample-utf16.TextGrid"))
-        with self.assertRaises(AioEncodingError):
-            trs = parser.read()
+        parser.read()
 
     def test_read_heuristic(self):
         parser = sppasRW(os.path.join(DATA, "sample.heuristic"))
