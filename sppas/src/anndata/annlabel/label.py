@@ -46,6 +46,7 @@
     >>> 280
 
 """
+import copy
 from ..anndataexc import AnnDataTypeError
 from .tag import sppasTag
 
@@ -328,6 +329,13 @@ class sppasLabel(object):
         if len(self.__tags) == 0:
             return False
         return self.__tags[0][0].get_type() == "bool"
+
+    # -----------------------------------------------------------------------
+
+    def copy(self):
+        """ Return a deep copy of the label. """
+
+        return copy.deepcopy(self)
 
     # -----------------------------------------------------------------------
     # Overloads

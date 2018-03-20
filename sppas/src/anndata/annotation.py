@@ -33,8 +33,6 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import copy
-
 from .anndataexc import AnnDataTypeError
 from .annlabel.tag import sppasTag
 from .annlabel.label import sppasLabel
@@ -104,7 +102,14 @@ class sppasAnnotation(sppasMetaData):
     def copy(self):
         """ Return a deep copy of the annotation. """
 
-        return copy.deepcopy(self)
+        location = self.__location.copy()
+        if self.__label is not None:
+            label = self.__label.copy()
+        else:
+            label = None
+        other = sppasAnnotation(location, label)
+        other.set_parent(self.__parent)
+        return other
 
     # -----------------------------------------------------------------------
     # Setters

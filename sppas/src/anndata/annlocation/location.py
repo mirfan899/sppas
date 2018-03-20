@@ -46,6 +46,7 @@
     >>> 280
 
 """
+import copy
 from ..anndataexc import AnnDataTypeError
 from .localization import sppasBaseLocalization
 
@@ -235,6 +236,13 @@ class sppasLocation(object):
             return any([point == l[0] for l in self.__localizations])
         else:
             return any([l[0].is_bound(point) for l in self.__localizations])
+
+    # -----------------------------------------------------------------------
+
+    def copy(self):
+        """ Return a deep copy of the location. """
+
+        return copy.deepcopy(self)
 
     # -----------------------------------------------------------------------
     # Overloads

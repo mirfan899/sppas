@@ -498,64 +498,45 @@ class sppasTextGrid(sppasBasePraat):
     # Writer
     # ------------------------------------------------------------------------
 
-    def convert_for_textgrid(self):
-        """ Create a transcription in which the content is compatible for a TextGrid support.
-
-        No controlled vocabulary, no media, no hierarchy, no metadata and...
-        no gap between annotations, no overlapping annotations.
-
-        :returns: sppasTranscription
-
-        """
-        if self.is_empty():
-            raise AioNoTiersError("TextGrid")
-
-        trs = sppasTextGrid()
-        min_point = self.get_min_loc()
-        max_point = self.get_max_loc()
-        for i, tier in enumerate(self._tiers):
-            if tier.is_empty() is False:
-
-                new_tier = tier.copy()
-                new_tier.set_ctrl_vocab(None)
-                new_tier.set_media(None)
-                new_tier.set_parent(None)
-                # annotations
-                if new_tier.is_interval() is True:
-                    new_tier = fill_gaps(new_tier, min_point, max_point)
-                    new_tier = merge_overlapping_annotations(new_tier)
-
-                trs.append(new_tier)
-
-        if trs.is_empty():
-            raise AioNoTiersError("TextGrid")
-
-        return trs
-
-    # ------------------------------------------------------------------------
-
     def write(self, filename):
         """ Write a TextGrid file.
 
         :param filename: (str)
 
         """
-        trs = self.convert_for_textgrid()
-        min_time = trs.get_min_loc().get_midpoint()
-        max_time = trs.get_max_loc().get_midpoint()
+        if self.is_empty():
+            raise AioNoTiersError("TextGrid")
+
+        min_time_point = self.get_min_loc()
+        max_time_point = self.get_max_loc()
+        if min_time_point is None or max_time_point is None:
+            # only empty tiers in the transcription
+            raise AioNoTiersError("TextGrid")
 
         with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
 
             # Write the header
-            fp.write(sppasTextGrid._serialize_textgrid_header(min_time,
-                                                              max_time,
-                                                              len(trs)))
+            fp.write(sppasTextGrid._serialize_textgrid_header(min_time_point.get_midpoint(),
+                                                              max_time_point.get_midpoint(),
+                                                              len(self)))
 
             # Write each tier
-            for i, tier in enumerate(trs):
+            for i, tier in enumerate(self):
+
+                if tier.is_disjoint() is True:
+                    continue
 
                 # Write the header of the tier
-                fp.write(sppasTextGrid._serialize_tier_header(tier, i+1))
+                try:
+                    fp.write(sppasTextGrid._serialize_tier_header(tier, i+1))
+                except:
+                    fp.close()
+                    raise
+
+                # intervals of annotations must be in a continuum
+                if tier.is_interval() is True:
+                    tier = fill_gaps(tier, min_time_point, max_time_point)
+                    tier = merge_overlapping_annotations(tier)
 
                 # Write annotations of the tier
                 is_point = tier.is_point()

@@ -32,16 +32,19 @@
     src.anndata.aio.aioutils.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Utilities for readers and writers.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Utilities for readers and writers.
 
 """
 from ..tier import sppasTier
 from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
 from ..annlocation.interval import sppasInterval
-from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
-from ..anndataexc import TierAppendError
 
 # ------------------------------------------------------------------------
 
@@ -53,23 +56,75 @@ def format_point_to_float(p):
 # ------------------------------------------------------------------------
 
 
+def check_gaps(tier, min_loc=None, max_loc=None):
+    """ Check if there are holes between annotations.
+
+    :param tier: (sppasTier)
+    :param min_loc: (sppasPoint)
+    :param max_loc: (sppasPoint)
+    :returns: (bool)
+
+    """
+    if tier.is_empty():
+        return False
+
+    if min_loc is not None and format_point_to_float(tier.get_first_point()) > format_point_to_float(min_loc):
+        return True
+    if max_loc is not None and format_point_to_float(tier.get_last_point()) < format_point_to_float(max_loc):
+        return True
+
+    prev = None
+    for ann in tier:
+        if prev is not None:
+            prev_end = prev.get_highest_localization()
+            ann_begin = ann.get_lowest_localization()
+            if prev_end < ann_begin:
+                return True
+        prev = ann
+
+    return False
+
+# ------------------------------------------------------------------------
+
+
 def fill_gaps(tier, min_loc=None, max_loc=None):
     """ Return the tier in which the temporal gaps between annotations are
     filled with an un-labelled annotation.
 
-    :param tier: (Tier)
+    :param tier: (Tier) A tier with intervals.
     :param min_loc: (sppasPoint)
     :param max_loc: (sppasPoint)
+    :returns: (sppasTier)
 
     """
-    new_tier = tier.copy()
-    prev = None
+    # find gaps only if the tier is an IntervalTier
+    if tier.is_interval() is False:
+        return tier
 
+    # There's no reason to do anything if the tier is already without gaps!
+    if check_gaps(tier, min_loc, max_loc) is False:
+        return tier
+
+    # Right, we have things to do...
+    new_tier = tier.copy()
+
+    # Check firstly the begin/end
     if min_loc is not None and format_point_to_float(tier.get_first_point()) > format_point_to_float(min_loc):
         interval = sppasInterval(min_loc, tier.get_first_point())
         new_tier.add(sppasAnnotation(sppasLocation(interval)))
 
+    if max_loc is not None and format_point_to_float(tier.get_last_point()) < format_point_to_float(max_loc):
+        interval = sppasInterval(tier.get_last_point(), max_loc)
+        new_tier.add(sppasAnnotation(sppasLocation(interval)))
+
+    # There's no reason to go further if the tier is already without gaps!
+    if check_gaps(new_tier, min_loc, max_loc) is False:
+        return new_tier
+
+    # Right, we have to check all annotations
+    prev = None
     for a in new_tier:
+
         if prev is not None and prev.get_highest_localization() < a.get_lowest_localization():
             interval = sppasInterval(prev.get_highest_localization(), a.get_lowest_localization())
             annotation = sppasAnnotation(sppasLocation(interval))
@@ -80,10 +135,6 @@ def fill_gaps(tier, min_loc=None, max_loc=None):
             prev = a
         else:
             prev = a
-
-    if max_loc is not None and format_point_to_float(tier.get_last_point()) < format_point_to_float(max_loc):
-        interval = sppasInterval(tier.get_last_point(), max_loc)
-        new_tier.add(sppasAnnotation(sppasLocation(interval)))
 
     return new_tier
 
@@ -114,6 +165,29 @@ def unfill_gaps(tier):
 # ------------------------------------------------------------------------
 
 
+def check_overlaps(tier):
+    """ Check whether some annotations are overlapping or not.
+
+    :param tier: (sppasTier)
+    :returns: (bool)
+
+    """
+    if tier.is_empty():
+        return False
+    prev = None
+    for ann in tier:
+        if prev is not None:
+            prev_end = prev.get_highest_localization()
+            ann_begin = ann.get_lowest_localization()
+            if ann_begin < prev_end:
+                return True
+        prev = ann
+
+    return False
+
+# ------------------------------------------------------------------------
+
+
 def merge_overlapping_annotations(tier, separator=' '):
     """ Merge overlapping annotations.
     The values of the tags are concatenated.
@@ -125,6 +199,13 @@ def merge_overlapping_annotations(tier, separator=' '):
 
     """
     if tier.is_interval() is False:
+        return tier
+    if tier.is_empty():
+        return tier
+    if len(tier) == 1:
+        return tier
+
+    if check_overlaps(tier) is False:
         return tier
 
     new_tier = sppasTier(tier.get_name())

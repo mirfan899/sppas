@@ -39,6 +39,8 @@
 import sys
 import os.path
 from argparse import ArgumentParser
+import pickle
+import time
 
 PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
@@ -93,12 +95,21 @@ args = parser.parse_args()
 
 if args.quiet is False:
     print("Read input file:")
+
+start_time = time.time()
 trs_input = sppas.src.annotationdata.aio.read(args.i)
+end_time = time.time()
+
 if args.quiet is False:
-    print(" [  OK  ]")
+    print("  - elapsed time for reading: {:f} seconds".format(end_time - start_time))
+    pickle_string = pickle.dumps(trs_input)
+    print("  - memory usage of the transcription: {:d} bytes".format(sys.getsizeof(pickle_string)))
 
 # ----------------------------------------------------------------------------
 # Select tiers
+
+if args.quiet is False:
+    print("Tier selection:")
 
 # Take all tiers or specified tiers
 tier_numbers = []
@@ -113,7 +124,7 @@ trs_output = Transcription(name=trs_input.GetName())
 # Add selected tiers into output
 for i in tier_numbers:
     if args.quiet is False:
-        print(" -> Tier "+str(i)+":")
+        sys.stdout.write("  - Tier " + str(i) + ": ")
     if i > 0:
         idx = i-1
     elif i < 0:
@@ -123,10 +134,10 @@ for i in tier_numbers:
     if idx < trs_input.GetSize():
         trs_output.Append(trs_input[idx])
         if args.quiet is False:
-            print(" [  OK  ]")
+            print("{:s}.".format(trs_input[idx].GetName()))
     else:
         if not args.quiet:
-            print(" [IGNORED] Wrong tier number.")
+            print("Ignored. Wrong tier number {:d}.".format(i))
 
 if args.n:
     for n in args.n:
@@ -135,7 +146,7 @@ if args.n:
             trs_output.Append(t)
         else:
             if not args.quiet:
-                print(" [IGNORED] Wrong tier name.")
+                print("Ignored. Wrong tier name {:s}.".format(n))
 
 # Set the other members
 trs_output.metadata = trs_input.metadata
@@ -146,6 +157,11 @@ trs_output.metadata = trs_input.metadata
 
 if args.quiet is False:
     print("Write output file:")
+
+start_time = time.time()
 sppas.src.annotationdata.aio.write(args.o, trs_output)
+end_time = time.time()
+
 if args.quiet is False:
-    print(" [  OK  ]")
+    print("  - elapsed time for writing: {:f} seconds".format(end_time - start_time))
+    print("Done.")
