@@ -779,9 +779,10 @@ class sppasPitchTier(sppasBaseNumericalTier):
 
         """
         try:
-            with codecs.open(filename, 'r', sppas.encoding) as it:
-                file_type = sppasBasePraat._parse_string(it)
-                object_class = sppasBasePraat._parse_string(it)
+            with codecs.open(filename, 'r', sppas.encoding) as fp:
+                file_type = sppasBasePraat._parse_string(fp.readline())
+                object_class = sppasBasePraat._parse_string(fp.readline())
+                fp.close()
                 return file_type == "ooTextFile" and object_class == "PitchTier"
         except IOError:
             return False
@@ -844,9 +845,10 @@ class sppasIntensityTier(sppasPitchTier):
 
         """
         try:
-            with codecs.open(filename, 'r', sppas.encoding) as it:
-                file_type = sppasBasePraat._parse_string(it)
-                object_class = sppasBasePraat._parse_string(it)
+            with codecs.open(filename, 'r', sppas.encoding) as fp:
+                file_type = sppasBasePraat._parse_string(fp.readline())
+                object_class = sppasBasePraat._parse_string(fp.readline())
+                fp.close()
                 return file_type == "ooTextFile" and object_class == "IntensityTier"
         except IOError:
             return False

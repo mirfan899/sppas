@@ -433,7 +433,9 @@ class sppasRawText(sppasBaseText):
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasBaseText.__init__(self, name)
+        self.default_extension = "txt"
 
         self._accept_multi_tiers = False
 
@@ -650,6 +652,8 @@ class sppasCSV(sppasBaseText):
         if name is None:
             name = self.__class__.__name__
         sppasBaseText.__init__(self, name)
+
+        self.default_extension = "csv"
 
         self._accept_multi_tiers = True
 

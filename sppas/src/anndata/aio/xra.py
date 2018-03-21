@@ -112,6 +112,7 @@ class sppasXRA(sppasBaseIO):
         self._accept_overlaps = True
 
         self.__format = "1.3"
+        self.default_extension = "xra"
 
     # -----------------------------------------------------------------
 

@@ -772,6 +772,6 @@ class TestPitchTier(unittest.TestCase):
         for filename in os.listdir(DATA):
             f = os.path.join(DATA, filename)
             if filename.endswith(sppasPitchTier().default_extension):
-                self.assertTrue(sppasTextGrid.detect(f))
+                self.assertTrue(sppasPitchTier.detect(f))
             else:
-                self.assertFalse(sppasTextGrid.detect(f))
+                self.assertFalse(sppasPitchTier.detect(f))

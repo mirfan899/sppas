@@ -732,7 +732,9 @@ class sppasARFF(sppasWEKA):
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasWEKA.__init__(self, name)
+        self.default_extension = "arff"
 
     # -----------------------------------------------------------------
     # Write data
@@ -926,7 +928,9 @@ class sppasXRFF(sppasWEKA):
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasWEKA.__init__(self, name)
+        self.default_extension = "xrff"
 
     # -----------------------------------------------------------------
     # Write data

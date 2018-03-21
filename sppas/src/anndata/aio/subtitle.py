@@ -68,6 +68,7 @@ class sppasBaseSubtitles(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasBaseIO.__init__(self, name)
 
         self._accept_multi_tiers = False
@@ -208,14 +209,16 @@ class sppasSubRip(sppasBaseSubtitles):
 
     """
     def __init__(self, name=None):
-        """ Initialize a new sppasBaseSubtitles instance.
+        """ Initialize a new sppasSubRip instance.
 
         :param name: (str) This transcription name.
 
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasBaseSubtitles.__init__(self, name)
+        self.default_extension = "srt"
 
     # -----------------------------------------------------------------
 
@@ -371,7 +374,9 @@ class sppasSubViewer(sppasBaseSubtitles):
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasBaseSubtitles.__init__(self, name)
+        self.default_extension = "sub"
 
     # -----------------------------------------------------------------
 

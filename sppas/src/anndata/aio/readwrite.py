@@ -81,27 +81,27 @@ class sppasRW(object):
 
     """
     TRANSCRIPTION_TYPES = OrderedDict()
-    TRANSCRIPTION_TYPES["xra"] = sppasXRA
+    TRANSCRIPTION_TYPES[sppasXRA().default_extension.lower()] = sppasXRA
     TRANSCRIPTION_TYPES[sppasTextGrid().default_extension.lower()] = sppasTextGrid
-    TRANSCRIPTION_TYPES["arff"] = sppasARFF
-    TRANSCRIPTION_TYPES["xrff"] = sppasXRFF
+    TRANSCRIPTION_TYPES[sppasARFF().default_extension.lower()] = sppasARFF
+    TRANSCRIPTION_TYPES[sppasXRFF().default_extension.lower()] = sppasXRFF
     # TRANSCRIPTION_TYPES["eaf"] = Elan,
     # TRANSCRIPTION_TYPES["anvil"] = Anvil
     # TRANSCRIPTION_TYPES["antx"] = Antx
-    TRANSCRIPTION_TYPES["trs"] = sppasTRS
-    TRANSCRIPTION_TYPES["mrk"] = sppasMRK
-    TRANSCRIPTION_TYPES["hz"] = sppasSignaix
-    TRANSCRIPTION_TYPES["lab"] = sppasLab
-    TRANSCRIPTION_TYPES["srt"] = sppasSubRip
-    TRANSCRIPTION_TYPES["sub"] = sppasSubViewer
-    TRANSCRIPTION_TYPES["ctm"] = sppasCTM
-    TRANSCRIPTION_TYPES["stm"] = sppasSTM
+    TRANSCRIPTION_TYPES[sppasTRS().default_extension.lower()] = sppasTRS
+    TRANSCRIPTION_TYPES[sppasMRK().default_extension.lower()] = sppasMRK
+    TRANSCRIPTION_TYPES[sppasSignaix().default_extension.lower()] = sppasSignaix
+    TRANSCRIPTION_TYPES[sppasLab().default_extension.lower()] = sppasLab
+    TRANSCRIPTION_TYPES[sppasSubRip().default_extension.lower()] = sppasSubRip
+    TRANSCRIPTION_TYPES[sppasSubViewer().default_extension.lower()] = sppasSubViewer
+    TRANSCRIPTION_TYPES[sppasCTM().default_extension.lower()] = sppasCTM
+    TRANSCRIPTION_TYPES[sppasSTM().default_extension.lower()] = sppasSTM
     TRANSCRIPTION_TYPES[sppasIntensityTier().default_extension.lower()] = sppasIntensityTier
     TRANSCRIPTION_TYPES[sppasPitchTier().default_extension.lower()] = sppasPitchTier
-    TRANSCRIPTION_TYPES["csv"] = sppasCSV
-    TRANSCRIPTION_TYPES["aup"] = sppasAudacity
-    TRANSCRIPTION_TYPES["tdf"] = sppasTDF
-    TRANSCRIPTION_TYPES["txt"] = sppasRawText
+    TRANSCRIPTION_TYPES[sppasAudacity().default_extension.lower()] = sppasAudacity
+    TRANSCRIPTION_TYPES[sppasTDF().default_extension.lower()] = sppasTDF
+    TRANSCRIPTION_TYPES[sppasCSV().default_extension.lower()] = sppasCSV
+    TRANSCRIPTION_TYPES[sppasRawText().default_extension.lower()] = sppasRawText
 
     # -----------------------------------------------------------------------
 

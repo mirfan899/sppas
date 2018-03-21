@@ -86,6 +86,7 @@ class sppasBasePhonedit(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasBaseIO.__init__(self, name)
 
         self._accept_multi_tiers = True
@@ -206,7 +207,9 @@ class sppasMRK(sppasBasePhonedit):
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasBasePhonedit.__init__(self, name)
+        self.default_extension = "mrk"
 
     # -----------------------------------------------------------------------
     # reader
@@ -416,7 +419,9 @@ class sppasSignaix(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasBaseIO.__init__(self, name)
+        self.default_extension = "hz"
 
         self._accept_multi_tiers = False
         self._accept_no_tiers = False

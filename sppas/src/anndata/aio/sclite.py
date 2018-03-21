@@ -265,7 +265,9 @@ class sppasCTM(sppasBaseSclite):
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasBaseSclite.__init__(self, name)
+        self.default_extension = "ctm"
 
     # ------------------------------------------------------------------------
     # Reader
@@ -629,7 +631,9 @@ class sppasSTM(sppasBaseSclite):
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasBaseSclite.__init__(self, name)
+        self.default_extension = "stm"
 
     # -----------------------------------------------------------------------
     # Reader

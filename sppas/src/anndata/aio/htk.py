@@ -76,6 +76,7 @@ class sppasBaseHTK(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasBaseIO.__init__(self, name)
 
         self._accept_multi_tiers = False
@@ -224,7 +225,9 @@ class sppasLab(sppasBaseHTK):
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasBaseHTK.__init__(self, name)
+        self.default_extension = "lab"
 
     # ------------------------------------------------------------------------
 

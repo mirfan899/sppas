@@ -138,7 +138,9 @@ class sppasTDF(sppasBaseText):
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasBaseText.__init__(self, name)
+        self.default_extension = "tdf"
 
         # override all
         self._accept_multi_tiers = True

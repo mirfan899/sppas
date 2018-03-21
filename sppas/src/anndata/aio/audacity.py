@@ -100,7 +100,9 @@ class sppasAudacity(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
+
         sppasBaseIO.__init__(self, name)
+        self.default_extension = "aup"
 
         self._accept_multi_tiers = True
         self._accept_no_tiers = True
