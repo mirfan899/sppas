@@ -51,8 +51,8 @@ from .sclite import sppasCTM
 from .sclite import sppasSTM
 from .xtrans import sppasTDF
 from .praat import sppasTextGrid
-#from .praat import sppasPitchTier
-#from .praat import sppasIntensityTier
+from .praat import sppasPitchTier
+from .praat import sppasIntensityTier
 from .phonedit import sppasMRK
 from .phonedit import sppasSignaix
 from .htk import sppasLab
@@ -82,10 +82,12 @@ class sppasRW(object):
     """
     TRANSCRIPTION_TYPES = OrderedDict()
     TRANSCRIPTION_TYPES["xra"] = sppasXRA
-    TRANSCRIPTION_TYPES["textgrid"] = sppasTextGrid
+    TRANSCRIPTION_TYPES[sppasTextGrid().default_extension.lower()] = sppasTextGrid
     TRANSCRIPTION_TYPES["arff"] = sppasARFF
     TRANSCRIPTION_TYPES["xrff"] = sppasXRFF
     # TRANSCRIPTION_TYPES["eaf"] = Elan,
+    # TRANSCRIPTION_TYPES["anvil"] = Anvil
+    # TRANSCRIPTION_TYPES["antx"] = Antx
     TRANSCRIPTION_TYPES["trs"] = sppasTRS
     TRANSCRIPTION_TYPES["mrk"] = sppasMRK
     TRANSCRIPTION_TYPES["hz"] = sppasSignaix
@@ -94,10 +96,8 @@ class sppasRW(object):
     TRANSCRIPTION_TYPES["sub"] = sppasSubViewer
     TRANSCRIPTION_TYPES["ctm"] = sppasCTM
     TRANSCRIPTION_TYPES["stm"] = sppasSTM
-    # TRANSCRIPTION_TYPES["anvil"] = Anvil
-    # TRANSCRIPTION_TYPES["antx"] = Antx
-    # TRANSCRIPTION_TYPES["intensitytier"] = IntensityTier
-    # TRANSCRIPTION_TYPES["pitchtier"] = PitchTier
+    TRANSCRIPTION_TYPES[sppasIntensityTier().default_extension.lower()] = sppasIntensityTier
+    TRANSCRIPTION_TYPES[sppasPitchTier().default_extension.lower()] = sppasPitchTier
     TRANSCRIPTION_TYPES["csv"] = sppasCSV
     TRANSCRIPTION_TYPES["aup"] = sppasAudacity
     TRANSCRIPTION_TYPES["tdf"] = sppasTDF

@@ -47,12 +47,16 @@ import shutil
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.makeunicode import u
 
+from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioLineFormatError
 from ..anndataexc import AioEmptyTierError
 from ..anndataexc import AioNoTiersError
 
 from ..aio.praat import sppasBasePraat
 from ..aio.praat import sppasTextGrid
+from ..aio.praat import sppasBaseNumericalTier
+from ..aio.praat import sppasPitchTier
+from ..aio.praat import sppasIntensityTier
 from ..annlocation.interval import sppasInterval
 from ..annlocation.point import sppasPoint
 from ..annlabel.tag import sppasTag
@@ -221,19 +225,19 @@ class TestBasePraat(unittest.TestCase):
         """ Convert a label into a text string. """
 
         line = sppasBasePraat._serialize_label_text(sppasLabel())
-        self.assertEqual(line, '\t\ttext = ""\n')
+        self.assertEqual(line, '\t\t\ttext = ""\n')
 
         line = sppasBasePraat._serialize_label_text(sppasLabel(sppasTag("")))
-        self.assertEqual(line, '\t\ttext = ""\n')
+        self.assertEqual(line, '\t\t\ttext = ""\n')
 
         line = sppasBasePraat._serialize_label_text(sppasLabel(sppasTag("toto")))
-        self.assertEqual(line, '\t\ttext = "toto"\n')
+        self.assertEqual(line, '\t\t\ttext = "toto"\n')
 
         line = sppasBasePraat._serialize_label_text(sppasLabel(sppasTag('"toto"')))
-        self.assertEqual(line, '\t\ttext = """toto"""\n')
+        self.assertEqual(line, '\t\t\ttext = """toto"""\n')
 
         line = sppasBasePraat._serialize_label_text(sppasLabel(sppasTag('This is "toto" and "titi"')))
-        self.assertEqual(line, '\t\ttext = "This is ""toto"" and ""titi"""\n')
+        self.assertEqual(line, '\t\t\ttext = "This is ""toto"" and ""titi"""\n')
 
     # -----------------------------------------------------------------
 
@@ -246,11 +250,11 @@ class TestBasePraat(unittest.TestCase):
         line = sppasBasePraat._serialize_label_value(sppasLabel(sppasTag("")))
         self.assertIsNone(line)
 
-        line = sppasBasePraat._serialize_label_value(sppasLabel(sppasTag("2")))
-        self.assertEqual(line, '\t\tvalue = 2\n')
-
         line = sppasBasePraat._serialize_label_value(sppasLabel(sppasTag("2", tag_type="float")))
-        self.assertEqual(line, '\t\tvalue = 2.0\n')
+        self.assertEqual(line, '\tvalue = 2.0\n')
+
+        with self.assertRaises(AnnDataTypeError):
+            sppasBasePraat._serialize_label_value(sppasLabel(sppasTag("2")))
 
 # ---------------------------------------------------------------------------
 
@@ -685,7 +689,89 @@ class TestTextGrid(unittest.TestCase):
             for a1, a2 in zip(t1, t2):
                 self.assertEqual(a1.get_label().get_best().get_typed_content(),
                                  a2.get_label().get_best().get_typed_content())
-                self.assertEqual(a1.get_highest_localization().get_midpoint(),
-                                 a2.get_highest_localization().get_midpoint())
-                self.assertEqual(a1.get_lowest_localization().get_midpoint(),
-                                 a2.get_lowest_localization().get_midpoint())
+                self.assertEqual(a1.get_highest_localization(),
+                                 a2.get_highest_localization())
+                self.assertEqual(a1.get_lowest_localization(),
+                                 a2.get_lowest_localization())
+
+# ---------------------------------------------------------------------------
+
+
+class TestNumerical(unittest.TestCase):
+
+    def setUp(self):
+        if os.path.exists(TEMP) is False:
+            os.mkdir(TEMP)
+
+    def tearDown(self):
+        shutil.rmtree(TEMP)
+
+    # -----------------------------------------------------------------------
+
+    def test_members(self):
+        tg = sppasBaseNumericalTier()
+        self.assertFalse(tg.multi_tiers_support())
+        self.assertFalse(tg.no_tiers_support())
+        self.assertFalse(tg.metadata_support())
+        self.assertFalse(tg.ctrl_vocab_support())
+        self.assertFalse(tg.media_support())
+        self.assertFalse(tg.hierarchy_support())
+        self.assertTrue(tg.point_support())
+        self.assertFalse(tg.interval_support())
+        self.assertFalse(tg.disjoint_support())
+        self.assertFalse(tg.alternative_localization_support())
+        self.assertFalse(tg.alternative_tag_support())
+        self.assertFalse(tg.radius_support())
+        self.assertFalse(tg.gaps_support())
+        self.assertFalse(tg.overlaps_support())
+
+    # -----------------------------------------------------------------------
+
+    def test_read_write(self):
+        txt = sppasBaseNumericalTier()
+        txt._read(os.path.join(DATA, "sample.PitchTier"))
+        txt._write(os.path.join(TEMP, "sample.PitchTier"), "PitchTier")
+        txt2 = sppasBaseNumericalTier()
+        txt2._read(os.path.join(TEMP, "sample.PitchTier"))
+        self.assertEqual(len(txt), len(txt2))
+        self.assertEqual(len(txt), 1)
+
+        self.assertTrue(txt[0].is_point())
+        self.assertTrue(txt[0].is_float())
+        self.assertTrue(txt2[0].is_point())
+        self.assertTrue(txt2[0].is_float())
+        self.assertEqual(len(txt[0]), len(txt2[0]))
+        # Compare annotations of original and saved-read
+        for t1, t2 in zip(txt, txt2):
+            self.assertEqual(len(t1), len(t2))
+            for a1, a2 in zip(t1, t2):
+                self.assertEqual(a1.get_label().get_best().get_typed_content(),
+                                 a2.get_label().get_best().get_typed_content())
+                self.assertEqual(a1.get_highest_localization(),
+                                 a2.get_highest_localization())
+                self.assertEqual(a1.get_lowest_localization(),
+                                 a2.get_lowest_localization())
+
+# ---------------------------------------------------------------------------
+
+
+class TestPitchTier(unittest.TestCase):
+
+    def setUp(self):
+        if os.path.exists(TEMP) is False:
+            os.mkdir(TEMP)
+
+    def tearDown(self):
+        shutil.rmtree(TEMP)
+
+    # -----------------------------------------------------------------------
+
+    def test_detect(self):
+        """ Test the file format detection method. """
+
+        for filename in os.listdir(DATA):
+            f = os.path.join(DATA, filename)
+            if filename.endswith(sppasPitchTier().default_extension):
+                self.assertTrue(sppasTextGrid.detect(f))
+            else:
+                self.assertFalse(sppasTextGrid.detect(f))

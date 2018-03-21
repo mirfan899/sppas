@@ -52,8 +52,10 @@ import sppas
 
 from sppas.src.utils.makeunicode import u
 from ..anndataexc import AnnDataTypeError
+from ..anndataexc import AioNoTiersError
 from ..anndataexc import AioMultiTiersError
 from ..anndataexc import AioEmptyTierError
+from ..anndataexc import AioLocationTypeError
 from ..anndataexc import AioError
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
@@ -479,7 +481,10 @@ class sppasSignaix(sppasBaseIO):
         :param filename: (str) output filename
 
         """
-        if len(self) != 1:
+        if self.is_empty():
+            raise AioNoTiersError(".hz")
+
+        if len(self) > 1:
             tier = self.find("Pitch", case_sensitive=False)
             if tier is None:
                 raise AioMultiTiersError("Signaix-Pitch")
@@ -492,7 +497,7 @@ class sppasSignaix(sppasBaseIO):
 
         # we expect a tier with only sppasPoint
         if tier.is_point() is False:
-            raise AnnDataTypeError(tier.get_name(), "location point")
+            raise AioLocationTypeError(".hz", "intervals")
 
         # check if the tier is really pitch values
         # or at least, float values sampled at a delta time.
