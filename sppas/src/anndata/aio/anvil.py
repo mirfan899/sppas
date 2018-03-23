@@ -58,12 +58,12 @@ class sppasAnvil(sppasBaseIO):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS XRA reader and writer.
+    :summary:      ANVIL reader.
 
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of XRA format or not.
+        """ Check whether a file is of ANVIL format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -81,6 +81,7 @@ class sppasAnvil(sppasBaseIO):
     @staticmethod
     def make_point(midpoint):
         """ The localization is a time value, so always a float. """
+
         try:
             midpoint = float(midpoint)
         except ValueError:
@@ -91,7 +92,7 @@ class sppasAnvil(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new XRA instance.
+        """ Initialize a new ANVIL instance.
 
         :param name: (str) This transcription name.
 

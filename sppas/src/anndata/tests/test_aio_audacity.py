@@ -82,6 +82,18 @@ class TestAudacity(unittest.TestCase):
 
     # -----------------------------------------------------------------------
 
+    def test_detect(self):
+        """ Test the file format detection method. """
+
+        for filename in os.listdir(DATA):
+            f = os.path.join(DATA, filename)
+            if filename.endswith('.aup'):
+                self.assertTrue(sppasAudacity.detect(f))
+            else:
+                self.assertFalse(sppasAudacity.detect(f))
+
+    # -----------------------------------------------------------------------
+
     def test_make_point(self):
         """ Convert data into the appropriate digit type, or not. """
 

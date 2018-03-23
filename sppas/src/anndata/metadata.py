@@ -35,7 +35,6 @@
 """
 from collections import OrderedDict
 
-import sppas
 from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.utils.fileutils import sppasGUID
 
@@ -79,15 +78,16 @@ class sppasMetaData(object):
 
     # -----------------------------------------------------------------------
 
-    def get_meta(self, entry):
+    def get_meta(self, entry, default=""):
         """ Return the value of the given key.
         Return an empty string if the given entry if not a key of metadata.
 
         :param entry: (str) Entry to be checked as a key.
+        :param default: (str) Default value to return if entry is not a key.
         :returns: (str)
 
         """
-        return self.__metadata.get(entry, "")
+        return self.__metadata.get(entry, default)
 
     # -----------------------------------------------------------------------
 
@@ -193,7 +193,6 @@ class sppasDefaultMeta(sppasMetaData):
 
         # annotation pro
         self.set_meta("file_version", "")
-        self.set_meta("file_created_date", "")
 
     # -----------------------------------------------------------------------
 

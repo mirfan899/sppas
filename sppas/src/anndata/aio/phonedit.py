@@ -338,7 +338,7 @@ class sppasMRK(sppasBasePhonedit):
                 for index_ann, ann in enumerate(tier):
 
                     fp.write("LBL_{:s}_{:06d}=\"{:s}\"".format(
-                        level, index_ann, ann.get_label().get_best().get_content()))
+                        level, index_ann, sppasMRK._serialize_label(ann.get_label())))
                     if point:
                         # Phonedit supports degenerated intervals (instead of points)
                         b = ann.get_lowest_localization().get_midpoint() * 1000.
@@ -349,6 +349,24 @@ class sppasMRK(sppasBasePhonedit):
                     fp.write(" {:s} {:s}\n".format(str(b), str(e)))
 
             fp.close()
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def _serialize_label(label):
+        """ Convert a label into a string. """
+
+        if label is None:
+            return ""
+
+        if label.get_best() is None:
+            return ""
+
+        if label.get_best().is_empty():
+            return ""
+
+        return label.get_best().get_content()
+
 
 # ---------------------------------------------------------------------------
 

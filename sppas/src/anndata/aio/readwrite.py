@@ -36,7 +36,7 @@
 
 """
 import os.path
-import datetime
+from datetime import datetime
 from collections import OrderedDict
 
 import sppas
@@ -165,11 +165,12 @@ class sppasRW(object):
             trs.set_meta('file_name', os.path.basename(self.__filename))
             trs.set_meta('file_path', os.path.dirname(self.__filename))
             trs.set_meta('file_ext', os.path.splitext(self.__filename)[1])
-            now = datetime.datetime.now()
-            trs.set_meta('file_read_date', "{:d}-{:d}-{:d}".format(now.year, now.month, now.day))
+            now = datetime.now().strftime("%Y-%M-%d %H:%M")
+            trs.set_meta('file_read_date', "{:s}".format(now))
 
-            # Read the file content dans store into a Trancription()
+            # Read the file content dans store into a Transcription()
             trs.read(self.__filename)
+
         except UnicodeError as e:
             raise AioEncodingError(filename=self.__filename, error=str(e))
         except Exception:
@@ -233,8 +234,12 @@ class sppasRW(object):
         trs_rw.set_meta('file_name', os.path.basename(self.__filename))
         trs_rw.set_meta('file_path', os.path.dirname(self.__filename))
         trs_rw.set_meta('file_ext', os.path.splitext(self.__filename)[1])
-        now = datetime.datetime.now()
-        trs_rw.set_meta('file_write_date', "{:d}-{:d}-{:d}".format(now.year, now.month, now.day))
+        now = datetime.now().strftime("%Y-%M-%d %H:%M")
+        trs_rw.set_meta('file_write_date', "{:s}".format(now))
+        file_version = int(trs_rw.get_meta("file_version", "0")) + 1
+        trs_rw.set_meta('file_version', str(file_version))
+        file_created_date = trs_rw.get_meta("file_created_date", now)
+        trs_rw.set_meta('file_created_date', file_created_date)
 
         try:
             trs_rw.write(self.__filename)
