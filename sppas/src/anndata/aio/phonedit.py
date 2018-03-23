@@ -65,7 +65,7 @@ from ..annlabel.tag import sppasTag
 
 from .basetrs import sppasBaseIO
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasBasePhonedit(sppasBaseIO):
@@ -104,7 +104,7 @@ class sppasBasePhonedit(sppasBaseIO):
         self._accept_gaps = True
         self._accept_overlaps = True
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse(filename):
@@ -141,7 +141,7 @@ class sppasBasePhonedit(sppasBaseIO):
         for entry in meta_list:
             meta_object.set_meta(entry[0], entry[1])
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def make_point(midpoint):
@@ -155,7 +155,7 @@ class sppasBasePhonedit(sppasBaseIO):
         return sppasPoint(midpoint / 1000., radius=0.0005)
 
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasMRK(sppasBasePhonedit):
@@ -235,7 +235,7 @@ class sppasMRK(sppasBasePhonedit):
             if "LBL_LEVEL_" in section_name:
                 self._parse_labels(parser.items(section_name))
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_level(self, data_list, level_id):
         """ Parse a section DSC_LEVEL_ .
@@ -257,7 +257,7 @@ class sppasMRK(sppasBasePhonedit):
         # extract metadata for this tier
         sppasBasePhonedit._parse_metadata(data_list, tier)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_labels(self, data_list):
         """ Parse labels of a section LBL_LEVEL_ . """
@@ -303,9 +303,9 @@ class sppasMRK(sppasBasePhonedit):
             # override the default "id" by the name of the attribute
             ann.set_meta("id", key)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # writer
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def write(self, filename):
         """ Write a Phonedit mark file.
@@ -350,7 +350,7 @@ class sppasMRK(sppasBasePhonedit):
 
             fp.close()
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasSignaix(sppasBaseIO):
@@ -387,7 +387,7 @@ class sppasSignaix(sppasBaseIO):
 
         return False
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def detect(filename):

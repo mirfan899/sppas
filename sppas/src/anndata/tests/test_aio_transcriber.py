@@ -21,6 +21,7 @@ DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 class TestTranscriber(unittest.TestCase):
     """
     Base text is mainly made of utility methods.
+
     """
     def test_members(self):
         txt = sppasTRS()
@@ -29,7 +30,7 @@ class TestTranscriber(unittest.TestCase):
         self.assertTrue(txt.metadata_support())
         self.assertFalse(txt.ctrl_vocab_support())
         self.assertTrue(txt.media_support())
-        self.assertFalse(txt.hierarchy_support())
+        self.assertTrue(txt.hierarchy_support())
         self.assertFalse(txt.point_support())
         self.assertTrue(txt.interval_support())
         self.assertFalse(txt.disjoint_support())

@@ -89,7 +89,7 @@ class TestBaseSclite(unittest.TestCase):
         self.assertTrue(txt.gaps_support())
         self.assertTrue(txt.overlaps_support())
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_make_point(self):
         """ Convert data into the appropriate digit type, or not. """
@@ -115,7 +115,7 @@ class TestScliteCTM(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(TEMP)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_detect(self):
         """ Test the file format detection method. """
@@ -127,7 +127,7 @@ class TestScliteCTM(unittest.TestCase):
             else:
                 self.assertFalse(sppasCTM.detect(f))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_check_line(self):
         """ Check whether a line is correct or not. """
@@ -152,9 +152,9 @@ class TestScliteCTM(unittest.TestCase):
 
         self.assertTrue(sppasCTM.check_line("waveform channel 1.3 2.0 word"))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # read
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_get_tier(self):
         """ Return the tier related to the given line. """
@@ -184,7 +184,7 @@ class TestScliteCTM(unittest.TestCase):
         self.assertEqual(len(ctm), 2)
         self.assertEqual(tier.get_meta("media_channel"), "1")
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_get_score(self):
         """ Return the score of the label of a given line. """
@@ -198,7 +198,7 @@ class TestScliteCTM(unittest.TestCase):
         # normal score with an error in writing the word!
         self.assertEqual(sppasCTM.get_score("D_NONE 1 108.74 0.31 SO SO SO 3"), 3.)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_create_annotation(self):
         """ Return the annotation corresponding to data of a line. """
@@ -225,7 +225,7 @@ class TestScliteCTM(unittest.TestCase):
         self.assertEqual(ann.get_label().get_best().get_content(), "bye_bye")
         self.assertEqual(ann.get_label().get_score(ann.get_label().get_best()), 0.95)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_parse_lines(self):
         """ Fill the transcription from the lines of the CTM file. """
@@ -314,7 +314,7 @@ class TestScliteCTM(unittest.TestCase):
         self.assertEqual(ctm[0].get_name(), "D_WAV-1")
         self.assertEqual(len(ctm[0]), 1)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_read(self):
         """ Sample ctm. """
@@ -332,9 +332,9 @@ class TestScliteCTM(unittest.TestCase):
         self.assertEqual(len(ctm[2]), 6)
         self.assertEqual(len(ctm[3]), 6)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Write
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_serialize_tag(self):
         """ Convert a tag with its score into a line for CTM files. """
@@ -348,7 +348,7 @@ class TestScliteCTM(unittest.TestCase):
         line = sppasCTM._serialize_tag("WAV", "A", 0.5, 0.22, sppasTag(''), 0.96)
         self.assertEqual("WAV A 0.5 0.22 @ 0.96\n", line)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_serialize_annotation(self):
         """ Convert an annotation into lines for CTM files. """
@@ -375,7 +375,7 @@ class TestScliteCTM(unittest.TestCase):
                          "WAV A 1.0 2.5 level 0.4\n"
                          "WAV A * * <ALT_END>\n", line)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_read_write(self):
         """ Write a transcription into a file. """
@@ -413,7 +413,7 @@ class TestScliteSTM(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(TEMP)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_detect(self):
         """ Test the file format detection method. """
@@ -425,7 +425,7 @@ class TestScliteSTM(unittest.TestCase):
             else:
                 self.assertFalse(sppasSTM.detect(f))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_check_line(self):
         """ Check whether a line is correct or not. """
@@ -450,9 +450,9 @@ class TestScliteSTM(unittest.TestCase):
 
         self.assertTrue(sppasSTM.check_line("waveform channel speaker 3.0 4.0 label"))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # read
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_get_tier(self):
         """ Return the tier related to the given line. """
@@ -484,7 +484,7 @@ class TestScliteSTM(unittest.TestCase):
         self.assertEqual(tier.get_meta("media_channel"), "1")
         self.assertEqual(tier.get_meta("speaker_id"), "B")
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_create_annotation(self):
         """ Return the annotation corresponding to data of a line. """
@@ -499,7 +499,7 @@ class TestScliteSTM(unittest.TestCase):
         self.assertEqual(ann.get_location().get_best().get_end().get_midpoint(), 2)
         self.assertEqual(ann.get_label().get_best().get_content(), "utterance")
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_parse_lines(self):
         """ Fill the transcription from the lines of the STM file. """
@@ -573,7 +573,7 @@ class TestScliteSTM(unittest.TestCase):
         self.assertEqual(stm[1][0].get_location().get_best().get_begin(), sppasPoint(109.8))
         self.assertEqual(stm[1][0].get_location().get_best().get_end(), sppasPoint(110.2))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_read(self):
         """ Sample stm. """
@@ -588,9 +588,9 @@ class TestScliteSTM(unittest.TestCase):
         self.assertEqual(len(stm[1]), 6)
         self.assertEqual(stm[1][0].get_label().get_best().get_content(), u("对 因为"))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # write
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_serialize_label(self):
         """ Convert a label into a string. """
@@ -617,7 +617,7 @@ class TestScliteSTM(unittest.TestCase):
         s = sppasSTM._serialize_label(label)
         self.assertEqual(s, "{ uh / um }")
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_serialize_annotation(self):
         """ Convert an annotation into lines for STM files. """
@@ -640,7 +640,7 @@ class TestScliteSTM(unittest.TestCase):
         line = sppasSTM._serialize_annotation(a3, "WAV", "1", "A")
         self.assertEqual("WAV 1 A 1.0 3.5 { label / level }\n", line)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_read_write(self):
         """ Write a transcription into a file. """

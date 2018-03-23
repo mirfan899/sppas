@@ -54,7 +54,7 @@ from ..annlabel.tag import sppasTag
 
 from .basetrs import sppasBaseIO
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasXRA(sppasBaseIO):
@@ -84,7 +84,7 @@ class sppasXRA(sppasBaseIO):
             return False
         return root.find('Tier') is not None
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
         """ Initialize a new XRA instance.
@@ -114,7 +114,7 @@ class sppasXRA(sppasBaseIO):
         self.__format = "1.3"
         self.default_extension = "xra"
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def read(self, filename):
         """ Read an XRA file and fill the Transcription.
@@ -144,7 +144,7 @@ class sppasXRA(sppasBaseIO):
         for vocabulary_root in root.findall('Vocabulary'):
             self.__read_vocabulary(vocabulary_root)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __read_metadata(meta_object, metadata_root):
@@ -165,7 +165,7 @@ class sppasXRA(sppasBaseIO):
 
                 meta_object.set_meta(key, value)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __read_tier(self, tier_root):
         """ Read a tier.
@@ -194,7 +194,7 @@ class sppasXRA(sppasBaseIO):
         for annotation_root in tier_root.findall('Annotation'):
             sppasXRA.__read_annotation(tier, annotation_root)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __read_annotation(tier, annotation_root):
@@ -213,7 +213,7 @@ class sppasXRA(sppasBaseIO):
         annotation = sppasAnnotation(location, label)
         tier.add(annotation)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __parse_location(location_root):
@@ -245,7 +245,7 @@ class sppasXRA(sppasBaseIO):
 
         return location
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __parse_localization(localization_root):
@@ -270,7 +270,7 @@ class sppasXRA(sppasBaseIO):
 
         return localization, score
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __parse_point(point_node):
@@ -311,7 +311,7 @@ class sppasXRA(sppasBaseIO):
 
         return sppasPoint(midpoint, radius), score
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __parse_interval(interval_root):
@@ -335,7 +335,7 @@ class sppasXRA(sppasBaseIO):
 
         return sppasInterval(begin, end), score
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __parse_disjoint(disjoint_root):
@@ -367,7 +367,7 @@ class sppasXRA(sppasBaseIO):
 
         return disjoint, score
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __parse_label(label_root):
@@ -396,7 +396,7 @@ class sppasXRA(sppasBaseIO):
 
         return label
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __parse_tag(tag_node):
@@ -424,7 +424,7 @@ class sppasXRA(sppasBaseIO):
 
         return tag, score
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __read_media(self, media_root):
         """ Read a media and add it.
@@ -454,7 +454,7 @@ class sppasXRA(sppasBaseIO):
                 if tier.get_meta("id") == tier_id:
                     tier.set_media(media)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __read_hierarchy(self, hierarchy_root):
         """ Read a hierarchy and set it.
@@ -488,7 +488,7 @@ class sppasXRA(sppasBaseIO):
                 logging.info("Corrupted hierarchy link: %s" % str(e))
                 pass
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __read_vocabulary(self, vocabulary_root):
         # Create a CtrlVocab instance
@@ -528,9 +528,9 @@ class sppasXRA(sppasBaseIO):
                 if tier.get_meta('id') == tier_id:
                     tier.set_ctrl_vocab(ctrl_vocab)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Write XRA 1.3
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def write(self, filename):
         """ Write an XRA file.
@@ -568,7 +568,7 @@ class sppasXRA(sppasBaseIO):
         tree = ET.ElementTree(root)
         tree.write(filename, sppas.encoding, method="xml")
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __format_metadata(metadata_root, meta_object):
@@ -585,7 +585,7 @@ class sppasXRA(sppasBaseIO):
             entry.set('key', key)
             entry.text = value
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __format_tier(tier_root, tier):
@@ -615,7 +615,7 @@ class sppasXRA(sppasBaseIO):
             annotation_root = ET.SubElement(tier_root, 'Annotation')
             sppasXRA.__format_annotation(annotation_root, annotation)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __format_annotation(annotation_root, annotation):
@@ -635,7 +635,7 @@ class sppasXRA(sppasBaseIO):
         label_root = ET.SubElement(annotation_root, 'Label')
         sppasXRA.__format_label(label_root, annotation.get_label())
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __format_location(location_root, location):
@@ -667,7 +667,7 @@ class sppasXRA(sppasBaseIO):
                 if score is not None:
                     disjoint_root.set('score', u(str(score)))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __format_point(point_node, point):
@@ -681,7 +681,7 @@ class sppasXRA(sppasBaseIO):
         if point.get_radius() is not None:
             point_node.set('radius', u(str(point.get_radius())))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __format_interval(interval_root, interval):
@@ -697,7 +697,7 @@ class sppasXRA(sppasBaseIO):
         end = ET.SubElement(interval_root, 'End')
         sppasXRA.__format_point(end, interval.get_end())
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __format_disjoint(disjoint_root, disjoint):
@@ -711,7 +711,7 @@ class sppasXRA(sppasBaseIO):
             interval_root = ET.SubElement(disjoint_root, 'Interval')
             sppasXRA.__format_interval(interval_root, interval)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __format_label(label_root, label):
@@ -730,7 +730,7 @@ class sppasXRA(sppasBaseIO):
                 tag_node.set("score", str(score))
             sppasXRA.__format_tag(tag_node, tag)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __format_tag(tag_node, tag):
@@ -743,7 +743,7 @@ class sppasXRA(sppasBaseIO):
         tag_node.set('type', tag.get_type())
         tag_node.text = tag.get_content()
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __format_media(self, media_root, media):
         """ Add a media object in the tree.
@@ -773,7 +773,7 @@ class sppasXRA(sppasBaseIO):
             content_node = ET.SubElement(media_root, 'Content')
             content_node.text = media.get_content()
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __format_hierarchy(self, hierarchy_root, hierarchy):
         """ Add a hierarchy object in the tree.
@@ -791,7 +791,7 @@ class sppasXRA(sppasBaseIO):
                 link.set('from', parent_tier.get_meta('id'))
                 link.set('to', child_tier.get_meta('id'))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __format_vocabulary(self, vocabulary_root, vocabulary):
         """ Add a controlled vocabulary object in the tree.
@@ -820,7 +820,7 @@ class sppasXRA(sppasBaseIO):
                 tier_node = ET.SubElement(vocabulary_root, 'Tier')
                 tier_node.set('id', tier.get_meta('id'))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def indent(elem, level=0):

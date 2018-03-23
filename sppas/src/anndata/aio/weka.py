@@ -37,29 +37,9 @@
     https://www.cs.waikato.ac.nz/ml/weka/
 
     WEKA is supporting 2 file formats:
-        - ARFF: a simple ASCII file,
-        - XRFF: an XML file which can be compressed with gzip.
 
-    ARFF format description is at the following URL:
-    http://weka.wikispaces.com/ARFF+(book+version)
-    An ARFF file for WEKA has the following structure:
-
-        1. Several lines starting by '%' with any kind of comment,
-        2. The name of the relation,
-        3. The set of attributes,
-        4. The set of instances.
-
-    XRFF format description is at the following URL:
-    http://weka.wikispaces.com/XRFF
-
-    This class is limited to:
-        1. Only the writers are implemented. No readers.
-        2. Sparse option is not supported by both writers.
-        3. XRFF output file is not gzipped.
-        4. XRFF format supports the followings that are not currently
-        implemented into this class:
-            - attribute weights;
-            - instance weights.
+        1. ARFF: a simple ASCII file,
+        2. XRFF: an XML file which can be compressed with gzip.
 
 """
 import codecs
@@ -67,6 +47,9 @@ from datetime import datetime
 
 import sppas
 from .basetrs import sppasBaseIO
+from ..anndataexc import AioNoTiersError
+from ..anndataexc import TagValueError
+from ..anndataexc import AioEmptyTierError
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 from ..annlocation import sppasPoint
@@ -78,7 +61,7 @@ from sppas.src.utils.makeunicode import sppasUnicode
 # Maximum number of class to predict
 MAX_CLASS_TAGS = 10
 
-# Maximum of attributes to explicitly list. Others are mentioned with "STRING".
+# Maximum of attributes to list explicitly. Others are mentioned with "STRING".
 MAX_ATTRIBUTES_TAGS = 20
 
 # ----------------------------------------------------------------------------
@@ -90,10 +73,11 @@ class sppasWEKA(sppasBaseIO):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      SPPAS Base writer for ARFF and XRFF formats.
 
     The following metadata of the Transcription object can be defined:
+
         - weka_instance_step: time step for the data instances. Do not
         define if "weka_instance_anchor" is set to a tier.
         - weka_max_class_tags
@@ -102,7 +86,8 @@ class sppasWEKA(sppasBaseIO):
         - weka_empty_annotation_class_tag
         - weka_uncertain_annotation_tag
 
-    The following metadata can be defined in the tiers:
+    The following metadata can be defined in a tier:
+
         - weka_attribute: is fixed if the tier will be used as attribute
         (i.e. its data will be part of the instances). The value can
         be "numeric" to use distributions of probabilities or
@@ -111,11 +96,11 @@ class sppasWEKA(sppasBaseIO):
          be inferred by the classification system. No matter of the value.
         - weka_instance_anchor: is fixed if the tier has to be used to
         define the time intervals of the instances.
-        - weka_epsilon: probability of an un-observed tag.
+        - weka_epsilon: probability of an unobserved tag.
 
     """
     def __init__(self, name=None):
-        """ Initialize a new sppasARFF instance.
+        """ Initialize a new sppasWEKA instance.
 
         :param name: (str) This transcription name.
 
@@ -143,7 +128,7 @@ class sppasWEKA(sppasBaseIO):
         self._accept_alt_localization = False
         self._accept_alt_tag = True
         self._accept_radius = False
-        self._accept_gaps = False
+        self._accept_gaps = True       # is True only for the reference tier
         self._accept_overlaps = True
 
     # -----------------------------------------------------------------
@@ -183,9 +168,9 @@ class sppasWEKA(sppasBaseIO):
         """
         nb_tags = int(nb_tags)
         if nb_tags < 2:
-            raise ValueError("The class must have at least 2 different tags.")
+            raise IOError("The class must have at least 2 different tags.")
         if nb_tags > self._max_class_tags:
-            raise ValueError("The class must have at max {:d} different tags."
+            raise IOError("The class must have at max {:d} different tags."
                              "".format(self._max_class_tags))
 
     # -----------------------------------------------------------------
@@ -231,11 +216,11 @@ class sppasWEKA(sppasBaseIO):
         :param tag_str: (str)
 
         """
-        tag_str = sppasUnicode(tag_str).clear_whitespace()
-        if len(tag_str) > 0:
-            self._empty_annotation_tag = tag_str
+        tag_str_formatted = sppasUnicode(tag_str).clear_whitespace()
+        if len(tag_str_formatted) > 0:
+            self._empty_annotation_tag = tag_str_formatted
         else:
-            raise ValueError('{:s} is not a valid tag.'.format(tag_str))
+            raise TagValueError(tag_str)
 
     # -----------------------------------------------------------------
 
@@ -250,11 +235,11 @@ class sppasWEKA(sppasBaseIO):
         if tag_str is None:
             self._empty_annotation_class_tag = None
         else:
-            tag_str = sppasUnicode(tag_str).clear_whitespace()
-            if len(tag_str) > 0:
-                self._empty_annotation_class_tag = tag_str
+            tag_str_formatted = sppasUnicode(tag_str).clear_whitespace()
+            if len(tag_str_formatted) > 0:
+                self._empty_annotation_class_tag = tag_str_formatted
             else:
-                raise ValueError('{:s} is not a valid tag.'.format(tag_str))
+                raise TagValueError(tag_str)
 
     # -----------------------------------------------------------------
 
@@ -265,11 +250,11 @@ class sppasWEKA(sppasBaseIO):
         :param tag_str: (str)
 
         """
-        tag_str = sppasUnicode(tag_str).clear_whitespace()
-        if len(tag_str) > 0:
-            self._uncertain_annotation_tag = tag_str
+        tag_str_formatted = sppasUnicode(tag_str).clear_whitespace()
+        if len(tag_str_formatted) > 0:
+            self._uncertain_annotation_tag = tag_str_formatted
         else:
-            raise ValueError('{:s} is not a valid tag.'.format(tag_str))
+            raise TagValueError(tag_str)
 
     # -----------------------------------------------------------------
     # Validation methods
@@ -303,6 +288,15 @@ class sppasWEKA(sppasBaseIO):
         (fill empty tags, replace whitespace by underscores).
 
         """
+        if self.is_empty():
+            raise AioNoTiersError("WEKA")
+
+        min_time_point = self.get_min_loc()
+        max_time_point = self.get_max_loc()
+        if min_time_point is None or max_time_point is None:
+            # only empty tiers in the transcription
+            raise AioNoTiersError("WEKA")
+
         for tier in self:
 
             # Name of the tier.
@@ -351,19 +345,19 @@ class sppasWEKA(sppasBaseIO):
             1. A class is defined: "weka_class" in the metadata of a tier
             2. Attributes are fixed: "weka_attribute" in the metadata of at least one tier
 
-        Raises ValueError if something is wrong.
+        Raises IOError or ValueError if something is wrong.
 
         """
         if self.is_empty() is True:
-            raise ValueError("Empty transcription. Nothing to do!")
+            raise AioNoTiersError("WEKA")
         if len(self) == 1:
-            raise ValueError("The transcription must contain at least 2 tiers.")
+            raise IOError("The transcription must contain at least 2 tiers.")
 
         class_tier = self._get_class_tier()
         if class_tier is None:
-            raise ValueError("The transcription must contain a class.")
+            raise IOError("The transcription must contain a class.")
         if class_tier.is_empty():
-            raise ValueError("The class tier must contain annotations.")
+            raise AioEmptyTierError("WEKA", class_tier.get_name())
         self.check_max_class_tags(len(class_tier.get_ctrl_vocab()))
 
         has_attribute = list()
@@ -371,13 +365,13 @@ class sppasWEKA(sppasBaseIO):
             if tier.is_meta_key("weka_attribute"):
                 has_attribute.append(tier)
                 if tier is class_tier:
-                    raise ValueError("A tier can be either an attribute or "
-                                     "the class. It can't be both.")
+                    raise IOError("A tier can be either an attribute or "
+                                  "the class. It can't be both.")
         if len(has_attribute) == 0:
-            raise ValueError("The transcription must contain attributes.")
+            raise IOError("The transcription must contain attributes.")
         for tier in has_attribute:
             if tier.is_empty():
-                raise ValueError("The attributes tier {:s} must contain annotations.".format(tier.get_name()))
+                raise AioEmptyTierError("WEKA", tier.get_name())
 
         has_time_slice = False
         if self.is_meta_key("weka_instance_step") is False:
@@ -389,10 +383,10 @@ class sppasWEKA(sppasBaseIO):
                 time = float(self.get_meta("weka_instance_step"))
             except ValueError:
                 raise ValueError("The instance step must be a numerical value. "
-                                 "Not {:s}".format(self.get_meta("weka_instance_step")))
+                                 "Got {:s}".format(self.get_meta("weka_instance_step")))
             has_time_slice = True
         if has_time_slice is False:
-            raise ValueError("No instance time step nor anchor tier defined.")
+            raise IOError("An instance time step or an anchor must tier defined.")
 
     # -----------------------------------------------------------------
     # Private
@@ -429,7 +423,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def _get_class_tier(self):
-        """ Return the tier which is the class. """
+        """ Return the tier which is the class or None. """
 
         for tier in self:
             if tier.is_meta_key("weka_class"):
@@ -440,7 +434,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def _get_anchor_tier(self):
-        """ Return the tier which will be used to create the instances. """
+        """ Return the tier which will be used to create the instances or None. """
 
         for tier in self:
             if tier.is_meta_key("weka_instance_anchor"):
@@ -708,19 +702,29 @@ class sppasARFF(sppasWEKA):
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      SPPAS ARFF writer.
 
+    ARFF format description is at the following URL:
+    http://weka.wikispaces.com/ARFF+(book+version)
+    An ARFF file for WEKA has the following structure:
+
+        1. Several lines starting by '%' with any kind of comment,
+        2. The name of the relation,
+        3. The set of attributes,
+        4. The set of instances.
+
     """
     @staticmethod
     def detect(filename):
         try:
-            with codecs.open(filename, 'r', 'utf-8') as fp:
+            with codecs.open(filename, 'r', sppas.encoding) as fp:
                 for i in range(200):
                     line = fp.readline()
                     if "@relation" in line.lower():
                         return True
-        except Exception:
             return False
-
-        return False
+        except IOError:
+            return False
+        except UnicodeDecodeError:
+            return False
 
     # -----------------------------------------------------------------
 
@@ -732,7 +736,6 @@ class sppasARFF(sppasWEKA):
         """
         if name is None:
             name = self.__class__.__name__
-
         sppasWEKA.__init__(self, name)
         self.default_extension = "arff"
 
@@ -746,6 +749,9 @@ class sppasARFF(sppasWEKA):
         :param filename: (str)
 
         """
+        if self.is_empty() is True:
+            raise AioNoTiersError(self.default_extension)
+
         with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
 
             # Check metadata
@@ -758,10 +764,10 @@ class sppasARFF(sppasWEKA):
             self.validate()
 
             # OK, we are ready to write
-            sppasARFF._write_header(fp)
-            self._write_metadata(fp)
-            self._write_relation(fp)
-            self._write_attributes(fp)
+            fp.write(sppasARFF._serialize_header())
+            fp.write(self._serialize_metadata())
+            fp.write(self._serialize_relation())
+            fp.write(self._serialize_attributes())
             self._write_data(fp)
 
             fp.close()
@@ -771,42 +777,46 @@ class sppasARFF(sppasWEKA):
     # -----------------------------------------------------------------
 
     @staticmethod
-    def _write_header(fp):
-        """ Write a standard header in comments. """
+    def _serialize_header():
+        """ Returns a standard header in comments. """
 
-        fp.write("% creator: {:s}\n".format(sppas.__name__))
-        fp.write("% version: {:s}\n".format(sppas.__version__))
-        fp.write("% date: {:s}\n".format(datetime.now().strftime("%Y-%m-%d")))
-        fp.write("% author: {:s}\n".format(sppas.__author__))
-        fp.write("% license: {:s}\n".format(sppas.__copyright__))
-        fp.write("% \n")
+        content = "% creator: {:s}\n".format(sppas.__name__)
+        content += "% version: {:s}\n".format(sppas.__version__)
+        content += "% date: {:s}\n".format(datetime.now().strftime("%Y-%m-%d"))
+        content += "% author: {:s}\n".format(sppas.__author__)
+        content += "% license: {:s}\n".format(sppas.__copyright__)
+        content += "% \n"
+        return content
 
     # -----------------------------------------------------------------
 
-    def _write_metadata(self, fp):
-        """ Write metadata in comments. """
+    def _serialize_metadata(self):
+        """ Serialize metadata in comments. """
 
+        content = ""
         for key in self.get_meta_keys():
+            # todo: we should ignore metadata already in the header.
             value = self.get_meta(key)
-            fp.write("% {:s}: {:s}\n".format(key, value))
-        fp.write("\n\n")
+            content += "% {:s}: {:s}\n".format(key, value)
+        content += "\n\n"
+        return content
 
     # -----------------------------------------------------------------
 
-    def _write_relation(self, fp):
-        """ Write the relation of the ARFF file. """
+    def _serialize_relation(self):
+        """ Serialize the relation of the ARFF file. """
 
-        fp.write("@RELATION {:s}\n".format(self.get_name()))
-        fp.write("\n")
+        content = "@RELATION {:s}\n".format(self.get_name())
+        content += "\n"
+        return content
 
     # -----------------------------------------------------------------
 
     @staticmethod
-    def _write_attributes_ctrl_vocab(tier, fp, is_class=False):
-        """ Write the controlled vocabulary in an attribute set.
+    def _serialize_attributes_ctrl_vocab(tier, is_class=False):
+        """ Serialize the controlled vocabulary in an attribute set.
 
         :param tier: (sppasTier)
-        :param fp: FileDescription
 
         """
         # Prepare the list of strings to write
@@ -815,20 +825,21 @@ class sppasARFF(sppasWEKA):
             tags.append(tag.get_content())
 
         # Write the name of the attribute serie
-        fp.write("@ATTRIBUTES ")
+        content = "@ATTRIBUTES "
         if is_class is True:
-            fp.write("class ")
+            content += "class "
         else:
-            fp.write("{:s} ".format(tier.get_name()))
+            content += "{:s} ".format(tier.get_name())
 
         # Write the attributes
-        fp.write("{")
-        fp.write("{:s}".format(",".join(tags)))
-        fp.write("}\n")
+        content += "{"
+        content += "{:s}".format(",".join(tags))
+        content += "}\n"
+        return content
 
     # -----------------------------------------------------------------
 
-    def _write_attributes(self, fp):
+    def _serialize_attributes(self):
         """ Write the attributes of the ARFF file.
         Attributes are corresponding to the controlled vocabulary.
         They are the list of possible tags of the annotations, except
@@ -837,6 +848,7 @@ class sppasARFF(sppasWEKA):
         It is supposed that the transcription has been already validated.
 
         """
+        content = ""
         for tier in self:
 
             is_att, is_numeric = sppasWEKA._tier_is_attribute(tier)
@@ -849,18 +861,18 @@ class sppasARFF(sppasWEKA):
                     # Do not write an uncertain label in that situation.
                     if tag.get_content() != self._uncertain_annotation_tag:
                         attribute_name = tier.get_name() + "-" + tag.get_content()
-                        fp.write("@ATTRIBUTES {:s} NUMERIC\n".format(attribute_name))
+                        content += "@ATTRIBUTES {:s} NUMERIC\n".format(attribute_name)
             else:
                 # Either a generic "string" or we can explicitly fix the list
                 if len(tier.get_ctrl_vocab()) > self._max_attributes_tags:
-                    fp.write("@ATTRIBUTES {:s} STRING\n".format(tier.get_name()))
+                    content += "@ATTRIBUTES {:s} STRING\n".format(tier.get_name())
                 else:
-                    sppasARFF._write_attributes_ctrl_vocab(tier, fp)
+                    content += sppasARFF._serialize_attributes_ctrl_vocab(tier)
 
         tier = self._get_class_tier()
-        sppasARFF._write_attributes_ctrl_vocab(tier, fp, is_class=True)
-
-        fp.write("\n")
+        content += sppasARFF._serialize_attributes_ctrl_vocab(tier, is_class=True)
+        content += "\n"
+        return content
 
     # -----------------------------------------------------------------
 
@@ -883,12 +895,13 @@ class sppasARFF(sppasWEKA):
         fp.write("@DATA\n")
 
         for point, class_str in self._fix_instance_steps():
+            line = ""
             data_instances = self._fix_data_instance(point)
             for attribute in data_instances:
-                fp.write(attribute)
-                fp.write(",")
-            fp.write(str(class_str))
-            fp.write("\n")
+                line += attribute
+                line += ","
+            line += str(class_str)
+            fp.write(line+"\n")
 
 # ----------------------------------------------------------------------------
 
@@ -903,6 +916,21 @@ class sppasXRFF(sppasWEKA):
     :summary:      SPPAS XRFF writer.
 
     XML-based format of WEKA software tool.
+    XRFF format description is at the following URL:
+    http://weka.wikispaces.com/XRFF
+
+    This class is limited to:
+        1. Only the writers are implemented. No readers.
+        2. Sparse option is not supported by both writers.
+        3. XRFF output file is not gzipped.
+        4. XRFF format supports the followings that are not currently
+        implemented into this class:
+            - attribute weights;
+            - instance weights.
+
+    -- !!!!!!!! No guarantee !!!!!! --
+    This class has never been tested.
+    -- !!!!!!!! No guarantee !!!!!! --
 
     """
     @staticmethod
@@ -937,11 +965,14 @@ class sppasXRFF(sppasWEKA):
     # -----------------------------------------------------------------
 
     def write(self, filename):
-        """ Write a RawText file.
+        """ Write a XRFF file.
 
         :param filename: (str)
 
         """
+        if self.is_empty() is True:
+            raise AioNoTiersError(self.default_extension)
+
         with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
 
             # Check metadata

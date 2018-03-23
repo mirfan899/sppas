@@ -39,6 +39,8 @@
 import sys
 import os.path
 from argparse import ArgumentParser
+import pickle
+import time
 
 PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
@@ -146,12 +148,19 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 # Read
 
-if args.quiet is False:
-    print("Read input file:")
 parser = sppasRW(args.i)
-trs = parser.read(heuristic=True)
+
 if args.quiet is False:
-    print(" [  OK  ]")
+    print("Read input:")
+
+start_time = time.time()
+trs = parser.read(heuristic=True)
+end_time = time.time()
+
+if args.quiet is False:
+    print("  - elapsed time for reading: {:f} seconds".format(end_time - start_time))
+    pickle_string = pickle.dumps(trs)
+    print("  - memory usage of the transcription: {:d} bytes".format(sys.getsizeof(pickle_string)))
 
 # ----------------------------------------------------------------------------
 # Attributes tiers
@@ -230,8 +239,21 @@ if not args.xrff:
 else:
     parser.set_filename(name + ".xrff")
 
-parser.write(trs)
+# ----------------------------------------------------------------------------
+# Write
 
+if args.quiet is False:
+    print("Write output file:")
+
+start_time = time.time()
+parser.write(trs)
+end_time = time.time()
+
+if args.quiet is False:
+    print("  - elapsed time for writing: {:f} seconds".format(end_time - start_time))
+    print("Done.")
+
+# XRA
 if args.xra:
     parser.set_filename(name + "-export.xra")
     parser.write(trs)

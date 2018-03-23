@@ -36,7 +36,7 @@
 import codecs
 import datetime
 
-from sppas import encoding
+import sppas
 from .basetrs import sppasBaseIO
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioMultiTiersError
@@ -47,7 +47,7 @@ from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasBaseSubtitles(sppasBaseIO):
@@ -86,7 +86,7 @@ class sppasBaseSubtitles(sppasBaseIO):
         self._accept_gaps = True
         self._accept_overlaps = False
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse_time(time_string):
@@ -97,7 +97,7 @@ class sppasBaseSubtitles(sppasBaseIO):
               datetime.datetime.strptime('', ''))
         return dt.total_seconds()
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _format_time(second_count):
@@ -106,7 +106,7 @@ class sppasBaseSubtitles(sppasBaseIO):
         dt = datetime.datetime.utcfromtimestamp(second_count)
         return dt.strftime('%H:%M:%S,%f')[:-3]
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def make_point(midpoint):
@@ -118,7 +118,7 @@ class sppasBaseSubtitles(sppasBaseIO):
             raise AnnDataTypeError(midpoint, "float")
         return sppasPoint(midpoint, radius=0.02)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _format_text(text):
@@ -148,7 +148,7 @@ class sppasBaseSubtitles(sppasBaseIO):
 
         return text
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_location(ann):
@@ -170,7 +170,7 @@ class sppasBaseSubtitles(sppasBaseIO):
 
         return '{:s} --> {:s}\n'.format(begin, end)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_label(ann):
@@ -182,7 +182,7 @@ class sppasBaseSubtitles(sppasBaseIO):
         return tag_content
 
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasSubRip(sppasBaseSubtitles):
@@ -220,7 +220,7 @@ class sppasSubRip(sppasBaseSubtitles):
         sppasBaseSubtitles.__init__(self, name)
         self.default_extension = "srt"
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def read(self, filename):
         """ Read a SRT file and fill the Transcription.
@@ -228,7 +228,7 @@ class sppasSubRip(sppasBaseSubtitles):
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'r', encoding) as fp:
+        with codecs.open(filename, 'r', sppas.encoding) as fp:
 
             tier = self.create_tier('Trans-SubRip')
             line = fp.next()
@@ -255,7 +255,7 @@ class sppasSubRip(sppasBaseSubtitles):
                     tier.append(a)
             fp.close()
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse_subtitle(lines):
@@ -292,7 +292,7 @@ class sppasSubRip(sppasBaseSubtitles):
         a.get_label().append(tag)
         return a
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def write(self, filename):
         """ Write a transcription into a file.
@@ -303,7 +303,7 @@ class sppasSubRip(sppasBaseSubtitles):
         if len(self) != 1:
             raise AioMultiTiersError("SubRip")
 
-        with codecs.open(filename, 'w', encoding, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
 
             if self.is_empty() is False:
                 number = 1
@@ -331,7 +331,7 @@ class sppasSubRip(sppasBaseSubtitles):
 
             fp.close()
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_metadata(ann):
@@ -350,7 +350,7 @@ class sppasSubRip(sppasBaseSubtitles):
                                 "".format(x1, y1, x2, y2)
         return text
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasSubViewer(sppasBaseSubtitles):
@@ -378,7 +378,7 @@ class sppasSubViewer(sppasBaseSubtitles):
         sppasBaseSubtitles.__init__(self, name)
         self.default_extension = "sub"
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def read(self, filename):
         """ Read a SUB file and fill the Transcription.
@@ -386,7 +386,7 @@ class sppasSubViewer(sppasBaseSubtitles):
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'r', encoding) as fp:
+        with codecs.open(filename, 'r', sppas.encoding) as fp:
 
             tier = self.create_tier('Trans-SubViewer')
             lines = list()
@@ -415,7 +415,7 @@ class sppasSubViewer(sppasBaseSubtitles):
                     tier.append(a)
             fp.close()
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_header(self, lines):
         """ Parse the header lines to get metadata.
@@ -446,7 +446,7 @@ class sppasSubViewer(sppasBaseSubtitles):
             elif line.startswith('[DELAY]'):
                 self.set_meta("media_shift_delay", line[:7])
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse_subtitle(lines):
@@ -471,7 +471,7 @@ class sppasSubViewer(sppasBaseSubtitles):
 
         return sppasAnnotation(sppasLocation(time), sppasLabel(tag))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def write(self, filename):
         """ Write a transcription into a file.
@@ -482,7 +482,7 @@ class sppasSubViewer(sppasBaseSubtitles):
         if len(self) != 1:
             raise AioMultiTiersError("SubViewer")
 
-        with codecs.open(filename, 'w', encoding, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
 
             fp.write(self._serialize_header())
             if self.is_empty() is False:
@@ -506,10 +506,11 @@ class sppasSubViewer(sppasBaseSubtitles):
 
             fp.close()
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _serialize_header(self):
         """ Convert metadata into an header.
+
         [INFORMATION]
         [TITLE]SubViewer file example
         [AUTHOR]FK
@@ -522,6 +523,7 @@ class sppasSubViewer(sppasBaseSubtitles):
         [END INFORMATION]
         [SUBTITLE]
         [COLF]&HFFFFFF,[STYLE]bd,[SIZE]18,[FONT]Arial
+
         """
         header = "[INFORMATION]"
         header += "\n"

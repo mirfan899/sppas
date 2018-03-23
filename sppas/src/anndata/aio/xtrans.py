@@ -43,7 +43,7 @@
 """
 import codecs
 
-from sppas import encoding
+import sppas
 
 from ..anndataexc import AioLineFormatError
 from ..anndataexc import AnnDataTypeError
@@ -117,10 +117,8 @@ class sppasTDF(sppasBaseText):
 
     @staticmethod
     def make_point(midpoint):
-        """ In Xtrans, the localization is a time value, so always a float.
-        Override the sppasBaseText.
+        """ The localization is a time value, so always a float. """
 
-        """
         try:
             midpoint = float(midpoint)
         except ValueError:
@@ -155,8 +153,6 @@ class sppasTDF(sppasBaseText):
         self._accept_alt_localization = False
         self._accept_alt_tag = False
         self._accept_radius = False
-        self._accept_gaps = True
-        self._accept_overlaps = True
         self._accept_gaps = True
         self._accept_overlaps = True
 
@@ -206,6 +202,8 @@ class sppasTDF(sppasBaseText):
 
         # Extract rows, create tiers and metadata.
         for i, line in enumerate(lines):
+
+            line = line.strip()
 
             # ignore blank lines
             if len(line) == 0:

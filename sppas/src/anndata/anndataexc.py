@@ -58,6 +58,8 @@ HIERARCHY_PARENT_TIER_ERROR = ":ERROR 1174: "
 HIERARCHY_CHILD_TIER_ERROR = ":ERROR 1176: "
 HIERARCHY_ANCESTOR_TIER_ERROR = ":ERROR 1178: "
 
+TAG_VALUE_ERROR = ":ERROR 1190: "
+
 AIO_ERROR = ":ERROR 1400: "
 AIO_ENCODING_ERROR = ":ERROR 1500: "
 AIO_FILE_EXTENSION_ERROR = ":ERROR 1505: "
@@ -459,6 +461,21 @@ class AioLocationTypeError(TypeError):
     def __init__(self, file_format, location_type):
         self.parameter = AIO_LOCATION_TYPE_ERROR + \
                          (t.gettext(AIO_LOCATION_TYPE_ERROR)).format(file_format, location_type)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class TagValueError(ValueError):
+    """ :ERROR 1190: TAG_VALUE_ERROR
+    {!s:s} is not a valid tag.
+
+    """
+    def __init__(self, tag_str):
+        self.parameter = TAG_VALUE_ERROR + \
+                         (t.gettext(TAG_VALUE_ERROR)).format(tag_str)
 
     def __str__(self):
         return repr(self.parameter)

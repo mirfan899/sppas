@@ -39,6 +39,7 @@ import logging
 from .makeunicode import u
 from .makeunicode import text_type
 from .makeunicode import binary_type
+from .datatype import sppasType
 
 # ---------------------------------------------------------------------------
 
@@ -113,7 +114,7 @@ class sppasCompare(object):
         if type(data1) is list:
             return self.equals_lists(data1, data2)
 
-        if self.is_dict(data1) is True:
+        if sppasType.is_dict(data1) is True:
             return self.equals_dictionaries(data1, data2)
 
         return self.equals_items(data1, data2)
@@ -145,7 +146,7 @@ class sppasCompare(object):
 
         for item1, item2 in zip(list1, list2):
 
-            if sppasCompare.is_dict(item1) is True:
+            if sppasType.is_dict(item1) is True:
                 items_are_equals = self.equals_dictionaries(item1, item2)
             elif type(item1) is list:
                 items_are_equals = self.equals_lists(item1, item2)
@@ -172,7 +173,7 @@ class sppasCompare(object):
                 logging.info("TypeError: None instead of lists.")
             return False
 
-        if sppasCompare.is_dict(dict1) is not True or sppasCompare.is_dict(dict2) is not True:
+        if sppasType.is_dict(dict1) is not True or sppasType.is_dict(dict2) is not True:
             if self._verbose is True:
                 logging.info("TypeError: Not same types (expected two dictionaries).")
             return False
@@ -186,7 +187,7 @@ class sppasCompare(object):
 
         for key in dict1:
 
-            if sppasCompare.is_dict(dict1[key]) is True:
+            if sppasType.is_dict(dict1[key]) is True:
                 items_are_equals = self.equals_dictionaries(dict1[key], dict2[key])
             elif type(dict1[key]) is list:
                 items_are_equals = self.equals_lists(dict1[key], dict2[key])
@@ -250,17 +251,3 @@ class sppasCompare(object):
             return item1.lower() == item2.lower()
 
         return item1 == item2
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def is_dict(d):
-        """ Return True if d is of any type of dictionary. """
-
-        if type(d) is dict:
-            return True
-
-        if "collections." in str(type(d)):
-            return True
-
-        return False

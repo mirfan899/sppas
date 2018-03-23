@@ -67,7 +67,7 @@ from ..annotation import sppasAnnotation
 from .aioutils import fill_gaps, merge_overlapping_annotations
 from .basetrs import sppasBaseIO
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasBasePraat(sppasBaseIO):
@@ -84,7 +84,7 @@ class sppasBasePraat(sppasBaseIO):
     """
     @staticmethod
     def make_point(midpoint, radius=0.0005):
-        """ In Praat, the localization is a time value, so a float.
+        """ The localization is a time value, so a float.
 
         :param midpoint: (float, str, int) a time value (in seconds).
         :param radius: (float): vagueness (in seconds)
@@ -99,7 +99,7 @@ class sppasBasePraat(sppasBaseIO):
 
         return sppasPoint(midpoint, radius)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
         """ Initialize a new Praat instance.
@@ -126,7 +126,7 @@ class sppasBasePraat(sppasBaseIO):
         self._accept_gaps = False
         self._accept_overlaps = False
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse_int(line, line_number=0):
@@ -147,7 +147,7 @@ class sppasBasePraat(sppasBaseIO):
         except:
             raise AioLineFormatError(line_number, line)
 
-    # ----------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse_float(line, line_number=0):
@@ -168,7 +168,7 @@ class sppasBasePraat(sppasBaseIO):
         except:
             raise AioLineFormatError(line_number, line)
 
-    # ----------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse_string(text):
@@ -234,7 +234,7 @@ class sppasBasePraat(sppasBaseIO):
         header += 'xmax = {:.18}\n'.format(xmax)
         return header
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_label_text(label):
@@ -260,7 +260,7 @@ class sppasBasePraat(sppasBaseIO):
 
         return '\t\t\ttext = "{:s}"\n'.format(text)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_label_value(label):
@@ -278,7 +278,7 @@ class sppasBasePraat(sppasBaseIO):
             raise AnnDataTypeError(tag.get_type(), "int,float")
         return "\tvalue = {}\n".format(tag.get_typed_content())
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasTextGrid(sppasBasePraat):
@@ -338,7 +338,7 @@ class sppasTextGrid(sppasBasePraat):
 
         return detected
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
         """ Initialize a new sppasTextGrid instance.
@@ -354,7 +354,7 @@ class sppasTextGrid(sppasBasePraat):
         self._accept_point = True
         self._accept_interval = True
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def read(self, filename):
         """ Read a TextGrid file.
@@ -392,7 +392,7 @@ class sppasTextGrid(sppasBasePraat):
                 cur_line += 1
             cur_line = self._parse_tier(lines, cur_line, is_long)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_tier(self, lines, start_line, is_long):
         """ Parse a tier from the content of a TextGrid file.
@@ -431,7 +431,7 @@ class sppasTextGrid(sppasBasePraat):
 
         return start_line
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse_annotation(lines, start_line, is_interval):
@@ -458,7 +458,7 @@ class sppasTextGrid(sppasBasePraat):
 
         return ann, start_line
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse_localization(lines, start_line, is_interval):
@@ -478,7 +478,7 @@ class sppasTextGrid(sppasBasePraat):
 
         return localization, start_line
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse_text(lines, start_line):
@@ -501,9 +501,9 @@ class sppasTextGrid(sppasBasePraat):
 
         return sppasTag(text), start_line
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Writer
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def write(self, filename):
         """ Write a TextGrid file.
@@ -555,7 +555,7 @@ class sppasTextGrid(sppasBasePraat):
 
             fp.close()
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_textgrid_header(xmin, xmax, size):
@@ -567,7 +567,7 @@ class sppasTextGrid(sppasBasePraat):
         content += 'item []:\n'
         return content
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_tier_header(tier, tier_number):
@@ -584,7 +584,7 @@ class sppasTextGrid(sppasBasePraat):
         content += '\t\tintervals: size = {:d}\n'.format(len(tier))
         return content
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_interval_annotation(annotation, number):
@@ -603,7 +603,7 @@ class sppasTextGrid(sppasBasePraat):
         content += sppasBasePraat._serialize_label_text(annotation.get_label())
         return u(content)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_point_annotation(annotation, number):
@@ -622,7 +622,7 @@ class sppasTextGrid(sppasBasePraat):
         content += text
         return u(content)
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasBaseNumericalTier(sppasBasePraat):
@@ -662,7 +662,7 @@ class sppasBaseNumericalTier(sppasBasePraat):
         self._accept_gaps = False
         self._accept_overlaps = False
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _read(self, filename):
         """ Read a file of any numerical file type.
@@ -707,7 +707,7 @@ class sppasBaseNumericalTier(sppasBasePraat):
                                    sppasLabel(tag))
             cur_line += 1
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _write(self, filename, file_type):
         """ Write a file of the given file type.
@@ -757,7 +757,7 @@ class sppasBaseNumericalTier(sppasBasePraat):
 
             fp.close()
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasPitchTier(sppasBaseNumericalTier):
@@ -789,7 +789,7 @@ class sppasPitchTier(sppasBaseNumericalTier):
         except UnicodeDecodeError:
             return False
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
         """ Initialize a new sppasPitchTier instance.
@@ -803,7 +803,7 @@ class sppasPitchTier(sppasBaseNumericalTier):
         sppasBaseNumericalTier.__init__(self, name)
         self.default_extension = "PitchTier"
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def read(self, filename):
         """ Read a PitchTier file.
@@ -813,7 +813,7 @@ class sppasPitchTier(sppasBaseNumericalTier):
         """
         self._read(filename)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def write(self, filename):
         """ Write a PitchTier file.
@@ -823,7 +823,7 @@ class sppasPitchTier(sppasBaseNumericalTier):
         """
         self._write(filename, "PitchTier")
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasIntensityTier(sppasPitchTier):
@@ -855,7 +855,7 @@ class sppasIntensityTier(sppasPitchTier):
         except UnicodeDecodeError:
             return False
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
         """ Initialize a new sppasIntensityTier instance.
@@ -869,7 +869,7 @@ class sppasIntensityTier(sppasPitchTier):
         sppasBaseNumericalTier.__init__(self, name)
         self.default_extension = "IntensityTier"
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def read(self, filename):
         """ Read a IntensityTier file.
@@ -879,7 +879,7 @@ class sppasIntensityTier(sppasPitchTier):
         """
         self._read(filename)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def write(self, filename):
         """ Write a IntensityTier file.

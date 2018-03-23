@@ -108,14 +108,11 @@ class sppasBaseSclite(sppasBaseText):
         self._accept_gaps = True
         self._accept_overlaps = True
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def make_point(midpoint):
-        """ In Sclite, the localization is a time value, so always a float.
-        Override the sppasBaseText.
-
-        """
+        """ The localization is a time value, so always a float. """
         try:
             midpoint = float(midpoint)
         except ValueError:
@@ -124,7 +121,7 @@ class sppasBaseSclite(sppasBaseText):
         return sppasPoint(midpoint, radius=0.005)
 
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasCTM(sppasBaseSclite):
@@ -222,11 +219,12 @@ class sppasCTM(sppasBaseSclite):
 
         return True
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def check_line(line, line_number=0):
         """ Check whether a line is an annotation or not.
+
         Raises AioLineFormatError() or ValueError() in case of a
         malformed line.
 
@@ -255,7 +253,7 @@ class sppasCTM(sppasBaseSclite):
 
         return True
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
         """ Initialize a new CTM instance.
@@ -269,9 +267,9 @@ class sppasCTM(sppasBaseSclite):
         sppasBaseSclite.__init__(self, name)
         self.default_extension = "ctm"
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Reader
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_tier(self, line):
         """ Return the tier related to the given line.
@@ -295,7 +293,7 @@ class sppasCTM(sppasBaseSclite):
 
         return tier
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def get_score(line):
@@ -315,7 +313,7 @@ class sppasCTM(sppasBaseSclite):
 
         return score
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def read(self, filename):
         """ Read a ctm file and fill the Transcription.
@@ -326,7 +324,7 @@ class sppasCTM(sppasBaseSclite):
         """
         self._parse_lines(sppasBaseSclite.load(filename))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_lines(self, lines):
         """ Fill the transcription from the lines of the CTM file. """
@@ -383,7 +381,7 @@ class sppasCTM(sppasBaseSclite):
                 else:
                     alternates[in_alt].append(ann)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _add_alt_annotations(tier, annotations):
@@ -398,7 +396,7 @@ class sppasCTM(sppasBaseSclite):
         except Exception:
             pass
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _create_annotation(begin, duration, word, score):
@@ -412,9 +410,9 @@ class sppasCTM(sppasBaseSclite):
                                                sppasBaseSclite.make_point(end)))
         return sppasAnnotation(location, label)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Writer
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def write(self, filename):
         """ Write a transcription into a file.
@@ -451,7 +449,7 @@ class sppasCTM(sppasBaseSclite):
 
             fp.close()
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_annotation(ann, waveform, channel):
@@ -488,7 +486,7 @@ class sppasCTM(sppasBaseSclite):
 
         return content
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_tag(waveform, channel, begin, duration, tag, score=None):
@@ -508,7 +506,7 @@ class sppasCTM(sppasBaseSclite):
 
         return content+"\n"
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasSTM(sppasBaseSclite):
@@ -590,7 +588,7 @@ class sppasSTM(sppasBaseSclite):
 
         return True
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def check_line(line, line_number=0):
@@ -621,7 +619,7 @@ class sppasSTM(sppasBaseSclite):
 
         return True
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
         """ Initialize a new STM instance.
@@ -662,7 +660,7 @@ class sppasSTM(sppasBaseSclite):
 
         return tier
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def read(self, filename):
         """ Read a ctm file and fill the Transcription.
@@ -673,7 +671,7 @@ class sppasSTM(sppasBaseSclite):
         """
         self._parse_lines(sppasBaseSclite.load(filename))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_lines(self, lines):
         """ Fill the transcription from the lines of the STM file. """
@@ -705,7 +703,7 @@ class sppasSTM(sppasBaseSclite):
                                         " ".join(tab_line[5:]),
                                         tier)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _create_annotation(begin, end, utterance, tier):
@@ -718,9 +716,9 @@ class sppasSTM(sppasBaseSclite):
                                                sppasBaseSclite.make_point(end)))
         tier.create_annotation(location, label)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Writer
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def write(self, filename):
         """ Write a transcription into a file.
@@ -764,7 +762,7 @@ class sppasSTM(sppasBaseSclite):
 
             fp.close()
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_annotation(ann, waveform, channel, speaker):
@@ -792,7 +790,7 @@ class sppasSTM(sppasBaseSclite):
             lab=content
         )
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_label(label):

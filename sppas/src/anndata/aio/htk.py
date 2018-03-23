@@ -36,7 +36,7 @@
 """
 import codecs
 
-from sppas import encoding
+import sppas
 
 from ..anndataexc import AioError
 from ..anndataexc import AioEncodingError
@@ -50,12 +50,12 @@ from ..annlabel.tag import sppasTag
 
 from .basetrs import sppasBaseIO
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # time values are in multiples of 100ns
 TIME_UNIT = pow(10, -7)
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasBaseHTK(sppasBaseIO):
@@ -94,7 +94,7 @@ class sppasBaseHTK(sppasBaseIO):
         self._accept_gaps = True
         self._accept_overlaps = False  # to be verified
 
-    # ----------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def make_point(time_string):
@@ -109,7 +109,7 @@ class sppasBaseHTK(sppasBaseIO):
         v = float(TIME_UNIT) * float(time_string)
         return sppasPoint(v, radius=0.005)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _format_time(second_count):
@@ -117,7 +117,7 @@ class sppasBaseHTK(sppasBaseIO):
 
         return int(1. / TIME_UNIT * float(second_count))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_annotation(ann):
@@ -146,7 +146,7 @@ class sppasBaseHTK(sppasBaseIO):
 
         return "{:s} {:s}\n".format(location, tag_content)
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasLab(sppasBaseHTK):
@@ -195,7 +195,7 @@ class sppasLab(sppasBaseHTK):
 
         """
         try:
-            with codecs.open(filename, 'r', encoding) as fp:
+            with codecs.open(filename, 'r', sppas.encoding) as fp:
                 line = fp.readline()
                 fp.close()
         except IOError:
@@ -215,7 +215,7 @@ class sppasLab(sppasBaseHTK):
 
         return line[0].isdigit()
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
         """ Initialize a new sppasLab instance.
@@ -229,7 +229,7 @@ class sppasLab(sppasBaseHTK):
         sppasBaseHTK.__init__(self, name)
         self.default_extension = "lab"
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def read(self, filename):
         """ Read a transcription from a file.
@@ -238,7 +238,7 @@ class sppasLab(sppasBaseHTK):
 
         """
         try:
-            with codecs.open(filename, 'r', encoding) as fp:
+            with codecs.open(filename, 'r', sppas.encoding) as fp:
                 lines = fp.readlines()
                 fp.close()
         except IOError:
@@ -284,7 +284,7 @@ class sppasLab(sppasBaseHTK):
             else:
                 label = label + " " + " ".join(line)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def write(self, filename):
         """ Write a transcription into a file.
@@ -295,7 +295,7 @@ class sppasLab(sppasBaseHTK):
         if len(self) != 1:
             raise AioMultiTiersError("HTK Label")
 
-        with codecs.open(filename, 'w', encoding, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
 
             if self.is_empty() is False:
                 for ann in self[0]:

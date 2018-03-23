@@ -67,7 +67,7 @@ from .audacity import sppasAudacity
 # from .annotationpro import Antx
 from .xra import sppasXRA
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasRW(object):

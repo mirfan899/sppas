@@ -47,11 +47,11 @@ from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 NO_SPK_TIER = "Trans-NoSpeaker"
 
-# list of noise events with descriptions
+# list of Transcriber noise events with their conversion into SPPAS convention.
 NOISE_EVENTS = {
     "r": "* {respiration}",
     "i": "* {inspiration}",
@@ -82,7 +82,7 @@ NOISE_EVENTS = {
     "nontrans": "dummy"
 }
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasTRS(sppasBaseIO):
@@ -97,10 +97,10 @@ class sppasTRS(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
-        """ Detect if filename if of TRS type.
+        """ Check whether a file is of TRS format or not.
 
-        :param filename:
-        :return: (bool)
+        :param filename: (str) Name of the file to check.
+        :returns: (bool)
 
         """
         try:
@@ -115,11 +115,11 @@ class sppasTRS(sppasBaseIO):
 
         return '<!DOCTYPE Trans SYSTEM "trans' in doctype_line
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def make_point(midpoint):
-        """ In TRS, the localization is a time value, so a float. """
+        """ The localization is a time value, so a float. """
 
         try:
             midpoint = float(midpoint)
@@ -127,7 +127,7 @@ class sppasTRS(sppasBaseIO):
             raise AnnDataTypeError(midpoint, "float")
         return sppasPoint(midpoint, radius=0.005)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
         """ Initialize a new sppasTRS instance.
@@ -146,7 +146,7 @@ class sppasTRS(sppasBaseIO):
         self._accept_metadata = True
         self._accept_ctrl_vocab = False
         self._accept_media = True
-        self._accept_hierarchy = False
+        self._accept_hierarchy = True
         self._accept_point = False
         self._accept_interval = True
         self._accept_disjoint = False
@@ -156,7 +156,7 @@ class sppasTRS(sppasBaseIO):
         self._accept_gaps = False
         self._accept_overlaps = False
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def read(self, filename):
         """ Read a TRS file and fill the Transcription.
@@ -220,7 +220,7 @@ class sppasTRS(sppasBaseIO):
         if len(self.find(NO_SPK_TIER)) == 0:
             self.pop(self.get_tier_index(NO_SPK_TIER))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __format_tag(tag):
@@ -244,7 +244,7 @@ class sppasTRS(sppasBaseIO):
 
         return " ".join(new_tokens)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_metadata(self, root):
         """ Get metadata from attributes of the main root.
@@ -287,7 +287,7 @@ class sppasTRS(sppasBaseIO):
             lang = root.attrib['xml:lang']
             self.set_meta("language", lang)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_speakers(self, spk_root):
         """ Read the <Speakers> element and create tiers.
@@ -305,6 +305,7 @@ class sppasTRS(sppasBaseIO):
             accent		CDATA		#IMPLIED
             scope		(local|global)	#IMPLIED
         >
+
         :param spk_root: (ET) XML Element tree root.
 
         """
@@ -340,7 +341,7 @@ class sppasTRS(sppasBaseIO):
                 if "scope" in spk_node.attrib:
                     tier.set_meta("speaker_scope", spk_node.attrib['scope'])
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse_topics(topic_root, topic_tier):
@@ -382,7 +383,7 @@ class sppasTRS(sppasBaseIO):
 
         topic_tier.set_ctrl_vocab(ctrl_vocab)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse_episode_attributes(episode_root, episodes_tier):
@@ -395,6 +396,7 @@ class sppasTRS(sppasBaseIO):
         >
 
         :param episode_root: (ET) XML Element tree root.
+        :param episodes_tier: (sppasTier) The tier to store the episodes.
 
         """
         if episode_root is None:
@@ -419,10 +421,11 @@ class sppasTRS(sppasBaseIO):
                     sppasTRS.make_point(end))),
             sppasLabel(sppasTag(program)))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_section_attributes(self, section_root, section_tier):
         """ Read the section attributes.
+
         Sections are mainly used to segment the topics and to mention
         un-transcribed segments.
 
@@ -435,6 +438,7 @@ class sppasTRS(sppasBaseIO):
         >
 
         :param section_root: (ET) XML Element tree root.
+        :param section_tier: (sppasTier) The tier to store the sections.
 
         """
         if section_root is None:
@@ -455,7 +459,7 @@ class sppasTRS(sppasBaseIO):
         # Add the section in the tier
         section_tier.create_annotation(location, sppasLabel(sppasTag(section_type)))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_turn_attributes(self, turn_root):
         """ Read the turn attributes and fill the tiers.
@@ -485,7 +489,7 @@ class sppasTRS(sppasBaseIO):
         self.__parse_fidelity_in_turn(turn_root, location)
         self.__parse_channel_in_turn(turn_root, location)
 
-        tiers = []
+        tiers = list()
         speakers = "dummy"
         if "speaker" in turn_root.attrib:
             speakers = turn_root.attrib['speaker']
@@ -504,7 +508,7 @@ class sppasTRS(sppasBaseIO):
 
         return tiers, begin, end
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_turn(self, turn_root):
         """ Fill a tier with the content of a turn.
@@ -593,9 +597,9 @@ class sppasTRS(sppasBaseIO):
 
         return
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Private - parse attributes
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __append_background_in_label(node_event, annotation):
@@ -617,7 +621,7 @@ class sppasTRS(sppasBaseIO):
         # append to the label of the transcription.
         sppasTRS.__append_text_in_label(annotation, txt)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __append_comment_in_label(node_event, annotation):
@@ -634,7 +638,7 @@ class sppasTRS(sppasBaseIO):
         # append to the label of the transcription.
         sppasTRS.__append_text_in_label(annotation, txt)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __append_event_in_label(node_event, annotation):
@@ -664,7 +668,7 @@ class sppasTRS(sppasBaseIO):
             sppasTRS.__append_text_in_label(annotation,
                                             '{%s}' % description.replace(' ', '_'))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __append_text_in_label(annotation, text):
@@ -672,7 +676,7 @@ class sppasTRS(sppasBaseIO):
         old_text = old_tag.get_content()
         old_tag.set_content(old_text + " " + text)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __create_annotation(begin, end, text):
@@ -680,7 +684,7 @@ class sppasTRS(sppasBaseIO):
             sppasLocation(sppasInterval(begin, end)),
             sppasLabel(sppasTag(text)))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __parse_type_in_section(section_root):
@@ -690,7 +694,7 @@ class sppasTRS(sppasBaseIO):
             return section_root.attrib['type']
         return "undefined"
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __parse_topic_in_section(self, section_root, location):
         """ Extract the topic of a section. """
@@ -704,7 +708,7 @@ class sppasTRS(sppasBaseIO):
         topics = self.find('Topics')
         topics.create_annotation(location, sppasLabel(sppasTag(section_topic)))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __parse_mode_in_turn(self, turn_root, location):
         """ Extract the mode of a turn. """
@@ -724,7 +728,7 @@ class sppasTRS(sppasBaseIO):
 
         mode_tier.create_annotation(location, sppasLabel(sppasTag(mode)))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __parse_fidelity_in_turn(self, turn_root, location):
         """ Extract the fidelity of a turn. """
@@ -745,7 +749,7 @@ class sppasTRS(sppasBaseIO):
 
         fidelity_tier.create_annotation(location, sppasLabel(sppasTag(fidelity)))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __parse_channel_in_turn(self, turn_root, location):
         """ Extract the channel of a turn. """

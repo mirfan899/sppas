@@ -46,14 +46,14 @@ from ..annlocation.location import sppasLocation
 from ..annlocation.interval import sppasInterval
 from ..annlabel.tag import sppasTag
 
-# ------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 def format_point_to_float(p):
     f = p.get_midpoint()
     return round(float(f), 4)
 
-# ------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 def check_gaps(tier, min_loc=None, max_loc=None):
@@ -84,7 +84,7 @@ def check_gaps(tier, min_loc=None, max_loc=None):
 
     return False
 
-# ------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 def fill_gaps(tier, min_loc=None, max_loc=None):
@@ -138,7 +138,7 @@ def fill_gaps(tier, min_loc=None, max_loc=None):
 
     return new_tier
 
-# ------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 def unfill_gaps(tier):
@@ -162,7 +162,7 @@ def unfill_gaps(tier):
 
     return new_tier
 
-# ------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 def check_overlaps(tier):
@@ -185,7 +185,7 @@ def check_overlaps(tier):
 
     return False
 
-# ------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 def merge_overlapping_annotations(tier, separator=' '):

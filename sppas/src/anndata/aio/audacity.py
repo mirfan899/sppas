@@ -50,7 +50,7 @@ from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasAudacity(sppasBaseIO):
@@ -67,6 +67,12 @@ class sppasAudacity(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
+        """ Check whether a file is of AUP format or not.
+
+        :param filename: (str) Name of the file to check.
+        :returns: (bool)
+
+        """
         try:
             with open(filename, 'r') as it:
                 it.next()
@@ -77,11 +83,11 @@ class sppasAudacity(sppasBaseIO):
 
         return 'audacityproject' in doctype_line
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def make_point(midpoint):
-        """ In Audacity, the localization is a time value, so a float. """
+        """ The localization is a time value, so a float. """
 
         try:
             midpoint = float(midpoint)
@@ -90,7 +96,7 @@ class sppasAudacity(sppasBaseIO):
 
         return sppasPoint(midpoint, radius=0.0005)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
         """ Initialize a new sppasAudacity instance.
@@ -119,7 +125,7 @@ class sppasAudacity(sppasBaseIO):
         self._accept_gaps = True
         self._accept_overlaps = True
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def read(self, filename):
         """ Read an AUP file and fill the Transcription.
@@ -156,7 +162,7 @@ class sppasAudacity(sppasBaseIO):
             if name == "timetrack":
                 self._parse_timetrack(node)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def normalize(name):
@@ -177,7 +183,7 @@ class sppasAudacity(sppasBaseIO):
         else:
             return name
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_metadata(self, root):
         """
@@ -197,7 +203,7 @@ class sppasAudacity(sppasBaseIO):
         """
         pass
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_tags(self, tags_root):
         """
@@ -218,7 +224,7 @@ class sppasAudacity(sppasBaseIO):
         """
         pass
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_labeltrack(self, tier_root):
         """
@@ -282,7 +288,7 @@ class sppasAudacity(sppasBaseIO):
         elif len(interval_anns) > 0:
             sppasAudacity.__fill_tier(tier, interval_anns)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_wavetrack(self, wave_root):
         """ Not implemented.
@@ -294,7 +300,7 @@ class sppasAudacity(sppasBaseIO):
         """
         pass
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_timetrack(self, time_root):
         """ Not implemented.
@@ -309,9 +315,9 @@ class sppasAudacity(sppasBaseIO):
         """
         pass
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Private
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __fill_tier(tier, annotations):

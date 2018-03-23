@@ -42,6 +42,7 @@ import re
 
 import sppas
 from sppas.src.utils.makeunicode import sppasUnicode
+from sppas.src.utils.datatype import sppasType
 
 from ..anndataexc import AioError
 from ..anndataexc import AioEncodingError
@@ -56,11 +57,11 @@ from ..media import sppasMedia
 
 from .basetrs import sppasBaseIO
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 COLUMN_SEPARATORS = [' ', ',', ';', ':', '\t']
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasBaseText(sppasBaseIO):
@@ -314,7 +315,8 @@ class sppasBaseText(sppasBaseIO):
                 comment += ';; {:s}={:s}\n'.format(meta, meta_object.get_meta(meta))
 
         return comment
-    # -----------------------------------------------------------------
+
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def create_media(media_name, meta_object):
@@ -339,7 +341,7 @@ class sppasBaseText(sppasBaseIO):
 
         return media
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def get_lines_columns(lines):
@@ -362,7 +364,7 @@ class sppasBaseText(sppasBaseIO):
 
         return columns
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _serialize_label(label):
@@ -423,7 +425,7 @@ class sppasRawText(sppasBaseText):
 
         return True
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
         """ Initialize a new sppasRawText instance.
@@ -439,7 +441,7 @@ class sppasRawText(sppasBaseText):
 
         self._accept_multi_tiers = False
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def read(self, filename):
         """ Read a raw file and fill the Transcription.
@@ -454,7 +456,7 @@ class sppasRawText(sppasBaseText):
         lines = sppasRawText.load(filename, sppas.encoding)
         self._parse_lines(lines)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_lines(self, lines):
         """ Fill the transcription from the lines of the TXT file. """
@@ -471,7 +473,7 @@ class sppasRawText(sppasBaseText):
         else:
             self.__format_columns(columns)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __format_raw_lines(self, lines):
         """ Format lines of a raw text.
@@ -512,7 +514,7 @@ class sppasRawText(sppasBaseText):
                 self._create_annotation(tier, n, line)
                 n += 1
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _create_annotation(tier, rank, utterance):
@@ -522,7 +524,7 @@ class sppasRawText(sppasBaseText):
         location = sppasLocation(sppasPoint(rank))
         tier.create_annotation(location, label)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __format_columns(self, columns):
         """ Format columns of a column-based text.
@@ -558,7 +560,7 @@ class sppasRawText(sppasBaseText):
                     label = sppasLabel(sppasTag(instance[i]))
                     self[i-2].create_annotation(location, label)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def write(self, filename):
         """ Write a RawText file.
@@ -609,7 +611,7 @@ class sppasCSV(sppasBaseText):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      SPPAS CSV reader and writer.
 
     """
@@ -641,7 +643,7 @@ class sppasCSV(sppasBaseText):
                 return False
         return True
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
         """ Initialize a new CSV instance.
@@ -657,7 +659,7 @@ class sppasCSV(sppasBaseText):
 
         self._accept_multi_tiers = True
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def read(self, filename, signed=True):
         """ Read a CSV file.
@@ -676,26 +678,7 @@ class sppasCSV(sppasBaseText):
         if len(lines) > 0:
             self.format_columns_lines(lines)
 
-    # -----------------------------------------------------------------
-
-    @staticmethod
-    def is_number(s):
-        try:
-            float(s)
-            return True
-        except ValueError:
-            pass
-
-        try:
-            import unicodedata
-            unicodedata.numeric(s)
-            return True
-        except (TypeError, ValueError):
-            pass
-
-        return False
-
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def format_columns_lines(self, lines):
         """ Append lines content into self.
@@ -718,11 +701,11 @@ class sppasCSV(sppasBaseText):
                 col3 = sppasBaseText.format_quotation_marks(row[2])
                 content = sppasBaseText.format_quotation_marks(" ".join(row[3:]))
 
-                if sppasCSV.is_number(col1) and sppasCSV.is_number(col2):
+                if sppasType.is_number(col1) and sppasType.is_number(col2):
                     begin = col1
                     end = col2
                     tier_name = col3
-                elif sppasCSV.is_number(col2) and sppasCSV.is_number(col3):
+                elif sppasType.is_number(col2) and sppasType.is_number(col3):
                     begin = col2
                     end = col3
                     tier_name = col1
@@ -752,7 +735,7 @@ class sppasCSV(sppasBaseText):
         # in each line
         raise AioLineFormatError(1, lines[0])
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def write(self, filename, signed=True):
         """ Write a CSV file.

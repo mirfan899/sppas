@@ -1,4 +1,45 @@
-# -*- coding:utf-8 -*-
+# -*- coding: UTF-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
+
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.anndata.tests.test_aio_weka
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Test the writer of SPPAS for WEKA files.
+
+"""
 import unittest
 import os.path
 import shutil
@@ -43,22 +84,22 @@ class TestWEKA(unittest.TestCase):
         self.assertFalse(weka.alternative_localization_support())
         self.assertTrue(weka.alternative_tag_support())
         self.assertFalse(weka.radius_support())
-        self.assertFalse(weka.gaps_support())
+        self.assertTrue(weka.gaps_support())
         self.assertTrue(weka.overlaps_support())
 
         self.assertEqual(weka._uncertain_annotation_tag, "?")
         self.assertEqual(weka._epsilon_proba, 0.001)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_setters(self):
         weka = sppasWEKA()
         self.assertEqual(weka.get_max_class_tags(), 10)
         weka.set_max_class_tags(5)
         self.assertEqual(weka.get_max_class_tags(), 5)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IOError):
             weka.set_max_class_tags(1)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IOError):
             weka.check_max_class_tags(10)
 
         self.assertEqual(weka._max_attributes_tags, 20)
@@ -81,7 +122,7 @@ class TestWEKA(unittest.TestCase):
         with self.assertRaises(ValueError):
             weka.set_uncertain_annotation_tag(" \n")
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_check_metadata(self):
         """ Check the metadata and fix the variable members. """
@@ -103,19 +144,19 @@ class TestWEKA(unittest.TestCase):
         self.assertEqual(weka._empty_annotation_tag, "~")
         self.assertEqual(weka._uncertain_annotation_tag, "%")
         weka.set_meta("weka_max_class_tags", "0")
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IOError):
             weka.check_metadata()
         weka.set_meta("weka_max_attributes_tags", "0")
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IOError):
             weka.check_metadata()
         weka.set_meta("weka_empty_annotation_tag", "")
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IOError):
             weka.check_metadata()
         weka.set_meta("weka_uncertain_annotation_tag", "")
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IOError):
             weka.check_metadata()
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_validate_annotations(self):
         """ Prepare data to be compatible. """
@@ -127,7 +168,7 @@ class TestWEKA(unittest.TestCase):
 
         # TODO: unittest of validate_annotations() method.
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_validate(self):
         """ Check the tiers to verify if everything is ok. """
@@ -135,35 +176,35 @@ class TestWEKA(unittest.TestCase):
         weka = sppasWEKA()
         t = sppasTranscription()
         weka.set(t)
-        with self.assertRaises(ValueError):   # Empty transcription
+        with self.assertRaises(IOError):   # Empty transcription
             weka.validate()
         tier1 = t.create_tier(name="tier1")
-        with self.assertRaises(ValueError):   # Not enough tiers
+        with self.assertRaises(IOError):   # Not enough tiers
             weka.validate()
         tier2 = t.create_tier(name="tier2")
-        with self.assertRaises(ValueError):   # No class
+        with self.assertRaises(IOError):   # No class
             weka.validate()
         tier1.set_meta("weka_class", "")
-        with self.assertRaises(ValueError):   # No attribute
+        with self.assertRaises(IOError):   # No attribute
             weka.validate()
         tier2.set_meta("weka_attribute", "")
-        with self.assertRaises(ValueError):   # Empty class tier
+        with self.assertRaises(IOError):   # Empty class tier
             weka.validate()
         tier1.set_ctrl_vocab(None)
         tier1.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(4))),
                                      sppasLabel(sppasTag('a'))))
         tier1.create_ctrl_vocab()
-        with self.assertRaises(ValueError):   # Not enough annotations in class tier
+        with self.assertRaises(IOError):   # Not enough annotations in class tier
             weka.validate()
         tier1.set_ctrl_vocab(None)
         tier1.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(4), sppasPoint(6))),
                                      sppasLabel(sppasTag('b'))))
         tier1.create_ctrl_vocab()
-        with self.assertRaises(ValueError):   # Empty attribute tier
+        with self.assertRaises(IOError):   # Empty attribute tier
             weka.validate()
         tier2.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3)))))
 
-        with self.assertRaises(ValueError):  # No instance time step nor anchor
+        with self.assertRaises(IOError):  # No instance time step nor anchor
             weka.validate()
 
         weka.set_meta("weka_instance_step", "0.04")
@@ -171,7 +212,7 @@ class TestWEKA(unittest.TestCase):
         # yes! it sounds good!
         weka.validate()
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_tier_is_attribute(self):
         """ Check if a tier is an attribute for the classification. """
@@ -190,7 +231,7 @@ class TestWEKA(unittest.TestCase):
         self.assertTrue(is_att)
         self.assertTrue(is_num)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_get_class_tier(self):
         """ Return the tier which is the class. """
@@ -203,7 +244,7 @@ class TestWEKA(unittest.TestCase):
         tier1.set_meta("weka_class", "")
         self.assertEqual(weka._get_class_tier(), tier1)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_get_anchor_tier(self):
         """ Return the tier which will be used to create the instances. """
@@ -216,7 +257,7 @@ class TestWEKA(unittest.TestCase):
         tier1.set_meta("weka_instance_anchor", "")
         self.assertEqual(weka._get_anchor_tier(), tier1)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_get_label(self):
         """ Return the sppasLabel() at the given time in the given tier.
@@ -257,7 +298,7 @@ class TestWEKA(unittest.TestCase):
         self.assertEqual(weka._get_label(sppasPoint(12.), tierp), empty)
         self.assertEqual(weka._get_label(sppasPoint(5.), tierp), sppasLabel(sppasTag('H*')))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_get_tag(self):
         """ Return the sppasTag() of at the given time in the given tier. """
@@ -282,7 +323,7 @@ class TestWEKA(unittest.TestCase):
         tier[0].get_label().set_score(sppasTag('toto'), "c")
         self.assertEqual(weka._get_tag(sppasPoint(2.), tier), sppasTag('toto'))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_fix_all_possible_instance_steps(self):
         """ Fix all the possible time-points of the instances. """
@@ -305,7 +346,7 @@ class TestWEKA(unittest.TestCase):
         self.assertTrue(sppasPoint(4.5, 0.5) in all_points)
         self.assertTrue(sppasPoint(5.5, 0.5) in all_points)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_fix_instance_steps(self):
         """ Fix the time-points to create the instances and the
@@ -338,7 +379,7 @@ class TestWEKA(unittest.TestCase):
         self.assertEqual(len(instances), 1)  # only "toto
         self.assertEqual(instances[0], (sppasPoint(4.5, 0.5), "toto"))
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_scores_to_probas(self):
         """ Convert scores of a label to probas. """
@@ -401,7 +442,7 @@ class TestWEKA(unittest.TestCase):
         self.assertEqual(round(label.get_score(tag2), 2), 0.7)
         self.assertEqual(round(label.get_score(tag3), 2), 0.1)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_fix_data_instance(self):
         """ Fix the data content of an instance. """
@@ -476,16 +517,12 @@ class TestFileFormats(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(TEMP)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_write_header(self):
         """ Write the creator, etc. in the header of an ARFF file. """
 
-        output = io.BytesIO()
-        arff = sppasARFF()
-        arff.set(self.trs)
-        arff._write_header(output)
-        lines = output.getvalue()
+        lines = sppasARFF._serialize_header()
         self.assertEqual(len(lines.split("\n")), 7)
         self.assertTrue("creator" in lines)
         self.assertTrue("version" in lines)
@@ -493,7 +530,7 @@ class TestFileFormats(unittest.TestCase):
         self.assertTrue("author" in lines)
         self.assertTrue("license" in lines)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_write_meta(self):
         """ Write the metadata of the Transcription object
@@ -502,20 +539,16 @@ class TestFileFormats(unittest.TestCase):
         """
         arff = sppasARFF()
         arff.set(self.trs)
-        output = io.BytesIO()
-        arff._write_metadata(output)
-        lines = output.getvalue()
+        lines = arff._serialize_metadata()
         self.assertEqual(len(lines.split("\n")), 4)  # 2 blank lines + id
 
         arff.set_meta("weka_instance_step", "0.04")
-        output = io.BytesIO()
-        arff._write_metadata(output)
-        lines = output.getvalue()
+        lines = arff._serialize_metadata()
         self.assertEqual(len(lines.split("\n")), 5)  # 2 blank lines + 1 meta data + id
         self.assertTrue("weka_instance_step" in lines)
         self.assertTrue("0.04" in lines)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_write_relation(self):
         """ Write the name of the relation. """
@@ -523,14 +556,12 @@ class TestFileFormats(unittest.TestCase):
         # test ARFF
         arff = sppasARFF()
         arff.set(self.trs)
-        output = io.BytesIO()
-        arff._write_relation(output)
-        lines = output.getvalue()
+        lines = arff._serialize_relation()
         self.assertEqual(len(lines.split("\n")), 3)  # 1 blank line + 1 relation data
         self.assertTrue("@RELATION" in lines)
         self.assertTrue(self.trs.get_name() in lines)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_write_attributes(self):
         """ Write the list of attributes. """
@@ -538,24 +569,21 @@ class TestFileFormats(unittest.TestCase):
         # test ARFF
         arff = sppasARFF()
         arff.set(self.trs)
-        output = io.BytesIO()
         self.tier1.set_meta("weka_class", "")
         self.tier2.set_meta("weka_attribute", "string")
         self.tier1.create_ctrl_vocab()
         self.tier2.create_ctrl_vocab()
-        arff._write_attributes(output)
-        lines = output.getvalue()
+        lines = arff._serialize_attributes()
         self.assertTrue("@ATTRIBUTES" in lines)
         # self.assertTrue(self.tier1.get_name() in lines)
         # self.assertTrue(self.tier2.get_name() in lines)
 
         # test XRFF
         xrff = sppasXRFF()
-        arff.set(self.trs)
-        output = io.BytesIO()
-        arff._write_relation(output)
+        xrff.set(self.trs)
+        #relation = xrff._serialize_relation()
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def test_write_data(self):
         """ Write the list of attributes. """
