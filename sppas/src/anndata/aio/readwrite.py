@@ -62,9 +62,9 @@ from .weka import sppasARFF
 from .weka import sppasXRFF
 from .transcriber import sppasTRS
 from .audacity import sppasAudacity
-# from .elan import Elan
-# from .anvil import Anvil
-# from .annotationpro import Antx
+from .anvil import sppasAnvil
+# from .elan import sppasEAF
+# from .annotationpro import sppasANTX
 from .xra import sppasXRA
 
 # ---------------------------------------------------------------------------
@@ -85,9 +85,9 @@ class sppasRW(object):
     TRANSCRIPTION_TYPES[sppasTextGrid().default_extension.lower()] = sppasTextGrid
     TRANSCRIPTION_TYPES[sppasARFF().default_extension.lower()] = sppasARFF
     TRANSCRIPTION_TYPES[sppasXRFF().default_extension.lower()] = sppasXRFF
-    # TRANSCRIPTION_TYPES["eaf"] = Elan,
-    # TRANSCRIPTION_TYPES["anvil"] = Anvil
-    # TRANSCRIPTION_TYPES["antx"] = Antx
+    TRANSCRIPTION_TYPES[sppasAnvil().default_extension.lower()] = sppasAnvil
+    # TRANSCRIPTION_TYPES[sppasEAF().default_extension.lower()] = sppasEAF
+    # TRANSCRIPTION_TYPES[sppasANTX().default_extension.lower()] = sppasANTX
     TRANSCRIPTION_TYPES[sppasTRS().default_extension.lower()] = sppasTRS
     TRANSCRIPTION_TYPES[sppasMRK().default_extension.lower()] = sppasMRK
     TRANSCRIPTION_TYPES[sppasSignaix().default_extension.lower()] = sppasSignaix
