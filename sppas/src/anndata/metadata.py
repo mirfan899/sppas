@@ -268,8 +268,8 @@ class sppasDefaultMeta(sppasMetaData):
         # transcriber
         self.set_meta("language", "")
 
-        # audacity, annotation pro (IsClosed)
-        self.set_meta("tier_is_minimized", "")
+        # audacity, annotation pro
+        self.set_meta("tier_is_closed", "")
 
         # audacity, annotation pro
         self.set_meta("tier_height", "")

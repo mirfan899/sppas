@@ -44,6 +44,7 @@ from ..tier import sppasTier
 from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
 from ..annlocation.interval import sppasInterval
+from ..annlocation.point import sppasPoint
 from ..annlabel.tag import sppasTag
 
 # ---------------------------------------------------------------------------
@@ -341,5 +342,60 @@ def merge_overlapping_annotations(tier, separator=' '):
             new_content.append(ann.get_label().get_best().get_content())
 
         new_ann.set_best_tag(sppasTag(separator.join(new_content)))
+
+    return new_tier
+
+# ------------------------------------------------------------------------
+
+
+def point2interval(tier, radius=0.001):
+    """ Convert a PointTier into an IntervalTier.
+
+    Ensure the radius to be always >= 1 millisecond and the newly created
+    tier won't contain overlapped intervals.
+
+    Do not convert alternatives localizations.
+    Do not share the hierarchy.
+
+    :param tier: (Tier)
+    :param radius: (float) the radius to use for all intervals
+    :returns: (sppasTier) or None if tier was not converted.
+
+    """
+    # check the type of the tier!
+    if tier.is_point() is False:
+        return None
+
+    # create the new tier and share information (except 'id' and hierarchy)
+    new_tier = sppasTier(tier.get_name())
+    for key in tier.get_meta_keys():
+        if key != 'id':
+            new_tier.set_meta(key, tier.get_meta(key))
+    new_tier.set_media(tier.get_media())
+    new_tier.set_ctrl_vocab(tier.get_ctrl_vocab())
+
+    # create the annotations with intervals
+    end_midpoint = 0.
+    for ann in tier:
+
+        # get the point with the best score for this annotation
+        point = ann.get_location().get_best()
+        m = point.get_midpoint()
+        r = max(radius, point.get_radius())
+
+        # fix begin/end new points. Provide overlaps.
+        begin_midpoint = max(m - r, end_midpoint)
+        begin = sppasPoint(begin_midpoint, r)
+        end_midpoint = m + r
+        end = sppasPoint(end_midpoint, r)
+
+        # create the new annotation with an interval
+        new_ann = sppasAnnotation(sppasLocation(sppasInterval(begin, end)),
+                                  ann.get_label().copy())
+        # new annotation shares original annotation's metadata, except the 'id'
+        for key in new_ann.get_meta_keys():
+            if key != 'id':
+                new_ann.set_meta(key, ann.get_meta(key))
+        new_tier.append(new_ann)
 
     return new_tier

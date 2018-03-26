@@ -64,7 +64,7 @@ from .transcriber import sppasTRS
 from .audacity import sppasAudacity
 from .anvil import sppasAnvil
 # from .elan import sppasEAF
-# from .annotationpro import sppasANTX
+from .annotationpro import sppasANTX
 from .xra import sppasXRA
 
 # ---------------------------------------------------------------------------
@@ -87,7 +87,7 @@ class sppasRW(object):
     TRANSCRIPTION_TYPES[sppasXRFF().default_extension.lower()] = sppasXRFF
     TRANSCRIPTION_TYPES[sppasAnvil().default_extension.lower()] = sppasAnvil
     # TRANSCRIPTION_TYPES[sppasEAF().default_extension.lower()] = sppasEAF
-    # TRANSCRIPTION_TYPES[sppasANTX().default_extension.lower()] = sppasANTX
+    TRANSCRIPTION_TYPES[sppasANTX().default_extension.lower()] = sppasANTX
     TRANSCRIPTION_TYPES[sppasTRS().default_extension.lower()] = sppasTRS
     TRANSCRIPTION_TYPES[sppasMRK().default_extension.lower()] = sppasMRK
     TRANSCRIPTION_TYPES[sppasSignaix().default_extension.lower()] = sppasSignaix

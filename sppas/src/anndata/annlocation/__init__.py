@@ -40,6 +40,7 @@ from .point import sppasPoint
 from .interval import sppasInterval
 from .disjoint import sppasDisjoint
 from .duration import sppasDuration
+from .location import sppasLocation
 
 __all__ = [
     'sppasBaseLocalization',

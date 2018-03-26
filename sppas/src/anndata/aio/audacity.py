@@ -249,21 +249,21 @@ class sppasAudacity(sppasBaseIO):
 
         # Attributes are stored as metadata
         if 'height' in tier_root.attrib:
-            tier.set_meta("height", tier_root.attrib["height"])
+            tier.set_meta("tier_height", tier_root.attrib["height"])
 
         if 'minimized' in tier_root.attrib:
             minimized = tier_root.attrib['minimized']
             if minimized == "0":
-                tier.set_meta("is_closed", "false")
+                tier.set_meta("tier_is_closed", "false")
             else:
-                tier.set_meta("is_closed", "true")
+                tier.set_meta("tier_is_closed", "true")
 
         if 'isSelected' in tier_root.attrib:
             selected = tier_root.attrib['isSelected']
             if selected == "0":
-                tier.set_meta("is_selected", "false")
+                tier.set_meta("tier_is_selected", "false")
             else:
-                tier.set_meta("is_selected", "true")
+                tier.set_meta("tier_is_selected", "true")
 
         # Annotations are labels.
         # Attention: Audacity accepts mixed localizations.

@@ -37,7 +37,7 @@
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Test the reader of SPPAS for ÃnnotationPro files.
+    :summary:      Test the reader of SPPAS for AnnotationPro files.
 
 """
 import unittest
@@ -46,6 +46,7 @@ import xml.etree.cElementTree as ET
 
 from ..aio.annotationpro import sppasANTX
 from ..annlocation.point import sppasPoint
+from ..tier import sppasTier
 from ..annlabel.tag import sppasTag
 from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
@@ -102,5 +103,58 @@ class TestANTX(unittest.TestCase):
             sppasANTX.make_point("3a")
         with self.assertRaises(TypeError):
             sppasANTX.make_point("3.")
+
+    # -----------------------------------------------------------------------
+
+    def test_configuration(self):
+        """ 'Configuration' <-> metadata. """
+
+        root = ET.Element('AnnotationSystemDataSet')
+        root.set('xmlns', 'http://tempuri.org/AnnotationSystemDataSet.xsd')
+        antx = sppasANTX()
+
+        # Format antx: from antx.metadata (or default value) to 'Configuration
+        antx._format_configuration(root)
+
+        # Parse the tree: from 'Configuration' to antx.metadata
+        for child in root.iter('Configuration'):
+            antx._parse_configuration(child)
+
+        # so, test the result!
+        self.assertEqual(antx.get_meta("Version"), "5")
+        self.assertEqual(antx.get_meta("file_version"), "1")
+        self.assertEqual(antx.get_meta("media_sample_rate"), "44100")
+
+    # -----------------------------------------------------------------------
+
+    def test_audiofile(self):
+        """ 'AudioFile' <-> sppasMedia. """
+
+        root = ET.Element('AnnotationSystemDataSet')
+        root.set('xmlns', 'http://tempuri.org/AnnotationSystemDataSet.xsd')
+        antx = sppasANTX()
+        pass
+
+    # -----------------------------------------------------------------------
+
+    def test_layer(self):
+        """ 'Layer' <-> sppasTier. """
+
+        root = ET.Element('AnnotationSystemDataSet')
+        root.set('xmlns', 'http://tempuri.org/AnnotationSystemDataSet.xsd')
+        tier = sppasTier()
+
+        sppasANTX._format_tier(root, tier)
+        pass
+
+    # -----------------------------------------------------------------------
+
+    def test_segment(self):
+        """ 'Segment' <-> sppasAnnotation. """
+
+        root = ET.Element('AnnotationSystemDataSet')
+        root.set('xmlns', 'http://tempuri.org/AnnotationSystemDataSet.xsd')
+        antx = sppasANTX()
+        pass
 
     # -----------------------------------------------------------------------

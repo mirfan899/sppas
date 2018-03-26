@@ -39,6 +39,7 @@ from datetime import datetime
 import xml.etree.cElementTree as ET
 
 import sppas
+from sppas.src.resources.mapping import sppasMapping
 
 from ..media import sppasMedia
 from ..annlocation.location import sppasLocation
@@ -51,6 +52,7 @@ from ..anndataexc import AnnDataTypeError
 
 from .basetrs import sppasBaseIO
 from .aioutils import merge_overlapping_annotations
+from .aioutils import point2interval
 
 # ---------------------------------------------------------------------------
 
@@ -87,7 +89,7 @@ class sppasANTX(sppasBaseIO):
 
     @staticmethod
     def make_point(midpoint, sample_rate=44100):
-        """ The localization is a frame value, so an int. """
+        """ The localization is a frame value, so an integer. """
 
         try:
             midpoint = int(midpoint)
@@ -95,7 +97,7 @@ class sppasANTX(sppasBaseIO):
         except ValueError:
             raise AnnDataTypeError(midpoint, "int")
 
-        return sppasPoint(midpoint, radius=0.005)
+        return sppasPoint(midpoint, radius=0.0005)
 
     # -----------------------------------------------------------------------
 
@@ -125,7 +127,16 @@ class sppasANTX(sppasBaseIO):
         self._accept_overlaps = False
 
         self.default_extension = "antx"
-        self.__id_tier_map = dict()
+
+        # Information that are both used by AnnotationPro and another software tool
+        self._map_meta = sppasMapping()
+        self._map_meta.add('Created', 'file_created_date')
+        self._map_meta.add('Modified', 'file_write_date')
+        self._map_meta.add('FileVersion', 'file_version')
+        self._map_meta.add('SampleRate', 'media_sample_rate')
+        self._map_meta.add('IsSelected', 'tier_is_selected')
+        self._map_meta.add('IsClosed', 'tier_is_closed')
+        self._map_meta.add('Height', 'tier_height')
 
     # -----------------------------------------------------------------------
 
@@ -135,55 +146,76 @@ class sppasANTX(sppasBaseIO):
         :param filename: (str)
 
         """
-        self.__id_tier_map = dict()
         tree = ET.parse(filename)
         root = tree.getroot()
         uri = root.tag[:root.tag.index('}')+1]
 
+        # Create metadata
         for child in tree.iter(tag=uri+'Configuration'):
-            self._read_configuration(child, uri)
+            self._parse_configuration(child, uri)
 
+        # Create media
         for child in tree.iter(tag=uri+"AudioFile"):
-            self._read_audiofile(child, uri)
+            self._parse_audiofile(child, uri)
 
+        # Create tiers
         for child in tree.iter(tag=uri+"Layer"):
-            self._read_layer(child, uri)
+            self._parse_layer(child, uri)
 
+        # Create annotations
         for child in tree.iter(tag=uri+"Segment"):
-            self._read_segment(child, uri)
+            self._parse_segment(child, uri)
 
     # -----------------------------------------------------------------------
 
-    def _read_configuration(self, configuration_root, uri):
-        """ Get the elements 'Configuration' """
+    def _parse_configuration(self, configuration_root, uri=""):
+        """ Get the elements 'Configuration'.
+        Fill metadata of the sppasANTX instance.
 
-        key_tag = configuration_root.find(uri+'Key').text
-        if key_tag is not None:
-            new_key = key_tag.replace(uri, '')
-            new_value = configuration_root.find(uri+'Value').text
-            if new_key is not None:
-                self.set_meta(new_key, new_value)
+        :param configuration_root: (ET)
+        :param uri: (str)
+
+        """
+        key = configuration_root.find(uri + 'Key')
+        value = configuration_root.find(uri + 'Value')
+
+        if key is not None and value is not None:
+            self._map_meta.set_reverse(False)
+            new_key = key.text.replace(uri, "")
+            new_key = self._map_meta.map_entry(new_key)
+            self.set_meta(new_key, value.text.replace(uri, ""))
 
     # -----------------------------------------------------------------------
 
-    def _read_audiofile(self, audio_root, uri):
-        """ Get the elements 'AudioFile'. """
+    def _parse_audiofile(self, audio_root, uri):
+        """ Get the elements 'AudioFile'.
+        Create a sppasMedia instance and add it.
 
-        media_id = audio_root.find(uri + 'Id').text.replace(uri, '')
+        :param audio_root: (ET)
+        :param uri: (str)
+
+        """
+        media_id = audio_root.find(uri + 'Id').text
         media_url = audio_root.find(uri + 'FileName').text
-        media = sppasMedia(media_url)
 
-        # Put all information in metadata of Media
-        media.set_meta("id", media_id)
-        for node in audio_root:
-            if node.text is not None:
-                media.set_meta(node.tag.replace(uri, ''), node.text)
+        if media_id is not None and media_url is not None:
 
-        self.add_media(media)
+            media_id = media_id.replace(uri, '')
+            media_url = media_url.replace(uri, '')
+
+            # Create the new Media and put all information in metadata
+            media = sppasMedia(media_url)
+            media.set_meta("id", media_id)
+            media.set_meta("media_sample_rate", self.get_meta("media_sample_rate", "44100"))
+            for node in audio_root:
+                if node.text is not None:
+                    media.set_meta(node.tag.replace(uri, ''), node.text)
+
+            self.add_media(media)
 
     # -----------------------------------------------------------------------
 
-    def _read_layer(self, tier_root, uri):
+    def _parse_layer(self, tier_root, uri):
         """ Get the elements 'Layer'. """
 
         tier_name = tier_root.find(uri + 'Name').text
@@ -193,15 +225,14 @@ class sppasANTX(sppasBaseIO):
         for node in tier_root:
             if node.text is not None:
                 if "Id" in node.tag:
-                    self.__id_tier_map[node.text] = tier
                     tier.set_meta('id', node.text)
                 elif 'Name' not in node.tag:
                     tier.set_meta(node.tag.replace(uri, ''), node.text)
-                # IsSelected -> is_selected
+                # elif IsSelected -> is_selected
 
     # -----------------------------------------------------------------------
 
-    def _read_segment(self, annotation_root, uri):
+    def _parse_segment(self, annotation_root, uri):
         """ Get the elements 'Segment'. """
 
         # fix tier
@@ -215,10 +246,17 @@ class sppasANTX(sppasBaseIO):
             raise AioLineFormatError(0, tier_id)
 
         # fix localization
-        begin = float(annotation_root.find(uri + 'Start').text)
-        duration = float(annotation_root.find(uri + 'Duration').text)
-        end = begin + duration
-        sample_rate = self.get_meta('samplerate', 44100)
+        start = int(annotation_root.find(uri + 'Start').text)
+        duration = int(annotation_root.find(uri + 'Duration').text)
+        if start + duration == 0:
+            # when annotationpro imports a PointTier, it assigns
+            # start=0 and duration=0 to all points in the tier...
+            # Here, we just ignore such annotations.
+            return
+
+        begin = float(start)
+        end = begin + float(duration)
+        sample_rate = self.get_meta('media_sample_rate', 44100)
 
         if end > begin:
             localization = sppasInterval(
@@ -251,46 +289,39 @@ class sppasANTX(sppasBaseIO):
         :param filename:
 
         """
-        try:
-            root = ET.Element('AnnotationSystemDataSet')
-            root.set('xmlns', 'http://tempuri.org/AnnotationSystemDataSet.xsd')
+        root = ET.Element('AnnotationSystemDataSet')
+        root.set('xmlns', 'http://tempuri.org/AnnotationSystemDataSet.xsd')
 
-            # Write layers
-            for tier in self:
-                sppasANTX._format_tier(root, tier)
+        # Write layers
+        for tier in self:
+            sppasANTX._format_tier(root, tier)
 
-            # Write segments
-            for tier in self:
-                #if tier.is_point():
-                #    tier = point2interval(tier, ANTX_RADIUS)
-                tier = merge_overlapping_annotations(tier)
-                for ann in tier:
-                    self._format_segment(root, tier, ann)
+        # Write segments
+        for tier in self:
+            if tier.is_point():
+                tier = point2interval(tier, 0.01)
+            tier = merge_overlapping_annotations(tier)
+            for ann in tier:
+                self._format_segment(root, tier, ann)
 
-            # Write media
-            for media in self.get_media_list():
-                if media:
-                    sppasANTX._format_media(root, media)
+        # Write media
+        for media in self.get_media_list():
+            if media:
+                sppasANTX._format_media(root, media)
 
-            # Write configurations
-            self._format_configuration(root)
+        # Write configurations
+        self._format_configuration(root)
 
-            sppasANTX.indent(root)
-            tree = ET.ElementTree(root)
-            tree.write(filename, encoding=sppas.encoding, xml_declaration=True, method="xml")
-            # TODO: add standalone="yes" in the declaration
-            # (but not available with ElementTree)
-
-        except Exception:
-            # import traceback
-            # print(traceback.format_exc())
-            raise
+        sppasANTX.indent(root)
+        tree = ET.ElementTree(root)
+        tree.write(filename, encoding=sppas.encoding, xml_declaration=True, method="xml")
+        # TODO: add standalone="yes" in the declaration (but not available with ElementTree)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
     def _format_media(root, media):
-        """ Write the sppasMedia element. """
+        """ Add 'AudioFile' into the ElementTree. """
 
         media_root = ET.SubElement(root, 'AudioFile')
 
@@ -313,38 +344,43 @@ class sppasANTX(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_configuration(self, root):
-        """ Write the Configuration element. """
+        """ Add 'Configuration' into the ElementTree. """
 
+        self._map_meta.set_reverse(True)
         now = datetime.now().strftime("%Y-%M-%d %H:%M")
 
         # File format version
-        sppasANTX.__add_configuration(root, "Version", "5")
+        sppasANTX._add_configuration(root, "Version", "5")
 
         # Author
         author = sppas.__name__ + " " + sppas.__version__ + " (C) " + sppas.__author__
-        sppasANTX.__add_configuration(root, "Author", author)
+        sppasANTX._add_configuration(root, "Author", author)
 
         # FileVersion
-        sppasANTX.__add_configuration(root, "FileVersion",
-                                      self.get_meta("file_version", "1"))
+        sppasANTX._add_configuration(root,
+                                     self._map_meta.map_entry("file_version"),
+                                     self.get_meta("file_version", "1"))
 
         # SampleRate
-        sppasANTX.__add_configuration(root, "SampleRate",
-                                      self.get_meta("sample_rate", "44100"))
+        sppasANTX._add_configuration(root,
+                                     self._map_meta.map_entry("media_sample_rate"),
+                                     self.get_meta("media_sample_rate", "44100"))
 
         # Created
-        sppasANTX.__add_configuration(root, "Created",
-                                      self.get_meta("file_created_date", now))
+        sppasANTX._add_configuration(root,
+                                     self._map_meta.map_entry("file_created_date"),
+                                     self.get_meta("file_created_date", now))
 
         # Modified
-        sppasANTX.__add_configuration(root, "Modified",
-                                      self.get_meta("file_write_date", now))
+        sppasANTX._add_configuration(root,
+                                     self._map_meta.map_entry("file_write_date"),
+                                     self.get_meta("file_write_date", now))
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __add_configuration(root, key, value):
-        """ Add a new 'Configuration' element in root. """
+    def _add_configuration(root, key, value):
+        """ Add a new 'Configuration' key/value element in root. """
 
         conf_root = ET.SubElement(root, 'Configuration')
         child_key = ET.SubElement(conf_root, 'Key')
@@ -356,7 +392,7 @@ class sppasANTX(sppasBaseIO):
 
     @staticmethod
     def _format_tier(root, tier):
-        """ Write a 'Layer' element and its content. """
+        """ Add 'Layer' and its content into the ElementTree. """
 
         tier_root = ET.SubElement(root, 'Layer')
 
@@ -366,10 +402,9 @@ class sppasANTX(sppasBaseIO):
         child_id.text = tier_id
 
         child_name = ET.SubElement(tier_root, 'Name')
-        child_name.text = tier.getN_name()
+        child_name.text = tier.get_name()
 
         # Layer required elements:
-        # 'is_selected' and 'height' are shared with Audacity.
         child = ET.SubElement(tier_root, 'ForeColor')
         child.text = tier.get_meta("ForeColor", "-16777216")
 
@@ -377,16 +412,17 @@ class sppasANTX(sppasBaseIO):
         child.text = tier.get_meta("BackColor", "-3281999")
 
         child = ET.SubElement(tier_root, 'IsSelected')
-        child.text = tier.get_meta("is_selected", "false")
+        child.text = tier.get_meta("tier_is_selected", "false")
 
         child = ET.SubElement(tier_root, 'Height')
-        child.text = tier.get_meta("height", "70")
+        child.text = tier.get_meta("tier_height", "70")
 
         # Layer optional elements:
-        # is_closed is shared with Audacity
         child = ET.SubElement(tier_root, 'IsClosed')
-        child.text = tier.get_meta("is_closed", "false")
+        child.text = tier.get_meta("tier_is_closed", "false")
 
+        # for each element key, assign either the stored value (in the metadata),
+        # or the default one.
         elt_opt_layer = {'CoordinateControlStyle': "0", 'IsLocked': "false",
                          'ShowOnSpectrogram': "false", 'ShowAsChart': "false",
                          'ChartMinimum': "-50", 'ChartMaximum': "50",
@@ -396,14 +432,16 @@ class sppasANTX(sppasBaseIO):
                          'IsVisible': "true", 'FontSize': "10"}
 
         for key in elt_opt_layer:
-            # here, we have to restore original upper/lower case for the key
             child = ET.SubElement(tier_root, key)
             child.text = tier.get_meta(key, elt_opt_layer[key])
 
     # -----------------------------------------------------------------------
 
     def _format_segment(self, root, tier, ann):
+        """ Add 'Segment' into the ElementTree. """
+
         segment_root = ET.SubElement(root, 'Segment')
+        is_point = tier.is_point()
 
         # Write all the elements SPPAS has interpreted
         child_id = ET.SubElement(segment_root, 'Id')            # Id
@@ -417,11 +455,11 @@ class sppasANTX(sppasBaseIO):
 
         child_id_start = ET.SubElement(segment_root, 'Start')    # Start
         child_id_dur = ET.SubElement(segment_root, 'Duration')   # Duration
-        if ann.is_point():
+        if is_point:
             start = ann.get_location().get_lowest_localization()
         else:
             start = ann.get_location().get_best().get_begin().get_midpoint()
-        duration = ann.get_location().get_best().get_duration().get_value()
+        duration = ann.get_location().get_best().duration().get_value()
 
         start *= float(self.get_meta('sample_rate', 44100))
         duration *= float(self.get_meta('sample_rate', 44100))
@@ -442,7 +480,7 @@ class sppasANTX(sppasBaseIO):
                            'Parameter1': None, 'Parameter2': None, 'Parameter3': None,
                            'IsMarker': "false", 'Marker': None, 'RScript': None}
 
-        for key, value in elt_opt_segment:
+        for key in elt_opt_segment:
             child = ET.SubElement(segment_root, key)
             child.text = ann.get_meta(key, elt_opt_segment[key])
 
@@ -467,7 +505,8 @@ class sppasANTX(sppasBaseIO):
 
     @staticmethod
     def indent(elem, level=0):
-        """ Pretty indent.
+        """ Pretty indent of an ElementTree.
+
         http://effbot.org/zone/element-lib.htm#prettyprint
 
         """
