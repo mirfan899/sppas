@@ -66,6 +66,7 @@ AIO_FILE_EXTENSION_ERROR = ":ERROR 1505: "
 AIO_MULTI_TIERS_ERROR = ":ERROR 1510: "
 AIO_NO_TIERS_ERROR = ":ERROR 1515: "
 AIO_LINE_FORMAT_ERROR = ":ERROR 1520: "
+AIO_FORMAT_ERROR = ":ERROR 1521: "
 AIO_EMPTY_TIER_ERROR = ":ERROR 1525: "
 AIO_LOCATION_TYPE_ERROR = ":ERROR 1530: "
 
@@ -434,6 +435,23 @@ class AioLineFormatError(IOError):
 
     def __str__(self):
         return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class AioFormatError(IOError):
+    """ :ERROR 1521: AIO_FORMAT_ERROR
+    Unexpected format about '{!s:s}'.
+
+    """
+
+    def __init__(self, number):
+        self.parameter = AIO_FORMAT_ERROR + \
+                         (t.gettext(AIO_FORMAT_ERROR)).format(number)
+
+    def __str__(self):
+        return repr(self.parameter)
+
 
 # -----------------------------------------------------------------------
 

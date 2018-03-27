@@ -161,9 +161,9 @@ class sppasXRA(sppasBaseIO):
                 except Exception:
                     # XRA < 1.2
                     key = entry_node.attrib['Key'].lower()
-                value = entry_node.text
 
-                meta_object.set_meta(key, value)
+                if entry_node.text is not None:
+                    meta_object.set_meta(key, entry_node.text)
 
     # -----------------------------------------------------------------------
 
@@ -626,8 +626,8 @@ class sppasXRA(sppasBaseIO):
 
         """
         # to be tested:
-        # metadata_root = ET.SubElement(annotation_root, 'Metadata')
-        # sppasXRA.__format_metadata(metadata_root, annotation)
+        metadata_root = ET.SubElement(annotation_root, 'Metadata')
+        sppasXRA.__format_metadata(metadata_root, annotation)
 
         location_root = ET.SubElement(annotation_root, 'Location')
         sppasXRA.__format_location(location_root, annotation.get_location())
@@ -759,6 +759,8 @@ class sppasXRA(sppasBaseIO):
 
         # Element Tier
         for tier in self:
+            if tier.get_media() is None:
+                continue
             if tier.get_media() == media:
                 tier_node = ET.SubElement(media_root, 'Tier')
                 tier_node.set('id', tier.get_meta('id'))

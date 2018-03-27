@@ -405,6 +405,22 @@ class sppasTranscription(sppasMetaData):
 
     # ------------------------------------------------------------------------
 
+    def find_id(self, tier_id):
+        """ Find a tier from its identifier.
+
+        :param tier_id: (str) Exact identifier of the tier
+        :returns: sppasTier or None
+
+        """
+        tier_id = str(tier_id).strip()
+        for tier in self._tiers:
+            if tier.get_meta('id') == tier_id:
+                return tier
+
+        return None
+
+    # ------------------------------------------------------------------------
+
     def get_tier_index(self, name, case_sensitive=True):
         """ Get the index of a tier from its name.
 

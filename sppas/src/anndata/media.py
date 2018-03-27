@@ -126,3 +126,9 @@ class sppasMedia(sppasMetaData):
     def __repr__(self):
         return "Media: {:s} url={:s} mime={:s}" \
                "".format(self.__name, self.__url, self.__mime)
+
+    def __eq__(self, other):
+        if isinstance(other, sppasMedia) is False:
+            return False
+        return self.__url == other.get_filename() and \
+               self.get_meta('id') == other.get_meta('id')

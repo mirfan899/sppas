@@ -92,6 +92,9 @@ msgstr "Le format de fichier {!s:s} ne supporte pas la sauvegarde sans aucune ti
 msgid ":ERROR 1520: "
 msgstr "Format de la ligne {:d} inconnu : '{!s:s}'."
 
+msgid ":ERROR 1521: "
+msgstr "Format de fichier non attendu autour de '{!s:s}'."
+
 msgid ":ERROR 1525: "
 msgstr "Le format de fichier {!s:s} ne supporte pas la sauvegarde de tiers vides: {:s}."
 

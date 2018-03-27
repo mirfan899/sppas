@@ -47,6 +47,7 @@ import xml.etree.cElementTree as ET
 from ..aio.annotationpro import sppasANTX
 from ..annlocation.point import sppasPoint
 from ..tier import sppasTier
+from ..media import sppasMedia
 from ..annlabel.tag import sppasTag
 from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
@@ -133,7 +134,21 @@ class TestANTX(unittest.TestCase):
         root = ET.Element('AnnotationSystemDataSet')
         root.set('xmlns', 'http://tempuri.org/AnnotationSystemDataSet.xsd')
         antx = sppasANTX()
-        pass
+        media = sppasMedia("filename.wav")
+
+        # Format antx: from sppasMedia() to 'AudioFile'
+        sppasANTX._format_media(root, media)
+
+        # Parse the tree: from 'AudioFile' to antx.media
+        for child in root.iter('AudioFile'):
+            antx._parse_audiofile(child)
+
+        self.assertEqual(len(antx.get_media_list()), 1)
+        antx_media = antx.get_media_list()[0]
+        self.assertEqual(antx_media, media)
+        self.assertEqual(antx_media.get_meta('media_sample_rate'), '44100')
+        self.assertEqual(antx_media.get_meta('Name'), 'NoName')
+        self.assertEqual(antx_media.get_meta('Current'), 'false')
 
     # -----------------------------------------------------------------------
 
@@ -142,10 +157,43 @@ class TestANTX(unittest.TestCase):
 
         root = ET.Element('AnnotationSystemDataSet')
         root.set('xmlns', 'http://tempuri.org/AnnotationSystemDataSet.xsd')
-        tier = sppasTier()
+        antx = sppasANTX()
+        tier1 = sppasTier()
+        tier2 = sppasTier()
 
-        sppasANTX._format_tier(root, tier)
-        pass
+        # Format antx: from sppasTier() to 'Layer'
+        sppasANTX._format_tier(root, tier1)
+        sppasANTX._format_tier(root, tier2)
+
+        # Parse the tree: from 'Layer' to antx.tier
+        for child in root.iter('Layer'):
+            antx._parse_layer(child)
+
+        self.assertEqual(len(antx), 2)
+        self.assertEqual(antx[0].get_name(), tier1.get_name())
+        self.assertEqual(antx[0].get_meta('id'), tier1.get_meta('id'))
+        self.assertEqual(antx[1].get_name(), tier2.get_name())
+        self.assertEqual(antx[1].get_meta('id'), tier2.get_meta('id'))
+
+        elt_layer = {'CoordinateControlStyle': "0",
+                     'IsLocked': "false",
+                     'ShowOnSpectrogram': "false",
+                     'ShowAsChart': "false",
+                     'ChartMinimum': "-50",
+                     'ChartMaximum': "50",
+                     'ShowBoundaries': "true",
+                     'IncludeInFrequency': "true",
+                     'Parameter1Name': "Parameter 1",
+                     'Parameter2Name': "Parameter 2",
+                     'Parameter3Name': "Parameter 3",
+                     'IsVisible': "true", 'FontSize': "10",
+                     "tier_is_closed": "false",
+                     "tier_height": "70",
+                     "tier_is_selected": "false",
+                     }
+        for key in elt_layer:
+            self.assertEqual(antx[0].get_meta(key), elt_layer[key])
+            self.assertEqual(antx[1].get_meta(key), elt_layer[key])
 
     # -----------------------------------------------------------------------
 

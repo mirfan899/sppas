@@ -35,6 +35,7 @@
     http://annotationpro.org/
 
 """
+import random
 from datetime import datetime
 import xml.etree.cElementTree as ET
 
@@ -47,12 +48,47 @@ from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
-from ..anndataexc import AioLineFormatError
+from ..anndataexc import AioFormatError
 from ..anndataexc import AnnDataTypeError
 
 from .basetrs import sppasBaseIO
 from .aioutils import merge_overlapping_annotations
 from .aioutils import point2interval
+
+# ---------------------------------------------------------------------------
+
+
+def pick_random_color(v1=0, v2=255):
+    """ Return a random RGB color. """
+
+    c = [random.uniform(v1, v2) for _ in range(5)]
+    random.shuffle(c)
+    return int(c[0]), int(c[1]), int(c[2])
+
+
+def rgb_to_color(r, g, b):
+    """ Convert a RGB color into ANTX decimal color. """
+
+    r_hexa = hex(r % 256)[2:]   # remove '0x'
+    g_hexa = hex(g % 256)[2:]   # remove '0x'
+    b_hexa = hex(b % 256)[2:]   # remove '0x'
+    hexa = str(r_hexa) + str(g_hexa) + str(b_hexa)
+    return (int(hexa, 16)*-1) - 1
+
+
+def color_to_rgb(color):
+    """ Convert an ANTX decimal color into RGB. """
+
+    hexa = hex((color-1)*-1)
+    l = ['0']*6
+    for i in range(len(hexa) - 2):
+        l[len(l) - i - 1] = hexa[len(hexa) - i - 1]
+
+    r = int(''.join(l[0:2]), 16)
+    g = int(''.join(l[2:4]), 16)
+    b = int(''.join(l[4:6]), 16)
+
+    return r, g, b
 
 # ---------------------------------------------------------------------------
 
@@ -130,10 +166,11 @@ class sppasANTX(sppasBaseIO):
 
         # Information that are both used by AnnotationPro and another software tool
         self._map_meta = sppasMapping()
+        self._map_meta.add('Id', 'id')
         self._map_meta.add('Created', 'file_created_date')
         self._map_meta.add('Modified', 'file_write_date')
         self._map_meta.add('FileVersion', 'file_version')
-        self._map_meta.add('SampleRate', 'media_sample_rate')
+        self._map_meta.add('Samplerate', 'media_sample_rate')
         self._map_meta.add('IsSelected', 'tier_is_selected')
         self._map_meta.add('IsClosed', 'tier_is_closed')
         self._map_meta.add('Height', 'tier_height')
@@ -172,7 +209,7 @@ class sppasANTX(sppasBaseIO):
         """ Get the elements 'Configuration'.
         Fill metadata of the sppasANTX instance.
 
-        :param configuration_root: (ET)
+        :param configuration_root: (ET) Configuration root.
         :param uri: (str)
 
         """
@@ -187,11 +224,11 @@ class sppasANTX(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def _parse_audiofile(self, audio_root, uri):
+    def _parse_audiofile(self, audio_root, uri=""):
         """ Get the elements 'AudioFile'.
         Create a sppasMedia instance and add it.
 
-        :param audio_root: (ET)
+        :param audio_root: (ET) AudioFile root.
         :param uri: (str)
 
         """
@@ -207,47 +244,45 @@ class sppasANTX(sppasBaseIO):
             media = sppasMedia(media_url)
             media.set_meta("id", media_id)
             media.set_meta("media_sample_rate", self.get_meta("media_sample_rate", "44100"))
-            for node in audio_root:
-                if node.text is not None:
-                    media.set_meta(node.tag.replace(uri, ''), node.text)
-
+            self.elt_to_meta(audio_root, media, uri)
             self.add_media(media)
 
     # -----------------------------------------------------------------------
 
-    def _parse_layer(self, tier_root, uri):
-        """ Get the elements 'Layer'. """
+    def _parse_layer(self, tier_root, uri=''):
+        """ Get the elements 'Layer'.
 
+        :param tier_root: (ET) Layer root.
+        :param uri: (str)
+
+        """
         tier_name = tier_root.find(uri + 'Name').text
         tier = self.create_tier(tier_name)
-
-        # Put all other information in metadata
-        for node in tier_root:
-            if node.text is not None:
-                if "Id" in node.tag:
-                    tier.set_meta('id', node.text)
-                elif 'Name' not in node.tag:
-                    tier.set_meta(node.tag.replace(uri, ''), node.text)
-                # elif IsSelected -> is_selected
+        self.elt_to_meta(tier_root, tier, uri, ['Name'])
 
     # -----------------------------------------------------------------------
 
-    def _parse_segment(self, annotation_root, uri):
-        """ Get the elements 'Segment'. """
+    def _parse_segment(self, annotation_root, uri=""):
+        """ Get the elements 'Segment'.
 
-        # fix tier
+        :param annotation_root: (ET) Segment root.
+        :param uri: (str)
+
+        """
+        # fix parent tier
         tier_id = annotation_root.find(uri + 'IdLayer').text
-        tier = None
-        for t in self:
-            if t.get_meta(tier_id) != "":
-                tier = t
-                break
+        tier = self.find_id(tier_id)
         if tier is None:
-            raise AioLineFormatError(0, tier_id)
+            raise AioFormatError("Layer id="+tier_id)
 
+        segment_id = annotation_root.find(uri + 'Id').text
         # fix localization
-        start = int(annotation_root.find(uri + 'Start').text)
-        duration = int(annotation_root.find(uri + 'Duration').text)
+        try:
+            start = int(annotation_root.find(uri + 'Start').text)
+            duration = int(annotation_root.find(uri + 'Duration').text)
+        except ValueError:
+            raise AioFormatError("Segment id="+segment_id)
+
         if start + duration == 0:
             # when annotationpro imports a PointTier, it assigns
             # start=0 and duration=0 to all points in the tier...
@@ -256,7 +291,7 @@ class sppasANTX(sppasBaseIO):
 
         begin = float(start)
         end = begin + float(duration)
-        sample_rate = self.get_meta('media_sample_rate', 44100)
+        sample_rate = self.get_meta('media_sample_rate', '44100')
 
         if end > begin:
             localization = sppasInterval(
@@ -271,13 +306,29 @@ class sppasANTX(sppasBaseIO):
                                      sppasLabel(tag))
 
         # fix other information in metadata
-        for node in annotation_root:
+        self.elt_to_meta(annotation_root, ann, uri,
+                         ['IdLayer', 'Start', 'Duration', 'Label', 'IsSelected'])
+
+        is_selected = annotation_root.find(uri + 'IsSelected')
+        if is_selected is not None:
+            ann.set_meta("IsSelected", is_selected.text)
+
+    # ----------------------------------------------------------------------
+
+    def elt_to_meta(self, root, meta_object, uri, exclude_list=[]):
+        """ Add nodes of root in meta_object. """
+
+        for node in root:
             if node.text is not None:
                 key = node.tag.replace(uri, '')
-                if key not in ['Id', 'IdLayer', 'Start', 'Duration', 'Label']:
-                    ann.set_meta(key, node.text)
-                elif key == 'Id':
-                    ann.set_meta('id', node.text)
+                if key not in exclude_list:
+                    key = self._map_meta.map_entry(key)
+                    meta_object.set_meta(key, node.text)
+
+                if 'Color' in key:
+                    color = meta_object.get_meta(key)
+                    r, g, b = color_to_rgb(int(color))
+                    meta_object.set_meta(key, ",".join([str(r), str(g), str(b)]))
 
     # ----------------------------------------------------------------------
     # Writer
@@ -298,9 +349,11 @@ class sppasANTX(sppasBaseIO):
 
         # Write segments
         for tier in self:
+            original_id = tier.get_meta('id')
             if tier.is_point():
                 tier = point2interval(tier, 0.01)
             tier = merge_overlapping_annotations(tier)
+            tier.set_meta('id', original_id)
             for ann in tier:
                 self._format_segment(root, tier, ann)
 
@@ -321,8 +374,12 @@ class sppasANTX(sppasBaseIO):
 
     @staticmethod
     def _format_media(root, media):
-        """ Add 'AudioFile' into the ElementTree. """
+        """ Add 'AudioFile' into the ElementTree.
 
+        :param root: (ElementTree)
+        :param media: (sppasMedia)
+
+        """
         media_root = ET.SubElement(root, 'AudioFile')
 
         # Write all the elements SPPAS has interpreted
@@ -361,7 +418,7 @@ class sppasANTX(sppasBaseIO):
                                      self._map_meta.map_entry("file_version"),
                                      self.get_meta("file_version", "1"))
 
-        # SampleRate
+        # Samplerate
         sppasANTX._add_configuration(root,
                                      self._map_meta.map_entry("media_sample_rate"),
                                      self.get_meta("media_sample_rate", "44100"))
@@ -406,10 +463,12 @@ class sppasANTX(sppasBaseIO):
 
         # Layer required elements:
         child = ET.SubElement(tier_root, 'ForeColor')
-        child.text = tier.get_meta("ForeColor", "-16777216")
+        r, g, b = pick_random_color(0, 20)
+        child.text = tier.get_meta("ForeColor", str(rgb_to_color(r, g, b)))
 
         child = ET.SubElement(tier_root, 'BackColor')
-        child.text = tier.get_meta("BackColor", "-3281999")
+        r, g, b = pick_random_color(20, 255)
+        child.text = tier.get_meta("BackColor", str(rgb_to_color(r, g, b)))
 
         child = ET.SubElement(tier_root, 'IsSelected')
         child.text = tier.get_meta("tier_is_selected", "false")
@@ -423,13 +482,19 @@ class sppasANTX(sppasBaseIO):
 
         # for each element key, assign either the stored value (in the metadata),
         # or the default one.
-        elt_opt_layer = {'CoordinateControlStyle': "0", 'IsLocked': "false",
-                         'ShowOnSpectrogram': "false", 'ShowAsChart': "false",
-                         'ChartMinimum': "-50", 'ChartMaximum': "50",
-                         'ShowBoundaries': "true", 'IncludeInFrequency': "true",
-                         'Parameter1Name': "Parameter 1", 'Parameter2Name': "Parameter 2",
+        elt_opt_layer = {'CoordinateControlStyle': "0",
+                         'IsLocked': "false",
+                         'ShowOnSpectrogram': "false",
+                         'ShowAsChart': "false",
+                         'ChartMinimum': "-50",
+                         'ChartMaximum': "50",
+                         'ShowBoundaries': "true",
+                         'IncludeInFrequency': "true",
+                         'Parameter1Name': "Parameter 1",
+                         'Parameter2Name': "Parameter 2",
                          'Parameter3Name': "Parameter 3",
-                         'IsVisible': "true", 'FontSize': "10"}
+                         'IsVisible': "true",
+                         'FontSize': "10"}
 
         for key in elt_opt_layer:
             child = ET.SubElement(tier_root, key)
@@ -463,12 +528,14 @@ class sppasANTX(sppasBaseIO):
 
         start *= float(self.get_meta('sample_rate', 44100))
         duration *= float(self.get_meta('sample_rate', 44100))
-        child_id_start.text = str(start)
-        child_id_dur.text = str(duration)
+        child_id_start.text = str(int(start))
+        child_id_dur.text = str(int(duration))
 
         # Segment required elements
-        elt_segment = {'ForeColor': '-16777216', 'BackColor': '-1',
-                       'BorderColor': '-16777216', 'IsSelected': 'false'}
+        elt_segment = {'ForeColor': tier.get_meta('ForeColor', '-16777216'),  # black
+                       'BackColor': tier.get_meta('BackColor', '-1'),         # white
+                       'BorderColor': '-8355172',  # grey
+                       'IsSelected': 'false'}
 
         for key in elt_segment:
             child = ET.SubElement(segment_root, key)
