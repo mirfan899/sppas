@@ -326,12 +326,12 @@ class sppasTextGrid(sppasBasePraat):
             with codecs.open(filename, 'r', sppas.encoding) as fp:
                 detected = sppasTextGrid._detect(fp)
                 fp.close()
-        except UnicodeDecodeError:
+        except UnicodeError:
             try:
                 with codecs.open(filename, 'r', 'UTF-16') as fp:
                     detected = sppasTextGrid._detect(fp)
                     fp.close()
-            except UnicodeDecodeError:
+            except UnicodeError:
                 return False
         except IOError:
             pass

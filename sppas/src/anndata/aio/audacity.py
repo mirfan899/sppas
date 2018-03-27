@@ -74,10 +74,10 @@ class sppasAudacity(sppasBaseIO):
 
         """
         try:
-            with open(filename, 'r') as it:
-                it.next()
-                doctype_line = it.next().strip()
-                it.close()
+            with open(filename, 'r') as fp:
+                fp.readline()
+                doctype_line = fp.readline().strip()
+                fp.close()
         except IOError:
             return False
 

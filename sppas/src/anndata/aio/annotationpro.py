@@ -35,12 +35,16 @@
     http://annotationpro.org/
 
 """
+import os.path
+import zipfile
+import shutil
 import random
 from datetime import datetime
 import xml.etree.cElementTree as ET
 
 import sppas
 from sppas.src.resources.mapping import sppasMapping
+from sppas.src.utils.fileutils import sppasFileUtils
 
 from ..media import sppasMedia
 from ..annlocation.location import sppasLocation
@@ -112,10 +116,10 @@ class sppasANTX(sppasBaseIO):
 
         """
         try:
-            with open(filename, 'r') as it:
-                it.next()
-                doctype_line = it.next().strip()
-                it.close()
+            with open(filename, 'r') as fp:
+                fp.readline()
+                doctype_line = fp.readline().strip()
+                fp.close()
         except IOError:
             return False
 
@@ -220,7 +224,8 @@ class sppasANTX(sppasBaseIO):
             self._map_meta.set_reverse(False)
             new_key = key.text.replace(uri, "")
             new_key = self._map_meta.map_entry(new_key)
-            self.set_meta(new_key, value.text.replace(uri, ""))
+            if value.text is not None:
+                self.set_meta(new_key, value.text.replace(uri, ""))
 
     # -----------------------------------------------------------------------
 
@@ -278,21 +283,19 @@ class sppasANTX(sppasBaseIO):
         segment_id = annotation_root.find(uri + 'Id').text
         # fix localization
         try:
-            start = int(annotation_root.find(uri + 'Start').text)
-            duration = int(annotation_root.find(uri + 'Duration').text)
+            begin = float(annotation_root.find(uri + 'Start').text)
+            duration = float(annotation_root.find(uri + 'Duration').text)
         except ValueError:
             raise AioFormatError("Segment id="+segment_id)
 
-        if start + duration == 0:
+        if begin + duration == 0.:
             # when annotationpro imports a PointTier, it assigns
             # start=0 and duration=0 to all points in the tier...
             # Here, we just ignore such annotations.
             return
 
-        begin = float(start)
-        end = begin + float(duration)
+        end = begin + duration
         sample_rate = self.get_meta('media_sample_rate', '44100')
-
         if end > begin:
             localization = sppasInterval(
                 sppasANTX.make_point(begin, sample_rate),
@@ -593,3 +596,103 @@ class sppasANTX(sppasBaseIO):
         else:
             if level and (not elem.tail or not elem.tail.strip()):
                 elem.tail = i
+
+# ---------------------------------------------------------------------------
+
+
+class sppasANT(sppasBaseIO):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      AnnotationPro ANT reader and writer.
+
+    An ANT file is a ZIPPED directory.
+
+    """
+    @staticmethod
+    def detect(filename):
+        """ Check whether a file is of ANT format or not.
+
+        :param filename: (str) Name of the file to check.
+        :returns: (bool)
+
+        """
+        if zipfile.is_zipfile(filename) is False:
+            return False
+        z = zipfile.ZipFile(filename, "r")
+        return any(x.endswith("annotation.xml") for x in z.namelist())
+
+    # -----------------------------------------------------------------------
+
+    def __init__(self, name=None):
+        """ Initialize a new sppasANT instance.
+
+        :param name: (str) This transcription name.
+
+        """
+        if name is None:
+            name = self.__class__.__name__
+        sppasBaseIO.__init__(self, name)
+
+        self._accept_multi_tiers = True
+        self._accept_no_tiers = True
+        self._accept_metadata = True
+        self._accept_ctrl_vocab = False
+        self._accept_media = True
+        self._accept_hierarchy = False
+        self._accept_point = False
+        self._accept_interval = True
+        self._accept_disjoint = False
+        self._accept_alt_localization = False
+        self._accept_alt_tag = False
+        self._accept_radius = False
+        self._accept_gaps = True
+        self._accept_overlaps = False
+
+        self.default_extension = "ant"
+
+    # -----------------------------------------------------------------------
+
+    def read(self, filename):
+        """ Read an ANT file and fill the Transcription.
+
+        :param filename: (str)
+
+        """
+        with zipfile.ZipFile(filename, 'r') as z:
+            res_test = z.testzip()
+            if res_test is not None:
+                return False
+            unzip_dir = sppasFileUtils().set_random()
+            z.extractall(unzip_dir)
+
+        antx_filename = os.path.join(unzip_dir, "annotation.xml")
+        antx = sppasANTX()
+        antx.read(antx_filename)
+        self.set(antx)
+
+    # -----------------------------------------------------------------------
+
+    def write(self, filename):
+        """ Write an Ant file.
+
+        :param filename: (str)
+
+        """
+        # Create a directory with the annotations in ANTX format
+        os.mkdir(filename)
+        antx = sppasANTX()
+        antx.set(self)
+        antx.write(os.path.join(filename, "annotation.xml"))
+
+        # Create the zip archive "filename.zip" of the directory
+        shutil.make_archive(filename, 'zip', filename)
+
+        # Remove the directory
+        shutil.rmtree(filename)
+
+        # Rename the archive to the expected filename
+        os.rename(filename+".zip", filename)

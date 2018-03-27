@@ -45,6 +45,7 @@ import os.path
 import xml.etree.cElementTree as ET
 
 from ..aio.annotationpro import sppasANTX
+from ..aio.annotationpro import sppasANT
 from ..annlocation.point import sppasPoint
 from ..tier import sppasTier
 from ..media import sppasMedia
@@ -62,7 +63,7 @@ DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 class TestANTX(unittest.TestCase):
     """
-    Test reader of Audacity project files.
+    Test reader of ANTX files.
 
     """
     def test_detect(self):
@@ -70,7 +71,7 @@ class TestANTX(unittest.TestCase):
 
         for filename in os.listdir(DATA):
             f = os.path.join(DATA, filename)
-            if filename.endswith('.antx'):
+            if filename.endswith(sppasANTX().default_extension):
                 self.assertTrue(sppasANTX.detect(f))
             else:
                 self.assertFalse(sppasANTX.detect(f))
@@ -206,3 +207,54 @@ class TestANTX(unittest.TestCase):
         pass
 
     # -----------------------------------------------------------------------
+
+    def test_read(self):
+        """ """
+        antx = sppasANTX()
+        antx.read(os.path.join(DATA, "grenelle.antx"))
+        self.assertEqual(len(antx), 20)
+
+# ---------------------------------------------------------------------------
+
+
+class TestANT(unittest.TestCase):
+    """
+    Test reader of ANT (zipped) files.
+
+    """
+    def test_detect(self):
+        """ Test the file format detection method. """
+
+        for filename in os.listdir(DATA):
+            f = os.path.join(DATA, filename)
+            if filename.endswith(sppasANT().default_extension):
+                self.assertTrue(sppasANT.detect(f))
+            else:
+                self.assertFalse(sppasANT.detect(f))
+
+    # -----------------------------------------------------------------------
+
+    def test_members(self):
+        txt = sppasANT()
+        self.assertTrue(txt.multi_tiers_support())
+        self.assertTrue(txt.no_tiers_support())
+        self.assertTrue(txt.metadata_support())
+        self.assertFalse(txt.ctrl_vocab_support())
+        self.assertTrue(txt.media_support())
+        self.assertFalse(txt.hierarchy_support())
+        self.assertFalse(txt.point_support())
+        self.assertTrue(txt.interval_support())
+        self.assertFalse(txt.disjoint_support())
+        self.assertFalse(txt.alternative_localization_support())
+        self.assertFalse(txt.alternative_tag_support())
+        self.assertFalse(txt.radius_support())
+        self.assertTrue(txt.gaps_support())
+        self.assertFalse(txt.overlaps_support())
+
+    # -----------------------------------------------------------------------
+
+    def test_read(self):
+        """ """
+        ant = sppasANT()
+        ant.read(os.path.join(DATA, "grenelle.ant"))
+        self.assertEqual(len(ant), 20)
