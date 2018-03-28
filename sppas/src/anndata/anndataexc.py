@@ -38,6 +38,7 @@
 from . import t
 
 ANN_DATA_ERROR = ":ERROR 1000: "
+ANN_UNK_TYPE_ERROR = ":ERROR 1050: "
 ANN_DATA_TYPE_ERROR = ":ERROR 1100: "
 ANN_DATA_EQ_TYPE_ERROR = ":ERROR 1105: "
 ANN_DATA_NEG_VALUE_ERROR = ":ERROR 1110: "
@@ -95,6 +96,21 @@ class AnnDataTypeError(TypeError):
     def __init__(self, rtype, expected):
         self.parameter = ANN_DATA_TYPE_ERROR + \
                          (t.gettext(ANN_DATA_TYPE_ERROR)).format(rtype, expected)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class AnnUnkTypeError(TypeError):
+    """ :ERROR 1050: ANN_UNK_TYPE_ERROR
+    {!s:s} is not a valid type.
+
+    """
+    def __init__(self, rtype):
+        self.parameter = ANN_UNK_TYPE_ERROR + \
+                         (t.gettext(ANN_UNK_TYPE_ERROR)).format(rtype)
 
     def __str__(self):
         return repr(self.parameter)

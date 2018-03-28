@@ -1,6 +1,47 @@
-#!/usr/bin/env python2
-# -*- coding:utf-8 -*-
+# -*- coding: UTF-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.anndata.tests.test_label
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Test the clases of the label package.
+
+    Includes tests of sppasLabel(), sppasTag().
+
+"""
 import unittest
 
 from sppas.src.utils.makeunicode import u, b, text_type
@@ -11,15 +52,40 @@ from ..annlabel.label import sppasLabel
 
 
 class TestTag(unittest.TestCase):
+    """ Represents a typed content of a label.
+    A sppasTag() content can be one of the following types:
 
+        1. string/unicode - (str)
+        2. integer - (int)
+        3. float - (float)
+        4. boolean - (bool)
+        5. a list of sppasTag(), all of the same type - (list)
+
+    """
     def test_unicode(self):
         text = sppasTag("\têtre   \r   être être  \n  ")
         self.assertIsInstance(str(text), str)
 
-    def test_value(self):
-        # string value
+    # -----------------------------------------------------------------------
+
+    def test_string_content(self):
+        """ Test the tag if the content is a unicode/string. """
+
         text = sppasTag(" test ")
         self.assertEqual(text.get_content(), u("test"))
+
+        text = sppasTag(2)
+        self.assertEqual(text.get_typed_content(), "2")
+        self.assertEqual(text.get_type(), "str")
+
+        text = sppasTag(2.1)
+        self.assertEqual(text.get_typed_content(), "2.1")
+        self.assertEqual(text.get_type(), "str")
+
+    # -----------------------------------------------------------------------
+
+    def test_int_content(self):
+        """ Test the tag if the content is an integer. """
 
         # int value
         text = sppasTag(2, tag_type="int")
@@ -29,11 +95,14 @@ class TestTag(unittest.TestCase):
         self.assertNotEqual(text.get_typed_content(), textstr.get_typed_content())
         self.assertEqual(text.get_content(), textstr.get_content())
 
-        text = sppasTag(2)
-        self.assertEqual(text.get_typed_content(), "2")
-        self.assertEqual(text.get_type(), "str")
+        with self.assertRaises(TypeError):
+            sppasTag("uh uhm", tag_type="int")
 
-        # float value
+    # -----------------------------------------------------------------------
+
+    def test_float_content(self):
+        """ Test the tag if the content is a floating point. """
+
         text = sppasTag(2.10, tag_type="float")
         textstr = sppasTag("2.1")
         self.assertEqual(text.get_typed_content(), 2.1)
@@ -41,11 +110,14 @@ class TestTag(unittest.TestCase):
         self.assertNotEqual(text.get_typed_content(), textstr.get_typed_content())
         self.assertEqual(text.get_content(), textstr.get_content())
 
-        text = sppasTag(2.1)
-        self.assertEqual(text.get_typed_content(), "2.1")
-        self.assertEqual(text.get_type(), "str")
+        with self.assertRaises(TypeError):
+            sppasTag("uh uhm", tag_type="float")
 
-        # boolean value
+    # -----------------------------------------------------------------------
+
+    def test_bool_content(self):
+        """ Test the tag if the content is a boolean. """
+
         text = sppasTag("1", tag_type="bool")
         textstr = sppasTag("True")
         self.assertEqual(text.get_typed_content(), True)
@@ -53,15 +125,19 @@ class TestTag(unittest.TestCase):
         self.assertNotEqual(text.get_typed_content(), textstr.get_typed_content())
         self.assertEqual(text.get_content(), textstr.get_content())
 
-        # Expect errors:
-        with self.assertRaises(TypeError):
-            sppasTag("uh uhm", tag_type="float")
-        with self.assertRaises(TypeError):
-            sppasTag("uh uhm", tag_type="int")
+    # -----------------------------------------------------------------------
+
+    def test_list_content(self):
+        """ Test the tag if the content is a boolean. """
+        pass
+
+    # -----------------------------------------------------------------------
 
     def test_set(self):
         text = sppasTag("test")
         text.set_content("toto")
+
+    # -----------------------------------------------------------------------
 
     def test__eq__(self):
         text1 = sppasTag(" test    ")

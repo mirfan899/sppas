@@ -50,6 +50,7 @@
 from sppas import SYMBOLS
 from sppas.src.utils.makeunicode import sppasUnicode, b
 from ..anndataexc import AnnDataTypeError
+from ..anndataexc import AnnUnkTypeError
 
 # ---------------------------------------------------------------------------
 
@@ -60,24 +61,44 @@ class sppasTag(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Represents one of the possible tags of a label.
 
+    A sppasTag() content can be one of the following types:
+
+        1. string/unicode - (str)
+        2. integer - (int)
+        3. float - (float)
+        4. boolean - (bool)
+        5. a list of sppasTag(), all of the same type - (list)
+
+    Get access to the content with the get_content() method and to the typed
+    content with get_typed_content().
+
+        >>> t1 = sppasTag("2")                      # "2" (str)
+        >>> t2 = sppasTag(2)                        # "2" (str)
+        >>> t3 = sppasTag(2, tag_type="int")        # 2 (int)
+        >>> t4 = sppasTag("2", tag_type="int")      # 2 (int)
+        >>> t5 = sppasTag("2", tag_type="float")    # 2. (float)
+        >>> t6 = sppasTag("true", tag_type="bool")  # True (bool)
+        >>> t7 = sppasTag(0, tag_type="bool")       # False (bool)
+        >>> t8 = sppasTag([t1, t2], tag_type="list")
+        >>> t8.get_content()
+        >>> "2 2"
+        >>> t8.get_typed_content()
+        >>> ["2", "2"]
+
     """
+    TAG_TYPES = ["str", "float", "int", "bool", "list"]
+
+    # ------------------------------------------------------------------------
+
     def __init__(self, tag_content, tag_type=None):
         """ Initialize a new sppasTag instance.
 
-        :param tag_content: (str) Data content
-        :param tag_type: (str): The type of this content (str, int, float, bool).
+        :param tag_content: (any) Data content
+        :param tag_type: (str): The type of this content (str, int, float, bool, list).
         str is used by default.
-
-        >>> t = sppasTag("2")                      # "2"
-        >>> t = sppasTag(2, tag_type="int")        # 2
-        >>> t = sppasTag("2", tag_type="int")      # 2
-        >>> t = sppasTag("2", tag_type="float")    # 2.
-        >>> t = sppasTag("true", tag_type="bool")  # True
-        >>> t = sppasTag(0, tag_type="bool")       # False
-        >>> t = sppasTag(1, tag_type="bool")       # True
 
         """
         self.__tag_content = ""
@@ -102,7 +123,16 @@ class sppasTag(object):
     # -----------------------------------------------------------------------
 
     def get_content(self):
-        """ Return the unicode string corresponding to the content of this sppasTag. """
+        """ Return an unicode string corresponding to the content.
+        Also returns a unicode string in case of a list (elements are
+        separated by a space).
+
+        :returns: (unicode)
+
+        """
+        if self.__tag_type is not None:
+            if self.__tag_type == "list":
+                return " ".join(t.get_content() for t in self.__tag_content)
 
         return self.__tag_content
 
@@ -132,40 +162,59 @@ class sppasTag(object):
     def set_content(self, tag_content, tag_type=None):
         """ Change content of this sppasTag.
 
-        :param tag_content: New text content for this sppasTag
-        :param tag_type: The type of this value (str, int, float, bool).
-        Default is str.
+        :param tag_content: (any) New text content for this sppasTag
+        :param tag_type: The type of this tag content in (str, int, float, bool, list).
+        Default is 'str' to represent an unicode string.
 
         """
-        if tag_content is None:
-            tag_content = ""
+        # Check type
+        if tag_type is not None and tag_type not in sppasTag.TAG_TYPES:
+            raise AnnUnkTypeError(tag_type)
         if tag_type == "str":
             tag_type = None
 
-        if tag_type is not None:
-            if tag_type in ["float", "int", "bool"]:
-                if tag_type == "float":
-                    try:
-                        tag_content = float(tag_content)
-                    except ValueError:
-                        raise AnnDataTypeError(tag_content, "float")
+        # Check content depending on the given type
+        if tag_content is None:
+            tag_content = ""
 
-                elif tag_type == "int":
-                    try:
-                        tag_content = int(tag_content)
-                    except ValueError:
-                        raise AnnDataTypeError(tag_content, "int")
+        if tag_type == "float":
+            try:
+                tag_content = float(tag_content)
+            except ValueError:
+                raise AnnDataTypeError(tag_content, "float")
 
-                else:
-                    # always works. Never raises ValueError!
-                    tag_content = bool(tag_content)
+        elif tag_type == "int":
+            try:
+                tag_content = int(tag_content)
+            except ValueError:
+                raise AnnDataTypeError(tag_content, "int")
 
-        # we systematically convert unknown data into strings
-        tag_content = str(tag_content)
+        elif tag_type == "bool":
+            # always works. Never raises ValueError!
+            tag_content = bool(tag_content)
 
-        su = sppasUnicode(tag_content)
-        self.__tag_content = su.to_strip()
+        elif tag_type == "list":
+            if isinstance(tag_content, list) is True:
+                # check if all elements of the list are sppasTag() and
+                for elem in tag_content:
+                    if isinstance(elem, sppasTag) is False:
+                        raise AnnDataTypeError(elem, "sppasTag")
+
+                # check if tags of the list are of the same type
+                tag_types = set(elem.get_type() for elem in tag_content)
+                if len(tag_types) > 1:
+                    raise AnnDataTypeError(tag_content, tag_content[0].get_type())
+            else:
+                raise AnnDataTypeError(tag_content, "list")
+
+        # we systematically convert data into strings
         self.__tag_type = tag_type
+        if tag_type != "list":
+            tag_content = str(tag_content)
+            su = sppasUnicode(tag_content)
+            self.__tag_content = su.to_strip()
+        else:
+            self.__tag_content = tag_content
 
     # ------------------------------------------------------------------------
 
@@ -181,6 +230,7 @@ class sppasTag(object):
 
         if self.__tag_type is None:
             return "str"
+
         return self.__tag_type
 
     # ------------------------------------------------------------------------
@@ -195,7 +245,11 @@ class sppasTag(object):
     def is_speech(self):
         """ Return True if the tag is not a silence. """
         
-        return not (self.is_silence() or self.is_pause() or self.is_laugh() or self.is_noise() or self.is_dummy())
+        return not (self.is_silence() or
+                    self.is_pause() or
+                    self.is_laugh() or
+                    self.is_noise() or
+                    self.is_dummy())
 
     # -----------------------------------------------------------------------
 
@@ -203,16 +257,16 @@ class sppasTag(object):
         """ Return True if the tag is a silence. """
 
         if self.__tag_type is None or self.__tag_type == "str":
+            # create a list of silence symbols from the list of all symbols
             silences = list()
             for symbol in SYMBOLS:
                 if SYMBOLS[symbol] == "silence":
                     silences.append(symbol)
 
-            # SPPAS representation of silences
             if self.__tag_content in silences:
                 return True
 
-            # The French CID corpus:
+            # HACK. Exception for the French CID corpus:
             if self.__tag_content.startswith("gpf_"):
                 return True
 
@@ -223,6 +277,7 @@ class sppasTag(object):
     def is_pause(self):
         """ Return True if the tag is a short pause. """
 
+        # create a list of pause symbols from the list of all symbols
         pauses = list()
         for symbol in SYMBOLS:
             if SYMBOLS[symbol] == "pause":
@@ -235,6 +290,7 @@ class sppasTag(object):
     def is_laugh(self):
         """ Return True if the tag is a laughing. """
 
+        # create a list of laughter symbols from the list of all symbols
         laugh = list()
         for symbol in SYMBOLS:
             if SYMBOLS[symbol] == "laughter":
@@ -247,6 +303,7 @@ class sppasTag(object):
     def is_noise(self):
         """ Return True if the tag is a noise. """
 
+        # create a list of noise symbols from the list of all symbols
         noises = list()
         for symbol in SYMBOLS:
             if SYMBOLS[symbol] == "noise":
