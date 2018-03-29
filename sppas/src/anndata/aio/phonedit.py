@@ -338,7 +338,7 @@ class sppasMRK(sppasBasePhonedit):
                 for index_ann, ann in enumerate(tier):
 
                     fp.write("LBL_{:s}_{:06d}=\"{:s}\"".format(
-                        level, index_ann, sppasMRK._serialize_label(ann.get_label())))
+                        level, index_ann, sppasMRK._serialize_labels(ann.get_labels())))
                     if point:
                         # Phonedit supports degenerated intervals (instead of points)
                         b = ann.get_lowest_localization().get_midpoint() * 1000.
@@ -349,6 +349,21 @@ class sppasMRK(sppasBasePhonedit):
                     fp.write(" {:s} {:s}\n".format(str(b), str(e)))
 
             fp.close()
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def _serialize_labels(labels):
+        """ Convert labels into a string. """
+
+        if len(labels) == 0:
+            return ""
+
+        content = ""
+        for label in labels:
+            content += sppasMRK._serialize_label(label) + " "
+        content = content.strip()
+        return content
 
     # -----------------------------------------------------------------------
 
@@ -542,5 +557,5 @@ class sppasSignaix(sppasBaseIO):
         # ok. write the data into the file.
         with open(filename, "w", buffering=8096) as fp:
             for ann in tier:
-                fp.write("{:s}\n".format(ann.get_label().get_best().get_content()))
+                fp.write("{:s}\n".format(ann.get_labels()[0].get_best().get_content()))
             fp.close()

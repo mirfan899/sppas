@@ -224,37 +224,41 @@ class TestBasePraat(unittest.TestCase):
     def test_serialize_label_text(self):
         """ Convert a label into a text string. """
 
-        line = sppasBasePraat._serialize_label_text(sppasLabel())
+        line = sppasBasePraat._serialize_labels_text([sppasLabel()])
         self.assertEqual(line, '\t\t\ttext = ""\n')
 
-        line = sppasBasePraat._serialize_label_text(sppasLabel(sppasTag("")))
+        line = sppasBasePraat._serialize_labels_text([sppasLabel(sppasTag(""))])
         self.assertEqual(line, '\t\t\ttext = ""\n')
 
-        line = sppasBasePraat._serialize_label_text(sppasLabel(sppasTag("toto")))
+        line = sppasBasePraat._serialize_labels_text([sppasLabel(sppasTag("toto"))])
         self.assertEqual(line, '\t\t\ttext = "toto"\n')
 
-        line = sppasBasePraat._serialize_label_text(sppasLabel(sppasTag('"toto"')))
+        line = sppasBasePraat._serialize_labels_text([sppasLabel(sppasTag('"toto"'))])
         self.assertEqual(line, '\t\t\ttext = """toto"""\n')
 
-        line = sppasBasePraat._serialize_label_text(sppasLabel(sppasTag('This is "toto" and "titi"')))
+        line = sppasBasePraat._serialize_labels_text([sppasLabel(sppasTag('This is "toto" and "titi"'))])
         self.assertEqual(line, '\t\t\ttext = "This is ""toto"" and ""titi"""\n')
+
+        line = sppasBasePraat._serialize_labels_text([sppasLabel(sppasTag('"toto"')),
+                                                      sppasLabel(sppasTag('titi'))])
+        self.assertEqual(line, '\t\t\ttext = """toto""\ntiti"\n')
 
     # -----------------------------------------------------------------
 
     def test_serialize_label_value(self):
         """ Convert a label with a numerical value into a string. """
 
-        line = sppasBasePraat._serialize_label_value(sppasLabel())
-        self.assertIsNone(line)
+        with self.assertRaises(IOError):
+            sppasBasePraat._serialize_labels_value([sppasLabel()])
 
-        line = sppasBasePraat._serialize_label_value(sppasLabel(sppasTag("")))
-        self.assertIsNone(line)
+        with self.assertRaises(IOError):
+            sppasBasePraat._serialize_labels_value([sppasLabel(sppasTag(""))])
 
-        line = sppasBasePraat._serialize_label_value(sppasLabel(sppasTag("2", tag_type="float")))
+        line = sppasBasePraat._serialize_labels_value([sppasLabel(sppasTag("2", tag_type="float"))])
         self.assertEqual(line, '\tvalue = 2.0\n')
 
-        with self.assertRaises(AnnDataTypeError):
-            sppasBasePraat._serialize_label_value(sppasLabel(sppasTag("2")))
+        with self.assertRaises(IOError):
+            sppasBasePraat._serialize_labels_value([sppasLabel(sppasTag("2"))])
 
 # ---------------------------------------------------------------------------
 
@@ -411,7 +415,7 @@ class TestTextGrid(unittest.TestCase):
             sppasTextGrid.make_point(0.),
             sppasTextGrid.make_point(2.4971007546)
         ), ann.get_location().get_best())
-        self.assertEqual(sppasTag("gpf_0"), ann.get_label().get_best())
+        self.assertEqual(sppasTag("gpf_0"), ann.get_labels()[0].get_best())
 
         ann_content = '  intervals [2]:\n' \
                       '    xmin = 2.4971007546\n' \
@@ -427,7 +431,7 @@ class TestTextGrid(unittest.TestCase):
                          ann.get_location().get_best())
         self.assertEqual(u('hier soir j\'ai ouvert la porte d\'entrée '
                            'pour laisser chort- sortir le "chat"'),
-                         ann.get_label().get_best().get_content())
+                         ann.get_labels()[0].get_best().get_content())
 
         ann_content = 'points [1]:\n'\
                       '    number = 0.054406250000000066\n'\
@@ -436,7 +440,7 @@ class TestTextGrid(unittest.TestCase):
         ann, nb = sppasTextGrid._parse_annotation(lines, 1, False)
         self.assertEqual(sppasTextGrid.make_point(0.054406250000000066),
                          ann.get_location().get_best())
-        self.assertEqual(sppasTag("Top"), ann.get_label().get_best())
+        self.assertEqual(sppasTag("Top"), ann.get_labels()[0].get_best())
 
     # -----------------------------------------------------------------------
 
@@ -453,7 +457,7 @@ class TestTextGrid(unittest.TestCase):
             sppasTextGrid.make_point(0.),
             sppasTextGrid.make_point(2.4971007546)
         ), ann.get_location().get_best())
-        self.assertEqual(sppasTag("gpf_0"), ann.get_label().get_best())
+        self.assertEqual(sppasTag("gpf_0"), ann.get_labels()[0].get_best())
 
         ann_content = '2.4971007546\n' \
                       '5.6838880379\n' \
@@ -467,7 +471,7 @@ class TestTextGrid(unittest.TestCase):
             sppasTextGrid.make_point(5.6838880379)), ann.get_location().get_best())
         self.assertEqual(u('hier soir j\'ai ouvert la porte d\'entrée '
                            'pour laisser chort- sortir le "chat"'),
-                         ann.get_label().get_best().get_content())
+                         ann.get_labels()[0].get_best().get_content())
 
     # -----------------------------------------------------------------------
 
@@ -687,8 +691,8 @@ class TestTextGrid(unittest.TestCase):
         for t1, t2 in zip(txt, txt2):
             self.assertEqual(len(t1), len(t2))
             for a1, a2 in zip(t1, t2):
-                self.assertEqual(a1.get_label().get_best().get_typed_content(),
-                                 a2.get_label().get_best().get_typed_content())
+                self.assertEqual(a1.get_labels()[0].get_best().get_typed_content(),
+                                 a2.get_labels()[0].get_best().get_typed_content())
                 self.assertEqual(a1.get_highest_localization(),
                                  a2.get_highest_localization())
                 self.assertEqual(a1.get_lowest_localization(),
@@ -745,8 +749,8 @@ class TestNumerical(unittest.TestCase):
         for t1, t2 in zip(txt, txt2):
             self.assertEqual(len(t1), len(t2))
             for a1, a2 in zip(t1, t2):
-                self.assertEqual(a1.get_label().get_best().get_typed_content(),
-                                 a2.get_label().get_best().get_typed_content())
+                self.assertEqual(a1.get_labels()[0].get_best().get_typed_content(),
+                                 a2.get_labels()[0].get_best().get_typed_content())
                 self.assertEqual(a1.get_highest_localization(),
                                  a2.get_highest_localization())
                 self.assertEqual(a1.get_lowest_localization(),

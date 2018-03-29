@@ -42,9 +42,12 @@ class TestAIO(unittest.TestCase):
         for t1, t2 in zip(trs_r, trs_w):
             self.assertEqual(len(t1), len(t2))
             for a1, a2 in zip(t1, t2):
-                self.assertEqual(a1.get_label().get_best().get_typed_content(), a2.get_label().get_best().get_typed_content())
-                self.assertEqual(a1.get_highest_localization().get_midpoint(), a2.get_highest_localization().get_midpoint())
-                self.assertEqual(a1.get_lowest_localization().get_midpoint(), a2.get_lowest_localization().get_midpoint())
+                self.assertEqual(a1.get_labels()[0].get_best().get_typed_content(),
+                                 a2.get_labels()[0].get_best().get_typed_content())
+                self.assertEqual(a1.get_highest_localization().get_midpoint(),
+                                 a2.get_highest_localization().get_midpoint())
+                self.assertEqual(a1.get_lowest_localization().get_midpoint(),
+                                 a2.get_lowest_localization().get_midpoint())
         # Compare media
         # Compare hierarchy
         # Compare controlled vocabularies

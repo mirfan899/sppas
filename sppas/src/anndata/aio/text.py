@@ -367,6 +367,21 @@ class sppasBaseText(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
+    def _serialize_labels(labels):
+        """ Convert labels into a string. """
+
+        if len(labels) == 0:
+            return ""
+
+        content = ""
+        for label in labels:
+            content += sppasBaseText._serialize_label(label) + " "
+        content = content.strip()
+        return content
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
     def _serialize_label(label):
         """ Convert a label into a string. """
 
@@ -587,11 +602,11 @@ class sppasRawText(sppasBaseText):
 
             if tier.get_name() == "RawTranscription":
                 for ann in tier:
-                    t = sppasBaseText._serialize_label(ann.get_label())
+                    t = sppasBaseText._serialize_labels(ann.get_labels())
                     fp.write(t + '\n')
             else:
                 for ann in tier:
-                    t = sppasBaseText._serialize_label(ann.get_label())
+                    t = sppasBaseText._serialize_labels(ann.get_labels())
                     if point:
                         mp = ann.get_lowest_localization().get_midpoint()
                         fp.write("{}\t\t{}\n".format(mp, t))
@@ -757,7 +772,7 @@ class sppasCSV(sppasBaseText):
                 point = tier.is_point()
 
                 for ann in tier:
-                    content = sppasRawText._serialize_label(ann.get_label())
+                    content = sppasRawText._serialize_labels(ann.get_labels())
                     if point:
                         mp = ann.get_lowest_localization().get_midpoint()
                         fp.write('"{}",{},,"{}"\n'.format(name, mp, content))

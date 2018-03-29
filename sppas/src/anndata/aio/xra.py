@@ -78,11 +78,16 @@ class sppasXRA(sppasBaseIO):
 
         """
         try:
-            tree = ET.parse(filename)
-            root = tree.getroot()
+            with open(filename, 'r') as fp:
+                for i in range(10):
+                    line = fp.readline()
+                    if "<Document" in line:
+                        return True
+                fp.close()
         except IOError:
             return False
-        return root.find('Tier') is not None
+
+        return False
 
     # -----------------------------------------------------------------------
 
@@ -111,7 +116,7 @@ class sppasXRA(sppasBaseIO):
         self._accept_gaps = True
         self._accept_overlaps = True
 
-        self.__format = "1.3"
+        self.__format = "1.4"
         self.default_extension = "xra"
 
     # -----------------------------------------------------------------------
@@ -129,25 +134,25 @@ class sppasXRA(sppasBaseIO):
 
         metadata_root = root.find('Metadata')
         if metadata_root is not None:
-            sppasXRA.__read_metadata(self, metadata_root)
+            sppasXRA._parse_metadata(self, metadata_root)
 
         for tier_root in root.findall('Tier'):
-            self.__read_tier(tier_root)
+            self._parse_tier(tier_root)
 
         for media_root in root.findall('Media'):
-            self.__read_media(media_root)
+            self._parse_media(media_root)
 
         hierarchy_root = root.find('Hierarchy')
         if hierarchy_root is not None:
-            self.__read_hierarchy(hierarchy_root)
+            self._parse_hierarchy(hierarchy_root)
 
         for vocabulary_root in root.findall('Vocabulary'):
-            self.__read_vocabulary(vocabulary_root)
+            self._parse_vocabulary(vocabulary_root)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __read_metadata(meta_object, metadata_root):
+    def _parse_metadata(meta_object, metadata_root):
         """ Read any kind of metadata. 
         
         :param meta_object: (sppasMetadata)
@@ -167,8 +172,8 @@ class sppasXRA(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def __read_tier(self, tier_root):
-        """ Read a tier.
+    def _parse_tier(self, tier_root):
+        """ Parse a 'Tier' element to create a sppasTier().
 
         :param tier_root: (ET) XML Element tree root.
 
@@ -188,36 +193,38 @@ class sppasXRA(sppasBaseIO):
             tier = self.create_tier(tid)
 
         # Set metadata
-        sppasXRA.__read_metadata(tier, tier_root.find('Metadata'))
+        sppasXRA._parse_metadata(tier, tier_root.find('Metadata'))
         tier.set_meta("id", tid)
 
         for annotation_root in tier_root.findall('Annotation'):
-            sppasXRA.__read_annotation(tier, annotation_root)
+            sppasXRA._parse_annotation(tier, annotation_root)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __read_annotation(tier, annotation_root):
-        """ Read an annotation and add it to the tier.
+    def _parse_annotation(tier, annotation_root):
+        """ Parse an 'Annotation' element and create a sppasAnnotation().
 
-        :param tier: (sppasTier)
+        :param tier: (sppasTier) Tier to add the newly created annotation.
         :param annotation_root: (ET) XML Element tree root.
 
         """
+        print (" Tier: ",tier.get_name(), len(tier))
+
         location_root = annotation_root.find('Location')
-        location = sppasXRA.__parse_location(location_root)
+        location = sppasXRA._parse_location(location_root)
 
-        label_root = annotation_root.find('Label')
-        label = sppasXRA.__parse_label(label_root)
+        labels = list()
+        for label_root in annotation_root.findall('Label'):
+            labels.append(sppasXRA._parse_label(label_root))
 
-        annotation = sppasAnnotation(location, label)
-        tier.add(annotation)
+        tier.create_annotation(location, labels)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __parse_location(location_root):
-        """ Read a location and return it.
+    def _parse_location(location_root):
+        """ Parse a 'Location' element an create a sppasLocation().
 
         :param location_root: (ET) XML Element tree root.
         :returns: (sppasLocation)
@@ -226,15 +233,16 @@ class sppasXRA(sppasBaseIO):
         # read list of localizations
         location = sppasLocation()
         for localization_root in list(location_root):
-            localization, score = sppasXRA.__parse_localization(localization_root)
+            localization, score = sppasXRA._parse_localization(localization_root)
             if localization is not None:
+                print (" --> localization", localization)
                 location.append(localization, score)
 
         if len(location) == 0:
             # XRA < 1.3
             for localization_root in location_root.findall('Localization'):
                 for loc_root in list(localization_root):
-                    localization, score = sppasXRA.__parse_localization(loc_root)
+                    localization, score = sppasXRA._parse_localization(loc_root)
                     score = localization_root.attrib["score"]
                     location.append(localization, score)
 
@@ -248,8 +256,8 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __parse_localization(localization_root):
-        """ Read a localization and its score and return it.
+    def _parse_localization(localization_root):
+        """ Parse a 'Localization' element and create a sppasLocalization().
 
         :param localization_root: (ET) XML Element tree root.
         :returns: (sppasLocalization)
@@ -260,21 +268,21 @@ class sppasXRA(sppasBaseIO):
         loc_str = localization_root.tag.lower()  # to be compatible with all versions
 
         if 'point' in loc_str:
-            localization, score = sppasXRA.__parse_point(localization_root)
+            localization, score = sppasXRA._parse_point(localization_root)
 
         elif 'interval' in loc_str:
-            localization, score = sppasXRA.__parse_interval(localization_root)
+            localization, score = sppasXRA._parse_interval(localization_root)
 
         elif 'disjoint' in loc_str:
-            localization, score = sppasXRA.__parse_disjoint(localization_root)
+            localization, score = sppasXRA._parse_disjoint(localization_root)
 
         return localization, score
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __parse_point(point_node):
-        """ Read a localization of type sppasPoint and return it.
+    def _parse_point(point_node):
+        """ Parse a 'Point' element and create a sppasPoint().
 
         :param point_node: (ET) XML Element node.
         :returns: (sppasPoint)
@@ -289,23 +297,23 @@ class sppasXRA(sppasBaseIO):
         midpoint_str = point_node.attrib['midpoint']
         try:
             radius_str = point_node.attrib['radius']
-        except Exception:
+        except:
             radius_str = None
 
         if midpoint_str.isdigit():
             midpoint = int(midpoint_str)
             try:
                 radius = int(radius_str)
-            except Exception:
+            except:
                 radius = None
         else:
             try:
                 midpoint = float(midpoint_str)
                 try:
                     radius = float(radius_str)
-                except Exception:
+                except:
                     radius = None
-            except Exception:
+            except:
                 midpoint = midpoint_str
                 radius = radius_str
 
@@ -314,8 +322,8 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __parse_interval(interval_root):
-        """ Read a localization of type sppasInterval and return it.
+    def _parse_interval(interval_root):
+        """ Parse an 'Interval' element and create a sppasInterval().
 
         :param interval_root: (ET) XML Element tree root.
         :returns: (sppasInterval)
@@ -330,16 +338,16 @@ class sppasXRA(sppasBaseIO):
         begin_node = interval_root.find('Begin')
         end_node = interval_root.find('End')
 
-        begin, s1 = sppasXRA.__parse_point(begin_node)
-        end, s2 = sppasXRA.__parse_point(end_node)
+        begin, s1 = sppasXRA._parse_point(begin_node)
+        end, s2 = sppasXRA._parse_point(end_node)
 
         return sppasInterval(begin, end), score
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __parse_disjoint(disjoint_root):
-        """ Read a localization of type sppasDisjoint and return it.
+    def _parse_disjoint(disjoint_root):
+        """ Parse a 'Disjoint' element and create a sppasDisjoint().
 
         :param disjoint_root: (ET) XML Element tree root.
         :returns: (sppasDisjoint)
@@ -353,16 +361,16 @@ class sppasXRA(sppasBaseIO):
 
         disjoint = sppasDisjoint()
         for interval_root in disjoint_root.findall('Interval'):
-            interval = sppasXRA.__parse_interval(interval_root)
+            interval = sppasXRA._parse_interval(interval_root)
             disjoint.append_interval(interval)
 
         # XRA < 1.3
         if len(disjoint) == 0:
             for interval_root in disjoint_root.findall('TimeInterval'):
-                interval = sppasXRA.__parse_interval(interval_root)
+                interval = sppasXRA._parse_interval(interval_root)
                 disjoint.append_interval(interval)
             for interval_root in disjoint_root.findall('FrameInterval'):
-                interval = sppasXRA.__parse_interval(interval_root)
+                interval = sppasXRA._parse_interval(interval_root)
                 disjoint.append_interval(interval)
 
         return disjoint, score
@@ -370,8 +378,8 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __parse_label(label_root):
-        """ Read a label and return it.
+    def _parse_label(label_root):
+        """ Parse a 'Label' element and return it.
 
         :param label_root: (ET) XML Element tree root.
         :returns: (sppasLabel)
@@ -380,13 +388,13 @@ class sppasXRA(sppasBaseIO):
         # read list of tags
         label = sppasLabel()
         for tag_root in label_root.findall('Tag'):
-            tag, score = sppasXRA.__parse_tag(tag_root)
+            tag, score = sppasXRA._parse_tag(tag_root)
             label.append(tag, score)
 
         if len(label) == 0:
             # XRA < 1.3
             for tag_root in label_root.findall('Text'):
-                tag, score = sppasXRA.__parse_tag(tag_root)
+                tag, score = sppasXRA._parse_tag(tag_root)
                 label.append(tag, score)
 
         # read scoremode
@@ -399,8 +407,8 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __parse_tag(tag_node):
-        """ Read a tag of type sppasTag and return it.
+    def _parse_tag(tag_node):
+        """ Parse a 'Tag' element and create a sppasTag().
 
         :param tag_node: (ET) XML Element node.
         :returns: (sppasTag)
@@ -426,8 +434,8 @@ class sppasXRA(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def __read_media(self, media_root):
-        """ Read a media and add it.
+    def _parse_media(self, media_root):
+        """ Parse a 'Media' element and add create a sppasMedia().
 
         :param media_root: (ET) XML Element tree root.
 
@@ -456,8 +464,8 @@ class sppasXRA(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def __read_hierarchy(self, hierarchy_root):
-        """ Read a hierarchy and set it.
+    def _parse_hierarchy(self, hierarchy_root):
+        """ Parse a 'Hierarchy' element and set it.
 
         :param hierarchy_root: (ET) XML Element tree root.
 
@@ -467,7 +475,7 @@ class sppasXRA(sppasBaseIO):
                 hierarchy_type = link_node.attrib['type']
                 parent_tier_id = link_node.attrib['from']
                 child_tier_id = link_node.attrib['to']
-            except Exception:
+            except:
                 # XRA < 1.2
                 hierarchy_type = link_node.attrib['Type']
                 parent_tier_id = link_node.attrib['From']
@@ -490,7 +498,12 @@ class sppasXRA(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def __read_vocabulary(self, vocabulary_root):
+    def _parse_vocabulary(self, vocabulary_root):
+        """ Parse a 'Vocabulary' element and set it.
+
+        :param hierarchy_root: (ET) XML Element tree root.
+
+        """
         # Create a CtrlVocab instance
         if 'id' in vocabulary_root.attrib:
             id_vocab = vocabulary_root.attrib['id']
@@ -529,7 +542,7 @@ class sppasXRA(sppasBaseIO):
                     tier.set_ctrl_vocab(ctrl_vocab)
 
     # -----------------------------------------------------------------------
-    # Write XRA 1.3
+    # Write XRA 1.4
     # -----------------------------------------------------------------------
 
     def write(self, filename):
@@ -545,24 +558,24 @@ class sppasXRA(sppasBaseIO):
         root.set('name', self.get_name())
 
         metadata_root = ET.SubElement(root, 'Metadata')
-        sppasXRA.__format_metadata(metadata_root, self)
+        sppasXRA._format_metadata(metadata_root, self)
         if len(metadata_root.findall('Entry')) == 0:
             root.remove(metadata_root)
 
         for tier in self:
             tier_root = ET.SubElement(root, 'Tier')
-            sppasXRA.__format_tier(tier_root, tier)
+            sppasXRA._format_tier(tier_root, tier)
 
         for media in self.get_media_list():
             media_root = ET.SubElement(root, 'Media')
-            self.__format_media(media_root, media)
+            self._format_media(media_root, media)
 
         hierarchy_root = ET.SubElement(root, 'Hierarchy')
-        self.__format_hierarchy(hierarchy_root, self._hierarchy)
+        self._format_hierarchy(hierarchy_root, self._hierarchy)
 
         for vocabulary in self.get_ctrl_vocab_list():
             vocabulary_root = ET.SubElement(root, 'Vocabulary')
-            self.__format_vocabulary(vocabulary_root, vocabulary)
+            self._format_vocabulary(vocabulary_root, vocabulary)
 
         sppasXRA.indent(root)
         tree = ET.ElementTree(root)
@@ -571,8 +584,8 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __format_metadata(metadata_root, meta_object):
-        """ Add metadata of a sppasMetaData object in the tree.
+    def _format_metadata(metadata_root, meta_object):
+        """ Add 'Metadata' element in the tree from a sppasMetaData().
 
         :param metadata_root: (ET) XML Element tree root.
         :param meta_object: (sppasMetadata)
@@ -588,8 +601,8 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __format_tier(tier_root, tier):
-        """ Add a tier object in the tree.
+    def _format_tier(tier_root, tier):
+        """ Add a 'Tier' object in the tree from a sppasTier().
 
         :param tier_root: (ET) XML Element tree root.
         :param tier: (sppasTier)
@@ -605,7 +618,7 @@ class sppasXRA(sppasBaseIO):
         # Tier Metadata
         tier.pop_meta('id')
         metadata_root = ET.SubElement(tier_root, 'Metadata')
-        sppasXRA.__format_metadata(metadata_root, tier)
+        sppasXRA._format_metadata(metadata_root, tier)
         if len(metadata_root.findall('Entry')) == 0:
             tier_root.remove(metadata_root)
         tier.set_meta('id', tier_id)
@@ -613,33 +626,33 @@ class sppasXRA(sppasBaseIO):
         # Tier annotations list
         for annotation in tier:
             annotation_root = ET.SubElement(tier_root, 'Annotation')
-            sppasXRA.__format_annotation(annotation_root, annotation)
+            sppasXRA._format_annotation(annotation_root, annotation)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __format_annotation(annotation_root, annotation):
-        """ Add an annotation object in the tree.
+    def _format_annotation(annotation_root, annotation):
+        """ Add an 'Annotation' element in the tree from a sppasAnnotation().
 
         :param annotation_root: (ET) XML Element tree root.
         :param annotation: (sppasAnnotation)
 
         """
-        # to be tested:
         metadata_root = ET.SubElement(annotation_root, 'Metadata')
-        sppasXRA.__format_metadata(metadata_root, annotation)
+        sppasXRA._format_metadata(metadata_root, annotation)
 
         location_root = ET.SubElement(annotation_root, 'Location')
-        sppasXRA.__format_location(location_root, annotation.get_location())
+        sppasXRA._format_location(location_root, annotation.get_location())
 
-        label_root = ET.SubElement(annotation_root, 'Label')
-        sppasXRA.__format_label(label_root, annotation.get_label())
+        for label in annotation.get_labels():
+            label_root = ET.SubElement(annotation_root, 'Label')
+            sppasXRA._format_label(label_root, label)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __format_location(location_root, location):
-        """ Add a location object in the tree.
+    def _format_location(location_root, location):
+        """ Add a 'Location' element in the tree from a sppasLocation().
 
         :param location_root: (ET) XML Element tree root.
         :param location: (sppasLocation)
@@ -651,27 +664,27 @@ class sppasXRA(sppasBaseIO):
         for localization, score in location:
             if localization.is_point():
                 point_node = ET.SubElement(location_root, 'Point')
-                sppasXRA.__format_point(point_node, localization)
+                sppasXRA._format_point(point_node, localization)
                 if score is not None:
                     point_node.set('score', u(str(score)))
 
             elif localization.is_interval():
                 interval_root = ET.SubElement(location_root, 'Interval')
-                sppasXRA.__format_interval(interval_root, localization)
+                sppasXRA._format_interval(interval_root, localization)
                 if score is not None:
                     interval_root.set('score', u(str(score)))
 
             elif localization.IsTimeDisjoint():
                 disjoint_root = ET.SubElement(location_root, 'Disjoint')
-                sppasXRA.__format_disjoint(disjoint_root, localization)
+                sppasXRA._format_disjoint(disjoint_root, localization)
                 if score is not None:
                     disjoint_root.set('score', u(str(score)))
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __format_point(point_node, point):
-        """ Add a point object in the tree.
+    def _format_point(point_node, point):
+        """ Add a 'Point' element in the tree from a sppasPoint().
 
         :param point_node: (ET) XML Element node.
         :param point: (sppasPoint)
@@ -684,24 +697,24 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __format_interval(interval_root, interval):
-        """ Add an interval object in the tree.
+    def _format_interval(interval_root, interval):
+        """ Add an 'Interval' element in the tree from a sppasInterval().
 
         :param interval_root: (ET) XML Element node.
         :param interval: (sppasInterval)
 
         """
         begin = ET.SubElement(interval_root, 'Begin')
-        sppasXRA.__format_point(begin, interval.get_begin())
+        sppasXRA._format_point(begin, interval.get_begin())
 
         end = ET.SubElement(interval_root, 'End')
-        sppasXRA.__format_point(end, interval.get_end())
+        sppasXRA._format_point(end, interval.get_end())
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __format_disjoint(disjoint_root, disjoint):
-        """ Add a disjoint object in the tree.
+    def _format_disjoint(disjoint_root, disjoint):
+        """ Add a 'Disjoint' element in the tree from a sppasDisjoint().
 
         :param disjoint_root: (ET) XML Element node.
         :param disjoint: (sppasDisjoint)
@@ -709,13 +722,13 @@ class sppasXRA(sppasBaseIO):
         """
         for interval in disjoint:
             interval_root = ET.SubElement(disjoint_root, 'Interval')
-            sppasXRA.__format_interval(interval_root, interval)
+            sppasXRA._format_interval(interval_root, interval)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __format_label(label_root, label):
-        """ Add a label object in the tree.
+    def _format_label(label_root, label):
+        """ Add a 'Label' element in the tree from a sppasLabel().
 
         :param label_root: (ET) XML Element tree root.
         :param label: (sppasLabel)
@@ -728,13 +741,13 @@ class sppasXRA(sppasBaseIO):
             tag_node = ET.SubElement(label_root, 'Tag')
             if score is not None:
                 tag_node.set("score", str(score))
-            sppasXRA.__format_tag(tag_node, tag)
+            sppasXRA._format_tag(tag_node, tag)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __format_tag(tag_node, tag):
-        """ Add a tag object in the tree.
+    def _format_tag(tag_node, tag):
+        """ Add a 'Tag' element in the tree from a sppasTag().
 
         :param tag_node: (ET) XML Element node.
         :param tag: (sppasTag)
@@ -745,8 +758,8 @@ class sppasXRA(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def __format_media(self, media_root, media):
-        """ Add a media object in the tree.
+    def _format_media(self, media_root, media):
+        """ Add a 'Media' element in the tree from a sppasMedia.
 
         :param media_root: (ET) XML Element tree root.
         :param media: (sppasMedia)
@@ -768,7 +781,7 @@ class sppasXRA(sppasBaseIO):
         # Element Metadata
         if len(media.get_meta_keys()) > 0:
             metadata_root = ET.SubElement(media_root, 'Metadata')
-            self.__format_metadata(metadata_root, media)
+            self._format_metadata(metadata_root, media)
 
         # Element Content
         if len(media.get_content()) > 0:
@@ -777,8 +790,8 @@ class sppasXRA(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def __format_hierarchy(self, hierarchy_root, hierarchy):
-        """ Add a hierarchy object in the tree.
+    def _format_hierarchy(self, hierarchy_root, hierarchy):
+        """ Add a 'Hierarchy' element in the tree from a sppasHierarchy().
 
         :param hierarchy_root: (ET) XML Element tree root.
         :param hierarchy: (sppasHierarchy)
@@ -795,8 +808,8 @@ class sppasXRA(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def __format_vocabulary(self, vocabulary_root, vocabulary):
-        """ Add a controlled vocabulary object in the tree.
+    def _format_vocabulary(self, vocabulary_root, vocabulary):
+        """ Add a 'Vocabulary' element in the tree from a sppasVocabulary().
 
          :param vocabulary_root: (ET) XML Element tree root.
          :param vocabulary: (sppasCtrlVocab)

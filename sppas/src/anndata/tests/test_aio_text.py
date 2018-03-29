@@ -337,9 +337,9 @@ class TestRawText(unittest.TestCase):
         self.assertEqual(len(txt[0]), 18)
         self.assertEqual(txt[0].get_name(), "RawTranscription")
         for i in range(1, 18, 2):
-            self.assertEqual(txt[0][i].get_label().get_best().get_content(), 'sil')
+            self.assertEqual(txt[0][i].get_labels()[0].get_best().get_content(), 'sil')
         for i in range(0, 18, 2):
-            self.assertEqual(txt[0][i].get_label().get_best().get_content(), 'speech')
+            self.assertEqual(txt[0][i].get_labels()[0].get_best().get_content(), 'speech')
 
     # -----------------------------------------------------------------
 
@@ -368,8 +368,8 @@ class TestRawText(unittest.TestCase):
         for t1, t2 in zip(txt, txt2):
             self.assertEqual(len(t1), len(t2))
             for a1, a2 in zip(t1, t2):
-                self.assertEqual(a1.get_label().get_best().get_typed_content(),
-                                 a2.get_label().get_best().get_typed_content())
+                self.assertEqual(a1.get_labels()[0].get_best().get_typed_content(),
+                                 a2.get_labels()[0].get_best().get_typed_content())
                 self.assertEqual(a1.get_highest_localization().get_midpoint(),
                                  a2.get_highest_localization().get_midpoint())
                 self.assertEqual(a1.get_lowest_localization().get_midpoint(),
@@ -502,8 +502,8 @@ class TestCSVText(unittest.TestCase):
         for t1, t2 in zip(txt, txt2):
             self.assertEqual(len(t1), len(t2))
             for a1, a2 in zip(t1, t2):
-                self.assertEqual(a1.get_label().get_best().get_typed_content(),
-                                 a2.get_label().get_best().get_typed_content())
+                self.assertEqual(a1.get_labels()[0].get_best().get_typed_content(),
+                                 a2.get_labels()[0].get_best().get_typed_content())
                 self.assertEqual(a1.get_highest_localization().get_midpoint(),
                                  a2.get_highest_localization().get_midpoint())
                 self.assertEqual(a1.get_lowest_localization().get_midpoint(),

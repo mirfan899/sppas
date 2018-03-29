@@ -466,7 +466,7 @@ class sppasCTM(sppasBaseSclite):
         duration = ann.get_location().get_best().get_end().get_midpoint() - begin
 
         # no label
-        if ann.get_label() is None:
+        if ann.label_is_filled() is None:
             content = sppasCTM._serialize_tag(waveform, channel, begin, duration, sppasTag(""))
 
         # only one tag in the label: no alternation
@@ -779,7 +779,7 @@ class sppasSTM(sppasBaseSclite):
         end = ann.get_location().get_best().get_end().get_midpoint()
 
         # fix label information
-        content = sppasSTM._serialize_label(ann.get_label())
+        content = sppasSTM._serialize_labels(ann.get_labels())
 
         return "{wav} {cha} {spk} {beg} {end} {lab}\n".format(
             wav=waveform,
@@ -789,6 +789,21 @@ class sppasSTM(sppasBaseSclite):
             end=str(end),
             lab=content
         )
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def _serialize_labels(labels):
+        """ Convert labels into a string. """
+
+        if len(labels) == 0:
+            return "IGNORE_TIME_SEGMENT_IN_SCORING"
+
+        content = ""
+        for label in labels:
+            content += sppasSTM._serialize_label(label) + " "
+        content = content.strip()
+        return content
 
     # -----------------------------------------------------------------------
 

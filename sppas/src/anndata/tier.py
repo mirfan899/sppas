@@ -67,6 +67,7 @@ class sppasTier(sppasMetaData):
     :summary:      Representation of a tier.
 
     A Tier is made of:
+
         - a name (used to identify the tier),
         - a set of metadata,
         - an array of annotations,
@@ -175,7 +176,8 @@ class sppasTier(sppasMetaData):
 
             # Check all annotation tags to validate the ctrl_vocab before assignment
             for annotation in self.__ann:
-                annotation.validate_label()
+                for label in annotation.get_labels():
+                    annotation.validate_label(label)
 
             if self.__parent is not None:
                 try:
@@ -247,15 +249,15 @@ class sppasTier(sppasMetaData):
     # Annotations
     # -----------------------------------------------------------------------
 
-    def create_annotation(self, location, label=None):
+    def create_annotation(self, location, labels=None):
         """ Create and add a new annotation into the tier.
 
         :param location: (sppasLocation) the location(s) where the annotation happens
-        :param label: (sppasLabel) the label(s) to stamp this annotation
+        :param labels: (sppasLabel, list) the label(s) to stamp this annotation
         :returns: sppasAnnotation
 
         """
-        ann = sppasAnnotation(location, label)
+        ann = sppasAnnotation(location, labels)
         self.add(ann)
         return ann
 
@@ -761,13 +763,13 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def is_string(self):
-        """ All label tags are string or unicode. """
+        """ All label tags are string or unicode or None. """
 
         if len(self.__ann) == 0:
             return False
 
         for ann in self.__ann:
-            if ann.get_label() is not None:
+            if ann.is_labelled() is True:
                 return ann.label_is_string()
 
         return False
@@ -775,13 +777,13 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def is_float(self):
-        """ All label tags are float values. """
+        """ All label tags are float values or None. """
 
         if len(self.__ann) == 0:
             return False
 
         for ann in self.__ann:
-            if ann.get_label() is not None:
+            if ann.is_labelled() is True:
                 return ann.label_is_float()
 
         return False
@@ -789,13 +791,13 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def is_int(self):
-        """ All label tags are integer values. """
+        """ All label tags are integer values or None. """
 
         if len(self.__ann) == 0:
             return False
 
         for ann in self.__ann:
-            if ann.get_label() is not None:
+            if ann.is_labelled() is True:
                 return ann.label_is_int()
 
         return False
@@ -803,13 +805,13 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def is_bool(self):
-        """ All label tags are boolean values. """
+        """ All label tags are boolean values or None. """
 
         if len(self.__ann) == 0:
             return False
 
         for ann in self.__ann:
-            if ann.get_label() is not None:
+            if ann.is_labelled() is True:
                 return ann.label_is_bool()
 
         return False
@@ -885,13 +887,6 @@ class sppasTier(sppasMetaData):
             if annotation.location_is_disjoint() is True and self.is_disjoint() is False:
                 raise AnnDataTypeError(annotation, "sppasDisjoint")
 
-            if annotation.get_label() is not None:
-                # perhaps the tier has no label! this is the first...
-
-                # else:
-                if annotation.label_is_string() is True and self.is_string() is False:
-                    pass
-
         # Assigning a parent will validate the label and the location
         annotation.set_parent(self)
 
@@ -909,6 +904,26 @@ class sppasTier(sppasMetaData):
             for tag, score in label:
                 if tag.is_empty() is False and self.__ctrl_vocab.contains(tag) is False:
                     raise CtrlVocabContainsError(tag)
+
+        # in this tier, no typed tag is already assigned.
+        if (self.is_bool() or self.is_float() or self.is_int() or self.is_string()) is False:
+            return
+
+        # check if the current label has the same tag type than
+        # the already defined ones.
+        if label.is_tagged():
+
+            if label.is_string() is True and self.is_string() is False:
+                raise AnnDataTypeError(label, "str")
+
+            if label.is_float() is True and self.is_float() is False:
+                raise AnnDataTypeError(label, "float")
+
+            if label.is_int() is True and self.is_int() is False:
+                raise AnnDataTypeError(label, "int")
+
+            if label.is_bool() is True and self.is_bool() is False:
+                raise AnnDataTypeError(label, "bool")
 
     # -----------------------------------------------------------------------
 
@@ -929,6 +944,7 @@ class sppasTier(sppasMetaData):
     def create_ctrl_vocab(self, name=None):
         """ Create (or re-create) the controlled vocabulary from the list of
         already existing annotation labels.
+
         The current controlled vocabulary is deleted.
 
         :param name: (str) Name of the controlled vocabulary. The name of
@@ -940,10 +956,10 @@ class sppasTier(sppasMetaData):
         self.__ctrl_vocab = sppasCtrlVocab(name)
 
         for ann in self.__ann:
-            label = ann.get_label()
-            if label is not None:
-                for tag, score in label:
-                    self.__ctrl_vocab.add(tag)
+            for label in ann.get_labels():
+                if label.is_tagged():
+                    for tag, score in label:
+                        self.__ctrl_vocab.add(tag)
 
     # -----------------------------------------------------------------------
     # Private

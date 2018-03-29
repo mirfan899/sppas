@@ -203,11 +203,11 @@ class sppasTRS(sppasBaseIO):
         for tier in self:
             if "Trans" in tier.get_name():
                 for ann in tier:
-                    if ann.get_label() is not None and \
-                    ann.get_label().get_best() is not None:
-                        tag = ann.get_label().get_best()
-                        new_content = sppasTRS.__format_tag(tag)
-                        ann.get_label().get_best().set_content(new_content)
+                    if ann.is_labelled():
+                        for label in ann.get_labels():
+                            tag = label.get_best()
+                            new_content = sppasTRS.__format_tag(tag)
+                            label.get_best().set_content(new_content)
 
         # Create the hierarchy
         self.add_hierarchy_link("TimeAlignment", self.find('Turns'), self.find('Sections'))
@@ -672,7 +672,9 @@ class sppasTRS(sppasBaseIO):
 
     @staticmethod
     def __append_text_in_label(annotation, text):
-        old_tag = annotation.get_label().get_best()
+        # here, we are sure that the annotation contains ONE label
+        labels = annotation.get_labels()
+        old_tag = labels[0].get_best()
         old_text = old_tag.get_content()
         old_tag.set_content(old_text + " " + text)
 

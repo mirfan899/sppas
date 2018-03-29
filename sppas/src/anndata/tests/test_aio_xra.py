@@ -1,5 +1,45 @@
-# -*- coding:utf-8 -*-
+# -*- coding: UTF-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.anndata.tests.test_aio_xra.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Test the sppasXRA instance.
+
+"""
 import unittest
 import os.path
 import shutil
@@ -18,6 +58,7 @@ DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 class TestXRA(unittest.TestCase):
     """
     Represents an XRA file, the native format of SPPAS.
+
     """
     def setUp(self):
         if os.path.exists(TEMP) is False:
@@ -25,6 +66,8 @@ class TestXRA(unittest.TestCase):
 
     def tearDown(self):
         shutil.rmtree(TEMP)
+
+    # -----------------------------------------------------------------------
 
     def test_members(self):
         xra = sppasXRA()
@@ -42,6 +85,8 @@ class TestXRA(unittest.TestCase):
         self.assertTrue(xra.radius_support())
         self.assertTrue(xra.gaps_support())
         self.assertTrue(xra.overlaps_support())
+
+    # -----------------------------------------------------------------------
 
     def test_read1(self):
         xra3 = sppasXRA()
@@ -68,6 +113,8 @@ class TestXRA(unittest.TestCase):
         self.assertIsNotNone(xra3.get_ctrl_vocab_from_name("v0"))
         # Hierarchy
         #self.assertEqual(len(xra3.hierarchy), 2)
+
+    # -----------------------------------------------------------------------
 
     def test_read2(self):
         xra3 = sppasXRA()
@@ -102,6 +149,8 @@ class TestXRA(unittest.TestCase):
         self.assertIsNotNone(xra3.get_ctrl_vocab_from_name("v0"))
         # Hierarchy
         #self.assertEqual(len(xra3.hierarchy), 2)
+
+    # -----------------------------------------------------------------------
 
     def test_read3(self):
         xra3 = sppasXRA()
@@ -138,18 +187,21 @@ class TestXRA(unittest.TestCase):
         # Hierarchy
         #self.assertEqual(len(xra3.hierarchy), 2)
 
+    # -----------------------------------------------------------------------
+
     def test_read_write(self):
         xra = sppasXRA()
-        xra.read(os.path.join(DATA, "sample-1.3.xra"))
-        xra.write(os.path.join(TEMP, "sample-1.3.xra"))
+        xra.read(os.path.join(DATA, "sample-1.4.xra"))
+        xra.write(os.path.join(TEMP, "sample-1.4.xra"))
         xra2 = sppasXRA()
-        xra2.read(os.path.join(TEMP, "sample-1.3.xra"))
+        xra2.read(os.path.join(TEMP, "sample-1.4.xra"))
 
         # Compare annotations of original xra and xra2
         for t1, t2 in zip(xra, xra2):
             self.assertEqual(len(t1), len(t2))
             for a1, a2 in zip(t1, t2):
-                self.assertEqual(a1.get_label().get_best().get_typed_content(), a2.get_label().get_best().get_typed_content())
+                self.assertEqual(len(a1.get_labels()), len(a2.get_labels()))
+                self.assertEqual(a1.get_best_tag().get_typed_content(), a2.get_best_tag().get_typed_content())
                 self.assertEqual(a1.get_highest_localization().get_midpoint(), a2.get_highest_localization().get_midpoint())
                 self.assertEqual(a1.get_lowest_localization().get_midpoint(), a2.get_lowest_localization().get_midpoint())
         # Compare media

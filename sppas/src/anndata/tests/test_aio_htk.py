@@ -120,5 +120,5 @@ class TestLab(unittest.TestCase):
         self.assertEqual(sppasTag("r"), txt[0][3].get_best_tag())
         self.assertEqual(sppasTag("iy"), txt[0][4].get_best_tag())
         self.assertEqual(sppasTag("m"), txt[0][5].get_best_tag())
-        l = txt[0][4].get_label()
+        l = txt[0][4].get_labels()[0]
         self.assertEqual(0.45, l.get_score(l.get_best()))

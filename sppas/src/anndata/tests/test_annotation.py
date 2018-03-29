@@ -127,13 +127,13 @@ class TestAnnotation(unittest.TestCase):
         self.assertFalse(self.annotationP.get_location().get_best().is_interval())
 
     def test_is_silence(self):
-        self.assertFalse(self.annotationP.get_label().get_best().is_silence())
-        self.assertFalse(self.annotationI.get_label().get_best().is_silence())
+        self.assertFalse(self.annotationP.get_best_tag().is_silence())
+        self.assertFalse(self.annotationI.get_best_tag().is_silence())
 
-        self.annotationI.get_label().get_best().set(sppasTag("#"))
-        self.annotationP.get_label().get_best().set(sppasTag("sil"))
-        self.assertTrue(self.annotationI.get_label().get_best().is_silence())
-        self.assertTrue(self.annotationP.get_label().get_best().is_silence())
+        self.annotationI.get_best_tag().set(sppasTag("#"))
+        self.annotationP.get_best_tag().set(sppasTag("sil"))
+        self.assertTrue(self.annotationI.get_best_tag().is_silence())
+        self.assertTrue(self.annotationP.get_best_tag().is_silence())
 
     def test_copy(self):
         p1 = sppasPoint(1)

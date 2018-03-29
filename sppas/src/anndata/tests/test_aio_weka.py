@@ -259,7 +259,7 @@ class TestWEKA(unittest.TestCase):
 
     # -----------------------------------------------------------------------
 
-    def test_get_label(self):
+    def test_get_labels(self):
         """ Return the sppasLabel() at the given time in the given tier.
             Return the empty label if no label was assigned at the given time.
         """
@@ -271,57 +271,31 @@ class TestWEKA(unittest.TestCase):
 
         # Interval tier
         tier = t.create_tier(name="tierIntervals")
-        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.)))))
-        tier.add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2.5), sppasPoint(4.))),
-                                 sppasLabel(sppasTag('toto'))))
-        self.assertEqual(weka._get_label(sppasPoint(0.), tier), empty)
-        self.assertEqual(weka._get_label(sppasPoint(1.), tier), empty)
-        self.assertEqual(weka._get_label(sppasPoint(2.), tier), empty)
-        self.assertEqual(weka._get_label(sppasPoint(3.), tier), sppasLabel(sppasTag('toto')))
-        self.assertEqual(weka._get_label(sppasPoint(4.), tier), empty)
-        self.assertEqual(weka._get_label(sppasPoint(5.), tier), empty)
+        tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.))))
+        tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(2.5), sppasPoint(4.))),
+                               sppasLabel(sppasTag('toto')))
+        self.assertEqual(weka._get_labels(sppasPoint(0.), tier), [empty])
+        self.assertEqual(weka._get_labels(sppasPoint(1.), tier), [empty])
+        self.assertEqual(weka._get_labels(sppasPoint(2.), tier), [empty])
+        self.assertEqual(weka._get_labels(sppasPoint(3.), tier), [sppasLabel(sppasTag('toto'))])
+        self.assertEqual(weka._get_labels(sppasPoint(4.), tier), [empty])
+        self.assertEqual(weka._get_labels(sppasPoint(5.), tier), [empty])
         tier[0].add_tag(sppasTag('titi'))
-        self.assertEqual(weka._get_label(sppasPoint(2.), tier), sppasLabel(sppasTag('titi')))
-        self.assertEqual(weka._get_label(sppasPoint(2.5), tier), sppasLabel(sppasTag('titi')))
-        self.assertEqual(weka._get_label(sppasPoint(2.6), tier), sppasLabel(sppasTag('titi')))
-        self.assertEqual(weka._get_label(sppasPoint(3.), tier), sppasLabel(sppasTag('toto')))
+        self.assertTrue(tier[0].contains_tag(sppasTag('titi')))
+        self.assertEqual(weka._get_labels(sppasPoint(2.), tier), [sppasLabel(sppasTag('titi'))])
+        self.assertEqual(weka._get_labels(sppasPoint(2.5), tier), [sppasLabel(sppasTag('titi'))])
+        self.assertEqual(weka._get_labels(sppasPoint(2.6), tier), [sppasLabel(sppasTag('titi'))])
+        self.assertEqual(weka._get_labels(sppasPoint(3.), tier), [sppasLabel(sppasTag('toto'))])
 
         # Point tier
         tierp = t.create_tier(name="tierPoints")
-        tierp.append(sppasAnnotation(sppasLocation(sppasPoint(1.))))
-        tierp.append(sppasAnnotation(sppasLocation(sppasPoint(5.)),
-                                     sppasLabel(sppasTag('H*'))))
-        tierp.append(sppasAnnotation(sppasLocation(sppasPoint(12.)),
-                                     sppasLabel()))
-        self.assertEqual(weka._get_label(sppasPoint(0.), tierp), empty)
-        self.assertEqual(weka._get_label(sppasPoint(1.), tierp), empty)
-        self.assertEqual(weka._get_label(sppasPoint(12.), tierp), empty)
-        self.assertEqual(weka._get_label(sppasPoint(5.), tierp), sppasLabel(sppasTag('H*')))
-
-    # -----------------------------------------------------------------------
-
-    def test_get_tag(self):
-        """ Return the sppasTag() of at the given time in the given tier. """
-
-        empty = sppasTag("none")
-        weka = sppasWEKA()
-        t = sppasTranscription()
-        weka.set(t)
-        tier = t.create_tier(name="tier")
-        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.)))))
-        self.assertEqual(weka._get_tag(sppasPoint(2.), tier), empty)
-        tier[0].add_tag(sppasTag('titi'))
-        self.assertEqual(weka._get_tag(sppasPoint(2.), tier), sppasTag('titi'))
-        tier[0].add_tag(sppasTag('toto'))
-        self.assertEqual(weka._get_tag(sppasPoint(2.), tier), sppasTag('titi'))
-        tier[0].add_tag(sppasTag('tata'), score=0.5)
-        self.assertEqual(weka._get_tag(sppasPoint(2.), tier), sppasTag('tata'))
-        tier[0].get_label().set_score(sppasTag('titi'), 1.)
-        self.assertEqual(weka._get_tag(sppasPoint(2.), tier), sppasTag('titi'))
-        tier[0].get_label().set_score(sppasTag('titi'), "a")
-        tier[0].get_label().set_score(sppasTag('tata'), "b")
-        tier[0].get_label().set_score(sppasTag('toto'), "c")
-        self.assertEqual(weka._get_tag(sppasPoint(2.), tier), sppasTag('toto'))
+        tierp.create_annotation(sppasLocation(sppasPoint(1.)))
+        tierp.create_annotation(sppasLocation(sppasPoint(5.)), sppasLabel(sppasTag('H*')))
+        tierp.create_annotation(sppasLocation(sppasPoint(12.)), sppasLabel())
+        self.assertEqual(weka._get_labels(sppasPoint(5.), tierp), [sppasLabel(sppasTag('H*'))])
+        self.assertEqual(weka._get_labels(sppasPoint(0.), tierp), [empty])
+        self.assertEqual(weka._get_labels(sppasPoint(1.), tierp), [empty])
+        self.assertEqual(weka._get_labels(sppasPoint(12.), tierp), [empty])
 
     # -----------------------------------------------------------------------
 
@@ -358,11 +332,11 @@ class TestWEKA(unittest.TestCase):
         weka.set(t)
         tier = t.create_tier(name="tier")
         tier.set_meta('weka_class', '')
-        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(2.)))))
-        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(4.), sppasPoint(5.))),
-                                    sppasLabel(sppasTag("toto"))))
-        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(5.), sppasPoint(6.))),
-                                    sppasLabel(sppasTag("none"))))
+        tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(2.))))
+        tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(4.), sppasPoint(5.))),
+                               sppasLabel(sppasTag("toto")))
+        tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(5.), sppasPoint(6.))),
+                               sppasLabel(sppasTag("none")))
 
         weka.set_meta('weka_instance_step', '0.1')
         all_points = sppasWEKA._fix_all_possible_instance_steps(1., 6., time_step=0.1)
@@ -382,65 +356,64 @@ class TestWEKA(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_scores_to_probas(self):
-        """ Convert scores of a label to probas. """
+        """ Convert scores of a set of tags to probas. """
 
-        self.assertFalse(sppasWEKA._scores_to_probas(None))
-        self.assertFalse(sppasWEKA._scores_to_probas(sppasLabel()))
+        self.assertFalse(sppasWEKA._scores_to_probas([], max))
+
+        tags = dict()
 
         # only one tag, without score (the most common situation)
         tag = sppasTag("")
-        label = sppasLabel(tag)
-        self.assertTrue(sppasWEKA._scores_to_probas(label))
-        self.assertEqual(label.get_score(tag), 1.)
+        tags[tag] = None
+        sppasWEKA._scores_to_probas(tags, max)
+        self.assertEqual(tags[tag], 1.)
 
         # only one tag, with a score (numerical or string)
-        tag = sppasTag("")
-        label = sppasLabel(tag, 3)
-        self.assertTrue(sppasWEKA._scores_to_probas(label))
-        self.assertEqual(label.get_score(tag), 1.)
-        label = sppasLabel(tag, "A")
-        self.assertTrue(sppasWEKA._scores_to_probas(label))
-        self.assertEqual(label.get_score(tag), 1.)
+        tags[tag] = 3
+        sppasWEKA._scores_to_probas(tags, max)
+        self.assertEqual(tags[tag], 1.)
 
         # several tags, all with scores
         tag1 = sppasTag("a")
         tag2 = sppasTag("b")
         tag3 = sppasTag("c")
-        label = sppasLabel(tag1, 3)
-        label.append(tag2, 2)
-        label.append(tag3, 5)
-        self.assertTrue(sppasWEKA._scores_to_probas(label))
-        self.assertEqual(label.get_score(tag1), 0.3)
-        self.assertEqual(label.get_score(tag2), 0.2)
-        self.assertEqual(label.get_score(tag3), 0.5)
+        tags = dict()
+        tags[tag1] = 3
+        tags[tag2] = 2
+        tags[tag3] = 5
+        sppasWEKA._scores_to_probas(tags, max)
+        self.assertEqual(tags[tag1], 0.3)
+        self.assertEqual(tags[tag2], 0.2)
+        self.assertEqual(tags[tag3], 0.5)
 
         # several tags, all without scores
-        label = sppasLabel(tag1)
-        label.append(tag2)
-        self.assertTrue(sppasWEKA._scores_to_probas(label))
-        self.assertEqual(label.get_score(tag1), 0.5)
-        self.assertEqual(label.get_score(tag2), 0.5)
+        tags = dict()
+        tags[tag1] = None
+        tags[tag2] = None
+        sppasWEKA._scores_to_probas(tags, max)
+        self.assertEqual(tags[tag1], 0.5)
+        self.assertEqual(tags[tag2], 0.5)
 
         # several tags, some without scores
-        label = sppasLabel(tag1, 7)
-        label.append(tag2, 2)
-        label.append(tag3)    # score will be 1
-        self.assertTrue(sppasWEKA._scores_to_probas(label))
-        self.assertEqual(label.get_score(tag1), 0.7)
-        self.assertEqual(label.get_score(tag2), 0.2)
-        self.assertEqual(label.get_score(tag3), 0.1)
+        tags = dict()
+        tags[tag1] = 7
+        tags[tag2] = 2
+        tags[tag3] = None   # score will be 1 (half of the min)
+        sppasWEKA._scores_to_probas(tags, max)
+        self.assertEqual(tags[tag1], 0.7)
+        self.assertEqual(tags[tag2], 0.2)
+        self.assertEqual(tags[tag3], 0.1)
 
         # several tags, with "min" function
         # several tags, some without scores
-        label = sppasLabel(tag1, 7)
-        label.append(tag2, 2)
-        label.append(tag3)    # score will be 1
-        label.set_function_score(min)
-
-        self.assertTrue(sppasWEKA._scores_to_probas(label))
-        self.assertEqual(round(label.get_score(tag1), 2), 0.2)
-        self.assertEqual(round(label.get_score(tag2), 2), 0.7)
-        self.assertEqual(round(label.get_score(tag3), 2), 0.1)
+        tags = dict()
+        tags[tag1] = 7
+        tags[tag2] = 2
+        tags[tag3] = None   # score will be 1 (half of the min)
+        sppasWEKA._scores_to_probas(tags, min)
+        self.assertEqual(round(tags[tag1], 2), 0.2)
+        self.assertEqual(round(tags[tag2], 2), 0.7)
+        self.assertEqual(round(tags[tag3], 2), 0.1)
 
     # -----------------------------------------------------------------------
 

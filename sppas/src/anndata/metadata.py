@@ -62,9 +62,6 @@ class sppasMetaData(object):
         self.__metadata = OrderedDict()
         self.__metadata["id"] = sppasGUID().get()
 
-        # Dictionary with key and description
-        self.__metadescr = dict()
-
     # -----------------------------------------------------------------------
 
     def is_meta_key(self, entry):
@@ -98,14 +95,13 @@ class sppasMetaData(object):
 
     # -----------------------------------------------------------------------
 
-    def set_meta(self, key, value, description=None):
+    def set_meta(self, key, value):
         """ Set or update a metadata.
 
         :param key: (str) The key of the metadata.
         :param value: (str) The value assigned to the key.
-        :param description: (str) An optional description of this metadata.
 
-        key, value and description are formatted and stored in unicode.
+        key, and value are formatted and stored in unicode.
 
         """
         su = sppasUnicode(key)
@@ -115,12 +111,6 @@ class sppasMetaData(object):
         value = su.to_strip()
 
         self.__metadata[key] = value
-
-        # Add the optional description
-        if description is not None:
-            su = sppasUnicode(description)
-            descr = su.to_strip()
-            self.__metadescr[key] = descr
 
     # -----------------------------------------------------------------------
 
@@ -132,8 +122,6 @@ class sppasMetaData(object):
         """
         if key in self.__metadata:
             del self.__metadata[key]
-        if key in self.__metadescr:
-            del self.__metadescr[key]
 
 # ---------------------------------------------------------------------------
 
@@ -229,19 +217,19 @@ class sppasDefaultMeta(sppasMetaData):
         """ Add metadata related to a speaker. """
 
         # sclite, transcriber
-        self.set_meta("speaker_id", "", "Identifier of the speaker")
+        self.set_meta("speaker_id", "")
 
         # sclite, xtrans, transcriber
-        self.set_meta("speaker_name", "", "Name of the speaker.")
+        self.set_meta("speaker_name", "")
 
         # xtrans, transcriber
-        self.set_meta("speaker_type", "", "Speaker can be male, female, child or unknown.")
+        self.set_meta("speaker_type", "")
 
         # xtrans, transcriber
-        self.set_meta("speaker_dialect", "", "Native or non-native speaker.")
+        self.set_meta("speaker_dialect", "")
 
         # transcriber
-        self.set_meta("speaker_accent", "", "Accent of the speaker.")
+        self.set_meta("speaker_accent", "")
 
         # transcriber
         self.set_meta("speaker_scope", "")  # (local|global)

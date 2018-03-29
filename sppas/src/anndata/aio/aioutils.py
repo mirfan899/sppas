@@ -152,14 +152,26 @@ def unfill_gaps(tier):
     :returns: tier
 
     """
-    new_tier = tier.copy()
     to_pop = list()
-    for i, ann in enumerate(new_tier):
-        if ann.get_label() is None or ann.get_label().get_best().is_empty():
+    for i, ann in enumerate(tier):
+        if ann.label_is_filled():
             to_pop.append(i)
+        # labels = ann.get_labels()
+        # if len(labels) == 0:
+        #     to_pop.append(i)
+        # else:
+        #     for label in labels:
+        #         if label is None \
+        #            or label.is_tagged() is False \
+        #            or label.get_best().get_content() == "":
+        #             to_pop.append(i)
 
-    for i in reversed(to_pop):
-        new_tier.pop(i)
+    new_tier = sppasTier(tier.get_name()+"-unfill")
+    new_tier.set_ctrl_vocab(tier.get_ctrl_vocab())
+    new_tier.set_media(tier.get_media())
+    for i, ann in enumerate(tier):
+        if i not in to_pop:
+            new_tier.append(ann.copy())
 
     return new_tier
 
@@ -337,11 +349,11 @@ def merge_overlapping_annotations(tier, separator=' '):
         begin = new_ann.get_lowest_localization()
         end = new_ann.get_highest_localization()
         anns = tier.find(begin, end, overlaps=True)
-        new_content = []
-        for ann in anns:
-            new_content.append(ann.get_label().get_best().get_content())
 
-        new_ann.set_best_tag(sppasTag(separator.join(new_content)))
+        new_labels = list()
+        for ann in anns:
+            new_labels.extend(ann.get_labels())
+        new_ann.set_labels(new_labels)
 
     return new_tier
 
@@ -391,7 +403,7 @@ def point2interval(tier, radius=0.001):
 
         # create the new annotation with an interval
         new_ann = sppasAnnotation(sppasLocation(sppasInterval(begin, end)),
-                                  ann.get_label().copy())
+                                  [label.copy() for label in ann.get_labels()])
         # new annotation shares original annotation's metadata, except the 'id'
         for key in new_ann.get_meta_keys():
             if key != 'id':

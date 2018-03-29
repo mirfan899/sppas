@@ -120,8 +120,13 @@ class TestSubRip(unittest.TestCase):
         self.assertEqual(sppasPoint(0.), txt[0].get_first_point())
         self.assertEqual(sppasPoint(15.), txt[0].get_last_point())
         self.assertTrue(txt[0][2].is_meta_key('position_pixel_X1'))
-        self.assertFalse("<i>" in txt[0][1].get_label().get_best().get_content())
-        self.assertTrue("une classe" in txt[0][1].get_label().get_best().get_content())
+
+        # multi-lines: 2 sppasLabel() created in the same annotation
+        print txt[0][1].get_labels()
+        self.assertEqual(len(txt[0][1].get_labels()), 2)
+        self.assertFalse("<i>" in txt[0][1].get_labels()[0].get_best().get_content())
+        self.assertTrue("une classe" in txt[0][1].get_labels()[0].get_best().get_content())
+        self.assertTrue("bien vu" in txt[0][1].get_labels()[1].get_best().get_content())
 
     # -----------------------------------------------------------------
 
@@ -145,9 +150,9 @@ class TestSubRip(unittest.TestCase):
         sub = sppasSubRip()
         tier = sub.create_tier(name="tierIntervals")
 
-        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.)))))
-        tier.add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2.5), sppasPoint(4.))),
-                                 sppasLabel(sppasTag('toto'))))
+        tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.))))
+        tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(2.5), sppasPoint(4.))),
+                               sppasLabel(sppasTag('toto')))
 
         sub.write(os.path.join(TEMP, "sample.srt"))
         self.assertTrue(os.path.exists(os.path.join(TEMP, "sample.srt")))
@@ -157,6 +162,7 @@ class TestSubRip(unittest.TestCase):
             lines = fp.readlines()
             fp.close()
 
+        print lines
         self.assertEqual(len(lines), 4)
 
 # ---------------------------------------------------------------------
@@ -187,8 +193,8 @@ class TestSubViewer(unittest.TestCase):
         self.assertEqual(len(txt[0]), 6)
         self.assertEqual(sppasPoint(22.5), txt[0].get_first_point())
         self.assertEqual(sppasPoint(34.80), txt[0].get_last_point())
-        self.assertFalse("[br]" in txt[0][0].get_label().get_best().get_content())
-        self.assertTrue("amet, consectetur" in txt[0][0].get_label().get_best().get_content())
+        self.assertFalse("[br]" in txt[0][0].get_labels()[0].get_best().get_content())
+        self.assertTrue("amet, consectetur" in txt[0][0].get_labels()[0].get_best().get_content())
 
     # -----------------------------------------------------------------
 

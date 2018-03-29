@@ -57,6 +57,7 @@ from ..anndataexc import AioLocationTypeError
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioLineFormatError
 from ..anndataexc import AioNoTiersError
+from ..anndataexc import AioFormatError
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
@@ -237,46 +238,50 @@ class sppasBasePraat(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def _serialize_label_text(label):
+    def _serialize_labels_text(labels):
         """ Convert a label into a string. """
 
-        if label is None:
-            text = ""
-        elif label.get_best() is None:
-            text = ""
-        elif label.get_best().is_empty():
-            text = ""
-        else:
+        content = ""
+        for label in labels:
+            if label is None:
+                continue
+            if label.get_best() is None:
+                continue
+            if label.get_best().is_empty():
+                continue
+
             text = label.get_best().get_content()
+            if '"' in text:
+                text = re.sub('([^"])["]([^"])', '\\1""\\2', text)
+                text = re.sub('([^"])["]([^"])', '\\1""\\2',
+                              text)  # miss occurrences if 2 " are separated by only 1 character
+                text = re.sub('([^"])["]$', '\\1""', text)  # miss occurrences if " is at the end of the label!
+                text = re.sub('^["]([^"])', '""\\1', text)  # miss occurrences if " is at the beginning of the label
+                text = re.sub('^""$', '""""', text)
+                text = re.sub('^"$', '""', text)
+            content += text + "\n"
+        content = content.rstrip()
 
-        if '"' in text:
-            text = re.sub('([^"])["]([^"])', '\\1""\\2', text)
-            text = re.sub('([^"])["]([^"])', '\\1""\\2',
-                          text)  # miss occurrences if 2 " are separated by only 1 character
-            text = re.sub('([^"])["]$', '\\1""', text)  # miss occurrences if " is at the end of the label!
-            text = re.sub('^["]([^"])', '""\\1', text)  # miss occurrences if " is at the beginning of the label
-            text = re.sub('^""$', '""""', text)
-            text = re.sub('^"$', '""', text)
-
-        return '\t\t\ttext = "{:s}"\n'.format(text)
+        return '\t\t\ttext = "{:s}"\n'.format(content)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def _serialize_label_value(label):
+    def _serialize_labels_value(labels):
         """ Convert a label with a numerical value into a string. """
 
-        if label is None:
-            return None
-        if label.get_best() is None:
-            return None
-        if label.get_best().is_empty():
-            return None
+        for label in labels:
+            if label is None:
+                continue
+            if label.get_best() is None:
+                continue
+            if label.get_best().is_empty():
+                continue
+            tag = label.get_best()
+            if tag.get_type() in ['int', 'float']:
+                return "\tvalue = {}\n".format(tag.get_typed_content())
 
-        tag = label.get_best()
-        if tag.get_type() not in ['int', 'float']:
-            raise AnnDataTypeError(tag.get_type(), "int,float")
-        return "\tvalue = {}\n".format(tag.get_typed_content())
+        raise AioFormatError(labels[0].get_type())
 
 # ---------------------------------------------------------------------------
 
@@ -600,7 +605,7 @@ class sppasTextGrid(sppasBasePraat):
         content = '\t\tintervals [{:d}]:\n'.format(number)
         content += '\t\t\txmin = {}\n'.format(annotation.get_lowest_localization().get_midpoint())
         content += '\t\t\txmax = {}\n'.format(annotation.get_highest_localization().get_midpoint())
-        content += sppasBasePraat._serialize_label_text(annotation.get_label())
+        content += sppasBasePraat._serialize_labels_text(annotation.get_labels())
         return u(content)
 
     # -----------------------------------------------------------------------
@@ -614,7 +619,7 @@ class sppasTextGrid(sppasBasePraat):
         :returns: (unicode)
 
         """
-        text = sppasBasePraat._serialize_label_text(annotation.get_label())
+        text = sppasBasePraat._serialize_labels_text(annotation.get_labels())
         text = text.replace("text =", "mark =")
 
         content = '\t\t\tpoints [{:d}]:\n'.format(number)
@@ -752,7 +757,7 @@ class sppasBaseNumericalTier(sppasBasePraat):
 
                 content = 'points [{:d}]:\n'.format(a+1)
                 content += '\tnumber = {}\n'.format(annotation.get_lowest_localization().get_midpoint())
-                content += sppasBasePraat._serialize_label_value(annotation.get_label())
+                content += sppasBasePraat._serialize_labels_value(annotation.get_labels())
                 fp.write(content)
 
             fp.close()

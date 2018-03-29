@@ -40,6 +40,8 @@
     >>> import sys
     >>> sys.getsizeof(None)
     >>> 16
+    >>> sys.getsizeof(tuple())
+    >>> 56
     >>> sys.getsizeof(list())
     >>> 72
     >>> sys.getsizeof(dict())
@@ -87,6 +89,8 @@ class sppasLabel(object):
             else:
                 self.append(tag, score)
 
+    # -----------------------------------------------------------------------
+    # Setters
     # -----------------------------------------------------------------------
 
     def get_function_score(self):
@@ -280,53 +284,67 @@ class sppasLabel(object):
 
     # -----------------------------------------------------------------------
 
+    def get_type(self):
+        """ Return the type of the tags content. """
+
+        if self.__tags is None:
+            return "str"
+
+        return self.__tags[0][0].get_type()
+
+    # -----------------------------------------------------------------------
+
+    def is_tagged(self):
+        """ Return False if no tag is set. """
+
+        if self.__tags is None:
+            return False
+        if len(self.__tags) == 0:
+            return False
+
+        return True
+
+    # -----------------------------------------------------------------------
+
     def is_string(self):
         """ Return True if tags are string or unicode.
         Return False if no tag is set.
 
         """
-        if self.__tags is None:
-                return False
-        if len(self.__tags) == 0:
+        if self.is_tagged() is False:
             return False
         return self.__tags[0][0].get_type() == "str"
 
     # -----------------------------------------------------------------------
 
     def is_float(self):
-        """ Return True if tags are ot type "float".
+        """ Return True if tags are of type "float".
         Return False if no tag is set.
 
         """
-        if self.__tags is None:
-            return False
-        if len(self.__tags) == 0:
+        if self.is_tagged() is False:
             return False
         return self.__tags[0][0].get_type() == "float"
 
     # -----------------------------------------------------------------------
 
     def is_int(self):
-        """ Return True if tags are ot type "int".
+        """ Return True if tags are of type "int".
         Return False if no tag is set.
 
         """
-        if self.__tags is None:
-            return False
-        if len(self.__tags) == 0:
+        if self.is_tagged() is False:
             return False
         return self.__tags[0][0].get_type() == "int"
 
     # -----------------------------------------------------------------------
 
     def is_bool(self):
-        """ Return True if tags are ot type "bool".
+        """ Return True if tags are of type "bool".
         Return False if no tag is set.
 
         """
-        if self.__tags is None:
-            return False
-        if len(self.__tags) == 0:
+        if self.is_tagged() is False:
             return False
         return self.__tags[0][0].get_type() == "bool"
 

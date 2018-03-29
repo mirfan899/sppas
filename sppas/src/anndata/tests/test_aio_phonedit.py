@@ -136,9 +136,9 @@ class TestMRK(unittest.TestCase):
         self.assertEqual(len(mrk[1]), 11)
         for i, ann in enumerate(mrk[1]):
             if i % 2:
-                self.assertEqual(ann.get_label().get_best().get_content(), u("ipu_"+str((i/2)+1)))
+                self.assertEqual(ann.get_labels()[0].get_best().get_content(), u("ipu_"+str((i/2)+1)))
             else:
-                self.assertEqual(ann.get_label().get_best().get_content(), u("#"))
+                self.assertEqual(ann.get_labels()[0].get_best().get_content(), u("#"))
 
     # -----------------------------------------------------------------
     # write
@@ -162,9 +162,9 @@ class TestMRK(unittest.TestCase):
         self.assertEqual(len(mrk2[1]), 11)
         for i, ann in enumerate(mrk2[1]):
             if i % 2:
-                self.assertEqual(ann.get_label().get_best().get_content(), u("ipu_"+str((i/2)+1)))
+                self.assertEqual(ann.get_labels()[0].get_best().get_content(), u("ipu_"+str((i/2)+1)))
             else:
-                self.assertEqual(ann.get_label().get_best().get_content(), u("#"))
+                self.assertEqual(ann.get_labels()[0].get_best().get_content(), u("#"))
 
 # ---------------------------------------------------------------------------
 
@@ -247,5 +247,5 @@ class TestSignaix(unittest.TestCase):
         self.assertTrue(hz2[0].is_float())
         self.assertEqual(len(hz[0]), len(hz2[0]))
         for a1, a2 in zip(hz[0], hz2[0]):
-            self.assertEqual(a1.get_label(), a2.get_label())
+            self.assertEqual(a1.get_labels()[0], a2.get_labels()[0])
             self.assertEqual(a1.get_location(), a2.get_location())

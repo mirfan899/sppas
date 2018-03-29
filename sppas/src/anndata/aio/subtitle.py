@@ -174,13 +174,34 @@ class sppasBaseSubtitles(sppasBaseIO):
 
     @staticmethod
     def _serialize_label(ann):
-        """ Extract the best tag to serialize the caption on screen. """
+        """ Get the best tag of each label to serialize the caption on screen.
 
-        tag_content = ann.get_best_tag().get_content()
-        tag_content += "\n"
+        :param ann: (sppasAnnotation)
+
+        """
+        tag_content = ""
+        for label in ann.get_labels():
+            tag_content += sppasBaseSubtitles._serialize_tags(label)
+            tag_content += "\n"
 
         return tag_content
 
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def _serialize_tags(label):
+        """ Convert a label into a string. """
+
+        if label is None:
+            return ""
+
+        if label.get_best() is None:
+            return ""
+
+        if label.get_best().is_empty():
+            return ""
+
+        return label.get_best().get_content()
 
 # ---------------------------------------------------------------------------
 
@@ -253,6 +274,7 @@ class sppasSubRip(sppasBaseSubtitles):
                 a = sppasSubRip._parse_subtitle(lines)
                 if a is not None:
                     tier.append(a)
+
             fp.close()
 
     # -----------------------------------------------------------------------
@@ -260,6 +282,9 @@ class sppasSubRip(sppasBaseSubtitles):
     @staticmethod
     def _parse_subtitle(lines):
         """ Parse a single subtitle.
+
+        The subtitle can be written on several lines. In this case, one sppasLabel()
+        is created for each line.
 
         :param lines: (list) the lines of a subtitle (index, timestamps, label)
 
@@ -273,7 +298,7 @@ class sppasSubRip(sppasBaseSubtitles):
                              sppasBaseSubtitles.make_point(stop))
 
         # create the annotation without label
-        a = sppasAnnotation(sppasLocation(time), sppasLabel())
+        a = sppasAnnotation(sppasLocation(time))
 
         # optional position (in pixels), saved as metadata of the annotation
         if 'X1' in lines[2] and 'Y1' in lines[2]:
@@ -285,11 +310,10 @@ class sppasSubRip(sppasBaseSubtitles):
             lines.pop(2)
 
         # label
-        text = " ".join(lines[2:])
-        tag = sppasTag(sppasBaseSubtitles._format_text(text))
+        for line in lines[2:]:
+            tag = sppasTag(sppasBaseSubtitles._format_text(line))
+            a.append_label(sppasLabel(tag))
 
-        # update annotation
-        a.get_label().append(tag)
         return a
 
     # -----------------------------------------------------------------------
@@ -310,7 +334,10 @@ class sppasSubRip(sppasBaseSubtitles):
                 for ann in self[0]:
 
                     # no label defined, or empty label -> no subtitle!
-                    if ann.get_best_tag().is_empty():
+                    if ann.is_labelled() is False:
+                        continue
+                    text = sppasBaseSubtitles._serialize_label(ann)
+                    if len(text.strip()) == 0:
                         continue
 
                     subtitle = ""
@@ -321,7 +348,7 @@ class sppasSubRip(sppasBaseSubtitles):
                     # 3rd line: optionally the position on screen
                     subtitle += sppasSubRip._serialize_metadata(ann)
                     # the text
-                    subtitle += sppasBaseSubtitles._serialize_label(ann)
+                    subtitle += text
                     # a blank line
                     subtitle += "\n"
 
@@ -466,10 +493,12 @@ class sppasSubViewer(sppasBaseSubtitles):
                              sppasBaseSubtitles.make_point(stop))
 
         # label
-        text = " ".join(lines[1:])
-        tag = sppasTag(sppasBaseSubtitles._format_text(text))
+        labels = list()
+        for line in lines[1:]:
+            tag = sppasTag(sppasBaseSubtitles._format_text(line))
+            labels.append(sppasLabel(tag))
 
-        return sppasAnnotation(sppasLocation(time), sppasLabel(tag))
+        return sppasAnnotation(sppasLocation(time), labels)
 
     # -----------------------------------------------------------------------
 

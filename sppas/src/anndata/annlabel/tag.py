@@ -82,14 +82,9 @@ class sppasTag(object):
         >>> t5 = sppasTag("2", tag_type="float")    # 2. (float)
         >>> t6 = sppasTag("true", tag_type="bool")  # True (bool)
         >>> t7 = sppasTag(0, tag_type="bool")       # False (bool)
-        >>> t8 = sppasTag([t1, t2], tag_type="list")
-        >>> t8.get_content()
-        >>> "2 2"
-        >>> t8.get_typed_content()
-        >>> ["2", "2"]
 
     """
-    TAG_TYPES = ["str", "float", "int", "bool", "list"]
+    TAG_TYPES = ["str", "float", "int", "bool"]
 
     # ------------------------------------------------------------------------
 
@@ -130,10 +125,6 @@ class sppasTag(object):
         :returns: (unicode)
 
         """
-        if self.__tag_type is not None:
-            if self.__tag_type == "list":
-                return " ".join(t.get_content() for t in self.__tag_content)
-
         return self.__tag_content
 
     # ------------------------------------------------------------------------
@@ -193,28 +184,11 @@ class sppasTag(object):
             # always works. Never raises ValueError!
             tag_content = bool(tag_content)
 
-        elif tag_type == "list":
-            if isinstance(tag_content, list) is True:
-                # check if all elements of the list are sppasTag() and
-                for elem in tag_content:
-                    if isinstance(elem, sppasTag) is False:
-                        raise AnnDataTypeError(elem, "sppasTag")
-
-                # check if tags of the list are of the same type
-                tag_types = set(elem.get_type() for elem in tag_content)
-                if len(tag_types) > 1:
-                    raise AnnDataTypeError(tag_content, tag_content[0].get_type())
-            else:
-                raise AnnDataTypeError(tag_content, "list")
-
         # we systematically convert data into strings
         self.__tag_type = tag_type
-        if tag_type != "list":
-            tag_content = str(tag_content)
-            su = sppasUnicode(tag_content)
-            self.__tag_content = su.to_strip()
-        else:
-            self.__tag_content = tag_content
+        tag_content = str(tag_content)
+        su = sppasUnicode(tag_content)
+        self.__tag_content = su.to_strip()
 
     # ------------------------------------------------------------------------
 

@@ -141,6 +141,20 @@ class sppasCtrlVocab(object):
 
     # -----------------------------------------------------------------------
 
+    def validate_tag(self, tag):
+        """ Check if the given tag can be added to the controlled vocabulary. """
+
+        if isinstance(tag, sppasTag) is False:
+            raise AnnDataTypeError(tag, "sppasTag")
+
+        # check if the tag is of the same type than the existing ones.
+        current_type = set([tag.get_type() for tag in self.__entries])
+        if len(current_type) == 1:
+            if tag.get_type() not in current_type:
+                raise AnnDataTypeError(tag, "sppasTag/"+current_type[0])
+
+    # -----------------------------------------------------------------------
+
     def add(self, tag, description=""):
         """ Add a tag to the controlled vocab.
 
@@ -149,9 +163,7 @@ class sppasCtrlVocab(object):
         :returns: Boolean
 
         """
-        if isinstance(tag, sppasTag) is False:
-            raise AnnDataTypeError(tag, "sppasTag")
-
+        self.validate_tag(tag)
         if self.contains(tag) is True:
             return False
 

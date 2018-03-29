@@ -207,23 +207,23 @@ class TestScliteCTM(unittest.TestCase):
         ann = sppasCTM._create_annotation(0.3, 0.22, "toto", score=None)
         self.assertEqual(ann.get_location().get_best().get_begin().get_midpoint(), 0.3)
         self.assertEqual(ann.get_location().get_best().get_end().get_midpoint(), 0.52)
-        self.assertEqual(ann.get_label().get_best().get_content(), "toto")
-        self.assertIsNone(ann.get_label().get_score(ann.get_label().get_best()))
+        self.assertEqual(ann.get_labels()[0].get_best().get_content(), "toto")
+        self.assertIsNone(ann.get_labels()[0].get_score(ann.get_labels()[0].get_best()))
 
         # tag with score
         ann = sppasCTM._create_annotation(0.3, 0.22, "toto", score=0.95)
         self.assertEqual(ann.get_location().get_best().get_begin().get_midpoint(), 0.3)
         self.assertEqual(ann.get_location().get_best().get_end().get_midpoint(), 0.52)
-        self.assertEqual(ann.get_label().get_best().get_content(), "toto")
-        self.assertEqual(ann.get_label().get_score(ann.get_label().get_best()), 0.95)
+        self.assertEqual(ann.get_labels()[0].get_best().get_content(), "toto")
+        self.assertEqual(ann.get_labels()[0].get_score(ann.get_labels()[0].get_best()), 0.95)
 
         # tag with whitespace
         # (in theory, ctm files contain only time-aligned words)
         ann = sppasCTM._create_annotation(0.3, 0.22, "bye bye", score=0.95)
         self.assertEqual(ann.get_location().get_best().get_begin().get_midpoint(), 0.3)
         self.assertEqual(ann.get_location().get_best().get_end().get_midpoint(), 0.52)
-        self.assertEqual(ann.get_label().get_best().get_content(), "bye_bye")
-        self.assertEqual(ann.get_label().get_score(ann.get_label().get_best()), 0.95)
+        self.assertEqual(ann.get_labels()[0].get_best().get_content(), "bye_bye")
+        self.assertEqual(ann.get_labels()[0].get_score(ann.get_labels()[0].get_best()), 0.95)
 
     # -----------------------------------------------------------------------
 
@@ -244,10 +244,10 @@ class TestScliteCTM(unittest.TestCase):
         self.assertEqual(len(ctm), 1)
         self.assertEqual(ctm[0].get_name(), "D_NONE-1")
         self.assertEqual(len(ctm[0]), 4)
-        self.assertEqual(ctm[0][0].get_label().get_best().get_content(), "THIS")
-        self.assertEqual(ctm[0][1].get_label().get_best().get_content(), "IS")
-        self.assertEqual(ctm[0][2].get_label().get_best().get_content(), "AN")
-        self.assertEqual(ctm[0][3].get_label().get_best().get_content(), "EXAMPLE")
+        self.assertEqual(ctm[0][0].get_labels()[0].get_best().get_content(), "THIS")
+        self.assertEqual(ctm[0][1].get_labels()[0].get_best().get_content(), "IS")
+        self.assertEqual(ctm[0][2].get_labels()[0].get_best().get_content(), "AN")
+        self.assertEqual(ctm[0][3].get_labels()[0].get_best().get_content(), "EXAMPLE")
         self.assertEqual(ctm[0][0].get_location().get_best().get_begin(), sppasPoint(108.74))
         self.assertEqual(ctm[0][0].get_location().get_best().get_end(), sppasPoint(109.05))
         self.assertEqual(ctm[0][1].get_location().get_best().get_begin(), sppasPoint(109.05))
@@ -274,7 +274,7 @@ class TestScliteCTM(unittest.TestCase):
         self.assertEqual(ctm[1].get_name(), "D_NONE-2")
         self.assertEqual(len(ctm[0]), 4)
         self.assertEqual(len(ctm[1]), 1)
-        self.assertEqual(ctm[1][0].get_label().get_best().get_content(), "YEP")
+        self.assertEqual(ctm[1][0].get_labels()[0].get_best().get_content(), "YEP")
         self.assertEqual(ctm[1][0].get_location().get_best().get_begin(), sppasPoint(109.8))
         self.assertEqual(ctm[1][0].get_location().get_best().get_end(), sppasPoint(110.))
 
@@ -295,7 +295,7 @@ class TestScliteCTM(unittest.TestCase):
         self.assertEqual(ctm[1].get_name(), "D_NONE-1")
         self.assertEqual(len(ctm[0]), 4)
         self.assertEqual(len(ctm[1]), 1)
-        self.assertEqual(ctm[1][0].get_label().get_best().get_content(), "YEP")
+        self.assertEqual(ctm[1][0].get_labels()[0].get_best().get_content(), "YEP")
         self.assertEqual(ctm[1][0].get_location().get_best().get_begin(), sppasPoint(109.8))
         self.assertEqual(ctm[1][0].get_location().get_best().get_end(), sppasPoint(110.))
 
@@ -497,7 +497,7 @@ class TestScliteSTM(unittest.TestCase):
         ann = tier[0]
         self.assertEqual(ann.get_location().get_best().get_begin().get_midpoint(), 1.)
         self.assertEqual(ann.get_location().get_best().get_end().get_midpoint(), 2)
-        self.assertEqual(ann.get_label().get_best().get_content(), "utterance")
+        self.assertEqual(ann.get_labels()[0].get_best().get_content(), "utterance")
 
     # -----------------------------------------------------------------------
 
@@ -518,10 +518,10 @@ class TestScliteSTM(unittest.TestCase):
         self.assertEqual(len(stm), 1)
         self.assertEqual(stm[0].get_name(), "D_NONE-1-A")
         self.assertEqual(len(stm[0]), 4)
-        self.assertEqual(stm[0][0].get_label().get_best().get_content(), "THIS")
-        self.assertEqual(stm[0][1].get_label().get_best().get_content(), "IS")
-        self.assertEqual(stm[0][2].get_label().get_best().get_content(), "AN")
-        self.assertEqual(stm[0][3].get_label().get_best().get_content(), "EXAMPLE")
+        self.assertEqual(stm[0][0].get_labels()[0].get_best().get_content(), "THIS")
+        self.assertEqual(stm[0][1].get_labels()[0].get_best().get_content(), "IS")
+        self.assertEqual(stm[0][2].get_labels()[0].get_best().get_content(), "AN")
+        self.assertEqual(stm[0][3].get_labels()[0].get_best().get_content(), "EXAMPLE")
         self.assertEqual(stm[0][0].get_location().get_best().get_begin(), sppasPoint(108.74))
         self.assertEqual(stm[0][0].get_location().get_best().get_end(), sppasPoint(109.05))
         self.assertEqual(stm[0][1].get_location().get_best().get_begin(), sppasPoint(109.05))
@@ -548,7 +548,7 @@ class TestScliteSTM(unittest.TestCase):
         self.assertEqual(stm[1].get_name(), "D_NONE-2-A")
         self.assertEqual(len(stm[0]), 4)
         self.assertEqual(len(stm[1]), 1)
-        self.assertEqual(stm[1][0].get_label().get_best().get_content(), "YEP")
+        self.assertEqual(stm[1][0].get_labels()[0].get_best().get_content(), "YEP")
         self.assertEqual(stm[1][0].get_location().get_best().get_begin(), sppasPoint(109.8))
         self.assertEqual(stm[1][0].get_location().get_best().get_end(), sppasPoint(110.2))
 
@@ -569,7 +569,7 @@ class TestScliteSTM(unittest.TestCase):
         self.assertEqual(stm[1].get_name(), "D_NONE-1-A")
         self.assertEqual(len(stm[0]), 4)
         self.assertEqual(len(stm[1]), 1)
-        self.assertEqual(stm[1][0].get_label().get_best().get_content(), "YEP")
+        self.assertEqual(stm[1][0].get_labels()[0].get_best().get_content(), "YEP")
         self.assertEqual(stm[1][0].get_location().get_best().get_begin(), sppasPoint(109.8))
         self.assertEqual(stm[1][0].get_location().get_best().get_end(), sppasPoint(110.2))
 
@@ -586,7 +586,7 @@ class TestScliteSTM(unittest.TestCase):
         self.assertEqual(stm[1].get_name(), "ma_0029-2-B")
         self.assertEqual(len(stm[0]), 4)
         self.assertEqual(len(stm[1]), 6)
-        self.assertEqual(stm[1][0].get_label().get_best().get_content(), u("对 因为"))
+        self.assertEqual(stm[1][0].get_labels()[0].get_best().get_content(), u("对 因为"))
 
     # -----------------------------------------------------------------------
     # write
@@ -659,4 +659,4 @@ class TestScliteSTM(unittest.TestCase):
         self.assertEqual(stm2[1].get_name(), "ma_0029-2-B")
         self.assertEqual(len(stm2[0]), 4)
         self.assertEqual(len(stm2[1]), 6)
-        self.assertEqual(stm2[1][0].get_label().get_best().get_content(), u("对 因为"))
+        self.assertEqual(stm2[1][0].get_labels()[0].get_best().get_content(), u("对 因为"))

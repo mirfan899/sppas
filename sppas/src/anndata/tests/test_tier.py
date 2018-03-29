@@ -1,5 +1,45 @@
-# -*- coding:utf-8 -*-
+# -*- coding: UTF-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.anndata.tests.test_tier
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Test the class sppasTier().
+
+"""
 import unittest
 import random
 
@@ -23,38 +63,62 @@ from ..ctrlvocab import sppasCtrlVocab
 
 
 class TestTier(unittest.TestCase):
+    """
+    A Tier is made of:
 
+        - a name (used to identify the tier),
+        - a set of metadata,
+        - an array of annotations,
+        - a controlled vocabulary (optional),
+        - a media (optional),
+        - a parent (optional).
+
+    """
     def setUp(self):
         pass
 
+    # -----------------------------------------------------------------------
+
     def test_metadata(self):
+        """ sppasTier() is a child of sppasMetadata. """
+
         tierP = sppasTier()
         tierI = sppasTier()
+
+        # A GUID is assigned to each sppasMetadata() object.
+        self.assertEqual(len(tierP.get_meta_keys()), 1)
+        self.assertEqual(len(tierI.get_meta_keys()), 1)
+        self.assertTrue(tierP.is_meta_key('id'))
+        self.assertTrue(tierI.is_meta_key('id'))
+
         tierP.set_meta("key", "value")
         tierI.set_meta('key', "value")
         self.assertEqual(tierI.get_meta('key'), tierP.get_meta('key'))
+        self.assertFalse(tierI.is_meta_key('toto'))
         self.assertEqual(tierI.get_meta('toto'), '')
 
     # -----------------------------------------------------------------------
 
-    def test_init(self):
-        ann = sppasTier()
-        self.assertEqual(len(ann.get_meta_keys()), 1)
-        self.assertTrue(ann.is_meta_key("id"))
-
-    # -----------------------------------------------------------------------
-
     def test_name(self):
+        """ The identifier name of the tier. """
+
         tierP = sppasTier()
+        # The default name is the metadata GUID.
         self.assertEqual(len(tierP.get_name()), 36)
+
         tierP.set_name('test')
         self.assertEqual(tierP.get_name(), 'test')
+
         tierP.set_name('    \r\t\ntest    \r\t\n')
         self.assertEqual(tierP.get_name(), 'test')
         tierP = sppasTier('    \r\t\ntest    \r\t\n')
         self.assertEqual(tierP.get_name(), 'test')
 
+    # -----------------------------------------------------------------------
+
     def test_media(self):
+        """ The media of a tier. """
+
         m = sppasMedia("toto.wav")
         tierP = sppasTier()
         tierP.set_media(m)
@@ -63,7 +127,11 @@ class TestTier(unittest.TestCase):
         with self.assertRaises(AnnDataTypeError):
             tierI = sppasTier(media="media")
 
+    # -----------------------------------------------------------------------
+
     def test_ctrl_vocab(self):
+        """ The controlled vocabulary of a tier. """
+
         voc = sppasCtrlVocab("Verbal Strategies")
         self.assertTrue(voc.add(sppasTag("definition")))
         self.assertTrue(voc.add(sppasTag("example")))
@@ -75,6 +143,7 @@ class TestTier(unittest.TestCase):
                              sppasLabel(sppasTag("gap filling with sound")))
         a3 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(7), sppasPoint(9))),
                              sppasLabel(sppasTag("biz")))
+
         # assign a ctrl_vocab after appending annotations
         tiercv = sppasTier()
         tiercv.set_ctrl_vocab(voc)
@@ -83,7 +152,11 @@ class TestTier(unittest.TestCase):
         with self.assertRaises(ValueError):
             tiercv.append(a3)
         with self.assertRaises(CtrlVocabContainsError):
-            tiercv[0].set_best_tag(sppasTag("error"))
+            # ctrl_vocab does not contains "error"
+            tiercv[0].add_tag(sppasTag("error"))
+
+        print " >>>>>> Should not contain tag error: ", tiercv[0]
+
         # assign a ctrl_vocab before appending annotations
         tiercv = sppasTier(ctrl_vocab=voc)
         tiercv.append(a1)
@@ -93,11 +166,14 @@ class TestTier(unittest.TestCase):
         with self.assertRaises(ValueError):
             tiercv.add(a3)
         with self.assertRaises(CtrlVocabContainsError):
-            tiercv[0].set_best_tag(sppasTag("error"))
-        with self.assertRaises(CtrlVocabContainsError):
+            # ctrl_vocab does not contains "error"
             tiercv[0].add_tag(sppasTag("error"))
 
+    # -----------------------------------------------------------------------
+
     def test_create_ctrl_vocab(self):
+        """ The controlled vocabulary of a tier. """
+
         tier_cv = sppasTier("toto")
         a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3))),
                              sppasLabel(sppasTag("A")))
@@ -113,18 +189,22 @@ class TestTier(unittest.TestCase):
         self.assertTrue(ctrl.contains(sppasTag("A")))
         self.assertTrue(ctrl.contains(sppasTag("B")))
         self.assertTrue(ctrl.contains(sppasTag("C")))
-        self.assertFalse(ctrl.contains(sppasTag("false")))
+        self.assertFalse(ctrl.contains(sppasTag("error")))
 
         with self.assertRaises(CtrlVocabContainsError):
             tier_cv[0].add_tag(sppasTag("error"))
         with self.assertRaises(CtrlVocabContainsError):
-            tier_cv[0].set_best_tag(sppasTag("error"))
+            tier_cv[0].add_tag(sppasTag("error"))
+
+    # -----------------------------------------------------------------------
 
     def test_ann_is_empty(self):
         tier = sppasTier()
         self.assertTrue(tier.is_empty())
         tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3)))))
         self.assertFalse(tier.is_empty())
+
+    # -----------------------------------------------------------------------
 
     def test_type(self):
         tier = sppasTier()
@@ -149,6 +229,8 @@ class TestTier(unittest.TestCase):
         self.assertFalse(tierD.is_interval())
         self.assertTrue(tierD.is_disjoint())
 
+    # -----------------------------------------------------------------------
+
     def test_append(self):
         # Without radius value
         tier = sppasTier()
@@ -170,6 +252,8 @@ class TestTier(unittest.TestCase):
         a2 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2, 1), sppasPoint(9, 1))))
         tier.append(a1)
         tier.append(a2)
+
+    # -----------------------------------------------------------------------
 
     def test_intervals_index(self):
         tier = sppasTier()
@@ -208,6 +292,8 @@ class TestTier(unittest.TestCase):
         self.assertEqual(-1, tier.mindex(sppasPoint(3), bound=0))
         self.assertEqual(0, tier.mindex(sppasPoint(3), bound=1))
 
+    # -----------------------------------------------------------------------
+
     def test_remove(self):
         tier = sppasTier()
         a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3))))
@@ -238,6 +324,8 @@ class TestTier(unittest.TestCase):
         self.assertEqual(nb, 0)
         self.assertEqual(len(tier), 3)
 
+    # -----------------------------------------------------------------------
+
     def test_add_interval(self):
         tier = sppasTier()
         localizations = [sppasInterval(sppasPoint(1.), sppasPoint(2.)),
@@ -264,6 +352,8 @@ class TestTier(unittest.TestCase):
         for a, ar in zip(tier, tier_random):
             self.assertTrue(a is ar)
 
+    # -----------------------------------------------------------------------
+
     def test_add_point(self):
         tier = sppasTier()
         localizations = [sppasPoint(1.),
@@ -280,6 +370,8 @@ class TestTier(unittest.TestCase):
         with self.assertRaises(TierAddError):
             tier.add(sppasAnnotation(sppasLocation(localizations[0])))
 
+    # -----------------------------------------------------------------------
+
     def test_pop(self):
         tier = sppasTier()
         a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3))))
@@ -294,6 +386,8 @@ class TestTier(unittest.TestCase):
         self.assertEqual(len(a), 0)
         a = tier.find(sppasPoint(2), sppasPoint(7))
         self.assertEqual(len(a), 1)
+
+    # -----------------------------------------------------------------------
 
     def test_find_interval(self):
         tier = sppasTier()
@@ -438,6 +532,8 @@ class TestTier(unittest.TestCase):
         annotations = tier.find(sppasPoint(6), sppasPoint(10), overlaps=False)
         self.assertEqual(len(annotations), 0)
 
+    # -----------------------------------------------------------------------
+
     def test_rindex(self):
         tier = sppasTier()
         for i in range(1, 11):
@@ -454,6 +550,8 @@ class TestTier(unittest.TestCase):
         self.assertEqual(tier.rindex(sppasPoint(2)), -1)
         tier.add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(2)))))
         self.assertEqual(tier.rindex(sppasPoint(2)), 0)
+
+    # -----------------------------------------------------------------------
 
     def test_lindex(self):
         tier = sppasTier()
@@ -472,6 +570,8 @@ class TestTier(unittest.TestCase):
         tier.add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3)))))
         tier.add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(4)))))
         self.assertEqual(tier.lindex(sppasPoint(1)), 0)
+
+    # -----------------------------------------------------------------------
 
     def test_mindex(self):
         # frames
@@ -495,11 +595,15 @@ class TestTier(unittest.TestCase):
             index = tier.mindex(time, 0)
             self.assertEqual(index, i)
 
+    # -----------------------------------------------------------------------
+
     def test_index(self):
         tier = sppasTier()
         self.assertEqual(tier.index(sppasPoint(2)), -1)
         tier.add(sppasAnnotation(sppasLocation(sppasPoint(2))))
         self.assertEqual(tier.index(sppasPoint(2)), 0)
+
+    # -----------------------------------------------------------------------
 
     def test_equal_annotation(self):
         tier = sppasTier()
@@ -507,6 +611,8 @@ class TestTier(unittest.TestCase):
         tier.append(a)
         self.assertTrue(tier[0] is a)
         self.assertEqual(tier[0], a)
+
+    # -----------------------------------------------------------------------
 
     def test_near(self):
         # IntervalTier
@@ -565,6 +671,8 @@ class TestTier(unittest.TestCase):
         index = tier.near(sppasPoint(1.7), direction=1)
         self.assertEqual(index, 1)
 
+    # -----------------------------------------------------------------------
+
     def test_start_end_points(self):
         tier = sppasTier()
         self.assertEqual(tier.get_first_point(), None)
@@ -576,12 +684,16 @@ class TestTier(unittest.TestCase):
         tier.add(a)
         self.assertEqual(tier.get_last_point(), 3.)
 
+    # -----------------------------------------------------------------------
+
     def test_start_end_intervals(self):
         tier = sppasTier()
         tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(2.)))))
         tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(4.), sppasPoint(5.)))))
         self.assertEqual(tier.get_first_point(), 1.)
         self.assertEqual(tier.get_last_point(), 5.)
+
+    # -----------------------------------------------------------------------
 
     def test_get_all_points(self):
         tier = sppasTier()
@@ -598,6 +710,8 @@ class TestTier(unittest.TestCase):
         l.append(sppasPoint(3.), score=0.5)
         tier.append(sppasAnnotation(l))
         self.assertEqual(tier.get_all_points(), [sppasPoint(2.4), sppasPoint(3.)])
+
+    # -----------------------------------------------------------------------
 
     def test_has_point(self):
         tier = sppasTier()
@@ -616,6 +730,8 @@ class TestTier(unittest.TestCase):
         self.assertTrue(tier.has_point(sppasPoint(2.4)))
         self.assertTrue(tier.has_point(sppasPoint(3.)))
         self.assertFalse(tier.has_point(sppasPoint(3.4)))
+
+    # -----------------------------------------------------------------------
 
     def test_is_superset(self):
         tier = sppasTier()
@@ -645,6 +761,8 @@ class TestTier(unittest.TestCase):
         subtier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2.), sppasPoint(3.)))))
         self.assertTrue(reftier.is_superset(subtier))
         self.assertFalse(subtier.is_superset(reftier))
+
+    # -----------------------------------------------------------------------
 
     def test_search(self):
         # search strings

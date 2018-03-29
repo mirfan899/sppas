@@ -60,40 +60,37 @@ class sppasAnnotation(sppasMetaData):
     >>> ann = sppasAnnotation(location, label)
 
     """
-    def __init__(self, location, label=None):
+    def __init__(self, location, labels=list()):
         """ Creates a new sppasAnnotation instance.
 
-        :param location: (sppasLocation) the location(s) where the annotation happens
-        :param label: (sppasLabel) the label(s) to stamp this annotation
+        :param location: (sppasLocation) the location(s) where the
+        annotation happens
+        :param labels: (sppasLabel, list) the label(s) to stamp this
+        annotation, or a list of them.
 
         """
         super(sppasAnnotation, self).__init__()
 
+        # Check location instances.
         if isinstance(location, sppasLocation) is False:
             raise AnnDataTypeError(location, "sppasLocation")
 
-        if label is not None:
-            if isinstance(label, sppasLabel) is False:
-                raise AnnDataTypeError(label, "sppasLabel")
-
         self.__parent = None
         self.__location = location
-        self.__label = label
+        self.__labels = list()
+        self.set_labels(labels)
 
     # -----------------------------------------------------------------------
 
-    def get_label(self):
-        """ Return the sppasLabel instance.
+    def get_labels(self):
+        """ Return the list of sppasLabel() instances. """
 
-        It could be None if no label were previously assigned.
-
-        """
-        return self.__label
+        return self.__labels
 
     # -----------------------------------------------------------------------
 
     def get_location(self):
-        """ Return the sppasLocation instance. """
+        """ Return the sppasLocation() instance. """
 
         return self.__location
 
@@ -103,11 +100,11 @@ class sppasAnnotation(sppasMetaData):
         """ Return a deep copy of the annotation. """
 
         location = self.__location.copy()
-        if self.__label is not None:
-            label = self.__label.copy()
-        else:
-            label = None
-        other = sppasAnnotation(location, label)
+        labels = list()
+        for l in self.__labels:
+            labels.append(l.copy())
+
+        other = sppasAnnotation(location, labels)
         other.set_parent(self.__parent)
         return other
 
@@ -119,14 +116,35 @@ class sppasAnnotation(sppasMetaData):
         """ Set a parent tier.
 
         :param parent: (sppasTier) The parent tier of this annotation.
+        :raises: CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError
 
         """
         if parent is not None:
             parent.validate_annotation_location(self.__location)
-            if self.__label is not None:
-                parent.validate_annotation_label(self.__label)
+            for label in self.__labels:
+                parent.validate_annotation_label(label)
 
         self.__parent = parent
+
+    # -----------------------------------------------------------------------
+
+    def set_labels(self, labels):
+        """ Fix a new list of labels for this annotation.
+
+        :param labels: (sppasLabel, list) the label(s) to stamp this
+        annotation, or a list of them.
+
+        """
+        if isinstance(labels, list) is False:
+            labels = [labels]
+        elif labels is None:
+            labels = []
+
+        for label in labels:
+            if label is not None:
+                self.validate_label(label)
+
+        self.__labels = labels
 
     # -----------------------------------------------------------------------
 
@@ -134,151 +152,251 @@ class sppasAnnotation(sppasMetaData):
         """ Validate the annotation.
         Check if the annotation matches the requirements of its parent.
 
-        :raises: CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError
+        :raises: TypeError, CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError
 
         """
+        for label in self.__labels:
+            self.validate_label(label)
         if self.__parent is not None:
-            if self.__label is not None:
-                self.__parent.validate_annotation_label(self.__label)
             self.__parent.validate_annotation_location(self.__location)
 
     # -----------------------------------------------------------------------
-    # Tags
+
+    def validate_label(self, label):
+        """ Validate the label.
+        Check if the label matches the requirements of this annotation.
+
+        :raises: CtrlVocabContainsError, TypeError
+
+        """
+        if label is None:
+            return
+
+        if isinstance(label, sppasLabel) is False:
+            raise AnnDataTypeError(label, "sppasLabel")
+
+        if len(self.__labels) > 0:
+            current_type = set(l.get_type() for l in self.__labels if l is not None)
+            if len(current_type) > 0 and label.get_type() not in current_type:
+                raise TypeError()
+
+        if self.__parent is not None:
+            self.__parent.validate_annotation_label(label)
+
+    # -----------------------------------------------------------------------
+    # Labels
     # -----------------------------------------------------------------------
 
-    def get_best_tag(self):
-        """ Return the tag with the highest score.
+    def is_labelled(self):
+        """ Return True if at least a sppasTag exists and is not None. """
 
-        If no label was previously assigned, returns an empty tag.
+        if len(self.__labels) == 0:
+            return False
+
+        for label in self.__labels:
+            if label is not None:
+                if label.is_tagged() is True:
+                    return True
+
+        return False
+
+    # -----------------------------------------------------------------------
+
+    def append_label(self, label):
+        """ Append a label into the list of labels.
+
+        :param label: (sppasLabel)
+
+        """
+        self.validate_label(label)
+        self.__labels.append(label)
+
+    # -----------------------------------------------------------------------
+
+    def get_labels_best_tag(self):
+        """ Return a list with the best tag of each label. """
+
+        tags = list()
+        for label in self.__labels:
+            best = label.get_best()
+            if best is not None:
+                tags.append(best)
+            else:
+                tags.append(sppasTag(''))
+
+        return tags
+
+    # -----------------------------------------------------------------------
+
+    def get_best_tag(self, label_idx=0):
+        """ Return the tag with the highest score of a label or an empty string.
+
+        :param label_idx: (int)
 
         """
         # No label defined
-        if self.__label is None:
-            return sppasTag("")
-        # No tag in the label
-        tag = self.__label.get_best()
-        if tag is None:
+        if len(self.__labels) == 0:
             return sppasTag("")
 
-        return tag
+        try:
+            label = self.__labels[label_idx]
+        except IndexError:
+            raise IndexError('Invalid label index')
+
+        if label is None:
+            return sppasTag('')
+
+        best = label.get_best()
+        if best is not None:
+            return best
+        return sppasTag("")
 
     # -----------------------------------------------------------------------
 
-    def set_best_tag(self, tag):
-        """ Set the best tag of the label.
-        It will replace the tag with the highest score by the given one,
-        and do not change the score.
-
-        :param tag: (sppasTag)
-
-        """
-        if self.__label is None:
-            self.__label = sppasLabel(sppasTag(""))
-
-        if self.__parent is not None:
-            old_tag = self.get_best_tag().copy()
-            self.__label.get_best().set(tag)
-            try:
-                self.__parent.validate_annotation_label(self.__label)
-            except Exception:
-                self.__label.get_best().set(old_tag)
-                raise
-        else:
-            self.__label.get_best().set(tag)
-
-    # -----------------------------------------------------------------------
-
-    def add_tag(self, tag, score=None):
-        """ Append an alternative tag in the label.
+    def add_tag(self, tag, score=None, label_idx=0):
+        """ Append an alternative tag in a label.
 
         :param tag: (sppasTag)
         :param score: (float)
-        :raises: AnnDataTypeError
+        :param label_idx: (int)
+        :raises: AnnDataTypeError, IndexError
 
         """
-        if self.__label is None:
-            self.__label = sppasLabel()
-
-        self.__label.append(tag, score)
-        if self.__parent is not None:
+        # No label previously defined
+        if len(self.__labels) == 0:
+            label = sppasLabel(tag, score)
+            self.__labels.append(label)
+        else:
             try:
-                self.__parent.validate_annotation_label(self.__label)
-            except Exception:
-                self.__label.remove(tag)
-                raise
+                label = self.__labels[label_idx]
+                if label is None:
+                    label = sppasLabel(tag, score)
+                else:
+                    label.append(tag, score)
+            except IndexError:
+                raise IndexError('Invalid label index')
+
+        # tag, score were added. Now, validate.
+        try:
+            self.validate_label(label)
+        except:
+            # restore
+            label.remove(tag)
+            raise
 
     # -----------------------------------------------------------------------
 
-    def remove_tag(self, tag):
+    def remove_tag(self, tag, label_idx=0):
         """ Remove an alternative tag of the label.
 
         :param tag: (sppasTag) the tag to be removed of the list.
+        :param label_idx: (int)
 
         """
-        if self.__label is not None:
-            self.__label.remove(tag)
+        try:
+            label = self.__labels[label_idx]
+        except IndexError:
+            raise IndexError('Invalid label index')
+
+        label.remove(tag)
 
     # -----------------------------------------------------------------------
 
-    def contains_tag(self, tag, function='exact', reverse=False):
+    def contains_tag(self, tag, function='exact', reverse=False, label_idx=0):
         """ Return True if the given tag is in the label.
 
         :param tag: (sppasTag)
         :param function: Search function
         :param reverse: Reverse the function.
+        :param label_idx: (int)
 
         """
-        r = self.__label.contains(tag, function)
+        # No label defined
+        if len(self.__labels) == 0:
+            return False
+
+        try:
+            label = self.__labels[label_idx]
+        except IndexError:
+            raise IndexError('Invalid label index')
+
+        if label is None:
+            return False
+        if label.is_tagged() is False:
+            return False
+
+        r = label.contains(tag, function)
         if reverse is False:
             return r
+
         return not r
 
     # -----------------------------------------------------------------------
 
-    def label_is_string(self):
-        """ Return True if the type of the tags of a label are str or unicode. """
+    def label_is_filled(self):
+        """ Return True if at least one BEST tag is filled. """
 
-        if self.__label is None:
+        for label in self.__labels:
+            if label is not None:
+                if label.is_tagged() is True:
+                    if label.get_best().get_content() != "":
+                        return True
+        return False
+
+    # -----------------------------------------------------------------------
+
+    def label_is_string(self):
+        """ Return True if the type of the labels is 'str'. """
+
+        if len(self.__labels) == 0:
             return False
-        return self.__label.is_string()
+
+        for label in self.__labels:
+            if label.is_tagged() is True:
+                return label.is_string()
+
+        return False
 
     # -----------------------------------------------------------------------
 
     def label_is_float(self):
-        """ Return True if the tags are float values """
+        """ Return True if the type of the labels is 'float'. """
 
-        if self.__label is None:
+        if len(self.__labels) == 0:
             return False
-        return self.__label.is_float()
 
+        for label in self.__labels:
+            if label.is_tagged() is True:
+                return label.is_float()
+
+        return False
     # -----------------------------------------------------------------------
 
     def label_is_int(self):
-        """ Return True if the tags are integer values """
+        """ Return True if the type of the labels is 'int'. """
 
-        if self.__label is None:
+        if len(self.__labels) == 0:
             return False
-        return self.__label.is_int()
+
+        for label in self.__labels:
+            if label.is_tagged() is True:
+                return label.is_int()
+
+        return False
 
     # -----------------------------------------------------------------------
 
     def label_is_bool(self):
-        """ Return True if the tags are integer values """
+        """ Return True if the type of the labels is 'bool'. """
 
-        if self.__label is None:
+        if len(self.__labels) == 0:
             return False
-        return self.__label.is_bool()
 
-    # -----------------------------------------------------------------------
+        for label in self.__labels:
+            if label.is_tagged() is True:
+                return label.is_bool()
 
-    def validate_label(self):
-        """ Validate the label of the annotation.
-
-        :raises: CtrlVocabContainsError
-
-        """
-        if self.__parent is not None:
-            self.__parent.validate_annotation_label(self.__label)
+        return False
 
     # -----------------------------------------------------------------------
     # Localization
@@ -392,10 +510,18 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        return "Annotation: {:s} {:s}".format(self.__location, self.__label)
+        return "Annotation: {:s} {:s}".format(self.__location, self.__labels)
 
     def __str__(self):
-        return "{:s} {:s}".format(self.__location, self.__label)
+        return "{:s} {:s}".format(self.__location, self.__labels)
 
     def __eq__(self, other):
-        return self.__location == other.get_location() and self.__label == other.get_label()
+        if self.__location != other.get_location():
+            return False
+        if len(self.__labels) != len(other.get_labels()):
+            return False
+        for label1, label2 in zip(self.__labels, other.get_labels()):
+            if label1 != label2:
+                return False
+
+        return True

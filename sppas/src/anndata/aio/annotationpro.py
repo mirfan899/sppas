@@ -519,7 +519,7 @@ class sppasANTX(sppasBaseIO):
         child_id_layer.text = tier.get_meta('id')
 
         child_id_label = ET.SubElement(segment_root, 'Label')    # Label
-        child_id_label.text = sppasANTX._serialize_label(ann.get_label())
+        child_id_label.text = sppasANTX._serialize_labels(ann.get_labels())
 
         child_id_start = ET.SubElement(segment_root, 'Start')    # Start
         child_id_dur = ET.SubElement(segment_root, 'Duration')   # Duration
@@ -553,6 +553,20 @@ class sppasANTX(sppasBaseIO):
         for key in elt_opt_segment:
             child = ET.SubElement(segment_root, key)
             child.text = ann.get_meta(key, elt_opt_segment[key])
+
+    # -----------------------------------------------------------------------
+    @staticmethod
+    def _serialize_labels(labels):
+        """ Convert labels into a string. """
+
+        if len(labels) == 0:
+            return ""
+
+        content = ""
+        for label in labels:
+            content += sppasANTX._serialize_label(label) + " "
+        content = content.strip()
+        return content
 
     # -----------------------------------------------------------------------
 

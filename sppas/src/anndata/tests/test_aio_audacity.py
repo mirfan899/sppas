@@ -150,9 +150,9 @@ class TestAudacity(unittest.TestCase):
         trs._parse_labeltrack(root)
         self.assertEqual(len(trs), 1)
         self.assertEqual(len(trs[0]), 3)
-        self.assertEqual(trs[0][0].get_label().get_best(), sppasTag('label1'))
-        self.assertEqual(trs[0][1].get_label().get_best(), sppasTag('label2'))
-        self.assertEqual(trs[0][2].get_label().get_best(), sppasTag('label3'))
+        self.assertEqual(trs[0][0].get_labels()[0].get_best(), sppasTag('label1'))
+        self.assertEqual(trs[0][1].get_labels()[0].get_best(), sppasTag('label2'))
+        self.assertEqual(trs[0][2].get_labels()[0].get_best(), sppasTag('label3'))
         self.assertTrue(trs[0].is_interval())
 
     # -----------------------------------------------------------------------
@@ -170,9 +170,9 @@ class TestAudacity(unittest.TestCase):
         trs._parse_labeltrack(root)
         self.assertEqual(len(trs), 1)
         self.assertEqual(len(trs[0]), 3)
-        self.assertEqual(trs[0][0].get_label().get_best(), sppasTag('label1'))
-        self.assertEqual(trs[0][1].get_label().get_best(), sppasTag('label2'))
-        self.assertEqual(trs[0][2].get_label().get_best(), sppasTag('label3'))
+        self.assertEqual(trs[0][0].get_labels()[0].get_best(), sppasTag('label1'))
+        self.assertEqual(trs[0][1].get_labels()[0].get_best(), sppasTag('label2'))
+        self.assertEqual(trs[0][2].get_labels()[0].get_best(), sppasTag('label3'))
         self.assertTrue(trs[0].is_point())
 
     # -----------------------------------------------------------------------
@@ -191,9 +191,9 @@ class TestAudacity(unittest.TestCase):
         self.assertEqual(len(trs), 2)
         self.assertEqual(len(trs[1]), 2)
         self.assertEqual(len(trs[0]), 1)
-        self.assertEqual(trs[1][0].get_label().get_best(), sppasTag('label1'))
-        self.assertEqual(trs[1][1].get_label().get_best(), sppasTag('label3'))
-        self.assertEqual(trs[0][0].get_label().get_best(), sppasTag('label2'))
+        self.assertEqual(trs[1][0].get_labels()[0].get_best(), sppasTag('label1'))
+        self.assertEqual(trs[1][1].get_labels()[0].get_best(), sppasTag('label3'))
+        self.assertEqual(trs[0][0].get_labels()[0].get_best(), sppasTag('label2'))
         self.assertTrue(trs[1].is_point())
         self.assertTrue(trs[0].is_interval())
 

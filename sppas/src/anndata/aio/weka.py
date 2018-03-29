@@ -310,29 +310,29 @@ class sppasWEKA(sppasBaseIO):
 
             # Convert annotation tags.
             for ann in tier:
-                if ann.get_label() is not None:
-                    label = ann.get_label()
-                    if len(label) > 0:
-                        for tag, score in label:
-                            if tag.get_type() == "str":
-                                # Replace whitespace by underscore and check for an empty tag.
-                                tag_text = sppasUnicode(tag.get_content()).clear_whitespace()
-                                if len(tag_text) == 0:
-                                    # The tag is empty. We have to fill it (or not).
-                                    if tier.is_meta_key("weka_class") is False:
-                                        tag_text = self._empty_annotation_tag
-                                    else:
-                                        if self._empty_annotation_class_tag is not None:
-                                            tag_text = self._empty_annotation_class_tag
+                if ann.is_labelled():
+                    for label in ann.get_labels():
+                        if len(label) > 0:
+                            for tag, score in label:
+                                if tag.get_type() == "str":
+                                    # Replace whitespace by underscore and check for an empty tag.
+                                    tag_text = sppasUnicode(tag.get_content()).clear_whitespace()
+                                    if len(tag_text) == 0:
+                                        # The tag is empty. We have to fill it (or not).
+                                        if tier.is_meta_key("weka_class") is False:
+                                            tag_text = self._empty_annotation_tag
+                                        else:
+                                            if self._empty_annotation_class_tag is not None:
+                                                tag_text = self._empty_annotation_class_tag
 
-                                new_tag = sppasTag(tag_text)
-                                # Set the new version of the tag to the label
-                                if new_tag != tag:
-                                    ann.remove_tag(tag)
-                                    label.append(new_tag, score)
-                    else:
-                        # The annotation was not labelled. We have to do it.
-                        label.append(sppasTag(self._empty_annotation_tag))
+                                    new_tag = sppasTag(tag_text)
+                                    # Set the new version of the tag to the label
+                                    if new_tag != tag:
+                                        ann.remove_tag(tag)
+                                        label.append(new_tag, score)
+                else:
+                    # The annotation was not labelled. We have to do it.
+                    ann.set_label(sppasTag(self._empty_annotation_tag))
 
         # Set the controlled vocabularies
         self._create_ctrl_vocab()
@@ -444,8 +444,8 @@ class sppasWEKA(sppasBaseIO):
 
     # -----------------------------------------------------------------
 
-    def _get_label(self, localization, tier):
-        """ Return the sppasLabel() at the given time in the given tier.
+    def _get_labels(self, localization, tier):
+        """ Return the list of sppasLabel() at the given time in the given tier.
         Return the empty label if no label was assigned at the given time.
 
         :param localization: (sppasPoint)
@@ -460,32 +460,18 @@ class sppasWEKA(sppasBaseIO):
             mindex = tier.index(localization)
         else:
             mindex = tier.mindex(localization, bound=10)
-            # TODO: return a sppasLabel() with all sppasTag and their scores
-            # depending on the observed tags during the localization (i.e.
+            # TODO: return all sppasLabel() during the localization (i.e.
             # during the period including the vagueness) and not only at the
             # midpoint of the localization.
             # And in the same idea, we have to deal with overlapping annotations.
 
         # Fix the label to be returned: the observed one or an empty one
         if mindex != -1:
-            label = tier[mindex].get_label()
-            if label is not None and len(label) > 0 and label.get_best().is_empty() is False:
-                return label
+            ann = tier[mindex]
+            if ann.is_labelled():
+                return ann.get_labels()
 
-        return sppasLabel(sppasTag(self._empty_annotation_tag))
-
-    # -----------------------------------------------------------------
-
-    def _get_tag(self, localization, tier):
-        """ Return the sppasTag() of at the given time in the given tier.
-
-        :param localization: (sppasPoint)
-        :param tier: (sppasTier)
-
-        :returns: sppasTag() with the highest score or an empty one
-
-        """
-        return self._get_label(localization, tier).get_best()
+        return [sppasLabel(sppasTag(self._empty_annotation_tag))]
 
     # -----------------------------------------------------------------
 
@@ -527,8 +513,7 @@ class sppasWEKA(sppasBaseIO):
         elif anchor_tier is not None:
             for ann in anchor_tier:
                 localization = ann.get_location().get_best()
-                label = ann.get_label()
-                if label is not None:
+                if ann.label_is_filled() is True:
                     if localization.is_point():
                         all_points.append(localization)
                     else:
@@ -551,6 +536,8 @@ class sppasWEKA(sppasBaseIO):
 
         The instances are created only for the labelled annotations of
         the class tier.
+        If several classes were assigned, the instance is also ignored.
+        (we also could choose to predict the one with the better score)
 
         :returns: List of (sppasPoint, tag content)
 
@@ -572,47 +559,48 @@ class sppasWEKA(sppasBaseIO):
         instance_points = list()
         for point in all_points:
 
-            # Fix the tag which have to be predicted
-            class_tag = self._get_tag(point, class_tier)
+            # Fix the tag to predict
+            labels = self._get_labels(point, class_tier)
+            tags = list()
+            for label in labels:
+                if label is not None and label.is_tagged():
+                    tag = label.get_best()
+                    if tag.get_content() != self._empty_annotation_tag:
+                        tags.append(tag.get_content())
 
-            # Append only if the class was labelled
-            if class_tag.get_content() != self._empty_annotation_tag:
-                instance_points.append((point, class_tag.get_content()))
+            # Append only if the class was labelled * * * WITH ONLY ONE LABEL * * *
+            if len(tags) == 1:
+                instance_points.append((point, tags[0]))
 
         return instance_points
 
     # -----------------------------------------------------------------
 
     @staticmethod
-    def _scores_to_probas(label):
-        """ Convert scores of a label to probas. """
+    def _scores_to_probas(tags, function_score):
+        """ Convert scores of a set of tags to probas. """
 
-        if label is None:
-            return False
-        if len(label) == 0:
+        if len(tags) == 0:
             return False
 
-        modified = False
-        # Check is the function to compare scores is "max"
-        function_score = label.get_function_score()
+        # Check if the function to compare scores is "max"
         if function_score is min:
-            for tag, score in label:
+            for tag in tags:
+                score = tags[tag]
                 if score is not None:
-                    label.set_score(tag, 1./score)
-            label.set_function_score(max)
-            modified = True
+                        tags[tag] = 1. / score
 
         # Convert "None" scores into a numerical value
         # then convert numerical values into probabilities.
-        if len(label) == 1:
-            tag, score = label[0]
-            label.set_score(tag, 1.)
-            modified = True
+        if len(tags) == 1:
+            for tag in tags:
+                tags[tag] = 1.
 
         else:
             # Search for the minimum score
             min_score = None
-            for tag, score in label:
+            for tag in tags:
+                score = tags[tag]
                 if score is not None:
                     if min_score is None or min_score > score:
                         min_score = score
@@ -621,17 +609,16 @@ class sppasWEKA(sppasBaseIO):
                 min_score = 2.
 
             # Assign a score to the tags if needed
-            for tag, score in label:
+            for tag in tags:
+                score = tags[tag]
                 if score is None:
-                    label.set_score(tag, min_score / 2.)
+                    tags[tag] = min_score / 2.
 
             # Convert scores to probabilities
-            total = float(sum(score for tag, score in label if score is not None))
-            for tag, score in label:
-                label.set_score(tag, float(score) / total)
-                modified = True
-
-        return modified
+            total = float(sum(tags[tag] for tag in tags))
+            for tag in tags:
+                score = tags[tag]
+                tags[tag] = float(score) / total
 
     # -----------------------------------------------------------------
 
@@ -658,35 +645,62 @@ class sppasWEKA(sppasBaseIO):
             if is_att is False:
                 continue
 
+            # Get all labels of the annotation
+            labels = self._get_labels(point, tier)
+
             if is_numeric is True:
 
-                label = self._get_label(point, tier)
+                # Create a list of tags
+                tags = dict()
+                function_score = max
+                for label in labels:
+                    if label is None:
+                        continue
+                    if len(label) == 0:
+                        continue
+                    function_score = label.get_function_score()
+                    for tag, score in label:
+                        if tag in tags:
+                            tags[tag] += score
+                        else:
+                            tags[tag] = score
 
                 # Scores of observed tags are converted to probabilities
-                self._scores_to_probas(label)
+                self._scores_to_probas(tags, function_score)
 
                 # Score of un-observed tags are all set to an epsilon probability
-                nb_eps_tags = len(tier.get_ctrl_vocab()) - len(label)
+                nb_eps_tags = len(tier.get_ctrl_vocab()) - len(tags)
                 epsilon = self._epsilon_proba
                 if tier.is_meta_key('weka_epsilon'):
                     epsilon = float(tier.get_meta('weka_epsilon'))
                 # ... if an uncertain tag is observed
-                if label.contains(sppasTag(self._uncertain_annotation_tag)) is True:
-                    score = label.get_score(sppasTag(self._uncertain_annotation_tag))
+                uncertain_tag = sppasTag(self._uncertain_annotation_tag)
+                if uncertain_tag in tags:
+                    score = tags[uncertain_tag]
                     nb_eps_tags += 1
                     epsilon = score / float(nb_eps_tags)
-                    label.remove(sppasTag(self._uncertain_annotation_tag))
+                    del tags[uncertain_tag]
 
                 # All possible tags are written
                 for tag in tier.get_ctrl_vocab():
                     proba = epsilon
-                    if label.contains(tag) is True:
-                        proba = label.get_score(tag) - (nb_eps_tags * epsilon)
+                    if tag in tags:
+                        proba = tags[tag] - (nb_eps_tags * epsilon)
                     instances_data.append(str(proba))
+
             else:
 
-                tag = self._get_tag(point, tier)
-                instances_data.append(tag.get_content())
+                content = ""
+                for label in labels:
+                    if label is None:
+                        continue
+                    if len(label) == 0:
+                        continue
+                    content += label.get_best().get_content() + " "
+                content = content.strip()
+                if len(content) == 0:
+                    content = self._empty_annotation_tag
+                instances_data.append(content)
 
         return instances_data
 
