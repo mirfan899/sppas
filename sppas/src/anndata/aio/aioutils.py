@@ -142,36 +142,69 @@ def fill_gaps(tier, min_loc=None, max_loc=None):
 # ---------------------------------------------------------------------------
 
 
+def serialize_labels(labels):
+    """ Convert labels into a string. """
+
+    label_contents = list()
+    for label in labels:
+        label_contents.append(serialize_label(label))
+
+    if len(label_contents) == 0:
+        return ""
+
+    return "\n".join(label_contents)
+
+# -----------------------------------------------------------------------
+
+
+def serialize_label(label):
+    """ Convert a label into a string, including alternative tags. """
+
+    if label is None:
+        return ""
+
+    tag_contents = list()
+
+    for tag, score in label:
+        tag_content = tag.get_content()
+        if len(tag_content) > 0:
+            tag_contents += tag_content
+
+    if len(tag_contents) == 0:
+        return ""
+    if len(tag_contents) == 1:
+        return tag_contents[0]
+
+    return "{ " + " / ".join(tag_contents) + " }"
+
+# -----------------------------------------------------------------------
+
+
 def unfill_gaps(tier):
     """ Return the tier in which un-labelled annotations are removed.
+
     An un_labelled annotation means that:
-        - either the label is None,
-        - or the best tag of the label is an empty string.
+
+        - the annotation has no labels,
+        - or the tags of each label are an empty string.
+
+    The hierarchy is not copied to the new tier.
 
     :param tier: (Tier)
-    :returns: tier
+    :returns: (sppasTier)
 
     """
-    to_pop = list()
-    for i, ann in enumerate(tier):
-        if ann.label_is_filled():
-            to_pop.append(i)
-        # labels = ann.get_labels()
-        # if len(labels) == 0:
-        #     to_pop.append(i)
-        # else:
-        #     for label in labels:
-        #         if label is None \
-        #            or label.is_tagged() is False \
-        #            or label.get_best().get_content() == "":
-        #             to_pop.append(i)
-
     new_tier = sppasTier(tier.get_name()+"-unfill")
     new_tier.set_ctrl_vocab(tier.get_ctrl_vocab())
     new_tier.set_media(tier.get_media())
+    for key in tier.get_meta_keys():
+        new_tier.set_meta(key, tier.get_meta(key))
+
     for i, ann in enumerate(tier):
-        if i not in to_pop:
-            new_tier.append(ann.copy())
+        if ann.label_is_filled() is True:
+            content = serialize_labels(ann.get_labels())
+            if len(content) > 0:
+                new_tier.append(ann.copy())
 
     return new_tier
 

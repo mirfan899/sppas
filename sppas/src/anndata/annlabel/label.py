@@ -68,7 +68,7 @@ class sppasLabel(object):
     A data type can be associated, as sppasTag() can be 'int', 'float' or 'bool'.
 
     """
-    def __init__(self, tag=None, score=None):
+    def __init__(self, tag, score=None):
         """ Creates a new Label instance.
 
         :param tag: (sppasTag or list of sppasTag)
@@ -76,7 +76,6 @@ class sppasLabel(object):
 
         """
         self.__tags = None
-        self.__fct = max
 
         if tag is not None:
             if isinstance(tag, list):
@@ -91,26 +90,6 @@ class sppasLabel(object):
 
     # -----------------------------------------------------------------------
     # Setters
-    # -----------------------------------------------------------------------
-
-    def get_function_score(self):
-        """ Return the function used to compare scores. """
-
-        return self.__fct
-
-    # -----------------------------------------------------------------------
-
-    def set_function_score(self, fct_name):
-        """ Set a new function to compare scores.
-
-        :param fct_name: one of min or max.
-
-        """
-        if fct_name not in (min, max):
-            raise AnnDataTypeError(fct_name, "min, max")
-
-        self.__fct = fct_name
-
     # -----------------------------------------------------------------------
 
     def append_content(self, content, data_type="str", score=None):
@@ -405,11 +384,21 @@ class sppasLabel(object):
                 return False
             if len(self.__tags) != len(other):
                 return False
-            for (l1, l2) in zip(self.__tags, other):
-                if l1[0] != l2[0] or l1[1] != l2[1]:
+            for (tag1, tag2) in zip(self.__tags, other):
+                # compare the typed content of the tags and
+                # also compare the scores...
+                if tag1[0] != tag2[0]:
+                    return False
+                if tag1[1] != tag2[1]:
                     return False
             return True
         else:
+            # self and other are both None
             if other is None:
                 return True
         return False
+    
+    # -----------------------------------------------------------------------
+
+    def __ne__(self, other):
+        return not self == other

@@ -262,8 +262,8 @@ class TestWEKA(unittest.TestCase):
     def test_get_labels(self):
         """ Return the sppasLabel() at the given time in the given tier.
             Return the empty label if no label was assigned at the given time.
-        """
 
+        """
         empty = sppasLabel(sppasTag("none"))
         weka = sppasWEKA()
         t = sppasTranscription()
@@ -291,7 +291,7 @@ class TestWEKA(unittest.TestCase):
         tierp = t.create_tier(name="tierPoints")
         tierp.create_annotation(sppasLocation(sppasPoint(1.)))
         tierp.create_annotation(sppasLocation(sppasPoint(5.)), sppasLabel(sppasTag('H*')))
-        tierp.create_annotation(sppasLocation(sppasPoint(12.)), sppasLabel())
+        tierp.create_annotation(sppasLocation(sppasPoint(12.)), sppasLabel(sppasTag('')))
         self.assertEqual(weka._get_labels(sppasPoint(5.), tierp), [sppasLabel(sppasTag('H*'))])
         self.assertEqual(weka._get_labels(sppasPoint(0.), tierp), [empty])
         self.assertEqual(weka._get_labels(sppasPoint(1.), tierp), [empty])
@@ -358,19 +358,19 @@ class TestWEKA(unittest.TestCase):
     def test_scores_to_probas(self):
         """ Convert scores of a set of tags to probas. """
 
-        self.assertFalse(sppasWEKA._scores_to_probas([], max))
+        self.assertFalse(sppasWEKA._scores_to_probas([]))
 
         tags = dict()
 
         # only one tag, without score (the most common situation)
         tag = sppasTag("")
         tags[tag] = None
-        sppasWEKA._scores_to_probas(tags, max)
+        sppasWEKA._scores_to_probas(tags)
         self.assertEqual(tags[tag], 1.)
 
         # only one tag, with a score (numerical or string)
         tags[tag] = 3
-        sppasWEKA._scores_to_probas(tags, max)
+        sppasWEKA._scores_to_probas(tags)
         self.assertEqual(tags[tag], 1.)
 
         # several tags, all with scores
@@ -381,7 +381,7 @@ class TestWEKA(unittest.TestCase):
         tags[tag1] = 3
         tags[tag2] = 2
         tags[tag3] = 5
-        sppasWEKA._scores_to_probas(tags, max)
+        sppasWEKA._scores_to_probas(tags)
         self.assertEqual(tags[tag1], 0.3)
         self.assertEqual(tags[tag2], 0.2)
         self.assertEqual(tags[tag3], 0.5)
@@ -390,7 +390,7 @@ class TestWEKA(unittest.TestCase):
         tags = dict()
         tags[tag1] = None
         tags[tag2] = None
-        sppasWEKA._scores_to_probas(tags, max)
+        sppasWEKA._scores_to_probas(tags)
         self.assertEqual(tags[tag1], 0.5)
         self.assertEqual(tags[tag2], 0.5)
 
@@ -399,21 +399,10 @@ class TestWEKA(unittest.TestCase):
         tags[tag1] = 7
         tags[tag2] = 2
         tags[tag3] = None   # score will be 1 (half of the min)
-        sppasWEKA._scores_to_probas(tags, max)
+        sppasWEKA._scores_to_probas(tags)
         self.assertEqual(tags[tag1], 0.7)
         self.assertEqual(tags[tag2], 0.2)
         self.assertEqual(tags[tag3], 0.1)
-
-        # several tags, with "min" function
-        # several tags, some without scores
-        tags = dict()
-        tags[tag1] = 7
-        tags[tag2] = 2
-        tags[tag3] = None   # score will be 1 (half of the min)
-        sppasWEKA._scores_to_probas(tags, min)
-        self.assertEqual(round(tags[tag1], 2), 0.2)
-        self.assertEqual(round(tags[tag2], 2), 0.7)
-        self.assertEqual(round(tags[tag3], 2), 0.1)
 
     # -----------------------------------------------------------------------
 

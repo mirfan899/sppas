@@ -246,11 +246,6 @@ class sppasXRA(sppasBaseIO):
                     score = localization_root.attrib["score"]
                     location.append(localization, score)
 
-        # read scoremode
-        if 'scoremode' in location_root.attrib:
-            fun = globals()['__builtins__'][location_root.attrib['scoremode']]
-            location.set_function_score(fun)
-
         return location
 
     # -----------------------------------------------------------------------
@@ -386,21 +381,22 @@ class sppasXRA(sppasBaseIO):
 
         """
         # read list of tags
-        label = sppasLabel()
+        label = None
         for tag_root in label_root.findall('Tag'):
             tag, score = sppasXRA._parse_tag(tag_root)
-            label.append(tag, score)
+            if label is None:
+                label = sppasLabel(tag, score)
+            else:
+                label.append(tag, score)
 
-        if len(label) == 0:
+        if label is None:
             # XRA < 1.3
             for tag_root in label_root.findall('Text'):
                 tag, score = sppasXRA._parse_tag(tag_root)
-                label.append(tag, score)
-
-        # read scoremode
-        if 'scoremode' in label_root.attrib:
-            fun = globals()['__builtins__'][label_root.attrib['scoremode']]
-            label.set_function_score(fun)
+                if label is None:
+                    label = sppasLabel(tag, score)
+                else:
+                    label.append(tag, score)
 
         return label
 
@@ -658,9 +654,6 @@ class sppasXRA(sppasBaseIO):
         :param location: (sppasLocation)
 
         """
-        if location.get_function_score() != max:
-            location_root.set('scoremode', location.get_function_score().__name__)
-
         for localization, score in location:
             if localization.is_point():
                 point_node = ET.SubElement(location_root, 'Point')
@@ -734,9 +727,6 @@ class sppasXRA(sppasBaseIO):
         :param label: (sppasLabel)
 
         """
-        if label.get_function_score() != max:
-            label_root.set('scoremode', label.get_function_score().__name__)
-
         for tag, score in label:
             tag_node = ET.SubElement(label_root, 'Tag')
             if score is not None:

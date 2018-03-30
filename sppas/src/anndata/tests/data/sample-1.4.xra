@@ -2,8 +2,7 @@
 <Document
 		author="Brigitte Bigi"
 		date="2018-03-30"
-		format="1.4"
-		name="sample">
+		format="1.4">
 
 	<Metadata>
 			<Entry key="created">2017-03-06</Entry>
@@ -102,7 +101,7 @@
                     <End midpoint="0.7890" radius="0.001" />
                 </Interval>
             </Location>
-            <Label scoremode="min">
+            <Label>
                 <Tag score="-0.632">le texte supposé</Tag>
                 <Tag score="-0.568">un texte alternatif</Tag>
             </Label>

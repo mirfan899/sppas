@@ -224,9 +224,6 @@ class TestBasePraat(unittest.TestCase):
     def test_serialize_label_text(self):
         """ Convert a label into a text string. """
 
-        line = sppasBasePraat._serialize_labels_text([sppasLabel()])
-        self.assertEqual(line, '\t\t\ttext = ""\n')
-
         line = sppasBasePraat._serialize_labels_text([sppasLabel(sppasTag(""))])
         self.assertEqual(line, '\t\t\ttext = ""\n')
 
@@ -247,9 +244,6 @@ class TestBasePraat(unittest.TestCase):
 
     def test_serialize_label_value(self):
         """ Convert a label with a numerical value into a string. """
-
-        with self.assertRaises(IOError):
-            sppasBasePraat._serialize_labels_value([sppasLabel()])
 
         with self.assertRaises(IOError):
             sppasBasePraat._serialize_labels_value([sppasLabel(sppasTag(""))])

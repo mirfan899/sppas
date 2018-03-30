@@ -59,7 +59,7 @@ class sppasLocation(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Represents the location of an Annotation.
 
     The location is a set of alternative localizations.
@@ -76,7 +76,6 @@ class sppasLocation(object):
 
         """
         self.__localizations = list()
-        self.__fct = max
 
         if localization is not None:
             if isinstance(localization, list):
@@ -84,26 +83,6 @@ class sppasLocation(object):
                     self.append(loc, 1./len(localization))
             else:
                 self.append(localization, score)
-
-    # -----------------------------------------------------------------------
-
-    def get_function_score(self):
-        """ Return the function used to compare scores. """
-
-        return self.__fct
-
-    # -----------------------------------------------------------------------
-
-    def set_function_score(self, fct_name):
-        """ Set a new function to compare scores.
-
-        :param fct_name: one of min or max.
-
-        """
-        if fct_name not in (min, max):
-            raise AnnDataTypeError(fct_name, "min, max")
-
-        self.__fct = fct_name
 
     # -----------------------------------------------------------------------
 
@@ -259,7 +238,7 @@ class sppasLocation(object):
     def __str__(self, *args, **kwargs):
         st = ""
         for t, s in self.__localizations:
-            st += "{!s:s}, {:s} ; ".format(t, s)
+            st += "{!s:s}, {!s:s} ; ".format(t, s)
         return st
 
     # -----------------------------------------------------------------------
@@ -281,9 +260,18 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def __eq__(self, other):
+
         if len(self.__localizations) != len(other):
             return False
         for (l1, l2) in zip(self.__localizations, other):
-            if l1[0] != l2[0] or l1[1] != l2[1]:
+            if l1[0] != l2[0]:
                 return False
+            if l1[1] != l2[1]:
+                return False
+
         return True
+
+    # -----------------------------------------------------------------------
+
+    def __ne__(self, other):
+        return not self == other

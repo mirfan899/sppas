@@ -64,10 +64,7 @@ class TestBaseHTK(unittest.TestCase):
         # No label
         a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
         self.assertEqual(sppasBaseHTK._serialize_annotation(a1), "")
-        # Empty label
-        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))),
-                             sppasLabel())
-        self.assertEqual(sppasBaseHTK._serialize_annotation(a1), "")
+
         # Empty tag
         a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))),
                              sppasLabel(sppasTag("")))

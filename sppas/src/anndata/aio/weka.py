@@ -577,18 +577,11 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     @staticmethod
-    def _scores_to_probas(tags, function_score):
+    def _scores_to_probas(tags):
         """ Convert scores of a set of tags to probas. """
 
         if len(tags) == 0:
             return False
-
-        # Check if the function to compare scores is "max"
-        if function_score is min:
-            for tag in tags:
-                score = tags[tag]
-                if score is not None:
-                        tags[tag] = 1. / score
 
         # Convert "None" scores into a numerical value
         # then convert numerical values into probabilities.
@@ -652,13 +645,11 @@ class sppasWEKA(sppasBaseIO):
 
                 # Create a list of tags
                 tags = dict()
-                function_score = max
                 for label in labels:
                     if label is None:
                         continue
                     if len(label) == 0:
                         continue
-                    function_score = label.get_function_score()
                     for tag, score in label:
                         if tag in tags:
                             tags[tag] += score
@@ -666,7 +657,7 @@ class sppasWEKA(sppasBaseIO):
                             tags[tag] = score
 
                 # Scores of observed tags are converted to probabilities
-                self._scores_to_probas(tags, function_score)
+                self._scores_to_probas(tags)
 
                 # Score of un-observed tags are all set to an epsilon probability
                 nb_eps_tags = len(tier.get_ctrl_vocab()) - len(tags)

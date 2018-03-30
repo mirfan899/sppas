@@ -50,7 +50,7 @@
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <!--
-        Document
+        Document -> sppasTranscription()
 -->
 
     <xsd:element name="Document">
@@ -62,8 +62,8 @@
                 <xsd:element name="Hierarchy"   type="hierarchyType"  minOccurs="0" maxOccurs="1"/>
                 <xsd:element name="Vocabulary"  type="vocabType"      minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>
-            <xsd:attribute name="date"          type="xsd:date"     use="required"/>
-            <xsd:attribute name="author"        type="stringType"   use="required"/>
+            <xsd:attribute name="date"          type="xsd:date"     use="optional"/>
+            <xsd:attribute name="author"        type="stringType"   use="optional"/>
             <xsd:attribute name="name"          type="stringType"   use="optional"/>
             <xsd:attribute name="version"       type="stringType"   use="optional"/>
             <xsd:attribute name="format"        type="stringType"   use="optional" default="1.4"/>
@@ -74,13 +74,14 @@
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <!--                                                                     -->
-<!--        THE METADATA: There should be exactly one METADATA element.  -->
+<!--        The METADATA: There should be exactly one Metadata element.  -->
 <!--                                                                     -->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <!--
-        Metadata
+        Metadata -> sppasMetaData()
 -->
+
     <xsd:complexType name="metadataType">
       <xsd:sequence>
         <xsd:element name="Entry" type="metaEntryType" minOccurs="1" maxOccurs="unbounded"/>
@@ -98,13 +99,14 @@
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <!--                                                                     -->
-<!--    The media list: There is no limit on the media number or type.   -->
+<!--    The MEDIA: There is no limit on the media number or type.        -->
 <!--                                                                     -->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <!--
-        Mediadata
+        Media -> sppasMedia()
 -->
+
     <xsd:complexType name="mediaType">
       <xsd:sequence>
          <xsd:element name="Metadata" type="metadataType" minOccurs="0" maxOccurs="1"/>
@@ -126,13 +128,14 @@
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <!--                                                                     -->
-<!--        THE TIERS: There is no limit on their number or rank.        -->
+<!--        The TIERS: There is no limit on their number or rank.        -->
 <!--                                                                     -->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <!--
-        Tier
+        Tier -> sppasTier()
 -->
+
     <xsd:complexType name="tierType">
         <xsd:sequence>
           <xsd:element name="Metadata"   type="metadataType"   minOccurs="0" maxOccurs="1"/>
@@ -144,19 +147,26 @@
 
 
 <!--
-        Annotation
+        Annotation -> sppasAnnotation()
 -->
+
     <xsd:complexType name="annotationType">
         <xsd:sequence>
             <xsd:element name="Metadata" type="metadataType"       minOccurs="0" maxOccurs="1"/>
             <xsd:element name="Location" type="annotationLocation" minOccurs="1" maxOccurs="1" />
             <xsd:element name="Label"    type="annotationLabel"    minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
+        <xsd:attribute name="id"    type="xsd:ID"     use="required"/>
+        <xsd:attribute name="score" type="xsd:double" use="optional"/>
     </xsd:complexType>
 
 
 <!--
-        Location representation
+        Location -> sppasLocation()
+        Localization -> sppasLocalization()sppas
+        Point -> sppasPoint()
+        Interval -> sppasInterval()
+        Disjoint -> sppasDisjoint()
 -->
 
     <xsd:complexType name="annotationLocation">
@@ -167,7 +177,6 @@
                 <xsd:element name="Disjoint" type="disjointType" minOccurs="1" maxOccurs="unbounded"/>
             </xsd:choice>
         </xsd:sequence>
-        <xsd:attribute name="scoremode" type="stringSort" use="optional" default="max" />
     </xsd:complexType>
 
     <xsd:complexType name="pointType">
@@ -193,14 +202,14 @@
 
 
 <!--
-        Label representation
+        Label -> sppasLabel()
+        Tag -> sppasTag()
 -->
 
     <xsd:complexType name="annotationLabel">
         <xsd:sequence>
             <xsd:element name="Tag" type="annotationTag" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
-        <xsd:attribute name="scoremode" type="stringSort" use="optional" default="max" />
     </xsd:complexType>
 
     <xsd:complexType name="annotationTag">
@@ -220,13 +229,15 @@
 
 
 
-
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <!--                                                                     -->
-<!--        THE HIERARCHY: links between tiers                       -->
+<!--        The HIERARCHY: links between tiers                           -->
 <!--                                                                     -->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+<!--
+        Hierarchy -> sppasHierarchy()
+-->
 
     <xsd:complexType name="hierarchyType">
         <xsd:sequence>
@@ -247,16 +258,17 @@
     </xsd:simpleType>
 
 
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<!--                                                                     -->
-<!--        CONTROLLED VOCABULARIES                                  -->
-<!--                                                                     -->
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!--                                                                     -->
+<!--       The CONTROLLED VOCABULARIES                                   -->
+<!--                                                                     -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <!--
-        Vocabulary.
+        Vocabulary -> sppasVocabulary()
 -->
+
     <xsd:complexType name="vocabType">
         <xsd:sequence>
             <xsd:element name="Entry" type="vocabEntryType" minOccurs="1" maxOccurs="unbounded" />
@@ -275,6 +287,7 @@
         </xsd:simpleContent>
     </xsd:complexType>
 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
     <xsd:complexType name="idTierType">

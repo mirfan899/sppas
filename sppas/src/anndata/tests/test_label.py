@@ -127,12 +127,6 @@ class TestTag(unittest.TestCase):
 
     # -----------------------------------------------------------------------
 
-    def test_list_content(self):
-        """ Test the tag if the content is a boolean. """
-        pass
-
-    # -----------------------------------------------------------------------
-
     def test_set(self):
         text = sppasTag("test")
         text.set_content("toto")
@@ -142,6 +136,11 @@ class TestTag(unittest.TestCase):
     def test__eq__(self):
         text1 = sppasTag(" test    ")
         text2 = sppasTag("test\n")
+        self.assertEqual(text1, text2)
+        self.assertTrue(text1 == text2)
+
+        text1 = sppasTag("")
+        text2 = sppasTag("\n")
         self.assertEqual(text1, text2)
         self.assertTrue(text1 == text2)
 

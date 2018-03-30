@@ -53,11 +53,11 @@ class sppasAnnotation(sppasMetaData):
 
     A sppasAnnotation() is a container for:
         - a sppasLocation()
-        - a sppasLabel()
+        - a list of sppasLabel()
 
     >>> location = sppasLocation(sppasPoint(1.5, radius=0.01))
-    >>> label = sppasLabel(sppasTag("foo"))
-    >>> ann = sppasAnnotation(location, label)
+    >>> labels = sppasLabel(sppasTag("foo"))
+    >>> ann = sppasAnnotation(location, labels)
 
     """
     def __init__(self, location, labels=list()):
@@ -71,15 +71,17 @@ class sppasAnnotation(sppasMetaData):
         """
         super(sppasAnnotation, self).__init__()
 
-        # Check location instances.
+        # Check location instance.
         if isinstance(location, sppasLocation) is False:
             raise AnnDataTypeError(location, "sppasLocation")
 
         self.__parent = None
         self.__location = location
-        self.__labels = list()
+        self.__labels = []
         self.set_labels(labels)
 
+    # -----------------------------------------------------------------------
+    # Member getters
     # -----------------------------------------------------------------------
 
     def get_labels(self):
@@ -97,15 +99,28 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """ Return a deep copy of the annotation. """
+        """ Return a full copy of the annotation.
 
+        The location, the labels and the metadata are all copied. The 'id'
+        of the returned annotation is then the same.
+
+        :returns: sppasAnnotation()
+
+        """
+        # Create a copy of the location/labels
         location = self.__location.copy()
         labels = list()
         for l in self.__labels:
             labels.append(l.copy())
 
+        # Create the new Annotation
         other = sppasAnnotation(location, labels)
         other.set_parent(self.__parent)
+
+        # Copy all metadata, including the 'id'.
+        for key in self.get_meta_keys():
+            other.set_meta(key, self.get_meta(key))
+
         return other
 
     # -----------------------------------------------------------------------
@@ -128,23 +143,29 @@ class sppasAnnotation(sppasMetaData):
 
     # -----------------------------------------------------------------------
 
-    def set_labels(self, labels):
+    def set_labels(self, labels=[]):
         """ Fix a new list of labels for this annotation.
 
         :param labels: (sppasLabel, list) the label(s) to stamp this
         annotation, or a list of them.
 
         """
-        if isinstance(labels, list) is False:
-            labels = [labels]
-        elif labels is None:
-            labels = []
+        self.__labels = list()
+        if labels is None:
+            return
 
-        for label in labels:
-            if label is not None:
-                self.validate_label(label)
+        if isinstance(labels, sppasLabel) is True:
+            self.validate_label(labels)
+            self.__labels.append(labels)
 
-        self.__labels = labels
+        elif isinstance(labels, list) is True:
+            for label in labels:
+                if label is not None:
+                    self.validate_label(label)
+                    self.__labels.append(label)
+
+        else:
+            raise AnnDataTypeError(labels, "sppasLabel/list")
 
     # -----------------------------------------------------------------------
 
@@ -517,11 +538,14 @@ class sppasAnnotation(sppasMetaData):
 
     def __eq__(self, other):
         if self.__location != other.get_location():
+            print "not same location"
             return False
         if len(self.__labels) != len(other.get_labels()):
+            print "not same number of labels"
             return False
         for label1, label2 in zip(self.__labels, other.get_labels()):
             if label1 != label2:
+                print "label1 != label2"
                 return False
 
         return True
