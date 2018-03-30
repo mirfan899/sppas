@@ -598,9 +598,6 @@ class TestScliteSTM(unittest.TestCase):
         s = sppasSTM._serialize_label(None)
         self.assertEqual(s, "IGNORE_TIME_SEGMENT_IN_SCORING")
 
-        s = sppasSTM._serialize_label(sppasLabel())
-        self.assertEqual(s, "IGNORE_TIME_SEGMENT_IN_SCORING")
-
         tag = sppasTag("")
         label = sppasLabel(tag)
         s = sppasSTM._serialize_label(label)

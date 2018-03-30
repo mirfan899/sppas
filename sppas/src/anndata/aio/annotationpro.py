@@ -676,12 +676,10 @@ class sppasANT(sppasBaseIO):
         :param filename: (str)
 
         """
-        with zipfile.ZipFile(filename, 'r') as z:
-            res_test = z.testzip()
-            if res_test is not None:
-                return False
-            unzip_dir = sppasFileUtils().set_random()
-            z.extractall(unzip_dir)
+        zf = zipfile.ZipFile(filename, 'r')
+        unzip_dir = sppasFileUtils().set_random()
+        zf.extractall(unzip_dir)
+        zf.close()
 
         antx_filename = os.path.join(unzip_dir, "annotation.xml")
         antx = sppasANTX()

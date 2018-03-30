@@ -466,23 +466,26 @@ class sppasCTM(sppasBaseSclite):
         duration = ann.get_location().get_best().get_end().get_midpoint() - begin
 
         # no label
-        if ann.label_is_filled() is None:
+        if len(ann.get_labels()) == 0:
             content = sppasCTM._serialize_tag(waveform, channel, begin, duration, sppasTag(""))
-
-        # only one tag in the label: no alternation
-        elif len(ann.get_label()) == 1:
-            tag = ann.get_best_tag()
-            score = ann.get_label().get_score(tag)
-            content = sppasCTM._serialize_tag(waveform, channel, begin, duration, tag, score)
-
-        # label with alternation tags
         else:
-            content = "{:s} {:s} * * <ALT_BEGIN>\n".format(waveform, channel)
-            for tag, score in ann.get_label():
-                content += sppasCTM._serialize_tag(waveform, channel, begin, duration, tag, score)
-                content += "{:s} {:s} * * <ALT>\n".format(waveform, channel)
-            content = content[:-2]
-            content += "_END>\n"
+            content = ""
+            for label in ann.get_labels():
+
+                # only one tag in the label: no alternation
+                if len(label) == 1:
+                    tag = ann.get_best_tag()
+                    score = label.get_score(tag)
+                    content += sppasCTM._serialize_tag(waveform, channel, begin, duration, tag, score)
+
+                # label with alternation tags
+                else:
+                    content = "{:s} {:s} * * <ALT_BEGIN>\n".format(waveform, channel)
+                    for tag, score in label:
+                        content += sppasCTM._serialize_tag(waveform, channel, begin, duration, tag, score)
+                        content += "{:s} {:s} * * <ALT>\n".format(waveform, channel)
+                    content = content[:-2]
+                    content += "_END>\n"
 
         return content
 

@@ -397,7 +397,7 @@ class sppasLabel(object):
             if other is None:
                 return True
         return False
-    
+
     # -----------------------------------------------------------------------
 
     def __ne__(self, other):

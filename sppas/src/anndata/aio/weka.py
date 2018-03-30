@@ -465,13 +465,23 @@ class sppasWEKA(sppasBaseIO):
             # midpoint of the localization.
             # And in the same idea, we have to deal with overlapping annotations.
 
+        labels = list()
         # Fix the label to be returned: the observed one or an empty one
         if mindex != -1:
             ann = tier[mindex]
             if ann.is_labelled():
-                return ann.get_labels()
+                for label in ann.get_labels():
+                    if len(label) > 0:
+                        for tag, score in label:
+                            if tag.get_content() == "":
+                                labels.append(sppasLabel(sppasTag(self._empty_annotation_tag), score))
+                            else:
+                                labels.append(label)
 
-        return [sppasLabel(sppasTag(self._empty_annotation_tag))]
+        if len(labels) == 0:
+            return [sppasLabel(sppasTag(self._empty_annotation_tag))]
+
+        return labels
 
     # -----------------------------------------------------------------
 

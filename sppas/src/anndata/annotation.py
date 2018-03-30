@@ -538,14 +538,14 @@ class sppasAnnotation(sppasMetaData):
 
     def __eq__(self, other):
         if self.__location != other.get_location():
-            print "not same location"
             return False
         if len(self.__labels) != len(other.get_labels()):
-            print "not same number of labels"
             return False
         for label1, label2 in zip(self.__labels, other.get_labels()):
             if label1 != label2:
-                print "label1 != label2"
                 return False
 
         return True
+
+    def __ne__(self, other):
+        return not self == other

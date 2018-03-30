@@ -142,9 +142,14 @@ def fill_gaps(tier, min_loc=None, max_loc=None):
 # ---------------------------------------------------------------------------
 
 
-def serialize_labels(labels):
-    """ Convert labels into a string. """
+def serialize_labels(labels, separator="\n"):
+    """ Convert labels into a string.
 
+    :param labels: (list of sppasLabel)
+    :param separator: (str) String to separate labels.
+    :returns: (str)
+
+    """
     label_contents = list()
     for label in labels:
         label_contents.append(serialize_label(label))
@@ -152,14 +157,18 @@ def serialize_labels(labels):
     if len(label_contents) == 0:
         return ""
 
-    return "\n".join(label_contents)
+    return separator.join(label_contents)
 
 # -----------------------------------------------------------------------
 
 
 def serialize_label(label):
-    """ Convert a label into a string, including alternative tags. """
+    """ Convert a label into a string, including alternative tags.
 
+    :param label: (sppasLabel)
+    :returns: (str)
+
+    """
     if label is None:
         return ""
 
@@ -234,14 +243,13 @@ def check_overlaps(tier):
 # ---------------------------------------------------------------------------
 
 
-def merge_overlapping_annotations(tier, separator=' '):
+def merge_overlapping_annotations(tier):
     """ Merge overlapping annotations.
-    The values of the tags are concatenated.
-    Do not pay attention to alternatives.
+
+    The labels of 2 overlapping annotations are appended.
 
     :param tier: (Tier)
-    :param separator: (char)
-    :returns: Tier
+    :returns: (sppasTier)
 
     """
     if tier.is_interval() is False:

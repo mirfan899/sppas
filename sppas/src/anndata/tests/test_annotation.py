@@ -136,6 +136,19 @@ class TestAnnotation(unittest.TestCase):
 
     # -----------------------------------------------------------------------
 
+    def test_is_silence(self):
+        self.assertFalse(self.annotationP.get_best_tag().is_silence())
+        self.assertFalse(self.annotationI.get_best_tag().is_silence())
+
+        self.annotationI.get_best_tag().set(sppasTag("#"))
+        self.annotationP.get_best_tag().set(sppasTag("sil"))
+        self.assertTrue(self.annotationI.get_best_tag().is_silence())
+        self.assertTrue(self.annotationP.get_best_tag().is_silence())
+
+    # -----------------------------------------------------------------------
+    # location
+    # -----------------------------------------------------------------------
+
     def test_get_begin(self):
         with self.assertRaises(AttributeError):
             self.annotationP.get_location().get_begin()
@@ -209,17 +222,6 @@ class TestAnnotation(unittest.TestCase):
     def test_is_interval(self):
         self.assertTrue(self.annotationI.get_location().get_best().is_interval())
         self.assertFalse(self.annotationP.get_location().get_best().is_interval())
-
-    # -----------------------------------------------------------------------
-
-    def test_is_silence(self):
-        self.assertFalse(self.annotationP.get_best_tag().is_silence())
-        self.assertFalse(self.annotationI.get_best_tag().is_silence())
-
-        self.annotationI.get_best_tag().set(sppasTag("#"))
-        self.annotationP.get_best_tag().set(sppasTag("sil"))
-        self.assertTrue(self.annotationI.get_best_tag().is_silence())
-        self.assertTrue(self.annotationP.get_best_tag().is_silence())
 
     # -----------------------------------------------------------------------
 
