@@ -200,10 +200,12 @@ class TestXRA(unittest.TestCase):
         for t1, t2 in zip(xra, xra2):
             self.assertEqual(len(t1), len(t2))
             for a1, a2 in zip(t1, t2):
-                self.assertEqual(len(a1.get_labels()), len(a2.get_labels()))
-                self.assertEqual(a1.get_best_tag().get_typed_content(), a2.get_best_tag().get_typed_content())
-                self.assertEqual(a1.get_highest_localization().get_midpoint(), a2.get_highest_localization().get_midpoint())
-                self.assertEqual(a1.get_lowest_localization().get_midpoint(), a2.get_lowest_localization().get_midpoint())
+                # compare labels and location
+                self.assertEqual(a1, a2)
+                # compare metadata
+                for key in a1.get_meta_keys():
+                    self.assertEqual(a1.get_meta(key), a2.get_meta(key))
+
         # Compare media
         # Compare hierarchy
         # Compare controlled vocabularies

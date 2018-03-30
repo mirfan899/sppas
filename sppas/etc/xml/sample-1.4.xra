@@ -33,7 +33,7 @@
             <Entry key="author">first name</Entry>
             <Entry key="expert">2</Entry>
 		</Metadata>
-		<Annotation>
+		<Annotation id="t1a1">
             <Location>
                 <Point score="1.0" midpoint="0.1234" radius="0.0001" />
             </Location>
@@ -42,7 +42,7 @@
                 <Tag score="0.2" type="str">le texte alternatif de cette annotation</Tag>
             </Label>
 		</Annotation>
-		<Annotation>
+		<Annotation id="t1a2">
             <Location>
                 <Point score="1.0" midpoint="0.2345" radius="0.0005" />
             </Location>
@@ -53,7 +53,7 @@
 	</Tier>
 
 	<Tier id="t2" tiername="TokensAlign">
-		<Annotation>
+		<Annotation id="t2a1">
             <Location>
                 <Interval>
                     <Begin midpoint="0.1234" radius="0.0001" />
@@ -64,7 +64,7 @@
                     <Tag>le</Tag>
             </Label>
 		</Annotation>
-		<Annotation>
+		<Annotation id="t2a2">
             <Location>
                 <Interval>
                     <Begin midpoint="0.3600" />
@@ -76,7 +76,7 @@
                 <Tag score="0.1" />
             </Label>
 		</Annotation>
-		<Annotation>
+		<Annotation id="t2a3" score="0.5">
             <Location>
                 <Interval>
                         <Begin midpoint="0.6000" radius="0.005" />
@@ -90,7 +90,7 @@
 	</Tier>
 
 	<Tier id="t3" tiername="IPU">
-		<Annotation>
+		<Annotation id="t3a1">
             <Location>
                 <Interval score="0.8">
                     <Begin midpoint="0.1234" radius="0.001" />
@@ -109,7 +109,7 @@
 	</Tier>
 
 	<Tier id="t4" tiername="Tokenization">
-		<Annotation>
+		<Annotation id="t4a1">
             <Location>
                 <Interval score="0.8">
                     <Begin midpoint="0.1234" radius="0.001" />
@@ -133,7 +133,7 @@
 	</Tier>
 
 	<Tier id="t5" tiername="Phonetization">
-		<Annotation>
+		<Annotation id="t5a1">
             <Location>
                 <Interval score="0.8">
                     <Begin midpoint="0.1234" radius="0.001" />

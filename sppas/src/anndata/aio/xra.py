@@ -209,8 +209,6 @@ class sppasXRA(sppasBaseIO):
         :param annotation_root: (ET) XML Element tree root.
 
         """
-        print (" Tier: ",tier.get_name(), len(tier))
-
         location_root = annotation_root.find('Location')
         location = sppasXRA._parse_location(location_root)
 
@@ -218,7 +216,15 @@ class sppasXRA(sppasBaseIO):
         for label_root in annotation_root.findall('Label'):
             labels.append(sppasXRA._parse_label(label_root))
 
-        tier.create_annotation(location, labels)
+        ann = tier.create_annotation(location, labels)
+
+        # Attributes (from XRA 1.4)
+
+        if 'id' in annotation_root.attrib:     # required
+            ann.set_meta('id', annotation_root.attrib['id'])
+
+        if 'score' in annotation_root.attrib:  # optional
+            ann.set_score(float(annotation_root.attrib['score']))
 
     # -----------------------------------------------------------------------
 
@@ -235,7 +241,6 @@ class sppasXRA(sppasBaseIO):
         for localization_root in list(location_root):
             localization, score = sppasXRA._parse_localization(localization_root)
             if localization is not None:
-                print (" --> localization", localization)
                 location.append(localization, score)
 
         if len(location) == 0:
@@ -634,8 +639,17 @@ class sppasXRA(sppasBaseIO):
         :param annotation: (sppasAnnotation)
 
         """
+        # Attributes:
+        ann_id = annotation.get_meta('id')
+        annotation_root.set("id", ann_id)
+        if annotation.get_score() is not None:
+            annotation_root.set("score", annotation.get_score())
+
+        # Elements:
+        annotation.pop_meta('id')
         metadata_root = ET.SubElement(annotation_root, 'Metadata')
         sppasXRA._format_metadata(metadata_root, annotation)
+        annotation.set_meta('id', ann_id)
 
         location_root = ET.SubElement(annotation_root, 'Location')
         sppasXRA._format_location(location_root, annotation.get_location())

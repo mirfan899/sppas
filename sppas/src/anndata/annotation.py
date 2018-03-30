@@ -78,23 +78,34 @@ class sppasAnnotation(sppasMetaData):
         self.__parent = None
         self.__location = location
         self.__labels = []
+        self.__score = None
         self.set_labels(labels)
 
     # -----------------------------------------------------------------------
     # Member getters
     # -----------------------------------------------------------------------
 
-    def get_labels(self):
-        """ Return the list of sppasLabel() instances. """
+    def get_score(self):
+        """ Return the score of this annotation or None if no score is set.
 
-        return self.__labels
+        :returns: score: (float)
+
+        """
+        return self.__score
 
     # -----------------------------------------------------------------------
 
     def get_location(self):
-        """ Return the sppasLocation() instance. """
+        """ Return the sppasLocation() of this annotation. """
 
         return self.__location
+
+    # -----------------------------------------------------------------------
+
+    def get_labels(self):
+        """ Return the list of sppasLabel() of this annotation. """
+
+        return self.__labels
 
     # -----------------------------------------------------------------------
 
@@ -116,6 +127,7 @@ class sppasAnnotation(sppasMetaData):
         # Create the new Annotation
         other = sppasAnnotation(location, labels)
         other.set_parent(self.__parent)
+        other.set_score(self.__score)
 
         # Copy all metadata, including the 'id'.
         for key in self.get_meta_keys():
@@ -143,11 +155,29 @@ class sppasAnnotation(sppasMetaData):
 
     # -----------------------------------------------------------------------
 
+    def set_score(self, score=None):
+        """ Set or reset the score to this annotation.
+
+        :param score: (float)
+
+        """
+        if score is not None:
+            try:
+                self.__score = float(score)
+            except ValueError:
+                raise AnnDataTypeError(score, "float")
+        else:
+            self.__score = None
+
+    # -----------------------------------------------------------------------
+
     def set_labels(self, labels=[]):
-        """ Fix a new list of labels for this annotation.
+        """ Fix/reset the list of labels of this annotation.
 
         :param labels: (sppasLabel, list) the label(s) to stamp this
         annotation, or a list of them.
+        :raises: AnnDataTypeError, TypeError, CtrlVocabContainsError,
+        HierarchyContainsError, HierarchyTypeError
 
         """
         self.__labels = list()
@@ -163,7 +193,6 @@ class sppasAnnotation(sppasMetaData):
                 if label is not None:
                     self.validate_label(label)
                     self.__labels.append(label)
-
         else:
             raise AnnDataTypeError(labels, "sppasLabel/list")
 
@@ -171,7 +200,8 @@ class sppasAnnotation(sppasMetaData):
 
     def validate(self):
         """ Validate the annotation.
-        Check if the annotation matches the requirements of its parent.
+
+        Check if the labels and location match the requirements of this annotation.
 
         :raises: TypeError, CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError
 
@@ -185,6 +215,7 @@ class sppasAnnotation(sppasMetaData):
 
     def validate_label(self, label):
         """ Validate the label.
+
         Check if the label matches the requirements of this annotation.
 
         :raises: CtrlVocabContainsError, TypeError
@@ -537,10 +568,15 @@ class sppasAnnotation(sppasMetaData):
         return "{:s} {:s}".format(self.__location, self.__labels)
 
     def __eq__(self, other):
+        if self.__score != other.get_score():
+            return False
+
         if self.__location != other.get_location():
             return False
+
         if len(self.__labels) != len(other.get_labels()):
             return False
+
         for label1, label2 in zip(self.__labels, other.get_labels()):
             if label1 != label2:
                 return False
