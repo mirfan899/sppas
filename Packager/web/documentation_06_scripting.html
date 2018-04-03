@@ -8,20 +8,38 @@
   <title>SPPAS Documentation</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #0000ff; }
-code > span.ch { color: #008080; }
-code > span.st { color: #008080; }
-code > span.co { color: #008000; }
-code > span.ot { color: #ff4000; }
-code > span.al { color: #ff0000; }
-code > span.er { font-weight: bold; }
+code > span.kw { color: #0000ff; } /* Keyword */
+code > span.ch { color: #008080; } /* Char */
+code > span.st { color: #008080; } /* String */
+code > span.co { color: #008000; } /* Comment */
+code > span.ot { color: #ff4000; } /* Other */
+code > span.al { color: #ff0000; } /* Alert */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #008000; font-weight: bold; } /* Warning */
+code > span.cn { } /* Constant */
+code > span.sc { color: #008080; } /* SpecialChar */
+code > span.vs { color: #008080; } /* VerbatimString */
+code > span.ss { color: #008080; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #0000ff; } /* ControlFlow */
+code > span.op { } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ff4000; } /* Preprocessor */
+code > span.do { color: #008000; } /* Documentation */
+code > span.an { color: #008000; } /* Annotation */
+code > span.cv { color: #008000; } /* CommentVar */
+code > span.at { } /* Attribute */
+code > span.in { color: #008000; } /* Information */
   </style>
-  <link rel="stylesheet" href="./etc/styles/sppas.css" />
+  <link rel="stylesheet" href="./etc/styles/sppas.css" type="text/css" />
       <!----------------------------------------------------------------->
   
       <div class="footer">
@@ -75,7 +93,7 @@ code > span.er { font-weight: bold; }
 <div id="header">
 <h1 class="title">SPPAS Documentation</h1>
 <h2 class="author">Brigitte Bigi</h2>
-<h3 class="date">Version 1.9.2</h3>
+<h3 class="date">Version 1.9.4</h3>
 </div>
 <div id="TOC">
 <ul>
@@ -118,24 +136,25 @@ code > span.er { font-weight: bold; }
 </ul>
 </div>
 <hr />
-<h1 id="scripting-with-python-and-sppas"><a href="#scripting-with-python-and-sppas">Scripting with Python and SPPAS</a></h1>
-<h2 id="introduction"><a href="#introduction">Introduction</a></h2>
+<h1 id="scripting-with-python-and-sppas">Scripting with Python and SPPAS</h1>
+<h2 id="introduction">Introduction</h2>
 <p>SPPAS implements an Application Programming Interface (API), named <em>annotationdata</em>, to deal with annotated files.</p>
 <p><em>annotationdata</em> API is a free and open source Python library to access and search data from annotated data of any of the supported formats (xra, TextGrid, eaf...). <em>annotationdata</em> is based on the Programming Language Python 2.7. It won't work with Python 3.x. Notice that this API will be fully re-implemented in the scope of 1/ compatibility with Python &gt; 3.3, 2/ PEP8 and PEP257 compliance and 3/ internationalization of the message. The new version will available in the middle of 2018 but the current one will be maintained until the end of 2018 or later.</p>
 <p>In this chapter, it is assumed that Python 2.7 is already installed and configured. It is also assumed that the Python IDLE is ready-to-use. For more details about Python, see:</p>
 <blockquote>
-<p>The Python Website: <a href="http://www.python.org">http://www.python.org</a></p>
+<p>The Python Website: <a href="http://www.python.org" class="uri">http://www.python.org</a></p>
 </blockquote>
 <p>This chapter firstly introduces basic programming concepts, then it gradually introduces how to write scripts with Python. Those who are familiar with programming in Python can directly go to the last section related to the description of the <em>annotationdata</em> API and how to use it in Python scripts.</p>
 <p>This API can convert file formats like Elan’s EAF, Praat's TextGrid and others into a <code>Transcription</code> object and convert this object into any of these formats. This object allows unified access to linguistic data from a wide range sources.</p>
 <pre><code>This chapter includes exercises. The solution programs are included in 
 the package directory *documentation*, then in the folder *solutions*.</code></pre>
-<h2 id="a-gentle-introduction-to-programming"><a href="#a-gentle-introduction-to-programming">A gentle introduction to programming</a></h2>
-<h3 id="introduction-1"><a href="#introduction-1">Introduction</a></h3>
+<h2 id="a-gentle-introduction-to-programming">A gentle introduction to programming</h2>
+<h3 id="introduction-1">Introduction</h3>
 <p>This section includes examples in Python programming language. You may want to try out some of the examples that come with the description. In order to do this, execute the Python IDLE - available in the Application-Menu of your operating system), and write the examples after the prompt &quot;&gt;&gt;&gt;&quot;.</p>
-<figure>
-<img src="./etc/logos/python_idle.png" alt="The Python IDLE logo" /><figcaption>The Python IDLE logo</figcaption>
-</figure>
+<div class="figure">
+<img src="./etc/logos/python_idle.png" alt="The Python IDLE logo" />
+<p class="caption">The Python IDLE logo</p>
+</div>
 <p>To get information about the IDLE, get access to <a href="https://docs.python.org/2/library/idle.html">the IDLE documentation</a></p>
 <p>Writing any program consists of writing statements so using a programming language. A <em>statement</em> is often known as a line of code that can be one of:</p>
 <ul>
@@ -147,44 +166,44 @@ the package directory *documentation*, then in the folder *solutions*.</code></p
 </ul>
 <p>Lines of code are grouped in <em>blocks</em>. Depending on the programming language, blocks delimited by brackets, braces or by the indentation.</p>
 <p>Each language has its own syntax to write these lines and the user has to follow strictly this syntax for the program to be able to interpret the program. However, the amount of freedom the user has to use capital letters, whitespace and so on is very high. Recommendations for Python language are available in the <a href="https://www.python.org/dev/peps/pep-0008/">PEP8 - Style Guide for Python Code</a>.</p>
-<h3 id="variables-assignment-and-typing"><a href="#variables-assignment-and-typing">Variables: Assignment and Typing</a></h3>
+<h3 id="variables-assignment-and-typing">Variables: Assignment and Typing</h3>
 <p>A <em>variable</em> is a name to give to a piece of memory with some information inside. Assignment is then the action of setting a variable to a value. The equal sign (=) is used to assign values to variables.</p>
-<pre class="sourceCode python"><code class="sourceCode python"> &gt;&gt;&gt;a = <span class="dv">1</span>    
- &gt;&gt;&gt;b = <span class="fl">1.0</span>
- &gt;&gt;&gt;c = <span class="st">&quot;c&quot;</span>
- &gt;&gt;&gt;cc = <span class="st">u&quot;ç&quot;</span>
- &gt;&gt;&gt;hello = <span class="st">&quot;Hello world!&quot;</span>
- &gt;&gt;&gt;vrai = <span class="ot">True</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"> <span class="op">&gt;&gt;&gt;</span>a <span class="op">=</span> <span class="dv">1</span>    
+ <span class="op">&gt;&gt;&gt;</span>b <span class="op">=</span> <span class="fl">1.0</span>
+ <span class="op">&gt;&gt;&gt;</span>c <span class="op">=</span> <span class="st">&quot;c&quot;</span>
+ <span class="op">&gt;&gt;&gt;</span>cc <span class="op">=</span> <span class="st">u&quot;ç&quot;</span>
+ <span class="op">&gt;&gt;&gt;</span>hello <span class="op">=</span> <span class="st">&quot;Hello world!&quot;</span>
+ <span class="op">&gt;&gt;&gt;</span>vrai <span class="op">=</span> <span class="va">True</span></code></pre></div>
 <p>In the previous example, <code>a</code>, <code>b</code>, <code>c</code>, <code>hello</code> and <code>vrai</code> are variables, <code>a = 1</code> is a declaration.</p>
 <p><strong>MISSING:Variable declarations and print in the Python IDLE./etc/screenshots/python_idle_example.png</strong></p>
 <p>Assignments to variables with Python language can be performed with the following operators:</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; a = <span class="dv">10</span>   <span class="co"># simple assignment operator</span>
-&gt;&gt;&gt; a += <span class="dv">2</span>   <span class="co"># add and assignment operator, so a is 12</span>
-&gt;&gt;&gt; a -= <span class="dv">7</span>   <span class="co"># minus and assignment, so a is 5</span>
-&gt;&gt;&gt; a *= <span class="dv">20</span>  <span class="co"># multiply and assignment, so a is 100</span>
-&gt;&gt;&gt; a /= <span class="dv">10</span>  <span class="co"># divide and assignment, so a is 10</span>
-&gt;&gt;&gt; a        <span class="co"># verify the value of a...</span>
-<span class="dv">10</span></code></pre>
-<h3 id="basic-operators"><a href="#basic-operators">Basic Operators</a></h3>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="dv">10</span>   <span class="co"># simple assignment operator</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">+=</span> <span class="dv">2</span>   <span class="co"># add and assignment operator, so a is 12</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">-=</span> <span class="dv">7</span>   <span class="co"># minus and assignment, so a is 5</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">*=</span> <span class="dv">20</span>  <span class="co"># multiply and assignment, so a is 100</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">/=</span> <span class="dv">10</span>  <span class="co"># divide and assignment, so a is 10</span>
+<span class="op">&gt;&gt;&gt;</span> a        <span class="co"># verify the value of a...</span>
+<span class="dv">10</span></code></pre></div>
+<h3 id="basic-operators">Basic Operators</h3>
 <p>Basic operators are used to use and/or manipulate variables. The following is the list of operators that can be used with Python, i.e. equal (assignment), plus, minus, multiply, divide:</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; a = <span class="dv">10</span>
-&gt;&gt;&gt; b = <span class="dv">20</span>  <span class="co"># Assignment</span>
-&gt;&gt;&gt; a + b   <span class="co"># Addition</span>
-&gt;&gt;&gt; a - b   <span class="co"># Subtraction</span>
-&gt;&gt;&gt; a * b   <span class="co"># Multiplication</span>
-&gt;&gt;&gt; a / b   <span class="co"># Division</span></code></pre>
-<h3 id="data-types"><a href="#data-types">Data types</a></h3>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="dv">10</span>
+<span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> <span class="dv">20</span>  <span class="co"># Assignment</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">+</span> b   <span class="co"># Addition</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">-</span> b   <span class="co"># Subtraction</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">*</span> b   <span class="co"># Multiplication</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">/</span> b   <span class="co"># Division</span></code></pre></div>
+<h3 id="data-types">Data types</h3>
 <p>The variables are of a data-type. For example, the declarations <code>a=1</code> and <code>a=1.0</code> are respectively assigning an integer and a real number. In Python, the command <code>type</code> allows to get the type of a variable, like in the following:</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; <span class="dt">type</span>(a)
-&lt;<span class="dt">type</span> <span class="st">&#39;int&#39;</span>&gt;
-&gt;&gt;&gt; <span class="dt">type</span>(b)
-&lt;<span class="dt">type</span> <span class="st">&#39;float&#39;</span>&gt;
-&gt;&gt;&gt; <span class="dt">type</span>(c)
-&lt;<span class="dt">type</span> <span class="st">&#39;str&#39;</span>&gt;
-&gt;&gt;&gt; <span class="dt">type</span>(cc)
-&lt;<span class="dt">type</span> <span class="st">&#39;unicode&#39;</span>&gt;
-&gt;&gt;&gt; <span class="dt">type</span>(vrai)
-&lt;<span class="dt">type</span> <span class="st">&#39;bool&#39;</span>&gt;</code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="bu">type</span>(a)
+<span class="op">&lt;</span><span class="bu">type</span> <span class="st">&#39;int&#39;</span><span class="op">&gt;</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">type</span>(b)
+<span class="op">&lt;</span><span class="bu">type</span> <span class="st">&#39;float&#39;</span><span class="op">&gt;</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">type</span>(c)
+<span class="op">&lt;</span><span class="bu">type</span> <span class="st">&#39;str&#39;</span><span class="op">&gt;</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">type</span>(cc)
+<span class="op">&lt;</span><span class="bu">type</span> <span class="st">&#39;unicode&#39;</span><span class="op">&gt;</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">type</span>(vrai)
+<span class="op">&lt;</span><span class="bu">type</span> <span class="st">&#39;bool&#39;</span><span class="op">&gt;</span></code></pre></div>
 <p>The following is a list of some fundamental data types, and their characteristics:</p>
 <ul>
 <li><em>str</em> String of characters</li>
@@ -194,62 +213,62 @@ the package directory *documentation*, then in the folder *solutions*.</code></p
 <li><em>float</em> Floating point number (max 15 digits)</li>
 </ul>
 <p>Python is assigning data types dynamically. As a consequence, the result of the sum between an <code>int</code> and a <code>float</code> is a <code>float</code>. The next examples illustrate that the type of the variables have to be carefully managed.</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; a = <span class="dv">10</span>
-&gt;&gt;&gt; a += <span class="dv">0</span>.
-&gt;&gt;&gt; a
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="dv">10</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">+=</span> <span class="dv">0</span>.
+<span class="op">&gt;&gt;&gt;</span> a
 <span class="fl">10.0</span>
-&gt;&gt;&gt; a += <span class="ot">True</span>
-&gt;&gt;&gt; a
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">+=</span> <span class="va">True</span>
+<span class="op">&gt;&gt;&gt;</span> a
 <span class="fl">11.0</span>
-&gt;&gt;&gt; a += <span class="st">&quot;a&quot;</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">+=</span> <span class="st">&quot;a&quot;</span>
 Traceback (most recent call last):
-  File <span class="st">&quot;&lt;input&gt;&quot;</span>, line <span class="dv">1</span>, in &lt;module&gt;
-<span class="ot">TypeError</span>: unsupported operand <span class="dt">type</span>(s) <span class="kw">for</span> +=: <span class="st">&#39;float&#39;</span> and <span class="st">&#39;str&#39;</span>
-&gt;&gt;&gt; a = <span class="st">&quot;a&quot;</span>
-&gt;&gt;&gt; a *= <span class="dv">5</span>
-&gt;&gt;&gt; a
-<span class="co">&#39;aaaaa&#39;</span></code></pre>
+  File <span class="st">&quot;&lt;input&gt;&quot;</span>, line <span class="dv">1</span>, <span class="op">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span>
+<span class="pp">TypeError</span>: unsupported operand <span class="bu">type</span>(s) <span class="cf">for</span> <span class="op">+=</span>: <span class="st">&#39;float&#39;</span> <span class="op">and</span> <span class="st">&#39;str&#39;</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="st">&quot;a&quot;</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">*=</span> <span class="dv">5</span>
+<span class="op">&gt;&gt;&gt;</span> a
+<span class="co">&#39;aaaaa&#39;</span></code></pre></div>
 <p>The type of a variable can be changed. This is called a &quot;cast&quot;, like in the following:</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; a = <span class="dv">10</span>
-&gt;&gt;&gt; b = <span class="dv">2</span>
-&gt;&gt;&gt; a/b
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="dv">10</span>
+<span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> <span class="dv">2</span>
+<span class="op">&gt;&gt;&gt;</span> a<span class="op">/</span>b
 <span class="dv">5</span>
-&gt;&gt;&gt; <span class="dt">float</span>(a) / <span class="dt">float</span>(b)
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">float</span>(a) <span class="op">/</span> <span class="bu">float</span>(b)
 <span class="fl">5.0</span>
-&gt;&gt;&gt; a = <span class="dv">1</span>
-&gt;&gt;&gt; b = <span class="dv">1</span> 
-&gt;&gt;&gt; <span class="dt">str</span>(a) + <span class="dt">str</span>(b)
-<span class="co">&#39;11&#39;</span></code></pre>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">=</span> <span class="dv">1</span>
+<span class="op">&gt;&gt;&gt;</span> b <span class="op">=</span> <span class="dv">1</span> 
+<span class="op">&gt;&gt;&gt;</span> <span class="bu">str</span>(a) <span class="op">+</span> <span class="bu">str</span>(b)
+<span class="co">&#39;11&#39;</span></code></pre></div>
 <p>Complex data types are often used to store variables sharing the same properties like a list of numbers, and so on. Common types in languages are lists/arrays and dictionaries. The following is the assignment of a list with name <code>fruits</code>, then the assignment of a sub-part of the list to the <code>to_buy</code> list:</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; fruits = [<span class="st">&#39;apples&#39;</span>, <span class="st">&#39;tomatoes&#39;</span>, <span class="st">&#39;peers&#39;</span>, <span class="st">&#39;bananas&#39;</span>]
-&gt;&gt;&gt; to_buy = fruits[<span class="dv">1</span>:<span class="dv">2</span>]
-&gt;&gt;&gt; to_buy
-[<span class="st">&#39;tomatoes&#39;</span>]</code></pre>
-<h3 id="conditions"><a href="#conditions">Conditions</a></h3>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> fruits <span class="op">=</span> [<span class="st">&#39;apples&#39;</span>, <span class="st">&#39;tomatoes&#39;</span>, <span class="st">&#39;peers&#39;</span>, <span class="st">&#39;bananas&#39;</span>]
+<span class="op">&gt;&gt;&gt;</span> to_buy <span class="op">=</span> fruits[<span class="dv">1</span>:<span class="dv">2</span>]
+<span class="op">&gt;&gt;&gt;</span> to_buy
+[<span class="st">&#39;tomatoes&#39;</span>]</code></pre></div>
+<h3 id="conditions">Conditions</h3>
 <p>Conditions aim to test whether a statement is True or False. The statement of the condition can include a variable, or be a variable. If the result of the condition is true and/or false, then a given action occurs. Statements of conditions are written with operators, as equal, less than, greater than, etc. The following shows examples of conditions/comparisons in Python. Notice that the comparison of variables of a different data-type is possible (but not recommended!).</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; var = <span class="dv">100</span>
-&gt;&gt;&gt; <span class="kw">if</span> var == <span class="dv">100</span>: 
-...     <span class="dt">print</span>(<span class="st">&quot;Value of expression is 100.&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> var <span class="op">=</span> <span class="dv">100</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">if</span> var <span class="op">==</span> <span class="dv">100</span>: 
+...     <span class="bu">print</span>(<span class="st">&quot;Value of expression is 100.&quot;</span>)
 ...
-Value of expression is <span class="dv">100</span>.
+Value of expression <span class="op">is</span> <span class="dv">100</span>.
 
-&gt;&gt;&gt; <span class="kw">if</span> var == <span class="st">&quot;100&quot;</span>:
-...     <span class="dt">print</span>(<span class="st">&quot;This message won&#39;t be printed out.&quot;</span>)
-...</code></pre>
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">if</span> var <span class="op">==</span> <span class="st">&quot;100&quot;</span>:
+...     <span class="bu">print</span>(<span class="st">&quot;This message won&#39;t be printed out.&quot;</span>)
+...</code></pre></div>
 <p>Conditions can expressed in a more complex way like:</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; <span class="kw">if</span> a == b:
-...     <span class="dt">print</span>(<span class="st">&#39;a and b are equals&#39;</span>)
-... <span class="kw">elif</span> a &gt; b:
-...    <span class="dt">print</span>(<span class="st">&#39;a is greater than b&#39;</span>)
-... <span class="kw">else</span>:
-...    <span class="dt">print</span>(<span class="st">&#39;b is greater than a&#39;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="cf">if</span> a <span class="op">==</span> b:
+...     <span class="bu">print</span>(<span class="st">&#39;a and b are equals&#39;</span>)
+... <span class="cf">elif</span> a <span class="op">&gt;</span> b:
+...    <span class="bu">print</span>(<span class="st">&#39;a is greater than b&#39;</span>)
+... <span class="cf">else</span>:
+...    <span class="bu">print</span>(<span class="st">&#39;b is greater than a&#39;</span>)</code></pre></div>
 <p>The simple operators for comparisons are summarized in the next examples:</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; a == b   <span class="co"># check if equals</span>
-&gt;&gt;&gt; a != b   <span class="co"># check if different</span>
-&gt;&gt;&gt; a &gt; b    <span class="co"># check if a is greater than b</span>
-&gt;&gt;&gt; a &gt;= b   <span class="co"># check if a is greater or equal to b</span>
-&gt;&gt;&gt; a &lt; b    <span class="co"># check if a is lesser than b</span>
-&gt;&gt;&gt; a &lt;= b   <span class="co"># check if a is lesser or equal to b</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> a <span class="op">==</span> b   <span class="co"># check if equals</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">!=</span> b   <span class="co"># check if different</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">&gt;</span> b    <span class="co"># check if a is greater than b</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">&gt;=</span> b   <span class="co"># check if a is greater or equal to b</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">&lt;</span> b    <span class="co"># check if a is lesser than b</span>
+<span class="op">&gt;&gt;&gt;</span> a <span class="op">&lt;=</span> b   <span class="co"># check if a is lesser or equal to b</span></code></pre></div>
 <p>It is also possible to use the following operators:</p>
 <ul>
 <li><code>and</code>: called &quot;Logical AND operator&quot;. If both the operands are true then the condition becomes true.</li>
@@ -257,62 +276,63 @@ Value of expression is <span class="dv">100</span>.
 <li><code>not</code> called Logical NOT Operator. Use to reverses the logical state of its operand. If a condition is true then Logical NOT operator will make false.</li>
 <li><code>in</code>: evaluates to true if it finds a variable in the specified sequence and false otherwise.</li>
 </ul>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; <span class="kw">if</span> a == <span class="st">&quot;apples&quot;</span> and b == <span class="st">&quot;peers&quot;</span>:
-...    <span class="dt">print</span>(<span class="st">&quot;You need to buy fruits.&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> <span class="cf">if</span> a <span class="op">==</span> <span class="st">&quot;apples&quot;</span> <span class="op">and</span> b <span class="op">==</span> <span class="st">&quot;peers&quot;</span>:
+...    <span class="bu">print</span>(<span class="st">&quot;You need to buy fruits.&quot;</span>)
 
-&gt;&gt;&gt; <span class="kw">if</span> a == <span class="st">&quot;apples&quot;</span> or b == <span class="st">&quot;apples&quot;</span>:
-...    <span class="dt">print</span>(<span class="st">&quot;You already have bought apples.&quot;</span>)
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">if</span> a <span class="op">==</span> <span class="st">&quot;apples&quot;</span> <span class="op">or</span> b <span class="op">==</span> <span class="st">&quot;apples&quot;</span>:
+...    <span class="bu">print</span>(<span class="st">&quot;You already have bought apples.&quot;</span>)
 
-&gt;&gt;&gt; <span class="kw">if</span> <span class="st">&quot;tomatoas&quot;</span> not in to_buy:
-...    <span class="dt">print</span>(<span class="st">&quot;You do not have to buy tomatoes.&quot;</span>)</code></pre>
-<h3 id="loops"><a href="#loops">Loops</a></h3>
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">if</span> <span class="st">&quot;tomatoas&quot;</span> <span class="op">not</span> <span class="op">in</span> to_buy:
+...    <span class="bu">print</span>(<span class="st">&quot;You do not have to buy tomatoes.&quot;</span>)</code></pre></div>
+<h3 id="loops">Loops</h3>
 <p>The <code>for</code> loop statement iterates over the items of any sequence. The next Python lines of code print items of a list on the screen:</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; to_buy = [<span class="st">&#39;fruits&#39;</span>, <span class="st">&#39;viande&#39;</span>, <span class="st">&#39;poisson&#39;</span>, <span class="st">&#39;oeufs&#39;</span>]
-&gt;&gt;&gt; <span class="kw">for</span> item in to_buy:
-...    <span class="dt">print</span>(item)
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> to_buy <span class="op">=</span> [<span class="st">&#39;fruits&#39;</span>, <span class="st">&#39;viande&#39;</span>, <span class="st">&#39;poisson&#39;</span>, <span class="st">&#39;oeufs&#39;</span>]
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> item <span class="op">in</span> to_buy:
+...    <span class="bu">print</span>(item)
 ...
 fruits
 viande
 poisson
-oeufs</code></pre>
+oeufs</code></pre></div>
 <p>A <code>while</code> loop statement repeatedly executes a target statement as long as a given condition returns <code>True</code>. The following example prints exactly the same result as the previous one:</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; to_buy = [<span class="st">&#39;fruits&#39;</span>, <span class="st">&#39;viande&#39;</span>, <span class="st">&#39;poisson&#39;</span>, <span class="st">&#39;oeufs&#39;</span>]
-&gt;&gt;&gt; i = <span class="dv">0</span>
-&gt;&gt;&gt; <span class="kw">while</span> i &lt; <span class="dt">len</span>(to_buy):
-...  <span class="dt">print</span>(to_buy[i])
-...  i += <span class="dv">1</span>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> to_buy <span class="op">=</span> [<span class="st">&#39;fruits&#39;</span>, <span class="st">&#39;viande&#39;</span>, <span class="st">&#39;poisson&#39;</span>, <span class="st">&#39;oeufs&#39;</span>]
+<span class="op">&gt;&gt;&gt;</span> i <span class="op">=</span> <span class="dv">0</span>
+<span class="op">&gt;&gt;&gt;</span> <span class="cf">while</span> i <span class="op">&lt;</span> <span class="bu">len</span>(to_buy):
+...  <span class="bu">print</span>(to_buy[i])
+...  i <span class="op">+=</span> <span class="dv">1</span>
 ...
 fruits
 viande
 poisson
-oeufs</code></pre>
-<h3 id="dictionaries"><a href="#dictionaries">Dictionaries</a></h3>
+oeufs</code></pre></div>
+<h3 id="dictionaries">Dictionaries</h3>
 <p>A dictionary is a very useful data type. It consists of pairs of keys and their corresponding values.</p>
-<pre class="sourceCode python"><code class="sourceCode python">&gt;&gt;&gt; fruits = <span class="dt">dict</span>()
-&gt;&gt;&gt; fruits[<span class="st">&#39;apples&#39;</span>] = <span class="dv">3</span>
-&gt;&gt;&gt; fruits[<span class="st">&#39;peers&#39;</span>] = <span class="dv">5</span>
-&gt;&gt;&gt; fruits[<span class="st">&#39;tomatoas&#39;</span>] = <span class="dv">1</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">&gt;&gt;&gt;</span> fruits <span class="op">=</span> <span class="bu">dict</span>()
+<span class="op">&gt;&gt;&gt;</span> fruits[<span class="st">&#39;apples&#39;</span>] <span class="op">=</span> <span class="dv">3</span>
+<span class="op">&gt;&gt;&gt;</span> fruits[<span class="st">&#39;peers&#39;</span>] <span class="op">=</span> <span class="dv">5</span>
+<span class="op">&gt;&gt;&gt;</span> fruits[<span class="st">&#39;tomatoas&#39;</span>] <span class="op">=</span> <span class="dv">1</span></code></pre></div>
 <p><code>fruits['apples']</code> is a way to get the value - i.e. 3, of the <code>apple</code> key. However, an error is sent if the key is unknown, like <code>fruits[bananas]</code>. Alternatively, the <code>get</code> function can be used, like <code>fruits.get(&quot;bananas&quot;, 0)</code> that returns 0 instead of an error.</p>
 <p>The next example is showing how use a simple dictionary: <sub><sub><sub><sub><sub><sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub></sub></sub></sub><sub><sub><sub><sub>~</sub></sub></sub></sub><sub>~</sub>~</sub>~~ {.python} &gt;&gt;&gt; for key in ['apples', 'peers', 'tomatoes', 'babanas']: ... value = fruits.get(key, 0) ... if value &lt; 3: ... print(&quot;You have to buy new {:s}.&quot;.format(key)) ... You have to buy new tomatoes. <sub><sub><sub><sub><sub><sub><sub><sub><sub><sub>~</sub></sub></sub></sub></sub></sub></sub></sub></sub><sub><sub><sub><sub>~</sub></sub></sub></sub><sub>~</sub>~</sub>~~</p>
 <p>To learn more about data structures and how to manage them, get access to <a href="https://docs.python.org/2/tutorial/datastructures.html">the Python documentation</a></p>
-<h2 id="scripting-with-python"><a href="#scripting-with-python">Scripting with Python</a></h2>
+<h2 id="scripting-with-python">Scripting with Python</h2>
 <p>This section describes how to create simple Python lines of code in separated files commonly called <em>scripts</em>, and run them. Some practical exercises, appropriate to the content of each action, are proposed and test exercises are suggested at the end of the section.</p>
 <p>To practice, you have first to create a new folder in your computer - on your Desktop for example; with name &quot;pythonscripts&quot; for example, and to execute the python IDLE.</p>
-<h3 id="comments-and-documentation"><a href="#comments-and-documentation">Comments and documentation</a></h3>
+<h3 id="comments-and-documentation">Comments and documentation</h3>
 <p>Comments are not required by the program to work. But comments are necessary! Comments are expected to be appropriate, useful, relevant, adequate and always reasonable.</p>
-<pre class="sourceCode python"><code class="sourceCode python"> <span class="co"># This script is doing this and that.</span>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"> <span class="co"># This script is doing this and that.</span>
  <span class="co"># It is under the terms of a license.</span>
  <span class="co"># and I can continue to write what I want after the # symbol</span>
- <span class="co"># except that it&#39;s not the right way to tell the story of my life</span></code></pre>
+ <span class="co"># except that it&#39;s not the right way to tell the story of my life</span></code></pre></div>
 <p>The documentation of a program complements the comments. Both are not sharing the same goal: comments are used in all kind of programs but documentation is appended to comments for the biggest programs and/or projects. Documentation is automatically extracted and formatted thanks to dedicated tools. Documentation is required for sharing the program. See the <a href="https://www.python.org/dev/peps/pep-0257/">Docstring Conventions</a> for details. Documentation must follow a convention like for example the markup language <a href="https://en.wikipedia.org/wiki/ReStructuredText">reST - reStructured Text</a>. Both conventions are used into SPPAS programs.</p>
-<h3 id="getting-started-with-scripting-in-python"><a href="#getting-started-with-scripting-in-python">Getting started with scripting in Python</a></h3>
+<h3 id="getting-started-with-scripting-in-python">Getting started with scripting in Python</h3>
 <p>In the IDLE, create a new empty file either by clicking on &quot;File&quot; menu, then &quot;New File&quot;, or with the shortcut &quot;CTRL&quot;+N.</p>
 <p>Copy the following line of code in this newly created file:</p>
-<table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
-</pre></td><td class="sourceCode"><pre><code class="sourceCode python"><span class="dt">print</span>(<span class="st">&quot;Hello world!&quot;</span>)</code></pre></td></tr></table>
-<figure>
-<img src="./etc/screenshots/python_idle_00.png" alt="Hello world! in a Python script" /><figcaption>Hello world! in a Python script</figcaption>
-</figure>
+<div class="sourceCode"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+</pre></td><td class="sourceCode"><pre><code class="sourceCode python"><span class="bu">print</span>(<span class="st">&quot;Hello world!&quot;</span>)</code></pre></td></tr></table></div>
+<div class="figure">
+<img src="./etc/screenshots/python_idle_00.png" alt="Hello world! in a Python script" />
+<p class="caption">Hello world! in a Python script</p>
+</div>
 <p>Then, save the file in the &quot;pythonscripts&quot; folder. By convention, Python source files end with a <em>.py</em> extension, and so the name <code>01_helloworld.py</code> could be fine.</p>
 <p>To execute the program, you can do one of:</p>
 <ul>
@@ -320,15 +340,16 @@ oeufs</code></pre>
 <li>with the keyboard: Press F5</li>
 </ul>
 <p>The expected output is as follow:</p>
-<figure>
-<img src="./etc/screenshots/python_idle_01.png" alt="Output of the first script" /><figcaption>Output of the first script</figcaption>
-</figure>
+<div class="figure">
+<img src="./etc/screenshots/python_idle_01.png" alt="Output of the first script" />
+<p class="caption">Output of the first script</p>
+</div>
 <p>A better practice while writing scripts is to describe by who, what and why this script was done. A nifty trick is to create a skeleton for any future script that will be written. Such ready-to-use script is available in the SPPAS package with the name <code>skeleton.py</code>.</p>
-<h3 id="functions"><a href="#functions">Functions</a></h3>
-<h4 id="simple-function"><a href="#simple-function">Simple function</a></h4>
+<h3 id="functions">Functions</h3>
+<h4 id="simple-function">Simple function</h4>
 <p>A function does something: it stats with its definition then is followed by its lines of code in a block.</p>
 <p>Here is an example of function:</p>
-<table class="sourceCode python numberLines" startFrom="27"><tr class="sourceCode"><td class="lineNumbers"><pre>27
+<div class="sourceCode" startFrom="27"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>27
 28
 29
 30
@@ -338,30 +359,31 @@ oeufs</code></pre>
 </pre></td><td class="sourceCode"><pre><code class="sourceCode python"><span class="kw">def</span> print_vowels():
     <span class="co">&quot;&quot;&quot; Print the list of French vowels on the screen. &quot;&quot;&quot;</span>
     
-    vowels = [<span class="st">&#39;a&#39;</span>, <span class="st">&#39;e&#39;</span>, <span class="st">&#39;E&#39;</span>, <span class="st">&#39;i&#39;</span>, <span class="st">&#39;o&#39;</span>, <span class="st">&#39;u&#39;</span>, <span class="st">&#39;y&#39;</span>, <span class="st">&#39;@&#39;</span>, <span class="st">&#39;2&#39;</span>, <span class="st">&#39;9&#39;</span>, <span class="st">&#39;a~&#39;</span>, <span class="st">&#39;o~&#39;</span>, <span class="st">&#39;U~&#39;</span>]
-    <span class="dt">print</span>(<span class="st">&quot;List of French vowels:&quot;</span>)
-    <span class="kw">for</span> v in vowels:
-        <span class="dt">print</span>(v)</code></pre></td></tr></table>
+    vowels <span class="op">=</span> [<span class="st">&#39;a&#39;</span>, <span class="st">&#39;e&#39;</span>, <span class="st">&#39;E&#39;</span>, <span class="st">&#39;i&#39;</span>, <span class="st">&#39;o&#39;</span>, <span class="st">&#39;u&#39;</span>, <span class="st">&#39;y&#39;</span>, <span class="st">&#39;@&#39;</span>, <span class="st">&#39;2&#39;</span>, <span class="st">&#39;9&#39;</span>, <span class="st">&#39;a~&#39;</span>, <span class="st">&#39;o~&#39;</span>, <span class="st">&#39;U~&#39;</span>]
+    <span class="bu">print</span>(<span class="st">&quot;List of French vowels:&quot;</span>)
+    <span class="cf">for</span> v <span class="op">in</span> vowels:
+        <span class="bu">print</span>(v)</code></pre></td></tr></table></div>
 <p>What the <code>print_vowels()</code> function is doing? This function declares a list with name <code>vowels</code>. Each item of the list is a string representing a vowel in French encoded in X-SAMPA. Of course, this list can be overridden with any other set of strings. The next line prints a message. Then, a loop prints each item of the list.</p>
 <p>At this stage, if a script including this function is executed, it will do... nothing! Actually, the function is created, but it must be invoked in the main function to be interpreted by Python. The new version is as follow:</p>
-<table class="sourceCode python numberLines" startFrom="40"><tr class="sourceCode"><td class="lineNumbers"><pre>40
+<div class="sourceCode" startFrom="40"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>40
 41
-</pre></td><td class="sourceCode"><pre><code class="sourceCode python"><span class="kw">if</span> <span class="ot">__name__</span> == <span class="st">&#39;__main__&#39;</span>:
-    print_vowels()</code></pre></td></tr></table>
+</pre></td><td class="sourceCode"><pre><code class="sourceCode python"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:
+    print_vowels()</code></pre></td></tr></table></div>
 <blockquote>
 <p><em>Practice:</em> create a copy of the file <code>skeleton.py</code>, then make a function to print &quot;Hello World!&quot;. (solution: ex01_hello_world.py).</p>
 </blockquote>
 <blockquote>
 <p><em>Practice</em>: add a function to print plosives and call it in the main function (solution: ex02_functions.py).</p>
 </blockquote>
-<figure>
-<img src="./etc/screenshots/python_idle_02.png" alt="Output of the second script" /><figcaption>Output of the second script</figcaption>
-</figure>
+<div class="figure">
+<img src="./etc/screenshots/python_idle_02.png" alt="Output of the second script" />
+<p class="caption">Output of the second script</p>
+</div>
 <p>One can also create a function to print glides, another one to print affricates, and so on. Hum... this sounds a little bit fastidious! Lets update, or refactor, our printing function to <em>make it more generic</em>.</p>
-<h4 id="function-with-parameters"><a href="#function-with-parameters">Function with parameters</a></h4>
+<h4 id="function-with-parameters">Function with parameters</h4>
 <p>Rather than writing the same lines of code with only a minor difference over and over, we can declare <em>parameters</em> to the function. Notice that the number of parameters of a function is not limited!</p>
 <p>In the example, we can replace the <code>print_vowels()</code> function and the <code>print_plosives()</code> function by a single function <code>print_list(mylist)</code> where <code>mylist</code> can be any list containing strings or characters. If the list contains other typed-variables like numerical values, they must be converted to string to be printed out. This can result in the following function:</p>
-<table class="sourceCode python numberLines" startFrom="27"><tr class="sourceCode"><td class="lineNumbers"><pre>27
+<div class="sourceCode" startFrom="27"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>27
 28
 29
 30
@@ -370,33 +392,34 @@ oeufs</code></pre>
 33
 34
 35
-</pre></td><td class="sourceCode"><pre><code class="sourceCode python"><span class="kw">def</span> print_list(mylist, message=<span class="st">&quot;&quot;</span>):
+</pre></td><td class="sourceCode"><pre><code class="sourceCode python"><span class="kw">def</span> print_list(mylist, message<span class="op">=</span><span class="st">&quot;&quot;</span>):
     <span class="co">&quot;&quot;&quot; Print a list on the screen.</span>
 
 <span class="co">    :param mylist: (list) is the list to print</span>
 <span class="co">    :param message: (string) is an optional message to print before each element </span>
 
 <span class="co">    &quot;&quot;&quot;</span>
-    <span class="kw">for</span> item in mylist:
-        <span class="dt">print</span>(<span class="st">&quot;</span><span class="ot">{0}</span><span class="st"> </span><span class="ot">{1}</span><span class="st">&quot;</span>.<span class="dt">format</span>(message, item))</code></pre></td></tr></table>
-<h4 id="function-return-values"><a href="#function-return-values">Function return values</a></h4>
+    <span class="cf">for</span> item <span class="op">in</span> mylist:
+        <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{0}</span><span class="st"> </span><span class="sc">{1}</span><span class="st">&quot;</span>.<span class="bu">format</span>(message, item))</code></pre></td></tr></table></div>
+<h4 id="function-return-values">Function return values</h4>
 <p>Functions are used to do a specific job and the result of the function can be captured by the program. In the following example, the function would return a boolean value, i.e. True if the given string has no character.</p>
-<table class="sourceCode python numberLines" startFrom="27"><tr class="sourceCode"><td class="lineNumbers"><pre>27
+<div class="sourceCode" startFrom="27"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>27
 28
 29
 30
 </pre></td><td class="sourceCode"><pre><code class="sourceCode python"><span class="kw">def</span> is_empty(mystr):
     <span class="co">&quot;&quot;&quot; Return True if mystr is empty. &quot;&quot;&quot;</span>
     
-    <span class="kw">return</span> <span class="dt">len</span>(mystr.strip()) == <span class="dv">0</span></code></pre></td></tr></table>
+    <span class="cf">return</span> <span class="bu">len</span>(mystr.strip()) <span class="op">==</span> <span class="dv">0</span></code></pre></td></tr></table></div>
 <blockquote>
 <p><em>Practice:</em> Add this function in a new script and try to print various lists (solution: ex03_functions.py)</p>
 </blockquote>
-<figure>
-<img src="./etc/screenshots/python_idle_03.png" alt="Expected output of the 3rd script" /><figcaption>Expected output of the 3rd script</figcaption>
-</figure>
-<h3 id="readingwriting-files"><a href="#readingwriting-files">Reading/Writing files</a></h3>
-<h4 id="reading-data-from-a-file"><a href="#reading-data-from-a-file">Reading data from a file</a></h4>
+<div class="figure">
+<img src="./etc/screenshots/python_idle_03.png" alt="Expected output of the 3rd script" />
+<p class="caption">Expected output of the 3rd script</p>
+</div>
+<h3 id="readingwriting-files">Reading/Writing files</h3>
+<h4 id="reading-data-from-a-file">Reading data from a file</h4>
 <p>Now, we'll try to get data from a file. Create a new empty file with the following lines - and add as many lines as you want; then, save it with the name &quot;phonemes.csv&quot; by using UTF-8 encoding:</p>
 <pre><code>occlusives ; b ; b 
 occlusives ; d ; d 
@@ -412,18 +435,18 @@ vowels ; e ; e </code></pre>
 <blockquote>
 <p><em>Practice:</em> Add this lines of code in a new script and try it (solution: ex04_reading_simple.py)</p>
 </blockquote>
-<table class="sourceCode python numberLines" startFrom="21"><tr class="sourceCode"><td class="lineNumbers"><pre>21
+<div class="sourceCode" startFrom="21"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>21
 22
 23
 24
 25
-</pre></td><td class="sourceCode"><pre><code class="sourceCode python">fp = <span class="dt">open</span>(<span class="st">&quot;C:\Users\Me\Desktop\pythonscripts\phonemes.csv&quot;</span>, <span class="st">&#39;r&#39;</span>)
-<span class="kw">for</span> line in fp:
+</pre></td><td class="sourceCode"><pre><code class="sourceCode python">fp <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;C:\Users\Me\Desktop\pythonscripts\phonemes.csv&quot;</span>, <span class="st">&#39;r&#39;</span>)
+<span class="cf">for</span> line <span class="op">in</span> fp:
     <span class="co"># do something with the line stored in variable l</span>
-    <span class="dt">print</span>(line.strip())
-f.close()</code></pre></td></tr></table>
+    <span class="bu">print</span>(line.strip())
+f.close()</code></pre></td></tr></table></div>
 <p>The following is a more generic solution, with the ability to deal with various file encodings, thanks to the <code>codecs</code> library:</p>
-<table class="sourceCode python numberLines" startFrom="21"><tr class="sourceCode"><td class="lineNumbers"><pre>21
+<div class="sourceCode" startFrom="21"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>21
 22
 23
 24
@@ -439,46 +462,46 @@ f.close()</code></pre></td></tr></table>
 <span class="co">    :returns: List of lines</span>
 
 <span class="co">    &quot;&quot;&quot;</span>
-    <span class="kw">with</span> codecs.<span class="dt">open</span>(filename, <span class="st">&#39;r&#39;</span>, encoding=<span class="st">&quot;utf8&quot;</span>) <span class="ch">as</span> fp:
-        <span class="kw">return</span> fp.readlines()</code></pre></td></tr></table>
+    <span class="cf">with</span> codecs.<span class="bu">open</span>(filename, <span class="st">&#39;r&#39;</span>, encoding<span class="op">=</span><span class="st">&quot;utf8&quot;</span>) <span class="im">as</span> fp:
+        <span class="cf">return</span> fp.readlines()</code></pre></td></tr></table></div>
 <p>In the previous code, the <code>codecs.open</code> functions got 3 parameters: the name of the file, the mode to open, and the encoding. The <code>readlines()</code> function gets each line of the file and store it into a list.</p>
 <blockquote>
 <p><em>Practice:</em> Write a script to print the content of a file (solution: ex05_reading_file.py)</p>
 </blockquote>
-<p>Notice that Python <code>os</code> module provides useful methods to perform file-processing operations, such as renaming and deleting. See Python documentation for details: <a href="https://docs.python.org/2/">https://docs.python.org/2/</a></p>
-<h4 id="writing-data-to-a-file"><a href="#writing-data-to-a-file">Writing data to a file</a></h4>
+<p>Notice that Python <code>os</code> module provides useful methods to perform file-processing operations, such as renaming and deleting. See Python documentation for details: <a href="https://docs.python.org/2/" class="uri">https://docs.python.org/2/</a></p>
+<h4 id="writing-data-to-a-file">Writing data to a file</h4>
 <p>Writing a file requires to open it in a writing mode:</p>
 <ul>
 <li>'w' is the mode to write data; it will erase any existing file;</li>
 <li>'a' is the mode to append data in an existing file.</li>
 </ul>
 <p>A file can be opened in an encoding and saved in another one. This could be useful to write a script to convert the encoding of a set of files. The following could help to create such script:</p>
-<table class="sourceCode python numberLines" startFrom="10"><tr class="sourceCode"><td class="lineNumbers"><pre>10
+<div class="sourceCode" startFrom="10"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>10
 11
 12
 </pre></td><td class="sourceCode"><pre><code class="sourceCode python"><span class="co"># getting all files of a given folder:</span>
-path = <span class="st">&#39;C:\Users\Me\data&#39;</span>
-dirs = os.listdir( path )</code></pre></td></tr></table>
-<table class="sourceCode python numberLines" startFrom="15"><tr class="sourceCode"><td class="lineNumbers"><pre>15
+path <span class="op">=</span> <span class="st">&#39;C:\Users\Me\data&#39;</span>
+dirs <span class="op">=</span> os.listdir( path )</code></pre></td></tr></table></div>
+<div class="sourceCode" startFrom="15"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>15
 16
 17
 18
 19
 20
 </pre></td><td class="sourceCode"><pre><code class="sourceCode python"><span class="co"># Converting the encoding of a file:</span>
-file_stream = codecs.<span class="dt">open</span>(file_location, <span class="st">&#39;r&#39;</span>, file_encoding)
-file_output = codecs.<span class="dt">open</span>(file_location+<span class="st">&#39;utf8&#39;</span>, <span class="st">&#39;w&#39;</span>, <span class="st">&#39;utf-8&#39;</span>)
+file_stream <span class="op">=</span> codecs.<span class="bu">open</span>(file_location, <span class="st">&#39;r&#39;</span>, file_encoding)
+file_output <span class="op">=</span> codecs.<span class="bu">open</span>(file_location<span class="op">+</span><span class="st">&#39;utf8&#39;</span>, <span class="st">&#39;w&#39;</span>, <span class="st">&#39;utf-8&#39;</span>)
 
-<span class="kw">for</span> line in file_stream:
-    file_output.write(line)</code></pre></td></tr></table>
-<h3 id="python-tutorials"><a href="#python-tutorials">Python tutorials</a></h3>
+<span class="cf">for</span> line <span class="op">in</span> file_stream:
+    file_output.write(line)</code></pre></td></tr></table></div>
+<h3 id="python-tutorials">Python tutorials</h3>
 <p>Here is a list of web sites with tutorials, from the easiest to the most complete:</p>
-<ol type="1">
+<ol style="list-style-type: decimal">
 <li><a href="http://www.learnpython.org/">Learn Python, by DataCamp</a></li>
 <li><a href="https://www.tutorialspoint.com/python/">Tutorial Points</a></li>
 <li><a href="https://docs.python.org/2/tutorial/">The Python documentation</a></li>
 </ol>
-<h3 id="exercises-to-practice"><a href="#exercises-to-practice">Exercises to practice</a></h3>
+<h3 id="exercises-to-practice">Exercises to practice</h3>
 <blockquote>
 <p>Exercise 1: How many vowels are in a list of phonemes? (solution: ex06_list.py)</p>
 </blockquote>
@@ -488,15 +511,15 @@ file_output = codecs.<span class="dt">open</span>(file_location+<span class="st"
 <blockquote>
 <p>Exercise 3: Compare 2 sets of data using NLP techniques (Zipf law, Tf.Idf) (solution: ex08_counter.py)</p>
 </blockquote>
-<h2 id="the-api-of-sppas-to-manage-data"><a href="#the-api-of-sppas-to-manage-data">The API of SPPAS to manage data</a></h2>
+<h2 id="the-api-of-sppas-to-manage-data">The API of SPPAS to manage data</h2>
 <p>In this section, we are going to create Python scripts with the SPPAS Application Programming Interface <em>annotationdata</em> and then run them.</p>
-<h3 id="overview"><a href="#overview">Overview</a></h3>
+<h3 id="overview">Overview</h3>
 <p>We are now going to write Python scripts using the <em>annotationdata</em> API included in SPPAS. This API is useful to read/write and manipulate files annotated from various annotation tools like SPPAS, Praat or Elan for example.</p>
 <p>First of all, it is important to understand the data structure included into the API to be able to use it efficiently. Details can be found in the following publication:</p>
 <blockquote>
 <p><em>Brigitte Bigi, Tatsuya Watanabe, Laurent Prévot</em> (2014). <strong>Representing Multimodal Linguistics Annotated data</strong>, Proceedings of the 9th edition of the Language Resources and Evaluation Conference, 26-31 May 2014, Reykjavik, Iceland.</p>
 </blockquote>
-<h3 id="why-developing-a-new-api"><a href="#why-developing-a-new-api">Why developing a new API?</a></h3>
+<h3 id="why-developing-a-new-api">Why developing a new API?</h3>
 <p>In the Linguistics field, multimodal annotations contain information ranging from general linguistic to domain specific information. Some are annotated with automatic tools, and some are manually annotated. In annotation tools, annotated data are mainly represented in the form of &quot;tiers&quot; or &quot;tracks&quot; of annotations. Tiers are series of intervals defined by:</p>
 <ul>
 <li>a time point to represent the beginning of the interval;</li>
@@ -505,7 +528,7 @@ file_output = codecs.<span class="dt">open</span>(file_location+<span class="st"
 </ul>
 <p>Of course, depending on the annotation tool, the internal data representation and the file formats are different. In Praat, tiers can be represented by a time point and a label (such tiers are respectively named PointTiers and IntervalTiers). IntervalTiers are made of a succession of consecutive intervals (labelled or un-labelled). In Elan, points are not supported; and unlabelled intervals are not represented nor saved.</p>
 <p>The <em>annotationdata</em> API was designed to be able to manipulate all data in the same way, regardless of the file type. The API supports to merge data and annotations from a wide range of heterogeneous data sources.</p>
-<h3 id="the-api-class-diagram"><a href="#the-api-class-diagram">The API class diagram</a></h3>
+<h3 id="the-api-class-diagram">The API class diagram</h3>
 <p>After opening/loading a file, its content is stored in a <code>Transcription</code> object. A <code>Transcription</code> has a name, and a list of <code>Tier</code> objects. Two tiers can't share the same name. The list of tiers can be empty. A hierarchy between tiers can be defined. Actually, subdivision relations can be established between tiers. For example, a tier with phonemes is a subdivision reference for syllables, or for tokens, and tokens are a subdivision reference for the orthographic transcription in IPUs. Such subdivisions can be of two categories: alignment or constituency.</p>
 <p>A <code>Tier</code> has a name, and a list of <code>Annotation</code> objects. It also contains a set of meta-data and it can be associated to a controlled vocabulary.</p>
 <p>An annotation is made of 2 objects:</p>
@@ -523,24 +546,26 @@ file_output = codecs.<span class="dt">open</span>(file_location+<span class="st"
 <li>a <code>FrameInterval</code> object; or</li>
 <li>a <code>FrameDisjoint</code> object.</li>
 </ul>
-<figure>
-<img src="./etc/figures/annotationdata.png" alt="API class diagram" /><figcaption>API class diagram</figcaption>
-</figure>
+<div class="figure">
+<img src="./etc/figures/annotationdata.png" alt="API class diagram" />
+<p class="caption">API class diagram</p>
+</div>
 <blockquote>
-<p><strong>The whole API documentation is available at the following URL:</strong> <a href="http://www.sppas.org/manual/module-tree.html">http://www.sppas.org/manual/module-tree.html</a></p>
+<p><strong>The whole API documentation is available at the following URL:</strong> <a href="http://www.sppas.org/manual/module-tree.html" class="uri">http://www.sppas.org/manual/module-tree.html</a></p>
 </blockquote>
-<h4 id="label-representation"><a href="#label-representation">Label representation</a></h4>
+<h4 id="label-representation">Label representation</h4>
 <p>Each annotation holds at least one label, mainly represented in the form of a string, freely written by the annotator or selected from a list of categories, depending on the annotation tool. The <em>annotationdata</em> API allows to assign a score to each label, and allows multiple labels for one annotation.</p>
-<h4 id="location-representation"><a href="#location-representation">Location representation</a></h4>
+<h4 id="location-representation">Location representation</h4>
 <p>In the <em>annotationdata</em> API, a <code>TimePoint</code> is considered <em>as an imprecise value</em>. It is possible to characterize a point in a space immediately allowing its vagueness by using:</p>
 <ul>
 <li>a midpoint value (center) of the point;</li>
 <li>a radius value.</li>
 </ul>
-<figure>
-<img src="./etc/figures/timepoint-represent.png" alt="Representation of a TimePoint" /><figcaption>Representation of a TimePoint</figcaption>
-</figure>
-<h4 id="example"><a href="#example">Example</a></h4>
+<div class="figure">
+<img src="./etc/figures/timepoint-represent.png" alt="Representation of a TimePoint" />
+<p class="caption">Representation of a TimePoint</p>
+</div>
+<h4 id="example">Example</h4>
 <p>The screenshot below shows an example of multimodal annotated data, imported from 3 different annotation tools. Each <code>TimePoint</code> is represented by a vertical dark-blue line with a gradient color to refer to the radius value.</p>
 <p>In the screenshot the following radius values were assigned:</p>
 <ul>
@@ -548,19 +573,20 @@ file_output = codecs.<span class="dt">open</span>(file_location+<span class="st"
 <li>5ms for phonetics, discourse and syntax</li>
 <li>40ms for gestures.</li>
 </ul>
-<figure>
-<img src="./etc/screenshots/Grenelle.png" alt="Example of multimodal data" /><figcaption>Example of multimodal data</figcaption>
-</figure>
-<h2 id="creating-scripts-with-annotationdata-api"><a href="#creating-scripts-with-annotationdata-api">Creating scripts with annotationdata API</a></h2>
-<h3 id="preparing-the-data"><a href="#preparing-the-data">Preparing the data</a></h3>
+<div class="figure">
+<img src="./etc/screenshots/Grenelle.png" alt="Example of multimodal data" />
+<p class="caption">Example of multimodal data</p>
+</div>
+<h2 id="creating-scripts-with-annotationdata-api">Creating scripts with annotationdata API</h2>
+<h3 id="preparing-the-data">Preparing the data</h3>
 <p>To practice, you have first to create a new folder in your computer - on your Desktop for example; with name &quot;sppasscripts&quot; for example, and to execute the python IDLE.</p>
 <p>Open a File Explorer window and go to the SPPAS folder location. Then, copy the <code>sppas</code> directory into the newly created &quot;sppasscripts&quot; folder. Then, go to the solution directory and copy/paste the files <code>skeleton-sppas.py</code> and <code>F_F_B003-P9-merge.TextGrid</code> into your &quot;sppasscripts&quot; folder. Then, open the skeleton script with the python IDLE and execute it. It will do... nothing! But now, you are ready to do something with the API of SPPAS!</p>
-<h3 id="readwrite-annotated-files"><a href="#readwrite-annotated-files">Read/Write annotated files</a></h3>
+<h3 id="readwrite-annotated-files">Read/Write annotated files</h3>
 <p>We are being to Open/Read a file of any format (XRA, TextGrid, Elan, ...) and store it into a <code>Transcription</code> object instance. Then, the latter will be saved into another file.</p>
-<table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+<div class="sourceCode"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
 2
-</pre></td><td class="sourceCode"><pre><code class="sourceCode python">trs = trsio.read(filename_in)
-trsaio.write(filename_out, trs)</code></pre></td></tr></table>
+</pre></td><td class="sourceCode"><pre><code class="sourceCode python">trs <span class="op">=</span> trsio.read(filename_in)
+trsaio.write(filename_out, trs)</code></pre></td></tr></table></div>
 <p>Only these two lines of code are required to convert a file from one format to another one! The appropriate reader/writer for the format is given by the extension of the name of the file.</p>
 <p>To get the list of accepted extensions that the API can read, just use <code>trsaio.extensions_in</code>. The list of accepted extensions that the API can write is given by <code>trsaio.extensions_out</code>.</p>
 <p>Currently, accepted input file extensions are:</p>
@@ -589,7 +615,7 @@ trsaio.write(filename_out, trs)</code></pre></td></tr></table>
 <blockquote>
 <p><em>Practice:</em> Write a script to convert a TextGrid file into CSV (solution: ex10_read_write.py)</p>
 </blockquote>
-<h3 id="manipulating-a-transcription-object"><a href="#manipulating-a-transcription-object">Manipulating a Transcription object</a></h3>
+<h3 id="manipulating-a-transcription-object">Manipulating a Transcription object</h3>
 <p>The most useful functions used to manage a Transcription object are:</p>
 <ul>
 <li><code>Append(tier)</code>, <code>Pop()</code></li>
@@ -599,39 +625,39 @@ trsaio.write(filename_out, trs)</code></pre></td></tr></table>
 <p><code>Append()</code> is used to add a tier at the end of the list of tiers of the Transcription object; and <code>Pop()</code> is used to remove the last tier of such list.</p>
 <p><code>Add()</code> and <code>Remove()</code> do the same, except that it does not put/delete the tier at the end of the list but at the given index.</p>
 <p><code>Find()</code> is useful to get a tier from its name.</p>
-<table class="sourceCode python numberLines" startFrom="15"><tr class="sourceCode"><td class="lineNumbers"><pre>15
+<div class="sourceCode" startFrom="15"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>15
 16
 17
 18
 19
-</pre></td><td class="sourceCode"><pre><code class="sourceCode python">trs = trsaio.read(<span class="st">&#39;Filename-palign.TextGrid)</span>
+</pre></td><td class="sourceCode"><pre><code class="sourceCode python">trs <span class="op">=</span> trsaio.read(<span class="st">&#39;Filename-palign.TextGrid)</span>
 <span class="st">for tier in trs:</span>
 <span class="st">    # do something with the tier:</span>
 <span class="st">    print(tier.GetName())</span>
-<span class="st">phonemes_tier = trs.Find(&quot;PhonAlign&quot;)</span></code></pre></td></tr></table>
+<span class="st">phonemes_tier = trs.Find(&quot;PhonAlign&quot;)</span></code></pre></td></tr></table></div>
 <p>Transcription object has an iterator to get access to tiers.</p>
-<table class="sourceCode python numberLines" startFrom="15"><tr class="sourceCode"><td class="lineNumbers"><pre>15
+<div class="sourceCode" startFrom="15"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>15
 16
-</pre></td><td class="sourceCode"><pre><code class="sourceCode python">trs = trsaio.read(<span class="st">&#39;Filename-palign.TextGrid)</span>
-<span class="st">phonemes_tier = trs[0]</span></code></pre></td></tr></table>
+</pre></td><td class="sourceCode"><pre><code class="sourceCode python">trs <span class="op">=</span> trsaio.read(<span class="st">&#39;Filename-palign.TextGrid)</span>
+<span class="st">phonemes_tier = trs[0]</span></code></pre></td></tr></table></div>
 <blockquote>
 <p><em>Practice:</em> Write a script to select a set of tiers of a file and save them into a new file (solution: ex11_transcription.py).</p>
 </blockquote>
-<h3 id="manipulating-a-tier-object"><a href="#manipulating-a-tier-object">Manipulating a Tier object</a></h3>
+<h3 id="manipulating-a-tier-object">Manipulating a Tier object</h3>
 <p>A tier is made of a name, a list of annotations and meta-data. To get the name of a tier, or to fix a new name, the easier way is to use <code>tier.GetName()</code>.</p>
 <p>The following block of code allow to get a tier and change its name. It should be tested into a script...</p>
-<table class="sourceCode python numberLines" startFrom="43"><tr class="sourceCode"><td class="lineNumbers"><pre>43
+<div class="sourceCode" startFrom="43"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>43
 44
 45
 46
 47
 48
-</pre></td><td class="sourceCode"><pre><code class="sourceCode python">trs = trsaio.read(filename)
-tier = trs[<span class="dv">0</span>]
-<span class="dt">print</span>(tier.GetName())
+</pre></td><td class="sourceCode"><pre><code class="sourceCode python">trs <span class="op">=</span> trsaio.read(filename)
+tier <span class="op">=</span> trs[<span class="dv">0</span>]
+<span class="bu">print</span>(tier.GetName())
 tier.SetName(<span class="st">&quot;toto&quot;</span>)
-<span class="dt">print</span>(tier.GetName())
-<span class="dt">print</span>(trs[<span class="dv">0</span>].GetName())</code></pre></td></tr></table>
+<span class="bu">print</span>(tier.GetName())
+<span class="bu">print</span>(trs[<span class="dv">0</span>].GetName())</code></pre></td></tr></table></div>
 <p>The most useful functions to manage a Tier object are:</p>
 <ul>
 <li><code>Append(annotation)</code>, <code>Pop()</code></li>
@@ -646,7 +672,7 @@ tier.SetName(<span class="st">&quot;toto&quot;</span>)
 </blockquote>
 <p><strong>Goodies:</strong></p>
 <p>The file <code>ex12_tiers_info_wx.py</code> proposes a GUI to print information of one file, or all files of a directory, and to ask the file/directory name with a dialogue frame, instead of fixing it in the script. This script can be executed simply by double-clicking on it in the File Explorer of your system. Many functions of this script can be cut/pasted in any other script.</p>
-<h3 id="main-information-on-annotationlocationlabel-objects"><a href="#main-information-on-annotationlocationlabel-objects">Main information on Annotation/Location/Label objects</a></h3>
+<h3 id="main-information-on-annotationlocationlabel-objects">Main information on Annotation/Location/Label objects</h3>
 <p>The most useful methods used to manage an <code>Annotation</code> object are:</p>
 <ul>
 <li><code>IsSilence()</code>, <code>IsLabel()</code></li>
@@ -656,7 +682,7 @@ tier.SetName(<span class="st">&quot;toto&quot;</span>)
 <li><code>GetPoint()</code>, <code>SetPoint(time)</code>, only if time is a TimePoint</li>
 </ul>
 <p>The following example shows how to get/set a new label, and to set a new time value to an annotation:</p>
-<table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+<div class="sourceCode"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
 2
 3
 4
@@ -665,25 +691,25 @@ tier.SetName(<span class="st">&quot;toto&quot;</span>)
 7
 8
 9
-</pre></td><td class="sourceCode"><pre><code class="sourceCode python"><span class="kw">if</span> ann.GetLabel().IsEmpty():
+</pre></td><td class="sourceCode"><pre><code class="sourceCode python"><span class="cf">if</span> ann.GetLabel().IsEmpty():
     ann.GetLabel().SetValue(<span class="st">&quot;dummy&quot;</span>)
-<span class="kw">if</span> ann.GetLocation().IsPoint():
-    p = ann.GetLocation().GetPoint()
+<span class="cf">if</span> ann.GetLocation().IsPoint():
+    p <span class="op">=</span> ann.GetLocation().GetPoint()
     p.SetMidPoint(<span class="fl">0.234</span>)
     p.SetRadius(<span class="fl">0.02</span>)
-<span class="kw">if</span> ann.GetLocation().IsInterval():
+<span class="cf">if</span> ann.GetLocation().IsInterval():
     ann.GetLocation().GetBegin().SetMidPoint(<span class="fl">0.123</span>)
-    ann.GetLocation().GetEnd().SetMidPoint(<span class="fl">0.234</span>)    </code></pre></td></tr></table>
+    ann.GetLocation().GetEnd().SetMidPoint(<span class="fl">0.234</span>)    </code></pre></td></tr></table></div>
 <p>If something forbidden is attempted, the object will raise an Exception. This means that the program will stop except if the script &quot;raises&quot; the exception.</p>
-<h3 id="exercises"><a href="#exercises">Exercises</a></h3>
+<h3 id="exercises">Exercises</h3>
 <blockquote>
 <p>Exercise 1: Write a script to print information about annotations of a tier (solution: ex13_tiers_info.py)</p>
 </blockquote>
 <blockquote>
 <p>Exercise 2: Write a script to estimates the frequency of a specific annotation label in a file/corpus (solution: ex14_freq.py)</p>
 </blockquote>
-<h3 id="search-in-annotations-filters"><a href="#search-in-annotations-filters">Search in annotations: Filters</a></h3>
-<h4 id="overview-1"><a href="#overview-1">Overview</a></h4>
+<h3 id="search-in-annotations-filters">Search in annotations: Filters</h3>
+<h4 id="overview-1">Overview</h4>
 <p>This section focuses on the problem of <em>searching and retrieving</em> data from annotated corpora.</p>
 <p>The filter implementation can only be used together with the <code>Tier()</code> class. The idea is that each <code>Tier()</code> can contain a set of filters, that each reduce the full list of annotations to a subset.</p>
 <p>SPPAS filtering system proposes 2 main axis to filter such data:</p>
@@ -692,7 +718,7 @@ tier.SetName(<span class="st">&quot;toto&quot;</span>)
 <li>with a relation function between annotation locations of 2 tiers.</li>
 </ul>
 <p>A set of filters can be created and combined to get the expected result. To be able to apply filters to a tier, some data must be loaded first. First, a new <code>Transcription()</code> has to be created when loading a file. Then, the tier(s) to apply filters on must be fixed. Finally, if the input file was NOT an XRA, it is widely recommended to fix a radius value depending on the annotation type.</p>
-<h4 id="creating-a-boolean-function"><a href="#creating-a-boolean-function">Creating a boolean function</a></h4>
+<h4 id="creating-a-boolean-function">Creating a boolean function</h4>
 <p>In the following, let <code>Bool</code> and <code>Rel</code> two predicates, a tier <code>T</code>, and a filter <code>f</code>.</p>
 <p>Thus, the following matching predicates are proposed to select annotations (intervals or points) depending on their label. Notice that <code>P</code> represents the text pattern to find:</p>
 <ul>
@@ -703,14 +729,14 @@ tier.SetName(<span class="st">&quot;toto&quot;</span>)
 </ul>
 <p>These predicates are then used while creating a filter on labels. All these matches can be reversed, to represent does not exactly match, does not contain, does not start with or does not end with.</p>
 <p>The next examples illustrate how to work with such filters and patterns. In this example, <code>f1</code> is a filter used to get all phonemes with the exact label 'a'. On the other side, <code>f2</code> is a filter that ignores all phonemes matching with 'a' (mentioned by the symbol '~') with a case insensitive comparison (iexact means insensitive-exact).</p>
-<pre class="sourceCode python"><code class="sourceCode python">tier = trs.Find(<span class="st">&quot;PhonAlign&quot;</span>)
-ft = Filter(tier)
-f1 = LabelFilter(Bool(exact=<span class="st">&#39;a&#39;</span>), ft)
-f2 = LabelFilter(~Bool(iexact=<span class="st">&#39;a&#39;</span>), ft)</code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">tier <span class="op">=</span> trs.Find(<span class="st">&quot;PhonAlign&quot;</span>)
+ft <span class="op">=</span> Filter(tier)
+f1 <span class="op">=</span> LabelFilter(Bool(exact<span class="op">=</span><span class="st">&#39;a&#39;</span>), ft)
+f2 <span class="op">=</span> LabelFilter(<span class="op">~</span>Bool(iexact<span class="op">=</span><span class="st">&#39;a&#39;</span>), ft)</code></pre></div>
 <p>For complex search, a selection based on regular expressions is available by using <code>pr = Bool(regexp=R)</code>.</p>
 <p>A multiple pattern selection can be expressed with the operators <code>|</code> to represent the logical &quot;or&quot; and the operator <code>&amp;</code> to represent the logical &quot;and&quot;.</p>
 <p>With this notation in hands, it is possible to formulate queries as, for example: <em>Extract words starting by &quot;ch&quot; or &quot;sh&quot;</em>, like:</p>
-<pre class="sourceCode python"><code class="sourceCode python">pr = Bool(startswith=<span class="st">&quot;ch&quot;</span>) | Bool(startswith=<span class="st">&quot;sh&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">pr <span class="op">=</span> Bool(startswith<span class="op">=</span><span class="st">&quot;ch&quot;</span>) <span class="op">|</span> Bool(startswith<span class="op">=</span><span class="st">&quot;sh&quot;</span>)</code></pre></div>
 <p>Filters on duration can also be created on annotations if Time instance is of type TimeInterval. In the following, <code>v</code> represents the value to be compared with:</p>
 <ul>
 <li>lower: <code>pr = Bool(duration_lt=v)</code>, means that an annotation of <code>T</code> is valid if its duration is lower than <code>v</code>;</li>
@@ -721,7 +747,7 @@ f2 = LabelFilter(~Bool(iexact=<span class="st">&#39;a&#39;</span>), ft)</code></
 </ul>
 <p>Search can also starts and ends at specific time values in a tier by creating filters with <code>begin_ge</code> and <code>end_le</code>.</p>
 <p>Finally, the user must apply the filter to get filtered data from the filter.</p>
-<table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+<div class="sourceCode"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
 2
 3
 4
@@ -732,21 +758,21 @@ f2 = LabelFilter(~Bool(iexact=<span class="st">&#39;a&#39;</span>), ft)</code></
 9
 10
 </pre></td><td class="sourceCode"><pre><code class="sourceCode python"><span class="co"># creating a complex boolean function</span>
-predicate = (Bool(icontains=<span class="st">&quot;a&quot;</span>) | Bool(icontains=<span class="st">&quot;e&quot;</span>)) &amp; Bool(duration_ge=<span class="fl">0.08</span>)
+predicate <span class="op">=</span> (Bool(icontains<span class="op">=</span><span class="st">&quot;a&quot;</span>) <span class="op">|</span> Bool(icontains<span class="op">=</span><span class="st">&quot;e&quot;</span>)) <span class="op">&amp;</span> Bool(duration_ge<span class="op">=</span><span class="fl">0.08</span>)
 
 <span class="co"># to create a filter:</span>
-ft = Filter(tier)
-flab = LabelFilter(predicate, ft)
+ft <span class="op">=</span> Filter(tier)
+flab <span class="op">=</span> LabelFilter(predicate, ft)
 
 <span class="co"># to get filtered data from the filter:</span>
-tier = flab.Filter()
-tier.SetName(<span class="st">&#39;Filtered with a-e-0.8&#39;</span>)</code></pre></td></tr></table>
-<h4 id="creating-a-relation-function"><a href="#creating-a-relation-function">Creating a relation function</a></h4>
+tier <span class="op">=</span> flab.Filter()
+tier.SetName(<span class="st">&#39;Filtered with a-e-0.8&#39;</span>)</code></pre></td></tr></table></div>
+<h4 id="creating-a-relation-function">Creating a relation function</h4>
 <p>Relations between annotations is crucial if we want to extract multimodal data. The aim here is to select intervals of a tier depending on what is represented in another tier.</p>
 <p>We implemented the 13 Allen interval relations: before, after, meets, met by, overlaps, overlapped by, starts, started by, finishes, finished by, contains, during and equals. Actually, we implemented the 25 relations proposed in the INDU model. This model is fixing constraints on INtervals (with Allen's relations) and on DUration (duration are equals, one is less/greater than the other).</p>
 <p><strong>MISSING:List of Allen interval relations./etc/screenshots/allen.png</strong></p>
 <p>Below is an example of implementing the request: <em>Which syllables stretch across 2 words?</em></p>
-<table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
+<div class="sourceCode"><table class="sourceCode python numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
 2
 3
 4
@@ -762,21 +788,21 @@ tier.SetName(<span class="st">&#39;Filtered with a-e-0.8&#39;</span>)</code></pr
 14
 15
 </pre></td><td class="sourceCode"><pre><code class="sourceCode python"><span class="co"># Get tiers from a Transcription object</span>
-tiersyll = trs.Find(<span class="st">&quot;Syllables&quot;</span>)
-tiertoks = trs.Find(<span class="st">&quot;TokensAlign&quot;</span>)
+tiersyll <span class="op">=</span> trs.Find(<span class="st">&quot;Syllables&quot;</span>)
+tiertoks <span class="op">=</span> trs.Find(<span class="st">&quot;TokensAlign&quot;</span>)
 
 <span class="co"># Create filters</span>
-fsyll = Filter(tiersyll)
-ftoks = Filter(tiertoks)
+fsyll <span class="op">=</span> Filter(tiersyll)
+ftoks <span class="op">=</span> Filter(tiertoks)
 
 <span class="co"># Create the filter with the relation function (link both filters)</span>
-predicate = Rel(<span class="st">&quot;overlaps&quot;</span>) | Rel(<span class="st">&quot;overlappedby&quot;</span>)
-f = RelationFilter(relation, fsyll, ftoks)
+predicate <span class="op">=</span> Rel(<span class="st">&quot;overlaps&quot;</span>) <span class="op">|</span> Rel(<span class="st">&quot;overlappedby&quot;</span>)
+f <span class="op">=</span> RelationFilter(relation, fsyll, ftoks)
 
 <span class="co"># to get filtered data from the filter:</span>
-tier = f.Filter()
-tier.SetName(<span class="st">&#39;Syllables across Tokens&#39;</span>)</code></pre></td></tr></table>
-<h3 id="exercises-1"><a href="#exercises-1">Exercises</a></h3>
+tier <span class="op">=</span> f.Filter()
+tier.SetName(<span class="st">&#39;Syllables across Tokens&#39;</span>)</code></pre></td></tr></table></div>
+<h3 id="exercises-1">Exercises</h3>
 <blockquote>
 <p>Exercise 1: Create a script to filter annotated data on their label (solution: ex15_annotation_label_filter.py).</p>
 </blockquote>
@@ -792,7 +818,7 @@ tier.SetName(<span class="st">&#39;Syllables across Tokens&#39;</span>)</code></
 <blockquote>
 <p>Exercise 5: Create a script to get tokens preceded by AND followed by a silence. (solution: ex17_annotations_relation_filter3.py).</p>
 </blockquote>
-<h2 id="more-with-sppas-api"><a href="#more-with-sppas-api">More with SPPAS API</a></h2>
+<h2 id="more-with-sppas-api">More with SPPAS API</h2>
 <p>In addition to <em>annotationdata</em>, SPPAS contains several other API that could be relevant for users to simplify their lives!!! They are all free and open source Python libraries, with a documentation and a set of tests.</p>
 <p>Among others:</p>
 <ul>

@@ -7,7 +7,7 @@
   <meta name="author" content="Brigitte Bigi" />
   <title>SPPAS Documentation</title>
   <style type="text/css">code{white-space: pre;}</style>
-  <link rel="stylesheet" href="./etc/styles/sppas.css" />
+  <link rel="stylesheet" href="./etc/styles/sppas.css" type="text/css" />
       <!----------------------------------------------------------------->
   
       <div class="footer">
@@ -61,7 +61,7 @@
 <div id="header">
 <h1 class="title">SPPAS Documentation</h1>
 <h2 class="author">Brigitte Bigi</h2>
-<h3 class="date">Version 1.9.2</h3>
+<h3 class="date">Version 1.9.4</h3>
 </div>
 <div id="TOC">
 <ul>
@@ -130,21 +130,22 @@
 <li><a href="#sppas-1.9.1-2017-1st-september">SPPAS 1.9.1 (2017, 1st September)</a></li>
 <li><a href="#sppas-1.9.2-2017-6th-october">SPPAS 1.9.2 (2017, 6th October)</a></li>
 <li><a href="#sppas-1.9.3-2017-18th-october">SPPAS 1.9.3 (2017, 18th October)</a></li>
+<li><a href="#sppas-1.9.4-2018-15th-january">SPPAS 1.9.4 (2018, 15th January)</a></li>
 </ul></li>
 </ul></li>
 </ul>
 </div>
 <hr />
-<h1 id="sppas-release-notes"><a href="#sppas-release-notes">SPPAS Release notes</a></h1>
-<h2 id="the-early-versions"><a href="#the-early-versions">The early versions</a></h2>
+<h1 id="sppas-release-notes">SPPAS Release notes</h1>
+<h2 id="the-early-versions">The early versions</h2>
 <p>Versions 1.0 to 1.3 was made only of <code>tcsh</code> and <code>gawk</code> scripts. It was developed under Linux system and was efficiently tested under Windows with Cygwin.</p>
-<h3 id="version-1.0-2011-9th-march"><a href="#version-1.0-2011-9th-march">Version 1.0 (2011, 9th March)</a></h3>
+<h3 id="version-1.0-2011-9th-march">Version 1.0 (2011, 9th March)</h3>
 <p>The only feature was that it was able to perform speech segmentation of English read speech.</p>
-<h3 id="version-1.1-2011-7th-june"><a href="#version-1.1-2011-7th-june">Version 1.1 (2011, 7th June)</a></h3>
+<h3 id="version-1.1-2011-7th-june">Version 1.1 (2011, 7th June)</h3>
 <p>This was mainly the debug of the previous version and some code re-organization and cleaning.</p>
-<h3 id="version-1.2-2011-23th-july"><a href="#version-1.2-2011-23th-july">Version 1.2 (2011, 23th July)</a></h3>
+<h3 id="version-1.2-2011-23th-july">Version 1.2 (2011, 23th July)</h3>
 <p>The support of English, French and Italian was added: a lexicon, a pronunciation dictionary and an acoustic model of each language was created. Three annotations were implemented: Tokenization, Phonetization, Alignment. The basis for a <em>multi-lingual methodology</em> was then already there.</p>
-<h3 id="version-1.3-2011-12th-december"><a href="#version-1.3-2011-12th-december">Version 1.3 (2011, 12th December)</a></h3>
+<h3 id="version-1.3-2011-12th-december">Version 1.3 (2011, 12th December)</h3>
 <p>This is a transitional version, from the scripts language to Python programming language. The main fixes and improvements were:</p>
 <p>Development:</p>
 <ul>
@@ -164,8 +165,8 @@
 <li>French acoustic model changed</li>
 </ul>
 <p>But the program still haven't a name and isn't distributed.</p>
-<h2 id="the-birth-of-sppas"><a href="#the-birth-of-sppas">The birth of SPPAS</a></h2>
-<h3 id="sppas-1.4.0-2012-14th-june"><a href="#sppas-1.4.0-2012-14th-june">SPPAS 1.4.0 (2012, 14th June)</a></h3>
+<h2 id="the-birth-of-sppas">The birth of SPPAS</h2>
+<h3 id="sppas-1.4.0-2012-14th-june">SPPAS 1.4.0 (2012, 14th June)</h3>
 <p>It's the official birth of SPPAS: the software has a name, a license, a GUI, a web-page and is freely distributed to the community.</p>
 <p>The source code is only based on Python 2.7 language and the GUI is based on WxPython 2.8.x or 2.9.x (on MacOS, wxpython must be 32 bits). SPPAS requires also <code>sox</code> and <code>julius</code> software to be installed.</p>
 <p>Automatic annotations main changes:</p>
@@ -212,7 +213,7 @@
 <li>The wav player can not play wav files if the filename contains '#'.</li>
 <li>The first line of the Italian dictionary must be changed to &quot;# [#] #&quot;.</li>
 </ul>
-<h3 id="sppas-1.4.1-2012-13th-july"><a href="#sppas-1.4.1-2012-13th-july">SPPAS 1.4.1 (2012, 13th July)</a></h3>
+<h3 id="sppas-1.4.1-2012-13th-july">SPPAS 1.4.1 (2012, 13th July)</h3>
 <p>Resources:</p>
 <ul>
 <li>Updated English acoustic model (from voxforge, 2012-06-25)</li>
@@ -237,7 +238,7 @@
 <ul>
 <li>Package's management</li>
 </ul>
-<h3 id="sppas-1.4.2-2012-2nd-august"><a href="#sppas-1.4.2-2012-2nd-august">SPPAS 1.4.2 (2012, 2nd August)</a></h3>
+<h3 id="sppas-1.4.2-2012-2nd-august">SPPAS 1.4.2 (2012, 2nd August)</h3>
 <p>GUI:</p>
 <ul>
 <li>add a panel with a Transcription editor</li>
@@ -250,7 +251,7 @@
 <ul>
 <li>The filter frame is not working under Windows XP.</li>
 </ul>
-<h3 id="sppas-1.4.3-2012-10th-october"><a href="#sppas-1.4.3-2012-10th-october">SPPAS 1.4.3 (2012, 10th October)</a></h3>
+<h3 id="sppas-1.4.3-2012-10th-october">SPPAS 1.4.3 (2012, 10th October)</h3>
 <p>This is primarily a bug-fix release. The author is addressing many thanks to all users who send their comments!</p>
 <p>GUI:</p>
 <ul>
@@ -268,7 +269,7 @@
 <li>Code cleaning in the package wxGUI.</li>
 <li>Debug...</li>
 </ul>
-<h3 id="sppas-1.4.4-2012-6th-december"><a href="#sppas-1.4.4-2012-6th-december">SPPAS 1.4.4 (2012, 6th December)</a></h3>
+<h3 id="sppas-1.4.4-2012-6th-december">SPPAS 1.4.4 (2012, 6th December)</h3>
 <p>GUI:</p>
 <ul>
 <li>add information/options when &quot;Request&quot; a file</li>
@@ -291,7 +292,7 @@
 <li>Syllabification: the last syllable of each file is &quot;broken&quot;.</li>
 <li>Alignment error if unknown words during phonetization.</li>
 </ul>
-<h3 id="sppas-1.4.5-2013-15th-january"><a href="#sppas-1.4.5-2013-15th-january">SPPAS 1.4.5 (2013, 15th January)</a></h3>
+<h3 id="sppas-1.4.5-2013-15th-january">SPPAS 1.4.5 (2013, 15th January)</h3>
 <p>Development:</p>
 <ul>
 <li>Correct a few bugs of the previous version (phonetization, alignment, syllabification)</li>
@@ -313,7 +314,7 @@
 <li>tierfilter.py</li>
 <li>tiercombine.py</li>
 </ul>
-<h3 id="sppas-1.4.6-2013-12th-february"><a href="#sppas-1.4.6-2013-12th-february">SPPAS 1.4.6 (2013, 12th February)</a></h3>
+<h3 id="sppas-1.4.6-2013-12th-february">SPPAS 1.4.6 (2013, 12th February)</h3>
 <p>GUI:</p>
 <ul>
 <li>Improved Request/Filter a tier:</li>
@@ -327,7 +328,7 @@
 <ul>
 <li>IPU segmentation: can take a &quot;Name&quot; tier to fix names of tracks (if the &quot;Split into tracks&quot; option is checked)</li>
 </ul>
-<h3 id="sppas-1.4.7-2013-25th-march"><a href="#sppas-1.4.7-2013-25th-march">SPPAS 1.4.7 (2013, 25th March)</a></h3>
+<h3 id="sppas-1.4.7-2013-25th-march">SPPAS 1.4.7 (2013, 25th March)</h3>
 <p>Requests/Filter:</p>
 <ul>
 <li>&quot;Starts search at...&quot; and &quot;Ends search at...&quot;</li>
@@ -346,7 +347,7 @@
 <ul>
 <li>New version of INTSINT, based on the algorithm proposed in (Hirst 2011) and implemented in the last version of Momel/INTSINT Praat plugin!</li>
 </ul>
-<h3 id="sppas-1.4.8-2013-30th-may"><a href="#sppas-1.4.8-2013-30th-may">SPPAS 1.4.8 (2013, 30th May)</a></h3>
+<h3 id="sppas-1.4.8-2013-30th-may">SPPAS 1.4.8 (2013, 30th May)</h3>
 <p>Development:</p>
 <ul>
 <li><p>reorganization of the GUI code. SPPAS is made of:</p></li>
@@ -361,7 +362,7 @@
 <li>new design</li>
 <li>Help and documentation changed, expanded and improved</li>
 </ul>
-<h3 id="sppas-1.4.9-2013-3rd-july"><a href="#sppas-1.4.9-2013-3rd-july">SPPAS 1.4.9 (2013, 3rd July)</a></h3>
+<h3 id="sppas-1.4.9-2013-3rd-july">SPPAS 1.4.9 (2013, 3rd July)</h3>
 <p>SPPAS has a new and more colored logo!</p>
 <p>Development:</p>
 <ul>
@@ -380,7 +381,7 @@
 <li>Volume control removed in the Wav Player component</li>
 <li>Save As improved in the Requests component</li>
 </ul>
-<h3 id="sppas-1.5.0-2013-2nd-august"><a href="#sppas-1.5.0-2013-2nd-august">SPPAS 1.5.0 (2013, 2nd August)</a></h3>
+<h3 id="sppas-1.5.0-2013-2nd-august">SPPAS 1.5.0 (2013, 2nd August)</h3>
 <p>Development:</p>
 <ul>
 <li>bug correction</li>
@@ -401,7 +402,7 @@
 <li>New Taiwanese dictionary: use the new phoneset + some chinese syllabes added.</li>
 <li>Vietnamese removed: due to the lack of data, the model can't be improved.</li>
 </ul>
-<h3 id="sppas-1.5.1-2013-29th-august"><a href="#sppas-1.5.1-2013-29th-august">SPPAS 1.5.1 (2013, 29th August)</a></h3>
+<h3 id="sppas-1.5.1-2013-29th-august">SPPAS 1.5.1 (2013, 29th August)</h3>
 <p>Development:</p>
 <ul>
 <li>bug correction in annotations</li>
@@ -415,7 +416,7 @@
 <ul>
 <li>French dict modified</li>
 </ul>
-<h3 id="sppas-1.5.2-2013-27th-september"><a href="#sppas-1.5.2-2013-27th-september">SPPAS 1.5.2 (2013, 27th September)</a></h3>
+<h3 id="sppas-1.5.2-2013-27th-september">SPPAS 1.5.2 (2013, 27th September)</h3>
 <p>All resources are moved into the &quot;resources&quot; directory.</p>
 <p>Development:</p>
 <ul>
@@ -430,7 +431,7 @@
 <ul>
 <li>&quot;Statistics&quot;: an avanced component to estimate (and save!) descriptive statistics on multiple annotated files</li>
 </ul>
-<h3 id="sppas-1.5.3-2013-25th-october"><a href="#sppas-1.5.3-2013-25th-october">SPPAS 1.5.3 (2013, 25th October)</a></h3>
+<h3 id="sppas-1.5.3-2013-25th-october">SPPAS 1.5.3 (2013, 25th October)</h3>
 <p>Resources:</p>
 <ul>
 <li>Add Spanish support</li>
@@ -444,7 +445,7 @@
 <ul>
 <li>Help updated.</li>
 </ul>
-<h3 id="sppas-1.5.4-2013-3rd-december"><a href="#sppas-1.5.4-2013-3rd-december">SPPAS 1.5.4 (2013, 3rd December)</a></h3>
+<h3 id="sppas-1.5.4-2013-3rd-december">SPPAS 1.5.4 (2013, 3rd December)</h3>
 <p>Components:</p>
 <ul>
 <li>Wav Player changed.</li>
@@ -458,7 +459,7 @@
 <li>Add Repetitions (detection of sources only)</li>
 </ul>
 <p>Notice that this is the first stable release.</p>
-<h3 id="sppas-1.5.5-2013-23th-december"><a href="#sppas-1.5.5-2013-23th-december">SPPAS 1.5.5 (2013, 23th December)</a></h3>
+<h3 id="sppas-1.5.5-2013-23th-december">SPPAS 1.5.5 (2013, 23th December)</h3>
 <p>Development:</p>
 <ul>
 <li>improved annotationdata (add methods: Find, Index; add uncertain label; debug radius).</li>
@@ -472,7 +473,7 @@
 <li>Tips at start-up</li>
 <li>New theme: Christmast</li>
 </ul>
-<h3 id="sppas-1.5.6-2014-28th-january"><a href="#sppas-1.5.6-2014-28th-january">SPPAS 1.5.6 (2014, 28th January)</a></h3>
+<h3 id="sppas-1.5.6-2014-28th-january">SPPAS 1.5.6 (2014, 28th January)</h3>
 <p>Development:</p>
 <ul>
 <li>improved annotationdata (add methods: Near, Search).</li>
@@ -486,13 +487,13 @@
 <ul>
 <li>New Italian dictionary (including gemination)</li>
 </ul>
-<h3 id="sppas-1.5.7-2014-18th-february"><a href="#sppas-1.5.7-2014-18th-february">SPPAS 1.5.7 (2014, 18th February)</a></h3>
+<h3 id="sppas-1.5.7-2014-18th-february">SPPAS 1.5.7 (2014, 18th February)</h3>
 <p>Plugins manager added.</p>
 <p>Resources:</p>
 <ul>
 <li>Japanese support, thanks to the resources available on the Julius website.</li>
 </ul>
-<h3 id="sppas-1.5.8-2014-18th-march"><a href="#sppas-1.5.8-2014-18th-march">SPPAS 1.5.8 (2014, 18th March)</a></h3>
+<h3 id="sppas-1.5.8-2014-18th-march">SPPAS 1.5.8 (2014, 18th March)</h3>
 <p>Development:</p>
 <ul>
 <li>annotationdata: more flexibility while adding annotations, add sub-divisions, export csv modified, docstrings, import/export in a native format (xra, version 1.0).</li>
@@ -501,7 +502,7 @@
 <ul>
 <li>add a PDF file of slides: &quot;SPPAS for dummies&quot;</li>
 </ul>
-<h3 id="sppas-1.5.9-2014-15th-april"><a href="#sppas-1.5.9-2014-15th-april">SPPAS 1.5.9 (2014, 15th April)</a></h3>
+<h3 id="sppas-1.5.9-2014-15th-april">SPPAS 1.5.9 (2014, 15th April)</h3>
 <p>Components:</p>
 <ul>
 <li>new: DataViewer, experimental version</li>
@@ -520,7 +521,7 @@
 <ul>
 <li>New French acoustic model</li>
 </ul>
-<h3 id="sppas-1.6.0-2014-22th-may"><a href="#sppas-1.6.0-2014-22th-may">SPPAS 1.6.0 (2014, 22th May)</a></h3>
+<h3 id="sppas-1.6.0-2014-22th-may">SPPAS 1.6.0 (2014, 22th May)</h3>
 <p>Package:</p>
 <ul>
 <li>Rename folder &quot;Doc&quot; to &quot;documentation&quot;</li>
@@ -540,7 +541,7 @@
 <li>new acoustic model: TW</li>
 <li>new acoustic model: SP</li>
 </ul>
-<h3 id="sppas-1.6.1-2014-26th-september"><a href="#sppas-1.6.1-2014-26th-september">SPPAS 1.6.1 (2014, 26th September)</a></h3>
+<h3 id="sppas-1.6.1-2014-26th-september">SPPAS 1.6.1 (2014, 26th September)</h3>
 <p>Development:</p>
 <ul>
 <li>bug correction (export, syllabification, alignment)</li>
@@ -555,14 +556,14 @@
 <ul>
 <li>add a new Export button</li>
 </ul>
-<h3 id="sppas-1.6.2-2014-21th-october"><a href="#sppas-1.6.2-2014-21th-october">SPPAS 1.6.2 (2014, 21th October)</a></h3>
+<h3 id="sppas-1.6.2-2014-21th-october">SPPAS 1.6.2 (2014, 21th October)</h3>
 <p>Resources:</p>
 <ul>
-<li>language names changed. They are now corresponding to the international standard ISO639-3. See <a href="http://www-01.sil.org/iso639-3/">http://www-01.sil.org/iso639-3/</a></li>
+<li>language names changed. They are now corresponding to the international standard ISO639-3. See <a href="http://www-01.sil.org/iso639-3/" class="uri">http://www-01.sil.org/iso639-3/</a></li>
 <li>Mandarin Chinese dictionary changed.</li>
 <li>Catalan dictionary changed.</li>
 </ul>
-<h3 id="sppas-1.6.3-2014-2nd-november"><a href="#sppas-1.6.3-2014-2nd-november">SPPAS 1.6.3 (2014, 2nd November)</a></h3>
+<h3 id="sppas-1.6.3-2014-2nd-november">SPPAS 1.6.3 (2014, 2nd November)</h3>
 <p>Resources:</p>
 <ul>
 <li>Add resources for Cantonese</li>
@@ -580,8 +581,8 @@
 <li>Change the organization of the main frame: annotations above components</li>
 </ul>
 <p>This version is known to be a stable release.</p>
-<h2 id="the-childhood-of-sppas"><a href="#the-childhood-of-sppas">The childhood of SPPAS</a></h2>
-<h3 id="sppas-1.6.4-2014-5th-december"><a href="#sppas-1.6.4-2014-5th-december">SPPAS 1.6.4 (2014, 5th December)</a></h3>
+<h2 id="the-childhood-of-sppas">The childhood of SPPAS</h2>
+<h3 id="sppas-1.6.4-2014-5th-december">SPPAS 1.6.4 (2014, 5th December)</h3>
 <p>From this version, SPPAS requires wxpython to be updated to version 3.0, particularly for MacOS users, and they need to install the 64 bits version. It is recommended to Windows users to install Python 2.7 and wxpython in 32bits.</p>
 <p>Development:</p>
 <ul>
@@ -599,7 +600,7 @@
 <li>SndRoamer replaces WavPlayer</li>
 <li>Dataroamer has also a new version</li>
 </ul>
-<h3 id="sppas-1.6.5-2014-17th-december"><a href="#sppas-1.6.5-2014-17th-december">SPPAS 1.6.5 (2014, 17th December)</a></h3>
+<h3 id="sppas-1.6.5-2014-17th-december">SPPAS 1.6.5 (2014, 17th December)</h3>
 <p>This is primarily a bug-fix release.</p>
 <p>Development:</p>
 <ul>
@@ -613,8 +614,8 @@
 <ul>
 <li>Procedure outcome report: print a warning message in the log file if no file is matching the expected extension</li>
 </ul>
-<h3 id="sppas-1.6.6-2015-19th-january"><a href="#sppas-1.6.6-2015-19th-january">SPPAS 1.6.6 (2015, 19th January)</a></h3>
-<p>Web site host has changed: <a href="http://sldr.org/sldr00800/preview/">http://sldr.org/sldr00800/preview/</a></p>
+<h3 id="sppas-1.6.6-2015-19th-january">SPPAS 1.6.6 (2015, 19th January)</h3>
+<p>Web site host has changed: <a href="http://sldr.org/sldr00800/preview/" class="uri">http://sldr.org/sldr00800/preview/</a></p>
 <p>Documentation completed and updated. Now, only the documentation of all the components is missing.</p>
 <p>Annotations:</p>
 <ul>
@@ -671,7 +672,7 @@
 <li>Red: SPPAS does not support. It must be converted before using it!</li>
 </ul></li>
 </ul>
-<h3 id="sppas-1.6.7-2015-16th-february"><a href="#sppas-1.6.7-2015-16th-february">SPPAS-1.6.7 (2015, 16th February)</a></h3>
+<h3 id="sppas-1.6.7-2015-16th-february">SPPAS-1.6.7 (2015, 16th February)</h3>
 <p>Automatic Annotations:</p>
 <ul>
 <li>By default, tokenization produces only one tier. Check an option to get TokensStd and TokensFaked, in case of EOT.</li>
@@ -689,7 +690,7 @@
 <ul>
 <li>Add Polish support</li>
 </ul>
-<h3 id="sppas-1.6.8-2015-9th-april"><a href="#sppas-1.6.8-2015-9th-april">SPPAS-1.6.8 (2015, 9th April)</a></h3>
+<h3 id="sppas-1.6.8-2015-9th-april">SPPAS-1.6.8 (2015, 9th April)</h3>
 <p>Resources:</p>
 <ul>
 <li>new French acoustic model</li>
@@ -712,8 +713,8 @@
 <li>DataRoamer: &quot;New&quot; button debugged</li>
 <li>DataRoamer: Add a button &quot;Radius&quot; to adjust manually the vagueness of each bounday of a tier</li>
 </ul>
-<h2 id="the-development-phase"><a href="#the-development-phase">The development phase</a></h2>
-<h3 id="sppas-1.6.9-2015-14th-may"><a href="#sppas-1.6.9-2015-14th-may">SPPAS-1.6.9 (2015, 14th May)</a></h3>
+<h2 id="the-development-phase">The development phase</h2>
+<h3 id="sppas-1.6.9-2015-14th-may">SPPAS-1.6.9 (2015, 14th May)</h3>
 <p>The installation of dependencies is simplified: <code>sox</code> is unnecessary. Python 2.7.x, WxPython and Julius are the only remaining dependencies.</p>
 <p>Development:</p>
 <ul>
@@ -739,7 +740,7 @@
 <li>DataFilter component partially re-written to facilitate its use</li>
 <li>Preview frame modified</li>
 </ul>
-<h3 id="sppas-1.7.0-2015-3th-july"><a href="#sppas-1.7.0-2015-3th-july">SPPAS-1.7.0 (2015, 3th July)</a></h3>
+<h3 id="sppas-1.7.0-2015-3th-july">SPPAS-1.7.0 (2015, 3th July)</h3>
 <p>Development:</p>
 <ul>
 <li>package annotationdata.io:
@@ -770,7 +771,7 @@
 <ul>
 <li>IPUs Segmentation produces 2 tiers if a transcription is given: the IPUs segmentation itself, and the Transcription time-aligned at the IPUs level.</li>
 </ul>
-<h3 id="sppas-1.7.1-2015-5th-august"><a href="#sppas-1.7.1-2015-5th-august">SPPAS-1.7.1 (2015, 5th August)</a></h3>
+<h3 id="sppas-1.7.1-2015-5th-august">SPPAS-1.7.1 (2015, 5th August)</h3>
 <p>Development:</p>
 <ul>
 <li>package re-organization:
@@ -805,7 +806,7 @@
 <li>New version of XRA: 1.2</li>
 <li>Make XRA the default input/output file format</li>
 </ul>
-<h3 id="sppas-1.7.2-2015-3th-september"><a href="#sppas-1.7.2-2015-3th-september">SPPAS-1.7.2 (2015, 3th September)</a></h3>
+<h3 id="sppas-1.7.2-2015-3th-september">SPPAS-1.7.2 (2015, 3th September)</h3>
 <p>Development:</p>
 <ul>
 <li>updated XRA reader/writer to solve problems with upper/lower cases of elements</li>
@@ -815,7 +816,7 @@
 <li>add the julius score in PhonAlign annotation (can be seen only if XRA)</li>
 <li>remove tk dependency</li>
 </ul>
-<h3 id="sppas-1.7.3-2015-9th-october"><a href="#sppas-1.7.3-2015-9th-october">SPPAS-1.7.3 (2015, 9th October)</a></h3>
+<h3 id="sppas-1.7.3-2015-9th-october">SPPAS-1.7.3 (2015, 9th October)</h3>
 <p>Resources:</p>
 <ul>
 <li>New word-based vocab for Cantonese</li>
@@ -826,7 +827,7 @@
 <ul>
 <li>Descriptive statistics debugged for detailed panels.</li>
 </ul>
-<h3 id="sppas-1.7.4-2015-6th-november"><a href="#sppas-1.7.4-2015-6th-november">SPPAS-1.7.4 (2015, 6th November)</a></h3>
+<h3 id="sppas-1.7.4-2015-6th-november">SPPAS-1.7.4 (2015, 6th November)</h3>
 <p>Resources:</p>
 <ul>
 <li>Add a vocab for Portuguese</li>
@@ -842,7 +843,7 @@
 <ul>
 <li>Debug of the Tokenizer.</li>
 </ul>
-<h3 id="sppas-1.7.5-2015-11th-december"><a href="#sppas-1.7.5-2015-11th-december">SPPAS-1.7.5 (2015, 11th December)</a></h3>
+<h3 id="sppas-1.7.5-2015-11th-december">SPPAS-1.7.5 (2015, 11th December)</h3>
 <p>Development:</p>
 <ul>
 <li>Add vagueness to the annotation duration estimation</li>
@@ -858,8 +859,8 @@
 <li>add a new button to auto-play the sound</li>
 </ul></li>
 </ul>
-<h3 id="sppas-1.7.6-2016-28th-january"><a href="#sppas-1.7.6-2016-28th-january">SPPAS-1.7.6 (2016, 28th January)</a></h3>
-<p>Web site host has changed: <a href="http://www.sppas.org/">http://www.sppas.org/</a></p>
+<h3 id="sppas-1.7.6-2016-28th-january">SPPAS-1.7.6 (2016, 28th January)</h3>
+<p>Web site host has changed: <a href="http://www.sppas.org/" class="uri">http://www.sppas.org/</a></p>
 <p>Development:</p>
 <ul>
 <li><p>IPU segmentation:</p>
@@ -887,7 +888,7 @@
 <li>Add a sample in Korean</li>
 <li>Updated references to cite SPPAS in publications</li>
 </ul>
-<h3 id="sppas-1.7.7-2016-30th-march"><a href="#sppas-1.7.7-2016-30th-march">SPPAS-1.7.7 (2016, 30th March)</a></h3>
+<h3 id="sppas-1.7.7-2016-30th-march">SPPAS-1.7.7 (2016, 30th March)</h3>
 <p>Resources:</p>
 <ul>
 <li>Correction of errors in most of the acoustics models, for /@@/ and /dummy/ models</li>
@@ -909,7 +910,7 @@
 <li><code>sppas.command</code> modified for MacOS-X (use python if python2 not available)</li>
 <li>GUIs in <code>bin</code> directory are updated (test of python, wxpython, and so on).</li>
 </ul>
-<h3 id="sppas-1.7.8-2016-5th-may"><a href="#sppas-1.7.8-2016-5th-may">SPPAS-1.7.8 (2016, 5th May)</a></h3>
+<h3 id="sppas-1.7.8-2016-5th-may">SPPAS-1.7.8 (2016, 5th May)</h3>
 <p>Resources:</p>
 <ul>
 <li>Add a pronunciation mapping table <code>eng-fra.map</code>: to be used for the speech segmentation for French speakers reading an English text.</li>
@@ -927,7 +928,7 @@
 <ul>
 <li>Automatic annotations: more explicit log messages.</li>
 </ul>
-<h3 id="sppas-1.7.9-2016-3th-june"><a href="#sppas-1.7.9-2016-3th-june">SPPAS-1.7.9 (2016, 3th June)</a></h3>
+<h3 id="sppas-1.7.9-2016-3th-june">SPPAS-1.7.9 (2016, 3th June)</h3>
 <p>GUI:</p>
 <ul>
 <li>Some debug in SppasEdit</li>
@@ -949,8 +950,8 @@
 <li>Package code cleaning and re-organization.</li>
 </ul></li>
 </ul>
-<h2 id="the-stabilization-phase"><a href="#the-stabilization-phase">The stabilization phase</a></h2>
-<h3 id="sppas-1.8.0-2016-30th-august"><a href="#sppas-1.8.0-2016-30th-august">SPPAS-1.8.0 (2016, 30th August)</a></h3>
+<h2 id="the-stabilization-phase">The stabilization phase</h2>
+<h3 id="sppas-1.8.0-2016-30th-august">SPPAS-1.8.0 (2016, 30th August)</h3>
 <p>GUI:</p>
 <ul>
 <li>Design fully revisited and tested under Linux Mint, Windows 10 and MacOS 10.9</li>
@@ -968,7 +969,7 @@
 <li>Add &quot;Chunk alignment&quot;</li>
 <li>Use of a .ini file to configure each annotation instead of a sppas.conf file</li>
 </ul>
-<h3 id="sppas-1.8.1-2016-28th-november"><a href="#sppas-1.8.1-2016-28th-november">SPPAS-1.8.1 (2016, 28th November)</a></h3>
+<h3 id="sppas-1.8.1-2016-28th-november">SPPAS-1.8.1 (2016, 28th November)</h3>
 <p>A few tutorials are available on the web site.</p>
 <p>Automatic annotations:</p>
 <ul>
@@ -980,7 +981,7 @@
 <ul>
 <li>Catalan: new pronunciation dictionary and new acoustic model.</li>
 </ul>
-<h3 id="sppas-1.8.2-2017-18th-january"><a href="#sppas-1.8.2-2017-18th-january">SPPAS-1.8.2 (2017, 18th January)</a></h3>
+<h3 id="sppas-1.8.2-2017-18th-january">SPPAS-1.8.2 (2017, 18th January)</h3>
 <p>Analysis:</p>
 <ul>
 <li>debug of DataFilter</li>
@@ -1003,18 +1004,18 @@
 <li>Themes management changed.</li>
 <li>Main font is managed by the Themes.</li>
 </ul>
-<h3 id="sppas-1.8.3-2017-10th-march"><a href="#sppas-1.8.3-2017-10th-march">SPPAS-1.8.3 (2017, 10th March)</a></h3>
+<h3 id="sppas-1.8.3-2017-10th-march">SPPAS-1.8.3 (2017, 10th March)</h3>
 <p>Development:</p>
 <ul>
 <li>Elan reader highly improved (faster reader).</li>
 <li>updated plugins</li>
 </ul>
-<h3 id="sppas-1.8.4-2017-10th-april"><a href="#sppas-1.8.4-2017-10th-april">SPPAS 1.8.4 (2017, 10th April)</a></h3>
+<h3 id="sppas-1.8.4-2017-10th-april">SPPAS 1.8.4 (2017, 10th April)</h3>
 <p>Development:</p>
 <ul>
 <li>Elan writer modified: create a time slot for each localization.</li>
 </ul>
-<h3 id="sppas-1.8.5-2017-20th-april"><a href="#sppas-1.8.5-2017-20th-april">SPPAS 1.8.5 (2017, 20th April)</a></h3>
+<h3 id="sppas-1.8.5-2017-20th-april">SPPAS 1.8.5 (2017, 20th April)</h3>
 <p>Development:</p>
 <ul>
 <li>Vizualizer renamed Visualizer</li>
@@ -1022,13 +1023,13 @@
 <li>New Phonedit mrk format support.</li>
 <li>Updated AnnotationPro Antx reader/writer</li>
 </ul>
-<h3 id="sppas-1.8.6-2017-19th-june"><a href="#sppas-1.8.6-2017-19th-june">SPPAS 1.8.6 (2017, 19th June)</a></h3>
+<h3 id="sppas-1.8.6-2017-19th-june">SPPAS 1.8.6 (2017, 19th June)</h3>
 <p>Resources:</p>
 <ul>
 <li>Polish dictionary and acoustic model updated.</li>
 </ul>
-<h3 id="sppas-1.9.0-2017-28th-july"><a href="#sppas-1.9.0-2017-28th-july">SPPAS 1.9.0 (2017, 28th July)</a></h3>
-<h4 id="programming"><a href="#programming">Programming:</a></h4>
+<h3 id="sppas-1.9.0-2017-28th-july">SPPAS 1.9.0 (2017, 28th July)</h3>
+<h4 id="programming">Programming:</h4>
 <ul>
 <li>Relative imports used in the standard way for Python</li>
 <li>PEP 8 code style (except for wxgui/annotationdata)</li>
@@ -1062,12 +1063,12 @@
 <li>re-structured package Repetitions</li>
 <li><p>new version of the plugins: updated and debugged.</p></li>
 </ul>
-<h4 id="resources"><a href="#resources">Resources:</a></h4>
+<h4 id="resources">Resources:</h4>
 <ul>
 <li>Add support of Naija language (pcm)</li>
 <li>English-French mapping table updated</li>
 </ul>
-<h4 id="annotations"><a href="#annotations">Annotations:</a></h4>
+<h4 id="annotations">Annotations:</h4>
 <ul>
 <li><p>Tokenizer renamed into Text Normalization:</p>
 <ul>
@@ -1079,40 +1080,59 @@
 <li>some debug</li>
 </ul></li>
 </ul>
-<h4 id="communication"><a href="#communication">Communication:</a></h4>
+<h4 id="communication">Communication:</h4>
 <ul>
 <li>Add a description document of the orthographic transcription convention in the package.</li>
 <li>Web page updated, new tutorials available</li>
 <li>Documentation updated</li>
 <li>Better information about the licenses</li>
 </ul>
-<h3 id="sppas-1.9.1-2017-1st-september"><a href="#sppas-1.9.1-2017-1st-september">SPPAS 1.9.1 (2017, 1st September)</a></h3>
-<h4 id="programming-1"><a href="#programming-1">Programming:</a></h4>
+<h3 id="sppas-1.9.1-2017-1st-september">SPPAS 1.9.1 (2017, 1st September)</h3>
+<h4 id="programming-1">Programming:</h4>
 <ul>
 <li>Bug correction in the ELAN reader.</li>
 <li>Bug correction with quotation marks of the Praat writer.</li>
 </ul>
-<h4 id="resources-1"><a href="#resources-1">Resources:</a></h4>
+<h4 id="resources-1">Resources:</h4>
 <ul>
 <li>Add an acoustic model for English, including laughter and noises.</li>
 </ul>
-<h3 id="sppas-1.9.2-2017-6th-october"><a href="#sppas-1.9.2-2017-6th-october">SPPAS 1.9.2 (2017, 6th October)</a></h3>
-<h4 id="programming-2"><a href="#programming-2">Programming:</a></h4>
+<h3 id="sppas-1.9.2-2017-6th-october">SPPAS 1.9.2 (2017, 6th October)</h3>
+<h4 id="programming-2">Programming:</h4>
 <ul>
 <li>Bug correction in the diagnosis of audio files.</li>
 <li>Package &quot;anndata&quot; continued, in the scope of replacing &quot;annotationdata&quot;.</li>
 <li>Acoustic model training procedure debugged and improved, code cleaned, scripts updated, etc.</li>
 </ul>
-<h3 id="sppas-1.9.3-2017-18th-october"><a href="#sppas-1.9.3-2017-18th-october">SPPAS 1.9.3 (2017, 18th October)</a></h3>
-<h4 id="programming-3"><a href="#programming-3">Programming:</a></h4>
+<h3 id="sppas-1.9.3-2017-18th-october">SPPAS 1.9.3 (2017, 18th October)</h3>
+<h4 id="programming-3">Programming:</h4>
 <ul>
 <li>Critical bug correction in Alignment: error when loading the tiedlist.</li>
 <li>Correction of TextNormalization of broken words: &quot;-&quot; is now not removed.</li>
 </ul>
-<h4 id="resources-2"><a href="#resources-2">Resources:</a></h4>
+<h4 id="resources-2">Resources:</h4>
 <ul>
 <li>Italian pronunciation dictionary updated.</li>
 <li>French vocabulary updated: list of compound words revised.</li>
+</ul>
+<h4 id="known-bugs">Known bugs:</h4>
+<ul>
+<li>Spanish alignment does not work: corrupted acoustic model</li>
+</ul>
+<h3 id="sppas-1.9.4-2018-15th-january">SPPAS 1.9.4 (2018, 15th January)</h3>
+<h4 id="programming-4">Programming:</h4>
+<ul>
+<li>Script to train acoustic models updated</li>
+<li>Script to evaluate alignments updated</li>
+<li>Bug corrections of the search tier system</li>
+</ul>
+<h4 id="resources-3">Resources:</h4>
+<ul>
+<li><p>Spanish:</p>
+<ul>
+<li>new pronunciation dictionary</li>
+<li>new acoustic model</li>
+</ul></li>
 </ul>
     <!----------------------------------------------------------------->
 

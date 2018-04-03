@@ -428,7 +428,7 @@ def gen_html_file(doc, css_filename, files, result_filename):
     command += " -s"
     command += " --toc"
     command += " --mathjax"
-    command += " --html5"
+    command += " --html"   # html5
     command += " --css " + css_filename
     command += " -H " + head_html_file
     command += " -B " + body_header_html_file

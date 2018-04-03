@@ -50,34 +50,15 @@
         <a class="group current" href="faq.html">F.A.Q.</a>
     </div>
 
-    <!----------------------------------------------------------------->
-    <h1>Frequently Asked Questions</h1>
-    <!----------------------------------------------------------------->
-
-    <!----------------------------------------------------------------->
-    <h2>Download, Install, First use, Extend</h2>
-    <!----------------------------------------------------------------->
-
     <div class="cols1 bg-white">
-        <div class="cols12"></div>
-        <div class="cols8">
-        <h3> What is SPPAS? How to download SPPAS?</h3>
-            <p><i>SPPAS - the automatic annotation and analyses of speech</i> is a scientific computer software package written and maintained by Brigitte Bigi</p>
-            <p>As the primary functionality, SPPAS proposes a set of automatic or semi-automatic annotations of recordings.
-                Some special features are also offered in SPPAS for managing annotated files and analyzing data.
-            </p>
-            <p>SPPAS can be downloaded from the main web site <a href="http://www.sppas.org/download.html">http://www.sppas.org</a> or from the <a href="https://github.com/brigittebigi/sppas">GitHub</a> repository.
-            </p>
-        </div>
-        <div class="cols12"></div>
-        <div class="cols10">
-            <img width="100%" src="./etc/screenshots/sppas-1-9-0.png" />
-        </div>
-    </div>
 
-    <!----------------------------------------------------------------->
+        <div class="cols12"></div>
+        <div class="cols2">
+        <!----------------------------------------------------------------->
+        <h1>Download, Install, First use, Extend</h1>
+        <!----------------------------------------------------------------->
+        </div>
 
-    <div class="cols1 bg-lightgrey">
         <div class="cols12"></div>
         <div class="cols8">
             <h3>Installation of external programs... </h3>
@@ -85,53 +66,26 @@
             <p>When I click on the install package I get: “wxPython3.0-osx-cocoa-py2.7.pkg” is damaged and can’t be opened. You should eject the disk image.”</p>
             <p>The problem is that the package is not signed (and it's an old-style package, which isn't fully supported anymore, which is why you get the wrong error message, and the usual workaround of context-clicking Open doesn't work).</p>
             <p><b>Solution:</b>Turn off Gatekeeper (in System Preferences, Security & Privacy, General, select the "Allow apps downloads from: … Anywhere" radio button), install wxPython, then turn Gatekeeper back on.</p>
-        </div>
-        <div class="cols12"></div>
-        <div class="cols8">
             <p><br></p>
             <h4>wxpython installation on Windows</h4>
             <p>I installed Python and wxPython but it seems not working...</p>
             <p>The problem is probably the incompatibility between the versions. For example, if Python 64 bits was installed instead of the 32 bits...</p>
             <p><b>Solution:</b>Remove all existing installations and downloads. Download and install the right versions.</p>
         </div>
-    </div>
-
-    <!----------------------------------------------------------------->
-
-    <div class="cols1 bg-white">
         <div class="cols12"></div>
         <div class="cols8">
+            <img width="90%" src="./etc/screenshots/sppas-1-9-0.png" />
+            <p><br></p>
             <h3>I finished the installation. What I have to do now to execute SPPAS?</h3>
             <p>First of all, take a look at both the tutorials and the documentation (the answer is there...).
             Doucle-click on sppas.bat file under Windows, or sppas.command file under MacOS/Linux.
             Test SPPAS with the given samples.
             </p>
-        <div class="cols12"></div>
-        <div class="cols8">
         </div>
-    </div>
-
-    <!----------------------------------------------------------------->
-
-    <div class="cols1 bg-lightgrey">
         <div class="cols12"></div>
-        <div class="cols8">
-            <h3>Support of a new language?</h3>
-            <p>All automatic annotations included in SPPAS are implemented with language-independent algorithms...
-                this means that adding a new language in SPPAS only consists in adding the linguistic resources
-                related to the annotation (like lexicons, dictionaries, models, set of rules, etc). </p>
-            <p>Linguistic resources can be edited, modified, changed or deleted by any user.</p>
-            <p>Supporting new languages is performed step by step, by adding linguistic resources; and
-                constructing linguistic resources requires to collaborate with linguists. So... any help is welcome!</p>
-            <p>Find more details in chapter 3: each annotation requiring a specific resource has a section "Support of a new language".</p>
-        <div class="cols12"></div>
-        <div class="cols8">
-        </div>
-    </div>
 
-    <!----------------------------------------------------------------->
+        <!----------------------------------------------------------------->
 
-    <div class="cols1 bg-white">
         <div class="cols12"></div>
         <div class="cols8">
             <h3>SPPAS send a message with an encoding error.</h3>
@@ -145,39 +99,41 @@
     </div>
 
 
-    <!----------------------------------------------------------------->
-    <h2>Automatic annotations</h2>
-    <!----------------------------------------------------------------->
 
-    <div class="cols1 bg-white">
+    <div class="cols1 bg-verylightgrey">
+
+        <div class="cols12"></div>
+            <div class="cols2">
+            <!----------------------------------------------------------------->
+            <h1>Automatic annotations</h1>
+            <!----------------------------------------------------------------->
+        </div>
+
         <div class="cols12"></div>
         <div class="cols8">
             <h3>How long audio files can SPPAS process?</h3>
             <p>SPPAS can work on any audio file in length, as soon as the computer has enough memory.</p>
-        <div class="cols12"></div>
-        <div class="cols8">
-        </div>
-    </div>
-
-    <!----------------------------------------------------------------->
-
-    <div class="cols1 bg-lightgrey">
-        <div class="cols12"></div>
-        <div class="cols8">
-        <h3>[WARNING] Unknown word phonetization</h3>
+            <p><br></p>
+            <h3>[WARNING] Unknown word phonetization</h3>
             <p>When a token is missing of the pronunciation dictionary, SPPAS tries to phonetize
             by analogy with other entries of the dictionary and this warning message occurs.
             If the proposed phonetization is appropriate, you can just ignore it. If not,
             you can edit the dictionary, add the right one then perform again the phonetization.
             See Chapter 3, Section 5 for details, and the section of the language of chapter 4.</p>
+        </div>
         <div class="cols12"></div>
         <div class="cols8">
+            <h3>Support of a new language?</h3>
+            <p>All automatic annotations included in SPPAS are implemented with language-independent algorithms...
+                this means that adding a new language in SPPAS only consists in adding the linguistic resources
+                related to the annotation (like lexicons, dictionaries, models, set of rules, etc). </p>
+            <p>Linguistic resources can be edited, modified, changed or deleted by any user.</p>
+            <p>Supporting new languages is performed step by step, by adding linguistic resources; and
+                constructing linguistic resources requires to collaborate with linguists. So... any help is welcome!</p>
+            <p>Find more details in chapter 3: each annotation requiring a specific resource has a section "Support of a new language".</p>
         </div>
-    </div>
+        <div class="cols12"></div>
 
-    <!----------------------------------------------------------------->
-
-    <div class="cols1 bg-white">
         <div class="cols12"></div>
         <div class="cols8">
         <h3>Julius failed to time-align</h3>
@@ -188,47 +144,66 @@
             problem and to solve it!
             You can also enable the "basic" option and SPPAS will assign the same duration
             to each phoneme to that specific IPU. </p>
-        <div class="cols12"></div>
-        <div class="cols8">
         </div>
-    </div>
-
-    <!----------------------------------------------------------------->
-
-    <div class="cols1 bg-lightgrey">
         <div class="cols12"></div>
         <div class="cols8">
-        <h3>Do SPPAS can transcribe automatically?</h3>
-            <p>no! SPPAS is not dedicated to Speech Recognition (ASR).</p>
-            <p>None of the existing ASR system is able to produce the high quality orthographic transcription as it is required!</p>
-            <p>Orthographic transcription has to be done manually and must follow the convention briefly described in (Chapter 3, Section 3) and detailed <a href="https://www.ortolang.fr/market/corpora/sldr000873?path=%2F">here</a>.</p>
-        <div class="cols12"></div>
-        <div class="cols8">
+            <h3>Do SPPAS can transcribe automatically?</h3>
+            <p>no! SPPAS is not dedicated to Automatic Speech Recognition (ASR).</p>
+            <p>None of the existing ASR system is able to produce the high quality
+                of orthographic transcription that is required for further reliable
+                analyses!</p>
+            <p>Orthographic transcription has to be done manually and must follow
+                the convention briefly described in (Chapter 3, Section 3) and
+                detailed <a href="https://www.ortolang.fr/market/corpora/sldr000873?path=%2F">here</a>.</p>
         </div>
-    </div>
+        <div class="cols12"></div>
 
-    <!----------------------------------------------------------------->
-
-    <div class="cols1 bg-white">
         <div class="cols12"></div>
         <div class="cols8">
             <h3>[ ERROR ] End TimePoint must be greater than Begin TimePoint</h3>
-            <p>The given file contains a degenerated interval. It has to be corrected before using SPPAS.</p>
+            <p>This error message means that the given file contains a degenerated interval.
+               It has to be corrected before the use of SPPAS.</p>
+        </div>
         <div class="cols12"></div>
         <div class="cols8">
         </div>
     </div>
 
-    <!----------------------------------------------------------------->
-    <h2>Analyses</h2>
-    <!----------------------------------------------------------------->
 
-    <div class="cols1 bg-white">
+    <div class="cols1 bg-lightgrey">
+
+        <div class="cols12"></div>
+            <div class="cols2">
+            <!----------------------------------------------------------------->
+            <h1>Analyses</h1>
+            <!----------------------------------------------------------------->
+        </div>
+
+        <div class="cols12"></div>
+        <div class="cols8"></div>
+    </div>
+
+
+    <div class="cols1 bg-verylightgrey">
+
+        <div class="cols12"></div>
+            <div class="cols2">
+            <!----------------------------------------------------------------->
+            <h1>File conversion</h1>
+            <!----------------------------------------------------------------->
+        </div>
+
         <div class="cols12"></div>
         <div class="cols8">
-         <div class="cols12"></div>
-        <div class="cols8">
+            <h3>What are the file formats supported by SPPAS?</h3>
+            <p>SPPAS can to open/save and convert files from a wide range
+                of file formats including (but not limited to) TextGrid, eaf,
+                antx, mrk, ctm, stm, lab, srt, sub, csv, txt...
+                The full list is available in the documentation, chapter
+                "Introduction", section "Compatibility and Operability".
+            </p>
         </div>
+
     </div>
 
     <!----------------------------------------------------------------->
