@@ -80,19 +80,6 @@ class TestBaseSubtitle(unittest.TestCase):
         self.assertEqual(sppasSubRip._serialize_location(a2),
                          "00:00:01,000 --> 00:00:02,000\n")
 
-    # -----------------------------------------------------------------
-
-    def test_serialize_label(self):
-        """ Test label -> caption. """
-
-        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))),
-                             sppasLabel(sppasTag("")))
-        self.assertEqual(sppasSubRip._serialize_label(a1), "\n")
-
-        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))),
-                             sppasLabel(sppasTag("label")))
-        self.assertEqual(sppasSubRip._serialize_label(a1), "label\n")
-
 # ---------------------------------------------------------------------
 
 
@@ -122,7 +109,6 @@ class TestSubRip(unittest.TestCase):
         self.assertTrue(txt[0][2].is_meta_key('position_pixel_X1'))
 
         # multi-lines: 2 sppasLabel() created in the same annotation
-        print txt[0][1].get_labels()
         self.assertEqual(len(txt[0][1].get_labels()), 2)
         self.assertFalse("<i>" in txt[0][1].get_labels()[0].get_best().get_content())
         self.assertTrue("une classe" in txt[0][1].get_labels()[0].get_best().get_content())
@@ -162,7 +148,6 @@ class TestSubRip(unittest.TestCase):
             lines = fp.readlines()
             fp.close()
 
-        print lines
         self.assertEqual(len(lines), 4)
 
 # ---------------------------------------------------------------------

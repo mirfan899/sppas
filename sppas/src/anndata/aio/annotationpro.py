@@ -58,6 +58,7 @@ from ..anndataexc import AnnDataTypeError
 from .basetrs import sppasBaseIO
 from .aioutils import merge_overlapping_annotations
 from .aioutils import point2interval
+from .aioutils import serialize_labels
 
 # ---------------------------------------------------------------------------
 
@@ -281,6 +282,7 @@ class sppasANTX(sppasBaseIO):
             raise AioFormatError("Layer id="+tier_id)
 
         segment_id = annotation_root.find(uri + 'Id').text
+
         # fix localization
         try:
             begin = float(annotation_root.find(uri + 'Start').text)
@@ -303,10 +305,16 @@ class sppasANTX(sppasBaseIO):
         else:
             localization = sppasANTX.make_point(begin)
 
-        # fix tag and create annotation
-        tag = sppasTag(annotation_root.find(uri + 'Label').text)
+        # fix labels
+        text = annotation_root.find(uri + 'Label').text
+        labels = list()
+        if text is not None:
+            for line_text in text.split('\n'):
+                labels.append(sppasLabel(sppasTag(line_text)))
+
+        # create annotation
         ann = tier.create_annotation(sppasLocation(localization),
-                                     sppasLabel(tag))
+                                     labels)
 
         # fix other information in metadata
         self.elt_to_meta(annotation_root, ann, uri,
@@ -519,7 +527,10 @@ class sppasANTX(sppasBaseIO):
         child_id_layer.text = tier.get_meta('id')
 
         child_id_label = ET.SubElement(segment_root, 'Label')    # Label
-        child_id_label.text = sppasANTX._serialize_labels(ann.get_labels())
+        child_id_label.text = serialize_labels(ann.get_labels(),
+                                               separator="\n",
+                                               empty="",
+                                               alt=True)
 
         child_id_start = ET.SubElement(segment_root, 'Start')    # Start
         child_id_dur = ET.SubElement(segment_root, 'Duration')   # Duration
@@ -553,37 +564,6 @@ class sppasANTX(sppasBaseIO):
         for key in elt_opt_segment:
             child = ET.SubElement(segment_root, key)
             child.text = ann.get_meta(key, elt_opt_segment[key])
-
-    # -----------------------------------------------------------------------
-    @staticmethod
-    def _serialize_labels(labels):
-        """ Convert labels into a string. """
-
-        if len(labels) == 0:
-            return ""
-
-        content = ""
-        for label in labels:
-            content += sppasANTX._serialize_label(label) + " "
-        content = content.strip()
-        return content
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def _serialize_label(label):
-        """ Convert a label into a string. """
-
-        if label is None:
-            return ""
-
-        if label.get_best() is None:
-            return ""
-
-        if label.get_best().is_empty():
-            return ""
-
-        return label.get_best().get_content()
 
     # -----------------------------------------------------------------------
 

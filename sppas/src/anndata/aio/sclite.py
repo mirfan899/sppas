@@ -66,6 +66,8 @@ from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
 from .text import sppasBaseText
+from .aioutils import serialize_labels
+from .aioutils import load
 
 # ---------------------------------------------------------------------------
 
@@ -194,14 +196,8 @@ class sppasCTM(sppasBaseSclite):
         """
         # Open and load the content.
         try:
-            with codecs.open(filename, 'r', sppas.encoding) as fp:
-                lines = fp.readlines()
-                fp.close()
-        except IOError:
-            # can't open the file
-            return False
-        except UnicodeDecodeError:
-            # can't open with SPPAS default encoding
+            lines = load(filename)
+        except:
             return False
 
         # Check each line
@@ -322,7 +318,8 @@ class sppasCTM(sppasBaseSclite):
         :param filename: (str)
 
         """
-        self._parse_lines(sppasBaseSclite.load(filename))
+        content = load(filename)
+        self._parse_lines(content)
 
     # -----------------------------------------------------------------------
 
@@ -444,7 +441,7 @@ class sppasCTM(sppasBaseSclite):
                     fp.write(sppasCTM._serialize_annotation(ann, waveform, channel))
 
                 # write the metadata of this tier
-                fp.write(sppasBaseSclite._serialize_metadata(tier))
+                fp.write(sppasBaseText.serialize_metadata(tier))
                 fp.write('\n')
 
             fp.close()
@@ -470,6 +467,8 @@ class sppasCTM(sppasBaseSclite):
             content = sppasCTM._serialize_tag(waveform, channel, begin, duration, sppasTag(""))
         else:
             content = ""
+            # all labels will have the same begin/duration.
+            # todo: check if sequences of labels are supported by CTM.
             for label in ann.get_labels():
 
                 # only one tag in the label: no alternation
@@ -566,14 +565,8 @@ class sppasSTM(sppasBaseSclite):
         """
         # Open and load the content.
         try:
-            with codecs.open(filename, 'r', sppas.encoding) as fp:
-                lines = fp.readlines()
-                fp.close()
-        except IOError:
-            # can't open the file
-            return False
-        except UnicodeDecodeError:
-            # can't open with SPPAS default encoding
+            lines = load(filename)
+        except:
             return False
 
         # Check each line
@@ -672,7 +665,8 @@ class sppasSTM(sppasBaseSclite):
         :param filename: (str)
 
         """
-        self._parse_lines(sppasBaseSclite.load(filename))
+        content = load(filename)
+        self._parse_lines(content)
 
     # -----------------------------------------------------------------------
 
@@ -760,7 +754,7 @@ class sppasSTM(sppasBaseSclite):
                     fp.write(sppasSTM._serialize_annotation(ann, waveform, channel, speaker))
 
                 # write the metadata of this tier
-                fp.write(sppasBaseSclite._serialize_metadata(tier))
+                fp.write(sppasBaseText.serialize_metadata(tier))
                 fp.write('\n')
 
             fp.close()
@@ -772,6 +766,7 @@ class sppasSTM(sppasBaseSclite):
         """ Convert an annotation into lines for STM files.
 
         Empty labels are replaced by "IGNORE_TIME_SEGMENT_IN_SCORING".
+        Alternative tags are included.
 
         :param ann: (sppasAnnotation)
         :returns: (str)
@@ -782,7 +777,10 @@ class sppasSTM(sppasBaseSclite):
         end = ann.get_location().get_best().get_end().get_midpoint()
 
         # fix label information
-        content = sppasSTM._serialize_labels(ann.get_labels())
+        content = serialize_labels(ann.get_labels(),
+                                   separator=" ",
+                                   empty="IGNORE_TIME_SEGMENT_IN_SCORING",
+                                   alt=True)
 
         return "{wav} {cha} {spk} {beg} {end} {lab}\n".format(
             wav=waveform,
@@ -792,45 +790,3 @@ class sppasSTM(sppasBaseSclite):
             end=str(end),
             lab=content
         )
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def _serialize_labels(labels):
-        """ Convert labels into a string. """
-
-        if len(labels) == 0:
-            return "IGNORE_TIME_SEGMENT_IN_SCORING"
-
-        content = ""
-        for label in labels:
-            content += sppasSTM._serialize_label(label) + " "
-        content = content.strip()
-        return content
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def _serialize_label(label):
-        """ Convert a label into a string. """
-
-        if label is None:
-            return "IGNORE_TIME_SEGMENT_IN_SCORING"
-
-        if label.get_best() is None:
-            return "IGNORE_TIME_SEGMENT_IN_SCORING"
-
-        if label.get_best().is_empty():
-            return "IGNORE_TIME_SEGMENT_IN_SCORING"
-
-        if len(label) == 1:
-            return label.get_best().get_content()
-
-        content = "{ "
-        for tag, score in label:
-            content += tag.get_content()
-            content += " / "
-        content = content[:-2]
-        content += "}"
-
-        return content

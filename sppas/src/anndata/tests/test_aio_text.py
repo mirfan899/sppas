@@ -195,20 +195,6 @@ class TestBaseText(unittest.TestCase):
 
     # -----------------------------------------------------------------
 
-    def test_load(self):
-        """ Load a file into lines. """
-
-        lines = sppasBaseText.load(os.path.join(DATA, "sample.ctm"))
-        self.assertEqual(len(lines), 45)
-
-        with self.assertRaises(UnicodeDecodeError):
-            sppasBaseText.load(os.path.join(DATA, "sample-utf16.TextGrid"))
-
-        with self.assertRaises(IOError):
-            sppasBaseText.load(os.path.join(DATA, "not-exists"))
-
-    # -----------------------------------------------------------------
-
     def test_parse_comment(self):
         """ Parse a comment and eventually fill metadata. """
 
@@ -243,10 +229,10 @@ class TestBaseText(unittest.TestCase):
 
     # -----------------------------------------------------------------
 
-    def test_serialize_header_private(self):
+    def test_serialize_header_software(self):
         """ Create a comment with the metadata to be written. """
 
-        header = sppasBaseText._serialize_header().split("\n")
+        header = sppasBaseText.serialize_header_software().split("\n")
         self.assertEqual(len(header), 9)
         for i in range(8):
             self.assertTrue(header[i].startswith(";;"))
@@ -257,17 +243,17 @@ class TestBaseText(unittest.TestCase):
         """ Serialize the metadata of an object in a multi-lines comment. """
 
         ctm = sppasRawText()
-        line = sppasBaseText._serialize_metadata(ctm)
+        line = sppasBaseText.serialize_metadata(ctm)
         self.assertEqual(len(line.split("\n")), 2)  # id
 
         ctm = sppasRawText()
         ctm.set_meta("meta_key", "meta_value")
-        line = sppasBaseText._serialize_metadata(ctm)
+        line = sppasBaseText.serialize_metadata(ctm)
         self.assertTrue(";; meta_key=meta_value\n" in line)
 
         stm = sppasRawText()
         stm.set_meta("meta key whitespace", "meta value\t whitespace  ")
-        line = sppasBaseText._serialize_metadata(stm)
+        line = sppasBaseText.serialize_metadata(stm)
         self.assertTrue(";; meta key whitespace=meta value whitespace\n" in line)
 
 # ---------------------------------------------------------------------

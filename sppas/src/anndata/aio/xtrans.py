@@ -54,6 +54,7 @@ from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
 from .text import sppasBaseText
+from .aioutils import load
 
 # ----------------------------------------------------------------------------
 
@@ -165,7 +166,7 @@ class sppasTDF(sppasBaseText):
         :param filename: (str)
 
         """
-        lines = sppasBaseText.load(filename)
+        lines = load(filename)
         if len(lines) < 2:
             return
 

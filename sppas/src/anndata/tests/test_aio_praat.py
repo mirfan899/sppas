@@ -423,9 +423,10 @@ class TestTextGrid(unittest.TestCase):
                             sppasTextGrid.make_point(2.4971007546),
                             sppasTextGrid.make_point(5.6838880379)),
                          ann.get_location().get_best())
-        self.assertEqual(u('hier soir j\'ai ouvert la porte d\'entrée '
-                           'pour laisser chort- sortir le "chat"'),
+        self.assertEqual(u('hier soir j\'ai ouvert la'),
                          ann.get_labels()[0].get_best().get_content())
+        self.assertEqual(u('porte d\'entrée pour laisser chort- sortir le "chat"'),
+                         ann.get_labels()[1].get_best().get_content())
 
         ann_content = 'points [1]:\n'\
                       '    number = 0.054406250000000066\n'\
@@ -463,9 +464,10 @@ class TestTextGrid(unittest.TestCase):
         self.assertEqual(sppasInterval(
             sppasTextGrid.make_point(2.4971007546),
             sppasTextGrid.make_point(5.6838880379)), ann.get_location().get_best())
-        self.assertEqual(u('hier soir j\'ai ouvert la porte d\'entrée '
-                           'pour laisser chort- sortir le "chat"'),
+        self.assertEqual(u('hier soir j\'ai ouvert la'),
                          ann.get_labels()[0].get_best().get_content())
+        self.assertEqual(u('porte d\'entrée pour laisser chort- sortir le "chat"'),
+                         ann.get_labels()[1].get_best().get_content())
 
     # -----------------------------------------------------------------------
 
@@ -527,8 +529,8 @@ class TestTextGrid(unittest.TestCase):
                       '2.4971007546\n' \
                       '"gpf_0"\n'
         lines_i = ann_content.split("\n")
-        tag, nb = sppasTextGrid._parse_text(lines_i, 2)
-        self.assertEqual(sppasTag("gpf_0"), tag)
+        labels, nb = sppasTextGrid._parse_text(lines_i, 2)
+        self.assertEqual(sppasTag("gpf_0"), labels[0].get_best())
         self.assertEqual(nb, 3)
 
         # multi-lines tag
@@ -538,8 +540,13 @@ class TestTextGrid(unittest.TestCase):
                       'porte d\'entrée\n'\
                       'pour laisser chort- sortir le ""chat"""\n'
         lines = ann_content.split("\n")
-        tag, nb = sppasTextGrid._parse_text(lines, 2)
-        self.assertEqual(sppasTag('hier soir j\'ai ouvert la porte d\'entrée pour laisser chort- sortir le "chat"'), tag)
+        labels, nb = sppasTextGrid._parse_text(lines, 2)
+        self.assertEqual(sppasTag('hier soir j\'ai ouvert la'),
+                         labels[0].get_best())
+        self.assertEqual(sppasTag('porte d\'entrée'),
+                         labels[1].get_best())
+        self.assertEqual(sppasTag('pour laisser chort- sortir le "chat"'),
+                         labels[2].get_best())
         self.assertEqual(nb, 5)
 
         with self.assertRaises(AioLineFormatError):
@@ -561,7 +568,7 @@ class TestTextGrid(unittest.TestCase):
                       '\t\ttext = "gpf_0"\n'
         lines_i = ann_content.split("\n")
         tag, nb = sppasTextGrid._parse_text(lines_i, 2)
-        self.assertEqual(sppasTag("gpf_0"), tag)
+        self.assertEqual([sppasLabel(sppasTag("gpf_0"))], tag)
         self.assertEqual(nb, 3)
 
         # multi-lines tag
@@ -571,9 +578,13 @@ class TestTextGrid(unittest.TestCase):
                       'porte d\'entrée\n' \
                       'pour laisser chort- sortir le ""chat"""\n'
         lines = ann_content.split("\n")
-        tag, nb = sppasTextGrid._parse_text(lines, 2)
-        self.assertEqual(
-            sppasTag('hier soir j\'ai ouvert la porte d\'entrée pour laisser chort- sortir le "chat"'), tag)
+        labels, nb = sppasTextGrid._parse_text(lines, 2)
+        self.assertEqual(u('hier soir j\'ai ouvert la'),
+                         labels[0].get_best().get_content())
+        self.assertEqual(u('porte d\'entrée'),
+                         labels[1].get_best().get_content())
+        self.assertEqual(u('pour laisser chort- sortir le "chat"'),
+                         labels[2].get_best().get_content())
         self.assertEqual(nb, 5)
 
         with self.assertRaises(AioLineFormatError):

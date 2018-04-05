@@ -32,7 +32,7 @@
     src.anndata.aio.text.py
     ~~~~~~~~~~~~~~~~~~~~~~~
 
-    Text readers and writers: raw text, column-based text, csv.
+    Text readers and writers for raw text, column-based text, csv.
 
 """
 import codecs
@@ -44,8 +44,6 @@ import sppas
 from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.utils.datatype import sppasType
 
-from ..anndataexc import AioError
-from ..anndataexc import AioEncodingError
 from ..anndataexc import AioMultiTiersError
 from ..anndataexc import AioLineFormatError
 from ..annlocation.location import sppasLocation
@@ -56,6 +54,8 @@ from ..annlabel.tag import sppasTag
 from ..media import sppasMedia
 
 from .basetrs import sppasBaseIO
+from .aioutils import serialize_labels
+from .aioutils import load
 
 # ---------------------------------------------------------------------------
 
@@ -104,33 +104,36 @@ class sppasBaseText(sppasBaseIO):
     @staticmethod
     def make_point(data):
         """ Convert data into the appropriate sppasPoint().
-        No radius if data is an integer. A default radius of 0.001 if data is a
-        float.
+
+        No radius is fixed if data is an integer.
+        A default radius of 0.001 seconds if data is a float.
 
         :param data: (any type)
         :returns: sppasPoint().
 
         """
         try:
-            if data.isdigit():
+            if data.isdigit() is True:
                 return sppasPoint(int(data))
         except AttributeError:
             # data is not a string
-            pass
+            data = float(data)
+
         return sppasPoint(data, radius=0.001)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
     def is_comment(line):
-        """ Check if the line is a comment.
+        """ Check if the line is a comment, ie starts with ';;'.
 
-        :param line: (str)
-        :return: boolean
+        :param line: (str/unicode)
+        :returns: boolean
 
         """
         sp = sppasUnicode(line)
         line = sp.to_strip()
+
         return line.startswith(";;")
 
     # -----------------------------------------------------------------------
@@ -139,8 +142,8 @@ class sppasBaseText(sppasBaseIO):
     def format_quotation_marks(text):
         """ Remove initial and final quotation mark.
 
-        :param text: (str)
-        :returns: the text without initial and final quotation mark.
+        :param text: (str/unicode) Text to clean
+        :returns: (unicode) the text without initial and final quotation mark.
 
         """
         text = sppasUnicode(text).to_strip()
@@ -175,7 +178,7 @@ class sppasBaseText(sppasBaseIO):
                 continue
 
             # estimate the number of columns and
-            # check if it matches with the previous
+            # check if it matches with the previous ones
             split_line = line.split(separator)
 
             if nb_col == -1:
@@ -186,28 +189,6 @@ class sppasBaseText(sppasBaseIO):
             line_columns.append(split_line)
 
         return line_columns
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def load(filename, file_encoding=sppas.encoding):
-        """ Load a file into lines.
-
-        :param filename: (str)
-        :param file_encoding: (str)
-        :returns: list of lines (str)
-
-        """
-        try:
-            with codecs.open(filename, 'r', file_encoding) as fp:
-                lines = fp.readlines()
-                fp.close()
-        except IOError:
-            raise AioError(filename)
-        except UnicodeDecodeError:
-            raise AioEncodingError(filename, "", file_encoding)
-
-        return lines
 
     # -----------------------------------------------------------------------
 
@@ -270,15 +251,19 @@ class sppasBaseText(sppasBaseIO):
 
     @staticmethod
     def serialize_header(filename, meta_object):
-        """ Create a comment with the metadata to be written. """
+        """ Create a comment with the metadata to be written.
 
-        header = sppasBaseText._serialize_header()
+        :param filename: (str) Name of the file to serialize.
+        :param meta_object: (sppasMeta)
+
+        """
+        header = sppasBaseText.serialize_header_software()
         header += ";; file_writer={:s}\n".format(meta_object.__class__.__name__)
         header += ";; file_name={:s}\n".format(os.path.basename(filename))
         header += ";; file_path={:s}\n".format(os.path.dirname(filename))
         header += ";; file_ext={:s}\n".format(os.path.splitext(filename)[1])
         header += ";;\n"
-        header += sppasBaseText._serialize_metadata(meta_object)
+        header += sppasBaseText.serialize_metadata(meta_object)
         header += ";;\n"
 
         return header
@@ -286,8 +271,8 @@ class sppasBaseText(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def _serialize_header():
-        """ Serialize the header of a Sclite file with SPPAS information. """
+    def serialize_header_software():
+        """ Serialize the header of a file with SPPAS information. """
 
         comment = ";; \n"
         comment += ";; software_name={:s}\n".format(sppas.__name__)
@@ -305,7 +290,7 @@ class sppasBaseText(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def _serialize_metadata(meta_object):
+    def serialize_metadata(meta_object):
         """ Serialize the metadata of an object in a multi-lines comment. """
 
         meta_keys = ["file_write_date", "file_writer", "file_name", "file_path", "file_ext"]
@@ -363,38 +348,6 @@ class sppasBaseText(sppasBaseIO):
             columns = sppasBaseText.split_lines(lines, sep)
 
         return columns
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def _serialize_labels(labels):
-        """ Convert labels into a string. """
-
-        if len(labels) == 0:
-            return ""
-
-        content = ""
-        for label in labels:
-            content += sppasBaseText._serialize_label(label) + " "
-        content = content.strip()
-        return content
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def _serialize_label(label):
-        """ Convert a label into a string. """
-
-        if label is None:
-            return ""
-
-        if label.get_best() is None:
-            return ""
-
-        if label.get_best().is_empty():
-            return ""
-
-        return label.get_best().get_content()
 
 # ----------------------------------------------------------------------------
 
@@ -468,7 +421,7 @@ class sppasRawText(sppasBaseText):
         :param filename: (str)
 
         """
-        lines = sppasRawText.load(filename, sppas.encoding)
+        lines = load(filename, sppas.encoding)
         self._parse_lines(lines)
 
     # -----------------------------------------------------------------------
@@ -580,6 +533,8 @@ class sppasRawText(sppasBaseText):
     def write(self, filename):
         """ Write a RawText file.
 
+        Labels are preserved, ie. separated by whitespace and alternative tags included.
+
         :param filename: (str)
 
         """
@@ -602,11 +557,11 @@ class sppasRawText(sppasBaseText):
 
             if tier.get_name() == "RawTranscription":
                 for ann in tier:
-                    t = sppasBaseText._serialize_labels(ann.get_labels())
+                    t = serialize_labels(ann.get_labels(), " ", "", True)
                     fp.write(t + '\n')
             else:
                 for ann in tier:
-                    t = sppasBaseText._serialize_labels(ann.get_labels())
+                    t = serialize_labels(ann.get_labels(), " ", "", True)
                     if point:
                         mp = ann.get_lowest_localization().get_midpoint()
                         fp.write("{}\t\t{}\n".format(mp, t))
@@ -643,14 +598,8 @@ class sppasCSV(sppasBaseText):
 
         # Open and load the content.
         try:
-            with codecs.open(filename, 'r', sppas.encoding) as fp:
-                lines = fp.readlines()
-                fp.close()
-        except IOError:
-            # can't open the file
-            return False
-        except UnicodeDecodeError:
-            # can't open with SPPAS default encoding
+            lines = load(filename)
+        except:
             return False
 
         for line in lines:
@@ -689,7 +638,7 @@ class sppasCSV(sppasBaseText):
         if signed is True:
             enc = 'utf-8-sig'
 
-        lines = sppasRawText.load(filename, enc)
+        lines = load(filename, enc)
         if len(lines) > 0:
             self.format_columns_lines(lines)
 
@@ -772,7 +721,7 @@ class sppasCSV(sppasBaseText):
                 point = tier.is_point()
 
                 for ann in tier:
-                    content = sppasRawText._serialize_labels(ann.get_labels())
+                    content = serialize_labels(ann.get_labels(), " ", "", True)
                     if point:
                         mp = ann.get_lowest_localization().get_midpoint()
                         fp.write('"{}",{},,"{}"\n'.format(name, mp, content))

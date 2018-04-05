@@ -40,6 +40,7 @@
     :summary:      Utilities for readers and writers.
 
 """
+import os.path
 import unittest
 
 from ..tier import sppasTier
@@ -53,6 +54,12 @@ from ..annlabel.tag import sppasTag
 from ..aio.aioutils import fill_gaps
 from ..aio.aioutils import unfill_gaps
 from ..aio.aioutils import merge_overlapping_annotations
+from ..aio.aioutils import serialize_label
+from ..aio.aioutils import load
+
+# ---------------------------------------------------------------------------
+
+DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # ---------------------------------------------------------------------------
 
@@ -193,3 +200,52 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(len(expected_tier), len(new_tier))
         for new_ann, expected_ann in zip(new_tier, expected_tier):
             self.assertEqual(new_ann, expected_ann)
+
+    # -----------------------------------------------------------------------
+
+    def test_serialize_label(self):
+        """ Convert a label into a string. """
+
+        tag = sppasTag("")
+        label = sppasLabel(tag)
+        s = serialize_label(label)
+        self.assertEqual("", s)
+
+        tag = sppasTag("")
+        label = sppasLabel(tag)
+        s = serialize_label(label, "IGNORE_TIME_SEGMENT_IN_SCORING")
+        self.assertEqual("IGNORE_TIME_SEGMENT_IN_SCORING", s)
+
+        tag = sppasTag("toto")
+        label = sppasLabel(tag)
+        s = serialize_label(label)
+        self.assertEqual("toto", s)
+
+        tag1 = sppasTag("uh")
+        tag2 = sppasTag("um")
+        label = sppasLabel([tag1, tag2])
+        s = serialize_label(label)
+        self.assertEqual("{ uh / um }", s)
+
+    # -----------------------------------------------------------------------
+
+    def test_serialize_labels(self):
+        """ Convert a list of labels into a string. """
+
+        pass
+
+    # -----------------------------------------------------------------------
+
+    def test_load(self):
+        """ Load a file into lines. """
+
+        lines = load(os.path.join(DATA, "sample.ctm"))
+        self.assertEqual(len(lines), 45)
+
+        with self.assertRaises(UnicodeDecodeError):
+            load(os.path.join(DATA, "sample-utf16.TextGrid"))
+
+        with self.assertRaises(IOError):
+            load(os.path.join(DATA, "not-exists"))
+
+    # -----------------------------------------------------------------

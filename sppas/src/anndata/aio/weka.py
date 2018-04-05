@@ -88,15 +88,15 @@ class sppasWEKA(sppasBaseIO):
 
     The following metadata can be defined in a tier:
 
-        - weka_attribute: is fixed if the tier will be used as attribute
+        - `weka_attribute` is fixed if the tier will be used as attribute
         (i.e. its data will be part of the instances). The value can
         be "numeric" to use distributions of probabilities or
         "label" to use the annotation labels in the vector of parameters.
-        - weka_class: is fixed to the tier with the annotation labels to
+        - `weka_class` is fixed to the tier with the annotation labels to
          be inferred by the classification system. No matter of the value.
-        - weka_instance_anchor: is fixed if the tier has to be used to
+        - `weka_instance_anchor` is fixed if the tier has to be used to
         define the time intervals of the instances.
-        - weka_epsilon: probability of an unobserved tag.
+        - `weka_epsilon` probability of an unobserved tag.
 
     """
     def __init__(self, name=None):
@@ -330,9 +330,20 @@ class sppasWEKA(sppasBaseIO):
                                     if new_tag != tag:
                                         ann.remove_tag(tag)
                                         label.append(new_tag, score)
+                        else:
+                            if tier.is_meta_key("weka_class") is False:
+                                # The annotation was not labelled. We have to do it.
+                                ann.set_label(sppasTag(self._empty_annotation_tag))
+                            else:
+                                if self._empty_annotation_class_tag is not None:
+                                    ann.set_label(sppasTag(self._empty_annotation_class_tag))
                 else:
-                    # The annotation was not labelled. We have to do it.
-                    ann.set_label(sppasTag(self._empty_annotation_tag))
+                    if tier.is_meta_key("weka_class") is False:
+                        # The annotation was not labelled. We have to do it.
+                        ann.set_label(sppasTag(self._empty_annotation_tag))
+                    else:
+                        if self._empty_annotation_class_tag is not None:
+                            ann.set_label(sppasTag(self._empty_annotation_class_tag))
 
         # Set the controlled vocabularies
         self._create_ctrl_vocab()

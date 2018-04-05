@@ -592,30 +592,6 @@ class TestScliteSTM(unittest.TestCase):
     # write
     # -----------------------------------------------------------------------
 
-    def test_serialize_label(self):
-        """ Convert a label into a string. """
-
-        s = sppasSTM._serialize_label(None)
-        self.assertEqual(s, "IGNORE_TIME_SEGMENT_IN_SCORING")
-
-        tag = sppasTag("")
-        label = sppasLabel(tag)
-        s = sppasSTM._serialize_label(label)
-        self.assertEqual(s, "IGNORE_TIME_SEGMENT_IN_SCORING")
-
-        tag = sppasTag("toto")
-        label = sppasLabel(tag)
-        s = sppasSTM._serialize_label(label)
-        self.assertEqual(s, "toto")
-
-        tag1 = sppasTag("uh")
-        tag2 = sppasTag("um")
-        label = sppasLabel([tag1, tag2])
-        s = sppasSTM._serialize_label(label)
-        self.assertEqual(s, "{ uh / um }")
-
-    # -----------------------------------------------------------------------
-
     def test_serialize_annotation(self):
         """ Convert an annotation into lines for STM files. """
 

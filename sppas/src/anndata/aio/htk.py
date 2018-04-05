@@ -49,6 +49,8 @@ from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
 from .basetrs import sppasBaseIO
+from .aioutils import serialize_labels
+from .aioutils import load
 
 # ---------------------------------------------------------------------------
 
@@ -127,24 +129,28 @@ class sppasBaseHTK(sppasBaseIO):
         :returns: (str)
 
         """
+        text = serialize_labels(ann.get_labels(),
+                                separator=" ",
+                                empty="",
+                                alt=False)
+
         # no label defined, or empty label
-        if ann.get_best_tag().is_empty():
+        if len(text) == 0:
             return ""
         if ann.get_location().is_point():
             raise AioLocationTypeError('HTK Label', 'points')
 
-        tag_content = ann.get_best_tag().get_content()
         begin = sppasBaseHTK._format_time(ann.get_lowest_localization().get_midpoint())
         end = sppasBaseHTK._format_time(ann.get_highest_localization().get_midpoint())
 
-        if ' ' not in tag_content:
+        if ' ' not in text:
             location = "{:d} {:d}".format(begin, end)
         else:
             # one "token" at a line, and only begin at first
             location = "{:d}".format(begin)
-            tag_content = tag_content.replace(' ', '\n')
+            text = text.replace(' ', '\n')
 
-        return "{:s} {:s}\n".format(location, tag_content)
+        return "{:s} {:s}\n".format(location, text)
 
 # ---------------------------------------------------------------------------
 
@@ -237,17 +243,9 @@ class sppasLab(sppasBaseHTK):
         :param filename:
 
         """
-        try:
-            with codecs.open(filename, 'r', sppas.encoding) as fp:
-                lines = fp.readlines()
-                fp.close()
-        except IOError:
-            raise AioError(filename)
-        except UnicodeDecodeError:
-            raise AioEncodingError(filename, "")
-
+        lines = load(filename)
         tier = self.create_tier('Trans-MLF')
-        label = ""
+        text = ""
         prev_end = sppasBaseHTK.make_point(0)
 
         for line in lines:
@@ -257,14 +255,14 @@ class sppasLab(sppasBaseHTK):
             has_end = len(line) > 1 and line[1].isdigit()
 
             if has_begin and has_end:
-                if len(label) > 0:
+                if len(text) > 0:
                     time = sppasInterval(prev_end, sppasBaseHTK.make_point(line[0]))
-                    tier.create_annotation(sppasLocation(time), sppasLabel(sppasTag(label)))
+                    tier.create_annotation(sppasLocation(time), sppasLabel(sppasTag(text)))
 
                 time = sppasInterval(sppasBaseHTK.make_point(line[0]),
                                      sppasBaseHTK.make_point(line[1]))
 
-                label = line[2]
+                text = line[2]
                 score = None
                 if len(line) > 3:
                     try:
@@ -273,16 +271,16 @@ class sppasLab(sppasBaseHTK):
                         # todo: auxiliary labels or comment
                         pass
 
-                tier.create_annotation(sppasLocation(time), sppasLabel(sppasTag(label), score))
-                label = ""
+                tier.create_annotation(sppasLocation(time), sppasLabel(sppasTag(text), score))
+                text = ""
                 prev_end = sppasBaseHTK.make_point(line[1])
 
             elif has_begin:
-                label = label + " " + " ".join(line[1])
+                text = text + " " + " ".join(line[1])
                 # todo: auxiliary labels or comment
 
             else:
-                label = label + " " + " ".join(line)
+                text = text + " " + " ".join(line)
 
     # -----------------------------------------------------------------------
 
@@ -299,7 +297,8 @@ class sppasLab(sppasBaseHTK):
 
             if self.is_empty() is False:
                 for ann in self[0]:
-                    if ann.get_best_tag().is_empty() is False:
-                        fp.write(sppasBaseHTK._serialize_annotation(ann))
+                    content = sppasBaseHTK._serialize_annotation(ann)
+                    if len(content) > 0:
+                        fp.write(content)
 
             fp.close()

@@ -58,6 +58,7 @@ from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioLineFormatError
 from ..anndataexc import AioNoTiersError
 from ..anndataexc import AioFormatError
+from ..anndataexc import TagValueError
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
@@ -65,7 +66,10 @@ from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 from ..annotation import sppasAnnotation
 
-from .aioutils import fill_gaps, merge_overlapping_annotations
+from .aioutils import fill_gaps
+from .aioutils import merge_overlapping_annotations
+from .aioutils import load
+from .aioutils import serialize_labels
 from .basetrs import sppasBaseIO
 
 # ---------------------------------------------------------------------------
@@ -197,28 +201,6 @@ class sppasBasePraat(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def load(filename, file_encoding=sppas.encoding):
-        """ Load a file into lines.
-
-        :param filename: (str)
-        :param file_encoding: (str)
-        :returns: list of lines (str)
-
-        """
-        try:
-            with codecs.open(filename, 'r', file_encoding) as fp:
-                lines = fp.readlines()
-                fp.close()
-        except IOError:
-            raise AioError(filename)
-        except UnicodeDecodeError:
-            raise AioEncodingError(filename, "", file_encoding)
-
-        return lines
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
     def _serialize_header(file_class, xmin, xmax):
         """ Serialize the header of a Praat file.
 
@@ -241,28 +223,21 @@ class sppasBasePraat(sppasBaseIO):
     def _serialize_labels_text(labels):
         """ Convert a label into a string. """
 
-        content = ""
-        for label in labels:
-            if label is None:
-                continue
-            if label.get_best() is None:
-                continue
-            if label.get_best().is_empty():
-                continue
+        text = serialize_labels(labels,
+                                separator="\n",
+                                empty="",
+                                alt=True)
 
-            text = label.get_best().get_content()
-            if '"' in text:
-                text = re.sub('([^"])["]([^"])', '\\1""\\2', text)
-                text = re.sub('([^"])["]([^"])', '\\1""\\2',
-                              text)  # miss occurrences if 2 " are separated by only 1 character
-                text = re.sub('([^"])["]$', '\\1""', text)  # miss occurrences if " is at the end of the label!
-                text = re.sub('^["]([^"])', '""\\1', text)  # miss occurrences if " is at the beginning of the label
-                text = re.sub('^""$', '""""', text)
-                text = re.sub('^"$', '""', text)
-            content += text + "\n"
-        content = content.rstrip()
+        if '"' in text:
+            text = re.sub('([^"])["]([^"])', '\\1""\\2', text)
+            text = re.sub('([^"])["]([^"])', '\\1""\\2',
+                          text)  # miss occurrences if 2 " are separated by only 1 character
+            text = re.sub('([^"])["]$', '\\1""', text)  # miss occurrences if " is at the end of the label!
+            text = re.sub('^["]([^"])', '""\\1', text)  # miss occurrences if " is at the beginning of the label
+            text = re.sub('^""$', '""""', text)
+            text = re.sub('^"$', '""', text)
 
-        return '\t\t\ttext = "{:s}"\n'.format(content)
+        return '\t\t\ttext = "{:s}"\n'.format(text)
 
     # -----------------------------------------------------------------------
 
@@ -270,18 +245,24 @@ class sppasBasePraat(sppasBaseIO):
     def _serialize_labels_value(labels):
         """ Convert a label with a numerical value into a string. """
 
-        for label in labels:
-            if label is None:
-                continue
-            if label.get_best() is None:
-                continue
-            if label.get_best().is_empty():
-                continue
-            tag = label.get_best()
-            if tag.get_type() in ['int', 'float']:
-                return "\tvalue = {}\n".format(tag.get_typed_content())
+        if len(labels) == 0:
+            TagValueError('empty label')
+        if len(labels) > 1:
+            TagValueError('multiple labels')
 
-        raise AioFormatError(labels[0].get_type())
+        label = labels[0]
+        if label is None:
+            raise TagValueError('None')
+        if label.get_best() is None:
+            raise TagValueError('None')
+        if label.get_best().is_empty():
+            TagValueError('empty label')
+
+        tag = label.get_best()
+        if tag.get_type() in ['int', 'float']:
+            return "\tvalue = {}\n".format(tag.get_typed_content())
+
+        raise AioFormatError(label.get_type())
 
 # ---------------------------------------------------------------------------
 
@@ -370,10 +351,10 @@ class sppasTextGrid(sppasBasePraat):
         # get the content of the file
 
         try:
-            lines = sppasBasePraat.load(filename, sppas.encoding)
+            lines = load(filename, sppas.encoding)
         except AioEncodingError:
             try:
-                lines = sppasBasePraat.load(filename, "UTF-16")
+                lines = load(filename, "UTF-16")
             except AioEncodingError:
                 raise AioEncodingError(filename, "", sppas.encoding+"/UTF-16")
 
@@ -455,11 +436,11 @@ class sppasTextGrid(sppasBasePraat):
             raise AioLineFormatError(start_line - 1, lines[-1])
 
         # Parse the tag
-        tag, start_line = \
+        labels, start_line = \
             sppasTextGrid._parse_text(lines, start_line)
 
         ann = sppasAnnotation(sppasLocation(localization),
-                              sppasLabel(tag))
+                              labels)
 
         return ann, start_line
 
@@ -487,24 +468,36 @@ class sppasTextGrid(sppasBasePraat):
 
     @staticmethod
     def _parse_text(lines, start_line):
-        """ Parse the text entry. Returns a sppasTag(). """
-
-        line = lines[start_line].strip()
-        text = sppasBasePraat._parse_string(line)
-        start_line += 1
+        """ Parse the text entry. Returns a list of sppasLabel(). """
 
         # text can be on several lines.
+        # we save each line in an individual label.
+        labels = list()
+
+        # read one line
+        line = lines[start_line].strip()
+        labels.append(sppasTextGrid.__line_to_label(line))
+        start_line += 1
+
+        # if the text continue on the following lines
         while line.endswith('"') is False:
 
             line = lines[start_line].strip()
-            text += " "
-            text += sppasBasePraat._parse_string(line)
-            start_line += 1
+            labels.append(sppasTextGrid.__line_to_label(line))
 
+            start_line += 1
             if start_line >= len(lines):
                 raise AioLineFormatError(start_line-1, lines[-1])
 
-        return sppasTag(text), start_line
+        return labels, start_line
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def __line_to_label(line):
+        text = sppasBasePraat._parse_string(line)
+        tag = sppasTag(text)
+        return sppasLabel(tag)
 
     # -----------------------------------------------------------------------
     # Writer
@@ -676,7 +669,7 @@ class sppasBaseNumericalTier(sppasBasePraat):
 
         """
         # get the content of the file
-        lines = sppasBasePraat.load(filename, sppas.encoding)
+        lines = load(filename, sppas.encoding)
         if len(lines) < 7:
             raise AioLineFormatError(len(lines), lines[-1])
 

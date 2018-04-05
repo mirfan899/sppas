@@ -40,12 +40,18 @@
     :summary:      Utilities for readers and writers.
 
 """
+import sppas
+import codecs
+
 from ..tier import sppasTier
 from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
 from ..annlocation.interval import sppasInterval
 from ..annlocation.point import sppasPoint
-from ..annlabel.tag import sppasTag
+from ..annlabel.label import sppasLabel
+from ..anndataexc import AnnDataTypeError
+from ..anndataexc import AioError
+from ..anndataexc import AioEncodingError
 
 # ---------------------------------------------------------------------------
 
@@ -53,6 +59,28 @@ from ..annlabel.tag import sppasTag
 def format_point_to_float(p):
     f = p.get_midpoint()
     return round(float(f), 4)
+
+# ---------------------------------------------------------------------------
+
+
+def load(filename, file_encoding=sppas.encoding):
+    """ Load a file into lines.
+
+    :param filename: (str)
+    :param file_encoding: (str)
+    :returns: list of lines (str)
+
+    """
+    try:
+        with codecs.open(filename, 'r', file_encoding) as fp:
+            lines = fp.readlines()
+            fp.close()
+    except IOError:
+        raise AioError(filename)
+    except UnicodeDecodeError:
+        raise AioEncodingError(filename, "", file_encoding)
+
+    return lines
 
 # ---------------------------------------------------------------------------
 
@@ -142,48 +170,75 @@ def fill_gaps(tier, min_loc=None, max_loc=None):
 # ---------------------------------------------------------------------------
 
 
-def serialize_labels(labels, separator="\n"):
+def serialize_labels(labels, separator="\n", empty="", alt=True):
     """ Convert labels into a string.
 
     :param labels: (list of sppasLabel)
     :param separator: (str) String to separate labels.
+    :param empty: (str) The text to return if a tag is empty or not set.
+    :param alt: (bool) Include alternative tags
     :returns: (str)
 
     """
-    label_contents = list()
+    if len(labels) == 0:
+        return empty
+
+    if len(labels) == 1:
+        return serialize_label(labels[0], empty, alt)
+
+    c = list()
     for label in labels:
-        label_contents.append(serialize_label(label))
+        c.append(serialize_label(label, empty, alt))
 
-    if len(label_contents) == 0:
-        return ""
-
-    return separator.join(label_contents)
+    return separator.join(c)
 
 # -----------------------------------------------------------------------
 
 
-def serialize_label(label):
-    """ Convert a label into a string, including alternative tags.
+def serialize_label(label, empty="", alt=True):
+    """ Convert a label into a string, including or not alternative tags.
+
+    BNF to represent alternative tags:
+        ALTERNATE :== "{" TEXT ALT+ "}"
+        ALT :== "|" TEXT
+        TEXT :== tag content | empty
+
+    Scores of the tags are not returned.
 
     :param label: (sppasLabel)
+    :param empty: (str) The text to return if a tag is empty or not set.
+    :param alt: (bool) Include alternative tags
     :returns: (str)
 
     """
+    if isinstance(label, sppasLabel) is False:
+        raise AnnDataTypeError(label, "sppasLabel")
+
     if label is None:
-        return ""
+        return empty
 
+    if label.get_best() is None:
+        return empty
+
+    if alt is False:
+        if label.get_best().is_empty():
+            return empty
+        return label.get_best().get_content()
+
+    # we store the alternative tags into a list.
+    # empty tags are replaced by the empty item.
     tag_contents = list()
-
     for tag, score in label:
-        tag_content = tag.get_content()
-        if len(tag_content) > 0:
-            tag_contents += tag_content
+        content = tag.get_content()
+        if len(content) > 0:
+            tag_contents.append(content)
+        else:
+            tag_contents.append(empty)
 
-    if len(tag_contents) == 0:
-        return ""
     if len(tag_contents) == 1:
         return tag_contents[0]
 
+    # we return the alternative tags
     return "{ " + " / ".join(tag_contents) + " }"
 
 # -----------------------------------------------------------------------

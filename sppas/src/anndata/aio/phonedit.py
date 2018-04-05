@@ -64,6 +64,8 @@ from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
 from .basetrs import sppasBaseIO
+from .aioutils import serialize_labels
+from .aioutils import load
 
 # ---------------------------------------------------------------------------
 
@@ -192,7 +194,7 @@ class sppasMRK(sppasBasePhonedit):
 
         """
         try:
-            parser = sppasBasePhonedit._parse(filename)
+            sppasBasePhonedit._parse(filename)
         except Exception:
             return False
         return True
@@ -259,6 +261,21 @@ class sppasMRK(sppasBasePhonedit):
 
     # -----------------------------------------------------------------------
 
+    @staticmethod
+    def _format_text(text):
+        """ Remove the " at the beginning and at the end of the string. """
+
+        text = text.strip()
+
+        if text.endswith('"'):
+            text = text[:-1]
+        if text.startswith('"'):
+            text = text[1:]
+
+        return text
+
+    # -----------------------------------------------------------------------
+
     def _parse_labels(self, data_list):
         """ Parse labels of a section LBL_LEVEL_ . """
 
@@ -293,12 +310,10 @@ class sppasMRK(sppasBasePhonedit):
 
             # ... tag text
             content = " ".join(tab_line[:-2])
-            # Remove the " at the beginning and at the end of the string
-            content = u(content[1:-1])
 
             # Create/Add the annotation into the tier
             ann = tier.create_annotation(sppasLocation(localization),
-                                         sppasLabel(sppasTag(content)))
+                                         sppasLabel(sppasTag(sppasMRK._format_text(content))))
     
             # override the default "id" by the name of the attribute
             ann.set_meta("id", key)
@@ -337,8 +352,12 @@ class sppasMRK(sppasBasePhonedit):
                 fp.write("[LBL_{:s}]\n".format(level))
                 for index_ann, ann in enumerate(tier):
 
-                    fp.write("LBL_{:s}_{:06d}=\"{:s}\"".format(
-                        level, index_ann, sppasMRK._serialize_labels(ann.get_labels())))
+                    text = serialize_labels(ann.get_labels(),
+                                            separator=" ",
+                                            empty="",
+                                            alt=True)
+                    fp.write("LBL_{:s}_{:06d}=\"{:s}\"".format(level, index_ann, text))
+
                     if point:
                         # Phonedit supports degenerated intervals (instead of points)
                         b = ann.get_lowest_localization().get_midpoint() * 1000.
@@ -349,39 +368,6 @@ class sppasMRK(sppasBasePhonedit):
                     fp.write(" {:s} {:s}\n".format(str(b), str(e)))
 
             fp.close()
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def _serialize_labels(labels):
-        """ Convert labels into a string. """
-
-        if len(labels) == 0:
-            return ""
-
-        content = ""
-        for label in labels:
-            content += sppasMRK._serialize_label(label) + " "
-        content = content.strip()
-        return content
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def _serialize_label(label):
-        """ Convert a label into a string. """
-
-        if label is None:
-            return ""
-
-        if label.get_best() is None:
-            return ""
-
-        if label.get_best().is_empty():
-            return ""
-
-        return label.get_best().get_content()
-
 
 # ---------------------------------------------------------------------------
 
@@ -431,15 +417,15 @@ class sppasSignaix(sppasBaseIO):
 
         """
         try:
-            with open(filename, "r") as fp:
-                for line in fp.readlines():
-                    line = line.strip()
-                    if len(line) > 0:
-                        if sppasSignaix.is_number(line) is False:
-                            return False
-        except IOError:
+            lines = load(filename)
+        except:
             return False
 
+        for line in lines:
+            line = line.strip()
+            if len(line) > 0:
+                if sppasSignaix.is_number(line) is False:
+                    return False
         return True
 
     # -----------------------------------------------------------------------
@@ -486,15 +472,9 @@ class sppasSignaix(sppasBaseIO):
 
         """
         delta = float(delta)
-        try:
-            with open(filename, "r") as fp:
-                lines = fp.readlines()
-                fp.close()
-        except IOError:
-            raise AioError(filename)
+        lines = load(filename)
 
         tier = self.create_tier("Pitch")
-
         # The reference time point of each interval is the middle.
         # The radius allows to cover the delta range.
         radius = delta / 2.

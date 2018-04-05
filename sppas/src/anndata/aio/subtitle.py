@@ -47,6 +47,8 @@ from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
+from .aioutils import serialize_labels
+
 # ---------------------------------------------------------------------------
 
 
@@ -170,38 +172,6 @@ class sppasBaseSubtitles(sppasBaseIO):
 
         return '{:s} --> {:s}\n'.format(begin, end)
 
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def _serialize_label(ann):
-        """ Get the best tag of each label to serialize the caption on screen.
-
-        :param ann: (sppasAnnotation)
-
-        """
-        tag_content = ""
-        for label in ann.get_labels():
-            tag_content += sppasBaseSubtitles._serialize_tags(label)
-            tag_content += "\n"
-
-        return tag_content
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def _serialize_tags(label):
-        """ Convert a label into a string. """
-
-        if label is None:
-            return ""
-
-        if label.get_best() is None:
-            return ""
-
-        if label.get_best().is_empty():
-            return ""
-
-        return label.get_best().get_content()
 
 # ---------------------------------------------------------------------------
 
@@ -333,11 +303,13 @@ class sppasSubRip(sppasBaseSubtitles):
                 number = 1
                 for ann in self[0]:
 
+                    text = serialize_labels(ann.get_labels(),
+                                            separator="\n",
+                                            empty="",
+                                            alt=True)
+
                     # no label defined, or empty label -> no subtitle!
-                    if ann.is_labelled() is False:
-                        continue
-                    text = sppasBaseSubtitles._serialize_label(ann)
-                    if len(text.strip()) == 0:
+                    if len(text) == 0:
                         continue
 
                     subtitle = ""
@@ -348,7 +320,7 @@ class sppasSubRip(sppasBaseSubtitles):
                     # 3rd line: optionally the position on screen
                     subtitle += sppasSubRip._serialize_metadata(ann)
                     # the text
-                    subtitle += text
+                    subtitle += text + "\n"
                     # a blank line
                     subtitle += "\n"
 
@@ -517,8 +489,13 @@ class sppasSubViewer(sppasBaseSubtitles):
             if self.is_empty() is False:
                 for ann in self[0]:
 
+                    text = serialize_labels(ann.get_labels(),
+                                            separator="\n",
+                                            empty="",
+                                            alt=True)
+
                     # no label defined, or empty label -> no subtitle!
-                    if ann.get_best_tag().is_empty():
+                    if len(text) == 0:
                         continue
 
                     # the timestamps
@@ -526,7 +503,7 @@ class sppasSubViewer(sppasBaseSubtitles):
                     subtitle = subtitle.replace(",", ".")
                     subtitle = subtitle.replace(" --> ", ",")
                     # the text
-                    subtitle += sppasBaseSubtitles._serialize_label(ann)
+                    subtitle += text + "\n"
                     # a blank line
                     subtitle += "\n"
 
