@@ -39,6 +39,11 @@
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Utilities for readers and writers.
 
+    BNF to represent alternative tags:
+        ALTERNATE :== "{" TEXT ALT+ "}"
+        ALT :== "|" TEXT
+        TEXT :== tag content | empty
+
 """
 import sppas
 import codecs
@@ -49,6 +54,7 @@ from ..annlocation.location import sppasLocation
 from ..annlocation.interval import sppasInterval
 from ..annlocation.point import sppasPoint
 from ..annlabel.label import sppasLabel
+from ..annlabel.tag import sppasTag
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioError
 from ..anndataexc import AioEncodingError
@@ -170,6 +176,56 @@ def fill_gaps(tier, min_loc=None, max_loc=None):
 # ---------------------------------------------------------------------------
 
 
+def format_labels(text, separator="\n", empty=""):
+    """ Create a set of labels from a text.
+
+    Use the separator to split the text into labels.
+    Use the "{ / }" system to parse the alternative tags.
+
+    :param text: (str)
+    :param separator: (str) String to separate labels.
+    :param empty: (str) The text representing an empty tag.
+
+    :returns: list of sppasLabel
+
+    """
+    if text is None:
+        return []
+    
+    text = text.strip()
+    if len(text) == 0:
+        return []
+
+    labels = list()
+    for line in text.split(separator):
+        label = format_label(line, empty)
+        labels.append(label)
+
+    return labels
+
+# ---------------------------------------------------------------------------
+
+
+def format_label(text, empty=""):
+    """ Create a label from a text.
+
+    Use the "{ / }" system to parse the alternative tags.
+
+    :param text: (str)
+    :param empty: (str) The text representing an empty tag.
+
+    :returns: sppasLabel
+
+    """
+    if len(text) == 0:
+        return sppasLabel(sppasTag(""))
+
+    tag = sppasTag(text)
+    return sppasLabel(tag)
+
+# ---------------------------------------------------------------------------
+
+
 def serialize_labels(labels, separator="\n", empty="", alt=True):
     """ Convert labels into a string.
 
@@ -198,11 +254,7 @@ def serialize_labels(labels, separator="\n", empty="", alt=True):
 def serialize_label(label, empty="", alt=True):
     """ Convert a label into a string, including or not alternative tags.
 
-    BNF to represent alternative tags:
-        ALTERNATE :== "{" TEXT ALT+ "}"
-        ALT :== "|" TEXT
-        TEXT :== tag content | empty
-
+    Use the "{ / }" system to serialize the alternative tags.
     Scores of the tags are not returned.
 
     :param label: (sppasLabel)

@@ -46,6 +46,7 @@ from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
+from .aioutils import format_labels
 
 # ---------------------------------------------------------------------------
 
@@ -672,19 +673,21 @@ class sppasTRS(sppasBaseIO):
 
     @staticmethod
     def __append_text_in_label(annotation, text):
-        # here, we are sure that the annotation contains ONE label
         labels = annotation.get_labels()
-        old_tag = labels[0].get_best()
-        old_text = old_tag.get_content()
-        old_tag.set_content(old_text + " " + text)
+        if len(labels) == 0:
+            labels.append(sppasLabel(sppasTag(text)))
+        else:
+            old_tag = labels[0].get_best()
+            old_text = old_tag.get_content()
+            old_tag.set_content(old_text + " " + text)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
     def __create_annotation(begin, end, text):
-        return sppasAnnotation(
-            sppasLocation(sppasInterval(begin, end)),
-            sppasLabel(sppasTag(text)))
+        loc = sppasLocation(sppasInterval(begin, end))
+        lab = format_labels(text)
+        return sppasAnnotation(loc, lab)
 
     # -----------------------------------------------------------------------
 

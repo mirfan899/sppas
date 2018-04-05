@@ -44,10 +44,9 @@ from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
-from ..annlabel.label import sppasLabel
-from ..annlabel.tag import sppasTag
 
 from .aioutils import serialize_labels
+from .aioutils import format_labels
 
 # ---------------------------------------------------------------------------
 
@@ -279,10 +278,13 @@ class sppasSubRip(sppasBaseSubtitles):
                 a.set_meta("position_pixel_"+coord, value)
             lines.pop(2)
 
-        # label
+        # labels
+        text = ""
         for line in lines[2:]:
-            tag = sppasTag(sppasBaseSubtitles._format_text(line))
-            a.append_label(sppasLabel(tag))
+            text += sppasBaseSubtitles._format_text(line) + "\n"
+        labels = format_labels(text.rstrip(), separator="\n")
+        if len(labels) > 0:
+            a.set_labels(labels)
 
         return a
 
@@ -464,11 +466,11 @@ class sppasSubViewer(sppasBaseSubtitles):
         time = sppasInterval(sppasBaseSubtitles.make_point(start),
                              sppasBaseSubtitles.make_point(stop))
 
-        # label
-        labels = list()
+        # labels
+        text = ""
         for line in lines[1:]:
-            tag = sppasTag(sppasBaseSubtitles._format_text(line))
-            labels.append(sppasLabel(tag))
+            text += sppasBaseSubtitles._format_text(line) + "\n"
+        labels = format_labels(text.rstrip(), separator="\n")
 
         return sppasAnnotation(sppasLocation(time), labels)
 
@@ -490,7 +492,7 @@ class sppasSubViewer(sppasBaseSubtitles):
                 for ann in self[0]:
 
                     text = serialize_labels(ann.get_labels(),
-                                            separator="\n",
+                                            separator="[br]",
                                             empty="",
                                             alt=True)
 

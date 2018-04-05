@@ -67,6 +67,7 @@ from ..annlabel.tag import sppasTag
 
 from .text import sppasBaseText
 from .aioutils import serialize_labels
+from .aioutils import format_labels
 from .aioutils import load
 
 # ---------------------------------------------------------------------------
@@ -707,11 +708,10 @@ class sppasSTM(sppasBaseSclite):
         """ Add into the tier the annotation corresponding to data of a line. """
 
         utterance = sppasUnicode(utterance).to_strip()
-        label = sppasLabel(sppasTag(utterance))
-
+        labels = format_labels(utterance)
         location = sppasLocation(sppasInterval(sppasBaseSclite.make_point(begin),
                                                sppasBaseSclite.make_point(end)))
-        tier.create_annotation(location, label)
+        tier.create_annotation(location, labels)
 
     # -----------------------------------------------------------------------
     # Writer

@@ -70,6 +70,7 @@ from .aioutils import fill_gaps
 from .aioutils import merge_overlapping_annotations
 from .aioutils import load
 from .aioutils import serialize_labels
+from .aioutils import format_labels
 from .basetrs import sppasBaseIO
 
 # ---------------------------------------------------------------------------
@@ -468,36 +469,27 @@ class sppasTextGrid(sppasBasePraat):
 
     @staticmethod
     def _parse_text(lines, start_line):
-        """ Parse the text entry. Returns a list of sppasLabel(). """
+        """ Parse the text entry. Returns a list of sppasLabel().
 
-        # text can be on several lines.
-        # we save each line in an individual label.
-        labels = list()
+        text can be on several lines.
+        we save each line in an individual label.
 
+        """
         # read one line
         line = lines[start_line].strip()
-        labels.append(sppasTextGrid.__line_to_label(line))
+        text = sppasBasePraat._parse_string(line)
         start_line += 1
 
         # if the text continue on the following lines
         while line.endswith('"') is False:
 
             line = lines[start_line].strip()
-            labels.append(sppasTextGrid.__line_to_label(line))
-
+            text += "\n" + sppasBasePraat._parse_string(line)
             start_line += 1
             if start_line >= len(lines):
                 raise AioLineFormatError(start_line-1, lines[-1])
 
-        return labels, start_line
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def __line_to_label(line):
-        text = sppasBasePraat._parse_string(line)
-        tag = sppasTag(text)
-        return sppasLabel(tag)
+        return format_labels(text, separator="\n"), start_line
 
     # -----------------------------------------------------------------------
     # Writer

@@ -54,8 +54,9 @@ from ..annlabel.tag import sppasTag
 from ..aio.aioutils import fill_gaps
 from ..aio.aioutils import unfill_gaps
 from ..aio.aioutils import merge_overlapping_annotations
-from ..aio.aioutils import serialize_label
 from ..aio.aioutils import load
+from ..aio.aioutils import serialize_label
+from ..aio.aioutils import format_labels
 
 # ---------------------------------------------------------------------------
 
@@ -232,7 +233,24 @@ class TestUtils(unittest.TestCase):
     def test_serialize_labels(self):
         """ Convert a list of labels into a string. """
 
-        pass
+        self.assertEqual([], format_labels(""))
+
+        self.assertEqual([sppasLabel(sppasTag("toto"))],
+                         format_labels("toto"))
+
+        self.assertEqual([sppasLabel(sppasTag("toto")), sppasLabel(sppasTag("toto"))],
+                         format_labels("toto\ntoto"))
+
+        self.assertEqual([sppasLabel(sppasTag("toto")), sppasLabel(sppasTag("toto"))],
+                         format_labels("toto toto", separator=" "))
+
+        self.assertEqual([sppasLabel(sppasTag("toto toto"))],
+                         format_labels("toto\ntoto", separator=" "))
+
+    # -----------------------------------------------------------------------
+
+    def test_format_labels(self):
+        """ Convert a string into labels. """
 
     # -----------------------------------------------------------------------
 

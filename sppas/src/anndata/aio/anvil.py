@@ -47,6 +47,7 @@ from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
 from .basetrs import sppasBaseIO
+from .aioutils import format_labels
 
 # ---------------------------------------------------------------------------
 
@@ -313,10 +314,10 @@ class sppasAnvil(sppasBaseIO):
 
         """
         for attribute_node in el_root.findall('attribute'):
-            tag = sppasTag(attribute_node.text)
+            labels = format_labels(attribute_node.text)
             tier = self.find(sppasAnvil.__fix_tier_name(track_root, attribute_node))
             tier.create_annotation(sppasLocation(localization), 
-                                   sppasLabel(tag))
+                                   labels)
 
     # -----------------------------------------------------------------------
     

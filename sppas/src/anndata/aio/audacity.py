@@ -47,8 +47,8 @@ from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
-from ..annlabel.label import sppasLabel
-from ..annlabel.tag import sppasTag
+
+from .aioutils import format_labels
 
 # ---------------------------------------------------------------------------
 
@@ -274,16 +274,16 @@ class sppasAudacity(sppasBaseIO):
             name = sppasAudacity.normalize(node.tag)
             if name == "label":
                 # get annotation information
-                label = sppasLabel(sppasTag(node.attrib['title']))
+                labels = format_labels(node.attrib['title'])
                 begin = sppasAudacity.make_point(node.attrib['t'])
                 end = sppasAudacity.make_point(node.attrib['t1'])
 
                 # create the annotation
                 if begin == end:
-                    new_a = sppasAnnotation(sppasLocation(begin), label)
+                    new_a = sppasAnnotation(sppasLocation(begin), labels)
                     point_anns.append(new_a)
                 else:
-                    new_a = sppasAnnotation(sppasLocation(sppasInterval(begin, end)), label)
+                    new_a = sppasAnnotation(sppasLocation(sppasInterval(begin, end)), labels)
                     interval_anns.append(new_a)
 
         # Fill the tier(s) with the annotations

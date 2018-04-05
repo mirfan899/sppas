@@ -50,7 +50,6 @@ from datetime import datetime
 
 import sppas
 
-from sppas.src.utils.makeunicode import u
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioNoTiersError
 from ..anndataexc import AioMultiTiersError
@@ -65,6 +64,7 @@ from ..annlabel.tag import sppasTag
 
 from .basetrs import sppasBaseIO
 from .aioutils import serialize_labels
+from .aioutils import format_labels
 from .aioutils import load
 
 # ---------------------------------------------------------------------------
@@ -310,10 +310,11 @@ class sppasMRK(sppasBasePhonedit):
 
             # ... tag text
             content = " ".join(tab_line[:-2])
+            labels = format_labels(sppasMRK._format_text(content))
 
             # Create/Add the annotation into the tier
             ann = tier.create_annotation(sppasLocation(localization),
-                                         sppasLabel(sppasTag(sppasMRK._format_text(content))))
+                                         labels)
     
             # override the default "id" by the name of the attribute
             ann.set_meta("id", key)

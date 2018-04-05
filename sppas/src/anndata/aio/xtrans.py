@@ -50,11 +50,10 @@ from ..anndataexc import AnnDataTypeError
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
-from ..annlabel.label import sppasLabel
-from ..annlabel.tag import sppasTag
 
 from .text import sppasBaseText
 from .aioutils import load
+from .aioutils import format_labels
 
 # ----------------------------------------------------------------------------
 
@@ -235,7 +234,8 @@ class sppasTDF(sppasBaseText):
                 tier.set_meta("speaker_dialect", line[speaker_dialect])
 
             # Add the new annotation
-            label = sppasLabel(sppasTag(line[tag]))
             location = sppasLocation(sppasInterval(sppasTDF.make_point(line[begin]),
                                                    sppasTDF.make_point(line[end])))
-            tier.create_annotation(location, label)
+            labels = format_labels(line[tag])
+
+            tier.create_annotation(location, labels)

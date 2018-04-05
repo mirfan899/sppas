@@ -50,8 +50,6 @@ from ..media import sppasMedia
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
-from ..annlabel.label import sppasLabel
-from ..annlabel.tag import sppasTag
 from ..anndataexc import AioFormatError
 from ..anndataexc import AnnDataTypeError
 
@@ -59,6 +57,7 @@ from .basetrs import sppasBaseIO
 from .aioutils import merge_overlapping_annotations
 from .aioutils import point2interval
 from .aioutils import serialize_labels
+from .aioutils import format_labels
 
 # ---------------------------------------------------------------------------
 
@@ -307,10 +306,7 @@ class sppasANTX(sppasBaseIO):
 
         # fix labels
         text = annotation_root.find(uri + 'Label').text
-        labels = list()
-        if text is not None:
-            for line_text in text.split('\n'):
-                labels.append(sppasLabel(sppasTag(line_text)))
+        labels = format_labels(text)
 
         # create annotation
         ann = tier.create_annotation(sppasLocation(localization),

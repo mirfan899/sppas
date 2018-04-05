@@ -179,7 +179,11 @@ class TestSubViewer(unittest.TestCase):
         self.assertEqual(sppasPoint(22.5), txt[0].get_first_point())
         self.assertEqual(sppasPoint(34.80), txt[0].get_last_point())
         self.assertFalse("[br]" in txt[0][0].get_labels()[0].get_best().get_content())
-        self.assertTrue("amet, consectetur" in txt[0][0].get_labels()[0].get_best().get_content())
+        self.assertTrue("Lorem ipsum dolor sit amet" in txt[0][0].get_labels()[0].get_best().get_content())
+        self.assertTrue("consectetur adipiscing elit" in txt[0][0].get_labels()[1].get_best().get_content())
+
+        self.assertTrue("Lorem ipsum dolor sit amet" in txt[0][0].get_labels()[0].get_best().get_content())
+        self.assertTrue("consectetur adipiscing elit" in txt[0][0].get_labels()[1].get_best().get_content())
 
     # -----------------------------------------------------------------
 

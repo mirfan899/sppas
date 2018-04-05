@@ -49,12 +49,11 @@ from ..anndataexc import AioLineFormatError
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
-from ..annlabel.label import sppasLabel
-from ..annlabel.tag import sppasTag
 from ..media import sppasMedia
 
 from .basetrs import sppasBaseIO
 from .aioutils import serialize_labels
+from .aioutils import format_labels
 from .aioutils import load
 
 # ---------------------------------------------------------------------------
@@ -465,6 +464,7 @@ class sppasRawText(sppasBaseText):
             # ignore blank lines
             if len(line) == 0:
                 continue
+
             # a comment can contain metadata
             if sppasBaseText.is_comment(line):
                 sppasBaseText._parse_comment(line, self)
@@ -488,9 +488,9 @@ class sppasRawText(sppasBaseText):
     def _create_annotation(tier, rank, utterance):
         """ Add the annotation corresponding to data of a line. """
 
-        label = sppasLabel(sppasTag(utterance))
+        labels = format_labels(utterance)
         location = sppasLocation(sppasPoint(rank))
-        tier.create_annotation(location, label)
+        tier.create_annotation(location, labels)
 
     # -----------------------------------------------------------------------
 
@@ -520,13 +520,13 @@ class sppasRawText(sppasBaseText):
         for instance in columns:
             if nb_col == 3 and instance[0].isdigit() is False:
                 location = sppasBaseText.fix_location(instance[1], instance[2])
-                label = sppasLabel(sppasTag(instance[0]))
-                self[0].create_annotation(location, label)
+                labels = format_labels(instance[0])
+                self[0].create_annotation(location, labels)
             else:
                 location = sppasBaseText.fix_location(instance[0], instance[1])
                 for i in range(2, nb_col):
-                    label = sppasLabel(sppasTag(instance[i]))
-                    self[i-2].create_annotation(location, label)
+                    labels = format_labels(instance[i])
+                    self[i-2].create_annotation(location, labels)
 
     # -----------------------------------------------------------------------
 
@@ -687,7 +687,7 @@ class sppasCSV(sppasBaseText):
                     continue
 
                 # Add the new annotation
-                tier.create_annotation(location, sppasLabel(sppasTag(content)))
+                tier.create_annotation(location, format_labels(content))
 
                 i += 1
 
