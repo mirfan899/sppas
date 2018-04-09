@@ -124,9 +124,10 @@ class TestXRA(unittest.TestCase):
         self.assertEqual(xra3.get_meta("license"), "GPL v3")
         # Media
         self.assertEqual(len(xra3.get_media_list()), 3)
-        self.assertIsNotNone(xra3.get_media_from_name("m1"))
-        self.assertIsNotNone(xra3.get_media_from_name("m2"))
-        self.assertIsNotNone(xra3.get_media_from_name("m3"))
+        self.assertIsNotNone(xra3.get_media_from_id("m1"))
+        self.assertIsNotNone(xra3.get_media_from_id("m2"))
+        self.assertIsNotNone(xra3.get_media_from_id("m3"))
+        self.assertIsNone(xra3.get_media_from_id("m4"))
         # Tiers
         self.assertEqual(len(xra3), 3)
         # ... First Tier
@@ -160,9 +161,10 @@ class TestXRA(unittest.TestCase):
         self.assertEqual(xra3.get_meta("license"), "GPL v3")
         # Media
         self.assertEqual(len(xra3.get_media_list()), 3)
-        self.assertIsNotNone(xra3.get_media_from_name("m1"))
-        self.assertIsNotNone(xra3.get_media_from_name("m2"))
-        self.assertIsNotNone(xra3.get_media_from_name("m3"))
+        self.assertIsNotNone(xra3.get_media_from_id("m1"))
+        self.assertIsNotNone(xra3.get_media_from_id("m2"))
+        self.assertIsNotNone(xra3.get_media_from_id("m3"))
+        self.assertIsNone(xra3.get_media_from_id("m4"))
         # Tiers
         self.assertEqual(len(xra3), 3)
         # ... First Tier

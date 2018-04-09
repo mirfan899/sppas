@@ -65,7 +65,6 @@
             <xsd:attribute name="date"          type="xsd:date"     use="optional"/>
             <xsd:attribute name="author"        type="stringType"   use="optional"/>
             <xsd:attribute name="name"          type="stringType"   use="optional"/>
-            <xsd:attribute name="version"       type="stringType"   use="optional"/>
             <xsd:attribute name="format"        type="stringType"   use="optional" default="1.4"/>
         </xsd:complexType>
     </xsd:element>

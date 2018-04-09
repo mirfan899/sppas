@@ -169,6 +169,12 @@ class sppasDefaultMeta(sppasMetaData):
         a file.
 
         """
+        self.set_meta("file_format_version", "")  # version of the file format
+        self.set_meta("file_version", "")         # version of the file
+        self.set_meta("file_author", "")          # complex name of the "author" of the file
+        self.set_meta("file_license", "")         # content of the license
+        self.set_meta("file_license_url", "")     # url of the license on the file
+
         self.set_meta("file_name", "")
         self.set_meta("file_path", "")
         self.set_meta("file_ext", "")
@@ -178,9 +184,6 @@ class sppasDefaultMeta(sppasMetaData):
 
         self.set_meta("file_writer", "")
         self.set_meta("file_write_date", "")
-
-        # annotation pro
-        self.set_meta("file_version", "")
 
     # -----------------------------------------------------------------------
 
@@ -202,7 +205,7 @@ class sppasDefaultMeta(sppasMetaData):
     def annotator(self):
         """ Add metadata related to an annotator. """
 
-        # subtitle, transcriber
+        # subtitle, transcriber, elan
         self.set_meta("annotator_name", "")
 
         # transcriber
@@ -219,7 +222,7 @@ class sppasDefaultMeta(sppasMetaData):
         # sclite, transcriber
         self.set_meta("speaker_id", "")
 
-        # sclite, xtrans, transcriber
+        # sclite, xtrans, transcriber, elan
         self.set_meta("speaker_name", "")
 
         # xtrans, transcriber

@@ -35,6 +35,66 @@
     Utilities to check data types.
 
 """
+import time
+from .utilsexc import UtilsDataTypeError
+
+# ---------------------------------------------------------------------------
+
+
+class sppasTime(object):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Utility class to check date time.
+
+    How SPPAS works with the date...
+
+    """
+    def __init__(self, now=None):
+        """ Create a sppasTime() instance.
+
+        :param now: (str) String representing the current time, formatted
+        like: '%Y-%m-%dT%H:%M:%S{:0=+3d}:{:0=2d}'
+
+        Example:
+
+        >>> p = sppasTime('2018-04-09T15:00:37+02:00')
+        >>> p.now
+        >>> '2018-04-09T15:00:37+02:00'
+        >>> p.gmt
+        >>> '+02:00'
+
+        """
+        # Fix now
+        if now is None:
+            ctz = -time.altzone if time.localtime(time.time()).tm_isdst and \
+                                   time.daylight else -time.timezone
+            self.now = time.strftime('%Y-%m-%dT%H:%M:%S{:0=+3d}:{:0=2d}').format(ctz // 3600, ctz % 3600)
+        else:
+            self.now = now
+
+        # Fix other members from now
+        if 'T' not in self.now or \
+           '-' not in self.now or \
+           ":" not in self.now or \
+           '+' not in self.now:
+            raise UtilsDataTypeError("sppasTime(now)", "%Y-%m-%dT%H:%M:%S{:0=+3d}:{:0=2d}", now)
+
+        try:
+            self.year = self.now.split('T')[0].split('-')[0]
+            self.month = self.now.split('T')[0].split('-')[1]
+            self.day = self.now.split('T')[0].split('-')[2]
+            self.hours = self.now.split('T')[1].split(':')[0]
+            self.min = self.now.split('T')[1].split(':')[1]
+            self.sec = self.now.split('T')[1].split(':')[2].split('+')[0]
+            self.gmt = self.now[-6:]
+        except IndexError:
+            raise UtilsDataTypeError("sppasTime(now)", "%Y-%m-%dT%H:%M:%S{:0=+3d}:{:0=2d}", now)
+
+# ---------------------------------------------------------------------------
 
 
 class sppasType(object):

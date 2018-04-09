@@ -136,15 +136,15 @@ class sppasTranscription(sppasMetaData):
 
     # ------------------------------------------------------------------------
 
-    def get_media_from_name(self, media_name):
+    def get_media_from_id(self, media_id):
         """ Return a sppasMedia from its name or None.
 
-        :param media_name: (str) Identifier name of a media
+        :param media_id: (str) Identifier name of a media
 
         """
-        idt = media_name.strip()
+        idt = media_id.strip()
         for m in self._media:
-            if m.get_name() == idt:
+            if m.get_meta('id') == idt:
                 return m
         return None
 
@@ -152,17 +152,18 @@ class sppasTranscription(sppasMetaData):
 
     def add_media(self, new_media):
         """ Add a new media in the list of media.
+         Do not add the media if a media with the same id is already in self.
 
-        :param new_media: (sppasMedia)
+        :param new_media: (sppasMedia) The media to add.
         :raises: AnnDataTypeError, TrsAddError
 
         """
         if isinstance(new_media, sppasMedia) is False:
             raise AnnDataTypeError(new_media, "sppasMedia")
 
-        ids = [m.get_name() for m in self._media]
-        if new_media.get_name() in ids:
-            raise TrsAddError(new_media.get_name(), self._name)
+        ids = [m.get_meta('id') for m in self._media]
+        if new_media.get_meta('id') in ids:
+            raise TrsAddError(new_media.get_filename(), self._name)
 
         self._media.append(new_media)
 

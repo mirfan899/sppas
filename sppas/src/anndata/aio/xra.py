@@ -36,15 +36,14 @@
 
 """
 import logging
-from datetime import datetime
 import xml.etree.cElementTree as ET
 
 import sppas
 from sppas.src.utils.makeunicode import u
+from sppas.src.utils.datatype import sppasTime
 
 from ..media import sppasMedia
 from ..ctrlvocab import sppasCtrlVocab
-from ..annotation import sppasAnnotation
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
@@ -131,6 +130,12 @@ class sppasXRA(sppasBaseIO):
         root = tree.getroot()
         if "name" in root.attrib:
             self.set_name(root.attrib['name'])
+        if "version" in root.attrib:
+            self.set_meta('file_format_version', root.attrib['version'])
+        if "date" in root.attrib:
+            self.set_meta('file_created_date', root.attrib['date'])
+        if "author" in root.attrib:
+            self.set_meta('file_author', root.attrib['author'])
 
         metadata_root = root.find('Metadata')
         if metadata_root is not None:
@@ -553,8 +558,9 @@ class sppasXRA(sppasBaseIO):
 
         """
         root = ET.Element('Document')
-        root.set('author', sppas.__name__)
-        root.set('date', datetime.now().strftime("%Y-%m-%d"))
+        author = sppas.__name__ + " " + sppas.__version__ + " (C) " + sppas.__author__
+        root.set('author', author)
+        root.set('date', sppasTime().now)
         root.set('format', self.__format)
         root.set('name', self.get_name())
 
@@ -585,19 +591,21 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def _format_metadata(metadata_root, meta_object):
+    def _format_metadata(metadata_root, meta_object, exclude=[]):
         """ Add 'Metadata' element in the tree from a sppasMetaData().
 
         :param metadata_root: (ET) XML Element tree root.
         :param meta_object: (sppasMetadata)
+        :param exclude: (list) List of keys to exclude
 
         """
         for key in meta_object.get_meta_keys():
-            value = meta_object.get_meta(key)
+            if key not in exclude:
+                value = meta_object.get_meta(key)
 
-            entry = ET.SubElement(metadata_root, 'Entry')
-            entry.set('key', key)
-            entry.text = value
+                entry = ET.SubElement(metadata_root, 'Entry')
+                entry.set('key', key)
+                entry.text = value
 
     # -----------------------------------------------------------------------
 
@@ -617,12 +625,10 @@ class sppasXRA(sppasBaseIO):
         tier_root.set("tiername", tier.get_name())
 
         # Tier Metadata
-        tier.pop_meta('id')
         metadata_root = ET.SubElement(tier_root, 'Metadata')
-        sppasXRA._format_metadata(metadata_root, tier)
+        sppasXRA._format_metadata(metadata_root, tier, exclude=['id'])
         if len(metadata_root.findall('Entry')) == 0:
             tier_root.remove(metadata_root)
-        tier.set_meta('id', tier_id)
 
         # Tier annotations list
         for annotation in tier:
@@ -646,10 +652,8 @@ class sppasXRA(sppasBaseIO):
             annotation_root.set("score", annotation.get_score())
 
         # Elements:
-        annotation.pop_meta('id')
         metadata_root = ET.SubElement(annotation_root, 'Metadata')
-        sppasXRA._format_metadata(metadata_root, annotation)
-        annotation.set_meta('id', ann_id)
+        sppasXRA._format_metadata(metadata_root, annotation, exclude=['id'])
 
         location_root = ET.SubElement(annotation_root, 'Location')
         sppasXRA._format_location(location_root, annotation.get_location())
@@ -770,7 +774,7 @@ class sppasXRA(sppasBaseIO):
 
         """
         # Set attribute
-        media_root.set('id', media.get_name())
+        media_root.set('id', media.get_meta('id'))
         media_root.set('url', media.get_filename())
         media_root.set('mimetype', media.get_mime_type())
 
@@ -782,10 +786,10 @@ class sppasXRA(sppasBaseIO):
                 tier_node = ET.SubElement(media_root, 'Tier')
                 tier_node.set('id', tier.get_meta('id'))
 
-        # Element Metadata
-        if len(media.get_meta_keys()) > 0:
-            metadata_root = ET.SubElement(media_root, 'Metadata')
-            self._format_metadata(metadata_root, media)
+        # Element Metadata (except 'id')
+        metadata_root = ET.SubElement(media_root, 'Metadata')
+        if len(media.get_meta_keys()) > 1:
+            sppasXRA._format_metadata(metadata_root, media, exclude=['id'])
 
         # Element Content
         if len(media.get_content()) > 0:

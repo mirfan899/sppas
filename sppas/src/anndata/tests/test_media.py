@@ -16,19 +16,19 @@ class TestMedia(unittest.TestCase):
         m = sppasMedia("toto.wav")
         self.assertEqual(m.get_filename(), "toto.wav")
         self.assertEqual(m.get_mime_type(), "audio/wav")
-        self.assertEqual(len(m.get_name()), 36)
+        self.assertEqual(len(m.get_meta('id')), 36)
 
     def test_media_video(self):
         m = sppasMedia("toto.mp4")
         self.assertEqual(m.get_filename(), "toto.mp4")
         self.assertEqual(m.get_mime_type(), "video/mp4")
-        self.assertEqual(len(m.get_name()), 36)
+        self.assertEqual(len(m.get_meta('id')), 36)
 
     def test_media_mime_error(self):
         m = sppasMedia("toto.iii")
         self.assertEqual(m.get_filename(), "toto.iii")
         self.assertEqual(m.get_mime_type(), "audio/basic")
-        self.assertEqual(len(m.get_name()), 36)
+        self.assertEqual(len(m.get_meta('id')), 36)
 
     def test_media_metadata(self):
         m = sppasMedia("toto.wav")

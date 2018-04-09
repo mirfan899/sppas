@@ -303,20 +303,22 @@ class sppasBaseText(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def create_media(media_name, meta_object):
+    def create_media(media_url, meta_object):
         """ Return the media of the given name (create it if necessary).
 
-        :param media_name: (str) Name (url) of the media to search/create
+        :param media_url: (str) Name (url) of the media to search/create
         :param meta_object: (sppasTranscription)
         :returns: (sppasMedia)
 
         """
         media = None
-        idt = media_name
+        idt = media_url
+
         # Search the media in the object
         for m in meta_object.get_media_list():
             if m.get_filename() == idt:
                 media = m
+
         if media is None:
             # Create a new media
             media = sppasMedia(idt)

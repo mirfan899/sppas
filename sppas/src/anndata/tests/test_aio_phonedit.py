@@ -83,17 +83,6 @@ class TestBasePhonedit(unittest.TestCase):
         self.assertTrue(txt.gaps_support())
         self.assertTrue(txt.overlaps_support())
 
-    # -----------------------------------------------------------------
-
-    def test_make_point(self):
-        """ Convert data into the appropriate digit type, or not. """
-
-        self.assertEqual(sppasPoint(3., 0.0005), sppasBasePhonedit.make_point("3000."))
-        self.assertEqual(sppasPoint(3., 0.0005), sppasBasePhonedit.make_point("3000."))
-        self.assertEqual(sppasPoint(3), sppasBasePhonedit.make_point("3000"))
-        with self.assertRaises(TypeError):
-            sppasBasePhonedit.make_point("3a")
-
 # ---------------------------------------------------------------------------
 
 
@@ -120,6 +109,17 @@ class TestMRK(unittest.TestCase):
                 self.assertTrue(sppasMRK.detect(f))
             else:
                 self.assertFalse(sppasMRK.detect(f))
+
+    # -----------------------------------------------------------------
+
+    def test_make_point(self):
+        """ Convert data into the appropriate digit type, or not. """
+
+        self.assertEqual(sppasPoint(3., 0.0005), sppasMRK.make_point("3000."))
+        self.assertEqual(sppasPoint(3., 0.0005), sppasMRK.make_point("3000."))
+        self.assertEqual(sppasPoint(3), sppasMRK.make_point("3000"))
+        with self.assertRaises(TypeError):
+            sppasMRK.make_point("3a")
 
     # -----------------------------------------------------------------
 

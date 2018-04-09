@@ -53,25 +53,22 @@ class sppasMedia(sppasMetaData):
     :summary:      Generic representation of a media file.
     
     """
-    def __init__(self, filename, media_name=None, mime_type=None):
+    def __init__(self, filename, media_id=None, mime_type=None):
         """ Creates a new sppasMedia instance.
 
         :param filename: (str) File name of the media
-        :param media_name: (str) Identifier of the media
+        :param media_id: (str) Identifier of the media
         :param mime_type: (str) Mime type of the media
 
         """
         super(sppasMedia, self).__init__()
 
         self.__url = filename
-        self.__name = None
         self.__mime = ""
         self.__content = ""
 
-        if media_name is None:
-            self.__name = sppasGUID().get()
-        else:
-            self.__name = media_name
+        if media_id is not None:
+            self.set_meta('id', media_id)
 
         if mime_type is None:
             m = mimetypes.guess_type(self.__url)
@@ -87,13 +84,6 @@ class sppasMedia(sppasMetaData):
         """ Return the URL of the media. """
 
         return self.__url
-
-    # -----------------------------------------------------------------------
-
-    def get_name(self):
-        """ Return the identifier name of the media. """
-        
-        return self.__name
 
     # -----------------------------------------------------------------------
 
@@ -124,8 +114,8 @@ class sppasMedia(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        return "Media: {:s} url={:s} mime={:s}" \
-               "".format(self.__name, self.__url, self.__mime)
+        return "Media: id={:s} url={:s} mime={:s}" \
+               "".format(self.get_meta('id'), self.__url, self.__mime)
 
     def __eq__(self, other):
         if isinstance(other, sppasMedia) is False:

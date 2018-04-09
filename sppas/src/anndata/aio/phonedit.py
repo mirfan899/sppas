@@ -143,20 +143,6 @@ class sppasBasePhonedit(sppasBaseIO):
         for entry in meta_list:
             meta_object.set_meta(entry[0], entry[1])
 
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def make_point(midpoint):
-        """ In Phonedit, the localization is a time value, so a float. """
-
-        try:
-            midpoint = float(midpoint)
-        except ValueError:
-            raise AnnDataTypeError(midpoint, "float")
-
-        return sppasPoint(midpoint / 1000., radius=0.0005)
-
-
 # ---------------------------------------------------------------------------
 
 
@@ -212,6 +198,36 @@ class sppasMRK(sppasBasePhonedit):
 
         sppasBasePhonedit.__init__(self, name)
         self.default_extension = "mrk"
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def make_point(midpoint):
+        """ In Phonedit, the localization is a time value, so a float. 
+
+        :param midpoint: (str) a time in ELAN format
+        :returns: sppasPoint() representing time in seconds.
+
+        """
+        try:
+            midpoint = float(midpoint)
+        except ValueError:
+            raise AnnDataTypeError(midpoint, "float")
+
+        return sppasPoint(midpoint / 1000., radius=0.0005)
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def format_point(second_count):
+        """ Convert a time in seconds into MRK format. """
+
+        try:
+            second_count = float(second_count)
+        except ValueError:
+            raise AnnDataTypeError(second_count, "float")
+
+        return 1000. * float(second_count)
 
     # -----------------------------------------------------------------------
     # reader
@@ -303,10 +319,10 @@ class sppasMRK(sppasBasePhonedit):
             end = float(tab_line[-1])
             if begin < end:
                 localization = sppasInterval(
-                    sppasBasePhonedit.make_point(begin),
-                    sppasBasePhonedit.make_point(end))
+                    sppasMRK.make_point(begin),
+                    sppasMRK.make_point(end))
             else:
-                localization = sppasBasePhonedit.make_point(begin)
+                localization = sppasMRK.make_point(begin)
 
             # ... tag text
             content = " ".join(tab_line[:-2])
@@ -327,7 +343,6 @@ class sppasMRK(sppasBasePhonedit):
         """ Write a Phonedit mark file.
 
         :param filename: output filename.
-        :param encoding: encoding.
 
         """
         code_a = ord("A")
@@ -361,11 +376,11 @@ class sppasMRK(sppasBasePhonedit):
 
                     if point:
                         # Phonedit supports degenerated intervals (instead of points)
-                        b = ann.get_lowest_localization().get_midpoint() * 1000.
+                        b = sppasMRK.format_point(ann.get_lowest_localization().get_midpoint())
                         e = b
                     else:
-                        b = ann.get_lowest_localization().get_midpoint() * 1000.
-                        e = ann.get_highest_localization().get_midpoint() * 1000.
+                        b = sppasMRK.format_point(ann.get_lowest_localization().get_midpoint())
+                        e = sppasMRK.format_point(ann.get_highest_localization().get_midpoint())
                     fp.write(" {:s} {:s}\n".format(str(b), str(e)))
 
             fp.close()

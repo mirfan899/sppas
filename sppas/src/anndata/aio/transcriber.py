@@ -264,8 +264,9 @@ class sppasTRS(sppasBaseIO):
         """
         # The media linked to this file.
         if "audio_filename" in root.attrib:
-            media_name = root.attrib['audio_filename']
-            media = sppasMedia(media_name)
+            media_url = root.attrib['audio_filename']
+            media = sppasMedia(media_url)
+            media.set_meta('media_source', 'primary')
             self.set_media_list([media])
 
         # Name of the annotator.

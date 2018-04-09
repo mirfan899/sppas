@@ -67,7 +67,83 @@ DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 class TestUtils(unittest.TestCase):
 
+    def test_load(self):
+        """ Load a file into lines. """
+
+        lines = load(os.path.join(DATA, "sample.ctm"))
+        self.assertEqual(len(lines), 45)
+
+        with self.assertRaises(UnicodeDecodeError):
+            load(os.path.join(DATA, "sample-utf16.TextGrid"))
+
+        with self.assertRaises(IOError):
+            load(os.path.join(DATA, "not-exists"))
+
+    # -----------------------------------------------------------------------
+
+    def test_format_labels(self):
+        """ Convert a string into labels. """
+
+        pass
+
+    # -----------------------------------------------------------------------
+
+    def test_serialize_label(self):
+        """ Convert a label into a string. """
+
+        tag = sppasTag("")
+        label = sppasLabel(tag)
+        s = serialize_label(label)
+        self.assertEqual("", s)
+
+        tag = sppasTag("")
+        label = sppasLabel(tag)
+        s = serialize_label(label, "IGNORE_TIME_SEGMENT_IN_SCORING")
+        self.assertEqual("IGNORE_TIME_SEGMENT_IN_SCORING", s)
+
+        tag = sppasTag("toto")
+        label = sppasLabel(tag)
+        s = serialize_label(label)
+        self.assertEqual("toto", s)
+
+        tag1 = sppasTag("uh")
+        tag2 = sppasTag("um")
+        label = sppasLabel([tag1, tag2])
+        s = serialize_label(label)
+        self.assertEqual("{ uh / um }", s)
+
+    # -----------------------------------------------------------------------
+
+    def test_serialize_labels(self):
+        """ Convert a list of labels into a string. """
+
+        self.assertEqual([], format_labels(""))
+
+        self.assertEqual([sppasLabel(sppasTag("toto"))],
+                         format_labels("toto"))
+
+        self.assertEqual([sppasLabel(sppasTag("toto")), sppasLabel(sppasTag("toto"))],
+                         format_labels("toto\ntoto"))
+
+        self.assertEqual([sppasLabel(sppasTag("toto")), sppasLabel(sppasTag("toto"))],
+                         format_labels("toto toto", separator=" "))
+
+        self.assertEqual([sppasLabel(sppasTag("toto toto"))],
+                         format_labels("toto\ntoto", separator=" "))
+
+    # -----------------------------------------------------------------------
+
+    def test_check_gaps(self):
+        """ Check if there are holes between annotations. """
+
+        pass
+
+    # -----------------------------------------------------------------------
+
     def test_fill_gaps(self):
+        """ Return the tier in which the temporal gaps between annotations are
+        filled with an un-labelled annotation."""
+
         # integers
         tier = sppasTier()
         anns = [sppasAnnotation(
@@ -115,6 +191,8 @@ class TestUtils(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_unfill_gaps(self):
+        """ Return the tier in which un-labelled annotations are removed. """
+
         # integers
         tier = sppasTier()
         anns = [sppasAnnotation(
@@ -143,7 +221,16 @@ class TestUtils(unittest.TestCase):
 
     # -----------------------------------------------------------------------
 
+    def test_check_overlaps(self):
+        """ Check whether some annotations are overlapping or not. """
+        pass
+
+    # -----------------------------------------------------------------------
+
     def test_merge_overlapping_annotations(self):
+        """ Merge overlapping annotations. The labels of 2 overlapping
+        annotations are appended."""
+
         tier = sppasTier()
         localizations = [sppasInterval(sppasPoint(1.), sppasPoint(2.)),    # 0
                          sppasInterval(sppasPoint(1.5), sppasPoint(2.)),   # 1
@@ -201,69 +288,3 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(len(expected_tier), len(new_tier))
         for new_ann, expected_ann in zip(new_tier, expected_tier):
             self.assertEqual(new_ann, expected_ann)
-
-    # -----------------------------------------------------------------------
-
-    def test_serialize_label(self):
-        """ Convert a label into a string. """
-
-        tag = sppasTag("")
-        label = sppasLabel(tag)
-        s = serialize_label(label)
-        self.assertEqual("", s)
-
-        tag = sppasTag("")
-        label = sppasLabel(tag)
-        s = serialize_label(label, "IGNORE_TIME_SEGMENT_IN_SCORING")
-        self.assertEqual("IGNORE_TIME_SEGMENT_IN_SCORING", s)
-
-        tag = sppasTag("toto")
-        label = sppasLabel(tag)
-        s = serialize_label(label)
-        self.assertEqual("toto", s)
-
-        tag1 = sppasTag("uh")
-        tag2 = sppasTag("um")
-        label = sppasLabel([tag1, tag2])
-        s = serialize_label(label)
-        self.assertEqual("{ uh / um }", s)
-
-    # -----------------------------------------------------------------------
-
-    def test_serialize_labels(self):
-        """ Convert a list of labels into a string. """
-
-        self.assertEqual([], format_labels(""))
-
-        self.assertEqual([sppasLabel(sppasTag("toto"))],
-                         format_labels("toto"))
-
-        self.assertEqual([sppasLabel(sppasTag("toto")), sppasLabel(sppasTag("toto"))],
-                         format_labels("toto\ntoto"))
-
-        self.assertEqual([sppasLabel(sppasTag("toto")), sppasLabel(sppasTag("toto"))],
-                         format_labels("toto toto", separator=" "))
-
-        self.assertEqual([sppasLabel(sppasTag("toto toto"))],
-                         format_labels("toto\ntoto", separator=" "))
-
-    # -----------------------------------------------------------------------
-
-    def test_format_labels(self):
-        """ Convert a string into labels. """
-
-    # -----------------------------------------------------------------------
-
-    def test_load(self):
-        """ Load a file into lines. """
-
-        lines = load(os.path.join(DATA, "sample.ctm"))
-        self.assertEqual(len(lines), 45)
-
-        with self.assertRaises(UnicodeDecodeError):
-            load(os.path.join(DATA, "sample-utf16.TextGrid"))
-
-        with self.assertRaises(IOError):
-            load(os.path.join(DATA, "not-exists"))
-
-    # -----------------------------------------------------------------

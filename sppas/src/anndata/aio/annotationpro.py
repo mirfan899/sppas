@@ -174,6 +174,7 @@ class sppasANTX(sppasBaseIO):
         self._map_meta.add('Created', 'file_created_date')
         self._map_meta.add('Modified', 'file_write_date')
         self._map_meta.add('FileVersion', 'file_version')
+        self._map_meta.add('Author', 'file_author')
         self._map_meta.add('Samplerate', 'media_sample_rate')
         self._map_meta.add('IsSelected', 'tier_is_selected')
         self._map_meta.add('IsClosed', 'tier_is_closed')
@@ -248,6 +249,7 @@ class sppasANTX(sppasBaseIO):
             # Create the new Media and put all information in metadata
             media = sppasMedia(media_url)
             media.set_meta("id", media_id)
+            media.set_meta('media_source', 'primary')
             media.set_meta("media_sample_rate", self.get_meta("media_sample_rate", "44100"))
             self.elt_to_meta(audio_root, media, uri)
             self.add_media(media)

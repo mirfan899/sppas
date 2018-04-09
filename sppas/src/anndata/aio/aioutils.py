@@ -91,91 +91,6 @@ def load(filename, file_encoding=sppas.encoding):
 # ---------------------------------------------------------------------------
 
 
-def check_gaps(tier, min_loc=None, max_loc=None):
-    """ Check if there are holes between annotations.
-
-    :param tier: (sppasTier)
-    :param min_loc: (sppasPoint)
-    :param max_loc: (sppasPoint)
-    :returns: (bool)
-
-    """
-    if tier.is_empty():
-        return False
-
-    if min_loc is not None and format_point_to_float(tier.get_first_point()) > format_point_to_float(min_loc):
-        return True
-    if max_loc is not None and format_point_to_float(tier.get_last_point()) < format_point_to_float(max_loc):
-        return True
-
-    prev = None
-    for ann in tier:
-        if prev is not None:
-            prev_end = prev.get_highest_localization()
-            ann_begin = ann.get_lowest_localization()
-            if prev_end < ann_begin:
-                return True
-        prev = ann
-
-    return False
-
-# ---------------------------------------------------------------------------
-
-
-def fill_gaps(tier, min_loc=None, max_loc=None):
-    """ Return the tier in which the temporal gaps between annotations are
-    filled with an un-labelled annotation.
-
-    :param tier: (Tier) A tier with intervals.
-    :param min_loc: (sppasPoint)
-    :param max_loc: (sppasPoint)
-    :returns: (sppasTier)
-
-    """
-    # find gaps only if the tier is an IntervalTier
-    if tier.is_interval() is False:
-        return tier
-
-    # There's no reason to do anything if the tier is already without gaps!
-    if check_gaps(tier, min_loc, max_loc) is False:
-        return tier
-
-    # Right, we have things to do...
-    new_tier = tier.copy()
-
-    # Check firstly the begin/end
-    if min_loc is not None and format_point_to_float(tier.get_first_point()) > format_point_to_float(min_loc):
-        interval = sppasInterval(min_loc, tier.get_first_point())
-        new_tier.add(sppasAnnotation(sppasLocation(interval)))
-
-    if max_loc is not None and format_point_to_float(tier.get_last_point()) < format_point_to_float(max_loc):
-        interval = sppasInterval(tier.get_last_point(), max_loc)
-        new_tier.add(sppasAnnotation(sppasLocation(interval)))
-
-    # There's no reason to go further if the tier is already without gaps!
-    if check_gaps(new_tier, min_loc, max_loc) is False:
-        return new_tier
-
-    # Right, we have to check all annotations
-    prev = None
-    for a in new_tier:
-
-        if prev is not None and prev.get_highest_localization() < a.get_lowest_localization():
-            interval = sppasInterval(prev.get_highest_localization(), a.get_lowest_localization())
-            annotation = sppasAnnotation(sppasLocation(interval))
-            new_tier.add(annotation)
-            prev = annotation
-        elif prev is not None and prev.get_highest_localization() < a.get_lowest_localization():
-            a.get_lowest_localization().set(prev.get_highest_localization())
-            prev = a
-        else:
-            prev = a
-
-    return new_tier
-
-# ---------------------------------------------------------------------------
-
-
 def format_labels(text, separator="\n", empty=""):
     """ Create a set of labels from a text.
 
@@ -294,6 +209,91 @@ def serialize_label(label, empty="", alt=True):
     return "{ " + " / ".join(tag_contents) + " }"
 
 # -----------------------------------------------------------------------
+
+
+def check_gaps(tier, min_loc=None, max_loc=None):
+    """ Check if there are holes between annotations.
+
+    :param tier: (sppasTier)
+    :param min_loc: (sppasPoint)
+    :param max_loc: (sppasPoint)
+    :returns: (bool)
+
+    """
+    if tier.is_empty():
+        return False
+
+    if min_loc is not None and format_point_to_float(tier.get_first_point()) > format_point_to_float(min_loc):
+        return True
+    if max_loc is not None and format_point_to_float(tier.get_last_point()) < format_point_to_float(max_loc):
+        return True
+
+    prev = None
+    for ann in tier:
+        if prev is not None:
+            prev_end = prev.get_highest_localization()
+            ann_begin = ann.get_lowest_localization()
+            if prev_end < ann_begin:
+                return True
+        prev = ann
+
+    return False
+
+# ---------------------------------------------------------------------------
+
+
+def fill_gaps(tier, min_loc=None, max_loc=None):
+    """ Return the tier in which the temporal gaps between annotations are
+    filled with an un-labelled annotation.
+
+    :param tier: (Tier) A tier with intervals.
+    :param min_loc: (sppasPoint)
+    :param max_loc: (sppasPoint)
+    :returns: (sppasTier)
+
+    """
+    # find gaps only if the tier is an IntervalTier
+    if tier.is_interval() is False:
+        return tier
+
+    # There's no reason to do anything if the tier is already without gaps!
+    if check_gaps(tier, min_loc, max_loc) is False:
+        return tier
+
+    # Right, we have things to do...
+    new_tier = tier.copy()
+
+    # Check firstly the begin/end
+    if min_loc is not None and format_point_to_float(tier.get_first_point()) > format_point_to_float(min_loc):
+        interval = sppasInterval(min_loc, tier.get_first_point())
+        new_tier.add(sppasAnnotation(sppasLocation(interval)))
+
+    if max_loc is not None and format_point_to_float(tier.get_last_point()) < format_point_to_float(max_loc):
+        interval = sppasInterval(tier.get_last_point(), max_loc)
+        new_tier.add(sppasAnnotation(sppasLocation(interval)))
+
+    # There's no reason to go further if the tier is already without gaps!
+    if check_gaps(new_tier, min_loc, max_loc) is False:
+        return new_tier
+
+    # Right, we have to check all annotations
+    prev = None
+    for a in new_tier:
+
+        if prev is not None and prev.get_highest_localization() < a.get_lowest_localization():
+            interval = sppasInterval(prev.get_highest_localization(), a.get_lowest_localization())
+            annotation = sppasAnnotation(sppasLocation(interval))
+            new_tier.add(annotation)
+            prev = annotation
+        elif prev is not None and prev.get_highest_localization() < a.get_lowest_localization():
+            a.get_lowest_localization().set(prev.get_highest_localization())
+            prev = a
+        else:
+            prev = a
+
+    return new_tier
+
+# ---------------------------------------------------------------------------
 
 
 def unfill_gaps(tier):

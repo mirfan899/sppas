@@ -38,8 +38,6 @@ import codecs
 
 import sppas
 
-from ..anndataexc import AioError
-from ..anndataexc import AioEncodingError
 from ..anndataexc import AioMultiTiersError
 from ..anndataexc import AioLocationTypeError
 from ..annlocation.location import sppasLocation
@@ -105,7 +103,7 @@ class sppasBaseHTK(sppasBaseIO):
         float.
 
         :param time_string: (str) a time in HTK format
-        :returns: sppasPoint().
+        :returns: sppasPoint() representing time in seconds.
 
         """
         v = float(TIME_UNIT) * float(time_string)

@@ -36,11 +36,13 @@
 
 """
 import os.path
+import time
 from datetime import datetime
 from collections import OrderedDict
 
 import sppas
 from sppas.src.utils.makeunicode import u
+from sppas.src.utils.datatype import sppasTime
 
 from ..anndataexc import AioEncodingError
 from ..anndataexc import AioFileExtensionError
@@ -167,8 +169,7 @@ class sppasRW(object):
             trs.set_meta('file_name', os.path.basename(self.__filename))
             trs.set_meta('file_path', os.path.dirname(self.__filename))
             trs.set_meta('file_ext', os.path.splitext(self.__filename)[1])
-            now = datetime.now().strftime("%Y-%M-%d %H:%M")
-            trs.set_meta('file_read_date', "{:s}".format(now))
+            trs.set_meta('file_read_date', sppasTime().now)
 
             # Read the file content dans store into a Transcription()
             trs.read(self.__filename)
