@@ -34,7 +34,6 @@
 
 
 """
-import time
 import xml.etree.cElementTree as ET
 
 import sppas
@@ -53,6 +52,8 @@ from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 from ..media import sppasMedia
+from ..tier import sppasTier
+from ..annotation import sppasAnnotation
 
 from ..ctrlvocab import sppasCtrlVocab
 
@@ -152,7 +153,6 @@ class sppasEAF(sppasBaseIO):
 
         # ELAN only supports (and assumes) milliseconds.
         self.unit = 0.001
-        self.time_slots = dict()
 
     # -----------------------------------------------------------------------
 
@@ -194,7 +194,7 @@ class sppasEAF(sppasBaseIO):
     def read(self, filename):
         """ Read a ELAN EAF file.
 
-        :param filename: (str) intput filename.
+        :param filename: (str) input filename.
 
         """
         tree = ET.parse(filename)
@@ -209,11 +209,13 @@ class sppasEAF(sppasBaseIO):
         self._parse_header(root.find('HEADER'))
 
         # Time order (1..1)
-        self._parse_time_order(root.find('TIME_ORDER'))
+        time_slots = sppasEAF._parse_time_order(root.find('TIME_ORDER'))
 
         # Controlled vocabularies (0..*)
         for vocabulary_root in root.findall('CONTROLLED_VOCABULARY'):
-            self._parse_ctrl_vocab(vocabulary_root)
+            ctrl_vocab = sppasEAF._parse_ctrl_vocab(vocabulary_root)
+            if len(ctrl_vocab) > 0:
+                self.add_ctrl_vocab(ctrl_vocab)
 
         # Linguistic type
 
@@ -229,7 +231,7 @@ class sppasEAF(sppasBaseIO):
 
         # Tiers (0..*)
         for tier_root in root.findall('TIER'):
-            self._parse_tier(tier_root)
+            self._parse_tier(tier_root, time_slots)
 
     # -----------------------------------------------------------------------
 
@@ -280,17 +282,20 @@ class sppasEAF(sppasBaseIO):
             self.unit = 1.0
 
         for media_root in header_root.findall('MEDIA_DESCRIPTOR'):
-            self._parse_media_descriptor(media_root, header_root)
+            media = sppasEAF._parse_media_descriptor(media_root, header_root)
+            self.add_media(media)
 
         for linked_root in header_root.findall('LINKED_FILE_DESCRIPTOR'):
-            self._parse_media_descriptor(linked_root)
+            media = sppasEAF._parse_linked_file_descriptor(linked_root, header_root)
+            self.add_media(media)
 
         for property_root in header_root.findall('PROPERTY'):
             self._parse_property(property_root)
 
     # -----------------------------------------------------------------------
 
-    def _parse_media_descriptor(self, media_root, header_root):
+    @staticmethod
+    def _parse_media_descriptor(media_root, header_root):
         """ Get the elements 'MEDIA_DESCRIPTOR'.
         This element describes one primary media source.
         Create a sppasMedia instance and add it.
@@ -318,13 +323,12 @@ class sppasEAF(sppasBaseIO):
                 if name == 'media_id_'+media.get_filename():
                     media.set_meta('id', property_root.text)
 
-        # Add media into sppasEAF();
-        # but the media is not linked to tiers... Elan doesn't support it.
-        self.add_media(media)
+        return media
 
     # -----------------------------------------------------------------------
 
-    def _parse_linked_file_descriptor(self, linked_root):
+    @staticmethod
+    def _parse_linked_file_descriptor(linked_root, header_root):
         """ Get the elements 'LINKED_FILE_DESCRIPTOR'.
         This element describes a “secondary”, additional source.
         Create a sppasMedia instance and add it.
@@ -345,15 +349,19 @@ class sppasEAF(sppasBaseIO):
         if 'ASSOCIATED_WITH' in linked_root.attrib:
             media.set_meta('ASSOCIATED_WITH', linked_root.attrib['ASSOCIATED_WITH'])
 
-        # Add media into sppasEAF();
-        # but the media is not linked to tiers... Elan doesn't support it.
-        self.add_media(media)
+        # media identifier
+        for property_root in header_root.findall('PROPERTY'):
+            if 'NAME' in property_root.attrib:
+                name = property_root.attrib['NAME']
+                if name == 'media_id_'+media.get_filename():
+                    media.set_meta('id', property_root.text)
+
+        return media
 
     # -----------------------------------------------------------------------
 
-    @staticmethod
     def _parse_property(self, property_root):
-        """ Get the elements 'PROPERTY'.
+        """ Get the elements 'PROPERTY' -> sppasMetadata().
         This is a general purpose element for storing key-value pairs.
 
         :param property_root: (ET) Property root element.
@@ -361,12 +369,13 @@ class sppasEAF(sppasBaseIO):
         """
         if 'NAME' in property_root.attrib:
             name = property_root.attrib['NAME']
-            if name.startswith('media_id_') is False:
+            if "_id_" not in name:
                 self.set_meta(name, property_root.text)
 
     # -----------------------------------------------------------------------
 
-    def _parse_time_order(self, time_order_root):
+    @staticmethod
+    def _parse_time_order(time_order_root):
         """ Get the elements 'TIME_ORDER'.
         The TIME_ORDER element is a container for ordered TIME_SLOT elements.
 
@@ -380,7 +389,7 @@ class sppasEAF(sppasBaseIO):
             time_id = time_slot_node.attrib['TIME_SLOT_ID']
 
             if 'TIME_VALUE' in time_order_root.attrib:
-                value = self.make_point(time_slot_node.attrib['TIME_VALUE'])
+                value = time_slot_node.attrib['TIME_VALUE']
                 time_slot_tuples.append((time_id, value))
 
         #
@@ -396,12 +405,13 @@ class sppasEAF(sppasBaseIO):
         #                            prevVal.GetMidpoint())
         #         time_slot_tuples[i] = (id, newVal)
         #
-        self.time_slots = dict(time_slot_tuples)
+        return dict(time_slot_tuples)
 
     # -----------------------------------------------------------------------
 
-    def _parse_ctrl_vocab(self, ctrl_vocab_root):
-        """ Get the elements 'CONTROLLED_VOCABULARY'.
+    @staticmethod
+    def _parse_ctrl_vocab(ctrl_vocab_root):
+        """ Get the elements 'CONTROLLED_VOCABULARY' -> sppasCtrlVocab().
 
         :param ctrl_vocab_root: (ET) Controlled vocabulary root element.
 
@@ -434,17 +444,18 @@ class sppasEAF(sppasBaseIO):
         # mutually exclusive with a sequence of CV_ENTRY_ML elements:
         if 'EXT_REF' in ctrl_vocab_root.attrib:
             ctrl_vocab_url = ctrl_vocab_root.attrib['EXT_REF']
+            ctrl_vocab.set_meta('EXT_REF', ctrl_vocab_url)
             # todo: open and parse the ctrl vocab external file.
 
-        if len(ctrl_vocab) > 0:
-            self.add_ctrl_vocab(ctrl_vocab)
+        return ctrl_vocab
 
     # -----------------------------------------------------------------------
 
-    def _parse_tier(self, tier_root):
-        """ Get the elements 'TIER'.
+    def _parse_tier(self, tier_root, time_slots):
+        """ Get the elements 'TIER' -> sppasTier().
 
         :param tier_root: (ET) Tier root.
+        :param time_slots: (dict)
 
         """
         # The name is used as identifier.
@@ -465,12 +476,14 @@ class sppasEAF(sppasBaseIO):
             self._parse_ref_tier(tier_root, tier, parent_ref)
         else:
             for annotation_root in tier_root.findall('ANNOTATION'):
-                self._parse_alignable_annotation(annotation_root.find('ALIGNABLE_ANNOTATION'), tier)
+                self._parse_alignable_annotation(annotation_root.find('ALIGNABLE_ANNOTATION'),
+                                                 tier,
+                                                 time_slots)
 
     # -----------------------------------------------------------------
 
-    def _parse_alignable_annotation(self, annotation_root, tier):
-        """ Get the elements 'ANNOTATION'.
+    def _parse_alignable_annotation(self, annotation_root, tier, time_slots):
+        """ Get the elements 'ANNOTATION' -> sppasAnnotation().
 
         :param annotation_root: (ET) Annotation root element.
         :param tier: (sppasTier) The tier to add the annotation
@@ -478,9 +491,9 @@ class sppasEAF(sppasBaseIO):
         """
         # Location
         begin_key = annotation_root.attrib['TIME_SLOT_REF1']
-        begin_time = self.time_slots[begin_key]
+        begin_time = time_slots[begin_key]
         end_key = annotation_root.attrib['TIME_SLOT_REF2']
-        end_time = self.time_slots[end_key]
+        end_time = time_slots[end_key]
         localization = sppasInterval(self.make_point(begin_time),
                                      self.make_point(end_time))
 
@@ -491,16 +504,15 @@ class sppasEAF(sppasBaseIO):
                 text.append(value_node.text)
         labels = format_labels("\n".join(text), separator="\n")
 
+        # Annotation and its metadata
         ann = tier.create_annotation(sppasLocation(localization), labels)
-
-        # metadata
         if 'SVG_REF' in annotation_root.attrib:
             ann.set_meta('SVG_REF', annotation_root.attrib['SVG_REF'])
 
     # -----------------------------------------------------------------
 
     def _parse_ref_tier(self, tier_root, tier, parent_ref):
-        """ Get the elements 'ANNOTATION'.
+        """ Get the elements 'TIER'.
 
         :param tier_root: (ET) Tier root element.
         :param tier: (sppasTier) The tier to add the annotations
@@ -570,7 +582,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _format_media(root, media):
-        """ Add 'MEDIA' into the ElementTree (if any).
+        """ Add 'MEDIA_DESCRIPTOR' into the ElementTree (if any).
 
         :param root: (ElementTree)
         :param media: (sppasMedia)
@@ -581,7 +593,7 @@ class sppasEAF(sppasBaseIO):
             if media.get_meta('media_source') != 'primary':
                 return
 
-        media_root = ET.SubElement(root, 'MEDIA')
+        media_root = ET.SubElement(root, 'MEDIA_DESCRIPTOR')
 
         # Write all the elements SPPAS has interpreted (required by EAF)
         media_root.set('MEDIA_URL', media.get_filename())
@@ -592,8 +604,86 @@ class sppasEAF(sppasBaseIO):
             if media.is_meta_key(key):
                 media_root.set(key, media.get_meta(key))
 
-        # In EAF, a media doesn't have an identifier.
-        header_root = root.find('HEADER')
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def _format_linked_media(root, media):
+        """ Add 'LINKED_FILE_DESCRIPTOR' into the ElementTree (if any).
+
+        :param root: (ElementTree)
+        :param media: (sppasMedia)
+
+        """
+        # do not add the media if it's a primary one
+        if media.is_meta_key('media_source'):
+            if media.get_meta('media_source') == 'primary':
+                return
+
+        media_root = ET.SubElement(root, 'LINKED_FILE_DESCRIPTOR')
+
+        # Write all the elements SPPAS has interpreted (required by EAF)
+        media_root.set('LINK_URL', media.get_filename())
+        media_root.set('MIME_TYPE', media.get_mime_type())
+
+        # other EAF optional elements
+        for key in ['RELATIVE_LINK_URL', 'TIME_ORIGIN', 'ASSOCIATED_WITH']:
+            if media.is_meta_key(key):
+                media_root.set(key, media.get_meta(key))
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def _format_property(header_root, meta_object):
+        """ Add 'PROPERTY' elements into the ElementTree (if any).
+
+        :param root: (ElementTree)
+
+        """
+        for key in meta_object.get_meta_keys():
+            if key == 'id':
+                if isinstance(meta_object, sppasMedia):
+                    sppasEAF.__add_property(header_root,
+                                            "media_id_"+meta_object.get_filename(),
+                                            meta_object.get_meta('id'))
+                elif isinstance(meta_object, sppasTier):
+                    sppasEAF.__add_property(header_root,
+                                            "tier_id_" + meta_object.get_name(),
+                                            meta_object.get_meta('id'))
+                # we can't preserve the 'id' of other objects
+            else:
+                sppasEAF.__add_property(header_root, key, meta_object.get_meta(key))
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def __add_property(header_root, name, text):
         property_root = ET.SubElement(header_root, 'PROPERTY')
-        property_root.text = media.get_meta('id')
-        property_root.set('NAME', "media_id_"+media.get_filename())
+        property_root.set('NAME', name)
+        property_root.text = text
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def _format_ctrl_vocab(root, ctrl_vocab):
+        """ Add 'CONTROLLED_VOCABULARY' elements into the ElementTree (if any).
+
+        :param root: (ElementTree)
+
+        """
+        ctrl_root = ET.SubElement(root, 'CONTROLLED_VOCABULARY')
+        ctrl_root.set('CV_ID', ctrl_vocab.get_name())
+        description = ctrl_vocab.get_description()
+        if len(description) > 0:
+            ctrl_root.set('DESCRIPTION', description)
+        if ctrl_vocab.is_meta_key('EXT_REF'):
+            ctrl_root.set('EXT_REF', ctrl_vocab.get_meta('EXT_REF'))
+
+        for tag in ctrl_vocab:
+            entry_root = ET.SubElement(ctrl_root, 'CV_ENTRY_ML')
+            entry_value_root = ET.SubElement(entry_root, 'CVE_VALUE')
+            entry_value_root.text = tag.get_content()
+            entry_descr_root = ET.SubElement(entry_root, 'DESCRIPTION')
+            entry_descr_root.text = ctrl_vocab.get_tag_description(tag)
+
+    # -----------------------------------------------------------------------
+

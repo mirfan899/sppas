@@ -42,11 +42,12 @@ from sppas.src.utils.makeunicode import sppasUnicode
 from .anndataexc import AnnDataTypeError
 from .anndataexc import CtrlVocabContainsError
 from .annlabel.tag import sppasTag
+from .metadata import sppasMetaData
 
 # ----------------------------------------------------------------------------
 
 
-class sppasCtrlVocab(object):
+class sppasCtrlVocab(sppasMetaData):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -66,6 +67,8 @@ class sppasCtrlVocab(object):
         :param description: (str)
 
         """
+        super(sppasCtrlVocab, self).__init__()
+
         # The name:
         # make unicode, strip and replace whitespace by underscore.
         su = sppasUnicode(str(name))
@@ -216,3 +219,7 @@ class sppasCtrlVocab(object):
 
     def __len__(self):
         return len(self.__entries)
+
+    def __repr__(self):
+        return "CtrlVocab: id={:s} name={:s} description={:s}" \
+               "".format(self.get_meta('id'), self.__name, self.__desc)

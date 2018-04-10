@@ -50,6 +50,7 @@ from ..aio.elan import sppasEAF
 from ..annlocation.point import sppasPoint
 from ..tier import sppasTier
 from ..media import sppasMedia
+from ..ctrlvocab import sppasCtrlVocab
 
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -171,35 +172,126 @@ class TestEAF(unittest.TestCase):
 
         root = sppasEAF._format_document()
         header_root = ET.SubElement(root, "HEADER")
-        eaf = sppasEAF()
         media = sppasMedia("filename.wav")
 
         # Format eaf: from sppasMedia() to 'MEDIA'
         sppasEAF._format_media(root, media)
+        sppasEAF._format_property(header_root, media)
 
-        # Parse the tree: from 'MEDTA' to eaf.MEDIA
-        for child in root.iter('MEDIA'):
-            eaf._parse_media_descriptor(child, header_root)
+        # Parse the tree: from 'MEDIA' to sppasMedia()
+        parsed_media = list()
+        for child in root.iter('MEDIA_DESCRIPTOR'):
+            parsed_media.append(sppasEAF._parse_media_descriptor(child, header_root))
 
-        self.assertEqual(len(eaf.get_media_list()), 1)
-        eaf_media = eaf.get_media_list()[0]
-        self.assertEqual(eaf_media, media)
-        # self.assertEqual('', eaf_media.get_meta('RELATIVE_MEDIA_URL'))
-        # self.assertEqual('', eaf_media.get_meta('TIME_ORIGIN'))
-        # self.assertEqual('', eaf_media.get_meta('EXTRACTED_FROM'))
+        self.assertEquals(1, len(parsed_media))
+        self.assertEqual(media, parsed_media[0])
+        self.assertFalse(parsed_media[0].is_meta_key('RELATIVE_MEDIA_URL'))
+        self.assertFalse(parsed_media[0].is_meta_key('TIME_ORIGIN'))
+        self.assertFalse(parsed_media[0].is_meta_key('EXTRACTED_FROM'))
+
+        root = sppasEAF._format_document()
+        header_root = ET.SubElement(root, "HEADER")
+        media.set_meta('media_source', 'secondary')
+
+        sppasEAF._format_media(root, media)
+        sppasEAF._format_property(header_root, media)
+        parsed_media = list()
+        for child in root.iter('MEDIA_DESCRIPTOR'):
+            parsed_media.append(sppasEAF._parse_media_descriptor(child, header_root))
+        self.assertEqual(0, len(parsed_media))
+
+        media.set_meta('media_source', 'primary')
+        media.set_meta('EXTRACTED_FROM', 'filename.mov')
+        sppasEAF._format_media(root, media)
+        for child in root.iter('MEDIA_DESCRIPTOR'):
+            parsed_media.append(sppasEAF._parse_media_descriptor(child, header_root))
+
+        self.assertEqual(1, len(parsed_media))
+        self.assertEqual(parsed_media[0], media)
+        self.assertFalse(parsed_media[0].is_meta_key('RELATIVE_MEDIA_URL'))
+        self.assertFalse(parsed_media[0].is_meta_key('TIME_ORIGIN'))
+        self.assertTrue(parsed_media[0].is_meta_key('EXTRACTED_FROM'))
 
     # -----------------------------------------------------------------------
 
     def test_linked_file(self):
         """ LINKED_FILE_DESCRIPTOR <-> sppasMedia(). """
-        pass
+
+        root = sppasEAF._format_document()
+        header_root = ET.SubElement(root, "HEADER")
+        media = sppasMedia("filename.wav")
+        media.set_meta('media_source', 'secondary')
+
+        # Format eaf: from sppasMedia() to 'MEDIA'
+        sppasEAF._format_linked_media(root, media)
+        sppasEAF._format_property(header_root, media)
+
+        # Parse the tree: from 'LINKED' to sppasMedia()
+        parsed_media = list()
+        for child in root.iter('LINKED_FILE_DESCRIPTOR'):
+            parsed_media.append(sppasEAF._parse_linked_file_descriptor(child, header_root))
+
+        self.assertEqual(1, len(parsed_media))
+        self.assertEqual(media, parsed_media[0])
+        self.assertFalse(parsed_media[0].is_meta_key('RELATIVE_LINK_URL'))
+        self.assertFalse(parsed_media[0].is_meta_key('TIME_ORIGIN'))
+        self.assertFalse(parsed_media[0].is_meta_key('ASSOCIATED_WITH'))
+
+        root = sppasEAF._format_document()
+        header_root = ET.SubElement(root, "HEADER")
+        media.set_meta('media_source', 'primary')
+
+        sppasEAF._format_linked_media(root, media)
+        sppasEAF._format_property(header_root, media)
+        parsed_media = list()
+        for child in root.iter('LINKED_FILE_DESCRIPTOR'):
+            parsed_media.append(sppasEAF._parse_linked_file_descriptor(child, header_root))
+        self.assertEqual(0, len(parsed_media))
+
+        media.set_meta('media_source', 'secondary')
+        media.set_meta('ASSOCIATED_WITH', 'filename.mov')
+        sppasEAF._format_linked_media(root, media)
+        sppasEAF._format_property(header_root, media)
+        for child in root.iter('LINKED_FILE_DESCRIPTOR'):
+            parsed_media.append(sppasEAF._parse_linked_file_descriptor(child, header_root))
+
+        self.assertEqual(1, len(parsed_media))
+        self.assertEqual(media, parsed_media[0])
+        self.assertFalse(parsed_media[0].is_meta_key('RELATIVE_LINK_URL'))
+        self.assertFalse(parsed_media[0].is_meta_key('TIME_ORIGIN'))
+        self.assertTrue(parsed_media[0].is_meta_key('ASSOCIATED_WITH'))
 
     # -----------------------------------------------------------------------
 
     def test_property(self):
         """ PROPERTY <-> sppasMetadata(). """
-        pass
+
+        root = sppasEAF._format_document()
+        eaf = sppasEAF()
+        eaf.set_meta('key1', 'value1')
+        eaf.set_meta('key2', 'value2')
+        sppasEAF._format_property(root, eaf)
+
+        eaf2 = sppasEAF()
+        for property_root in root.findall('PROPERTY'):
+            eaf2._parse_property(property_root)
+
+        self.assertEquals(3, len(eaf2.get_meta_keys()))
+        self.assertEquals(eaf.get_meta('key1'), eaf2.get_meta('key1'))
+        self.assertEquals(eaf.get_meta('key2'), eaf2.get_meta('key2'))
 
     # -----------------------------------------------------------------------
 
+    def test_ctrl_vocab(self):
+        """ CONTROLLED_VOCABULARY <-> sppasCtrlVocab(). """
+
+        root = sppasEAF._format_document()
+        ctrl_vocab = sppasCtrlVocab(name="c")
+
+        sppasEAF._format_ctrl_vocab(root, ctrl_vocab)
+        c = list()
+        for c_node in root.findall('CONTROLLED_VOCABULARY'):
+            c.append(sppasEAF._parse_ctrl_vocab(c_node))
+        self.assertEquals(1, len(c))
+        self.assertEquals(0, len(c[0]))
 

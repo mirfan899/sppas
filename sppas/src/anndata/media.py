@@ -35,7 +35,6 @@
 """
 import mimetypes
 
-from sppas.src.utils.fileutils import sppasGUID
 from sppas.src.utils.makeunicode import u
 
 from .metadata import sppasMetaData
