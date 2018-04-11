@@ -502,11 +502,11 @@ class TestFileFormats(unittest.TestCase):
         arff = sppasARFF()
         arff.set(self.trs)
         lines = arff._serialize_metadata()
-        self.assertEqual(len(lines.split("\n")), 4)  # 2 blank lines + id
+        nb_lines = len(lines.split("\n"))
 
         arff.set_meta("weka_instance_step", "0.04")
         lines = arff._serialize_metadata()
-        self.assertEqual(len(lines.split("\n")), 5)  # 2 blank lines + 1 meta data + id
+        self.assertEqual(len(lines.split("\n")), nb_lines+1)  # 1 more meta data
         self.assertTrue("weka_instance_step" in lines)
         self.assertTrue("0.04" in lines)
 

@@ -42,6 +42,9 @@ msgstr ""
 msgid ":ERROR 1130: "
 msgstr "{!s:s} ne fait pas parti des entrées connus du vocabulaire controllé."
 
+msgid ":ERROR 1132: "
+msgstr "Le vocabulaire contrôlé {:s} ne peut pas être associé à la tier {:s}."
+
 msgid ":ERROR 1140: "
 msgstr ""
 "Echec de l'ajout de l'annotation en fin de tier. La valeur de fin actuelle {!s:s} est supérieure à celle de l'annotation à "

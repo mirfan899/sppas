@@ -35,6 +35,7 @@
 """
 from collections import OrderedDict
 
+import sppas
 from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.utils.fileutils import sppasGUID
 
@@ -60,7 +61,7 @@ class sppasMetaData(object):
         """
         # Dictionary with key and value
         self.__metadata = OrderedDict()
-        self.__metadata["id"] = sppasGUID().get()
+        self.__metadata['id'] = sppasGUID().get()
 
     # -----------------------------------------------------------------------
 
@@ -123,6 +124,52 @@ class sppasMetaData(object):
         if key in self.__metadata:
             del self.__metadata[key]
 
+    # -----------------------------------------------------------------------
+
+    def add_license_metadata(self, idx):
+        """ Add metadata about the license applied to the object (GPLv3). """
+
+        self.set_meta('file_license_%s' % idx, 'GNU GPL V3')
+        self.set_meta('file_license_%s_url' % idx, 'https://www.gnu.org/licenses/gpl-3.0.en.html')
+
+    # -----------------------------------------------------------------------
+
+    def add_software_metadata(self):
+        """ Add metadata about SPPAS. """
+
+        self.set_meta('software_name', sppas.__name__)
+        self.set_meta('software_version', sppas.__version__)
+        self.set_meta('software_url', sppas.__url__)
+        self.set_meta('software_author', sppas.__author__)
+        self.set_meta('software_contact', sppas.__contact__)
+        self.set_meta('software_copyright', sppas.__copyright__)
+
+    # -----------------------------------------------------------------------
+
+    def add_language_metadata(self):
+        """ Add metadata about the language (und). """
+
+        self.set_meta('language_iso_code', "iso639-3")
+        self.set_meta('language_0_iso', "und")
+        self.set_meta('language_0_name', "Undetermined")
+        self.set_meta('language_0_url', "https://iso639-3.sil.org/code/und")
+
+    # -----------------------------------------------------------------------
+
+    def add_project_metadata(self):
+        """ Add metadata about the project this object is included-in. """
+
+        # annotation pro
+        self.set_meta("project_description", "")
+        self.set_meta("project_corpus_owner", "")
+        self.set_meta("project_corpus_type", "")
+        self.set_meta("project_license", "")
+        self.set_meta("project_environment", "")
+        self.set_meta("project_collection", "")
+        self.set_meta("project_title", "")
+        self.set_meta("project_noises", "")
+
+
 # ---------------------------------------------------------------------------
 
 
@@ -149,20 +196,6 @@ class sppasDefaultMeta(sppasMetaData):
 
     # -----------------------------------------------------------------------
 
-    def software_tool(self):
-        """ Add metadata related to the annotation software tool.
-        These metadata are assigned by sppasRW() when writing a file.
-
-        """
-        self.set_meta("software_name", "")
-        self.set_meta("software_version", "")
-        self.set_meta("software_url", "")
-        self.set_meta("software_author", "")
-        self.set_meta("software_contact", "")
-        self.set_meta("software_copyright", "")
-
-    # -----------------------------------------------------------------------
-
     def rw_file(self):
         """ Add metadata related to a file to read/write.
         These metadata are assigned by sppasRW() when reading and/or writing
@@ -184,21 +217,6 @@ class sppasDefaultMeta(sppasMetaData):
 
         self.set_meta("file_writer", "")
         self.set_meta("file_write_date", "")
-
-    # -----------------------------------------------------------------------
-
-    def project(self):
-        """ Add metadata related to the annotation project. """
-
-        # annotation pro
-        self.set_meta("project_description", "")
-        self.set_meta("project_corpus_owner", "")
-        self.set_meta("project_corpus_type", "")
-        self.set_meta("project_license", "")
-        self.set_meta("project_environment", "")
-        self.set_meta("project_collection", "")
-        self.set_meta("project_title", "")
-        self.set_meta("project_noises", "")
 
     # -----------------------------------------------------------------------
 
@@ -256,9 +274,6 @@ class sppasDefaultMeta(sppasMetaData):
     def tier(self):
         """ Add metadata related to a tier. """
 
-        # transcriber
-        self.set_meta("language", "")
-
         # audacity, annotation pro
         self.set_meta("tier_is_closed", "")
 
@@ -291,5 +306,5 @@ class sppasDefaultMeta(sppasMetaData):
     def generic(self):
         """ Add metadata related to any level (document, tier, annotation...). """
 
-        # transcriber, annotation pro
+        # transcriber, annotation pro, elan
         self.set_meta("language", "")

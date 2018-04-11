@@ -38,6 +38,7 @@
 from sppas.src.utils.fileutils import sppasGUID
 from sppas.src.utils.makeunicode import sppasUnicode
 
+import sppas
 from .anndataexc import AnnDataTypeError
 from .anndataexc import TrsAddError
 from .anndataexc import TrsRemoveError
@@ -99,6 +100,11 @@ class sppasTranscription(sppasMetaData):
         self._hierarchy = sppasHierarchy()
 
         self.set_name(name)
+
+        # Add metadata about SPPAS, the language and the license.
+        self.add_software_metadata()
+        self.add_language_metadata()
+        self.add_license_metadata(0)
 
     # -----------------------------------------------------------------------
     # Name

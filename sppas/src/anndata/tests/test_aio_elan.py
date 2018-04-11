@@ -141,29 +141,99 @@ class TestEAF(unittest.TestCase):
         root = sppasEAF._format_document()
         eaf = sppasEAF()
 
-        # no license
+        # override the license (content only)
+        eaf.set_meta('file_license_0', 'This is the license content of the document.')
         eaf._format_license(root)
-        self.assertFalse(eaf.is_meta_key('file_license'))
-        self.assertFalse(eaf.is_meta_key('file_license_url'))
-
-        # a license (content only)
-        eaf.set_meta('file_license', 'This is the license content of the document.')
-        eaf._format_license(root)
-        for license_root in root.findall('LICENSE'):
-            eaf._parse_license(license_root)
-        self.assertTrue(eaf.is_meta_key('file_license'))
-        self.assertFalse(eaf.is_meta_key('file_license_url'))
-        self.assertEqual('This is the license content of the document.', eaf.get_meta('file_license'))
+        for i, license_root in enumerate(root.findall('LICENSE')):
+            eaf._parse_license(license_root, i)
+        self.assertTrue(eaf.is_meta_key('file_license_0'))
+        self.assertEqual('This is the license content of the document.', eaf.get_meta('file_license_0'))
+        self.assertEqual('https://www.gnu.org/licenses/gpl-3.0.en.html', eaf.get_meta('file_license_0_url'))
 
         # a license (content + url)
-        eaf.set_meta('file_license_url', 'filename.txt')
+        eaf.set_meta('file_license_0_url', 'filename.txt')
         eaf._format_license(root)
-        for license_root in root.findall('LICENSE'):
+        for i, license_root in enumerate(root.findall('LICENSE')):
             eaf._parse_license(license_root)
-        self.assertTrue(eaf.is_meta_key('file_license'))
-        self.assertTrue(eaf.is_meta_key('file_license_url'))
-        self.assertEqual('This is the license content of the document.', eaf.get_meta('file_license'))
-        self.assertEqual('filename.txt', eaf.get_meta('file_license_url'))
+        self.assertTrue(eaf.is_meta_key('file_license_0'))
+        self.assertTrue(eaf.is_meta_key('file_license_0_url'))
+        self.assertEqual('This is the license content of the document.', eaf.get_meta('file_license_0'))
+        self.assertEqual('filename.txt', eaf.get_meta('file_license_0_url'))
+
+    # -----------------------------------------------------------------------
+
+    def test_locale(self):
+        """ LOCALE <-> root element. """
+
+        # create an element tree for EAF format
+        root = sppasEAF._format_document()
+        eaf = sppasEAF()
+
+        # no license
+        eaf._format_locales(root)
+        self.assertFalse(eaf.is_meta_key('locale_0'))
+
+        # a locale
+        eaf.set_meta('locale_0', 'en')
+        eaf._format_locales(root)
+        for i, locale_root in enumerate(root.findall('LOCALE')):
+            eaf._parse_locale(locale_root, i)
+        self.assertTrue(eaf.is_meta_key('locale_0'))
+        self.assertFalse(eaf.is_meta_key('locale_0_country'))
+        self.assertFalse(eaf.is_meta_key('locale_0_variant'))
+        self.assertEqual('en', eaf.get_meta('locale_0'))
+
+        # a license (content + url)
+        eaf.set_meta('locale_0_country', 'US')
+        eaf._format_locales(root)
+        for i, locale_root in enumerate(root.findall('LOCALE')):
+            eaf._parse_locale(locale_root)
+        self.assertTrue(eaf.is_meta_key('locale_0'))
+        self.assertTrue(eaf.is_meta_key('locale_0_country'))
+        self.assertEqual('en', eaf.get_meta('locale_0'))
+        self.assertEqual('US', eaf.get_meta('locale_0_country'))
+
+    # -----------------------------------------------------------------------
+
+    def test_language(self):
+        """ LANGUAGE <-> root element. """
+
+        # create an element tree for EAF format
+        root = sppasEAF._format_document()
+        eaf = sppasEAF()
+
+        # no language defined (sppas assign 'und')
+        eaf._format_languages(root)
+        self.assertTrue(eaf.is_meta_key('language_0_iso'))
+        self.assertTrue(eaf.is_meta_key('language_0_name'))
+        self.assertTrue(eaf.is_meta_key('language_0_url'))
+        self.assertEqual('und', eaf.get_meta('language_0_iso'))
+        self.assertEqual('Undetermined', eaf.get_meta('language_0_name'))
+        self.assertEqual('https://iso639-3.sil.org/code/und', eaf.get_meta('language_0_url'))
+
+        # a language (override the default)
+        eaf.set_meta('language_0_iso', 'eng')
+        eaf._format_languages(root)
+        for i, language_root in enumerate(root.findall('LANGUAGE')):
+            eaf._parse_language(language_root, i)
+        self.assertTrue(eaf.is_meta_key('language_0_iso'))
+        self.assertEqual('eng', eaf.get_meta('language_0_iso'))
+        self.assertEqual('Undetermined', eaf.get_meta('language_0_name'))
+        self.assertEqual('https://iso639-3.sil.org/code/und', eaf.get_meta('language_0_url'))
+
+        # a language (content + url)
+        eaf.set_meta('language_0_iso', 'fra')
+        eaf.set_meta('language_0_name', 'French')
+        eaf.set_meta('language_0_url', 'https://iso639-3.sil.org/code/fra')
+        eaf._format_languages(root)
+        for i, language_root in enumerate(root.findall('LANGUAGE')):
+            eaf._parse_language(language_root)
+        self.assertTrue(eaf.is_meta_key('language_0_iso'))
+        self.assertTrue(eaf.is_meta_key('language_0_name'))
+        self.assertTrue(eaf.is_meta_key('language_0_url'))
+        self.assertEqual('fra', eaf.get_meta('language_0_iso'))
+        self.assertEqual('French', eaf.get_meta('language_0_name'))
+        self.assertEqual('https://iso639-3.sil.org/code/fra', eaf.get_meta('language_0_url'))
 
     # -----------------------------------------------------------------------
 
@@ -276,7 +346,8 @@ class TestEAF(unittest.TestCase):
         for property_root in root.findall('PROPERTY'):
             eaf2._parse_property(property_root)
 
-        self.assertEquals(3, len(eaf2.get_meta_keys()))
+        self.assertTrue(eaf2.is_meta_key('key1'))
+        self.assertTrue(eaf2.is_meta_key('key2'))
         self.assertEquals(eaf.get_meta('key1'), eaf2.get_meta('key1'))
         self.assertEquals(eaf.get_meta('key2'), eaf2.get_meta('key2'))
 

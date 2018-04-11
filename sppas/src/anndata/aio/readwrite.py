@@ -161,9 +161,6 @@ class sppasRW(object):
                 raise
 
         try:
-            # Add metadata about SPPAS
-            sppasRW.add_sppas_metadata(trs)
-
             # Add metadata about the file
             trs.set_meta('file_reader', trs.__class__.__name__)
             trs.set_meta('file_name', os.path.basename(self.__filename))
@@ -229,9 +226,6 @@ class sppasRW(object):
         trs_rw = sppasRW.create_trs_from_extension(self.__filename)
         trs_rw.set(transcription)
 
-        # Add metadata about SPPAS
-        sppasRW.add_sppas_metadata(trs_rw)
-
         # Add metadata about the file
         trs_rw.set_meta('file_writer', trs_rw.__class__.__name__)
         trs_rw.set_meta('file_name', os.path.basename(self.__filename))
@@ -250,16 +244,3 @@ class sppasRW(object):
             raise AioEncodingError(self.__filename, str(e))
         except Exception:
             raise
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def add_sppas_metadata(trs):
-        """ Add metadata about SPPAS. """
-
-        trs.set_meta('software_name', sppas.__name__)
-        trs.set_meta('software_version', sppas.__version__)
-        trs.set_meta('software_url', sppas.__url__)
-        trs.set_meta('software_author', sppas.__author__)
-        trs.set_meta('software_contact', sppas.__contact__)
-        trs.set_meta('software_copyright', sppas.__copyright__)

@@ -284,10 +284,11 @@ class sppasTRS(sppasBaseIO):
             version_date = root.attrib['version_date']
             self.set_meta("annotator_version_date", version_date)
 
-        # Language of the annotation.
+        # Language of the annotation. saved as a language name because
+        # it's iso639-1 and SPPAS is expecting iso639-3.
         if "xml:lang" in root.attrib:
             lang = root.attrib['xml:lang']
-            self.set_meta("language", lang)
+            self.set_meta("language_name_0", lang)
 
     # -----------------------------------------------------------------------
 

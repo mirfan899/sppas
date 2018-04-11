@@ -35,6 +35,9 @@
 
 """
 import xml.etree.cElementTree as ET
+from operator import itemgetter
+from collections import OrderedDict
+import logging
 
 import sppas
 from sppas.src.resources.mapping import sppasMapping
@@ -46,6 +49,8 @@ from ..anndataexc import AioEmptyTierError
 from ..anndataexc import AioLocationTypeError
 from ..anndataexc import AioError
 from ..anndataexc import AioLocationTypeError
+from ..anndataexc import CtrlVocabSetTierError
+from ..anndataexc import CtrlVocabContainsError
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
@@ -60,6 +65,8 @@ from ..ctrlvocab import sppasCtrlVocab
 from .basetrs import sppasBaseIO
 from .aioutils import serialize_labels
 from .aioutils import format_labels
+from .aioutils import point2interval
+from .aioutils import merge_overlapping_annotations
 
 # ---------------------------------------------------------------------------
 
@@ -199,39 +206,47 @@ class sppasEAF(sppasBaseIO):
         """
         tree = ET.parse(filename)
         root = tree.getroot()
+
+        # 1. Document
         self._parse_document(root)
 
-        # License (0..*)
-        for license_root in root.findall('LICENSE'):
-            self._parse_license(license_root)
+        # 2. License (0..*)
+        for i, license_root in enumerate(root.findall('LICENSE')):
+            self._parse_license(license_root, i)
 
-        # Header (1..1)
+        # 3. Header (1..1)
         self._parse_header(root.find('HEADER'))
 
-        # Time order (1..1)
+        # 4. Time order (1..1)
         time_slots = sppasEAF._parse_time_order(root.find('TIME_ORDER'))
 
-        # Controlled vocabularies (0..*)
+        # 5. Controlled vocabularies (0..*)
         for vocabulary_root in root.findall('CONTROLLED_VOCABULARY'):
             ctrl_vocab = sppasEAF._parse_ctrl_vocab(vocabulary_root)
             if len(ctrl_vocab) > 0:
                 self.add_ctrl_vocab(ctrl_vocab)
 
-        # Linguistic type
-
-        # Locale
-
-        # Language
-
-        # Constraint
-
-        # Lexicon ref
-
-        # External ref
-
-        # Tiers (0..*)
+        # 6. Tiers (0..*)
         for tier_root in root.findall('TIER'):
             self._parse_tier(tier_root, time_slots)
+
+        # 7. Linguistic type
+        for linguistic_root in root.findall('LINGUISTIC_TYPE'):
+            self._parse_linguistic_type(linguistic_root)
+
+        # 8. Locale (0..*)
+        for i, locale_root in enumerate(root.findall('LOCALE')):
+            self._parse_locale(locale_root, i)
+
+        # 9. Language
+        for i, language_root in enumerate(root.findall('LANGUAGE')):
+            self._parse_language(language_root, i)
+
+        # 10. Constraint
+
+        # 11. Lexicon ref
+
+        # 12. External ref
 
     # -----------------------------------------------------------------------
 
@@ -252,18 +267,21 @@ class sppasEAF(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def _parse_license(self, license_root):
+    def _parse_license(self, license_root, idx=0):
         """ Get an element 'LICENSE'.
         The current version of ELAN does not yet provide a means to edit
         or view the contents of the license.
 
         :param license_root: (ET) License root.
+        :param idx: (int) Index of the license
 
         """
-        self.set_meta('file_license', license_root.text)
+        self.set_meta('file_license_%s' % idx, license_root.text)
 
         if "LICENSE_URL" in license_root.attrib:
-            self.set_meta('file_license_url', license_root.attrib['LICENSE_URL'])
+            self.set_meta('file_license_%s_url' % idx, license_root.attrib['LICENSE_URL'])
+        else:
+            self.set_meta('file_license_%s_url' % idx, "")
 
     # -----------------------------------------------------------------------
 
@@ -374,6 +392,49 @@ class sppasEAF(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
+    def _parse_locale(self, locale_root, idx=0):
+        """ Get an element 'LOCALE'.
+
+        :param locale_root: (ET) Locale root.
+        :param idx: (int) Index of the locale
+
+        """
+        self.set_meta('locale_%s' % idx, locale_root.attrib['LANGUAGE_CODE'])
+
+        if "COUNTRY_CODE" in locale_root.attrib:
+            self.set_meta('locale_%s_country' % idx, locale_root.attrib['COUNTRY_CODE'])
+        if "VARIANT" in locale_root.attrib:
+            self.set_meta('locale_%s_variant' % idx, locale_root.attrib['VARIANT'])
+
+    # -----------------------------------------------------------------------
+
+    def _parse_language(self, language_root, idx=0):
+        """ Get an element 'LANGUAGE'.
+
+        Extracted information are:
+            - language iso639-3 code,
+            - language name,
+            - language url, except if cdb.iso.org which is wrong (changed to the SIL one).
+
+        :param language_root: (ET) Language element.
+        :param idx: (int) Index of the language
+
+        """
+        iso = language_root.attrib['LANG_ID']
+        self.set_meta('language_iso_%s' % idx, iso)
+
+        if "LANG_LABEL" in language_root.attrib:
+            self.set_meta('language_name_%s' % idx, language_root.attrib['LANG_LABEL'])
+
+        url = 'http://iso639-3.sil.org/code/'+iso
+        if "LANG_DEF" in language_root.attrib:
+            url = language_root.attrib['LANG_DEF']
+            if 'cdb.iso.org' in url:
+                url = 'http://iso639-3.sil.org/code/'+iso
+        self.set_meta('language_url_%s' % idx, url)
+
+    # -----------------------------------------------------------------------
+
     @staticmethod
     def _parse_time_order(time_order_root):
         """ Get the elements 'TIME_ORDER'.
@@ -448,6 +509,46 @@ class sppasEAF(sppasBaseIO):
             # todo: open and parse the ctrl vocab external file.
 
         return ctrl_vocab
+
+    # -----------------------------------------------------------------
+
+    def _parse_linguistic_type(self, linguistic_root):
+        """ Get the elements 'LINGUISTIC_TYPE'.
+
+        This is a collection of attributes and constraints for TIER objects.
+
+        :param linguistic_root: (ET) Tier root.
+
+        """
+        linguistic_type = linguistic_root.attrib['LINGUISTIC_TYPE_ID']
+
+        # which tier is using this linguistic type?
+        found = False
+        for tier in self:
+            if linguistic_type == tier.get_meta('LINGUISTIC_TYPE_REF'):
+
+                # Add linguistic type info in the metadata of the tier
+                for key in ['CONSTRAINTS', 'GRAPHIC_REFERENCES', 'TIME_ALIGNABLE']:
+                    if key in linguistic_root.attrib:
+                        tier.set_meta(key, linguistic_root.attrib[key])
+
+                # Associate tier with a controlled vocabulary
+                if 'CONTROLLED_VOCABULARY_REF' in linguistic_root.attrib:
+                    ctrl_vocab_name = linguistic_root.attrib['CONTROLLED_VOCABULARY_REF']
+                    ctrl_vocab = self.get_ctrl_vocab_from_name(ctrl_vocab_name)
+                    if ctrl_vocab is not None:
+                        try:
+                            tier.set_ctrl_vocab(ctrl_vocab)
+                        except CtrlVocabContainsError:
+                            # It's a bug in Elan: accepts non-controlled text in controlled tier
+                            tier.set_meta("controlled_vocabulary", ctrl_vocab.get_meta('id'))
+                            logging.info(str(CtrlVocabSetTierError(ctrl_vocab.get_name(), tier.get_name())))
+
+                found = True
+
+        # what to do with an unused linguistic type?
+        if not found:
+            pass
 
     # -----------------------------------------------------------------------
 
@@ -531,14 +632,40 @@ class sppasEAF(sppasBaseIO):
         :param filename: output filename.
 
         """
+        # 1. Document
         root = sppasEAF._format_document()
+        self.unit = 0.001
 
+        # 2. License
         self._format_license(root)
 
-        header_root = ET.SubElement(root, 'HEADER')
+        # 3. Header: media, linked media, property
+        self._format_header(root)
 
-        for media in self.get_media_list():
-            self._format_media(root, media)
+        # 4. Time Order
+        time_slots = self.__build_time_slots()
+        time_order_root = ET.SubElement(root, 'TIME_ORDER')
+        #self._format_time_slots(time_order_root, time_slots)
+
+        # 5. Tier
+
+        # 6. Linguistic Type
+
+        # 7. Locale
+        self._format_locales(root)
+
+        # 8. Language
+        self._format_languages(root)
+
+        # 9. Constraint
+
+        # 10. Controlled vocabulary
+        for ctrl_vocab in self.get_ctrl_vocab_list():
+            sppasEAF._format_ctrl_vocab(root, ctrl_vocab)
+
+        # 11. Lexicon ref
+
+        # 12. External ref
 
     # -----------------------------------------------------------------------
 
@@ -569,14 +696,67 @@ class sppasEAF(sppasBaseIO):
         :returns: (ET) License root.
 
         """
-        if self.is_meta_key('file_license') or self.is_meta_key('file_license_url'):
+        # we have to restore the licenses in their original order.
+        licenses = dict()
+        for key in self.get_meta_keys():
+            if 'file_license_' in key:
+                if 'url' not in key:
+                    url = ""
+                    for url_key in self.get_meta_keys():
+                        if url_key == key+"_url":
+                            url = self.get_meta(url_key)
+                    licenses[key] = (self.get_meta(key), url)
 
-            license_root = ET.SubElement(root, "LICENSE")
+        for key in sorted(licenses):
+                license_root = ET.SubElement(root, "LICENSE")
+                license_root.text = licenses[key][0]
+                license_root.set('LICENSE_URL', licenses[key][1])
 
-            if self.is_meta_key('file_license'):
-                license_root.text = self.get_meta('file_license')
-            if self.is_meta_key('file_license_url'):
-                license_root.set('LICENSE_URL', self.get_meta('file_license_url'))
+    # -----------------------------------------------------------------------
+
+    def _format_languages(self, root):
+        """ Add the elements 'LANGUAGE' into the ElementTree (if any).
+
+        :param root: (ElementTree)
+        :returns: (ET) License root.
+
+        """
+        # we have to restore the languages in their original order.
+        languages = dict()
+        for key in self.get_meta_keys():
+            if key.startswith('language_') and key.endswith('_iso'):
+                name = None
+                url = None
+                for key2 in self.get_meta_keys():
+                    if key2 == key.replace('iso', 'url'):
+                        url = self.get_meta(key2)
+                    if key2 == key.replace('iso', 'name'):
+                        name = self.get_meta(key2)
+                languages[key] = (self.get_meta(key), name, url)
+
+        for key in sorted(languages):
+            language_root = ET.SubElement(root, "LANGUAGE")
+            language_root.set('LANG_ID', languages[key][0])
+            if languages[key][1] is not None:
+                language_root.set('LANG_LABEL', languages[key][1])
+            if languages[key][2] is not None:
+                language_root.set('LANG_DEF', languages[key][2])
+
+    # -----------------------------------------------------------------------
+
+    def _format_header(self, root):
+        """ Add 'HEADER' into the ElementTree. """
+
+        header_root = ET.SubElement(root, 'HEADER')
+        header_root.set('TIME_UNITS', 'milliseconds')
+
+        for media in self.get_media_list():
+            self._format_media(header_root, media)
+
+        for media in self.get_media_list():
+            self._format_linked_media(header_root, media)
+
+        sppasEAF._format_property(header_root, self)
 
     # -----------------------------------------------------------------------
 
@@ -663,6 +843,37 @@ class sppasEAF(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
+    def _format_locales(self, root):
+        """ Add the elements 'LOCALE' into the ElementTree (if any).
+
+        :param root: (ElementTree)
+        :returns: (ET) Locale root.
+
+        """
+        # we have to restore the locales in their original order.
+        locales = dict()
+        for key in self.get_meta_keys():
+            if 'locale_' in key:
+                if 'country' not in key and 'variant' not in key:
+                    country = None
+                    variant = None
+                    for key2 in self.get_meta_keys():
+                        if key2 == key+"_country":
+                            country = self.get_meta(key2)
+                        if key2 == key+"_variant":
+                            variant = self.get_meta(key2)
+                    locales[key] = (self.get_meta(key), country, variant)
+
+        for key in sorted(locales):
+            locale_root = ET.SubElement(root, "LOCALE")
+            locale_root.set('LANGUAGE_CODE', locales[key][0])
+            if locales[key][1] is not None:
+                locale_root.set('COUNTRY_CODE', locales[key][1])
+            if locales[key][2] is not None:
+                locale_root.set('VARIANT', locales[key][2])
+
+    # -----------------------------------------------------------------------
+
     @staticmethod
     def _format_ctrl_vocab(root, ctrl_vocab):
         """ Add 'CONTROLLED_VOCABULARY' elements into the ElementTree (if any).
@@ -686,4 +897,39 @@ class sppasEAF(sppasBaseIO):
             entry_descr_root.text = ctrl_vocab.get_tag_description(tag)
 
     # -----------------------------------------------------------------------
+    # PRIVATE
+    # -----------------------------------------------------------------
 
+    def __build_time_slots(self):
+
+        time_slots = OrderedDict()
+        self.changed_tiers = dict()
+
+        # build a list of all (begin/end) time_slots associated to the annotation
+        time_slot_keys = list()
+        for tier in self:
+            init_tier = tier  # check if tier change
+
+            # ELAN didn't use point tier => convert to interval
+            if tier.is_point():
+                tier = point2interval(tier, radius=0.02)
+            # Avoid overlapping => split annotations and merge labels on common parts
+            tier = merge_overlapping_annotations(tier)
+
+            # record the changed tiers
+            if tier is not init_tier:
+                self.changed_tiers[init_tier] = tier
+
+            for annotation in tier:
+                begin = round(annotation.get_lowest_localization().get_midpoint(), 4)
+                end = round(annotation.get_highest_localization().get_midpoint()(), 4)
+
+                time_slot_keys.append((begin, annotation))
+                time_slot_keys.append((end, annotation))
+
+        # sort by time values and assign the 'ts<num>' id
+        i = 0
+        for key in sorted(time_slot_keys, key=itemgetter(0)):
+            i += 1
+            ts = 'ts%s' % i
+            time_slots[key] = ts

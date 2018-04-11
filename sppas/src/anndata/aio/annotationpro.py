@@ -179,6 +179,7 @@ class sppasANTX(sppasBaseIO):
         self._map_meta.add('IsSelected', 'tier_is_selected')
         self._map_meta.add('IsClosed', 'tier_is_closed')
         self._map_meta.add('Height', 'tier_height')
+        self._map_meta.add('Language', 'language_name_0')
 
     # -----------------------------------------------------------------------
 
@@ -327,6 +328,7 @@ class sppasANTX(sppasBaseIO):
     def elt_to_meta(self, root, meta_object, uri, exclude_list=[]):
         """ Add nodes of root in meta_object. """
 
+        self._map_meta.set_reverse(False)
         for node in root:
             if node.text is not None:
                 key = node.tag.replace(uri, '')
@@ -516,6 +518,7 @@ class sppasANTX(sppasBaseIO):
 
         segment_root = ET.SubElement(root, 'Segment')
         is_point = tier.is_point()
+        self._map_meta.set_reverse(True)
 
         # Write all the elements SPPAS has interpreted
         child_id = ET.SubElement(segment_root, 'Id')            # Id
@@ -555,13 +558,18 @@ class sppasANTX(sppasBaseIO):
 
         # Segment optional elements
 
-        elt_opt_segment = {'Feature': None, 'Language': None, 'Group': None, 'Name': None,
+        elt_opt_segment = {'Feature': None, 'Group': None, 'Name': None,
                            'Parameter1': None, 'Parameter2': None, 'Parameter3': None,
                            'IsMarker': "false", 'Marker': None, 'RScript': None}
 
+        # in SPPAS, the language can be defined at any level (trs, tier, annotation).
+        meta_key_language = self._map_meta.map_entry('Language')
+        elt_opt_segment['Language'] = tier.get_meta(meta_key_language, self.get_meta(meta_key_language, None))
+
         for key in elt_opt_segment:
             child = ET.SubElement(segment_root, key)
-            child.text = ann.get_meta(key, elt_opt_segment[key])
+            meta_key = self._map_meta.map_entry(key)
+            child.text = ann.get_meta(meta_key, elt_opt_segment[key])
 
     # -----------------------------------------------------------------------
 

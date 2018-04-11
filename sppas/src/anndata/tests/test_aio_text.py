@@ -201,17 +201,16 @@ class TestBaseText(unittest.TestCase):
         ctm = sppasRawText()
         line = ";; this is a simple comment."
         sppasBaseText._parse_comment(line, ctm)
-        self.assertEqual(len(ctm.get_meta_keys()), 1)  # id
 
         line = ";; meta_key=meta_value"
         sppasBaseText._parse_comment(line, ctm)
-        self.assertEqual(len(ctm.get_meta_keys()), 2)
-        self.assertEqual(ctm.get_meta("meta_key"), "meta_value")
+        self.assertTrue(ctm.is_meta_key("meta_key"))
+        self.assertEqual("meta_value", ctm.get_meta("meta_key"))
 
         line = ";; \t meta key whitespace   =   meta value\t whitespace   "
         sppasBaseText._parse_comment(line, ctm)
-        self.assertEqual(len(ctm.get_meta_keys()), 3)
-        self.assertEqual(ctm.get_meta("meta key whitespace"), "meta value whitespace")
+        self.assertTrue(ctm.is_meta_key("meta key whitespace"))
+        self.assertEqual("meta value whitespace", ctm.get_meta("meta key whitespace"))
 
     # -----------------------------------------------------------------
 
@@ -220,12 +219,12 @@ class TestBaseText(unittest.TestCase):
 
         ctm = sppasRawText()
         lines = sppasBaseText.serialize_header("sample.ctm", ctm)
-        self.assertEqual(len(lines.split('\n')), 16)
+        nb_lines = len(lines.split('\n'))
 
         ctm = sppasRawText()
         ctm.set_meta("meta_key", "meta_value")
         lines = sppasBaseText.serialize_header("sample.ctm", ctm)
-        self.assertEqual(len(lines.split('\n')), 17)
+        self.assertEqual(nb_lines+1, len(lines.split('\n')))
 
     # -----------------------------------------------------------------
 
@@ -241,10 +240,6 @@ class TestBaseText(unittest.TestCase):
 
     def test_serialize_metadata_private(self):
         """ Serialize the metadata of an object in a multi-lines comment. """
-
-        ctm = sppasRawText()
-        line = sppasBaseText.serialize_metadata(ctm)
-        self.assertEqual(len(line.split("\n")), 2)  # id
 
         ctm = sppasRawText()
         ctm.set_meta("meta_key", "meta_value")

@@ -45,6 +45,7 @@ ANN_DATA_NEG_VALUE_ERROR = ":ERROR 1110: "
 ANN_DATA_INDEX_ERROR = ":ERROR 1200: "
 INTERVAL_BOUNDS_ERROR = ":ERROR 1120: "
 CTRL_VOCAB_CONTAINS_ERROR = ":ERROR 1130: "
+CTRL_VOCAB_SET_TIER_ERROR = ":ERROR 1132: "
 TIER_APPEND_ERROR = ":ERROR 1140: "
 TIER_ADD_ERROR = ":ERROR 1142: "
 TIER_HIERARCHY_ERROR = ":ERROR 1144: "
@@ -186,6 +187,21 @@ class CtrlVocabContainsError(ValueError):
     def __init__(self, tag):
         self.parameter = CTRL_VOCAB_CONTAINS_ERROR + \
                          (t.gettext(CTRL_VOCAB_CONTAINS_ERROR)).format(tag)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class CtrlVocabSetTierError(ValueError):
+    """ :ERROR 1132: CTRL_VOCAB_SET_TIER_ERROR
+    The controlled vocabulary {:s} can't be associated to the tier {:s}.
+
+    """
+    def __init__(self, vocab_name, tier_name):
+        self.parameter = CTRL_VOCAB_SET_TIER_ERROR + \
+                         (t.gettext(CTRL_VOCAB_SET_TIER_ERROR)).format(vocab_name, tier_name)
 
     def __str__(self):
         return repr(self.parameter)

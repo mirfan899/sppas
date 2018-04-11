@@ -41,6 +41,9 @@ msgstr "The begin must be strictly lesser than the end in an interval. Got: [{!s
 msgid ":ERROR 1130: "
 msgstr "{!s:s} is not included in the controlled vocabulary."
 
+msgid ":ERROR 1132: "
+msgstr "The controlled vocabulary {:s} can't be associated to the tier {:s}."
+
 msgid ":ERROR 1140: "
 msgstr "Can't append annotation. Current end {!s:s} is highest than the given one {!s:s}."
 
