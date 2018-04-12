@@ -47,11 +47,16 @@ import xml.etree.cElementTree as ET
 import sppas
 from sppas.src.utils.datatype import sppasTime
 from ..aio.elan import sppasEAF
+from ..annlocation.location import sppasLocation
+from ..annlocation.interval import sppasInterval
 from ..annlocation.point import sppasPoint
+from ..annlabel.label import sppasLabel
+from ..annlabel.tag import sppasTag
 from ..tier import sppasTier
+from ..annotation import sppasAnnotation
 from ..media import sppasMedia
 from ..ctrlvocab import sppasCtrlVocab
-
+from ..aio.aioutils import format_labels
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
@@ -366,3 +371,281 @@ class TestEAF(unittest.TestCase):
         self.assertEquals(1, len(c))
         self.assertEquals(0, len(c[0]))
 
+    # -----------------------------------------------------------------------
+
+    def test_parse_alignable_tier(self):
+        """ TIER <-> sppasTier(). """
+
+        # two aligned annotations in the tier
+        tier_xml = '<TIER TIER_ID="test" LINGUISTIC_TYPE_REF="utterance" DEFAULT_LOCALE="en">\n'\
+                   '  <ANNOTATION>\n'\
+                   '    <ALIGNABLE_ANNOTATION ANNOTATION_ID="a1" TIME_SLOT_REF1="ts2" TIME_SLOT_REF2="ts5">\n'\
+                   '      <ANNOTATION_VALUE>label</ANNOTATION_VALUE>\n'\
+                   '    </ALIGNABLE_ANNOTATION>\n'\
+                   ' </ANNOTATION>\n' \
+                   ' <ANNOTATION>\n' \
+                   '      <ALIGNABLE_ANNOTATION ANNOTATION_ID="a2" TIME_SLOT_REF1="ts22" TIME_SLOT_REF2="ts24">\n' \
+                   '          <ANNOTATION_VALUE />\n' \
+                   '     </ALIGNABLE_ANNOTATION>\n' \
+                   '  </ANNOTATION>\n' \
+                   '</TIER>'
+        time_slots = dict()
+        time_slots['ts2'] = 0
+        time_slots['ts5'] = 1000
+        time_slots['ts22'] = 2000
+        time_slots['ts24'] = 3567
+
+        tree = ET.ElementTree(ET.fromstring(tier_xml))
+        tier_root = tree.getroot()
+        eaf = sppasEAF()
+        tier = eaf.create_tier('test')
+        eaf._parse_alignable_tier(tier_root, tier, time_slots)
+        self.assertEqual(2, len(tier))
+        self.assertEqual(format_labels('label'), tier[0].get_labels())
+        self.assertEqual(sppasPoint(0.), tier[0].get_lowest_localization())
+        self.assertEqual(sppasPoint(1.), tier[0].get_highest_localization())
+        self.assertEqual('a1', tier[0].get_meta('id'))
+        self.assertEqual(format_labels(''), tier[1].get_labels())
+        self.assertEqual(sppasPoint(2.), tier[1].get_lowest_localization())
+        self.assertEqual(sppasPoint(3.567), tier[1].get_highest_localization())
+        self.assertEqual('a2', tier[1].get_meta('id'))
+
+        # two aligned annotations in the tier + 1 non-aligned
+        tier_xml = '<TIER TIER_ID="test" LINGUISTIC_TYPE_REF="utterance" DEFAULT_LOCALE="en">\n'\
+                   ' <ANNOTATION>\n'\
+                   '    <ALIGNABLE_ANNOTATION ANNOTATION_ID="a1" TIME_SLOT_REF1="ts2" TIME_SLOT_REF2="ts5">\n'\
+                   '      <ANNOTATION_VALUE>label1</ANNOTATION_VALUE>\n'\
+                   '    </ALIGNABLE_ANNOTATION>\n'\
+                   ' </ANNOTATION>\n' \
+                   ' <ANNOTATION>\n' \
+                   '      <ALIGNABLE_ANNOTATION ANNOTATION_ID="a2" TIME_SLOT_REF1="ts5" TIME_SLOT_REF2="ts6">\n' \
+                   '          <ANNOTATION_VALUE>label2</ANNOTATION_VALUE>\n'\
+                   '     </ALIGNABLE_ANNOTATION>\n' \
+                   '  </ANNOTATION>\n' \
+                   ' <ANNOTATION>\n' \
+                   '      <ALIGNABLE_ANNOTATION ANNOTATION_ID="a3" TIME_SLOT_REF1="ts22" TIME_SLOT_REF2="ts24">\n' \
+                   '          <ANNOTATION_VALUE />\n' \
+                   '     </ALIGNABLE_ANNOTATION>\n' \
+                   '  </ANNOTATION>\n' \
+                   '</TIER>'
+        time_slots = dict()
+        time_slots['ts2'] = 0
+        time_slots['ts6'] = 1000
+        time_slots['ts22'] = 2000
+        time_slots['ts24'] = 3567
+
+        # we'll have only 2 annotations because ts5 is omitted in the time_slots
+        tree = ET.ElementTree(ET.fromstring(tier_xml))
+        tier_root = tree.getroot()
+        eaf = sppasEAF()
+        tier = eaf.create_tier('test')
+        eaf._parse_alignable_tier(tier_root, tier, time_slots)
+        self.assertEqual(2, len(tier))
+        self.assertEqual(format_labels('label1\nlabel2'), tier[0].get_labels())
+        self.assertEqual(sppasPoint(0.), tier[0].get_lowest_localization())
+        self.assertEqual(sppasPoint(1.), tier[0].get_highest_localization())
+        self.assertEqual('a2', tier[0].get_meta('id'))
+        self.assertEqual(format_labels(''), tier[1].get_labels())
+        self.assertEqual(sppasPoint(2.), tier[1].get_lowest_localization())
+        self.assertEqual(sppasPoint(3.567), tier[1].get_highest_localization())
+        self.assertEqual('a3', tier[1].get_meta('id'))
+
+    # -----------------------------------------------------------------------
+
+    def test_create_alignable_annotation_element(self):
+
+        # An annotation without label
+        tier_xml = '<TIER TIER_ID="test"></TIER>'
+        tree = ET.ElementTree(ET.fromstring(tier_xml))
+        tier_root = tree.getroot()
+        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
+        a1.set_meta('id', "a1")
+        created_anns = sppasEAF._create_alignable_annotation_element(a1, tier_root)
+        self.assertEqual(1, len(created_anns))
+        self.assertEqual('', created_anns[0].text)
+        self.assertEqual("1.0", created_anns[0].attrib['TIME_SLOT_REF1'])
+        self.assertEqual("3.5", created_anns[0].attrib['TIME_SLOT_REF2'])
+        self.assertEqual("a1", created_anns[0].attrib['ANNOTATION_ID'])
+
+        # An annotation with one label
+        tier_xml = '<TIER TIER_ID="test"></TIER>'
+        tree = ET.ElementTree(ET.fromstring(tier_xml))
+        tier_root = tree.getroot()
+        a2 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))),
+                             sppasLabel(sppasTag("toto")))
+        a2.set_meta('id', "a2")
+        created_anns = sppasEAF._create_alignable_annotation_element(a2, tier_root)
+        self.assertEqual(1, len(created_anns))
+        self.assertEqual('toto', created_anns[0].text)
+        self.assertEqual("1.0", created_anns[0].attrib['TIME_SLOT_REF1'])
+        self.assertEqual("3.5", created_anns[0].attrib['TIME_SLOT_REF2'])
+        self.assertEqual("a2", created_anns[0].attrib['ANNOTATION_ID'])
+
+        # An annotation with two labels
+        tier_xml = '<TIER TIER_ID="test"></TIER>'
+        tree = ET.ElementTree(ET.fromstring(tier_xml))
+        tier_root = tree.getroot()
+        a3 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))),
+                             [sppasLabel(sppasTag("toto1")),
+                             sppasLabel(sppasTag("toto2"))])
+        a3.set_meta('id', "a3")
+        created_anns = sppasEAF._create_alignable_annotation_element(a3, tier_root)
+        self.assertEqual(2, len(created_anns))
+        self.assertEqual('toto1', created_anns[0].text)
+        self.assertEqual("1.0", created_anns[0].attrib['TIME_SLOT_REF1'])
+        self.assertEqual("1.0_none_1", created_anns[0].attrib['TIME_SLOT_REF2'])
+        self.assertEqual("a3", created_anns[0].attrib['ANNOTATION_ID'])
+        self.assertEqual('toto2', created_anns[1].text)
+        self.assertEqual("1.0_none_1", created_anns[1].attrib['TIME_SLOT_REF1'])
+        self.assertEqual("3.5", created_anns[1].attrib['TIME_SLOT_REF2'])
+        self.assertEqual("a3_2", created_anns[1].attrib['ANNOTATION_ID'])
+
+        # An annotation with 3 labels
+        tier_xml = '<TIER TIER_ID="test"></TIER>'
+        tree = ET.ElementTree(ET.fromstring(tier_xml))
+        tier_root = tree.getroot()
+        a3 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))),
+                             [sppasLabel(sppasTag("toto1")),
+                              sppasLabel(sppasTag("toto2")),
+                              sppasLabel(sppasTag("toto3"))])
+        a3.set_meta('id', "a3")
+        created_anns = sppasEAF._create_alignable_annotation_element(a3, tier_root)
+        self.assertEqual(3, len(created_anns))
+        self.assertEqual('toto1', created_anns[0].text)
+        self.assertEqual("1.0", created_anns[0].attrib['TIME_SLOT_REF1'])
+        self.assertEqual("1.0_none_1", created_anns[0].attrib['TIME_SLOT_REF2'])
+        self.assertEqual("a3", created_anns[0].attrib['ANNOTATION_ID'])
+        self.assertEqual('toto2', created_anns[1].text)
+        self.assertEqual("1.0_none_1", created_anns[1].attrib['TIME_SLOT_REF1'])
+        self.assertEqual("1.0_none_2", created_anns[1].attrib['TIME_SLOT_REF2'])
+        self.assertEqual("a3_2", created_anns[1].attrib['ANNOTATION_ID'])
+        self.assertEqual('toto3', created_anns[2].text)
+        self.assertEqual("1.0_none_2", created_anns[2].attrib['TIME_SLOT_REF1'])
+        self.assertEqual("3.5", created_anns[2].attrib['TIME_SLOT_REF2'])
+        self.assertEqual("a3_3", created_anns[2].attrib['ANNOTATION_ID'])
+
+    # -----------------------------------------------------------------------
+
+    def test_format_alignable_annotations(self):
+        """ (0..*) ANNOTATION <-> sppasAnnotation (0..*). """
+
+        tier_xml = '<TIER TIER_ID="test"></TIER>'
+        tree = ET.ElementTree(ET.fromstring(tier_xml))
+        tier_root = tree.getroot()
+        tier = sppasTier('Test')
+        a1 = tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
+        a1.set_meta('id', "a1")
+        a2 = tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(3.5), sppasPoint(5.))),
+                                    sppasLabel(sppasTag("toto_a2")))
+        a2.set_meta('id', "a2")
+        a3 = tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(6.), sppasPoint(6.5))),
+                                    [sppasLabel(sppasTag("toto1_a3")),
+                                     sppasLabel(sppasTag("toto2_a3"))])
+        a3.set_meta('id', "a3")
+        time_values = list()
+        sppasEAF._format_alignable_annotations(tier_root, tier, time_values)
+
+        created = dict()
+        for ann_root in tier_root.findall('ANNOTATION'):
+            align_ann_root = ann_root.find('ALIGNABLE_ANNOTATION')
+
+            # get the time values we previously assigned.
+            begin = align_ann_root.attrib["TIME_SLOT_REF1"]
+            end = align_ann_root.attrib["TIME_SLOT_REF2"]
+            ann_id = align_ann_root.attrib["ANNOTATION_ID"]
+            created[ann_id] = (begin, end)
+
+        self.assertEqual(4, len(created))
+        self.assertEqual(("1.0", "3.5"), created["a1"])
+        self.assertEqual(("3.5", "5.0"), created["a2"])
+        self.assertEqual(("6.0", "6.0_none_1"), created["a3"])
+        self.assertEqual(("6.0_none_1", "6.5"), created["a3_2"])
+
+        self.assertEqual(6, len(time_values))
+        self.assertTrue(("1.0", tier) in time_values)
+        self.assertTrue(("3.5", tier) in time_values)
+        self.assertTrue(("5.0", tier) in time_values)
+        self.assertTrue(("6.0", tier) in time_values)
+        self.assertTrue(("6.0_none_1", tier) in time_values)
+        self.assertTrue(("6.5", tier) in time_values)
+
+        time_slots = sppasEAF._fix_time_slots(time_values)
+        self.assertEqual("ts1", time_slots[("1.0", tier)])
+        self.assertEqual("ts2", time_slots[("3.5", tier)])
+        self.assertEqual("ts3", time_slots[("5.0", tier)])
+        self.assertEqual("ts4", time_slots[("6.0", tier)])
+        self.assertEqual("ts5", time_slots[("6.0_none_1", tier)])
+        self.assertEqual("ts6", time_slots[("6.5", tier)])
+
+        sppasEAF._re_format_alignable_annotations(tier_root, tier, time_slots)
+
+        created = dict()
+        for ann_root in tier_root.findall('ANNOTATION'):
+            align_ann_root = ann_root.find('ALIGNABLE_ANNOTATION')
+
+            # get the time values we previously assigned.
+            begin = align_ann_root.attrib["TIME_SLOT_REF1"]
+            end = align_ann_root.attrib["TIME_SLOT_REF2"]
+            ann_id = align_ann_root.attrib["ANNOTATION_ID"]
+            created[ann_id] = (begin, end)
+
+        self.assertEqual(4, len(created))
+        self.assertEqual(("ts1", "ts2"), created["a1"])
+        self.assertEqual(("ts2", "ts3"), created["a2"])
+        self.assertEqual(("ts4", "ts5"), created["a3"])
+        self.assertEqual(("ts5", "ts6"), created["a3_2"])
+
+    # -----------------------------------------------------------------------
+
+    def test_format_alignable_tiers(self):
+
+        # Create two tier and generate the Elan element tree.
+        eaf = sppasEAF()
+        tier1 = eaf.create_tier('Test1')
+        a1 = tier1.create_annotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
+        a1.set_meta('id', "a1")
+        a2 = tier1.create_annotation(sppasLocation(sppasInterval(sppasPoint(3.5), sppasPoint(5.))),
+                                     sppasLabel(sppasTag("toto_a2")))
+        a2.set_meta('id', "a2")
+        a3 = tier1.create_annotation(sppasLocation(sppasInterval(sppasPoint(6.), sppasPoint(6.5))),
+                                     [sppasLabel(sppasTag("toto1_a3")),
+                                      sppasLabel(sppasTag("toto2_a3"))])
+        a3.set_meta('id', "a3")
+
+        tier2 = eaf.create_tier('Test2')
+        a4 = tier2.create_annotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
+        a4.set_meta('id', "a4")
+        a5 = tier2.create_annotation(sppasLocation(sppasInterval(sppasPoint(3.5), sppasPoint(5.))),
+                                     sppasLabel(sppasTag("toto_a2")))
+        a5.set_meta('id', "a5")
+        a6 = tier2.create_annotation(sppasLocation(sppasInterval(sppasPoint(6.), sppasPoint(7.))),
+                                     [sppasLabel(sppasTag("toto1_a3")),
+                                      sppasLabel(sppasTag("toto2_a3"))])
+        a6.set_meta('id', "a6")
+
+        # Create the tiers (not filled)
+        root = sppasEAF._format_document()
+        eaf._format_tier_root(root)
+        # Fill with annotations
+        eaf._format_alignable_tiers(root)
+
+        created = dict()
+        for tier_root in root.findall('TIER'):
+            for ann_root in tier_root.findall('ANNOTATION'):
+                align_ann_root = ann_root.find('ALIGNABLE_ANNOTATION')
+
+                # get the time values we previously assigned.
+                begin = align_ann_root.attrib["TIME_SLOT_REF1"]
+                end = align_ann_root.attrib["TIME_SLOT_REF2"]
+                ann_id = align_ann_root.attrib["ANNOTATION_ID"]
+                created[ann_id] = (begin, end)
+
+        self.assertEqual(8, len(created))
+        self.assertEqual(("ts1", "ts3"), created["a1"])
+        self.assertEqual(("ts3", "ts5"), created["a2"])
+        self.assertEqual(("ts7", "ts9"), created["a3"])
+        self.assertEqual(("ts9", "ts11"), created["a3_2"])
+        self.assertEqual(("ts2", "ts4"), created["a4"])
+        self.assertEqual(("ts4", "ts6"), created["a5"])
+        self.assertEqual(("ts8", "ts10"), created["a6"])
+        self.assertEqual(("ts10", "ts12"), created["a6_2"])

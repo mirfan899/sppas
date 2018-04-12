@@ -511,11 +511,13 @@ def merge_overlapping_annotations(tier):
 def point2interval(tier, radius=0.001):
     """ Convert a PointTier into an IntervalTier.
 
-    Ensure the radius to be always >= 1 millisecond and the newly created
+    - Ensure the radius to be always >= 1 millisecond and the newly created
     tier won't contain overlapped intervals.
-
-    Do not convert alternatives localizations.
-    Do not share the hierarchy.
+    - Do not convert alternatives localizations.
+    - Do not share the hierarchy.
+    - New tier share the original tier's metadata, except that its 'id' is different.
+    - New annotations share the original annotation's metadata, except that
+    their 'id' is different.
 
     :param tier: (Tier)
     :param radius: (float) the radius to use for all intervals

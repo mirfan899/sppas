@@ -477,9 +477,9 @@ class AioFormatError(IOError):
 
     """
 
-    def __init__(self, number):
+    def __init__(self, line):
         self.parameter = AIO_FORMAT_ERROR + \
-                         (t.gettext(AIO_FORMAT_ERROR)).format(number)
+                         (t.gettext(AIO_FORMAT_ERROR)).format(line)
 
     def __str__(self):
         return repr(self.parameter)

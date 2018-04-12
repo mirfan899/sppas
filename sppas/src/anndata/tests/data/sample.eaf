@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ANNOTATION_DOCUMENT xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.mpi.nl/tools/elan/EAFv2.4.xsd" DATE="2008-09-01T21:55:03+10:00" AUTHOR="" VERSION="2.4" FORMAT="2.4">
+<ANNOTATION_DOCUMENT AUTHOR="" DATE="2018-04-12T17:02:01+01:00" FORMAT="3.0" VERSION="3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.mpi.nl/tools/elan/EAFv3.0.xsd">
     <HEADER MEDIA_FILE="" TIME_UNITS="milliseconds">
         <MEDIA_DESCRIPTOR MEDIA_URL="file:///home/steve/src/elan/elan-example1.mpg" MIME_TYPE="video/mpeg"/>
-        <MEDIA_DESCRIPTOR MEDIA_URL="file:///home/steve/src/elan/elan-example1.wav" MIME_TYPE="audio/x-wav" EXTRACTED_FROM="file:///home/steve/src/elan/elan-example1.mpg"/>
+        <MEDIA_DESCRIPTOR EXTRACTED_FROM="file:///home/steve/src/elan/elan-example1.mpg" MEDIA_URL="file:///home/steve/src/elan/elan-example1.wav" MIME_TYPE="audio/x-wav"/>
+        <PROPERTY NAME="URN">urn:nl-mpi-tools-elan-eaf:1c360451-e140-4e80-8a68-a7a11b585d3c</PROPERTY>
         <PROPERTY NAME="lastUsedAnnotationId">315</PROPERTY>
     </HEADER>
     <TIME_ORDER>
@@ -197,10 +198,10 @@
         <TIME_SLOT TIME_SLOT_ID="ts189" TIME_VALUE="35730"/>
         <TIME_SLOT TIME_SLOT_ID="ts190" TIME_VALUE="36180"/>
     </TIME_ORDER>
-    <TIER TIER_ID="K-Spch" LINGUISTIC_TYPE_REF="utterance" DEFAULT_LOCALE="en">
+    <TIER DEFAULT_LOCALE="en" LINGUISTIC_TYPE_REF="utterance" TIER_ID="K-Spch">
         <ANNOTATION>
             <ALIGNABLE_ANNOTATION ANNOTATION_ID="a1" TIME_SLOT_REF1="ts2" TIME_SLOT_REF2="ts5">
-                <ANNOTATION_VALUE>so from here.</ANNOTATION_VALUE>
+                <ANNOTATION_VALUE></ANNOTATION_VALUE>
             </ALIGNABLE_ANNOTATION>
         </ANNOTATION>
         <ANNOTATION>
@@ -234,7 +235,7 @@
             </ALIGNABLE_ANNOTATION>
         </ANNOTATION>
     </TIER>
-    <TIER TIER_ID="W-Spch" LINGUISTIC_TYPE_REF="utterance" DEFAULT_LOCALE="en">
+    <TIER DEFAULT_LOCALE="en" LINGUISTIC_TYPE_REF="utterance" TIER_ID="W-Spch">
         <ANNOTATION>
             <ALIGNABLE_ANNOTATION ANNOTATION_ID="a8" TIME_SLOT_REF1="ts4" TIME_SLOT_REF2="ts23">
                 <ANNOTATION_VALUE>so you go out of the Institute to the Saint Anna Straat.</ANNOTATION_VALUE>
@@ -311,7 +312,7 @@
             </ALIGNABLE_ANNOTATION>
         </ANNOTATION>
     </TIER>
-    <TIER TIER_ID="W-Words" LINGUISTIC_TYPE_REF="words" DEFAULT_LOCALE="en" PARENT_REF="W-Spch">
+    <TIER DEFAULT_LOCALE="en" LINGUISTIC_TYPE_REF="words" PARENT_REF="W-Spch" TIER_ID="W-Words">
         <ANNOTATION>
             <ALIGNABLE_ANNOTATION ANNOTATION_ID="a23" TIME_SLOT_REF1="ts4" TIME_SLOT_REF2="ts6">
                 <ANNOTATION_VALUE>so</ANNOTATION_VALUE>
@@ -798,7 +799,7 @@
             </ALIGNABLE_ANNOTATION>
         </ANNOTATION>
     </TIER>
-    <TIER TIER_ID="W-POS" LINGUISTIC_TYPE_REF="part of speech" DEFAULT_LOCALE="en" PARENT_REF="W-Words">
+    <TIER DEFAULT_LOCALE="en" LINGUISTIC_TYPE_REF="part of speech" PARENT_REF="W-Words" TIER_ID="W-POS">
         <ANNOTATION>
             <REF_ANNOTATION ANNOTATION_ID="a120" ANNOTATION_REF="a23">
                 <ANNOTATION_VALUE></ANNOTATION_VALUE>
@@ -1285,7 +1286,7 @@
             </REF_ANNOTATION>
         </ANNOTATION>
     </TIER>
-    <TIER TIER_ID="W-IPA" LINGUISTIC_TYPE_REF="phonetic_transcription" DEFAULT_LOCALE="en" PARENT_REF="W-Spch">
+    <TIER DEFAULT_LOCALE="en" LINGUISTIC_TYPE_REF="phonetic_transcription" PARENT_REF="W-Spch" TIER_ID="W-IPA">
         <ANNOTATION>
             <REF_ANNOTATION ANNOTATION_ID="a217" ANNOTATION_REF="a8">
                 <ANNOTATION_VALUE>səʋ  juː ɡɔ aut əf ðə ɪnstɪtjuːt tʊ zə sant ana straːt</ANNOTATION_VALUE>
@@ -1362,14 +1363,14 @@
             </REF_ANNOTATION>
         </ANNOTATION>
     </TIER>
-    <TIER TIER_ID="W-RGU" LINGUISTIC_TYPE_REF="gestures" DEFAULT_LOCALE="en">
+    <TIER DEFAULT_LOCALE="en" LINGUISTIC_TYPE_REF="gestures" TIER_ID="W-RGU">
         <ANNOTATION>
             <ALIGNABLE_ANNOTATION ANNOTATION_ID="a232" TIME_SLOT_REF1="ts1" TIME_SLOT_REF2="ts183">
                 <ANNOTATION_VALUE>R Gesture Unit 1</ANNOTATION_VALUE>
             </ALIGNABLE_ANNOTATION>
         </ANNOTATION>
     </TIER>
-    <TIER TIER_ID="W-RGph" LINGUISTIC_TYPE_REF="gesture_phases" DEFAULT_LOCALE="en" PARENT_REF="W-RGU">
+    <TIER DEFAULT_LOCALE="en" LINGUISTIC_TYPE_REF="gesture_phases" PARENT_REF="W-RGU" TIER_ID="W-RGph">
         <ANNOTATION>
             <ALIGNABLE_ANNOTATION ANNOTATION_ID="a233" TIME_SLOT_REF1="ts1" TIME_SLOT_REF2="ts3">
                 <ANNOTATION_VALUE>preparation</ANNOTATION_VALUE>
@@ -1666,7 +1667,7 @@
             </ALIGNABLE_ANNOTATION>
         </ANNOTATION>
     </TIER>
-    <TIER TIER_ID="W-RGMe" LINGUISTIC_TYPE_REF="gesture_meaning" DEFAULT_LOCALE="en" PARENT_REF="W-RGph">
+    <TIER DEFAULT_LOCALE="en" LINGUISTIC_TYPE_REF="gesture_meaning" PARENT_REF="W-RGph" TIER_ID="W-RGMe">
         <ANNOTATION>
             <REF_ANNOTATION ANNOTATION_ID="a292" ANNOTATION_REF="a235">
                 <ANNOTATION_VALUE>Going out of the Insitute</ANNOTATION_VALUE>
@@ -1763,14 +1764,14 @@
             </REF_ANNOTATION>
         </ANNOTATION>
     </TIER>
-    <TIER TIER_ID="K-RGU" LINGUISTIC_TYPE_REF="gestures" DEFAULT_LOCALE="en">
+    <TIER DEFAULT_LOCALE="en" LINGUISTIC_TYPE_REF="gestures" TIER_ID="K-RGU">
         <ANNOTATION>
             <ALIGNABLE_ANNOTATION ANNOTATION_ID="a311" TIME_SLOT_REF1="ts122" TIME_SLOT_REF2="ts129">
                 <ANNOTATION_VALUE>R Gesture Unit 1</ANNOTATION_VALUE>
             </ALIGNABLE_ANNOTATION>
         </ANNOTATION>
     </TIER>
-    <TIER TIER_ID="K-RGph" LINGUISTIC_TYPE_REF="gesture_phases" DEFAULT_LOCALE="en" PARENT_REF="K-RGU">
+    <TIER DEFAULT_LOCALE="en" LINGUISTIC_TYPE_REF="gesture_phases" PARENT_REF="K-RGU" TIER_ID="K-RGph">
         <ANNOTATION>
             <ALIGNABLE_ANNOTATION ANNOTATION_ID="a312" TIME_SLOT_REF1="ts122" TIME_SLOT_REF2="ts124">
                 <ANNOTATION_VALUE>preparation</ANNOTATION_VALUE>
@@ -1787,44 +1788,81 @@
             </ALIGNABLE_ANNOTATION>
         </ANNOTATION>
     </TIER>
-    <TIER TIER_ID="K-RGMe" LINGUISTIC_TYPE_REF="gesture_meaning" DEFAULT_LOCALE="en" PARENT_REF="K-RGph">
+    <TIER DEFAULT_LOCALE="en" LINGUISTIC_TYPE_REF="gesture_meaning" PARENT_REF="K-RGph" TIER_ID="K-RGMe">
         <ANNOTATION>
             <REF_ANNOTATION ANNOTATION_ID="a315" ANNOTATION_REF="a313">
                 <ANNOTATION_VALUE>a roundabout</ANNOTATION_VALUE>
             </REF_ANNOTATION>
         </ANNOTATION>
     </TIER>
-    <LINGUISTIC_TYPE LINGUISTIC_TYPE_ID="utterance" TIME_ALIGNABLE="true" GRAPHIC_REFERENCES="false"/>
-    <LINGUISTIC_TYPE LINGUISTIC_TYPE_ID="words" TIME_ALIGNABLE="true" GRAPHIC_REFERENCES="false" CONSTRAINTS="Time_Subdivision"/>
-    <LINGUISTIC_TYPE LINGUISTIC_TYPE_ID="phonetic_transcription" TIME_ALIGNABLE="false" GRAPHIC_REFERENCES="false" CONSTRAINTS="Symbolic_Association"/>
-    <LINGUISTIC_TYPE LINGUISTIC_TYPE_ID="gestures" TIME_ALIGNABLE="true" GRAPHIC_REFERENCES="false"/>
-    <LINGUISTIC_TYPE LINGUISTIC_TYPE_ID="gesture_phases" TIME_ALIGNABLE="true" GRAPHIC_REFERENCES="false" CONSTRAINTS="Time_Subdivision" CONTROLLED_VOCABULARY_REF="Gesture phases"/>
-    <LINGUISTIC_TYPE LINGUISTIC_TYPE_ID="gesture_meaning" TIME_ALIGNABLE="false" GRAPHIC_REFERENCES="false" CONSTRAINTS="Symbolic_Association"/>
-    <LINGUISTIC_TYPE LINGUISTIC_TYPE_ID="part of speech" TIME_ALIGNABLE="false" GRAPHIC_REFERENCES="false" CONSTRAINTS="Symbolic_Association" CONTROLLED_VOCABULARY_REF="POS"/>
-    <LOCALE LANGUAGE_CODE="en" COUNTRY_CODE="US"/>
-    <CONSTRAINT STEREOTYPE="Time_Subdivision" DESCRIPTION="Time subdivision of parent annotation's time interval, no time gaps allowed within this interval"/>
-    <CONSTRAINT STEREOTYPE="Symbolic_Subdivision" DESCRIPTION="Symbolic subdivision of a parent annotation. Annotations refering to the same parent are ordered"/>
-    <CONSTRAINT STEREOTYPE="Symbolic_Association" DESCRIPTION="1-1 association with a parent annotation"/>
-    <CONSTRAINT STEREOTYPE="Included_In" DESCRIPTION="Time alignable annotations within the parent annotation's time interval, gaps are allowed"/>
-    <CONTROLLED_VOCABULARY CV_ID="Gesture phases" DESCRIPTION="Gesture phases">
-        <CV_ENTRY DESCRIPTION="preparation">preparation</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="stroke">stroke</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="hold">hold</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="partial retraction">part.retraction</CV_ENTRY>
+    <LINGUISTIC_TYPE GRAPHIC_REFERENCES="false" LINGUISTIC_TYPE_ID="utterance" TIME_ALIGNABLE="true"/>
+    <LINGUISTIC_TYPE CONSTRAINTS="Time_Subdivision" GRAPHIC_REFERENCES="false" LINGUISTIC_TYPE_ID="words" TIME_ALIGNABLE="true"/>
+    <LINGUISTIC_TYPE CONSTRAINTS="Symbolic_Association" GRAPHIC_REFERENCES="false" LINGUISTIC_TYPE_ID="phonetic_transcription" TIME_ALIGNABLE="false"/>
+    <LINGUISTIC_TYPE GRAPHIC_REFERENCES="false" LINGUISTIC_TYPE_ID="gestures" TIME_ALIGNABLE="true"/>
+    <LINGUISTIC_TYPE CONSTRAINTS="Time_Subdivision" CONTROLLED_VOCABULARY_REF="Gesture phases" GRAPHIC_REFERENCES="false" LINGUISTIC_TYPE_ID="gesture_phases" TIME_ALIGNABLE="true"/>
+    <LINGUISTIC_TYPE CONSTRAINTS="Symbolic_Association" GRAPHIC_REFERENCES="false" LINGUISTIC_TYPE_ID="gesture_meaning" TIME_ALIGNABLE="false"/>
+    <LINGUISTIC_TYPE CONSTRAINTS="Symbolic_Association" CONTROLLED_VOCABULARY_REF="POS" GRAPHIC_REFERENCES="false" LINGUISTIC_TYPE_ID="part of speech" TIME_ALIGNABLE="false"/>
+    <LOCALE COUNTRY_CODE="US" LANGUAGE_CODE="en"/>
+    <LANGUAGE LANG_DEF="http://cdb.iso.org/lg/CDB-00130975-001" LANG_ID="und" LANG_LABEL="undetermined (und)"/>
+    <CONSTRAINT DESCRIPTION="Time subdivision of parent annotation's time interval, no time gaps allowed within this interval" STEREOTYPE="Time_Subdivision"/>
+    <CONSTRAINT DESCRIPTION="Symbolic subdivision of a parent annotation. Annotations refering to the same parent are ordered" STEREOTYPE="Symbolic_Subdivision"/>
+    <CONSTRAINT DESCRIPTION="1-1 association with a parent annotation" STEREOTYPE="Symbolic_Association"/>
+    <CONSTRAINT DESCRIPTION="Time alignable annotations within the parent annotation's time interval, gaps are allowed" STEREOTYPE="Included_In"/>
+    <CONTROLLED_VOCABULARY CV_ID="Gesture phases">
+        <DESCRIPTION LANG_REF="und">Gesture phases</DESCRIPTION>
+        <CV_ENTRY_ML CVE_ID="cveid0">
+            <CVE_VALUE DESCRIPTION="preparation" LANG_REF="und">preparation</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid1">
+            <CVE_VALUE DESCRIPTION="stroke" LANG_REF="und">stroke</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid2">
+            <CVE_VALUE DESCRIPTION="hold" LANG_REF="und">hold</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid3">
+            <CVE_VALUE DESCRIPTION="partial retraction" LANG_REF="und">part.retraction</CVE_VALUE>
+        </CV_ENTRY_ML>
     </CONTROLLED_VOCABULARY>
-    <CONTROLLED_VOCABULARY CV_ID="POS" DESCRIPTION="Part of Speech">
-        <CV_ENTRY DESCRIPTION="noun">n</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="verb">v</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="interjection">int</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="adjective">adj</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="pronoun">pro</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="determiner">det</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="article">art</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="preposition">prep</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="adverb">adv</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="conj">con</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="demonstrative pronoun">dem</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="post">post</CV_ENTRY>
-        <CV_ENTRY DESCRIPTION="particle">part</CV_ENTRY>
+    <CONTROLLED_VOCABULARY CV_ID="POS">
+        <DESCRIPTION LANG_REF="und">Part of Speech</DESCRIPTION>
+        <CV_ENTRY_ML CVE_ID="cveid0">
+            <CVE_VALUE DESCRIPTION="noun" LANG_REF="und">n</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid1">
+            <CVE_VALUE DESCRIPTION="verb" LANG_REF="und">v</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid2">
+            <CVE_VALUE DESCRIPTION="interjection" LANG_REF="und">int</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid3">
+            <CVE_VALUE DESCRIPTION="adjective" LANG_REF="und">adj</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid4">
+            <CVE_VALUE DESCRIPTION="pronoun" LANG_REF="und">pro</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid5">
+            <CVE_VALUE DESCRIPTION="determiner" LANG_REF="und">det</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid6">
+            <CVE_VALUE DESCRIPTION="article" LANG_REF="und">art</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid7">
+            <CVE_VALUE DESCRIPTION="preposition" LANG_REF="und">prep</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid8">
+            <CVE_VALUE DESCRIPTION="adverb" LANG_REF="und">adv</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid9">
+            <CVE_VALUE DESCRIPTION="conj" LANG_REF="und">con</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid10">
+            <CVE_VALUE DESCRIPTION="demonstrative pronoun" LANG_REF="und">dem</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid11">
+            <CVE_VALUE DESCRIPTION="post" LANG_REF="und">post</CVE_VALUE>
+        </CV_ENTRY_ML>
+        <CV_ENTRY_ML CVE_ID="cveid12">
+            <CVE_VALUE DESCRIPTION="particle" LANG_REF="und">part</CVE_VALUE>
+        </CV_ENTRY_ML>
     </CONTROLLED_VOCABULARY>
 </ANNOTATION_DOCUMENT>

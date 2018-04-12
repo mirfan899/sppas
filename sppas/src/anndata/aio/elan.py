@@ -47,7 +47,7 @@ from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioNoTiersError
 from ..anndataexc import AioEmptyTierError
 from ..anndataexc import AioLocationTypeError
-from ..anndataexc import AioError
+from ..anndataexc import AioFormatError
 from ..anndataexc import AioLocationTypeError
 from ..anndataexc import CtrlVocabSetTierError
 from ..anndataexc import CtrlVocabContainsError
@@ -453,19 +453,6 @@ class sppasEAF(sppasBaseIO):
                 value = time_slot_node.attrib['TIME_VALUE']
                 time_slot_tuples.append((time_id, value))
 
-        #
-        # # create a midpoint value for undefined TIME_VALUE
-        # for i in range(1, len(time_slot_tuples) - 1):
-        #     (id, val) = time_slot_tuples[i]
-        #     if val is None:
-        #         (prevId, prevVal) = time_slot_tuples[i - 1]
-        #         (nextId, nextVal) = time_slot_tuples[i + 1]
-        #         midPoint = (prevVal.GetMidpoint() +
-        #                     nextVal.GetMidpoint()) / 2  # /!\ failed if nextVal is None
-        #         newVal = TimePoint(midPoint, midPoint -
-        #                            prevVal.GetMidpoint())
-        #         time_slot_tuples[i] = (id, newVal)
-        #
         return dict(time_slot_tuples)
 
     # -----------------------------------------------------------------------
@@ -562,65 +549,106 @@ class sppasEAF(sppasBaseIO):
         # The name is used as identifier.
         tier = self.create_tier(tier_root.attrib['TIER_ID'])
 
-        # a reference to a type object that defines constraints for this tier
-        linguistic_type = tier_root.attrib['LINGUISTIC_TYPE_REF']
-        tier.set_meta('LINGUISTIC_TYPE_REF', linguistic_type)
-
-        # other meta information
-        for key in ['DEFAULT_LOCALE', 'PARTICIPANT', 'ANNOTATOR', 'LANG_REF']:
+        # meta information (required or optional)
+        for key in ['LINGUISTIC_TYPE_REF', 'DEFAULT_LOCALE', 'PARTICIPANT', 'ANNOTATOR', 'LANG_REF']:
             if key in tier_root.attrib:
                 tier.set_meta(key, tier_root.attrib[key])
 
         # get annotations
         if 'PARENT_REF' in tier_root.attrib:
-            parent_ref = tier_root.attrib['PARENT_REF']
-            self._parse_ref_tier(tier_root, tier, parent_ref)
+            self._parse_ref_tier(tier_root, tier)
         else:
-            for annotation_root in tier_root.findall('ANNOTATION'):
-                self._parse_alignable_annotation(annotation_root.find('ALIGNABLE_ANNOTATION'),
-                                                 tier,
-                                                 time_slots)
+            self._parse_alignable_tier(tier_root, tier, time_slots)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-    def _parse_alignable_annotation(self, annotation_root, tier, time_slots):
-        """ Get the elements 'ANNOTATION' -> sppasAnnotation().
+    def _parse_alignable_tier(self, tier_root, tier, time_slots):
+        """ Get the elements 'TIER' -> sppasTier().
 
-        :param annotation_root: (ET) Annotation root element.
+        :param tier_root: (ET) Tier root.
         :param tier: (sppasTier) The tier to add the annotation
+        :param time_slots: (dict)
 
         """
-        # Location
-        begin_key = annotation_root.attrib['TIME_SLOT_REF1']
-        begin_time = time_slots[begin_key]
-        end_key = annotation_root.attrib['TIME_SLOT_REF2']
-        end_time = time_slots[end_key]
-        localization = sppasInterval(self.make_point(begin_time),
-                                     self.make_point(end_time))
-
-        # Labels
+        # Some time slots don't have a time value, so some annotations do not
+        # starts/ends at a given localization.
+        # From the SPPAS opinion, it's not an annotation...
+        begin_time = None
+        end_time = None
         text = list()
-        for value_node in annotation_root.findall('ANNOTATION_VALUE'):
+
+        for annotation_root in tier_root.findall('ANNOTATION'):
+
+            # In an alignable tier, we expect only alignable annotations
+            align_ann_root = sppasEAF.__get_ann_root(annotation_root, tier, 'ALIGNABLE_ANNOTATION')
+
+            # The (only) 'annotation value' in ELan is a text of a tag of a 'label' in SPPAS.
+            # Store in a list of labels.
+            value_node = align_ann_root.find('ANNOTATION_VALUE')
             if value_node.text is not None:
                 text.append(value_node.text)
-        labels = format_labels("\n".join(text), separator="\n")
 
-        # Annotation and its metadata
-        ann = tier.create_annotation(sppasLocation(localization), labels)
-        if 'SVG_REF' in annotation_root.attrib:
-            ann.set_meta('SVG_REF', annotation_root.attrib['SVG_REF'])
+            # Localization
+            if begin_time is None:
+                begin_key = align_ann_root.attrib['TIME_SLOT_REF1']
+                begin_time = time_slots.get(begin_key, None)
+            if end_time is None:
+                end_key = align_ann_root.attrib['TIME_SLOT_REF2']
+                end_time = time_slots.get(end_key, None)
+
+            # If the annotation has a localization, we can create it.
+            if begin_time is not None and end_time is not None:
+                ann = self.__add_ann_in_tier(begin_time, end_time, text, tier)
+                sppasEAF.__add_meta_in_ann(align_ann_root, ann)
+
+                # prepare for the next annotation
+                begin_time = None
+                end_time = None
+                text = list()
 
     # -----------------------------------------------------------------
 
-    def _parse_ref_tier(self, tier_root, tier, parent_ref):
+    @staticmethod
+    def __get_ann_root(annotation_root, tier, element):
+        align_ann_root = annotation_root.find(element)
+        if align_ann_root is None:
+            raise AioFormatError('TIER: {:s}: ANNOTATION:{:s}'
+                                 ''.format(tier.get_name(), element))
+        return align_ann_root
+
+    # -----------------------------------------------------------------
+
+    def __add_ann_in_tier(self, begin_time, end_time, text_list, tier):
+        localization = sppasInterval(self.make_point(begin_time),
+                                     self.make_point(end_time))
+        labels = format_labels("\n".join(text_list), separator="\n")
+        ann = tier.create_annotation(sppasLocation(localization), labels)
+        return ann
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def __add_meta_in_ann(ann_root, ann):
+        ann.set_meta('id', ann_root.attrib['ANNOTATION_ID'])
+        for attrib in ['SVG_REF', 'EXT_REF', 'LANG_REF', 'CVE_REF']:
+            if attrib in ann_root.attrib:
+                ann.set_meta(attrib, ann_root.attrib[attrib])
+
+    # -----------------------------------------------------------------------
+
+    def _parse_ref_tier(self, tier_root, tier):
         """ Get the elements 'TIER'.
 
         :param tier_root: (ET) Tier root element.
         :param tier: (sppasTier) The tier to add the annotations
-        :param parent_ref:
 
         """
-        pass
+        parent_ref = tier_root.attrib['PARENT_REF']
+
+        for annotation_root in tier_root.findall('ANNOTATION'):
+
+            # In an alignable tier, we expect only alignable annotations
+            ref_ann_root = sppasEAF.__get_ann_root(annotation_root, tier, 'REF_ANNOTATION')
 
     # -----------------------------------------------------------------------
     # writer
@@ -648,6 +676,12 @@ class sppasEAF(sppasBaseIO):
         #self._format_time_slots(time_order_root, time_slots)
 
         # 5. Tier
+        # Create the root of each tier
+        self._format_tier_root(root)
+        # Fill alignable tiers with their annotations
+        self._format_alignable_tiers(root)
+        # Fill reference tiers with their annotations
+        #self._format_reference_tiers(root)
 
         # 6. Linguistic Type
 
@@ -847,7 +881,6 @@ class sppasEAF(sppasBaseIO):
         """ Add the elements 'LOCALE' into the ElementTree (if any).
 
         :param root: (ElementTree)
-        :returns: (ET) Locale root.
 
         """
         # we have to restore the locales in their original order.
@@ -897,39 +930,182 @@ class sppasEAF(sppasBaseIO):
             entry_descr_root.text = ctrl_vocab.get_tag_description(tag)
 
     # -----------------------------------------------------------------------
+
+    def _format_tier_root(self, root):
+        """ Create the root of each tier. Do not fill at all.
+        It allows to preserve the rank of each tier in the tree and to fill
+        all-in-one alignable-tiers then ref-tiers.
+
+        """
+        if self.is_empty():
+            return
+
+        for tier in self:
+            if tier.is_disjoint() is False:
+                tier_root = ET.SubElement(root, 'TIER')
+                tier_root.set('TIER_ID', tier.get_name())
+
+    # -----------------------------------------------------------------------
+
+    def _format_alignable_tiers(self, root):
+        """ Add the elements 'TIER' into the ElementTree (if any).
+        Only for alignable tiers.
+
+        :param root: (ElementTree)
+        :returns: (dict) Time slots
+
+        """
+        # no tier, nothing to do!
+        if self.is_empty():
+            return
+
+        min_time_point = self.get_min_loc()
+        max_time_point = self.get_max_loc()
+        if min_time_point is None or max_time_point is None:
+            # only empty tiers in the transcription: nothing to add in the tree
+            return
+
+        alignable_tiers = list()
+
+        for tier in self:
+            # if it's not an alignable tier, go to the next...
+
+            if tier.is_disjoint() is True:
+                continue
+
+            if tier.is_interval() is True:
+                new_tier = merge_overlapping_annotations(tier)
+            else:
+                new_tier = point2interval(tier, 0.02)
+            new_tier.set_meta('id', tier.get_meta('id'))
+            alignable_tiers.append(new_tier)
+
+        # create the annotation
+        time_values = list()
+        for tier in alignable_tiers:
+            for tier_root in root.findall('TIER'):
+                if tier_root.attrib['TIER_ID'] == tier.get_name():
+                    sppasEAF._format_alignable_annotations(tier_root, tier, time_values)
+
+        # assign time slots to annotations
+        time_slots = sppasEAF._fix_time_slots(time_values)
+
+        # then, we can assign the time slots to annotations, instead of time values
+        for tier in alignable_tiers:
+            for tier_root in root.findall('TIER'):
+                if tier_root.attrib['TIER_ID'] == tier.get_name():
+                    sppasEAF._re_format_alignable_annotations(tier_root, tier, time_slots)
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def _format_alignable_annotations(tier_root, tier, time_values):
+        """ Add the elements 'ANNOTATION' into the ElementTree (if any).
+        Only for alignable tiers.
+
+        Attention: we assign time values instead of time slots. An annotation
+        without time value has 'none' instead.
+
+        :param root: (ElementTree)
+        :param tier: (sppasTier)
+        :param time_values: (list) The list of time values of the tiers. Will be completed.
+
+        """
+        for ann in tier:
+
+            # create an ANNOTATION for each label.
+            # specific time slots will have to be generated for un-aligned annotations.
+            created_anns = sppasEAF._create_alignable_annotation_element(ann, tier_root)
+
+            # we save only once a couple (time_value, tier).
+            # it allows to link consecutive annotations like it's done in Elan.
+            for align_ann_root in created_anns:
+                b = align_ann_root.attrib['TIME_SLOT_REF1']
+                e = align_ann_root.attrib['TIME_SLOT_REF2']
+                if (b, tier) not in time_values:
+                    time_values.append((b, tier))
+                if (e, tier) not in time_values:
+                    time_values.append((e, tier))
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def _create_alignable_annotation_element(ann, tier_root):
+        """ Create ANNOTATION in ElementTree.
+        Returns the list of created nodes of 'ALIGNABLE_ANNOTATION'.
+
+        """
+        begin = round(ann.get_lowest_localization().get_midpoint(), 4)
+        end = round(ann.get_highest_localization().get_midpoint(), 4)
+
+        # a label (and only one) is required in an annotation
+        labels = ann.get_labels()
+        if len(labels) == 0:
+            labels = [sppasLabel(sppasTag(""))]
+
+        created_anns = list()
+
+        for j, label in enumerate(labels):
+
+            ann_root = ET.SubElement(tier_root, "ANNOTATION")
+            align_ann_root = ET.SubElement(ann_root, 'ALIGNABLE_ANNOTATION')
+            align_ann_root.text = label.get_best().get_content()
+
+            align_ann_root.set('TIME_SLOT_REF1', '%s_none_%s' % (begin, j))
+            align_ann_root.set('TIME_SLOT_REF2', '%s_none_%s' % (begin, j + 1))
+            if j > 0:
+                align_ann_root.set('ANNOTATION_ID', ann.get_meta('id') + "_" + str(j+1))
+            else:
+                align_ann_root.set('ANNOTATION_ID', ann.get_meta('id'))
+            for attrib in ['SVG_REF', 'EXT_REF', 'LANG_REF', 'CVE_REF']:
+                if ann.is_meta_key(attrib):
+                    align_ann_root.set(attrib, ann.get_meta(attrib))
+
+            created_anns.append(align_ann_root)
+
+        # Fix begin/end to the first/last created alignable annotations
+        created_anns[0].set('TIME_SLOT_REF1', str(begin))
+        created_anns[-1].set('TIME_SLOT_REF2', str(end))
+
+        return created_anns
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def _re_format_alignable_annotations(tier_root, tier, time_slots):
+        """ Replace time values instead of time slots in 'ANNOTATION' elements.
+
+        :param root: (ElementTree)
+        :param tier: (sppasTier)
+        :param time_slots: (dict) The link between time values/tier and time slots.
+
+        """
+        for ann_root in tier_root.findall('ANNOTATION'):
+            align_ann_root = ann_root.find('ALIGNABLE_ANNOTATION')
+
+            # get the time values we previously assigned.
+            begin = align_ann_root.attrib["TIME_SLOT_REF1"]
+            end = align_ann_root.attrib["TIME_SLOT_REF2"]
+
+            # replace by the time slot in the tree
+            ts_begin = time_slots[(begin, tier)]
+            ts_end = time_slots[(end, tier)]
+            align_ann_root.set('TIME_SLOT_REF1', ts_begin)
+            align_ann_root.set('TIME_SLOT_REF2', ts_end)
+
+    # -----------------------------------------------------------------------
     # PRIVATE
     # -----------------------------------------------------------------
 
-    def __build_time_slots(self):
-
-        time_slots = OrderedDict()
-        self.changed_tiers = dict()
-
-        # build a list of all (begin/end) time_slots associated to the annotation
-        time_slot_keys = list()
-        for tier in self:
-            init_tier = tier  # check if tier change
-
-            # ELAN didn't use point tier => convert to interval
-            if tier.is_point():
-                tier = point2interval(tier, radius=0.02)
-            # Avoid overlapping => split annotations and merge labels on common parts
-            tier = merge_overlapping_annotations(tier)
-
-            # record the changed tiers
-            if tier is not init_tier:
-                self.changed_tiers[init_tier] = tier
-
-            for annotation in tier:
-                begin = round(annotation.get_lowest_localization().get_midpoint(), 4)
-                end = round(annotation.get_highest_localization().get_midpoint()(), 4)
-
-                time_slot_keys.append((begin, annotation))
-                time_slot_keys.append((end, annotation))
+    @staticmethod
+    def _fix_time_slots(time_values):
 
         # sort by time values and assign the 'ts<num>' id
+        time_slots = OrderedDict()
         i = 0
-        for key in sorted(time_slot_keys, key=itemgetter(0)):
+        for key in sorted(time_values, key=itemgetter(0)):
             i += 1
             ts = 'ts%s' % i
             time_slots[key] = ts
+
+        return time_slots
