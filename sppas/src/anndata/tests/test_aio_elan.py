@@ -385,7 +385,7 @@ class TestEAF(unittest.TestCase):
                    ' </ANNOTATION>\n' \
                    ' <ANNOTATION>\n' \
                    '      <ALIGNABLE_ANNOTATION ANNOTATION_ID="a2" TIME_SLOT_REF1="ts22" TIME_SLOT_REF2="ts24">\n' \
-                   '          <ANNOTATION_VALUE />\n' \
+                   '          <ANNOTATION_VALUE></ANNOTATION_VALUE>\n' \
                    '     </ALIGNABLE_ANNOTATION>\n' \
                    '  </ANNOTATION>\n' \
                    '</TIER>'
@@ -449,6 +449,62 @@ class TestEAF(unittest.TestCase):
         self.assertEqual(sppasPoint(2.), tier[1].get_lowest_localization())
         self.assertEqual(sppasPoint(3.567), tier[1].get_highest_localization())
         self.assertEqual('a3', tier[1].get_meta('id'))
+
+    # -----------------------------------------------------------------------
+
+    def test_parse_ref_tier(self):
+        """ TIER <-> sppasTier(). """
+
+        # two aligned annotations in the aligned tier + 2 annotations in the ref tier
+        tier_xml = '<TIER TIER_ID="test" LINGUISTIC_TYPE_REF="speech" DEFAULT_LOCALE="en">\n'\
+                   '  <ANNOTATION>\n'\
+                   '    <ALIGNABLE_ANNOTATION ANNOTATION_ID="a1" TIME_SLOT_REF1="ts2" TIME_SLOT_REF2="ts5">\n'\
+                   '      <ANNOTATION_VALUE>label</ANNOTATION_VALUE>\n'\
+                   '    </ALIGNABLE_ANNOTATION>\n'\
+                   ' </ANNOTATION>\n' \
+                   ' <ANNOTATION>\n' \
+                   '      <ALIGNABLE_ANNOTATION ANNOTATION_ID="a2" TIME_SLOT_REF1="ts22" TIME_SLOT_REF2="ts24">\n' \
+                   '          <ANNOTATION_VALUE></ANNOTATION_VALUE>\n' \
+                   '     </ALIGNABLE_ANNOTATION>\n' \
+                   '  </ANNOTATION>\n' \
+                   '</TIER>'
+        ref_tier_xml = '<TIER TIER_ID="testref" LINGUISTIC_TYPE_REF="motion" PARENT_REF="test">\n'\
+                       '  <ANNOTATION>\n'\
+                       '    <REF_ANNOTATION ANNOTATION_ID="a3" ANNOTATION_REF="a1">\n'\
+                       '      <ANNOTATION_VALUE>lemme</ANNOTATION_VALUE>\n'\
+                       '    </REF_ANNOTATION>\n'\
+                       ' </ANNOTATION>\n' \
+                       ' <ANNOTATION>\n' \
+                       '      <REF_ANNOTATION ANNOTATION_ID="a4" ANNOTATION_REF="a2">\n' \
+                       '         <ANNOTATION_VALUE>blabla</ANNOTATION_VALUE>\n' \
+                       '     </REF_ANNOTATION>\n' \
+                       '  </ANNOTATION>\n' \
+                       '</TIER>'
+        time_slots = dict()
+        time_slots['ts2'] = 0
+        time_slots['ts5'] = 1000
+        time_slots['ts22'] = 2000
+        time_slots['ts24'] = 3567
+
+        tree = ET.ElementTree(ET.fromstring(tier_xml))
+        tier_root = tree.getroot()
+        tree = ET.ElementTree(ET.fromstring(ref_tier_xml))
+        ref_tier_root = tree.getroot()
+        eaf = sppasEAF()
+        tier = eaf.create_tier('test')
+        ref_tier = eaf.create_tier('ref_test')
+        eaf._parse_alignable_tier(tier_root, tier, time_slots)
+        self.assertEqual(2, len(tier))
+        eaf._parse_ref_tier(ref_tier_root, ref_tier)
+        self.assertEqual(2, len(ref_tier))
+        self.assertEqual(format_labels('lemme'), ref_tier[0].get_labels())
+        self.assertEqual(sppasPoint(0.), ref_tier[0].get_lowest_localization())
+        self.assertEqual(sppasPoint(1.), ref_tier[0].get_highest_localization())
+        self.assertEqual('a3', ref_tier[0].get_meta('id'))
+        self.assertEqual(format_labels('blabla'), ref_tier[1].get_labels())
+        self.assertEqual(sppasPoint(2.), ref_tier[1].get_lowest_localization())
+        self.assertEqual(sppasPoint(3.567), ref_tier[1].get_highest_localization())
+        self.assertEqual('a4', ref_tier[1].get_meta('id'))
 
     # -----------------------------------------------------------------------
 
@@ -599,7 +655,7 @@ class TestEAF(unittest.TestCase):
 
     def test_format_alignable_tiers(self):
 
-        # Create two tier and generate the Elan element tree.
+        # Create two tiers and generate the Elan element tree.
         eaf = sppasEAF()
         tier1 = eaf.create_tier('Test1')
         a1 = tier1.create_annotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
@@ -649,3 +705,43 @@ class TestEAF(unittest.TestCase):
         self.assertEqual(("ts4", "ts6"), created["a5"])
         self.assertEqual(("ts8", "ts10"), created["a6"])
         self.assertEqual(("ts10", "ts12"), created["a6_2"])
+
+    # -----------------------------------------------------------------------
+
+    def test_format_ref_tier(self):
+        # Create two tiers and generate the Elan element tree.
+        eaf = sppasEAF()
+        tier1 = eaf.create_tier('Test1')
+        a1 = tier1.create_annotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
+        a1.set_meta('id', "a1")
+        a2 = tier1.create_annotation(sppasLocation(sppasInterval(sppasPoint(3.5), sppasPoint(5.))),
+                                     sppasLabel(sppasTag("toto_a2")))
+        a2.set_meta('id', "a2")
+        a3 = tier1.create_annotation(sppasLocation(sppasInterval(sppasPoint(6.), sppasPoint(6.5))),
+                                     [sppasLabel(sppasTag("toto1_a3")),
+                                      sppasLabel(sppasTag("toto2_a3"))])
+        a3.set_meta('id', "a3")
+
+        tier2 = eaf.create_tier('Test2')
+        a4 = tier2.create_annotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
+        a4.set_meta('id', "a4")
+        a5 = tier2.create_annotation(sppasLocation(sppasInterval(sppasPoint(3.5), sppasPoint(5.))),
+                                     sppasLabel(sppasTag("toto_a2")))
+        a5.set_meta('id', "a5")
+        a6 = tier2.create_annotation(sppasLocation(sppasInterval(sppasPoint(6.), sppasPoint(7.))),
+                                     [sppasLabel(sppasTag("toto1_a3")),
+                                      sppasLabel(sppasTag("toto2_a3"))])
+        a6.set_meta('id', "a6")
+
+    # -----------------------------------------------------------------------
+    # READ / WRITE
+    # -----------------------------------------------------------------------
+
+    def test_read(self):
+        eaf = sppasEAF()
+        eaf.read(os.path.join(DATA, "sample.eaf"))
+        for tier in eaf:
+            print " --------------- {:s} ------------".format(tier.get_name())
+            for ann in tier:
+                print ann
+        self.assertEqual(len(eaf), 11)

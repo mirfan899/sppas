@@ -328,7 +328,9 @@ class sppasTier(sppasMetaData):
                         self.__ann[index + 1].get_highest_localization() < annotation.get_highest_localization():
                     index += 1
 
-                if self.__ann[index].get_location() == annotation.get_location():
+                #if self.__ann[index].get_location() == annotation.get_location():
+                if self.__ann[index].get_lowest_localization() == annotation.get_lowest_localization() and \
+                   self.__ann[index].get_highest_localization() < annotation.get_highest_localization():
                     raise TierAddError(index)
 
                 self.__ann.insert(index + 1, annotation)
@@ -936,6 +938,20 @@ class sppasTier(sppasMetaData):
         """
         if self.__parent is not None:
             self.__parent.validate_annotation_location(self, location)
+
+    # -----------------------------------------------------------------------
+
+    def get_annotation(self, identifier):
+        """ Find an annotation from its metadata 'id'.
+
+        :param identifier: (str) Metadata 'id' of an annotation.
+        :returns: sppasAnnotation or None
+
+        """
+        for a in self:
+            if a.get_meta('id') == identifier:
+                return a
+        return None
 
     # -----------------------------------------------------------------------
     # Utils

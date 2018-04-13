@@ -443,6 +443,26 @@ class sppasTranscription(sppasMetaData):
 
     # ------------------------------------------------------------------------
 
+    def set_tier_index(self, name, new_index, case_sensitive=True):
+        """ Get the index of a tier from its name.
+
+        :param name: (str) EXACT name of the tier
+        :param index: (int) New index of the tier in self
+        :param case_sensitive: (bool)
+        :returns: index or -1 if not found
+
+        """
+        old_index = self.get_tier_index(name, case_sensitive)
+        if old_index == -1:
+            raise IndexError
+
+        try:
+            self._tiers.insert(new_index, self._tiers.pop(old_index))
+        except:
+            raise IndexError
+
+    # ------------------------------------------------------------------------
+
     def rename_tier(self, tier):
         """ Rename a tier by appending a digit.
 

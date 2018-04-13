@@ -215,10 +215,16 @@ class sppasEAF(sppasBaseIO):
             self._parse_license(license_root, i)
 
         # 3. Header (1..1)
+        header_root = root.find('HEADER')
+        if header_root is None:
+            raise AioFormatError('HEADER')
         self._parse_header(root.find('HEADER'))
 
         # 4. Time order (1..1)
-        time_slots = sppasEAF._parse_time_order(root.find('TIME_ORDER'))
+        time_order_root = root.find('TIME_ORDER')
+        if time_order_root is None:
+            raise AioFormatError('TIME_ORDER')
+        time_slots = sppasEAF._parse_time_order(time_order_root)
 
         # 5. Controlled vocabularies (0..*)
         for vocabulary_root in root.findall('CONTROLLED_VOCABULARY'):
@@ -227,8 +233,7 @@ class sppasEAF(sppasBaseIO):
                 self.add_ctrl_vocab(ctrl_vocab)
 
         # 6. Tiers (0..*)
-        for tier_root in root.findall('TIER'):
-            self._parse_tier(tier_root, time_slots)
+        self._parse_tiers(root, time_slots)
 
         # 7. Linguistic type
         for linguistic_root in root.findall('LINGUISTIC_TYPE'):
@@ -443,17 +448,17 @@ class sppasEAF(sppasBaseIO):
         :param time_order_root: (ET) Time order root element.
 
         """
-        time_slot_tuples = list()
+        time_slots = dict()
 
         # parse each of the <TIME_SLOT> elements
         for time_slot_node in time_order_root.findall('TIME_SLOT'):
             time_id = time_slot_node.attrib['TIME_SLOT_ID']
 
-            if 'TIME_VALUE' in time_order_root.attrib:
+            if 'TIME_VALUE' in time_slot_node.attrib:
                 value = time_slot_node.attrib['TIME_VALUE']
-                time_slot_tuples.append((time_id, value))
+                time_slots[time_id] = value
 
-        return dict(time_slot_tuples)
+        return time_slots
 
     # -----------------------------------------------------------------------
 
@@ -539,8 +544,43 @@ class sppasEAF(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def _parse_tier(self, tier_root, time_slots):
-        """ Get the elements 'TIER' -> sppasTier().
+    def _parse_tiers(self, root, time_slots):
+        """ Get all the elements 'TIER' -> sppasTier().
+
+        :param root: (ET) Document root.
+        :param time_slots: (dict)
+
+        """
+        removed_annotations = dict()
+        # We first parse alignable tiers
+        for tier_root in root.findall('TIER'):
+            if sppasEAF.__is_alignable_tier(tier_root) is True:
+                self._parse_tier(tier_root, time_slots, removed_annotations)
+
+        # We then parse ref tiers
+        for tier_root in root.findall('TIER'):
+            if sppasEAF.__is_alignable_tier(tier_root) is False:
+                self._parse_tier(tier_root, time_slots, removed_annotations)
+
+        # We re-organize tiers: we restore the original rank of each tier
+        for i, tier_root in enumerate(root.findall('TIER')):
+            tier_name = tier_root.attrib['TIER_ID']
+            self.set_tier_index(tier_name, i)
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def __is_alignable_tier(tier_root):
+        if 'PARENT_REF' in tier_root.attrib:
+            for annotation_root in tier_root.findall('ANNOTATION'):
+                if annotation_root.find('REF_ANNOTATION') is not None:
+                    return False
+        return True
+
+    # -----------------------------------------------------------------------
+
+    def _parse_tier(self, tier_root, time_slots, removed_annotations=dict()):
+        """ Get the element 'TIER' -> sppasTier().
 
         :param tier_root: (ET) Tier root.
         :param time_slots: (dict)
@@ -550,24 +590,26 @@ class sppasEAF(sppasBaseIO):
         tier = self.create_tier(tier_root.attrib['TIER_ID'])
 
         # meta information (required or optional)
+        self._map_meta.set_reverse(False)
         for key in ['LINGUISTIC_TYPE_REF', 'DEFAULT_LOCALE', 'PARTICIPANT', 'ANNOTATOR', 'LANG_REF']:
             if key in tier_root.attrib:
-                tier.set_meta(key, tier_root.attrib[key])
+                tier.set_meta(self._map_meta.map_entry(key), tier_root.attrib[key])
 
         # get annotations
-        if 'PARENT_REF' in tier_root.attrib:
-            self._parse_ref_tier(tier_root, tier)
+        if sppasEAF.__is_alignable_tier(tier_root):
+            self._parse_alignable_tier(tier_root, tier, time_slots, removed_annotations)
         else:
-            self._parse_alignable_tier(tier_root, tier, time_slots)
+            self._parse_ref_tier(tier_root, tier, removed_annotations)
 
     # -----------------------------------------------------------------------
 
-    def _parse_alignable_tier(self, tier_root, tier, time_slots):
+    def _parse_alignable_tier(self, tier_root, tier, time_slots, removed_annotations=dict()):
         """ Get the elements 'TIER' -> sppasTier().
 
         :param tier_root: (ET) Tier root.
         :param tier: (sppasTier) The tier to add the annotation
         :param time_slots: (dict)
+        :param removed_annotations: (dict) Alignable annotations without time values.
 
         """
         # Some time slots don't have a time value, so some annotations do not
@@ -576,6 +618,7 @@ class sppasEAF(sppasBaseIO):
         begin_time = None
         end_time = None
         text = list()
+        removed = list()
 
         for annotation_root in tier_root.findall('ANNOTATION'):
 
@@ -601,10 +644,20 @@ class sppasEAF(sppasBaseIO):
                 ann = self.__add_ann_in_tier(begin_time, end_time, text, tier)
                 sppasEAF.__add_meta_in_ann(align_ann_root, ann)
 
+                # update
+                for ann_id in removed:
+                    removed_annotations[ann_id] = ann.get_meta('id')
+
                 # prepare for the next annotation
                 begin_time = None
                 end_time = None
                 text = list()
+                removed = list()
+
+            else:
+                removed.append(align_ann_root.attrib['ANNOTATION_ID'])
+                logging.info('No time value for the annotation {:s} in an alignable tier {:s}'
+                             ''.format(align_ann_root.attrib['ANNOTATION_ID'], tier.get_name()))
 
     # -----------------------------------------------------------------
 
@@ -636,19 +689,32 @@ class sppasEAF(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def _parse_ref_tier(self, tier_root, tier):
+    def _parse_ref_tier(self, tier_root, tier, removed_annotations=dict()):
         """ Get the elements 'TIER'.
 
         :param tier_root: (ET) Tier root element.
         :param tier: (sppasTier) The tier to add the annotations
 
         """
-        parent_ref = tier_root.attrib['PARENT_REF']
+        # we expect that the parent tier has already been included in self
+        parent_tier_ref = tier_root.attrib['PARENT_REF']
+        parent_tier = self.find(parent_tier_ref)
+        if parent_tier is None:
+            raise AioFormatError('tier:{:s} parent:{:s}'.format(tier.get_name(), parent_tier_ref))
 
-        for annotation_root in tier_root.findall('ANNOTATION'):
+        # while we have the aligned parent, we can fill the child tier
+        for i, annotation_root in enumerate(tier_root.findall('ANNOTATION')):
 
-            # In an alignable tier, we expect only alignable annotations
             ref_ann_root = sppasEAF.__get_ann_root(annotation_root, tier, 'REF_ANNOTATION')
+            ann_ref_id = ref_ann_root.attrib['ANNOTATION_REF']
+            ann_ref = parent_tier.get_annotation(removed_annotations.get(ann_ref_id, ann_ref_id))
+            if ann_ref is None:
+                raise AioFormatError('tier:{:s} annotation:{:s}'.format(tier.get_name(), ann_ref_id))
+
+            label = sppasLabel(sppasTag(ref_ann_root.find('ANNOTATION_VALUE').text))
+            location = ann_ref.get_location().copy()
+            new_ann = tier.create_annotation(location, label)
+            sppasEAF.__add_meta_in_ann(ref_ann_root, new_ann)
 
     # -----------------------------------------------------------------------
     # writer

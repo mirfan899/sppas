@@ -562,10 +562,10 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        return "Annotation: {:s} {:s}".format(self.__location, self.__labels)
+        return "Annotation {:s}: {:s} {:s}".format(self.get_meta('id'), self.__location, self.__labels)
 
     def __str__(self):
-        return "{:s} {:s}".format(self.__location, self.__labels)
+        return "{:s} {:s} {:s}".format(self.get_meta('id'), self.__location, self.__labels)
 
     def __eq__(self, other):
         if self.__score != other.get_score():

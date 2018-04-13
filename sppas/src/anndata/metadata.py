@@ -125,17 +125,20 @@ class sppasMetaData(object):
             del self.__metadata[key]
 
     # -----------------------------------------------------------------------
+    # Add default metadata
+    # -----------------------------------------------------------------------
 
     def add_license_metadata(self, idx):
         """ Add metadata about the license applied to the object (GPLv3). """
 
+        # Elan
         self.set_meta('file_license_%s' % idx, 'GNU GPL V3')
         self.set_meta('file_license_%s_url' % idx, 'https://www.gnu.org/licenses/gpl-3.0.en.html')
 
     # -----------------------------------------------------------------------
 
     def add_software_metadata(self):
-        """ Add metadata about SPPAS. """
+        """ Add metadata about SPPAS software. """
 
         self.set_meta('software_name', sppas.__name__)
         self.set_meta('software_version', sppas.__version__)
@@ -149,6 +152,7 @@ class sppasMetaData(object):
     def add_language_metadata(self):
         """ Add metadata about the language (und). """
 
+        # Elan
         self.set_meta('language_iso_code', "iso639-3")
         self.set_meta('language_0_iso', "und")
         self.set_meta('language_0_name', "Undetermined")
@@ -168,6 +172,20 @@ class sppasMetaData(object):
         self.set_meta("project_collection", "")
         self.set_meta("project_title", "")
         self.set_meta("project_noises", "")
+
+    # -----------------------------------------------------------------------
+
+    def add_annotator_metadata(self, name="", version="", version_date=""):
+        """ Add metadata about an annotator. """
+
+        # subtitle, transcriber, elan
+        self.set_meta("annotator_name", name)
+
+        # transcriber
+        self.set_meta("annotator_version", version)
+
+        # transcriber
+        self.set_meta("annotator_version_date", version_date)
 
 
 # ---------------------------------------------------------------------------
@@ -217,20 +235,6 @@ class sppasDefaultMeta(sppasMetaData):
 
         self.set_meta("file_writer", "")
         self.set_meta("file_write_date", "")
-
-    # -----------------------------------------------------------------------
-
-    def annotator(self):
-        """ Add metadata related to an annotator. """
-
-        # subtitle, transcriber, elan
-        self.set_meta("annotator_name", "")
-
-        # transcriber
-        self.set_meta("annotator_version", "")
-
-        # transcriber
-        self.set_meta("annotator_version_date", "")
 
     # -----------------------------------------------------------------------
 
@@ -300,11 +304,3 @@ class sppasDefaultMeta(sppasMetaData):
 
         # annotation pro
         self.set_meta("media_sample_rate", "")
-
-    # -----------------------------------------------------------------------
-
-    def generic(self):
-        """ Add metadata related to any level (document, tier, annotation...). """
-
-        # transcriber, annotation pro, elan
-        self.set_meta("language", "")
