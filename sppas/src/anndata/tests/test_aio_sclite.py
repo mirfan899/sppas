@@ -310,9 +310,9 @@ class TestScliteCTM(unittest.TestCase):
 
         ctm = sppasCTM()
         ctm._parse_lines(lines)
-        self.assertEqual(len(ctm), 1)
-        self.assertEqual(ctm[0].get_name(), "D_WAV-1")
-        self.assertEqual(len(ctm[0]), 1)
+        self.assertEqual(1, len(ctm))
+        self.assertEqual("D_WAV-1", ctm[0].get_name())
+        self.assertEqual(1, len(ctm[0]))
 
     # -----------------------------------------------------------------------
 
@@ -321,16 +321,16 @@ class TestScliteCTM(unittest.TestCase):
 
         ctm = sppasCTM()
         ctm.read(os.path.join(DATA, "sample.ctm"))
-        self.assertEqual(len(ctm), 4)
-        self.assertEqual(len(ctm.get_media_list()), 3)
-        self.assertEqual(ctm[0].get_name(), "SHOW_1-1")
-        self.assertEqual(ctm[1].get_name(), "SHOW_2-1")
-        self.assertEqual(ctm[2].get_name(), "SHOW_2-2")
-        self.assertEqual(ctm[3].get_name(), "SHOW_3-1")
-        self.assertEqual(len(ctm[0]), 7)
-        self.assertEqual(len(ctm[1]), 3)
-        self.assertEqual(len(ctm[2]), 6)
-        self.assertEqual(len(ctm[3]), 6)
+        self.assertEqual(4, len(ctm))
+        self.assertEqual(3, len(ctm.get_media_list()))
+        self.assertEqual("SHOW_1-1", ctm[0].get_name())
+        self.assertEqual("SHOW_2-1", ctm[1].get_name())
+        self.assertEqual("SHOW_2-2", ctm[2].get_name())
+        self.assertEqual("SHOW_3-1", ctm[3].get_name())
+        self.assertEqual(7, len(ctm[0]))
+        self.assertEqual(3, len(ctm[1]))
+        self.assertEqual(5, len(ctm[2]))
+        self.assertEqual(6, len(ctm[3]))
 
     # -----------------------------------------------------------------------
     # Write
@@ -389,14 +389,14 @@ class TestScliteCTM(unittest.TestCase):
         ctm2.read(os.path.join(TEMP, "sample.ctm"))
         self.assertEqual(len(ctm2), 4)
         self.assertEqual(len(ctm2.get_media_list()), 3)
-        self.assertEqual(ctm2[0].get_name(), "SHOW_1-1")
-        self.assertEqual(ctm2[1].get_name(), "SHOW_2-1")
-        self.assertEqual(ctm2[2].get_name(), "SHOW_2-2")
-        self.assertEqual(ctm2[3].get_name(), "SHOW_3-1")
-        self.assertEqual(len(ctm2[0]), 7)
-        self.assertEqual(len(ctm2[1]), 3)
-        self.assertEqual(len(ctm2[2]), 6)
-        self.assertEqual(len(ctm2[3]), 6)
+        self.assertEqual("SHOW_1-1", ctm2[0].get_name())
+        self.assertEqual("SHOW_2-1", ctm2[1].get_name())
+        self.assertEqual("SHOW_2-2", ctm2[2].get_name())
+        self.assertEqual("SHOW_3-1", ctm2[3].get_name())
+        self.assertEqual(7, len(ctm2[0]))
+        self.assertEqual(3, len(ctm2[1]))
+        self.assertEqual(5, len(ctm2[2]))
+        self.assertEqual(6, len(ctm2[3]))
 
 # ---------------------------------------------------------------------------
 
@@ -463,26 +463,26 @@ class TestScliteSTM(unittest.TestCase):
         line = "D_NONE 1 A 108.74 0.31 SO"
         tier = stm.get_tier(line)
         self.assertIsNotNone(tier)
-        self.assertEqual(tier.get_name(), "D_NONE-1-A")
-        self.assertEqual(len(stm), 1)
+        self.assertEqual("D_NONE-1-A", tier.get_name())
+        self.assertEqual(1, len(stm))
 
         # the same tier is returned
         line = "D_NONE 1 A 109.05 0.2 FULL"
         tier = stm.get_tier(line)
         self.assertIsNotNone(tier)
-        self.assertEqual(tier.get_name(), "D_NONE-1-A")
-        self.assertEqual(len(stm), 1)
-        self.assertEqual(tier.get_meta("media_channel"), "1")
-        self.assertEqual(tier.get_meta("speaker_id"), "A")
+        self.assertEqual("D_NONE-1-A", tier.get_name())
+        self.assertEqual(1, len(stm))
+        self.assertEqual("1", tier.get_meta("media_channel"))
+        self.assertEqual("A", tier.get_meta("speaker_id"))
 
         # a new tier is created
         line = "D_NONE 1 B 1.0 0.2 JAVA 0.98"
         tier = stm.get_tier(line)
         self.assertIsNotNone(tier)
-        self.assertEqual(tier.get_name(), "D_NONE-1-B")
-        self.assertEqual(len(stm), 2)
-        self.assertEqual(tier.get_meta("media_channel"), "1")
-        self.assertEqual(tier.get_meta("speaker_id"), "B")
+        self.assertEqual("D_NONE-1-B", tier.get_name())
+        self.assertEqual(2, len(stm))
+        self.assertEqual("1", tier.get_meta("media_channel"))
+        self.assertEqual("B", tier.get_meta("speaker_id"))
 
     # -----------------------------------------------------------------------
 

@@ -332,12 +332,9 @@ class sppasEAF(sppasBaseIO):
         # Create the new Media and put all information in metadata
         media = sppasMedia(media_url, mime_type=media_mime)
         media.set_meta('media_source', 'primary')
-        if 'RELATIVE_MEDIA_URL' in media_root.attrib:
-            media.set_meta('RELATIVE_MEDIA_URL', media_root.attrib['RELATIVE_MEDIA_URL'])
-        if 'TIME_ORIGIN' in media_root.attrib:
-            media.set_meta('TIME_ORIGIN', media_root.attrib['TIME_ORIGIN'])
-        if 'EXTRACTED_FROM' in media_root.attrib:
-            media.set_meta('EXTRACTED_FROM', media_root.attrib['EXTRACTED_FROM'])
+        for attrib in ['RELATIVE_MEDIA_URL', 'TIME_ORIGIN', 'EXTRACTED_FROM']:
+            if attrib in media_root.attrib:
+                media.set_meta(attrib, media_root.attrib[attrib])
 
         # media identifier
         for property_root in header_root.findall('PROPERTY'):
@@ -365,12 +362,9 @@ class sppasEAF(sppasBaseIO):
         # Create the new Media and put all information in metadata
         media = sppasMedia(media_url, mime_type=media_mime)
         media.set_meta('media_source', 'secondary')
-        if 'RELATIVE_LINK_URL' in linked_root.attrib:
-            media.set_meta('RELATIVE_LINK_URL', linked_root.attrib['RELATIVE_LINK_URL'])
-        if 'TIME_ORIGIN' in linked_root.attrib:
-            media.set_meta('TIME_ORIGIN', linked_root.attrib['TIME_ORIGIN'])
-        if 'ASSOCIATED_WITH' in linked_root.attrib:
-            media.set_meta('ASSOCIATED_WITH', linked_root.attrib['ASSOCIATED_WITH'])
+        for attrib in ['RELATIVE_LINK_URL', 'TIME_ORIGIN', 'ASSOCIATED_WITH']:
+            if attrib in linked_root.attrib:
+                media.set_meta(attrib, linked_root.attrib[attrib])
 
         # media identifier
         for property_root in header_root.findall('PROPERTY'):
@@ -386,6 +380,8 @@ class sppasEAF(sppasBaseIO):
     def _parse_property(self, property_root):
         """ Get the elements 'PROPERTY' -> sppasMetadata().
         This is a general purpose element for storing key-value pairs.
+
+        This method store all metadata except the identifiers (media, tier...).
 
         :param property_root: (ET) Property root element.
 
@@ -454,6 +450,7 @@ class sppasEAF(sppasBaseIO):
         for time_slot_node in time_order_root.findall('TIME_SLOT'):
             time_id = time_slot_node.attrib['TIME_SLOT_ID']
 
+            # time slots without time values are ignored.
             if 'TIME_VALUE' in time_slot_node.attrib:
                 value = time_slot_node.attrib['TIME_VALUE']
                 time_slots[time_id] = value
@@ -465,6 +462,8 @@ class sppasEAF(sppasBaseIO):
     @staticmethod
     def _parse_ctrl_vocab(ctrl_vocab_root):
         """ Get the elements 'CONTROLLED_VOCABULARY' -> sppasCtrlVocab().
+
+        In version 2.8, the locale is ignored.
 
         :param ctrl_vocab_root: (ET) Controlled vocabulary root element.
 
@@ -532,10 +531,10 @@ class sppasEAF(sppasBaseIO):
                         try:
                             tier.set_ctrl_vocab(ctrl_vocab)
                         except CtrlVocabContainsError:
-                            # It's a bug in Elan: accepts non-controlled text in controlled tier
+                            # There's a bug in Elan: accepts non-controlled text in controlled tier
                             tier.set_meta("controlled_vocabulary", ctrl_vocab.get_meta('id'))
                             logging.info(str(CtrlVocabSetTierError(ctrl_vocab.get_name(), tier.get_name())))
-
+                        # todo: CtrlVocab <-> Tier must deal with the locale...
                 found = True
 
         # what to do with an unused linguistic type?
@@ -551,8 +550,12 @@ class sppasEAF(sppasBaseIO):
         :param time_slots: (dict)
 
         """
+        # list of alignable annotations that are not saved in SPPAS because
+        # they don't have a localization. Their label is added to the closest
+        # time-aligned annotations.
         removed_annotations = dict()
-        # We first parse alignable tiers
+
+        # We first parse only alignable tiers
         for tier_root in root.findall('TIER'):
             if sppasEAF.__is_alignable_tier(tier_root) is True:
                 self._parse_tier(tier_root, time_slots, removed_annotations)
@@ -562,7 +565,7 @@ class sppasEAF(sppasBaseIO):
             if sppasEAF.__is_alignable_tier(tier_root) is False:
                 self._parse_tier(tier_root, time_slots, removed_annotations)
 
-        # We re-organize tiers: we restore the original rank of each tier
+        # We have to re-organize tiers: we restore the original rank of each tier
         for i, tier_root in enumerate(root.findall('TIER')):
             tier_name = tier_root.attrib['TIER_ID']
             self.set_tier_index(tier_name, i)
@@ -642,10 +645,17 @@ class sppasEAF(sppasBaseIO):
             # If the annotation has a localization, we can create it.
             if begin_time is not None and end_time is not None:
                 ann = self.__add_ann_in_tier(begin_time, end_time, text, tier)
-                sppasEAF.__add_meta_in_ann(align_ann_root, ann)
+                if len(removed) > 0:
+                    # the first removed annotation is the one we use to store metadata
+                    sppasEAF.__add_meta_in_ann(removed[0], ann)
+                    removed.pop(0)
+                    removed.append(align_ann_root)
+                else:
+                    sppasEAF.__add_meta_in_ann(align_ann_root, ann)
 
                 # update
-                for ann_id in removed:
+                for a in removed:
+                    ann_id = a.attrib['ANNOTATION_ID']
                     removed_annotations[ann_id] = ann.get_meta('id')
 
                 # prepare for the next annotation
@@ -655,7 +665,7 @@ class sppasEAF(sppasBaseIO):
                 removed = list()
 
             else:
-                removed.append(align_ann_root.attrib['ANNOTATION_ID'])
+                removed.append(align_ann_root)
                 logging.info('No time value for the annotation {:s} in an alignable tier {:s}'
                              ''.format(align_ann_root.attrib['ANNOTATION_ID'], tier.get_name()))
 
@@ -707,14 +717,26 @@ class sppasEAF(sppasBaseIO):
 
             ref_ann_root = sppasEAF.__get_ann_root(annotation_root, tier, 'REF_ANNOTATION')
             ann_ref_id = ref_ann_root.attrib['ANNOTATION_REF']
+
             ann_ref = parent_tier.get_annotation(removed_annotations.get(ann_ref_id, ann_ref_id))
             if ann_ref is None:
                 raise AioFormatError('tier:{:s} annotation:{:s}'.format(tier.get_name(), ann_ref_id))
-
             label = sppasLabel(sppasTag(ref_ann_root.find('ANNOTATION_VALUE').text))
-            location = ann_ref.get_location().copy()
-            new_ann = tier.create_annotation(location, label)
-            sppasEAF.__add_meta_in_ann(ref_ann_root, new_ann)
+
+            if ann_ref_id in removed_annotations:
+                # we append the label like it's done into the reference, instead of
+                # creating a new annotation. We suppose that the annotation to be
+                # appended is the last alignable annotation that we previously saved
+                # (because annotations are time-sorted)... is it a strong hypothesis?
+                # to be verified.
+                tier[-1].append_label(label)
+                logging.info('Label {:s} appended to annotation {:s}.'
+                             ''.format(label.get_best().get_content(), tier[-1].get_meta('id')))
+            else:
+                location = ann_ref.get_location().copy()
+                new_ann = sppasAnnotation(location, label)
+                tier.append(new_ann)
+                sppasEAF.__add_meta_in_ann(ref_ann_root, new_ann)
 
     # -----------------------------------------------------------------------
     # writer

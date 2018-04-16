@@ -352,6 +352,18 @@ class TestTier(unittest.TestCase):
         for a, ar in zip(tier, tier_random):
             self.assertTrue(a is ar)
 
+        tier = sppasTier('add')
+        tier.create_annotation(sppasLocation(sppasInterval(
+                                                sppasPoint(11.15, 0.02),
+                                                sppasPoint(11.47, 0.02))))
+        tier.create_annotation(sppasLocation(sppasInterval(
+                                                sppasPoint(11.47, 0.02),
+                                                sppasPoint(11.94, 0.02))))
+        with self.assertRaises(TierAddError):
+            tier.create_annotation(sppasLocation(sppasInterval(
+                                                    sppasPoint(11.47, 0.02),
+                                                    sppasPoint(11.94, 0.02))))
+
     # -----------------------------------------------------------------------
 
     def test_add_point(self):

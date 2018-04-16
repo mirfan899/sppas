@@ -444,7 +444,7 @@ class TestEAF(unittest.TestCase):
         self.assertEqual(format_labels('label1\nlabel2'), tier[0].get_labels())
         self.assertEqual(sppasPoint(0.), tier[0].get_lowest_localization())
         self.assertEqual(sppasPoint(1.), tier[0].get_highest_localization())
-        self.assertEqual('a2', tier[0].get_meta('id'))
+        self.assertEqual('a1', tier[0].get_meta('id'))
         self.assertEqual(format_labels(''), tier[1].get_labels())
         self.assertEqual(sppasPoint(2.), tier[1].get_lowest_localization())
         self.assertEqual(sppasPoint(3.567), tier[1].get_highest_localization())

@@ -328,10 +328,12 @@ class sppasTier(sppasMetaData):
                         self.__ann[index + 1].get_highest_localization() < annotation.get_highest_localization():
                     index += 1
 
-                #if self.__ann[index].get_location() == annotation.get_location():
-                if self.__ann[index].get_lowest_localization() == annotation.get_lowest_localization() and \
-                   self.__ann[index].get_highest_localization() < annotation.get_highest_localization():
+                if self.__ann[index].get_location() == annotation.get_location():
                     raise TierAddError(index)
+
+                if index+1 < len(self.__ann):
+                    if self.__ann[index+1].get_location() == annotation.get_location():
+                        raise TierAddError(index+1)
 
                 self.__ann.insert(index + 1, annotation)
                 return index + 1
