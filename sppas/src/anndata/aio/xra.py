@@ -131,11 +131,11 @@ class sppasXRA(sppasBaseIO):
         if "name" in root.attrib:
             self.set_name(root.attrib['name'])
         if "version" in root.attrib:
-            self.set_meta('file_format_version', root.attrib['version'])
+            self.set_meta('file_created_format_version', root.attrib['version'])
         if "date" in root.attrib:
             self.set_meta('file_created_date', root.attrib['date'])
         if "author" in root.attrib:
-            self.set_meta('file_author', root.attrib['author'])
+            self.set_meta('file_created_author', root.attrib['author'])
 
         metadata_root = root.find('Metadata')
         if metadata_root is not None:

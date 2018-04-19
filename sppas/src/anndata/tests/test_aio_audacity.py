@@ -47,9 +47,6 @@ import xml.etree.cElementTree as ET
 from ..aio.audacity import sppasAudacity
 from ..annlocation.point import sppasPoint
 from ..annlabel.tag import sppasTag
-from ..annlocation.interval import sppasInterval
-from ..annlabel.label import sppasLabel
-from ..annlocation.location import sppasLocation
 
 # ---------------------------------------------------------------------------
 

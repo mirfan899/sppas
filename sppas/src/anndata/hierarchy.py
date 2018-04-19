@@ -60,7 +60,7 @@ class sppasHierarchy(object):
         the points of a child tier are all equals to the points of
         a reference tier, as for example:
 
-            | parent:  Tokens     | l' |  âne  | est |  là   |
+            | parent:  Words      | l' |  âne  | est |  là   |
             | child:   Lemmas     | le |  âne  | être |  là  |
 
       - TimeAlignment:
@@ -68,7 +68,7 @@ class sppasHierarchy(object):
         points of a reference tier, as for example:
 
             | parent: Phonemes    | l  | a | n |  e  | l | a |
-            | child:  Tokens      | l' |  âne  | est |  là   |
+            | child:  Words       | l' |  âne  | est |  là   |
             |
             | parent: Phonemes    | l  | a | n |  e  | l | a |
             | child:  Syllables   |   l.a  |  n.e    |   l.a |
@@ -82,6 +82,12 @@ class sppasHierarchy(object):
         - A child can have ONLY ONE parent!
         - A parent can have as many children as wanted.
         - A hierarchy is a tree, not a graph.
+
+
+    Todo is to consider a time association that is not fully completed:
+
+            | parent:  Tokens     | l' |  âne  | euh | euh | est |  là   | @ |
+            | child:   Lemmas     | le |  âne  |           | être |  là  |
 
     """
     types = {"TimeAssociation", "TimeAlignment"}
@@ -99,7 +105,7 @@ class sppasHierarchy(object):
     # -----------------------------------------------------------------------
 
     def get_parent(self, child_tier):
-        """ Return the reference tier for a given child tier.
+        """ Return the parent tier for a given child tier.
 
         :param child_tier: (Tier) The child tier to found
 
@@ -176,7 +182,7 @@ class sppasHierarchy(object):
     def validate_time_alignment(parent_tier, child_tier):
         """ Validate a time alignment hierarchy link between 2 tiers.
 
-        :param parent_tier: (Tier) The reference tier
+        :param parent_tier: (Tier) The parent tier
         :param child_tier: (Tier) The child tier to be linked to reftier
         :raises: HierarchyAlignmentError
 
@@ -190,8 +196,8 @@ class sppasHierarchy(object):
     def validate_time_association(parent_tier, child_tier):
         """ Validate a time association hierarchy link between 2 tiers.
 
-        :param parent_tier: (Tier) The reference tier
-        :param child_tier: (Tier) The child tier to be linked to reftier
+        :param parent_tier: (Tier) The parent tier
+        :param child_tier: (Tier) The child tier to be linked to the parent
         :raises: HierarchyAssociationError
 
         """
@@ -204,7 +210,7 @@ class sppasHierarchy(object):
         """ Validate a hierarchy link between 2 tiers.
 
         :param link_type: (constant) One of the hierarchy types
-        :param parent_tier: (Tier) The reference tier
+        :param parent_tier: (Tier) The parent tier
         :param child_tier: (Tier) The child tier to be linked to reftier
         :raises: AnnDataTypeError, HierarchyParentTierError,
         HierarchyChildTierError, HierarchyAncestorTierError,
@@ -218,8 +224,8 @@ class sppasHierarchy(object):
         if child_tier in self.__hierarchy.keys():
             parent, link = self.__hierarchy[child_tier]
             raise HierarchyParentTierError(child_tier.get_name(),
-                                           parent.get_name(),
-                                           link)
+                                           link,
+                                           parent.get_name())
 
         # A tier can't be its own child/parent
         if parent_tier == child_tier:
@@ -254,7 +260,7 @@ class sppasHierarchy(object):
         """ Validate and add a hierarchy link between 2 tiers.
 
         :param link_type: (constant) One of the hierarchy types
-        :param parent_tier: (Tier) The reference tier
+        :param parent_tier: (Tier) The parent tier
         :param child_tier: (Tier) The child tier to be linked to reftier
 
         """
@@ -277,7 +283,7 @@ class sppasHierarchy(object):
     def remove_parent(self, parent_tier):
         """ Remove all hierarchy links between a parent and its children.
 
-        :param parent_tier: (Tier) The reference tier
+        :param parent_tier: (Tier) The parent tier
 
         """
         to_remove = []
@@ -312,7 +318,7 @@ class sppasHierarchy(object):
 
     @staticmethod
     def infer_hierarchy_type(tier1, tier2):
-        """ Test if tier1 can be a reference tier for tier2.
+        """ Test if tier1 can be a parent tier for tier2.
 
         :returns: One of hierarchy types or an empty string
 

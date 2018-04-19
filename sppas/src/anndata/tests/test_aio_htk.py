@@ -2,11 +2,7 @@
 
 import unittest
 import os.path
-import shutil
 
-from sppas.src.utils.fileutils import sppasFileUtils
-
-from ..anndataexc import AioMultiTiersError
 from ..aio.htk import sppasBaseHTK
 from ..aio.htk import sppasLab
 
@@ -19,7 +15,6 @@ from ..annlocation.location import sppasLocation
 
 # ---------------------------------------------------------------------------
 
-TEMP = sppasFileUtils().set_random()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # ---------------------------------------------------------------------------
@@ -91,15 +86,6 @@ class TestLab(unittest.TestCase):
     Represents a lab file reader/writer.
 
     """
-    def setUp(self):
-        if os.path.exists(TEMP) is False:
-            os.mkdir(TEMP)
-
-    def tearDown(self):
-        shutil.rmtree(TEMP)
-
-    # -----------------------------------------------------------------
-
     def test_read(self):
         """ Test of reading a LAB sample file. """
 

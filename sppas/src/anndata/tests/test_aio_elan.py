@@ -42,10 +42,13 @@
 """
 import unittest
 import os.path
+import shutil
 import xml.etree.cElementTree as ET
 
 import sppas
 from sppas.src.utils.datatype import sppasTime
+from sppas.src.utils.fileutils import sppasFileUtils
+
 from ..aio.elan import sppasEAF
 from ..annlocation.location import sppasLocation
 from ..annlocation.interval import sppasInterval
@@ -58,6 +61,9 @@ from ..media import sppasMedia
 from ..ctrlvocab import sppasCtrlVocab
 from ..aio.aioutils import format_labels
 
+# ---------------------------------------------------------------------------
+
+TEMP = sppasFileUtils().set_random()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # ---------------------------------------------------------------------------
@@ -68,6 +74,16 @@ class TestEAF(unittest.TestCase):
     Test reader/writer of EAF files.
 
     """
+    def setUp(self):
+        if os.path.exists(TEMP) is False:
+            os.mkdir(TEMP)
+
+    def tearDown(self):
+        return
+        shutil.rmtree(TEMP)
+
+    # -----------------------------------------------------------------
+
     def test_detect(self):
         """ Test the file format detection method. """
 
@@ -134,8 +150,8 @@ class TestEAF(unittest.TestCase):
         # so, test the result!
         author = sppas.__name__ + " " + sppas.__version__ + " (C) " + sppas.__author__
         self.assertEqual(sppasTime().now, eaf.get_meta("file_created_date"))
-        self.assertEqual("2.8", eaf.get_meta("file_format_version"))
-        self.assertEqual(author, eaf.get_meta("file_author"))
+        self.assertEqual("3.0", eaf.get_meta("file_created_format_version"))
+        self.assertEqual(author, eaf.get_meta("file_created_author"))
 
     # -----------------------------------------------------------------------
 
@@ -147,23 +163,23 @@ class TestEAF(unittest.TestCase):
         eaf = sppasEAF()
 
         # override the license (content only)
-        eaf.set_meta('file_license_0', 'This is the license content of the document.')
+        eaf.set_meta('file_license_text_0', 'This is the license content of the document.')
         eaf._format_license(root)
         for i, license_root in enumerate(root.findall('LICENSE')):
             eaf._parse_license(license_root, i)
-        self.assertTrue(eaf.is_meta_key('file_license_0'))
-        self.assertEqual('This is the license content of the document.', eaf.get_meta('file_license_0'))
-        self.assertEqual('https://www.gnu.org/licenses/gpl-3.0.en.html', eaf.get_meta('file_license_0_url'))
+        self.assertTrue(eaf.is_meta_key('file_license_text_0'))
+        self.assertEqual('This is the license content of the document.', eaf.get_meta('file_license_text_0'))
+        self.assertEqual('https://www.gnu.org/licenses/gpl-3.0.en.html', eaf.get_meta('file_license_url_0'))
 
         # a license (content + url)
-        eaf.set_meta('file_license_0_url', 'filename.txt')
+        eaf.set_meta('file_license_url_0', 'filename.txt')
         eaf._format_license(root)
         for i, license_root in enumerate(root.findall('LICENSE')):
             eaf._parse_license(license_root)
-        self.assertTrue(eaf.is_meta_key('file_license_0'))
-        self.assertTrue(eaf.is_meta_key('file_license_0_url'))
-        self.assertEqual('This is the license content of the document.', eaf.get_meta('file_license_0'))
-        self.assertEqual('filename.txt', eaf.get_meta('file_license_0_url'))
+        self.assertTrue(eaf.is_meta_key('file_license_text_0'))
+        self.assertTrue(eaf.is_meta_key('file_license_url_0'))
+        self.assertEqual('This is the license content of the document.', eaf.get_meta('file_license_text_0'))
+        self.assertEqual('filename.txt', eaf.get_meta('file_license_url_0'))
 
     # -----------------------------------------------------------------------
 
@@ -176,27 +192,27 @@ class TestEAF(unittest.TestCase):
 
         # no license
         eaf._format_locales(root)
-        self.assertFalse(eaf.is_meta_key('locale_0'))
+        self.assertFalse(eaf.is_meta_key('locale_code_0'))
 
         # a locale
-        eaf.set_meta('locale_0', 'en')
+        eaf.set_meta('locale_code_0', 'en')
         eaf._format_locales(root)
         for i, locale_root in enumerate(root.findall('LOCALE')):
             eaf._parse_locale(locale_root, i)
-        self.assertTrue(eaf.is_meta_key('locale_0'))
-        self.assertFalse(eaf.is_meta_key('locale_0_country'))
-        self.assertFalse(eaf.is_meta_key('locale_0_variant'))
-        self.assertEqual('en', eaf.get_meta('locale_0'))
+        self.assertTrue(eaf.is_meta_key('locale_code_0'))
+        self.assertFalse(eaf.is_meta_key('locale_country_0'))
+        self.assertFalse(eaf.is_meta_key('locale_variant_0'))
+        self.assertEqual('en', eaf.get_meta('locale_code_0'))
 
         # a license (content + url)
-        eaf.set_meta('locale_0_country', 'US')
+        eaf.set_meta('locale_country_0', 'US')
         eaf._format_locales(root)
         for i, locale_root in enumerate(root.findall('LOCALE')):
             eaf._parse_locale(locale_root)
-        self.assertTrue(eaf.is_meta_key('locale_0'))
-        self.assertTrue(eaf.is_meta_key('locale_0_country'))
-        self.assertEqual('en', eaf.get_meta('locale_0'))
-        self.assertEqual('US', eaf.get_meta('locale_0_country'))
+        self.assertTrue(eaf.is_meta_key('locale_code_0'))
+        self.assertTrue(eaf.is_meta_key('locale_country_0'))
+        self.assertEqual('en', eaf.get_meta('locale_code_0'))
+        self.assertEqual('US', eaf.get_meta('locale_country_0'))
 
     # -----------------------------------------------------------------------
 
@@ -209,36 +225,37 @@ class TestEAF(unittest.TestCase):
 
         # no language defined (sppas assign 'und')
         eaf._format_languages(root)
-        self.assertTrue(eaf.is_meta_key('language_0_iso'))
-        self.assertTrue(eaf.is_meta_key('language_0_name'))
-        self.assertTrue(eaf.is_meta_key('language_0_url'))
-        self.assertEqual('und', eaf.get_meta('language_0_iso'))
-        self.assertEqual('Undetermined', eaf.get_meta('language_0_name'))
-        self.assertEqual('https://iso639-3.sil.org/code/und', eaf.get_meta('language_0_url'))
+        self.assertTrue(eaf.is_meta_key('language_code_0'))
+        self.assertTrue(eaf.is_meta_key('language_name_0'))
+        self.assertTrue(eaf.is_meta_key('language_url_0'))
+        self.assertEqual('und', eaf.get_meta('language_code_0'))
+        self.assertEqual('Undetermined', eaf.get_meta('language_name_0'))
+        self.assertEqual('https://iso639-3.sil.org/code/und', eaf.get_meta('language_url_0'))
 
         # a language (override the default)
-        eaf.set_meta('language_0_iso', 'eng')
+        eaf.set_meta('language_code_0', 'eng')
+        self.assertEqual('eng', eaf.get_meta('language_code_0'))
         eaf._format_languages(root)
         for i, language_root in enumerate(root.findall('LANGUAGE')):
             eaf._parse_language(language_root, i)
-        self.assertTrue(eaf.is_meta_key('language_0_iso'))
-        self.assertEqual('eng', eaf.get_meta('language_0_iso'))
-        self.assertEqual('Undetermined', eaf.get_meta('language_0_name'))
-        self.assertEqual('https://iso639-3.sil.org/code/und', eaf.get_meta('language_0_url'))
+        self.assertTrue(eaf.is_meta_key('language_code_0'))
+        self.assertEqual('eng', eaf.get_meta('language_code_0'))
+        self.assertEqual('Undetermined', eaf.get_meta('language_name_0'))
+        self.assertEqual('https://iso639-3.sil.org/code/und', eaf.get_meta('language_url_0'))
 
         # a language (content + url)
-        eaf.set_meta('language_0_iso', 'fra')
-        eaf.set_meta('language_0_name', 'French')
-        eaf.set_meta('language_0_url', 'https://iso639-3.sil.org/code/fra')
+        eaf.set_meta('language_code_0', 'fra')
+        eaf.set_meta('language_name_0', 'French')
+        eaf.set_meta('language_url_0', 'https://iso639-3.sil.org/code/fra')
         eaf._format_languages(root)
         for i, language_root in enumerate(root.findall('LANGUAGE')):
             eaf._parse_language(language_root)
-        self.assertTrue(eaf.is_meta_key('language_0_iso'))
-        self.assertTrue(eaf.is_meta_key('language_0_name'))
-        self.assertTrue(eaf.is_meta_key('language_0_url'))
-        self.assertEqual('fra', eaf.get_meta('language_0_iso'))
-        self.assertEqual('French', eaf.get_meta('language_0_name'))
-        self.assertEqual('https://iso639-3.sil.org/code/fra', eaf.get_meta('language_0_url'))
+        self.assertTrue(eaf.is_meta_key('language_code_0'))
+        self.assertTrue(eaf.is_meta_key('language_name_0'))
+        self.assertTrue(eaf.is_meta_key('language_url_0'))
+        self.assertEqual('fra', eaf.get_meta('language_code_0'))
+        self.assertEqual('French', eaf.get_meta('language_name_0'))
+        self.assertEqual('https://iso639-3.sil.org/code/fra', eaf.get_meta('language_url_0'))
 
     # -----------------------------------------------------------------------
 
@@ -364,7 +381,9 @@ class TestEAF(unittest.TestCase):
         root = sppasEAF._format_document()
         ctrl_vocab = sppasCtrlVocab(name="c")
 
-        sppasEAF._format_ctrl_vocab(root, ctrl_vocab)
+        eaf = sppasEAF()
+        eaf.add_ctrl_vocab(ctrl_vocab)
+        eaf._format_ctrl_vocab(root, ctrl_vocab)
         c = list()
         for c_node in root.findall('CONTROLLED_VOCABULARY'):
             c.append(sppasEAF._parse_ctrl_vocab(c_node))
@@ -390,10 +409,10 @@ class TestEAF(unittest.TestCase):
                    '  </ANNOTATION>\n' \
                    '</TIER>'
         time_slots = dict()
-        time_slots['ts2'] = 0
-        time_slots['ts5'] = 1000
-        time_slots['ts22'] = 2000
-        time_slots['ts24'] = 3567
+        time_slots['ts2'] = "0"
+        time_slots['ts5'] = "1000"
+        time_slots['ts22'] = "2000"
+        time_slots['ts24'] = "3567"
 
         tree = ET.ElementTree(ET.fromstring(tier_xml))
         tier_root = tree.getroot()
@@ -518,7 +537,9 @@ class TestEAF(unittest.TestCase):
         a1.set_meta('id', "a1")
         created_anns = sppasEAF._create_alignable_annotation_element(a1, tier_root)
         self.assertEqual(1, len(created_anns))
-        self.assertEqual('', created_anns[0].text)
+        self.assertEqual(None, created_anns[0].text)
+        label_value = created_anns[0].find('ANNOTATION_VALUE')
+        self.assertEqual("", label_value.text)
         self.assertEqual("1.0", created_anns[0].attrib['TIME_SLOT_REF1'])
         self.assertEqual("3.5", created_anns[0].attrib['TIME_SLOT_REF2'])
         self.assertEqual("a1", created_anns[0].attrib['ANNOTATION_ID'])
@@ -532,7 +553,8 @@ class TestEAF(unittest.TestCase):
         a2.set_meta('id', "a2")
         created_anns = sppasEAF._create_alignable_annotation_element(a2, tier_root)
         self.assertEqual(1, len(created_anns))
-        self.assertEqual('toto', created_anns[0].text)
+        label_value = created_anns[0].find('ANNOTATION_VALUE')
+        self.assertEqual("toto", label_value.text)
         self.assertEqual("1.0", created_anns[0].attrib['TIME_SLOT_REF1'])
         self.assertEqual("3.5", created_anns[0].attrib['TIME_SLOT_REF2'])
         self.assertEqual("a2", created_anns[0].attrib['ANNOTATION_ID'])
@@ -547,11 +569,13 @@ class TestEAF(unittest.TestCase):
         a3.set_meta('id', "a3")
         created_anns = sppasEAF._create_alignable_annotation_element(a3, tier_root)
         self.assertEqual(2, len(created_anns))
-        self.assertEqual('toto1', created_anns[0].text)
+        label_value = created_anns[0].find('ANNOTATION_VALUE')
+        self.assertEqual("toto1", label_value.text)
         self.assertEqual("1.0", created_anns[0].attrib['TIME_SLOT_REF1'])
         self.assertEqual("1.0_none_1", created_anns[0].attrib['TIME_SLOT_REF2'])
         self.assertEqual("a3", created_anns[0].attrib['ANNOTATION_ID'])
-        self.assertEqual('toto2', created_anns[1].text)
+        label_value = created_anns[1].find('ANNOTATION_VALUE')
+        self.assertEqual("toto2", label_value.text)
         self.assertEqual("1.0_none_1", created_anns[1].attrib['TIME_SLOT_REF1'])
         self.assertEqual("3.5", created_anns[1].attrib['TIME_SLOT_REF2'])
         self.assertEqual("a3_2", created_anns[1].attrib['ANNOTATION_ID'])
@@ -567,15 +591,18 @@ class TestEAF(unittest.TestCase):
         a3.set_meta('id', "a3")
         created_anns = sppasEAF._create_alignable_annotation_element(a3, tier_root)
         self.assertEqual(3, len(created_anns))
-        self.assertEqual('toto1', created_anns[0].text)
+        label_value = created_anns[0].find('ANNOTATION_VALUE')
+        self.assertEqual("toto1", label_value.text)
         self.assertEqual("1.0", created_anns[0].attrib['TIME_SLOT_REF1'])
         self.assertEqual("1.0_none_1", created_anns[0].attrib['TIME_SLOT_REF2'])
         self.assertEqual("a3", created_anns[0].attrib['ANNOTATION_ID'])
-        self.assertEqual('toto2', created_anns[1].text)
+        label_value = created_anns[1].find('ANNOTATION_VALUE')
+        self.assertEqual("toto2", label_value.text)
         self.assertEqual("1.0_none_1", created_anns[1].attrib['TIME_SLOT_REF1'])
         self.assertEqual("1.0_none_2", created_anns[1].attrib['TIME_SLOT_REF2'])
         self.assertEqual("a3_2", created_anns[1].attrib['ANNOTATION_ID'])
-        self.assertEqual('toto3', created_anns[2].text)
+        label_value = created_anns[2].find('ANNOTATION_VALUE')
+        self.assertEqual("toto3", label_value.text)
         self.assertEqual("1.0_none_2", created_anns[2].attrib['TIME_SLOT_REF1'])
         self.assertEqual("3.5", created_anns[2].attrib['TIME_SLOT_REF2'])
         self.assertEqual("a3_3", created_anns[2].attrib['ANNOTATION_ID'])
@@ -618,20 +645,20 @@ class TestEAF(unittest.TestCase):
         self.assertEqual(("6.0_none_1", "6.5"), created["a3_2"])
 
         self.assertEqual(6, len(time_values))
-        self.assertTrue(("1.0", tier) in time_values)
-        self.assertTrue(("3.5", tier) in time_values)
-        self.assertTrue(("5.0", tier) in time_values)
-        self.assertTrue(("6.0", tier) in time_values)
-        self.assertTrue(("6.0_none_1", tier) in time_values)
-        self.assertTrue(("6.5", tier) in time_values)
+        self.assertTrue((1.0, 0, tier) in time_values)
+        self.assertTrue((3.5, 0, tier) in time_values)
+        self.assertTrue((5.0, 0, tier) in time_values)
+        self.assertTrue((6.0, 0, tier) in time_values)
+        self.assertTrue((6.0, 1, tier) in time_values)
+        self.assertTrue((6.5, 0, tier) in time_values)
 
         time_slots = sppasEAF._fix_time_slots(time_values)
-        self.assertEqual("ts1", time_slots[("1.0", tier)])
-        self.assertEqual("ts2", time_slots[("3.5", tier)])
-        self.assertEqual("ts3", time_slots[("5.0", tier)])
-        self.assertEqual("ts4", time_slots[("6.0", tier)])
-        self.assertEqual("ts5", time_slots[("6.0_none_1", tier)])
-        self.assertEqual("ts6", time_slots[("6.5", tier)])
+        self.assertEqual("ts1", time_slots[(1.0, 0, tier)])
+        self.assertEqual("ts2", time_slots[(3.5, 0, tier)])
+        self.assertEqual("ts3", time_slots[(5.0, 0, tier)])
+        self.assertEqual("ts4", time_slots[(6.0, 0, tier)])
+        self.assertEqual("ts5", time_slots[(6.0, 1, tier)])
+        self.assertEqual("ts6", time_slots[(6.5, 0, tier)])
 
         sppasEAF._re_format_alignable_annotations(tier_root, tier, time_slots)
 
@@ -699,11 +726,11 @@ class TestEAF(unittest.TestCase):
         self.assertEqual(8, len(created))
         self.assertEqual(("ts1", "ts3"), created["a1"])
         self.assertEqual(("ts3", "ts5"), created["a2"])
-        self.assertEqual(("ts7", "ts9"), created["a3"])
-        self.assertEqual(("ts9", "ts11"), created["a3_2"])
+        self.assertEqual(("ts7", "ts8"), created["a3"])
+        self.assertEqual(("ts8", "ts11"), created["a3_2"])
         self.assertEqual(("ts2", "ts4"), created["a4"])
         self.assertEqual(("ts4", "ts6"), created["a5"])
-        self.assertEqual(("ts8", "ts10"), created["a6"])
+        self.assertEqual(("ts9", "ts10"), created["a6"])
         self.assertEqual(("ts10", "ts12"), created["a6_2"])
 
     # -----------------------------------------------------------------------
@@ -745,3 +772,18 @@ class TestEAF(unittest.TestCase):
             for ann in tier:
                 print ann
         self.assertEqual(len(eaf), 11)
+
+    # -----------------------------------------------------------------------
+
+    def test_read_write(self):
+        eaf = sppasEAF()
+        eaf.read(os.path.join(DATA, "sample.eaf"))
+        for tier in eaf:
+            print " --------------- {:s} ------------".format(tier.get_name())
+            for ann in tier:
+                print ann
+        self.assertEqual(len(eaf), 11)
+
+        eaf.write(os.path.join(TEMP, "sample.eaf"))
+        eaf2 = sppasEAF()
+        eaf2.read(os.path.join(TEMP, "sample.eaf"))

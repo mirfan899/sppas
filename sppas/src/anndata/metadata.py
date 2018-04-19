@@ -132,8 +132,8 @@ class sppasMetaData(object):
         """ Add metadata about the license applied to the object (GPLv3). """
 
         # Elan
-        self.set_meta('file_license_%s' % idx, 'GNU GPL V3')
-        self.set_meta('file_license_%s_url' % idx, 'https://www.gnu.org/licenses/gpl-3.0.en.html')
+        self.set_meta('file_license_text_%s' % idx, 'GNU GPL V3')
+        self.set_meta('file_license_url_%s' % idx, 'https://www.gnu.org/licenses/gpl-3.0.en.html')
 
     # -----------------------------------------------------------------------
 
@@ -153,10 +153,10 @@ class sppasMetaData(object):
         """ Add metadata about the language (und). """
 
         # Elan
-        self.set_meta('language_iso_code', "iso639-3")
-        self.set_meta('language_0_iso', "und")
-        self.set_meta('language_0_name', "Undetermined")
-        self.set_meta('language_0_url', "https://iso639-3.sil.org/code/und")
+        self.set_meta('language_iso', "iso639-3")
+        self.set_meta('language_code_0', "und")
+        self.set_meta('language_name_0', "Undetermined")
+        self.set_meta('language_url_0', "https://iso639-3.sil.org/code/und")
 
     # -----------------------------------------------------------------------
 
@@ -211,30 +211,6 @@ class sppasDefaultMeta(sppasMetaData):
     def __init__(self):
         """ Instantiate a default set of meta data. """
         super(sppasDefaultMeta, self).__init__()
-
-    # -----------------------------------------------------------------------
-
-    def rw_file(self):
-        """ Add metadata related to a file to read/write.
-        These metadata are assigned by sppasRW() when reading and/or writing
-        a file.
-
-        """
-        self.set_meta("file_format_version", "")  # version of the file format
-        self.set_meta("file_version", "")         # version of the file
-        self.set_meta("file_author", "")          # complex name of the "author" of the file
-        self.set_meta("file_license", "")         # content of the license
-        self.set_meta("file_license_url", "")     # url of the license on the file
-
-        self.set_meta("file_name", "")
-        self.set_meta("file_path", "")
-        self.set_meta("file_ext", "")
-
-        self.set_meta("file_reader", "")
-        self.set_meta("file_read_date", "")
-
-        self.set_meta("file_writer", "")
-        self.set_meta("file_write_date", "")
 
     # -----------------------------------------------------------------------
 
