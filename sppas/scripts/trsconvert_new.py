@@ -159,7 +159,20 @@ if args.n:
 for key in trs_input.get_meta_keys():
     trs_output.set_meta(key, trs_input.get_meta(key))
 
-# TODO: copy relevant hierarchy links
+# copy relevant hierarchy links
+for child_tier in trs_input:
+    parent_tier = trs_input.get_hierarchy().get_parent(child_tier)
+    if parent_tier is not None:
+        output_child_tier = trs_output.find(child_tier.get_name())
+        output_parent_tier = trs_output.find(parent_tier.get_name())
+        if output_child_tier is not None and output_parent_tier is not None:
+            link_type = trs_input.get_hierarchy().get_hierarchy_type(child_tier)
+            trs_output.add_hierarchy_link(link_type,
+                                          output_parent_tier,
+                                          output_child_tier)
+
+# copy all media
+trs_output.set_media_list(trs_input.get_media_list())
 
 # ----------------------------------------------------------------------------
 # Write

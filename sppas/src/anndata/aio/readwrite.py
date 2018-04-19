@@ -36,11 +36,9 @@
 
 """
 import os.path
-import time
 from datetime import datetime
 from collections import OrderedDict
 
-import sppas
 from sppas.src.utils.makeunicode import u
 from sppas.src.utils.datatype import sppasTime
 
@@ -65,7 +63,7 @@ from .weka import sppasXRFF
 from .transcriber import sppasTRS
 from .audacity import sppasAudacity
 from .anvil import sppasAnvil
-# from .elan import sppasEAF
+from .elan import sppasEAF
 from .annotationpro import sppasANT
 from .annotationpro import sppasANTX
 from .xra import sppasXRA
@@ -89,7 +87,7 @@ class sppasRW(object):
     TRANSCRIPTION_TYPES[sppasARFF().default_extension.lower()] = sppasARFF
     TRANSCRIPTION_TYPES[sppasXRFF().default_extension.lower()] = sppasXRFF
     TRANSCRIPTION_TYPES[sppasAnvil().default_extension.lower()] = sppasAnvil
-    # TRANSCRIPTION_TYPES[sppasEAF().default_extension.lower()] = sppasEAF
+    TRANSCRIPTION_TYPES[sppasEAF().default_extension.lower()] = sppasEAF
     TRANSCRIPTION_TYPES[sppasANT().default_extension.lower()] = sppasANT
     TRANSCRIPTION_TYPES[sppasANTX().default_extension.lower()] = sppasANTX
     TRANSCRIPTION_TYPES[sppasTRS().default_extension.lower()] = sppasTRS

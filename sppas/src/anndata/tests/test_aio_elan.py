@@ -232,16 +232,18 @@ class TestEAF(unittest.TestCase):
         self.assertEqual('Undetermined', eaf.get_meta('language_name_0'))
         self.assertEqual('https://iso639-3.sil.org/code/und', eaf.get_meta('language_url_0'))
 
+        # create an element tree for EAF format
+        root = sppasEAF._format_document()
+        eaf = sppasEAF()
+
         # a language (override the default)
         eaf.set_meta('language_code_0', 'eng')
         self.assertEqual('eng', eaf.get_meta('language_code_0'))
-        eaf._format_languages(root)
+        eaf._format_languages(root)  # add the language into the tree
         for i, language_root in enumerate(root.findall('LANGUAGE')):
+            # get the language from the tree to eaf
             eaf._parse_language(language_root, i)
-        self.assertTrue(eaf.is_meta_key('language_code_0'))
         self.assertEqual('eng', eaf.get_meta('language_code_0'))
-        self.assertEqual('Undetermined', eaf.get_meta('language_name_0'))
-        self.assertEqual('https://iso639-3.sil.org/code/und', eaf.get_meta('language_url_0'))
 
         # a language (content + url)
         eaf.set_meta('language_code_0', 'fra')
@@ -709,8 +711,9 @@ class TestEAF(unittest.TestCase):
         # Create the tiers (not filled)
         root = sppasEAF._format_document()
         eaf._format_tier_root(root)
+        alignables = [tier for tier in eaf]
         # Fill with annotations
-        eaf._format_alignable_tiers(root)
+        eaf._format_alignable_tiers(root, alignables)
 
         created = dict()
         for tier_root in root.findall('TIER'):
@@ -745,45 +748,61 @@ class TestEAF(unittest.TestCase):
                                      sppasLabel(sppasTag("toto_a2")))
         a2.set_meta('id', "a2")
         a3 = tier1.create_annotation(sppasLocation(sppasInterval(sppasPoint(6.), sppasPoint(6.5))),
-                                     [sppasLabel(sppasTag("toto1_a3")),
-                                      sppasLabel(sppasTag("toto2_a3"))])
+                                     sppasLabel(sppasTag("toto1_a3")))
         a3.set_meta('id', "a3")
 
         tier2 = eaf.create_tier('Test2')
         a4 = tier2.create_annotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
         a4.set_meta('id', "a4")
         a5 = tier2.create_annotation(sppasLocation(sppasInterval(sppasPoint(3.5), sppasPoint(5.))),
-                                     sppasLabel(sppasTag("toto_a2")))
+                                     sppasLabel(sppasTag("toto_t2_a2")))
         a5.set_meta('id', "a5")
-        a6 = tier2.create_annotation(sppasLocation(sppasInterval(sppasPoint(6.), sppasPoint(7.))),
-                                     [sppasLabel(sppasTag("toto1_a3")),
-                                      sppasLabel(sppasTag("toto2_a3"))])
+        a6 = tier2.create_annotation(sppasLocation(sppasInterval(sppasPoint(6.), sppasPoint(6.5))),
+                                     sppasLabel(sppasTag("toto1_t2_a3")))
         a6.set_meta('id', "a6")
+        eaf.add_hierarchy_link("TimeAssociation", tier1, tier2)
+
+        # Create the tiers (not filled)
+        root = sppasEAF._format_document()
+        eaf._format_tier_root(root)
+        alignables = eaf._fix_alignable_tiers()
+        # Fill with annotations (alignable then ref)
+        eaf._format_alignable_tiers(root, alignables)
+        eaf._format_reference_tiers(root, alignables)
+
+        created = dict()
+        for tier_root in root.findall('TIER'):
+            for ann_root in tier_root.findall('ANNOTATION'):
+                align_ann_root = ann_root.find('ALIGNABLE_ANNOTATION')
+                if align_ann_root is not None:
+                    # get the time values we previously assigned.
+                    begin = align_ann_root.attrib["TIME_SLOT_REF1"]
+                    end = align_ann_root.attrib["TIME_SLOT_REF2"]
+                    ann_id = align_ann_root.attrib["ANNOTATION_ID"]
+                    created[ann_id] = (begin, end)
+                else:
+                    ref_ann_root = ann_root.find('REF_ANNOTATION')
+                    ann_id = ref_ann_root.attrib["ANNOTATION_ID"]
+                    ref = ref_ann_root.attrib['ANNOTATION_REF']
+                    created[ann_id] = (ref, ref)
+
+        self.assertEqual(6, len(created))
+        self.assertEqual(("ts1", "ts2"), created["a1"])
+        self.assertEqual(("ts2", "ts3"), created["a2"])
+        self.assertEqual(("ts4", "ts5"), created["a3"])
+        self.assertEqual(("a1", "a1"), created["a4"])
+        self.assertEqual(("a2", "a2"), created["a5"])
+        self.assertEqual(("a3", "a3"), created["a6"])
 
     # -----------------------------------------------------------------------
     # READ / WRITE
     # -----------------------------------------------------------------------
 
-    def test_read(self):
-        eaf = sppasEAF()
-        eaf.read(os.path.join(DATA, "sample.eaf"))
-        for tier in eaf:
-            print " --------------- {:s} ------------".format(tier.get_name())
-            for ann in tier:
-                print ann
-        self.assertEqual(len(eaf), 11)
-
-    # -----------------------------------------------------------------------
-
     def test_read_write(self):
         eaf = sppasEAF()
         eaf.read(os.path.join(DATA, "sample.eaf"))
-        for tier in eaf:
-            print " --------------- {:s} ------------".format(tier.get_name())
-            for ann in tier:
-                print ann
         self.assertEqual(len(eaf), 11)
-
         eaf.write(os.path.join(TEMP, "sample.eaf"))
         eaf2 = sppasEAF()
         eaf2.read(os.path.join(TEMP, "sample.eaf"))
+        self.assertEqual(len(eaf2), 11)

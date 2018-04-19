@@ -167,10 +167,10 @@ class sppasXRA(sppasBaseIO):
         if metadata_root is not None:
             for entry_node in metadata_root.findall('Entry'):
                 try:
-                    key = entry_node.attrib['key'].lower()
+                    key = entry_node.attrib['key']
                 except Exception:
                     # XRA < 1.2
-                    key = entry_node.attrib['Key'].lower()
+                    key = entry_node.attrib['Key']
 
                 if entry_node.text is not None:
                     meta_object.set_meta(key, entry_node.text)
@@ -578,7 +578,7 @@ class sppasXRA(sppasBaseIO):
             self._format_media(media_root, media)
 
         hierarchy_root = ET.SubElement(root, 'Hierarchy')
-        self._format_hierarchy(hierarchy_root, self._hierarchy)
+        self._format_hierarchy(hierarchy_root)
 
         for vocabulary in self.get_ctrl_vocab_list():
             vocabulary_root = ET.SubElement(root, 'Vocabulary')
@@ -586,7 +586,7 @@ class sppasXRA(sppasBaseIO):
 
         sppasXRA.indent(root)
         tree = ET.ElementTree(root)
-        tree.write(filename, sppas.encoding, method="xml")
+        tree.write(filename, encoding=sppas.encoding, method="xml", xml_declaration=True)
 
     # -----------------------------------------------------------------------
 
@@ -798,17 +798,17 @@ class sppasXRA(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def _format_hierarchy(self, hierarchy_root, hierarchy):
+    def _format_hierarchy(self, hierarchy_root):
         """ Add a 'Hierarchy' element in the tree from a sppasHierarchy().
 
         :param hierarchy_root: (ET) XML Element tree root.
-        :param hierarchy: (sppasHierarchy)
 
         """
         for child_tier in self:
-            parent_tier = hierarchy.get_parent(child_tier)
+            parent_tier = self._hierarchy.get_parent(child_tier)
+
             if parent_tier is not None:
-                link_type = hierarchy.get_hierarchy_type(child_tier)
+                link_type = self._hierarchy.get_hierarchy_type(child_tier)
                 link = ET.SubElement(hierarchy_root, 'Link')
                 link.set('type', link_type)
                 link.set('from', parent_tier.get_meta('id'))
