@@ -45,7 +45,7 @@
 
 """
 metadata = dict(
-    __version__="1.9.4",
+    __version__="1.9.5",
     __author__="Brigitte Bigi",
     __contact__="brigite.bigi@gmail.com",
     __copyright__="Copyright (C) 2011-2018 Brigitte Bigi",
@@ -62,4 +62,3 @@ and performs the analysis of any annotated data.",
 globals().update(metadata)
 
 __all__ = metadata.keys()
-

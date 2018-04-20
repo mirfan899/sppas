@@ -79,7 +79,6 @@ class TestEAF(unittest.TestCase):
             os.mkdir(TEMP)
 
     def tearDown(self):
-        return
         shutil.rmtree(TEMP)
 
     # -----------------------------------------------------------------

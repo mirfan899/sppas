@@ -214,3 +214,13 @@ Resources:
     - new acoustic model
 
 
+### SPPAS 1.9.5 (2018, 25th April)
+
+#### Programming:
+
+- I/O development of the package "anndata".
+- Reading and writing of annotated files is now based on the new 'anndata'
+  package instead of the old 'annotationdata' package.
+  This was a big issue and it allows a better support of annotated files
+  (less bugs and the amount of lost information is drastically reduced).
+

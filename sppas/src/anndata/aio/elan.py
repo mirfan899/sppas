@@ -1197,13 +1197,13 @@ class sppasEAF(sppasBaseIO):
         """
         # no tier, nothing to do!
         if self.is_empty():
-            return
+            return {}
 
         min_time_point = self.get_min_loc()
         max_time_point = self.get_max_loc()
         if min_time_point is None or max_time_point is None:
             # only empty tiers in the transcription: nothing to add in the tree
-            return
+            return {}
 
         for tier in self:
             # not a relevant tier
@@ -1214,8 +1214,10 @@ class sppasEAF(sppasBaseIO):
 
             if tier.is_interval() is True:
                 new_tier = merge_overlapping_annotations(tier)
-            else:
+            elif tier.is_point() is True:
                 new_tier = point2interval(tier, 0.02)
+            else:
+                continue
             new_tier.set_meta('id', tier.get_meta('id'))
 
         # create the annotations

@@ -40,7 +40,7 @@
 @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 @contact:      brigitte.bigi@gmail.com
 @license:      GPL, v3
-@copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+@copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 @summary:      Readers and writers of annotated data.
 
 """
@@ -54,20 +54,8 @@ import os.path
 from sppas.src.anndata.aio.readwrite import sppasRW
 from ..transcription import Transcription
 
-from .text import RawText, CSV
-from .praat import TextGrid, PitchTier, IntensityTier
+from .praat import PitchTier, IntensityTier
 from .signaix import HzPitch
-from .transcriber import Transcriber
-from .xra import XRA
-from .phonedit import Phonedit
-from .htk import HTKLabel, MasterLabel
-from .subtitle import SubRip, SubViewer
-from .sclite import TimeMarkedConversation, SegmentTimeMark
-from .elan import Elan
-from .anvil import Anvil
-from .annotationpro import Antx
-from .xtrans import Xtrans
-from .audacity import Audacity
 
 # ----------------------------------------------------------------------------
 # Variables
@@ -106,26 +94,9 @@ def get_extension(filename):
 
 
 TRANSCRIPTION_TYPES = {
-    "txt": RawText,
-    "csv": CSV,
     "intensitytier": IntensityTier,
     "pitchtier": PitchTier,
-    "hz": HzPitch,
-    "textgrid": TextGrid,
-    "trs": Transcriber,
-    "xra": XRA,
-    "mrk": Phonedit,
-    "lab": HTKLabel,
-    "mlf": MasterLabel,
-    "srt": SubRip,
-    "sub": SubViewer,
-    "ctm": TimeMarkedConversation,
-    "stm": SegmentTimeMark,
-    "eaf": Elan,
-    "anvil": Anvil,
-    "antx": Antx,
-    "tdf": Xtrans,
-    "aup": Audacity
+    "hz": HzPitch
 }
 
 
@@ -141,6 +112,8 @@ def NewTrs(trs_type):
         return TRANSCRIPTION_TYPES[trs_type.lower()]()
     except KeyError:
         raise KeyError("Unrecognized Transcription type: %s" % trs_type)
+
+# ----------------------------------------------------------------------------
 
 
 def read(filename):
@@ -181,7 +154,7 @@ def read(filename):
 
     """
     ext = get_extension(filename).lower()
-    if ext in ['pitchtier', 'hz']:
+    if ext in ['intensitytier', 'pitchtier', 'hz']:
         try:
             transcription = NewTrs(ext)
             transcription.read(unicode(filename))
@@ -223,7 +196,7 @@ def write(filename, transcription):
 
     """
     ext = get_extension(filename).lower()
-    if ext in ['pitchtier', 'hz']:
+    if ext in ['intensitytier', 'pitchtier', 'hz']:
         output = NewTrs(ext)
         output.Set(transcription)
         output.SetMinTime(transcription.GetMinTime())
