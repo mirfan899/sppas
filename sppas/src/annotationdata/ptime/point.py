@@ -190,7 +190,7 @@ class TimePoint(BasePlacement):
         """
         if radius < 0.:
             raise ValueError(
-                "The vagueness of a time point can't be negative: %r" % radius)
+                "The vagueness of a time point can't be negative or None. Got: %r" % radius)
 
         if self.__midpoint < radius:
             radius = self.__midpoint

@@ -47,5 +47,6 @@ __all__ = [
     'sppasPoint',
     'sppasInterval',
     'sppasDisjoint',
-    'sppasDuration'
+    'sppasDuration',
+    'sppasLocation'
 ]

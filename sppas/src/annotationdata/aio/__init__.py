@@ -49,11 +49,25 @@
 # Imports
 # ----------------------------------------------------------------------------
 
-from os.path import splitext
+import os.path
 
-from .trsfactory import TrsFactory
-from .heuristic import HeuristicFactory
+from sppas.src.anndata.aio.readwrite import sppasRW
+from ..transcription import Transcription
 
+from .text import RawText, CSV
+from .praat import TextGrid, PitchTier, IntensityTier
+from .signaix import HzPitch
+from .transcriber import Transcriber
+from .xra import XRA
+from .phonedit import Phonedit
+from .htk import HTKLabel, MasterLabel
+from .subtitle import SubRip, SubViewer
+from .sclite import TimeMarkedConversation, SegmentTimeMark
+from .elan import Elan
+from .anvil import Anvil
+from .annotationpro import Antx
+from .xtrans import Xtrans
+from .audacity import Audacity
 
 # ----------------------------------------------------------------------------
 # Variables
@@ -84,11 +98,49 @@ extensions_out_multitiers = ['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.antx
 
 
 def get_extension(filename):
-    return splitext(filename)[1][1:]
+    return os.path.splitext(filename)[1][1:]
 
 # ----------------------------------------------------------------------------
 # Functions for reading and writing annotated files.
 # ----------------------------------------------------------------------------
+
+
+TRANSCRIPTION_TYPES = {
+    "txt": RawText,
+    "csv": CSV,
+    "intensitytier": IntensityTier,
+    "pitchtier": PitchTier,
+    "hz": HzPitch,
+    "textgrid": TextGrid,
+    "trs": Transcriber,
+    "xra": XRA,
+    "mrk": Phonedit,
+    "lab": HTKLabel,
+    "mlf": MasterLabel,
+    "srt": SubRip,
+    "sub": SubViewer,
+    "ctm": TimeMarkedConversation,
+    "stm": SegmentTimeMark,
+    "eaf": Elan,
+    "anvil": Anvil,
+    "antx": Antx,
+    "tdf": Xtrans,
+    "aup": Audacity
+}
+
+
+def NewTrs(trs_type):
+    """
+    Return a new Transcription() according to the format.
+
+    @param trs_type (str) a file extension.
+    @return Transcription()
+
+    """
+    try:
+        return TRANSCRIPTION_TYPES[trs_type.lower()]()
+    except KeyError:
+        raise KeyError("Unrecognized Transcription type: %s" % trs_type)
 
 
 def read(filename):
@@ -129,24 +181,31 @@ def read(filename):
 
     """
     ext = get_extension(filename).lower()
-    try:
-        transcription = TrsFactory.NewTrs(ext)
-    except KeyError:
-        transcription = HeuristicFactory.NewTrs(filename)
+    if ext in ['pitchtier', 'hz']:
+        try:
+            transcription = NewTrs(ext)
+            transcription.read(unicode(filename))
+        except IOError:
+            raise
+        except KeyError:
+            raise
+        except UnicodeError as e:
+            raise UnicodeError('The file %r contains non-UTF-8 characters: %s' % (filename, e))
 
-    try:
-        transcription.read(unicode(filename))
-    except IOError:
-        raise
-    except UnicodeError as e:
-        raise UnicodeError('The file %r contains non-UTF-8 characters: %s' % (filename, e))
+        # Each reader has its own solution to assign min and max, anyway
+        # take care, if one missed to assign the values!
+        if transcription.GetMinTime() is None:
+            transcription.SetMinTime(transcription.GetBegin())
+        if transcription.GetMaxTime() is None:
+            transcription.SetMaxTime(transcription.GetEnd())
+    else:
+        # Use anndata reader
+        parser = sppasRW(filename)
+        trs = parser.read()
 
-    # Each reader has its own solution to assign min and max, anyway
-    # take care, if one missed to assign the values!
-    if transcription.GetMinTime() is None:
-        transcription.SetMinTime(transcription.GetBegin())
-    if transcription.GetMaxTime() is None:
-        transcription.SetMaxTime(transcription.GetEnd())
+        # Convert anndata.sppasTranscription() into annotationdata.Transcription()
+        transcription = Transcription()
+        transcription.SetFromAnnData(trs)
 
     return transcription
 
@@ -163,12 +222,17 @@ def write(filename, transcription):
     @raise IOError:
 
     """
-
     ext = get_extension(filename).lower()
-    output = TrsFactory.NewTrs(ext)
+    if ext in ['pitchtier', 'hz']:
+        output = NewTrs(ext)
+        output.Set(transcription)
+        output.SetMinTime(transcription.GetMinTime())
+        output.SetMaxTime(transcription.GetMaxTime())
+        output.write(unicode(filename))
+    else:
+        # Convert annotationdata.Transcription() into anndata.sppasTranscription()
+        trs = transcription.ExportToAnnData()
 
-    output.Set(transcription)
-    output.SetMinTime(transcription.GetMinTime())
-    output.SetMaxTime(transcription.GetMaxTime())
-
-    output.write(unicode(filename))
+        # Use anndata writer
+        parser = sppasRW(filename)
+        parser.write(trs)

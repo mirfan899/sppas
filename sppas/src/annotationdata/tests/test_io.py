@@ -4,8 +4,8 @@ import unittest
 import os.path
 import shutil
 
-from ..aio import read as trsread
-from ..aio import write as trswrite
+from ..aio import read as read_trs
+from ..aio import write as write_trs
 from sppas.src.utils.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
@@ -26,9 +26,9 @@ class TestIO(unittest.TestCase):
         shutil.rmtree(TEMP)
 
     def test_IOTextGrid(self):
-        tg1 = trsread(os.path.join(DATA, "sample.TextGrid"))
-        trswrite(os.path.join(TEMP, "sample.TextGrid"), tg1)
-        tg2 = trsread(os.path.join(TEMP, "sample.TextGrid"))
+        tg1 = read_trs(os.path.join(DATA, "sample.TextGrid"))
+        write_trs(os.path.join(TEMP, "sample.TextGrid"), tg1)
+        tg2 = read_trs(os.path.join(TEMP, "sample.TextGrid"))
 
         self.assertEqual(tg1.GetName(), tg2.GetName())
         self.assertEqual(tg1.GetSize(), tg2.GetSize())
@@ -40,9 +40,9 @@ class TestIO(unittest.TestCase):
                 self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
 
     def test_IOXtrans(self):
-        tg1 = trsread(os.path.join(DATA, "sample-irish.tdf"))
-        trswrite(os.path.join(TEMP, "sample-irish.xra"), tg1)
-        tg2 = trsread(os.path.join(TEMP, "sample-irish.xra"))
+        tg1 = read_trs(os.path.join(DATA, "sample-irish.tdf"))
+        write_trs(os.path.join(TEMP, "sample-irish.xra"), tg1)
+        tg2 = read_trs(os.path.join(TEMP, "sample-irish.xra"))
 
         self.assertEqual(tg1.GetName(), tg2.GetName())
         self.assertEqual(tg1.GetSize(), tg2.GetSize())
@@ -54,11 +54,11 @@ class TestIO(unittest.TestCase):
                 self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
 
     def test_IOAscii(self):
-        tg1 = trsread(os.path.join(DATA, "sample.TextGrid"))
+        tg1 = read_trs(os.path.join(DATA, "sample.TextGrid"))
         # save as txt.
-        trswrite(os.path.join(TEMP, "sample.csv"), tg1)
+        write_trs(os.path.join(TEMP, "sample.csv"), tg1)
         # load from txt.
-        tg2 = trsread(os.path.join(TEMP, "sample.csv"))
+        tg2 = read_trs(os.path.join(TEMP, "sample.csv"))
 
         self.assertEqual(tg1.GetName(), tg2.GetName())
         self.assertEqual(tg1.GetSize(), tg2.GetSize())
@@ -70,9 +70,9 @@ class TestIO(unittest.TestCase):
                 self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
 
     def test_IOPitch(self):
-        tg1 = trsread(os.path.join(DATA, "sample.PitchTier"))
-        trswrite(os.path.join(TEMP, "sample.PitchTier"), tg1)
-        tg2 = trsread(os.path.join(TEMP, "sample.PitchTier"))
+        tg1 = read_trs(os.path.join(DATA, "sample.PitchTier"))
+        write_trs(os.path.join(TEMP, "sample.PitchTier"), tg1)
+        tg2 = read_trs(os.path.join(TEMP, "sample.PitchTier"))
         tg2.SetName( 'Pitch' )
 
         self.assertEqual(tg1.GetName(), tg2.GetName())

@@ -43,6 +43,13 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import copy
 
+import sppas.src.anndata as anndata
+
+from .ptime.interval import TimeInterval
+from .ptime.point import TimePoint
+from .label.label import Label
+from .annotation import Annotation
+
 from .meta import MetaObject
 from .tier import Tier
 from .hierarchy import Hierarchy
@@ -102,6 +109,160 @@ class Transcription( MetaObject ):
 
     # ------------------------------------------------------------------------
 
+    def SetFromAnnData(self, trs):
+        """ Set the transcription from anndata.sppasTranscription() object.
+
+        @param trs: sppasTranscription.
+
+        """
+        self.SetName(trs.get_name())
+
+        for meta_key in trs.get_meta_keys():
+            self.metadata[meta_key] = trs.get_meta(meta_key)
+
+        for ctrl_vocab in trs.get_ctrl_vocab_list():
+            new_cv = CtrlVocab(ctrl_vocab.get_name())
+            new_cv.SetDescription(ctrl_vocab.get_description())
+            for tag in ctrl_vocab:
+                new_cv.Append(tag.get_content(), ctrl_vocab.get_tag_description(tag))
+
+        for media in trs.get_media_list():
+            new_m = Media(media.get_meta('id'), media.get_filename(), media.get_mime_type())
+            self.AddMedia(new_m)
+
+        for tier in trs:
+            new_tier = Tier(tier.get_name())
+            is_point = tier.is_point()
+            for ann in tier:
+                # here we go to the essential...
+                begin = ann.get_lowest_localization()
+                r = begin.get_radius()
+                if r is None:
+                    r = 0.
+                new_begin = TimePoint(begin.get_midpoint(), r)
+                if is_point is False:
+                    end = ann.get_highest_localization()
+                    new_end = TimePoint(end.get_midpoint(), end.get_radius())
+                    localization = TimeInterval(new_begin, new_end)
+                else:
+                    localization = new_begin
+                label_text = anndata.aio.aioutils.serialize_labels(ann.get_labels())
+                new_tier.Add(Annotation(localization, Label(label_text)))
+            for meta_key in tier.get_meta_keys():
+                new_tier.metadata[meta_key] = tier.get_meta(meta_key)
+            ctrl_vocab = tier.get_ctrl_vocab()
+            if ctrl_vocab is not None:
+                new_tier.SetCtrlVocab(self.GetCtrlVocabFromId(ctrl_vocab.get_name()))
+            media = tier.get_media()
+            if media is not None:
+                new_tier.SetMedia(self.GetMediaFromId(media.get_meta('id')))
+
+            self.Add(new_tier)
+
+        self.__mintime = trs.get_min_loc().get_midpoint()
+        self.__maxtime = trs.get_max_loc().get_midpoint()
+
+        hierarchy = trs.get_hierarchy()
+        for tier in trs:
+            parent_tier = hierarchy.get_parent(tier)
+            if parent_tier is not None:
+                link_type = hierarchy.get_hierarchy_type(tier)
+                new_tier = self.Find(tier.get_name())
+                new_parent_tier = self.Find(parent_tier.get_name())
+                self._hierarchy.add_link(link_type, new_parent_tier, new_tier)
+
+    # ------------------------------------------------------------------------
+
+    def ExportToAnnData(self):
+        """ Export this transcription to anndata.sppasTranscription(). """
+
+        trs = anndata.sppasTranscription(self.__name)
+
+        for meta_key in self.metadata:
+            if self.metadata[meta_key] is not None:
+                trs.set_meta(meta_key, self.metadata[meta_key])
+
+        for ctrl_vocab in self.GetCtrlVocab():
+            other_cv = anndata.sppasCtrlVocab(ctrl_vocab.id, ctrl_vocab.GetDescription())
+            for entry in ctrl_vocab:
+                entry_text = entry.Text
+                entry_desc = entry.GetDescription()
+                other_cv.add(anndata.sppasTag(entry_text), entry_desc)
+            trs.add_ctrl_vocab(other_cv)
+
+        for media in self.GetMedia():
+            other_m = anndata.sppasMedia(media.url, media.id, media.mime)
+            trs.add_media(other_m)
+
+        for tier in self:
+            other_t = trs.create_tier(tier.GetName())
+            is_point = tier.IsPoint()
+            for ann in tier:
+                text = ann.GetLabel().GetLabel()
+                if is_point is True:
+                    p = ann.GetLocation().GetPoint().GetValue()
+                    r = ann.GetLocation().GetPoint().GetRadius()
+                    if r == 0.:
+                        r = None
+                    other_t.create_annotation(
+                        anndata.sppasLocation(anndata.sppasPoint(p, r)),
+                        anndata.sppasLabel(anndata.sppasTag(text)))
+                else:
+                    b = ann.GetLocation().GetBegin().GetValue()
+                    rb = ann.GetLocation().GetBegin().GetRadius()
+                    if rb == 0.:
+                        rb = None
+                    e = ann.GetLocation().GetEnd().GetValue()
+                    re = ann.GetLocation().GetEnd().GetRadius()
+                    if rb == 0.:
+                        rb = None
+                    other_t.create_annotation(
+                        anndata.sppasLocation(anndata.sppasInterval(
+                            anndata.sppasPoint(b, rb),
+                            anndata.sppasPoint(e, re))),
+                        anndata.sppasLabel(anndata.sppasTag(text)))
+
+        for tier in self:
+            parent_tier = self._hierarchy.get_parent(tier)
+            if parent_tier is not None:
+                link_type = self._hierarchy.get_hierarchy_type(tier)
+                new_tier = trs.find(tier.GetName())
+                new_parent_tier = trs.find(parent_tier.GetName())
+                trs.add_hierarchy_link(link_type, new_parent_tier, new_tier)
+
+        return trs
+
+    # ------------------------------------------------------------------------
+
+    def Set(self, other, name='NoName'):
+        """
+        Set a transcription.
+
+        @param tiers: Transcription or list of Tier instances.
+        @raise TypeError:
+
+        """
+        if isinstance(other, Transcription):
+            self.metadata    = other.metadata
+            self._hierarchy  = other._hierarchy
+            self.__media     = other.__media
+            self.__ctrlvocab = other.__ctrlvocab
+            self.__name      = other.__name
+            self.__mintime   = other.__mintime
+            self.__maxtime   = other.__maxtime
+            self.__tiers     = other.__tiers
+
+        if all(isinstance(tier, Tier) for tier in other) is False:
+            raise TypeError("Transcription or List of Tier instances argument required, not %r" % other)
+
+        self.__tiers = [tier for tier in other]
+        self.__media     = set( [tier.GetMedia() for tier in other] )
+        self.__ctrlvocab = set( [tier.GetCtrlVocab() for tier in other] )
+
+        self.__name  = name
+
+    # ------------------------------------------------------------------------
+
     def GetHierarchy(self):
         """
         Return the Hierarchy instance.
@@ -137,35 +298,6 @@ class Transcription( MetaObject ):
                 self.__name = name.decode("utf-8")
             except UnicodeDecodeError as e:
                 raise e
-
-    # ------------------------------------------------------------------------
-
-    def Set(self, tiers, name='NoName'):
-        """
-        Set a transcription.
-
-        @param tiers: Transcription or list of Tier instances.
-        @raise TypeError:
-
-        """
-        if isinstance(tiers, Transcription):
-            self.metadata    = tiers.metadata
-            self._hierarchy  = tiers._hierarchy
-            self.__media     = tiers.__media
-            self.__ctrlvocab = tiers.__ctrlvocab
-            self.__name      = tiers.__name
-            self.__mintime   = tiers.__mintime
-            self.__maxtime   = tiers.__maxtime
-            self.__tiers     = tiers.__tiers
-
-        if all(isinstance(tier, Tier) for tier in tiers) is False:
-            raise TypeError("Transcription or List of Tier instances argument required, not %r" % tiers)
-
-        self.__tiers = [tier for tier in tiers]
-        self.__media     = set( [tier.GetMedia() for tier in tiers] )
-        self.__ctrlvocab = set( [tier.GetCtrlVocab() for tier in tiers] )
-
-        self.__name  = name
 
     # ------------------------------------------------------------------------
 

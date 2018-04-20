@@ -33,7 +33,7 @@ class TestHTK(unittest.TestCase):
         trswrite(os.path.join(TEMP, "sample-1.2.mlf"), tg1)
         tg2 = trsread(os.path.join(TEMP, "sample-1.2.mlf"))
 
-        self.assertEqual(tg1.GetSize()-1, tg2.GetSize())
+        self.assertEqual(tg2.GetSize(), 1)  # only lab files... so 1 tier
 
         # We can't do that...
         # While writing a mlf file, we loose the location-information....
