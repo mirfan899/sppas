@@ -117,7 +117,20 @@ class sppasMedia(sppasMetaData):
                "".format(self.get_meta('id'), self.__url, self.__mime)
 
     def __eq__(self, other):
+        """ Return True if other is strictly identical to self (even the id). """
+
         if isinstance(other, sppasMedia) is False:
             return False
-        return self.__url == other.get_filename() and \
-               self.get_meta('id') == other.get_meta('id')
+        if self.__url != other.get_filename():
+            return False
+
+        for meta_key in self.get_meta_keys():
+            if self.get_meta(meta_key) != other.get_meta(meta_key):
+                return False
+        for meta_key in other.get_meta_keys():
+            if self.get_meta(meta_key) != other.get_meta(meta_key):
+                return False
+        return True
+
+    def __ne__(self, other):
+        return not self == other

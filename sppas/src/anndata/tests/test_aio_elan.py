@@ -42,12 +42,10 @@
 """
 import unittest
 import os.path
-import shutil
 import xml.etree.cElementTree as ET
 
 import sppas
 from sppas.src.utils.datatype import sppasTime
-from sppas.src.utils.fileutils import sppasFileUtils
 
 from ..aio.elan import sppasEAF
 from ..annlocation.location import sppasLocation
@@ -63,7 +61,6 @@ from ..aio.aioutils import format_labels
 
 # ---------------------------------------------------------------------------
 
-TEMP = sppasFileUtils().set_random()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # ---------------------------------------------------------------------------
@@ -74,15 +71,6 @@ class TestEAF(unittest.TestCase):
     Test reader/writer of EAF files.
 
     """
-    def setUp(self):
-        if os.path.exists(TEMP) is False:
-            os.mkdir(TEMP)
-
-    def tearDown(self):
-        shutil.rmtree(TEMP)
-
-    # -----------------------------------------------------------------
-
     def test_detect(self):
         """ Test the file format detection method. """
 
@@ -792,16 +780,3 @@ class TestEAF(unittest.TestCase):
         self.assertEqual(("a1", "a1"), created["a4"])
         self.assertEqual(("a2", "a2"), created["a5"])
         self.assertEqual(("a3", "a3"), created["a6"])
-
-    # -----------------------------------------------------------------------
-    # READ / WRITE
-    # -----------------------------------------------------------------------
-
-    def test_read_write(self):
-        eaf = sppasEAF()
-        eaf.read(os.path.join(DATA, "sample.eaf"))
-        self.assertEqual(len(eaf), 11)
-        eaf.write(os.path.join(TEMP, "sample.eaf"))
-        eaf2 = sppasEAF()
-        eaf2.read(os.path.join(TEMP, "sample.eaf"))
-        self.assertEqual(len(eaf2), 11)

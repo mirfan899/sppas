@@ -73,6 +73,10 @@ def pick_random_color(v1=0, v2=255):
 def rgb_to_color(r, g, b):
     """ Convert a RGB color into ANTX decimal color. """
 
+    r = int(r)
+    g = int(g)
+    b = int(b)
+
     r_hexa = hex(r % 256)[2:]   # remove '0x'
     g_hexa = hex(g % 256)[2:]   # remove '0x'
     b_hexa = hex(b % 256)[2:]   # remove '0x'
@@ -474,12 +478,20 @@ class sppasANTX(sppasBaseIO):
 
         # Layer required elements:
         child = ET.SubElement(tier_root, 'ForeColor')
-        r, g, b = pick_random_color(0, 20)
-        child.text = tier.get_meta("ForeColor", str(rgb_to_color(r, g, b)))
+        col = tier.get_meta('ForeColor', '')
+        if col == '':
+            r, g, b = pick_random_color(0, 20)
+        else:
+            r, g, b = col.split(',')
+        child.text = str(rgb_to_color(r, g, b))
 
         child = ET.SubElement(tier_root, 'BackColor')
-        r, g, b = pick_random_color(20, 255)
-        child.text = tier.get_meta("BackColor", str(rgb_to_color(r, g, b)))
+        col = tier.get_meta('BackColor', '')
+        if col == '':
+            r, g, b = pick_random_color(20, 255)
+        else:
+            r, g, b = col.split(',')
+        child.text = str(rgb_to_color(r, g, b))
 
         child = ET.SubElement(tier_root, 'IsSelected')
         child.text = tier.get_meta("tier_is_selected", "false")
@@ -547,14 +559,19 @@ class sppasANTX(sppasBaseIO):
         child_id_dur.text = str(int(duration))
 
         # Segment required elements
-        elt_segment = {'ForeColor': tier.get_meta('ForeColor', '-16777216'),  # black
-                       'BackColor': tier.get_meta('BackColor', '-1'),         # white
+        fore_r, fore_g, fore_b = tier.get_meta('ForeColor', '0,0,0').split(',')
+        back_r, back_g, back_b = tier.get_meta('BackColor', '255,255,255').split(',')
+        elt_segment = {'ForeColor': rgb_to_color(fore_r, fore_g, fore_b),   # black
+                       'BackColor': rgb_to_color(back_r, back_g, back_b),   # white
                        'BorderColor': '-8355172',  # grey
                        'IsSelected': 'false'}
 
         for key in elt_segment:
             child = ET.SubElement(segment_root, key)
-            child.text = ann.get_meta(key, elt_segment[key])
+            if 'Color' not in key:
+                child.text = ann.get_meta(key, elt_segment[key])
+            else:
+                child.text = str(elt_segment[key])
 
         # Segment optional elements
 

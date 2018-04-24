@@ -223,3 +223,32 @@ class sppasCtrlVocab(sppasMetaData):
     def __repr__(self):
         return "CtrlVocab: id={:s} name={:s} description={:s}" \
                "".format(self.get_meta('id'), self.__name, self.__desc)
+
+    def __eq__(self, other):
+        """ Return True if other is strictly identical to self (even the id). """
+
+        if isinstance(other, sppasCtrlVocab) is False:
+            return False
+
+        for meta_key in self.get_meta_keys():
+            if self.get_meta(meta_key) != other.get_meta(meta_key):
+                return False
+        for meta_key in other.get_meta_keys():
+            if self.get_meta(meta_key) != other.get_meta(meta_key):
+                return False
+
+        if self.__name != other.get_name():
+            return False
+        if self.__desc != other.get_description():
+            return False
+
+        for entry in self:
+            if other.contains(entry) is False:
+                return False
+            if self.get_tag_description(entry) != other.get_tag_description(entry):
+                return False
+
+        return len(self) == len(other)
+
+    def __ne__(self, other):
+        return not self == other

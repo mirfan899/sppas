@@ -222,6 +222,7 @@ class sppasXRA(sppasBaseIO):
             labels.append(sppasXRA._parse_label(label_root))
 
         ann = tier.create_annotation(location, labels)
+        sppasXRA._parse_metadata(ann, annotation_root.find('Metadata'))
 
         # Attributes (from XRA 1.4)
 
@@ -253,7 +254,7 @@ class sppasXRA(sppasBaseIO):
             for localization_root in location_root.findall('Localization'):
                 for loc_root in list(localization_root):
                     localization, score = sppasXRA._parse_localization(loc_root)
-                    score = localization_root.attrib["score"]
+                    score = float(localization_root.attrib["score"])
                     location.append(localization, score)
 
         return location
@@ -455,6 +456,7 @@ class sppasXRA(sppasBaseIO):
 
         media = sppasMedia(media_url, media_id, media_mime)
         self.add_media(media)
+        sppasXRA._parse_metadata(media, media_root.find('Metadata'))
 
         # Add content if any
         content_root = media_root.find('Content')
@@ -518,6 +520,7 @@ class sppasXRA(sppasBaseIO):
             id_vocab = vocabulary_root.attrib['ID']
         ctrl_vocab = sppasCtrlVocab(id_vocab)
         self.add_ctrl_vocab(ctrl_vocab)
+        sppasXRA._parse_metadata(ctrl_vocab, vocabulary_root.find('Metadata'))
 
         # Description
         if "description" in vocabulary_root.attrib:
@@ -654,6 +657,8 @@ class sppasXRA(sppasBaseIO):
         # Elements:
         metadata_root = ET.SubElement(annotation_root, 'Metadata')
         sppasXRA._format_metadata(metadata_root, annotation, exclude=['id'])
+        if len(metadata_root.findall('Entry')) == 0:
+            annotation_root.remove(metadata_root)
 
         location_root = ET.SubElement(annotation_root, 'Location')
         sppasXRA._format_location(location_root, annotation.get_location())
@@ -790,6 +795,8 @@ class sppasXRA(sppasBaseIO):
         metadata_root = ET.SubElement(media_root, 'Metadata')
         if len(media.get_meta_keys()) > 1:
             sppasXRA._format_metadata(metadata_root, media, exclude=['id'])
+        if len(metadata_root.findall('Entry')) == 0:
+            media_root.remove(metadata_root)
 
         # Element Content
         if len(media.get_content()) > 0:
@@ -842,6 +849,12 @@ class sppasXRA(sppasBaseIO):
             if tier.get_ctrl_vocab() == vocabulary:
                 tier_node = ET.SubElement(vocabulary_root, 'Tier')
                 tier_node.set('id', tier.get_meta('id'))
+
+        # Element Metadata (except 'id')
+        metadata_root = ET.SubElement(vocabulary_root, 'Metadata')
+        sppasXRA._format_metadata(metadata_root, vocabulary)
+        if len(metadata_root.findall('Entry')) == 0:
+            vocabulary_root.remove(metadata_root)
 
     # -----------------------------------------------------------------------
 

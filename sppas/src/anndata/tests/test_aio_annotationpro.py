@@ -49,10 +49,6 @@ from ..aio.annotationpro import sppasANT
 from ..annlocation.point import sppasPoint
 from ..tier import sppasTier
 from ..media import sppasMedia
-from ..annlabel.tag import sppasTag
-from ..annlocation.interval import sppasInterval
-from ..annlabel.label import sppasLabel
-from ..annlocation.location import sppasLocation
 
 # ---------------------------------------------------------------------------
 

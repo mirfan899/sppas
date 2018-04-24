@@ -688,7 +688,7 @@ class sppasEAF(sppasBaseIO):
     def __add_ann_in_tier(self, begin_time, end_time, text_list, tier):
         localization = sppasInterval(self.make_point(begin_time),
                                      self.make_point(end_time))
-        labels = None
+        labels = [sppasLabel(sppasTag(''))]
         if len(text_list) > 0:
             labels = format_labels("\n".join(text_list), separator="\n")
         ann = tier.create_annotation(sppasLocation(localization), labels)

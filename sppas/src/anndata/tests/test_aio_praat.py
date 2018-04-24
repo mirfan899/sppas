@@ -259,15 +259,6 @@ class TestBasePraat(unittest.TestCase):
 
 class TestTextGrid(unittest.TestCase):
 
-    def setUp(self):
-        if os.path.exists(TEMP) is False:
-            os.mkdir(TEMP)
-
-    def tearDown(self):
-        shutil.rmtree(TEMP)
-
-    # -----------------------------------------------------------------------
-
     def test_members(self):
         tg = sppasTextGrid()
         self.assertTrue(tg.multi_tiers_support())
@@ -670,38 +661,6 @@ class TestTextGrid(unittest.TestCase):
         self.assertTrue('points [3]:' in lines[0])
         self.assertTrue('time = 0.881936360' in lines[1])
         self.assertTrue('mark = ""' in lines[2])
-
-    # -----------------------------------------------------------------------
-
-    def test_write(self):
-        txt = sppasTextGrid()
-        with self.assertRaises(AioNoTiersError):
-            txt.write(os.path.join(TEMP, "sample.txt"))
-        self.assertFalse(os.path.exists(os.path.join(TEMP, "sample.txt")))
-        txt.create_tier()
-        with self.assertRaises(AioNoTiersError):
-            txt.write(os.path.join(TEMP, "sample.txt"))
-
-    # -----------------------------------------------------------------------
-    # -----------------------------------------------------------------------
-
-    def test_read_write(self):
-        txt = sppasTextGrid()
-        txt.read(os.path.join(DATA, "sample.TextGrid"))
-        txt.write(os.path.join(TEMP, "sample.TextGrid"))
-        txt2 = sppasTextGrid()
-        txt2.read(os.path.join(TEMP, "sample.TextGrid"))
-        self.assertEqual(len(txt), len(txt2))
-        # Compare annotations of original and saved-read
-        for t1, t2 in zip(txt, txt2):
-            self.assertEqual(len(t1), len(t2))
-            for a1, a2 in zip(t1, t2):
-                self.assertEqual(a1.get_labels()[0].get_best().get_typed_content(),
-                                 a2.get_labels()[0].get_best().get_typed_content())
-                self.assertEqual(a1.get_highest_localization(),
-                                 a2.get_highest_localization())
-                self.assertEqual(a1.get_lowest_localization(),
-                                 a2.get_lowest_localization())
 
 # ---------------------------------------------------------------------------
 
