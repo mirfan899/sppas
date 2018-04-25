@@ -4,34 +4,22 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <meta name="author" content="Brigitte Bigi" />
-  <title>SPPAS Documentation</title>
+  <title></title>
   <style type="text/css">code{white-space: pre;}</style>
-  <link rel="stylesheet" href="./etc/styles/sppas.css" type="text/css" />
-      <!----------------------------------------------------------------->
+  <link rel="stylesheet" href="./etc/styles/sppas.css" />
+      <link rel="icon" href="./etc/icons/sppas.png" />
   
-      <div class="footer">
-          <a href="index.html"><img src="./etc/logos/sppas-logo.png" alt="SPPAS"></a>
-          <p class="copyright">
-              <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2017
-          </p>
-      </div>
-  
-      <!----------------------------------------------------------------->
-  
-      <span class="scrollT"></span>
-      <script type="text/javascript" src="./etc/scripts/jquery.min.js"></script>
-      <script type="text/javascript" src="./etc/scripts/scrollT.js"></script>
       <script type="text/javascript">
-          // On active la fonction permettant de faire apparaitre l'indicateur 
-          // de scroll pour remonter en haut de page.
-          $(document).ready(function() 
-          {
-              $(this).scrollT();
-          });
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-38055333-4']);
+        _gaq.push(['_trackPageview']);
+      
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
       </script>
-  
-      <!----------------------------------------------------------------->
 </head>
 <body>
 
@@ -39,56 +27,40 @@
 
     <div class="header">
         <div class="title">
-            <div class="h1title">SPPAS</div>
-            <div class="h3title">a software tool by Brigitte Bigi, researcher at</div>
-            <div class="h3title">Laboratoire Parole et Langage - Aix-en-Provence - France</div>
+            SPPAS: a software tool by Brigitte Bigi, researcher at Laboratoire Parole et Langage - Aix-en-Provence - France
         </div>
     </div>
 
     <!----------------------------------------------------------------->
 
     <div class="menu">
-        <a class="home"     href="index.html">Home</a>
+        <a class="home" href="index.html">Home</a>
         <a class="features" href="features.html">Features</a>
         <a class="install"  href="installation.html">Installation</a>
         <a class="download" href="download.html">Download</a>
         <a class="tutorial" href="tutorial.html">Tutorials</a>
-        <a class="documentation" href="documentation.html">Documentation</a>
-        <a class="group"    href="faq.html">F.A.Q.</a>
+        <a class="group" href="faq.html">F.A.Q.</a>
+    </div>
+
+    <div class="menu">
+    <div class="submenu">
+        <a href="documentation_01_introduction.html">Introduction</a>
+        <a href="documentation_02_interface.html">Interface</a>
+        <a href="documentation_03_annotations.html">Annotations</a>
+        <a href="documentation_04_resources.html">Resources</a>
+        <a href="documentation_05_analyses.html">Analyses</a>
+        <a href="documentation_06_scripting.html">Scripting</a>
+        <a href="documentation_07_references.html">Publications</a>
+        <a href="documentation_08_changes.html">History</a>
+        <a href="documentation_09_annexes.html">Annexes</a>
+    </div>
     </div>
 
     <!----------------------------------------------------------------->
-<div id="header">
-<h1 class="title">SPPAS Documentation</h1>
-<h2 class="author">Brigitte Bigi</h2>
-<h3 class="date">Version 1.9.4</h3>
-</div>
-<div id="TOC">
-<ul>
-<li><a href="#references">References</a><ul>
-<li><a href="#references-about-sppas">References about SPPAS</a><ul>
-<li><a href="#how-to-cite-sppas">How to cite SPPAS?</a></li>
-<li><a href="#sppas-software-description">SPPAS software description</a></li>
-<li><a href="#about-text-normalization">About Text Normalization</a></li>
-<li><a href="#about-phonetization">About Phonetization</a></li>
-<li><a href="#about-forced-alignment">About Forced-Alignment</a></li>
-<li><a href="#about-syllabification">About Syllabification</a></li>
-<li><a href="#about-repetitions">About Repetitions</a></li>
-<li><a href="#about-analyses-tools">About analyses tools</a></li>
-<li><a href="#about-the-api">About the API</a></li>
-<li><a href="#related-references">Related references</a></li>
-</ul></li>
-<li><a href="#sppas-in-research-projects">SPPAS in research projects</a><ul>
-<li><a href="#multiphonia">MULTIPHONIA</a></li>
-<li><a href="#amennpro">Amennpro</a></li>
-<li><a href="#evalita-2011-italian-phonetization-and-alignment">Evalita 2011: Italian phonetization and alignment</a></li>
-<li><a href="#cofee-conversational-feedback">Cofee: Conversational Feedback</a></li>
-<li><a href="#variamu-variations-in-action-a-multilingual-approach">Variamu: Variations in Action: a MUltilingual approach</a></li>
-</ul></li>
-</ul></li>
-</ul>
-</div>
-<hr />
+
+    <div class="cols1 bg-lightgrey">
+        <div class="cols12"></div>
+        <div class="cols2">
 <h1 id="references">References</h1>
 <h2 id="references-about-sppas">References about SPPAS</h2>
 <h3 id="how-to-cite-sppas">How to cite SPPAS?</h3>
@@ -96,7 +68,7 @@
 <blockquote>
 <p><em>Brigitte Bigi (2015).</em> <strong>SPPAS - Multi-lingual Approaches to the Automatic Annotation of Speech</strong>. In &quot;the Phonetician&quot; - International Society of Phonetic Sciences, ISSN 0741-6164, Number 111-112 / 2015-I-II, pages 54-69.</p>
 </blockquote>
-<p>For a specific purpose of SPPAS, like for automatic syllabification, forced-alignment, or for the request system, please refer to the related specific publication. All the papers are available on <a href="http://www.lpl-aix.fr/~bigi">the author website</a>, at the following URL: <a href="http://www.lpl-aix.fr/~bigi/publications.html" class="uri">http://www.lpl-aix.fr/~bigi/publications.html</a></p>
+<p>For a specific purpose of SPPAS, like for automatic syllabification, forced-alignment, or for the request system, please refer to the related specific publication. All the papers are available on <a href="http://www.lpl-aix.fr/~bigi">the author website</a>, at the following URL: <a href="http://www.lpl-aix.fr/~bigi/publications.html">http://www.lpl-aix.fr/~bigi/publications.html</a></p>
 <h3 id="sppas-software-description">SPPAS software description</h3>
 <blockquote>
 <p><em>Brigitte Bigi</em> (2012). <strong>SPPAS: a tool for the phonetic segmentations of Speech</strong>, The eight international conference on Language Resources and Evaluation, Istanbul (Turkey), pages 1748-1755, ISBN 978-2-9517408-7-7.</p>
@@ -216,7 +188,7 @@
 <blockquote>
 <p><em>Charlotte Alazard, Corine Astésano, Michel Billières</em> <strong>MULTIPHONIA: a MULTImodal database of PHONetics teaching methods in classroom InterActions</strong>, Language Resources and Evaluation Conference, Istanbul (Turkey), May 2012.</p>
 </blockquote>
-<p>MULTIPHONIA: <a href="http://www.sldr.org/sldr000780/en" class="uri">http://www.sldr.org/sldr000780/en</a></p>
+<p>MULTIPHONIA: <a href="http://www.sldr.org/sldr000780/en">http://www.sldr.org/sldr000780/en</a></p>
 <h3 id="amennpro">Amennpro</h3>
 <p>SPPAS was used for the annotation of the French part of the AixOx corpus.</p>
 <ul>
@@ -224,7 +196,7 @@
 <li>read by English and French speakers;</li>
 <li>non-native speakers were divided into advanced and beginners.</li>
 </ul>
-<p>Download the AixOx corpus: <a href="http://www.sldr.fr/sldr000784/" class="uri">http://www.sldr.fr/sldr000784/</a></p>
+<p>Download the AixOx corpus: <a href="http://www.sldr.fr/sldr000784/">http://www.sldr.fr/sldr000784/</a></p>
 <pre><code>Remark:
 Some examples are located in the samples-fra directory (files F_F_*.*) and
 in the samples-eng (files E_E*.*).</code></pre>
@@ -242,7 +214,7 @@ in the samples-eng (files E_E*.*).</code></pre>
 </ul>
 <h3 id="cofee-conversational-feedback">Cofee: Conversational Feedback</h3>
 <p>In a conversation, feedback is mostly performed through short utterances produced by another participant than the main current speaker. These utterances are among the most frequent in conversational data. They are also considered as crucial communicative tools for achieving coordination in dialogue. They have been the topic of various descriptive studies and often given a central role in applications such as dialogue systems. Cofee project addresses this issue from a linguistic viewpoint and combines fine-grained corpus analyses of semi- controlled data with formal and statistical modelling.</p>
-<p>Cofee is managed by Laurent Prévot: <a href="http://cofee.hypotheses.org/" class="uri">http://cofee.hypotheses.org/</a></p>
+<p>Cofee is managed by Laurent Prévot: <a href="http://cofee.hypotheses.org/">http://cofee.hypotheses.org/</a></p>
 <p>Cofee corpora and the use of SPPAS on such corpora is presented in:</p>
 <blockquote>
 <p><strong>Jan Gorish, Corine Astésano, Ellen Gurman Bard, Brigitte Bigi, Laurent Prévot</strong> (2014). <em>Aix Map Task corpus: The French multimodal corpus of task-oriented dialogue</em>, 9th International conference on Language Resources and Evaluation (LREC), Reykjavik (Iceland).</p>
@@ -250,7 +222,7 @@ in the samples-eng (files E_E*.*).</code></pre>
 <h3 id="variamu-variations-in-action-a-multilingual-approach">Variamu: Variations in Action: a MUltilingual approach</h3>
 <p>Variamu is an international collaborative joint project co-funded by Amidex. The scientific object of the collaboration is the issue of language variation addressed from a comparative perspective. Speech and language knowledge supports a growing number of strategic domains such as Human Language Technologies (HLT), Language Learning (LL), and Clinical Linguistics (CL). A crucial issue to these domains is language variation, which can result from dysfunction, proficiency, dialectal specificities, communicative contexts or even inter-individual differences. Variation is often an important part of the question itself.</p>
 <p>This network will be structured around 3 research axes, all centered on the variation concept:</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>Language technologies,</li>
 <li>Linguistics and Phonetics,</li>
 <li>Speech and Language Pathologies.</li>
@@ -258,6 +230,10 @@ in the samples-eng (files E_E*.*).</code></pre>
 <p>SPPAS is mainly concerned by the first axe.</p>
 <p>The first result of this project is the participation of SPPAS at the Evalita 2014 campaign, for the FACS task: Forced-Alignment on Children Speech.</p>
 <p>The second result of this project is the support of Cantonese into SPPAS, thanks to a collaboration with Prof. Tan Lee of the University of Hong Kong.</p>
+
+    </div>
+    </div>
+
     <!----------------------------------------------------------------->
 
     <div class="footer">

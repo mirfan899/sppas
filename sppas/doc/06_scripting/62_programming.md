@@ -53,7 +53,7 @@ The equal sign (=) is used to assign values to variables.
 In the previous example, `a`, `b`, `c`, `hello` and `vrai` are variables,
 `a = 1` is a declaration.
 
-**MISSING:Variable declarations and print in the Python IDLE./etc/screenshots/python_idle_example.png**
+![Variable declarations and print in the Python IDLE](./etc/screenshots/python_idle_example.png)
 
 Assignments to variables with Python language can be performed with the 
 following operators:

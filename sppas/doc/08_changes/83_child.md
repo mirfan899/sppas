@@ -1,14 +1,16 @@
 ## The childhood of SPPAS
 
 
-### SPPAS 1.6.4 (2014, 5th December)
+### SPPAS 1.6.4 
+
+(2014, 5th December)
 
 From this version, SPPAS requires wxpython to be updated to version 3.0, 
 particularly for MacOS users, and they need to install the 64 bits version.
 It is recommended to Windows users to install Python 2.7 and wxpython 
 in 32bits.
 
-Development:
+#### Development:
 
 - Package re-organized!
 - Phonetization of unknown words improved
@@ -18,7 +20,7 @@ Development:
 - Read TextGrid files exported by Elan: bug fixed.
 - `sppas.command` checks the system and run either in 32 or 64 bits (MacOS)
 
-Components:
+#### Components:
 
 - IPUscribe replaces IPUTranscriber mainly for the support of large files:
 tested with a file of 1 hour speech (143 Go) and 800 IPUs.
@@ -26,38 +28,42 @@ tested with a file of 1 hour speech (143 Go) and 800 IPUs.
 - Dataroamer has also a new version
 
 
-### SPPAS 1.6.5 (2014, 17th December)
+### SPPAS 1.6.5
 
+(2014, 17th December)
+ 
 This is primarily a bug-fix release.
 
-Development:
+#### Development:
 
 - all programs in "bin" and "scripts" sub-directories were revised and
 tested, or removed.
 
-Annotation:
+#### Annotation:
 
 - Tokenization: code cleaning and re-organisation.
 
-GUI:
+#### GUI:
 
 - Procedure outcome report: print a warning message in the log file if no
 file is matching the expected extension
 
 
-### SPPAS 1.6.6 (2015, 19th January)
+### SPPAS 1.6.6 
+
+(2015, 19th January)
 
 Web site host has changed: <http://sldr.org/sldr00800/preview/>
 
 Documentation completed and updated. Now, only the documentation of all the
 components is missing.
 
-Annotations:
+#### Annotations:
 
 - log messages more explicit and status printed with intuitive colors.
 - management of input/output file format re-done: now easier for the user.
 
-Development:
+#### Development:
 
 - package architecture revised: mainly "sppasgui" and "components" merged
 in "wxgui", and many other changes.
@@ -65,7 +71,7 @@ in "wxgui", and many other changes.
 - debug of alignment: if too short units.
 - radius value properly fixed in most of the automatic annotations.
 
-GUI:
+#### GUI:
 
 - GUI is more homogeneous and pretty (hope!)
 - Show the date in the status bar
@@ -96,7 +102,7 @@ GUI:
      - F1 to open the help browser
      - F2 to open the "About" frame
 
-Components:
+#### Components:
 
 - GUI design unified for DataRoamer, SndPlayer, IPUscribe and SppasEdit
 - New Tier Preview frame (still under development)
@@ -108,37 +114,41 @@ Components:
      - Red: SPPAS does not support. It must be converted before using it!
 
 
-### SPPAS-1.6.7 (2015, 16th February)
+### SPPAS-1.6.7 
 
-Automatic Annotations:
+(2015, 16th February)
+
+#### Automatic Annotations:
 
 - By default, tokenization produces only one tier. Check an option to get
   TokensStd and TokensFaked, in case of EOT.
 - radius value properly fixed in most of the automatic annotations.
 
-GUI:
+#### GUI:
 
 - Tested and debugged on MacOS (version 10.9.5, with wxpython 3.0.2)
 
-Development:
+#### Development:
 
 - Tier hierarchy partly implemented: TimeAlignement and TimeAssociation are
   two "links" that can be fixed between tiers.
 
-Annotations:
+#### Annotations:
 
 - Add Polish support
 
 
-### SPPAS-1.6.8 (2015, 9th April)
+### SPPAS-1.6.8 
 
-Resources:
+(2015, 9th April)
+
+#### Resources:
 
 - new French acoustic model
 - new English acoustic model (VoxForge nightly build of March, 15th, 2015)
 - add phoneset mapping tables
 
-Development:
+#### Development:
 
 - Add a phoneme mapping in models, to allow both the dictionary to include
   real X-SAMPA symbols and the acoustic model to be compatible with Hvite
@@ -151,7 +161,7 @@ Development:
 
 - Self-repetitions debug in finding the repetition interval
 
-GUI:
+#### GUI:
 
 - DataRoamer: "New" button debugged
 - DataRoamer: Add a button "Radius" to adjust manually the vagueness of each bounday of a tier

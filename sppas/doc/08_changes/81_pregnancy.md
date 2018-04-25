@@ -5,33 +5,42 @@ It was developed under Linux system and was efficiently tested
 under Windows with Cygwin.
 
 
-### Version 1.0 (2011, 9th March)
+### Version 1.0 
+
+(2011, 9th March)
 
 The only feature was that it was able to perform speech segmentation 
 of English read speech.
 
 
-### Version 1.1 (2011, 7th June)
+### Version 1.1 
+
+(2011, 7th June)
 
 This was mainly the debug of the previous version and some code
 re-organization and cleaning.
 
 
-### Version 1.2 (2011, 23th July)
+### Version 1.2 
+
+(2011, 23th July)
 
 The support of English, French and Italian was added: a lexicon,
 a pronunciation dictionary and an acoustic model of each language
 was created. Three annotations were implemented: Tokenization, 
 Phonetization, Alignment.
-The basis for a *multi-lingual methodology* was then already there. 
+
+The basis for a *multi-lingual methodology* was already there. 
 
 
-### Version 1.3 (2011, 12th December)
+### Version 1.3 
+
+(2011, 12th December)
 
 This is a transitional version, from the scripts language to Python
 programming language. The main fixes and improvements were:
 
-Development:
+#### Development:
     
 - MacOS support
 - bugs corrected in many scripts
@@ -42,7 +51,7 @@ Development:
 - a python library to manage wav files is added.
 - IPUs segmentation automatic annotation
 
-Resources:
+#### Resources:
     
 - Italian dictionary improved
 - Italian acoustic model changed (triphones trained from map-task dialogues)

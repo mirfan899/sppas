@@ -1,12 +1,14 @@
 ## The development phase
 
 
-### SPPAS-1.6.9 (2015, 14th May)
+### SPPAS-1.6.9 
+
+(2015, 14th May)
 
 The installation of dependencies is simplified: `sox` is unnecessary.
 Python 2.7.x, WxPython and Julius are the only remaining dependencies.
 
-Development:
+#### Development:
 
 - package annotationdata.filter updated to support last changes in
   annotationdata: multiple labels and numerical labels.
@@ -29,15 +31,17 @@ Development:
 - package signal: partially re-written. As a consequence, sox won't
 be neither used, but the file conversion (if required) is slower.
 
-GUI:
+#### GUI:
 
 - DataFilter component partially re-written to facilitate its use
 - Preview frame modified
 
 
-### SPPAS-1.7.0 (2015, 3th July)
+### SPPAS-1.7.0 
 
-Development:
+(2015, 3th July)
+
+#### Development:
 
 - package annotationdata.io:
     - add support of subtitles: sub, srt
@@ -53,23 +57,25 @@ Development:
     - support of audio files re-written: can open/save wav, aiff and au files
     - add a lot of possibilities to manage one channel of an audio file
 
-GUI:
+#### GUI:
 
 - DataFilter component finalized: can deal with alternative labels,
   and typed labels (string, number, boolean)
 - Statistics component fully re-written to facilitate its use
 - SndRoamer displays more properties of audio files (min, mean and max added)
 
-Annotations:
+#### Annotations:
 
 - IPUs Segmentation produces 2 tiers if a transcription is given:
   the IPUs segmentation itself, and the Transcription time-aligned
   at the IPUs level.
 
 
-### SPPAS-1.7.1 (2015, 5th August)
+### SPPAS-1.7.1 
 
-Development:
+(2015, 5th August)
+
+#### Development:
 
 - package re-organization:
      - package signal is now standalone
@@ -92,20 +98,22 @@ Development:
      - add Media/CtrlVocab in some file formats
      - add Annotation Pro support of antx files (in API)
 
-Components:
+#### Components:
 
 - add Time Group Analyser (TGA) in Statistics
 - add Kappa estimation on labels of 2 tiers with the same number of intervals
 
-Annotations:
+#### Annotations:
 
 - New version of XRA: 1.2
 - Make XRA the default input/output file format
 
 
-### SPPAS-1.7.2 (2015, 3th September)
+### SPPAS-1.7.2 
 
-Development:
+(2015, 3th September)
+
+#### Development:
 
 - updated XRA reader/writer to solve problems with upper/lower cases of elements
 - updated Elan reader to be compatible with format 2.8
@@ -115,22 +123,26 @@ Development:
 - remove tk dependency
 
 
-### SPPAS-1.7.3 (2015, 9th October)
+### SPPAS-1.7.3 
 
-Resources:
+(2015, 9th October)
+
+#### Resources:
 
 - New word-based vocab for Cantonese
 - New word-based dict for Cantonese
 - New phoneme-based acoustic model for Cantonese
 
-Development:
+#### Development:
 
 - Descriptive statistics debugged for detailed panels.
 
 
-### SPPAS-1.7.4 (2015, 6th November)
+### SPPAS-1.7.4 
 
-Resources:
+(2015, 6th November)
+
+#### Resources:
 
 - Add a vocab for Portuguese
 - Add a dict for Portuguese
@@ -138,24 +150,26 @@ Resources:
   it was constructed from French/Spanish/Italian models, not trained
   from data.
 
-Samples:
+#### Samples:
 
 - Add Portuguese
 - Change some samples in various languages
 
-Development:
+#### Development:
 
 - Debug of the Tokenizer.
 
 
-### SPPAS-1.7.5 (2015, 11th December)
+### SPPAS-1.7.5 
 
-Development:
+(2015, 11th December)
+
+#### Development:
 
 - Add vagueness to the annotation duration estimation
 - Bug correction while saving the procedure outcome report in the GUI
 
-GUI:
+#### GUI:
 
 - Changed all pictures to remove the problem with colorset of some of them
 - Add a christmast theme for the pictures of tips
@@ -165,11 +179,13 @@ GUI:
     - add a new button to auto-play the sound
 
 
-### SPPAS-1.7.6 (2016, 28th January)
+### SPPAS-1.7.6 
+
+(2016, 28th January)
 
 Web site host has changed: <http://www.sppas.org/>
 
-Development:
+#### Development:
 
 - IPU segmentation:
 
@@ -182,36 +198,38 @@ Development:
      - bug correction in input tier selection
      - bug correction for replacements
 
-Resources:
+#### Resources:
 
 - add a vocabulary of Korean
 - add an acoustic model for Korean (made from the English and the Taiwanese ones).
 
-GUI:
+#### GUI:
 
 - DataRoamer: bug correction of "Duplicate"
 
-Others:
+#### Others:
 
 - Add a sample in Korean
 - Updated references to cite SPPAS in publications
 
 
-### SPPAS-1.7.7 (2016, 30th March)
+### SPPAS-1.7.7 
 
-Resources:
+(2016, 30th March)
+
+#### Resources:
 
 - Correction of errors in most of the acoustics models,
   for /@@/ and /dummy/ models
 - New vocabulary and pronunciation dictionary for Mandarin Chinese.
 
-GUI:
+#### GUI:
 
 - Dialogs are customized
 - DataRoamer debug and changes: save buttons moved in the main toolbar.
 - HelpSystem is (welcome) back!
 
-Development:
+#### Development:
 
 - Add the API and a script to train acoustic models with HTK.
 - Add Kullback-Leibler distance estimator.
@@ -222,14 +240,16 @@ Development:
 - GUIs in `bin` directory are updated (test of python, wxpython, and so on).
 
 
-### SPPAS-1.7.8 (2016, 5th May)
+### SPPAS-1.7.8 
 
-Resources:
+(2016, 5th May)
+
+#### Resources:
 
 - Add a pronunciation mapping table `eng-fra.map`: to be used for the
   speech segmentation for French speakers reading an English text.
 
-Development:
+#### Development:
 
 - Phonetization is extended: it can take into account a mapping table of
   phones to generate new pronunciation variants.
@@ -241,14 +261,16 @@ Development:
 - annotationdata: add Xtrans reader (extension: .tdf)
 - Code cleaning in several packages.
 
-GUI:
+#### GUI:
 
 - Automatic annotations: more explicit log messages.
 
 
-### SPPAS-1.7.9 (2016, 3th June)
+### SPPAS-1.7.9 
 
-GUI:
+(2016, 3th June)
+
+#### GUI:
 
 - Some debug in SppasEdit
 - SndPlayer renamed AudioRoamer because new functionalities were added:
@@ -260,7 +282,7 @@ GUI:
     - Can multiply amplitude values of a channel
     - Can remove the offset of amplitude values of a channel
 
-Automatic annotations:
+#### Automatic annotations:
 
 - IPUs Segmentation fully re-implemented.
     - Silence/speech segmentation improved for both quality and fastness

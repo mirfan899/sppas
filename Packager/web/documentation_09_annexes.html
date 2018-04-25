@@ -4,34 +4,22 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <meta name="author" content="Brigitte Bigi" />
-  <title>SPPAS Documentation</title>
+  <title></title>
   <style type="text/css">code{white-space: pre;}</style>
-  <link rel="stylesheet" href="./etc/styles/sppas.css" type="text/css" />
-      <!----------------------------------------------------------------->
+  <link rel="stylesheet" href="./etc/styles/sppas.css" />
+      <link rel="icon" href="./etc/icons/sppas.png" />
   
-      <div class="footer">
-          <a href="index.html"><img src="./etc/logos/sppas-logo.png" alt="SPPAS"></a>
-          <p class="copyright">
-              <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2017
-          </p>
-      </div>
-  
-      <!----------------------------------------------------------------->
-  
-      <span class="scrollT"></span>
-      <script type="text/javascript" src="./etc/scripts/jquery.min.js"></script>
-      <script type="text/javascript" src="./etc/scripts/scrollT.js"></script>
       <script type="text/javascript">
-          // On active la fonction permettant de faire apparaitre l'indicateur 
-          // de scroll pour remonter en haut de page.
-          $(document).ready(function() 
-          {
-              $(this).scrollT();
-          });
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-38055333-4']);
+        _gaq.push(['_trackPageview']);
+      
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
       </script>
-  
-      <!----------------------------------------------------------------->
 </head>
 <body>
 
@@ -39,39 +27,40 @@
 
     <div class="header">
         <div class="title">
-            <div class="h1title">SPPAS</div>
-            <div class="h3title">a software tool by Brigitte Bigi, researcher at</div>
-            <div class="h3title">Laboratoire Parole et Langage - Aix-en-Provence - France</div>
+            SPPAS: a software tool by Brigitte Bigi, researcher at Laboratoire Parole et Langage - Aix-en-Provence - France
         </div>
     </div>
 
     <!----------------------------------------------------------------->
 
     <div class="menu">
-        <a class="home"     href="index.html">Home</a>
+        <a class="home" href="index.html">Home</a>
         <a class="features" href="features.html">Features</a>
         <a class="install"  href="installation.html">Installation</a>
         <a class="download" href="download.html">Download</a>
         <a class="tutorial" href="tutorial.html">Tutorials</a>
-        <a class="documentation" href="documentation.html">Documentation</a>
-        <a class="group"    href="faq.html">F.A.Q.</a>
+        <a class="group" href="faq.html">F.A.Q.</a>
+    </div>
+
+    <div class="menu">
+    <div class="submenu">
+        <a href="documentation_01_introduction.html">Introduction</a>
+        <a href="documentation_02_interface.html">Interface</a>
+        <a href="documentation_03_annotations.html">Annotations</a>
+        <a href="documentation_04_resources.html">Resources</a>
+        <a href="documentation_05_analyses.html">Analyses</a>
+        <a href="documentation_06_scripting.html">Scripting</a>
+        <a href="documentation_07_references.html">Publications</a>
+        <a href="documentation_08_changes.html">History</a>
+        <a href="documentation_09_annexes.html">Annexes</a>
+    </div>
     </div>
 
     <!----------------------------------------------------------------->
-<div id="header">
-<h1 class="title">SPPAS Documentation</h1>
-<h2 class="author">Brigitte Bigi</h2>
-<h3 class="date">Version 1.9.4</h3>
-</div>
-<div id="TOC">
-<ul>
-<li><a href="#appendix">Appendix</a><ul>
-<li><a href="#list-of-error-messages">List of error messages</a></li>
-<li><a href="#gnu-free-documentation-license">GNU Free Documentation License</a></li>
-</ul></li>
-</ul>
-</div>
-<hr />
+
+    <div class="cols1 bg-lightgrey">
+        <div class="cols12"></div>
+        <div class="cols2">
 <h1 id="appendix">Appendix</h1>
 <h2 id="list-of-error-messages">List of error messages</h2>
 <p>Since version 1.9.0, SPPAS introduced a system for internationalization of the messages. In the same time, a quality and a number was assigned progressively to each of them in the packages. The following indicates the list of error messages that can occur while using SPPAS.</p>
@@ -139,7 +128,7 @@
 <p>:ERROR 7515: No model found or empty model in {!s:s}.</p>
 <h2 id="gnu-free-documentation-license">GNU Free Documentation License</h2>
 <p>Version 1.3, 3 November 2008</p>
-<p>Copyright (C) 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc. <a href="http://fsf.org/" class="uri">http://fsf.org/</a></p>
+<p>Copyright (C) 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc. <a href="http://fsf.org/">http://fsf.org/</a></p>
 <p>Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.</p>
 <h4 id="preamble">0. PREAMBLE</h4>
 <p>The purpose of this License is to make a manual, textbook, or other functional and useful document &quot;free&quot; in the sense of freedom: to assure everyone the effective freedom to copy and redistribute it, with or without modifying it, either commercially or noncommercially. Secondarily, this License preserves for the author and publisher a way to get credit for their work, while not being considered responsible for modifications made by others.</p>
@@ -207,7 +196,7 @@
 <p>Moreover, your license from a particular copyright holder is reinstated permanently if the copyright holder notifies you of the violation by some reasonable means, this is the first time you have received notice of violation of this License (for any work) from that copyright holder, and you cure the violation prior to 30 days after your receipt of the notice.</p>
 <p>Termination of your rights under this section does not terminate the licenses of parties who have received copies or rights from you under this License. If your rights have been terminated and not permanently reinstated, receipt of a copy of some or all of the same material does not give you any rights to use it.</p>
 <h4 id="future-revisions-of-this-license">10. FUTURE REVISIONS OF THIS LICENSE</h4>
-<p>The Free Software Foundation may publish new, revised versions of the GNU Free Documentation License from time to time. Such new versions will be similar in spirit to the present version, but may differ in detail to address new problems or concerns. See <a href="http://www.gnu.org/copyleft/" class="uri">http://www.gnu.org/copyleft/</a>.</p>
+<p>The Free Software Foundation may publish new, revised versions of the GNU Free Documentation License from time to time. Such new versions will be similar in spirit to the present version, but may differ in detail to address new problems or concerns. See <a href="http://www.gnu.org/copyleft/">http://www.gnu.org/copyleft/</a>.</p>
 <p>Each version of the License is given a distinguishing version number. If the Document specifies that a particular numbered version of this License &quot;or any later version&quot; applies to it, you have the option of following the terms and conditions either of that specified version or of any later version that has been published (not as a draft) by the Free Software Foundation. If the Document does not specify a version number of this License, you may choose any version ever published (not as a draft) by the Free Software Foundation. If the Document specifies that a proxy can decide which future versions of this License can be used, that proxy's public statement of acceptance of a version permanently authorizes you to choose that version for the Document.</p>
 <h4 id="relicensing">11. RELICENSING</h4>
 <p>&quot;Massive Multiauthor Collaboration Site&quot; (or &quot;MMC Site&quot;) means any World Wide Web server that publishes copyrightable works and also provides prominent facilities for anybody to edit those works. A public wiki that anybody can edit is an example of such a server. A &quot;Massive Multiauthor Collaboration&quot; (or &quot;MMC&quot;) contained in the site means any set of copyrightable works thus published on the MMC site.</p>
@@ -215,6 +204,10 @@
 <p>&quot;Incorporate&quot; means to publish or republish a Document, in whole or in part, as part of another Document.</p>
 <p>An MMC is &quot;eligible for relicensing&quot; if it is licensed under this License, and if all works that were first published under this License somewhere other than this MMC, and subsequently incorporated in whole or in part into the MMC, (1) had no cover texts or invariant sections, and (2) were thus incorporated prior to November 1, 2008.</p>
 <p>The operator of an MMC Site may republish an MMC contained in the site under CC-BY-SA on the same site at any time before August 1, 2009, provided the MMC is eligible for relicensing.</p>
+
+    </div>
+    </div>
+
     <!----------------------------------------------------------------->
 
     <div class="footer">

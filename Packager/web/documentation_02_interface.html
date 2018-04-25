@@ -4,34 +4,22 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <meta name="author" content="Brigitte Bigi" />
-  <title>SPPAS Documentation</title>
+  <title></title>
   <style type="text/css">code{white-space: pre;}</style>
-  <link rel="stylesheet" href="./etc/styles/sppas.css" type="text/css" />
-      <!----------------------------------------------------------------->
+  <link rel="stylesheet" href="./etc/styles/sppas.css" />
+      <link rel="icon" href="./etc/icons/sppas.png" />
   
-      <div class="footer">
-          <a href="index.html"><img src="./etc/logos/sppas-logo.png" alt="SPPAS"></a>
-          <p class="copyright">
-              <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2017
-          </p>
-      </div>
-  
-      <!----------------------------------------------------------------->
-  
-      <span class="scrollT"></span>
-      <script type="text/javascript" src="./etc/scripts/jquery.min.js"></script>
-      <script type="text/javascript" src="./etc/scripts/scrollT.js"></script>
       <script type="text/javascript">
-          // On active la fonction permettant de faire apparaitre l'indicateur 
-          // de scroll pour remonter en haut de page.
-          $(document).ready(function() 
-          {
-              $(this).scrollT();
-          });
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-38055333-4']);
+        _gaq.push(['_trackPageview']);
+      
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
       </script>
-  
-      <!----------------------------------------------------------------->
 </head>
 <body>
 
@@ -39,49 +27,40 @@
 
     <div class="header">
         <div class="title">
-            <div class="h1title">SPPAS</div>
-            <div class="h3title">a software tool by Brigitte Bigi, researcher at</div>
-            <div class="h3title">Laboratoire Parole et Langage - Aix-en-Provence - France</div>
+            SPPAS: a software tool by Brigitte Bigi, researcher at Laboratoire Parole et Langage - Aix-en-Provence - France
         </div>
     </div>
 
     <!----------------------------------------------------------------->
 
     <div class="menu">
-        <a class="home"     href="index.html">Home</a>
+        <a class="home" href="index.html">Home</a>
         <a class="features" href="features.html">Features</a>
         <a class="install"  href="installation.html">Installation</a>
         <a class="download" href="download.html">Download</a>
         <a class="tutorial" href="tutorial.html">Tutorials</a>
-        <a class="documentation" href="documentation.html">Documentation</a>
-        <a class="group"    href="faq.html">F.A.Q.</a>
+        <a class="group" href="faq.html">F.A.Q.</a>
+    </div>
+
+    <div class="menu">
+    <div class="submenu">
+        <a href="documentation_01_introduction.html">Introduction</a>
+        <a href="documentation_02_interface.html">Interface</a>
+        <a href="documentation_03_annotations.html">Annotations</a>
+        <a href="documentation_04_resources.html">Resources</a>
+        <a href="documentation_05_analyses.html">Analyses</a>
+        <a href="documentation_06_scripting.html">Scripting</a>
+        <a href="documentation_07_references.html">Publications</a>
+        <a href="documentation_08_changes.html">History</a>
+        <a href="documentation_09_annexes.html">Annexes</a>
+    </div>
     </div>
 
     <!----------------------------------------------------------------->
-<div id="header">
-<h1 class="title">SPPAS Documentation</h1>
-<h2 class="author">Brigitte Bigi</h2>
-<h3 class="date">Version 1.9.4</h3>
-</div>
-<div id="TOC">
-<ul>
-<li><a href="#interface">Interface</a><ul>
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#gui-main-frame">GUI Main frame</a><ul>
-<li><a href="#launch-sppas">Launch SPPAS</a></li>
-<li><a href="#the-tips">The tips</a></li>
-<li><a href="#the-menu">The menu</a></li>
-<li><a href="#the-file-explorer">The file explorer</a></li>
-<li><a href="#settings">Settings</a></li>
-<li><a href="#about">About</a></li>
-<li><a href="#help">Help</a></li>
-<li><a href="#plugins">Plugins</a></li>
-</ul></li>
-<li><a href="#cli">CLI</a></li>
-</ul></li>
-</ul>
-</div>
-<hr />
+
+    <div class="cols1 bg-lightgrey">
+        <div class="cols12"></div>
+        <div class="cols2">
 <h1 id="interface">Interface</h1>
 <h2 id="introduction">Introduction</h2>
 <p>The current chapter describes how to use SPPAS with the Graphical User Interface (GUI) and with the Command-line User Interface (CLI). Each feature implemented in SPPAS corresponds to a program that can be invoked by the GUI or the CLI.</p>
@@ -92,30 +71,26 @@
 <p>Under Linux, once the SPPAS package is opened in the Finder/File Explorer, double-click on the <code>sppas.command</code> file.</p>
 <p>The program will first check the version of wxpython and eventually ask to update. It will then check if the julius program can be accessed.</p>
 <p>The main windows will open automatically. It is made of a menu (left), a title (top), the tips (middle), the list of files (left-middle), and the action buttons (right).</p>
-<div class="figure">
-<img src="./etc/screenshots/sppas-1-8-0.png" alt="Main Frame of version 1.9.0" />
-<p class="caption">Main Frame of version 1.9.0</p>
-</div>
+<figure>
+<img src="./etc/screenshots/sppas-1-8-0.png" alt="Main Frame of version 1.9.0" /><figcaption>Main Frame of version 1.9.0</figcaption>
+</figure>
 <h3 id="the-tips">The tips</h3>
-<div class="figure">
-<img src="./etc/screenshots/tips.png" alt="The tips included in the main frame" />
-<p class="caption">The tips included in the main frame</p>
-</div>
+<figure>
+<img src="./etc/screenshots/tips.png" alt="The tips included in the main frame" /><figcaption>The tips included in the main frame</figcaption>
+</figure>
 <p>The frame includes message tips that are picked up randomly and printed to help users. Click on the button <code>Next Tip</code> to read another message, or click on the top-left button to close the tips frame. The <code>Settings</code> allows to show/hide tips at start-up. Anyone can suggest new tips to help other users. They have to be sent to the author by e-mail so that they will be included in the next version.</p>
 <h3 id="the-menu">The menu</h3>
 <p>The menu is located at the left-side of the window. At top, a button allows to exit the program, and at bottom you can declare an issue or contact the author.</p>
 <p>The <code>Exit</code> button closes all SPPAS frames properly.</p>
 <p>To declare an issue, click on the bug button of the menu, then your default web browser will be opened at the appropriate URL. Take a quick look at the list of already declared issues and if any, click on the green button &quot;New Issue&quot;.</p>
 <p>To contact the author, replace the text &quot;Describe what you did here...&quot; by your own comment, question or suggestion and choose how to send the e-mail: with your own default mailer, with gmail opened in your web browser, or by another e-mail client. Then, close the frame by clicking on the &quot;Close&quot; button.</p>
-<div class="figure">
-<img src="./etc/screenshots/feedback.png" alt="The Feedback Frame" />
-<p class="caption">The Feedback Frame</p>
-</div>
+<figure>
+<img src="./etc/screenshots/feedback.png" alt="The Feedback Frame" /><figcaption>The Feedback Frame</figcaption>
+</figure>
 <h3 id="the-file-explorer">The file explorer</h3>
-<div class="figure">
-<img src="./etc/screenshots/FLP.png" alt="File explorer" />
-<p class="caption">File explorer</p>
-</div>
+<figure>
+<img src="./etc/screenshots/FLP.png" alt="File explorer" /><figcaption>File explorer</figcaption>
+</figure>
 <p>The list contains directories and files the user added. However, only files that SPPAS can deal with, e.g. depending on the file extension, can be appended to the list. Files with an unknown extension are rejected.</p>
 <blockquote>
 <p>Remark: The files are added in the list, but they are not opened.</p>
@@ -132,10 +107,9 @@
 <p>A single-click on the <code>Add files</code> button opens a window that allows to select the files to get. By default, only files with &quot;.wav&quot; extensions are proposed. When audio file(s) is/are selected, all files with the same name are automatically added into the file explorer.</p>
 <p>The wildcard of this window can be changed to some other specific file extensions and then other files can be selected.</p>
 <p>In both cases, only files with an appropriate extension will be added in the file explorer.</p>
-<div class="figure">
-<img src="./etc/screenshots/FLP-Add.png" alt="Adding specific files" />
-<p class="caption">Adding specific files</p>
-</div>
+<figure>
+<img src="./etc/screenshots/FLP-Add.png" alt="Adding specific files" /><figcaption>Adding specific files</figcaption>
+</figure>
 <h4 id="add-a-directory">Add a directory</h4>
 <p>A single-click on the <code>Add dir</code> button opens a window that allows to select the directory to get. Each audio file, and all related files - i.e. with the same name and with an appropriate extension, will be added into the file explorer.</p>
 <h4 id="remove-files">Remove file(s)</h4>
@@ -147,10 +121,9 @@
 <p>A single-click on the <code>Copy</code> button allows to copy the selected file(s), change their name and/or change the location. It is also possible to change the file format by assigning the appropriate file extension.</p>
 <h4 id="export-files">Export file(s)</h4>
 <p>Export annotated files in an other format (csv, txt, ...):</p>
-<div class="figure">
-<img src="./etc/screenshots/FLP-Export.png" alt="Export: Check the expected format in the list" />
-<p class="caption">Export: Check the expected format in the list</p>
-</div>
+<figure>
+<img src="./etc/screenshots/FLP-Export.png" alt="Export: Check the expected format in the list" /><figcaption>Export: Check the expected format in the list</figcaption>
+</figure>
 <p>After the export, a new window opens to report whether the file(s) were exported successfully or not. Actually, an export fails if: - the given file is not in UTF-8 encoding; - the given file contains several tiers and the output format supports only one; - the given file contains corrupted annotations.</p>
 <h3 id="settings">Settings</h3>
 <p>To change user preferences, click on the <code>Settings</code> icon, then choose your preferred options in the tabs:</p>
@@ -159,10 +132,9 @@
 <li>Theme: fix how the icons of the GUI will look like.</li>
 <li>Annotations: fix automatic annotations parameters.</li>
 </ul>
-<div class="figure">
-<img src="./etc/screenshots/settings.png" alt="Settings is used to manage user preferences" />
-<p class="caption">Settings is used to manage user preferences</p>
-</div>
+<figure>
+<img src="./etc/screenshots/settings.png" alt="Settings is used to manage user preferences" /><figcaption>Settings is used to manage user preferences</figcaption>
+</figure>
 <p>These preferences can be saved in a file to be used each time SPPAS is executed. Finally, to close the settings window, click on:</p>
 <ul>
 <li>&quot;Cancel&quot; button to ignore changes;</li>
@@ -172,10 +144,9 @@
 <p>The <code>About</code> action button allows to display the main information about SPPAS: author, license, a link to the web site, etc.</p>
 <h3 id="help">Help</h3>
 <p>The <code>Help</code> action button opens the documentation and allows to browse in the chapters and sections.</p>
-<div class="figure">
-<img src="./etc/screenshots/help.png" alt="The Help browser window" />
-<p class="caption">The Help browser window</p>
-</div>
+<figure>
+<img src="./etc/screenshots/help.png" alt="The Help browser window" /><figcaption>The Help browser window</figcaption>
+</figure>
 <h3 id="plugins">Plugins</h3>
 <p>Installing plugins is a very useful solution to extend the features of SPPAS. Several plugins are available for download in the main site of SPPAS. The plugins of SPPAS are installed in a folder with name &quot;plugins&quot; in the main directory of SPPAS.</p>
 <blockquote>
@@ -183,17 +154,16 @@
 </blockquote>
 <h4 id="installing-a-plugin">Installing a plugin</h4>
 <p>To install a plugin, simply follow this workflow:</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>Download the plugin package - e.g. a zip file.</li>
 <li>Execute SPPAS.</li>
 <li>Click on the 'Plugin' icon then click on the 'Install' button of the toolbar.</li>
 <li>Browse to indicate the plugin package.</li>
 <li>See the new plugin icon in the plugins list.</li>
 </ol>
-<div class="figure">
-<img src="./etc/figures/plugin-workflow.png" alt="Installing a new Plugin" />
-<p class="caption">Installing a new Plugin</p>
-</div>
+<figure>
+<img src="./etc/figures/plugin-workflow.png" alt="Installing a new Plugin" /><figcaption>Installing a new Plugin</figcaption>
+</figure>
 <h4 id="deleting-a-plugin">Deleting a plugin</h4>
 <p>To delete a plugin, click on the &quot;Delete&quot; button of the toolbar. Choose the plugin in the given list then click on the &quot;OK&quot; button. Notice that the plugin is definitively deleted of the disk.</p>
 <h4 id="using-a-plugin">Using a plugin</h4>
@@ -205,11 +175,15 @@
 <p>It is usual for a program to be able to display a brief summary of its parameters. Each program included in SPPAS provides its usage by using the option <code>--help</code>, as for example:</p>
 <pre><code>prompt&gt; annotation.py --help</code></pre>
 <p>There are 2 types of programs in the <code>sppas/bin</code> folder:</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>programs to execute an automatic annotation. These programs only requires Python 2.7 to be installed, and <code>julius</code> or <code>hvite</code> for the alignment program. They do not use a GUI so that installing wxPython is not required.</li>
 <li>programs to execute an analysis tool. They take as argument the files to work on and they open the corresponding window. The GUI is launch.</li>
 </ol>
 <p>In addition, the program <code>plugin.py</code> allows to install, execute and remove a plugin of SPPAS.</p>
+
+    </div>
+    </div>
+
     <!----------------------------------------------------------------->
 
     <div class="footer">

@@ -185,7 +185,7 @@ class sppasDocFiles(object):
     def get_js_head_scripts(self):
         """ Return the scripts for the <head> of an html file. """
 
-        return self.get_file(sppasDocFiles.HTML_FOOTER)
+        return self.get_file(sppasDocFiles.HTML_JS_HEAD)
 
     # -----------------------------------------------------------------------
     # Explore the documentation folders and files
@@ -426,9 +426,9 @@ def gen_html_file(doc, css_filename, files, result_filename):
 
     # the parameters
     command += " -s"
-    command += " --toc"
+    # command += " --toc"
     command += " --mathjax"
-    command += " --html"   # html5
+    command += " -5"   # --html"   # html5
     command += " --css " + css_filename
     command += " -H " + head_html_file
     command += " -B " + body_header_html_file
@@ -529,7 +529,7 @@ def generate_web(doc_dir, doc_temp):
         print(folder)
         folder_dirname = os.path.join(doc_dir, folder)
         folder_doc = sppasDocFiles(folder_dirname, doc_temp)
-        files = folder_doc.get_all_md(header=True, footer=False)
+        files = folder_doc.get_all_md(header=False, footer=False)
         print(files)
         result_filename = os.path.join(result_dirname, "documentation_" + folder + ".html")
         gen_html_file(base_doc, css_file, files, result_filename)

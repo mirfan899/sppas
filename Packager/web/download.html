@@ -30,22 +30,32 @@
 
     <div class="header">
         <div class="title">
-            <div class="h1title">SPPAS</div>
-            <div class="h3title">a software tool by Brigitte Bigi, researcher at</div>
-            <div class="h3title">Laboratoire Parole et Langage - Aix-en-Provence - France</div>
+            SPPAS: a software tool by Brigitte Bigi, researcher at Laboratoire Parole et Langage - Aix-en-Provence - France
         </div>
     </div>
-
     <!----------------------------------------------------------------->
 
     <div class="menu">
-        <a class="home"     href="index.html">Home</a>
+        <a class="home" href="index.html">Home</a>
         <a class="features" href="features.html">Features</a>
         <a class="install"  href="installation.html">Installation</a>
         <a class="download current" href="download.html">Download</a>
         <a class="tutorial" href="tutorial.html">Tutorials</a>
-        <a class="documentation" href="documentation.html">Documentation</a>
         <a class="group"    href="faq.html">F.A.Q.</a>
+    </div>
+
+    <div class="menu">
+    <div class="submenu">
+        <a href="documentation_01_introduction.html">Introduction</a>
+        <a href="documentation_02_interface.html">Interface</a>
+        <a href="documentation_03_annotations.html">Annotations</a>
+        <a href="documentation_04_resources.html">Resources</a>
+        <a href="documentation_05_analyses.html">Analyses</a>
+        <a href="documentation_06_scripting.html">Scripting</a>
+        <a href="documentation_07_references.html">Publications</a>
+        <a href="documentation_08_changes.html">History</a>
+        <a href="documentation_09_annexes.html">Annexes</a>
+    </div>
     </div>
 
     <!----------------------------------------------------------------->
@@ -55,8 +65,8 @@
         <div class="cols8">
             <h1>Download SPPAS</h1>
             <p>
-            Click on the red button to download the latest SPPAS package,
-            and do not forget to follow carefully <b>installation instructions</b>.
+            Click on the button to download the latest SPPAS package,
+            and follow carefully <a href="installation.html">installation instructions</a>.
             </p>
             <p>
                 There is a unique version of SPPAS which does not depend on the 
@@ -67,11 +77,31 @@
         <div class="cols12"></div>
         <div class="cols10">
             <p><br></p>
+            <p><br></p>
+            <p><br></p>
             <figure>
-                <a href="downloads/SPPAS-1.9.4.zip">
-                <img class="illustration" src="./etc/icons/zip-download.png" />
+                <a type="button"
+                   href="downloads/SPPAS-1.9.5.zip"
+                   onclick="ga('send', 'event', 'ZIP', 'Download', 'SPPAS Package – ZIP Download');">
+                <!-- OTHER SOLUTION??? onclick=_gaq.push(['_trackEvent','button','clicked','download',,'true']) -->
+                    <img class="illustration" src="./etc/icons/zip-download.png" height="96" />
                 </a>
-                <figcaption>SPPAS version 1.9.4<br>(2018-01-15)</figcaption>
+                <figcaption>SPPAS version 1.9.5<br>(2018-04-26)<br><a href="./documentation_08_changes.html#sppas-1.9.5">What's new in this version?</a></figcaption>
+            </figure>
+
+        </div>
+        <div class="cols11">
+            <p><br></p>
+            <p><br></p>
+            <p><br></p>
+            <figure>
+                <a type="button"
+                   href="doc/Documentation.pdf"
+                   onclick="ga('send', 'event', 'PDF', 'Download', 'SPPAS Documentation – PDF Download');">
+                <!-- OTHER SOLUTION??? onclick=_gaq.push(['_trackEvent','button','clicked','download',,'true']) -->
+                    <img class="illustration" src="./etc/icons/PDF.jpg" width="96" height="96" />
+                </a>
+                <figcaption>User's manual</figcaption>
             </figure>
         </div>
         <div class="cols12"></div>
@@ -273,6 +303,7 @@
                 <li><a href="downloads/SPPAS-1.9.0.zip">SPPAS 1.9.0 (2017-07-27)</a></li>
                 <li><a href="downloads/SPPAS-1.9.1.zip">SPPAS 1.9.1 (2017-09-01)</a></li>
                 <li><a href="downloads/SPPAS-1.9.3.zip">SPPAS 1.9.3 (2017-10-18)</a></li>
+                <li><a href="downloads/SPPAS-1.9.4.zip">SPPAS 1.9.4 (2018-01-15)</a></li>
             </ul>
        </div>
     </div>

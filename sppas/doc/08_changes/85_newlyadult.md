@@ -1,18 +1,20 @@
 ## The stabilization phase
 
 
-### SPPAS-1.8.0 (2016, 30th August)
+### SPPAS-1.8.0
 
-GUI:
+(2016, 30th August)
+ 
+#### GUI:
 
 - Design fully revisited and tested under Linux Mint, Windows 10 and MacOS 10.9
 
-Development:
+#### Development:
 
 - SLM package created: can estimate a statistical language model (without 
   smooth method) on a small corpus
 
-Automatic annotations:
+#### Automatic annotations:
 
 - Add a diagnosis of files
 - Tokenize extended: applied also on alternative labels
@@ -22,33 +24,37 @@ Automatic annotations:
 - Use of a .ini file to configure each annotation instead of a sppas.conf file
 
 
-### SPPAS-1.8.1 (2016, 28th November)
+### SPPAS-1.8.1 
+
+(2016, 28th November)
 
 A few tutorials are available on the web site.
 
-Automatic annotations:
+#### Automatic annotations:
 
 - Align: an ActivityDuration tier can be optionally added.
 - Support of 3-columns tab-delimited files with .txt extension. It allows the
   compatibility with Audacity Label track files.
 - Acoustic models training validated.
 
-Resources:
+#### Resources:
 
 - Catalan: new pronunciation dictionary and new acoustic model.
 
 
-### SPPAS-1.8.2 (2017, 18th January)
+### SPPAS-1.8.2 
 
-Analysis:
+(2017, 18th January)
+
+#### Analysis:
 
 - debug of DataFilter
 
-Resources:
+#### Resources:
 
 - French vocabulary and dictionary updated
 
-Development:
+#### Development:
 
 - new plugins package with a new plugin manager
 - GUI integration of this new plugins system
@@ -56,31 +62,37 @@ Development:
 - annotationdata.io renamed annotationdata.aio
 - docstrings of some packages converted from epytext to reST syntax
 
-GUI: 
+#### GUI: 
 
 - DataStats, DataFilter and DataRoamer toolbars don't scroll anymore
 - Themes management changed.
 - Main font is managed by the Themes.
 
 
-### SPPAS-1.8.3 (2017, 10th March)
+### SPPAS-1.8.3 
 
-Development:
+(2017, 10th March)
+
+#### Development:
 
 - Elan reader highly improved (faster reader).
 - updated plugins
 
 
-### SPPAS 1.8.4 (2017, 10th April)
+### SPPAS 1.8.4 
 
-Development:
+(2017, 10th April)
+
+#### Development:
 
 - Elan writer modified: create a time slot for each localization.
 
 
-### SPPAS 1.8.5 (2017, 20th April)
+### SPPAS 1.8.5 
 
-Development:
+(2017, 20th April)
+
+#### Development:
 
 - Vizualizer renamed Visualizer
 - AudioRoamer: bug with an icon corrected
@@ -88,14 +100,18 @@ Development:
 - Updated AnnotationPro Antx reader/writer
 
 
-### SPPAS 1.8.6 (2017, 19th June)
+### SPPAS 1.8.6 
 
-Resources:
+(2017, 19th June)
+
+#### Resources:
 
 - Polish dictionary and acoustic model updated.
 
 
-### SPPAS 1.9.0 (2017, 28th July)
+### SPPAS 1.9.0 
+
+(2017, 28th July)
 
 #### Programming:
 
@@ -159,7 +175,9 @@ Resources:
 - Better information about the licenses
 
 
-### SPPAS 1.9.1 (2017, 1st September)
+### SPPAS 1.9.1 
+
+(2017, 1st September)
 
 #### Programming:
 
@@ -171,7 +189,9 @@ Resources:
 - Add an acoustic model for English, including laughter and noises.
 
 
-### SPPAS 1.9.2 (2017, 6th October)
+### SPPAS 1.9.2 
+
+(2017, 6th October)
 
 #### Programming:
 
@@ -181,7 +201,9 @@ Resources:
   scripts updated, etc.
 
 
-### SPPAS 1.9.3 (2017, 18th October)
+### SPPAS 1.9.3 
+
+(2017, 18th October)
 
 #### Programming:
 
@@ -198,7 +220,9 @@ Resources:
 - Spanish alignment does not work: corrupted acoustic model
 
 
-### SPPAS 1.9.4 (2018, 15th January)
+### SPPAS 1.9.4 
+
+(2018, 15th January)
 
 #### Programming:
 
@@ -214,7 +238,9 @@ Resources:
     - new acoustic model
 
 
-### SPPAS 1.9.5 (2018, 25th April)
+### SPPAS 1.9.5 
+
+(2018, 25th April)
 
 #### Programming:
 

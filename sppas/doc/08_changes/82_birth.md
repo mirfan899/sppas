@@ -1,7 +1,9 @@
 ## The birth of SPPAS
 
 
-### SPPAS 1.4.0 (2012, 14th June)
+### SPPAS 1.4.0 
+
+(2012, 14th June)
 
 It's the official birth of SPPAS: the software has a name, a license, a GUI, 
 a web-page and is freely distributed to the community.
@@ -10,7 +12,7 @@ The source code is only based on Python 2.7 language and the GUI is based
 on WxPython 2.8.x or 2.9.x (on MacOS, wxpython must be 32 bits).
 SPPAS requires also `sox` and `julius` software to be installed.
 
-Automatic annotations main changes:
+#### Automatic annotations:
 
 - add Momel: 
   Momel (MOdelling MELody) is an algorithm developed by Daniel Hirst
@@ -28,7 +30,7 @@ Automatic annotations main changes:
   8 discrete symbols constituting a surface phonological representation of
   the intonation.
 
-Packaging:
+#### Packaging:
 
 - merge AUTHORS, VERSION and README files in the README file
 - create packages in the lib directory (2012-03-20)
@@ -45,7 +47,7 @@ Packaging:
 - SPPAS can be installed in a directory containing spaces and can deal
   with file names with spaces (bug fixed: 2012-06-11)
 
-GUI:
+#### GUI:
 
 - GUI with the wxpython library (2012-03-27)
 - Manage a list of selected files
@@ -54,26 +56,28 @@ GUI:
 - Fix options to each annotation step with the menu
 - Open the log file after each process
 
-Resources:
+#### Resources:
 
 - French dictionary is using UTF-8 (instead of iso8859-1 in previous versions)
 - French dictionary is based on X-SAMPA phone set
 - Chinese: work with chinese characters instead of pinyin.
 
-Known Bugs:
+#### Known Bugs:
 
 - The wav player can not play wav files if the filename contains '#'.
 - The first line of the Italian dictionary must be changed to "# [#] #".
 
 
-### SPPAS 1.4.1 (2012, 13th July)
+### SPPAS 1.4.1 
 
-Resources:
+(2012, 13th July)
+
+#### Resources:
 
 - Updated English acoustic model (from voxforge, 2012-06-25)
 - English acoustic models converted to X-SAMPA
 
-Annotations:
+#### Automatic annotations:
 
 - IPUs Segmentation annotation performs a simple silence detection if no
   transcription is available (the volume is automatically adjusted)
@@ -86,18 +90,20 @@ Annotations:
    * short pauses: + (a + example)
    * silences: # (a # example)
 
-GUI:
+#### GUI:
 
 - Create (systematically) a merged annotations TextGrid file.
 
-Development:
+#### Development:
 
 - Package's management
 
 
-### SPPAS 1.4.2 (2012, 2nd August)
+### SPPAS 1.4.2 
 
-GUI:
+(2012, 2nd August)
+
+#### GUI:
 
 - add a panel with a Transcription editor
 - IPU segmentation can split a wav into tracks
@@ -107,89 +113,94 @@ value is automatically adjusted)
 - "File Information" button adds some tier manipulation tools:
     cut/copy/paste/rename/duplicate/move/preview/filter
 
-Known bug:
+#### Known bug:
 
 - The filter frame is not working under Windows XP.
 
 
-### SPPAS 1.4.3 (2012, 10th October)
+### SPPAS 1.4.3 
+
+(2012, 10th October)
 
 This is primarily a bug-fix release. 
 The author is addressing many thanks to all users who send their
 comments!
 
-GUI:
+#### GUI:
 
 - Frames and Dialog design is more uniform.
 - Users preferences changed. Themes and colors introduced.
 - Help is available.
 
-Annotations:
+#### Automatic annotations:
 
 - Bug fixed for phonetization/alignement if the input transcription contains
 series of silence intervals or series of speech intervals. Previous
 versions was supposing a **strict IPUs** input transcription.
 - Tokenization is done.
 
-Development:
+#### Development:
 
 - Code cleaning in the package wxGUI.
 - Debug...
 
 
-### SPPAS 1.4.4 (2012, 6th December)
+### SPPAS 1.4.4 
 
-GUI:
+(2012, 6th December)
+
+#### GUI:
 
 - add information/options when "Request" a file
 - debug Request/Filter (for Windows systems)
 
-Annotations:
+#### Automatic annotations:
 
 - New Italian acoustic model
 - New Chinese acoustic model, and some minor changes in the dictionary
 
-Development:
+#### Development:
 
 - ".trs" files support (transcriptions from Transcriber)
 - debug (alignment, tokenization)
 - add ".lab" files export (HTK format)
 
-Known bugs:
+#### Known bugs:
 
 - Alignment: it fails under Windows, if `julius` is not installed properly.
 - Syllabification: the last syllable of each file is "broken".
 - Alignment error if unknown words during phonetization.
 
 
-### SPPAS 1.4.5 (2013, 15th January)
+### SPPAS 1.4.5 
 
-Development:
+(2013, 15th January)
+
+#### Development:
 
 - Correct a few bugs of the previous version (phonetization, alignment, 
 syllabification)
 - ".eaf" files support (transcriptions from Elan software)
+- add script tierfilter.py
+- add script tiercombine.py
 
-Annotations:
+#### Automatic annotations:
 
 - Experimental version of Vietnamese
 - add Tokenization as a specific annotation level
 - add Phonetization of PinYin
 
-GUI:
+#### GUI:
 
 - Request/Filter a tier: multiple patterns filtering
 - Request: add a "New File" button
 
-Tools/scripts:
 
-- tierfilter.py
-- tiercombine.py
+### SPPAS 1.4.6
 
-
-### SPPAS 1.4.6 (2013, 12th February)
-
-GUI:
+(2013, 12th February)
+ 
+#### GUI:
 
 - Improved Request/Filter a tier:
   * add new modes: not contains, not starts with, not ends with
@@ -198,38 +209,39 @@ GUI:
 - Add Requests/Stats to obtain basic statistics
 - Requests Copy/Cut/Paste/Duplicate/Save debugged
 
-Annotations:
+#### utomatic annotations:
 
 - IPU segmentation: can take a "Name" tier to fix names of tracks
   (if the "Split into tracks" option is checked)
 
 
-### SPPAS 1.4.7 (2013, 25th March)
+### SPPAS 1.4.7 
 
-Requests/Filter:
+(2013, 25th March)
 
-- "Starts search at..." and "Ends search at..."
-- remove negative search (because of a bug...). Replaced by a "reverse" option.
-
-Development:
+#### Development:
 
 - re-organization of lib, except for the wxGUI library.
 - Cancel the sppas.lock file creation when SPPAS is running.
+- Requests/Filter: "Starts search at..." and "Ends search at..."
+- Requests/Filter: remove negative search (because of a bug...). Replaced by a "reverse" option.
 
-Resources:
+#### Resources:
 
 - add experimental version of Taiwanese automatic segmentation (from 
   romanized transcriptions)
 
-Annotations:
+#### Annotations:
 
 - New version of INTSINT, based on the algorithm proposed in (Hirst 2011)
   and implemented in the last version of Momel/INTSINT Praat plugin!
 
 
-### SPPAS 1.4.8 (2013, 30th May)
+### SPPAS 1.4.8 
 
-Development:
+(2013, 30th May)
+
+#### Development:
 
 - reorganization of the GUI code. SPPAS is made of:
 
@@ -239,18 +251,20 @@ Development:
 - sppas.py removed. sppas.bat created (for Windows).
 - Input/Output library entirely changed
 
-GUI:
+#### GUI:
 
 - components (wavplayer, transcriber, requests) in separate frames
 - new design
 - Help and documentation changed, expanded and improved
 
 
-### SPPAS 1.4.9 (2013, 3rd July)
+### SPPAS 1.4.9 
+
+(2013, 3rd July)
 
 SPPAS has a new and more colored logo!
 
-Development:
+#### Development:
 
 - bug correction:
    * Bug fixed in IPU segmentation with option "Split into tracks"
@@ -260,7 +274,7 @@ Development:
    * Bug fixed in Transcriber
 - library organization revised
 
-GUI:
+#### GUI:
 
 - Add an export button to the File List Panel
 - Migrate wav infos from the Requests component to the Wav player component
@@ -268,21 +282,23 @@ GUI:
 - Save As improved in the Requests component
 
 
-### SPPAS 1.5.0 (2013, 2nd August)
+### SPPAS 1.5.0
 
-Development:
+(2013, 2nd August)
+ 
+#### Development:
 
 - bug correction
 
-Annotation:
+#### Annotation:
 
 - Tokenization: TOE support finalized
 
-GUI:
+#### GUI:
 
 - Transcribe: debug of IPU player, for MacOS
 
-Resources:
+#### Resources:
 
 - New French acoustic model. Attention: phoneset changed.
 - New French dictionary: use the new phoneset!
@@ -291,60 +307,68 @@ Resources:
 - Vietnamese removed: due to the lack of data, the model can't be improved.
 
 
-### SPPAS 1.5.1 (2013, 29th August)
+### SPPAS 1.5.1 
 
-Development:
+(2013, 29th August)
+
+#### Development:
 
 - bug correction in annotations
 - help system debugged
 
-Annotation:
+#### Annotation:
 
 - Phonetization of unknown words improved
 
-Resources:
+#### Resources:
 
 - French dict modified
 
 
-### SPPAS 1.5.2 (2013, 27th September)
+### SPPAS 1.5.2 
+
+(2013, 27th September)
 
 All resources are moved into the "resources" directory.
 
-Development:
+#### Development:
 
 - bug correction in annotations and GUI
 
-Resources:
+#### Resources:
 
 - French dict modified
 - New resources for the tokenization
 
-Components:
+#### Components:
 
 - "Statistics": an avanced component to estimate (and save!) descriptive 
 statistics on multiple annotated files
 
 
-### SPPAS 1.5.3 (2013, 25th October)
+### SPPAS 1.5.3 
 
-Resources:
+(2013, 25th October)
+
+#### Resources:
 
 - Add Spanish support
 
-Components:
+#### Components:
 
 - improved Statistics component
 - Add a "Filter" component, first version with a basic GUI
 
-GUI:
+#### GUI:
 
 - Help updated.
 
 
-### SPPAS 1.5.4 (2013, 3rd December)
+### SPPAS 1.5.4 
 
-Components:
+(2013, 3rd December)
+
+#### Components:
 
 - Wav Player changed.
 - Information and Requests removed. Replaced by Data Roamer.
@@ -352,105 +376,119 @@ Components:
 - Statistics updated.
 - Filter updated.
 
-Annotations:
+#### Annotations:
 
 - Add Repetitions (detection of sources only)
 
 Notice that this is the first stable release.
 
 
-### SPPAS 1.5.5 (2013, 23th December)
+### SPPAS 1.5.5 
 
-Development:
+(2013, 23th December)
+
+#### Development:
 
 - improved annotationdata
   (add methods: Find, Index; add uncertain label; debug radius).
 
-Components:
+#### Components:
 
 - debug
 
-GUI:
+#### GUI:
 
 - Tips at start-up
 - New theme: Christmast
 
 
-### SPPAS 1.5.6 (2014, 28th January)
+### SPPAS 1.5.6 
 
-Development:
+(2014, 28th January)
+
+#### Development:
 
 - improved annotationdata (add methods: Near, Search).
 - Package cleaning!
 
-Components:
+#### Components:
 
 - debug
 
-Resources:
+#### Resources:
 
 - New Italian dictionary (including gemination)
 
 
-### SPPAS 1.5.7 (2014, 18th February)
+### SPPAS 1.5.7 
 
-Plugins manager added.
+(2014, 18th February)
 
-Resources:
+#### Development:
+
+- Plugins manager added.
+
+#### Resources:
 
 - Japanese support, thanks to the resources available on the Julius website.
 
 
-### SPPAS 1.5.8 (2014, 18th March)
+### SPPAS 1.5.8 
 
-Development:
+(2014, 18th March)
+
+#### Development:
 
 - annotationdata: more flexibility while adding annotations,
   add sub-divisions, export csv modified, docstrings,
   import/export in a native format (xra, version 1.0).
 
-Documentation:
+#### Documentation:
 
 - add a PDF file of slides: "SPPAS for dummies"
 
 
-### SPPAS 1.5.9 (2014, 15th April)
+### SPPAS 1.5.9 
 
-Components:
+(2014, 15th April)
+
+#### Components:
 
 - new: DataViewer, experimental version
 
-Annotations:
+#### Annotations:
 
 - syllabification rules: accept 2 types of vowels (V and W)
 - syllabification: faster!
 
-Development:
+#### Development:
 
 - Export Elan
 - Import/Export xra. XRA is the native format of SPPAS annotation files. 
   See etc/xra for details.
 
-Resources:
+#### Resources:
 
 - New French acoustic model
 
 
-### SPPAS 1.6.0 (2014, 22th May)
+### SPPAS 1.6.0 
 
-Package:
+(2014, 22th May)
+
+#### Package:
 
 - Rename folder "Doc" to "documentation"
 - A documentation is created
 - SPPAS-for-dummies updated
 
-Development:
+#### Development:
 
 - helpsystem removed
 - GUI: package re-organization, re-implementation.
 - Alignment: choice of the aligner (julius, hvite or basic)
 
-Resources:
+#### Resources:
 
 - new acoustic model: FR-Read and FR
 - new acoustic model: ZH
@@ -458,26 +496,30 @@ Resources:
 - new acoustic model: SP
 
 
-### SPPAS 1.6.1 (2014, 26th September)
+### SPPAS 1.6.1 
 
-Development:
+(2014, 26th September)
+
+#### Development:
 
 - bug correction (export, syllabification, alignment)
 - DataViewer, major bugs corrected.
 
-Resources:
+#### Resources:
 
 - Italian: new pronunciation dictionary and new acoustic model
 - add resources for Catalan
 
-GUI:
+#### GUI:
 
 - add a new Export button
 
 
-### SPPAS 1.6.2 (2014, 21th October)
+### SPPAS 1.6.2 
 
-Resources:
+(2014, 21th October)
+
+#### Resources:
 
 - language names changed. They are now corresponding to the international
   standard ISO639-3. See <http://www-01.sil.org/iso639-3/>
@@ -485,21 +527,23 @@ Resources:
 - Catalan dictionary changed.
 
 
-### SPPAS 1.6.3 (2014, 2nd November)
+### SPPAS 1.6.3 
 
-Resources:
+(2014, 2nd November)
+
+#### Resources:
 
 - Add resources for Cantonese
 
-Documentation:
+#### Documentation:
 
 - It's now (more or less) finished!
 
-Development:
+#### Development:
 
 - Support of Elan improved (add Controlled vocabulary)
 
-GUI:
+#### GUI:
 
 - Change the organization of the main frame: annotations above components
 

@@ -90,8 +90,8 @@ To summarize, SPPAS users are:
 
 ### User engagement
 
-By using SPPAS, **you agree to cite the reference in your publications.
-See the chapter 7 of this documentation.
+By using SPPAS, **you agree to cite a reference in your publications**.
+All references are listed in Chapter 7 of this documentation.
 
 
 ### Need help
