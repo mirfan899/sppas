@@ -142,7 +142,8 @@ class TestANTX(unittest.TestCase):
 
         self.assertEqual(len(antx.get_media_list()), 1)
         antx_media = antx.get_media_list()[0]
-        self.assertEqual(antx_media, media)
+        self.assertEqual(antx_media.get_filename(), media.get_filename())
+        self.assertEqual(antx_media.get_mime_type(), media.get_mime_type())
         self.assertEqual('44100', antx_media.get_meta('media_sample_rate'))
         self.assertEqual('NoName', antx_media.get_meta('Name'))
         self.assertEqual('false', antx_media.get_meta('Current'))

@@ -42,9 +42,7 @@
 """
 import unittest
 import os.path
-import shutil
 
-from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.makeunicode import u
 
 from ..aio.sclite import sppasBaseSclite
@@ -61,7 +59,6 @@ from ..annlocation.location import sppasLocation
 
 # ---------------------------------------------------------------------------
 
-TEMP = sppasFileUtils().set_random()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # ---------------------------------------------------------------------------
@@ -108,15 +105,6 @@ class TestScliteCTM(unittest.TestCase):
     CTM file format, from Sclite tool.
 
     """
-    def setUp(self):
-        if os.path.exists(TEMP) is False:
-            os.mkdir(TEMP)
-
-    def tearDown(self):
-        shutil.rmtree(TEMP)
-
-    # -----------------------------------------------------------------------
-
     def test_detect(self):
         """ Test the file format detection method. """
 
@@ -383,20 +371,6 @@ class TestScliteCTM(unittest.TestCase):
         ctm = sppasCTM()
         ctm.read(os.path.join(DATA, "sample.ctm"))
         self.assertEqual(len(ctm), 4)
-        ctm.write(os.path.join(TEMP, "sample.ctm"))
-
-        ctm2 = sppasCTM()
-        ctm2.read(os.path.join(TEMP, "sample.ctm"))
-        self.assertEqual(len(ctm2), 4)
-        self.assertEqual(len(ctm2.get_media_list()), 3)
-        self.assertEqual("SHOW_1-1", ctm2[0].get_name())
-        self.assertEqual("SHOW_2-1", ctm2[1].get_name())
-        self.assertEqual("SHOW_2-2", ctm2[2].get_name())
-        self.assertEqual("SHOW_3-1", ctm2[3].get_name())
-        self.assertEqual(7, len(ctm2[0]))
-        self.assertEqual(3, len(ctm2[1]))
-        self.assertEqual(5, len(ctm2[2]))
-        self.assertEqual(6, len(ctm2[3]))
 
 # ---------------------------------------------------------------------------
 
@@ -406,15 +380,6 @@ class TestScliteSTM(unittest.TestCase):
     STM file format, from Sclite tool.
 
     """
-    def setUp(self):
-        if os.path.exists(TEMP) is False:
-            os.mkdir(TEMP)
-
-    def tearDown(self):
-        shutil.rmtree(TEMP)
-
-    # -----------------------------------------------------------------------
-
     def test_detect(self):
         """ Test the file format detection method. """
 
@@ -612,24 +577,3 @@ class TestScliteSTM(unittest.TestCase):
                                         [0.60, 0.4]))
         line = sppasSTM._serialize_annotation(a3, "WAV", "1", "A")
         self.assertEqual("WAV 1 A 1.0 3.5 { label / level }\n", line)
-
-    # -----------------------------------------------------------------------
-
-    def test_read_write(self):
-        """ Write a transcription into a file. """
-
-        stm = sppasSTM()
-        stm.read(os.path.join(DATA, "sample.stm"))
-        self.assertEqual(len(stm), 2)
-        stm.write(os.path.join(TEMP, "sample.stm"))
-
-        stm2 = sppasSTM()
-        stm2.read(os.path.join(TEMP, "sample.stm"))
-
-        self.assertEqual(len(stm2), 2)
-        self.assertEqual(len(stm2.get_media_list()), 1)
-        self.assertEqual(stm2[0].get_name(), "ma_0029-1-A")
-        self.assertEqual(stm2[1].get_name(), "ma_0029-2-B")
-        self.assertEqual(len(stm2[0]), 4)
-        self.assertEqual(len(stm2[1]), 6)
-        self.assertEqual(stm2[1][0].get_labels()[0].get_best().get_content(), u("对 因为"))

@@ -57,6 +57,31 @@ class sppasBaseIO(sppasTranscription):
 
     # -----------------------------------------------------------------------
 
+    @staticmethod
+    def is_number(s):
+        """ Check whether a string is a number or not.
+
+        :param s: (str or unicode)
+        :returns: (bool)
+
+        """
+        try:
+            float(s)
+            return True
+        except ValueError:
+            pass
+
+        try:
+            import unicodedata
+            unicodedata.numeric(s)
+            return True
+        except (TypeError, ValueError):
+            pass
+
+        return False
+
+    # -----------------------------------------------------------------------
+
     def __init__(self, name=None):
         """ Initialize a new Transcription reader-writer instance.
 

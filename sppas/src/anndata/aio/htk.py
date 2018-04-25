@@ -217,7 +217,7 @@ class sppasLab(sppasBaseHTK):
         except ValueError:
             return False
 
-        return line[0].isdigit()
+        return sppasBaseIO.is_number(line[0])
 
     # -----------------------------------------------------------------------
 
@@ -249,8 +249,8 @@ class sppasLab(sppasBaseHTK):
         for line in lines:
             line = line.strip().split()
 
-            has_begin = len(line) > 0 and line[0].isdigit()
-            has_end = len(line) > 1 and line[1].isdigit()
+            has_begin = len(line) > 0 and sppasBaseIO.is_number(line[0])
+            has_end = len(line) > 1 and sppasBaseIO.is_number(line[1])
 
             if has_begin and has_end:
                 if len(text) > 0:

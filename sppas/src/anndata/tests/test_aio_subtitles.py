@@ -2,11 +2,7 @@
 
 import unittest
 import os.path
-import shutil
 
-from sppas.src.utils.fileutils import sppasFileUtils
-
-from ..anndataexc import AioMultiTiersError
 from ..aio.subtitle import sppasBaseSubtitles
 from ..aio.subtitle import sppasSubRip
 from ..aio.subtitle import sppasSubViewer
@@ -20,7 +16,6 @@ from ..annlocation.location import sppasLocation
 
 # ---------------------------------------------------------------------------
 
-TEMP = sppasFileUtils().set_random()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # ---------------------------------------------------------------------------
@@ -88,15 +83,6 @@ class TestSubRip(unittest.TestCase):
     Represents a SubRip reader/writer.
 
     """
-    def setUp(self):
-        if os.path.exists(TEMP) is False:
-            os.mkdir(TEMP)
-
-    def tearDown(self):
-        shutil.rmtree(TEMP)
-
-    # -----------------------------------------------------------------
-
     def test_read(self):
         """ Test of reading a SRT sample file. """
 
@@ -128,28 +114,6 @@ class TestSubRip(unittest.TestCase):
         a1.set_meta("position_pixel_Y2", "200")
         self.assertEqual(sppasSubRip._serialize_metadata(a1), "X1:10 Y1:20 X2:100 Y2:200\n")
 
-    # -----------------------------------------------------------------
-
-    def test_write(self):
-        """ Test of writing a SRT sample file. """
-
-        sub = sppasSubRip()
-        tier = sub.create_tier(name="tierIntervals")
-
-        tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.))))
-        tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(2.5), sppasPoint(4.))),
-                               sppasLabel(sppasTag('toto')))
-
-        sub.write(os.path.join(TEMP, "sample.srt"))
-        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample.srt")))
-        self.assertGreater(os.stat(os.path.join(TEMP, "sample.srt")).st_size, 0)
-
-        with open(os.path.join(TEMP, "sample.srt")) as fp:
-            lines = fp.readlines()
-            fp.close()
-
-        self.assertEqual(len(lines), 4)
-
 # ---------------------------------------------------------------------
 
 
@@ -158,15 +122,6 @@ class TestSubViewer(unittest.TestCase):
     Represents a SubViewer reader/writer.
 
     """
-    def setUp(self):
-        if os.path.exists(TEMP) is False:
-            os.mkdir(TEMP)
-
-    def tearDown(self):
-        shutil.rmtree(TEMP)
-
-    # -----------------------------------------------------------------
-
     def test_read(self):
         """ Test of reading a SUB sample file. """
 
@@ -174,8 +129,8 @@ class TestSubViewer(unittest.TestCase):
         txt.read(os.path.join(DATA, "sample.sub"))
         self.assertEqual(txt.get_meta('annotator_name'), "FK")
 
-        self.assertEqual(len(txt), 1)
-        self.assertEqual(len(txt[0]), 6)
+        self.assertEqual(1, len(txt))
+        self.assertEqual(6, len(txt[0]))
         self.assertEqual(sppasPoint(22.5), txt[0].get_first_point())
         self.assertEqual(sppasPoint(34.80), txt[0].get_last_point())
         self.assertFalse("[br]" in txt[0][0].get_labels()[0].get_best().get_content())
@@ -193,23 +148,3 @@ class TestSubViewer(unittest.TestCase):
         txt = sppasSubViewer()
         header = txt._serialize_header()
         self.assertEqual(len(header.split('\n')), 14)
-
-    # -----------------------------------------------------------------
-
-    def test_write(self):
-        """ """
-        sub = sppasSubViewer()
-        tier = sub.create_tier(name="tierIntervals")
-
-        tier.append(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.)))))
-        tier.add(sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(2.5), sppasPoint(4.))),
-                                 sppasLabel(sppasTag('toto'))))
-
-        sub.write(os.path.join(TEMP, "sample.sub"))
-        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample.sub")))
-        self.assertGreater(os.stat(os.path.join(TEMP, "sample.sub")).st_size, 0)
-
-        with open(os.path.join(TEMP, "sample.sub")) as fp:
-            lines = fp.readlines()
-
-        self.assertEqual(len(lines), 16)

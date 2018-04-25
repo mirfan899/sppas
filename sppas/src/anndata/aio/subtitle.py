@@ -225,7 +225,7 @@ class sppasSubRip(sppasBaseSubtitles):
             lines = list()
 
             # Ignore an optional header (or blank lines)
-            while line.strip()[0:1].isdigit() is False:
+            while sppasBaseIO.is_number(line.strip()[0:1]) is False:
                 line = fp.next()
 
             # Content of the file
@@ -303,6 +303,7 @@ class sppasSubRip(sppasBaseSubtitles):
 
             if self.is_empty() is False:
                 number = 1
+                last = len(self[0])
                 for ann in self[0]:
 
                     text = serialize_labels(ann.get_labels(),
@@ -323,8 +324,9 @@ class sppasSubRip(sppasBaseSubtitles):
                     subtitle += sppasSubRip._serialize_metadata(ann)
                     # the text
                     subtitle += text + "\n"
-                    # a blank line
-                    subtitle += "\n"
+                    if number < last:
+                        # a blank line
+                        subtitle += "\n"
 
                     # next!
                     fp.write(subtitle)
@@ -394,7 +396,7 @@ class sppasSubViewer(sppasBaseSubtitles):
             line = fp.next()
 
             # Header
-            while line.strip()[0:1].isdigit() is False:
+            while sppasBaseIO.is_number(line.strip()[0:1]) is False:
                 lines.append(line.strip())
                 line = fp.next()
             self._parse_header(lines)
@@ -413,7 +415,10 @@ class sppasSubViewer(sppasBaseSubtitles):
             except StopIteration:
                 a = sppasSubViewer._parse_subtitle(lines)
                 if a is not None:
-                    tier.append(a)
+                    try:
+                        tier.append(a)
+                    except:
+                        pass
             fp.close()
 
     # -----------------------------------------------------------------------

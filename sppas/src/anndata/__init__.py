@@ -77,6 +77,7 @@ from .annlocation import sppasDuration
 from .annlocation import sppasInterval
 from .annlocation import sppasPoint
 from .annlocation import sppasDisjoint
+from aio import aioutils
 
 __all__ = [
     sppasMetaData,
@@ -93,5 +94,6 @@ __all__ = [
     sppasDuration,
     sppasDisjoint,
     sppasInterval,
-    sppasPoint
+    sppasPoint,
+    aioutils
 ]

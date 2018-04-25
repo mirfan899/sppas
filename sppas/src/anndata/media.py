@@ -123,6 +123,8 @@ class sppasMedia(sppasMetaData):
             return False
         if self.__url != other.get_filename():
             return False
+        if self.__mime != other.get_mime_type():
+            return False
 
         for meta_key in self.get_meta_keys():
             if self.get_meta(meta_key) != other.get_meta(meta_key):
@@ -130,6 +132,7 @@ class sppasMedia(sppasMetaData):
         for meta_key in other.get_meta_keys():
             if self.get_meta(meta_key) != other.get_meta(meta_key):
                 return False
+
         return True
 
     def __ne__(self, other):

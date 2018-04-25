@@ -885,9 +885,9 @@ class sppasTier(sppasMetaData):
         #  - location consistency
         if len(self.__ann) > 0:
             if annotation.location_is_point() is True and self.is_point() is False:
-                raise AnnDataTypeError(annotation, "sppasPoint")
+                raise AnnDataTypeError(str(annotation)+" (sppasPoint)", "sppasInterval")
             if annotation.location_is_interval() is True and self.is_interval() is False:
-                raise AnnDataTypeError(annotation, "sppasInterval")
+                raise AnnDataTypeError(str(annotation)+" (sppasInterval)", "sppasPoint")
             if annotation.location_is_disjoint() is True and self.is_disjoint() is False:
                 raise AnnDataTypeError(annotation, "sppasDisjoint")
 

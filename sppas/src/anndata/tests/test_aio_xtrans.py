@@ -2,12 +2,9 @@
 
 import unittest
 import os.path
-import shutil
 
 from ..aio.xtrans import sppasTDF
-from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
-from ..annlocation.interval import sppasInterval
 
 # ---------------------------------------------------------------------------
 

@@ -46,8 +46,6 @@ import os.path
 import shutil
 
 from sppas.src.utils.fileutils import sppasFileUtils
-from sppas.src.utils.makeunicode import u
-
 from ..aio.readwrite import sppasRW
 from ..aio.praat import sppasTextGrid
 
@@ -61,8 +59,10 @@ DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 def compare_tiers_trs(trs1, trs2, meta=True):
     """  Compare tiers of 2 sppasTranscription().
-    :param trs1:
-    :param trs2:
+
+    :param trs1: (sppasTranscription)
+    :param trs2: (sppasTranscription)
+    :param meta: (bool)
 
     """
     for t1, t2 in zip(trs1, trs2):
@@ -70,7 +70,7 @@ def compare_tiers_trs(trs1, trs2, meta=True):
             print('Tier names differ: {:s} != {:s}'.format(t1.get_name(), t2.get_name()))
             return False
         if len(t1) != len(t2):
-            print('Tier sizes differ: {:s} != {:s}'.format(len(t1), len(t2)))
+            print('Tier sizes differ: {:d} != {:d}'.format(len(t1), len(t2)))
             return False
         if meta is True:
             # compare metadata
@@ -96,8 +96,10 @@ def compare_tiers_trs(trs1, trs2, meta=True):
 
 def compare_ctrl_vocab_trs(trs1, trs2, meta=True):
     """ Compare controlled vocabularies of the tiers of 2 sppasTranscription().
-    :param trs1:
-    :param trs2:
+
+    :param trs1: (sppasTranscription)
+    :param trs2: (sppasTranscription)
+    :param meta: (bool)
 
     """
     for t1, t2 in zip(trs1, trs2):
@@ -107,8 +109,7 @@ def compare_ctrl_vocab_trs(trs1, trs2, meta=True):
         if c1 is None and c2 is None:
             continue
         if meta is True:
-            if c1 != c2:
-                return False
+            return c1 == c2
         else:
             if c1.get_name() != c2.get_name():
                 return False
@@ -126,17 +127,27 @@ def compare_ctrl_vocab_trs(trs1, trs2, meta=True):
     return True
 
 
-def compare_media_trs(trs1, trs2):
+def compare_media_trs(trs1, trs2, meta=True):
     """ Compare media of the tiers of 2 sppasTranscription().
-    :param trs1:
-    :param trs2:
+
+    :param trs1: (sppasTranscription)
+    :param trs2: (sppasTranscription)
+    :param meta: (bool)
 
     """
     for t1, t2 in zip(trs1, trs2):
         m1 = t1.get_media()  # a sppasMedia() instance or None
         m2 = t2.get_media()  # a sppasMedia() instance or None
-        if m1 != m2:
-            return False
+
+        if m1 is None and m2 is None:
+            continue
+        if meta is True:
+            return m1 == m2
+        else:
+            if m1.get_filename() != m2.get_filename():
+                return False
+            if m1.get_mime_type() != m2.get_mime_type():
+                return False
     return True
 
 # ---------------------------------------------------------------------------
@@ -149,19 +160,8 @@ class TestAIO(unittest.TestCase):
             os.mkdir(TEMP)
 
     def tearDown(self):
+        return
         shutil.rmtree(TEMP)
-
-    # -----------------------------------------------------------------------
-
-    def test_read_heuristic(self):
-        """ Test if the heuristic is using the appropriate reader. """
-
-        parser = sppasRW(os.path.join(DATA, "sample.heuristic"))
-        trs = parser.read(heuristic=True)
-        self.assertTrue(isinstance(trs, sppasTextGrid))
-        self.assertEqual(len(trs), 2)
-        self.assertEqual(len(trs[0]), 1)
-        self.assertEqual(len(trs[1]), 2)
 
     # -----------------------------------------------------------------------
 
@@ -202,9 +202,23 @@ class TestAIO(unittest.TestCase):
         self.assertTrue(compare_tiers_trs(trs1, trs2, meta=False))  # colors slightly differ...
         self.assertTrue(compare_media_trs(trs1, trs2))
 
+        # Read ANTX file (with TGA results)
+        parser = sppasRW(os.path.join(DATA, "sample-TGA.antx"))
+        trs1 = parser.read(heuristic=True)
+
+        # Write ANTX file
+        parser.set_filename(os.path.join(TEMP, "sample-TGA.antx"))
+        parser.write(trs1)
+
+        # Read the ANTX file
+        trs2 = parser.read(heuristic=True)
+
+        self.assertTrue(compare_tiers_trs(trs1, trs2, meta=False))  # colors slightly differ...
+        self.assertTrue(compare_media_trs(trs1, trs2))
+
     # -----------------------------------------------------------------------
 
-    def test_IO_ELAN(self):
+    def test_IO_EAF(self):
         """ Read/Write/Read then compare EAF files. """
 
         # Read file
@@ -220,7 +234,7 @@ class TestAIO(unittest.TestCase):
 
         self.assertTrue(compare_tiers_trs(trs1, trs2, meta=False))  # 'id' differ...
         self.assertTrue(compare_ctrl_vocab_trs(trs1, trs2, meta=False))
-        self.assertTrue(compare_media_trs(trs1, trs2))
+        self.assertTrue(compare_media_trs(trs1, trs2, meta=False))
 
     # -----------------------------------------------------------------------
 
@@ -256,4 +270,198 @@ class TestAIO(unittest.TestCase):
 
     # -----------------------------------------------------------------------
 
+    def test_IO_PitchTier(self):
+        """ Read/Write/Read then compare PitchTier files. """
 
+        # Read file
+        parser = sppasRW(os.path.join(DATA, "sample.PitchTier"))
+        trs1 = parser.read(heuristic=True)
+
+        # Write file
+        parser.set_filename(os.path.join(TEMP, "sample.PitchTier"))
+        parser.write(trs1)
+
+        # Read the file
+        trs2 = parser.read(heuristic=True)
+
+        self.assertTrue(compare_tiers_trs(trs1, trs2, meta=False))  # 'id' differ...
+
+    # -----------------------------------------------------------------------
+
+    def test_IO_MRK(self):
+        """ Read/Write/Read then compare MRK files. """
+
+        # Read file
+        parser = sppasRW(os.path.join(DATA, "sample.mrk"))
+        trs1 = parser.read(heuristic=True)
+
+        # Write file
+        parser.set_filename(os.path.join(TEMP, "sample.mrk"))
+        parser.write(trs1)
+
+        # Read the file
+        trs2 = parser.read(heuristic=True)
+
+        self.assertTrue(compare_tiers_trs(trs1, trs2, meta=False))  # 'id' differ...
+
+    # -----------------------------------------------------------------------
+
+    def test_IO_HZ(self):
+        """ Read/Write/Read then compare HZ files. """
+
+        # Read file
+        parser = sppasRW(os.path.join(DATA, "sample.hz"))
+        trs1 = parser.read(heuristic=True)
+
+        # Write file
+        parser.set_filename(os.path.join(TEMP, "sample.hz"))
+        parser.write(trs1)
+
+        # Read the file
+        trs2 = parser.read(heuristic=True)
+
+        self.assertTrue(compare_tiers_trs(trs1, trs2, meta=False))  # 'id' differ...
+
+    # -----------------------------------------------------------------------
+
+    def test_IO_CTM(self):
+        """ Read/Write/Read then compare EAF files. """
+
+        # Read file
+        parser = sppasRW(os.path.join(DATA, "sample.ctm"))
+        trs1 = parser.read(heuristic=True)
+
+        # Write file
+        parser.set_filename(os.path.join(TEMP, "sample.ctm"))
+        parser.write(trs1)
+
+        # Read the file
+        trs2 = parser.read(heuristic=True)
+
+        self.assertTrue(compare_tiers_trs(trs1, trs2, meta=False))  # 'id' of annotations differ...
+        self.assertTrue(compare_media_trs(trs1, trs2, meta=False))
+
+    # -----------------------------------------------------------------------
+
+    def test_IO_STM(self):
+        """ Read/Write/Read then compare EAF files. """
+
+        # Read file
+        parser = sppasRW(os.path.join(DATA, "sample.stm"))
+        trs1 = parser.read(heuristic=True)
+
+        # Write file
+        parser.set_filename(os.path.join(TEMP, "sample.stm"))
+        parser.write(trs1)
+
+        # Read the file
+        trs2 = parser.read(heuristic=True)
+
+        self.assertTrue(compare_tiers_trs(trs1, trs2, meta=False))  # 'id' of annotations differ...
+        self.assertTrue(compare_media_trs(trs1, trs2, meta=False))
+
+    # -----------------------------------------------------------------------
+
+    def test_IO_SRT(self):
+        """ Read/Write/Read then compare EAF files. """
+
+        # Read file
+        parser = sppasRW(os.path.join(DATA, "sample.srt"))
+        trs1 = parser.read(heuristic=True)
+
+        # Write file
+        parser.set_filename(os.path.join(TEMP, "sample.srt"))
+        parser.write(trs1)
+
+        # Read the file
+        trs2 = parser.read(heuristic=True)
+
+        self.assertTrue(compare_tiers_trs(trs1, trs2, meta=False))  # 'id' differ...
+
+    # -----------------------------------------------------------------------
+
+    def test_IO_SUB(self):
+        """ Read/Write/Read then compare EAF files. """
+
+        # Read file
+        parser = sppasRW(os.path.join(DATA, "sample.sub"))
+        trs1 = parser.read(heuristic=True)
+
+        # Write file
+        parser.set_filename(os.path.join(TEMP, "sample.sub"))
+        parser.write(trs1)
+
+        # Read the file
+        trs2 = parser.read(heuristic=True)
+
+        self.assertTrue(compare_tiers_trs(trs1, trs2, meta=False))  # 'id' differ...
+
+    # -----------------------------------------------------------------------
+
+    def test_IO_TXT(self):
+        """ Read/Write/Read then compare EAF files. """
+
+        # 1. Read file (transcription only)
+        parser = sppasRW(os.path.join(DATA, "sample-irish-1.txt"))
+        trs1 = parser.read(heuristic=True)
+
+        # Write file
+        parser.set_filename(os.path.join(TEMP, "sample-irish-1.txt"))
+        parser.write(trs1)
+
+        # Read the file
+        trs2 = parser.read(heuristic=True)
+
+        self.assertTrue(compare_tiers_trs(trs1, trs2, meta=False))  # 'id' differ...
+
+        # 2. Read file (column-based)
+        parser = sppasRW(os.path.join(DATA, "sample.txt"))
+        trs1 = parser.read(heuristic=True)
+
+        # Write file
+        parser.set_filename(os.path.join(TEMP, "sample.txt"))
+        parser.write(trs1)
+
+        # Read the file
+        trs2 = parser.read(heuristic=True)
+
+        # compare
+        self.assertTrue(compare_tiers_trs(trs1, trs2, meta=False))  # 'id' differ...
+
+    # -----------------------------------------------------------------------
+
+    def test_IO_CSV(self):
+        """ Read/Write/Read then compare EAF files. """
+
+        # Read file (transcription only)
+        parser = sppasRW(os.path.join(DATA, "sample-irish.csv"))
+        trs1 = parser.read(heuristic=True)
+
+        # Write file
+        parser.set_filename(os.path.join(TEMP, "sample-irish.csv"))
+        parser.write(trs1)
+
+        # Read the file
+        trs2 = parser.read(heuristic=True)
+
+        # compare
+        self.assertTrue(compare_tiers_trs(trs1, trs2, meta=False))  # 'id' differ...
+
+    # -----------------------------------------------------------------------
+
+    def test_IO_TextGrid_CSV(self):
+        """ Read/Write/Read then compare EAF files. """
+
+        # Read file (transcription only)
+        parser = sppasRW(os.path.join(DATA, "sample.TextGrid"))
+        trs1 = parser.read(heuristic=True)
+
+        # Write file
+        parser.set_filename(os.path.join(TEMP, "sample.csv"))
+        parser.write(trs1)
+
+        # Read the file
+        trs2 = parser.read(heuristic=True)
+
+        # compare
+        self.assertTrue(compare_tiers_trs(trs1, trs2, meta=False))  # 'id' differ...

@@ -290,26 +290,27 @@ class sppasANTX(sppasBaseIO):
         segment_id = annotation_root.find(uri + 'Id').text
 
         # fix localization
-        try:
-            begin = float(annotation_root.find(uri + 'Start').text)
-            duration = float(annotation_root.find(uri + 'Duration').text)
-        except ValueError:
-            raise AioFormatError("Segment id="+segment_id)
-
-        if begin + duration == 0.:
+        b = annotation_root.find(uri + 'Start').text
+        d = annotation_root.find(uri + 'Duration').text
+        if b in ['0', '0.', '0.0'] and d in ['0', '0.', '0.0']:
             # when annotationpro imports a PointTier, it assigns
             # start=0 and duration=0 to all points in the tier...
             # Here, we just ignore such annotations.
             return
 
-        end = begin + duration
+        try:
+            begin = float(b)
+            duration = float(d)
+        except ValueError:
+            raise AioFormatError("Segment id="+segment_id)
+
         sample_rate = self.get_meta('media_sample_rate', '44100')
-        if end > begin:
+        if annotation_root.find(uri + 'Duration').text == "0":
+            localization = sppasANTX.make_point(begin, sample_rate)
+        else:
             localization = sppasInterval(
                 sppasANTX.make_point(begin, sample_rate),
-                sppasANTX.make_point(end, sample_rate))
-        else:
-            localization = sppasANTX.make_point(begin)
+                sppasANTX.make_point(begin + duration, sample_rate))
 
         # fix labels
         text = annotation_root.find(uri + 'Label').text
@@ -549,14 +550,16 @@ class sppasANTX(sppasBaseIO):
         child_id_dur = ET.SubElement(segment_root, 'Duration')   # Duration
         if is_point:
             start = ann.get_location().get_lowest_localization()
+            duration = 0
         else:
             start = ann.get_location().get_best().get_begin().get_midpoint()
-        duration = ann.get_location().get_best().duration().get_value()
+            duration = ann.get_location().get_best().duration().get_value()
+            duration *= float(self.get_meta('sample_rate', 44100))
+            duration = max(int(duration), 1)
 
         start *= float(self.get_meta('sample_rate', 44100))
-        duration *= float(self.get_meta('sample_rate', 44100))
         child_id_start.text = str(int(start))
-        child_id_dur.text = str(int(duration))
+        child_id_dur.text = str(duration)
 
         # Segment required elements
         fore_r, fore_g, fore_b = tier.get_meta('ForeColor', '0,0,0').split(',')

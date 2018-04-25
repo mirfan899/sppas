@@ -42,9 +42,6 @@
 """
 import unittest
 import os.path
-import shutil
-
-from sppas.src.utils.fileutils import sppasFileUtils
 
 from ..anndataexc import AioMultiTiersError
 from ..aio.text import sppasRawText
@@ -56,7 +53,6 @@ from ..annlocation.interval import sppasInterval
 
 # ---------------------------------------------------------------------------
 
-TEMP = sppasFileUtils().set_random()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # ---------------------------------------------------------------------------
@@ -258,15 +254,6 @@ class TestRawText(unittest.TestCase):
     """
     Represents a Text reader/writer.
     """
-    def setUp(self):
-        if os.path.exists(TEMP) is False:
-            os.mkdir(TEMP)
-
-    def tearDown(self):
-        shutil.rmtree(TEMP)
-
-    # -----------------------------------------------------------------
-
     def test_members(self):
         txt = sppasRawText()
         self.assertFalse(txt.multi_tiers_support())
@@ -304,7 +291,7 @@ class TestRawText(unittest.TestCase):
         self.assertEqual(len(txt), 2)
         self.assertEqual(len(txt[0]), 5)
         self.assertEqual(len(txt[1]), 5)
-        self.assertEqual(txt[0].get_name(), "RawTranscription")
+        self.assertEqual(txt[0].get_name(), "Transcription")
         self.assertEqual(txt[1].get_name(), "Tier-1")
 
     # -----------------------------------------------------------------
@@ -313,52 +300,14 @@ class TestRawText(unittest.TestCase):
         """ Column-based transcription. """
 
         txt = sppasRawText()
-        txt.read(os.path.join(DATA, "sample-3.txt"))
+        txt.read(os.path.join(DATA, "sample.txt"))
         self.assertEqual(len(txt), 1)
         self.assertEqual(len(txt[0]), 18)
-        self.assertEqual(txt[0].get_name(), "RawTranscription")
+        self.assertEqual(txt[0].get_name(), "Transcription")
         for i in range(1, 18, 2):
             self.assertEqual(txt[0][i].get_labels()[0].get_best().get_content(), 'sil')
         for i in range(0, 18, 2):
             self.assertEqual(txt[0][i].get_labels()[0].get_best().get_content(), 'speech')
-
-    # -----------------------------------------------------------------
-
-    def test_write(self):
-        txt = sppasRawText()
-        txt.write(os.path.join(TEMP, "sample.txt"))
-        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample.txt")))
-        self.assertEqual(os.stat(os.path.join(TEMP, "sample.txt")).st_size, 0)
-        txt.create_tier()
-        txt.write(os.path.join(TEMP, "sample-2.txt"))
-        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample-2.txt")))
-        self.assertEqual(os.stat(os.path.join(TEMP, "sample.txt")).st_size, 0)
-        txt.create_tier()
-        with self.assertRaises(AioMultiTiersError):
-            txt.write(os.path.join(TEMP, "sample.txt"))
-
-    # -----------------------------------------------------------------
-
-    def test_read_write(self):
-        txt = sppasRawText()
-        txt.read(os.path.join(DATA, "sample-irish-1.txt"))
-        txt.write(os.path.join(TEMP, "sample-1.txt"))
-        txt2 = sppasRawText()
-        txt2.read(os.path.join(TEMP, "sample-1.txt"))
-        # Compare annotations of original and saved-read
-        for t1, t2 in zip(txt, txt2):
-            self.assertEqual(len(t1), len(t2))
-            for a1, a2 in zip(t1, t2):
-                self.assertEqual(a1.get_labels()[0].get_best().get_typed_content(),
-                                 a2.get_labels()[0].get_best().get_typed_content())
-                self.assertEqual(a1.get_highest_localization().get_midpoint(),
-                                 a2.get_highest_localization().get_midpoint())
-                self.assertEqual(a1.get_lowest_localization().get_midpoint(),
-                                 a2.get_lowest_localization().get_midpoint())
-        txt = sppasRawText()
-        txt.read(os.path.join(DATA, "sample-irish-2.txt"))
-        with self.assertRaises(AioMultiTiersError):
-            txt.write(os.path.join(TEMP, "sample-2.txt"))
 
 # ---------------------------------------------------------------------
 
@@ -368,15 +317,6 @@ class TestCSVText(unittest.TestCase):
     Represents a CSV reader/writer.
 
     """
-    def setUp(self):
-        if os.path.exists(TEMP) is False:
-            os.mkdir(TEMP)
-
-    def tearDown(self):
-        shutil.rmtree(TEMP)
-
-    # -----------------------------------------------------------------
-
     def test_detect(self):
         """ Test the file format detection method. """
 
@@ -446,46 +386,3 @@ class TestCSVText(unittest.TestCase):
         self.assertEqual(len(txt), 2)
         self.assertEqual(len(txt[0]), 5)
         self.assertEqual(len(txt[1]), 5)
-
-    # -----------------------------------------------------------------
-
-    def test_write(self):
-
-        # Empty files:
-        csv = sppasCSV()
-        csv.write(os.path.join(TEMP, "sample.csv"))
-        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample.csv")))
-        self.assertEqual(os.stat(os.path.join(TEMP, "sample.csv")).st_size, 0)
-
-        csv.create_tier()
-        csv.write(os.path.join(TEMP, "sample2.csv"))
-        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample2.csv")))
-        self.assertEqual(os.stat(os.path.join(TEMP, "sample2.csv")).st_size, 0)
-
-        csv[0].create_annotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
-        csv.write(os.path.join(TEMP, "sample3.csv"))
-        self.assertTrue(os.path.exists(os.path.join(TEMP, "sample3.csv")))
-        with open(os.path.join(TEMP, "sample3.csv")) as fp:
-            lines = fp.readlines()
-            fp.close()
-        self.assertEqual(len(lines), 1)
-
-    # -----------------------------------------------------------------
-
-    def test_read_write(self):
-        txt = sppasCSV()
-        txt.read(os.path.join(DATA, "sample-irish.csv"))
-        txt.write(os.path.join(TEMP, "sample-irish.csv"))
-        txt2 = sppasCSV()
-        txt2.read(os.path.join(TEMP, "sample-irish.csv"))
-
-        # Compare annotations of original and saved-read
-        for t1, t2 in zip(txt, txt2):
-            self.assertEqual(len(t1), len(t2))
-            for a1, a2 in zip(t1, t2):
-                self.assertEqual(a1.get_labels()[0].get_best().get_typed_content(),
-                                 a2.get_labels()[0].get_best().get_typed_content())
-                self.assertEqual(a1.get_highest_localization().get_midpoint(),
-                                 a2.get_highest_localization().get_midpoint())
-                self.assertEqual(a1.get_lowest_localization().get_midpoint(),
-                                 a2.get_lowest_localization().get_midpoint())

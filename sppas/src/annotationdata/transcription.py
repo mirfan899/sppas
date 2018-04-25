@@ -60,7 +60,8 @@ from .utils.deprecated import deprecated
 
 # ----------------------------------------------------------------------------
 
-class Transcription( MetaObject ):
+
+class Transcription(MetaObject):
     """
     @authors: Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -146,7 +147,7 @@ class Transcription( MetaObject ):
                     localization = TimeInterval(new_begin, new_end)
                 else:
                     localization = new_begin
-                label_text = anndata.aio.aioutils.serialize_labels(ann.get_labels())
+                label_text = anndata.aioutils.serialize_labels(ann.get_labels())
                 new_tier.Add(Annotation(localization, Label(label_text)))
             for meta_key in tier.get_meta_keys():
                 new_tier.metadata[meta_key] = tier.get_meta(meta_key)
@@ -195,7 +196,17 @@ class Transcription( MetaObject ):
             trs.add_media(other_m)
 
         for tier in self:
-            other_t = trs.create_tier(tier.GetName())
+            c = tier.GetCtrlVocab()
+            if c is not None:
+                ctrl_vocab = trs.get_ctrl_vocab_from_name(c.GetName())
+            else:
+                ctrl_vocab = None
+            m = tier.GetMedia()
+            if m is not None:
+                media = trs.get_media_from_id(m.id)
+            else:
+                media = None
+            other_t = trs.create_tier(tier.GetName(), ctrl_vocab, media)
             is_point = tier.IsPoint()
             for ann in tier:
                 text = ann.GetLabel().GetLabel()
@@ -238,7 +249,8 @@ class Transcription( MetaObject ):
         """
         Set a transcription.
 
-        @param tiers: Transcription or list of Tier instances.
+        @param other: Transcription or list of Tier instances.
+        :param name: (str)
         @raise TypeError:
 
         """
@@ -256,8 +268,8 @@ class Transcription( MetaObject ):
             raise TypeError("Transcription or List of Tier instances argument required, not %r" % other)
 
         self.__tiers = [tier for tier in other]
-        self.__media     = set( [tier.GetMedia() for tier in other] )
-        self.__ctrlvocab = set( [tier.GetCtrlVocab() for tier in other] )
+        self.__media     = set([tier.GetMedia() for tier in other])
+        self.__ctrlvocab = set([tier.GetCtrlVocab() for tier in other])
 
         self.__name  = name
 
@@ -318,8 +330,8 @@ class Transcription( MetaObject ):
         if not isinstance(other, Transcription):
             raise TypeError("Can not set properties. Expected Transcription instance, got %s."%type(other))
 
-        self.SetMedia( other.GetMedia() )
-        self.SetCtrlVocab( other.GetCtrlVocab() )
+        self.SetMedia(other.GetMedia())
+        self.SetCtrlVocab(other.GetCtrlVocab())
 
     # ------------------------------------------------------------------------
     # Media
@@ -341,12 +353,12 @@ class Transcription( MetaObject ):
         ids = [ m.id for m in self.__media ]
         if newmedia.id in ids:
             raise ValueError('A media is already defined with the same identifier %s'%newmedia.id)
-        self.__media.append( newmedia )
+        self.__media.append(newmedia)
 
     def RemoveMedia(self, oldmedia):
         if not isinstance(oldmedia, Media) or not oldmedia in self.__media:
             raise TypeError("Can not remove media of Transcription.")
-        self.__media.remove( oldmedia )
+        self.__media.remove(oldmedia)
         for tier in self.__tiers:
             if tier.GetMedia() == oldmedia:
                 tier.SetMedia(None)
@@ -354,7 +366,7 @@ class Transcription( MetaObject ):
     def SetMedia(self, media):
         self.__media = []
         for m in media:
-            self.AddMedia( m )
+            self.AddMedia(m)
 
     # ------------------------------------------------------------------------
     # Controlled vocabularies
@@ -382,6 +394,11 @@ class Transcription( MetaObject ):
         for tier in self.__tiers:
             if tier.GetCtrlVocab() == ctrlvocab:
                 tier.SetCtrlVocab(None)
+
+    def SetCtrlVocab(self, ctrlvocab):
+        self.__ctrlvocab = list()
+        for c in ctrlvocab:
+            self.AddCtrlVocab(c)
 
     # -----------------------------------------------------------------------
     # Tiers
@@ -645,7 +662,6 @@ class Transcription( MetaObject ):
         """
         return len(self.__tiers) == 0
 
-
     # ------------------------------------------------------------------------
     # Input/Output
     # ------------------------------------------------------------------------
@@ -689,5 +705,3 @@ class Transcription( MetaObject ):
 
     def __getitem__(self, i):
         return self.__tiers[i]
-
-    # ------------------------------------------------------------------------

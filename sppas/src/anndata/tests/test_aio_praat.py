@@ -42,15 +42,11 @@
 """
 import unittest
 import os.path
-import shutil
 
-from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.makeunicode import u
 
-from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioLineFormatError
 from ..anndataexc import AioEmptyTierError
-from ..anndataexc import AioNoTiersError
 
 from ..aio.praat import sppasBasePraat
 from ..aio.praat import sppasTextGrid
@@ -67,7 +63,6 @@ from ..annlocation.location import sppasLocation
 
 # ---------------------------------------------------------------------------
 
-TEMP = sppasFileUtils().set_random()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # ---------------------------------------------------------------------------
@@ -667,15 +662,6 @@ class TestTextGrid(unittest.TestCase):
 
 class TestNumerical(unittest.TestCase):
 
-    def setUp(self):
-        if os.path.exists(TEMP) is False:
-            os.mkdir(TEMP)
-
-    def tearDown(self):
-        shutil.rmtree(TEMP)
-
-    # -----------------------------------------------------------------------
-
     def test_members(self):
         tg = sppasBaseNumericalTier()
         self.assertFalse(tg.multi_tiers_support())
@@ -695,44 +681,18 @@ class TestNumerical(unittest.TestCase):
 
     # -----------------------------------------------------------------------
 
-    def test_read_write(self):
+    def test_read(self):
         txt = sppasBaseNumericalTier()
         txt._read(os.path.join(DATA, "sample.PitchTier"))
-        txt._write(os.path.join(TEMP, "sample.PitchTier"), "PitchTier")
-        txt2 = sppasBaseNumericalTier()
-        txt2._read(os.path.join(TEMP, "sample.PitchTier"))
-        self.assertEqual(len(txt), len(txt2))
-        self.assertEqual(len(txt), 1)
 
         self.assertTrue(txt[0].is_point())
         self.assertTrue(txt[0].is_float())
-        self.assertTrue(txt2[0].is_point())
-        self.assertTrue(txt2[0].is_float())
-        self.assertEqual(len(txt[0]), len(txt2[0]))
-        # Compare annotations of original and saved-read
-        for t1, t2 in zip(txt, txt2):
-            self.assertEqual(len(t1), len(t2))
-            for a1, a2 in zip(t1, t2):
-                self.assertEqual(a1.get_labels()[0].get_best().get_typed_content(),
-                                 a2.get_labels()[0].get_best().get_typed_content())
-                self.assertEqual(a1.get_highest_localization(),
-                                 a2.get_highest_localization())
-                self.assertEqual(a1.get_lowest_localization(),
-                                 a2.get_lowest_localization())
+
 
 # ---------------------------------------------------------------------------
 
 
 class TestPitchTier(unittest.TestCase):
-
-    def setUp(self):
-        if os.path.exists(TEMP) is False:
-            os.mkdir(TEMP)
-
-    def tearDown(self):
-        shutil.rmtree(TEMP)
-
-    # -----------------------------------------------------------------------
 
     def test_detect(self):
         """ Test the file format detection method. """

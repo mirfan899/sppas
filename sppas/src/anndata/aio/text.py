@@ -362,7 +362,7 @@ class sppasRawText(sppasBaseText):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      SPPAS raw text reader and writer.
 
-    RawText does not support multiple tiers.
+    RawText does not support multiple tiers for writing (ok for reading).
     RawText accepts no tiers.
     RawText does not support alternatives labels nor locations. Only the ones
     with the best score are saved.
@@ -414,6 +414,7 @@ class sppasRawText(sppasBaseText):
 
     def read(self, filename):
         """ Read a raw file and fill the Transcription.
+
         The file can be a simple raw text (without location information).
         It can also be a column-based (table-style) file, so that each
         column represents the annotation of a tier (1st and 2nd columns
@@ -514,13 +515,13 @@ class sppasRawText(sppasBaseText):
         nb_col = len(columns[0])
         # Create the tiers (one tier per column) but
         # the name of the tiers are unknown...
-        self.create_tier('RawTranscription')
+        self.create_tier('Transcription')
         for i in range(3, nb_col):
             self.create_tier('Tier-{:d}'.format(i-2))
 
         # Create the annotations of the tiers
         for instance in columns:
-            if nb_col == 3 and instance[0].isdigit() is False:
+            if nb_col == 3 and sppasBaseIO.is_number(instance[0]) is False:
                 location = sppasBaseText.fix_location(instance[1], instance[2])
                 labels = format_labels(instance[0])
                 self[0].create_annotation(location, labels)
@@ -667,11 +668,11 @@ class sppasCSV(sppasBaseText):
                 col3 = sppasBaseText.format_quotation_marks(row[2])
                 content = sppasBaseText.format_quotation_marks(" ".join(row[3:]))
 
-                if sppasType.is_number(col1) and sppasType.is_number(col2):
+                if sppasType.is_number(col1):  # and sppasType.is_number(col2):
                     begin = col1
                     end = col2
                     tier_name = col3
-                elif sppasType.is_number(col2) and sppasType.is_number(col3):
+                elif sppasType.is_number(col2):  # and sppasType.is_number(col3):
                     begin = col2
                     end = col3
                     tier_name = col1

@@ -67,7 +67,7 @@ class TestTrainer(unittest.TestCase):
         pho = sppasPhoneSet()
         self.assertEqual(len(pho), 4)
         pho.add_from_dict(os.path.join(RESOURCES_PATH, "dict", "nan.dict"))
-        self.assertEqual(len(pho), 44)
+        self.assertEqual(len(pho), 45)
         pho.save(os.path.join(TEMP, "monophones"))
 
         pho2 = sppasPhoneSet(os.path.join(TEMP, "monophones"))
@@ -86,7 +86,7 @@ class TestTrainer(unittest.TestCase):
         self.assertEqual(corpus.phonemap.map_entry('#'), "#")
 
         corpus.fix_resources(dict_file=os.path.join(RESOURCES_PATH, "dict", "nan.dict"))
-        self.assertEqual(len(corpus.monophones), 44)
+        self.assertEqual(len(corpus.monophones), 45)
 
         corpus.fix_resources(dict_file=os.path.join(RESOURCES_PATH, "dict", "nan.dict"),
                              mapping_file=os.path.join(RESOURCES_PATH, "models", "models-nan", "monophones.repl"))

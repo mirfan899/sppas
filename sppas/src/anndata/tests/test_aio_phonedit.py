@@ -42,9 +42,7 @@
 """
 import unittest
 import os.path
-import shutil
 
-from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.makeunicode import u
 
 from ..aio.phonedit import sppasBasePhonedit
@@ -55,7 +53,6 @@ from ..annlocation.point import sppasPoint
 
 # ---------------------------------------------------------------------------
 
-TEMP = sppasFileUtils().set_random()
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 # ---------------------------------------------------------------------------
@@ -91,15 +88,6 @@ class TestMRK(unittest.TestCase):
     Test reader/writer of MRK files.
 
     """
-    def setUp(self):
-        if os.path.exists(TEMP) is False:
-            os.mkdir(TEMP)
-
-    def tearDown(self):
-        shutil.rmtree(TEMP)
-
-    # -----------------------------------------------------------------
-
     def test_detect(self):
         """ Test the file format detection method. """
 
@@ -140,32 +128,6 @@ class TestMRK(unittest.TestCase):
             else:
                 self.assertEqual(ann.get_labels()[0].get_best().get_content(), u("#"))
 
-    # -----------------------------------------------------------------
-    # write
-    # -----------------------------------------------------------------
-    
-    def test_read_write(self):
-        """ Write a transcription into a file. """
-
-        mrk = sppasMRK()
-        mrk.read(os.path.join(DATA, "sample.mrk"))
-        self.assertEqual(len(mrk), 2)
-        mrk.write(os.path.join(TEMP, "sample.mrk"))
-
-        mrk2 = sppasMRK()
-        mrk2.read(os.path.join(TEMP, "sample.mrk"))
-        self.assertEqual(len(mrk2), 2)
-        self.assertEqual(len(mrk2.get_media_list()), 0)
-        self.assertEqual(mrk2[0].get_name(), u("transcription"))
-        self.assertEqual(mrk2[1].get_name(), u("ipus"))
-        self.assertEqual(len(mrk2[0]), 11)
-        self.assertEqual(len(mrk2[1]), 11)
-        for i, ann in enumerate(mrk2[1]):
-            if i % 2:
-                self.assertEqual(ann.get_labels()[0].get_best().get_content(), u("ipu_"+str((i/2)+1)))
-            else:
-                self.assertEqual(ann.get_labels()[0].get_best().get_content(), u("#"))
-
 # ---------------------------------------------------------------------------
 
 
@@ -174,15 +136,6 @@ class TestSignaix(unittest.TestCase):
     Test reader/writer of MRK files.
 
     """
-    def setUp(self):
-        if os.path.exists(TEMP) is False:
-            os.mkdir(TEMP)
-
-    def tearDown(self):
-        shutil.rmtree(TEMP)
-
-    # -----------------------------------------------------------------------
-
     def test_detect(self):
         """ Test the file format detection method. """
 
@@ -225,27 +178,3 @@ class TestSignaix(unittest.TestCase):
         self.assertEqual(hz[0].get_name(), u("Pitch"))
         self.assertTrue(hz[0].is_point())
         self.assertTrue(hz[0].is_float())
-
-    # -----------------------------------------------------------------
-    # write
-    # -----------------------------------------------------------------
-
-    def test_read_write(self):
-        """ Write a transcription into a file. """
-
-        hz = sppasSignaix()
-        hz.read(os.path.join(DATA, "sample.hz"))
-        hz.write(os.path.join(TEMP, "sample.hz"))
-
-        hz2 = sppasSignaix()
-        hz2.read(os.path.join(TEMP, "sample.hz"))
-
-        self.assertEqual(len(hz2), 1)
-        self.assertEqual(len(hz2.get_media_list()), 0)
-        self.assertEqual(hz2[0].get_name(), u("Pitch"))
-        self.assertTrue(hz2[0].is_point())
-        self.assertTrue(hz2[0].is_float())
-        self.assertEqual(len(hz[0]), len(hz2[0]))
-        for a1, a2 in zip(hz[0], hz2[0]):
-            self.assertEqual(a1.get_labels()[0], a2.get_labels()[0])
-            self.assertEqual(a1.get_location(), a2.get_location())

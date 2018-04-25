@@ -398,32 +398,6 @@ class sppasSignaix(sppasBaseIO):
     :summary:      Class for reader and writer of F0 values from LPL-Signaix.
 
     """
-
-    @staticmethod
-    def is_number(s):
-        """ Check whether a string is a number or not.
-
-        :param s: (str or unicode)
-        :returns: (bool)
-
-        """
-        try:
-            float(s)
-            return True
-        except ValueError:
-            pass
-
-        try:
-            import unicodedata
-            unicodedata.numeric(s)
-            return True
-        except (TypeError, ValueError):
-            pass
-
-        return False
-
-    # -----------------------------------------------------------------------
-
     @staticmethod
     def detect(filename):
         """ Check whether a file is of CTM format or not.
@@ -440,7 +414,7 @@ class sppasSignaix(sppasBaseIO):
         for line in lines:
             line = line.strip()
             if len(line) > 0:
-                if sppasSignaix.is_number(line) is False:
+                if sppasBaseIO.is_number(line) is False:
                     return False
         return True
 
