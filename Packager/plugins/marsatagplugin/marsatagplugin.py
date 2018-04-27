@@ -45,6 +45,7 @@ sys.path.append(SPPAS)
 
 import sppas.src.annotationdata.aio as aio
 from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.utils.makeunicode import u
 
 # ---------------------------------------------------------------------------
 
