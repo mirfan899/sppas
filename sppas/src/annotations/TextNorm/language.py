@@ -35,19 +35,41 @@
 """
 
 
-def without_whitespace(lang):
-    """ Return true if 'lang' is not using whitespace.
-    Mandarin Chinese or Japanese languages return True, but English
-    or French language return False.
+class sppasLangISO(object):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Language name definition.
 
-    :param lang: (str) iso639-3 language code or a string containing
-        such code, like "yue" or "yue-chars" for example.
-    :returns: (bool)
+    todo: parse the iso639-3 json file to load all language names.
 
     """
-    lang_list = ["cmn", "jpn", "yue"]  # TODO: add languages
-    for l in lang_list:
-        if l in lang:
-            return True
+    lang_list = ["cmn", "jpn", "yue", "zho", "cdo", "cjy", "cmo", "cpx",
+                 "czh", "czo", "czt", "gan", "hak", "hsn", "ltc", "lzh",
+                 "mnp", "och", "wuu"]  # TODO: add languages
+
+    @staticmethod
+    def without_whitespace(lang):
+        """ Return true if 'lang' is not using whitespace.
+
+        Mandarin Chinese or Japanese languages return True, but English
+        or French languages return False.
+
+        :param lang: (str) iso639-3 language code or a string starting with
+            such code, like "yue" or "yue-chars" for example.
+        :returns: (bool)
+
+        """
+
+        for l in sppasLangISO.lang_list:
+            if l in lang:
+                return True
+
+        for l in sppasLangISO.lang_list:
+            if lang.startswith(l):
+                return True
 
         return False

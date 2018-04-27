@@ -44,7 +44,7 @@ from sppas.src.resources.dictrepl import sppasDictRepl
 from .transcription import sppasTranscription
 from .tokenize import sppasTokenizer
 from .num2letter import sppasNum
-from .language import without_whitespace
+from .language import sppasLangISO
 from .splitter import sppasTokSplitter
 
 # ---------------------------------------------------------------------------
@@ -52,6 +52,9 @@ from .splitter import sppasTokSplitter
 
 class DictReplUTF8(sppasDictRepl):
     """ Replacement dictionary of UTF8 characters that caused problems.
+
+    This is a hack to match with our dictionaries...
+
     TODO: This class should read an external replacement file...
 
     """
@@ -203,7 +206,7 @@ class TextNormalizer(object):
         unbind_result = tok.unbind(utt)
 
         # longest matching for whitespace
-        if without_whitespace(self.lang):
+        if sppasLangISO.without_whitespace(self.lang):
             tok.separator = ""
             tok.aggregate_max = 15
 
