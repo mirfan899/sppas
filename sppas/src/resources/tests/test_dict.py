@@ -32,6 +32,13 @@
     src.resources.tests.test_dict.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Test of the management of pronunciation dictionaries.
+
 """
 import unittest
 import os.path
@@ -48,15 +55,19 @@ from ..unigram import sppasUnigram
 
 DICT_TEST = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "dict.txt")
 DICT_TEST_OK = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "dict_ok.txt")
+DICT_TEST_XML = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "dict_xml.txt")
 
 # ---------------------------------------------------------------------------
 
 
 class TestDictPron(unittest.TestCase):
+    """ Test of sppasDictPron class. """
 
     def test_init(self):
         d = sppasDictPron()
         self.assertEqual(len(d), 0)
+
+    # -----------------------------------------------------------------
 
     def test_add(self):
         # simple and normal situation
@@ -74,6 +85,8 @@ class TestDictPron(unittest.TestCase):
         self.assertTrue("É" in d)
         self.assertTrue(u("É") in d)
 
+    # -----------------------------------------------------------------
+
     def test_is_unk(self):
         d = sppasDictPron(DICT_TEST, nodump=True)
         self.assertTrue(d.is_unk('azerty'))
@@ -81,9 +94,13 @@ class TestDictPron(unittest.TestCase):
         self.assertFalse(d.is_unk(u('être')))
         self.assertFalse(d.is_unk('être'))
 
+    # -----------------------------------------------------------------
+
     def test_is_pron_of(self):
         d = sppasDictPron(DICT_TEST, nodump=True)
         self.assertTrue(d.is_pron_of("abc", "a-b-c"))
+
+    # -----------------------------------------------------------------
 
     def test_get_pron(self):
         d = sppasDictPron(DICT_TEST, nodump=True)
@@ -97,18 +114,56 @@ class TestDictPron(unittest.TestCase):
         self.assertEqual(d.get_pron(u('tyty')), "t-y-t-y")
         self.assertEqual(d.get_pron(u('tete')), "t-e-t-e")
 
-    def test_save(self):
+    # -----------------------------------------------------------------
+
+    def test_load_save(self):
+        """ Load/Save an HTK-ASCII pronunciation dictionary. """
+
         d = sppasDictPron(DICT_TEST_OK, nodump=True)
-        d.save_as_ascii(DICT_TEST+".copy")
-        d2 = sppasDictPron(DICT_TEST+".copy", nodump=True)
+        d.save_as_ascii(DICT_TEST + ".copy")
+        d2 = sppasDictPron(DICT_TEST + ".copy", nodump=True)
         for token in d:
             self.assertEqual(d.get_pron(token), d2.get_pron(token))
-        os.remove(DICT_TEST+".copy")
+        os.remove(DICT_TEST + ".copy")
+
+    # -----------------------------------------------------------------
+
+    def test_load_xml(self):
+        """ Load a pronunciation dictionary from a RALF dic file (xml). """
+
+        d = sppasDictPron(DICT_TEST_XML)
+        self.assertGreater(len(d), 7500)
+        self.assertEqual(u("y:-p-s-t"), d.get_pron("übst"))
+        self.assertEqual(u("g-e:-s-t-@-n|g-e:-s-t-n"), d.get_pron("Gesten"))
+
+    # -----------------------------------------------------------------
+
+    def test_ipa_to_sampa(self):
+        """ Convert a string in IPA to SAMPA. """
+
+        conv = dict()
+        conv[u('ɑ')] = 'A'
+        conv[u('ɛ')] = 'E'
+        conv[u('ː')] = ':'
+        conv[u('̠ ')] = '_'
+
+        s = sppasDictPron.ipa_to_sampa(conv, u("ɑ"))
+        self.assertEqual("A", s)
+
+        s = sppasDictPron.ipa_to_sampa(conv, u("ɑɛ"))
+        self.assertEqual("A-E", s)
+
+        s = sppasDictPron.ipa_to_sampa(conv, u("ɑː"))
+        self.assertEqual("A:", s)
+
+        s = sppasDictPron.ipa_to_sampa(conv, u("ɑ̠"))
+        self.assertEqual("A", s)
 
 # ---------------------------------------------------------------------------
 
 
 class TestUnigram(unittest.TestCase):
+    """ Test of sppasUnigram. """
 
     def test_unigram(self):
         gram = sppasUnigram()
@@ -128,20 +183,27 @@ class TestUnigram(unittest.TestCase):
 
 
 class TestDictRepl(unittest.TestCase):
+    """ Test of sppasDictRepl. """
 
     def setUp(self):
         self.replfile = os.path.join(RESOURCES_PATH, "repl", "fra.repl")
+
+    # -----------------------------------------------------------------
 
     def test_init_with_dict(self):
         dict1 = sppasDictRepl(self.replfile, nodump=True)
         dict2 = sppasDictRepl()
         self.assertEqual(len(dict2), 0)
 
+    # -----------------------------------------------------------------
+
     def test_is_empty(self):
         d = sppasDictRepl()
         self.assertTrue(d.is_empty())
         d.add("key1", "v1")
         self.assertFalse(d.is_empty())
+
+    # -----------------------------------------------------------------
 
     def test_getters(self):
         d = sppasDictRepl()
@@ -160,6 +222,8 @@ class TestDictRepl(unittest.TestCase):
         self.assertFalse(d.is_value("v2"))
         self.assertFalse(d.is_value_of("key1", "v2"))
 
+    # -----------------------------------------------------------------
+
     def test_unicode_getters(self):
         d = sppasDictRepl()
         d.add("keyé", "éé")
@@ -176,6 +240,8 @@ class TestDictRepl(unittest.TestCase):
         self.assertTrue(d.is_value_of("keyé", "éé"))
         self.assertFalse(d.is_value("v2"))
         self.assertFalse(d.is_value_of("keyé", "v2"))
+
+    # -----------------------------------------------------------------
 
     def test_add(self):
         d = sppasDictRepl()
@@ -198,11 +264,15 @@ class TestDictRepl(unittest.TestCase):
         self.assertTrue("éé" in d)
         self.assertTrue(u("éé") in d)
 
+    # -----------------------------------------------------------------
+
     def test_remove(self):
         d = sppasDictRepl()
         d.add("key1", "v1")
         d.remove('key1')
         self.assertEqual(len(d), 0)
+
+    # -----------------------------------------------------------------
 
     def test_reversed(self):
         d = sppasDictRepl()
@@ -218,9 +288,12 @@ class TestDictRepl(unittest.TestCase):
 
 
 class TestMapping(unittest.TestCase):
+    """ Test of sppasMapping. """
 
     def setUp(self):
         self.replfile = os.path.join(RESOURCES_PATH, "models", "models-fra", "monophones.repl")
+
+    # -----------------------------------------------------------------
 
     def test_init_with_dict(self):
         dict1 = sppasMapping(self.replfile)
@@ -243,6 +316,8 @@ class TestMapping(unittest.TestCase):
         dict1.set_keep_miss(False)
         self.assertEqual("", dict1.map_entry("toto"))
 
+    # -----------------------------------------------------------------
+
     def test_init_without_dict(self):
         dict2 = sppasMapping()
         dict2.set_keep_miss(True)
@@ -262,6 +337,8 @@ class TestMapping(unittest.TestCase):
         self.assertEqual("+", dict2.map_entry("+"))
         self.assertEqual("+", dict2.map_entry("sp"))
         self.assertEqual("", dict2.map_entry("a"))
+
+    # -----------------------------------------------------------------
 
     def test_map(self):
         dict1 = sppasMapping(self.replfile)
@@ -288,6 +365,8 @@ class TestMapping(unittest.TestCase):
         self.assertEqual("9 ", dict1.map("oe ", delimiters=()))
         self.assertEqual("a-9@", dict1.map("a-oe@", delimiters=()))
         self.assertEqual("lleu ko~.bl9", dict1.map("lleu ko~.bloe", delimiters=()))
+
+    # -----------------------------------------------------------------
 
     def test_is_key(self):
         d = sppasMapping()
