@@ -42,3 +42,5 @@ quality of the linguistic resources**. The users can contribute to improve them.
 **Users are of crucial importance for resource development**. 
 They can contribute to improve them, and the author releases the improvements 
 to the public, so that the whole community benefits. 
+
+
