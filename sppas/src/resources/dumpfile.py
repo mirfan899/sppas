@@ -146,7 +146,7 @@ class sppasDumpFile(object):
         return False
 
     # ----------------------------------------------------------------------------
-    # Reader/Writer
+    # proceedReader/Writer
     # ----------------------------------------------------------------------------
 
     def load_from_dump(self):

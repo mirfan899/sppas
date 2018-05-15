@@ -265,7 +265,7 @@ class sppasCTM(sppasBaseSclite):
         self.default_extension = "ctm"
 
     # -----------------------------------------------------------------------
-    # Reader
+    # proceedReader
     # -----------------------------------------------------------------------
 
     def get_tier(self, line):
@@ -631,7 +631,7 @@ class sppasSTM(sppasBaseSclite):
         self.default_extension = "stm"
 
     # -----------------------------------------------------------------------
-    # Reader
+    # proceedReader
     # -----------------------------------------------------------------------
 
     def get_tier(self, line):
