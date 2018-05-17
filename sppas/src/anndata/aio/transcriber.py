@@ -219,8 +219,8 @@ class sppasTRS(sppasBaseIO):
 
         # Remove empty tiers.
         for i in reversed(range(len(self))):
-           if len(self[i]) == 0:
-               self.pop(i)
+            if len(self[i]) == 0:
+                self.pop(i)
 
     # -----------------------------------------------------------------------
 
