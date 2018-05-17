@@ -51,8 +51,7 @@ from ..annlocation.interval import sppasInterval
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
-from ..aio.aioutils import fill_gaps
-from ..aio.aioutils import unfill_gaps
+from ..aio.aioutils import fill_gaps, check_gaps, unfill_gaps
 from ..aio.aioutils import merge_overlapping_annotations
 from ..aio.aioutils import load
 from ..aio.aioutils import serialize_label
@@ -136,7 +135,8 @@ class TestUtils(unittest.TestCase):
     def test_check_gaps(self):
         """ Check if there are holes between annotations. """
 
-        pass
+        tier = sppasTier("empty")
+        self.assertTrue(check_gaps(tier))
 
     # -----------------------------------------------------------------------
 
@@ -187,6 +187,13 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(len(filled_tier), 7)
         self.assertEqual(filled_tier.get_first_point().get_midpoint(), 0.)
         self.assertEqual(filled_tier.get_last_point().get_midpoint(), 10.)
+
+        # empty tier
+        tier = sppasTier("empty")
+        filled_tier = fill_gaps(tier, sppasPoint(0.), sppasPoint(10.))
+        self.assertEqual(filled_tier.get_first_point().get_midpoint(), 0.)
+        self.assertEqual(filled_tier.get_last_point().get_midpoint(), 10.)
+        self.assertEqual(1, len(filled_tier))
 
     # -----------------------------------------------------------------------
 

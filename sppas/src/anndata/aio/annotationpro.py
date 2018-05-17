@@ -359,6 +359,12 @@ class sppasANTX(sppasBaseIO):
         root = ET.Element('AnnotationSystemDataSet')
         root.set('xmlns', 'http://tempuri.org/AnnotationSystemDataSet.xsd')
 
+        # we have to remove the hierarchy because instead we can't merge
+        # overlapping annotations
+        hierarchy_backup = self.get_hierarchy().copy()
+        for tier in self:
+            self.get_hierarchy().remove_tier(tier)
+
         # Write layers
         for tier in self:
             sppasANTX._format_tier(root, tier)
@@ -384,7 +390,11 @@ class sppasANTX(sppasBaseIO):
         sppasANTX.indent(root)
         tree = ET.ElementTree(root)
         tree.write(filename, encoding=sppas.encoding, xml_declaration=True, method="xml")
-        # TODO: add standalone="yes" in the declaration (but not available with ElementTree)
+        # we should add 'standalone="yes"' in the declaration
+        # (but not available with ElementTree)
+
+        # restore the hierarchy...
+        self._hierarchy = hierarchy_backup
 
     # -----------------------------------------------------------------------
 

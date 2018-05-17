@@ -1205,13 +1205,18 @@ class sppasEAF(sppasBaseIO):
             # only empty tiers in the transcription: nothing to add in the tree
             return {}
 
+        # we have to remove the hierarchy because instead we can't merge
+        # overlapping annotations
+        hierarchy_backup = self.get_hierarchy().copy()
+        for tier in self:
+            self.get_hierarchy().remove_tier(tier)
+
+        new_alignable_tiers = list()
         for tier in self:
             # not a relevant tier
             if tier not in alignable_tiers:
                 continue
-            if tier.is_disjoint() is True:
-                continue
-
+            # create the new tier (no overlaps, no points, no disjoint)
             if tier.is_interval() is True:
                 new_tier = merge_overlapping_annotations(tier)
             elif tier.is_point() is True:
@@ -1219,10 +1224,11 @@ class sppasEAF(sppasBaseIO):
             else:
                 continue
             new_tier.set_meta('id', tier.get_meta('id'))
+            new_alignable_tiers.append(new_tier)
 
         # create the annotations
         time_values = list()
-        for tier in alignable_tiers:
+        for tier in new_alignable_tiers:
             for tier_root in root.findall('TIER'):
                 if tier_root.attrib['TIER_ID'] == tier.get_name():
                     sppasEAF._format_alignable_annotations(tier_root, tier, time_values)
@@ -1231,10 +1237,13 @@ class sppasEAF(sppasBaseIO):
         time_slots = sppasEAF._fix_time_slots(time_values)
 
         # then, we can assign the time slots to annotations, instead of time values
-        for tier in alignable_tiers:
+        for tier in new_alignable_tiers:
             for tier_root in root.findall('TIER'):
                 if tier_root.attrib['TIER_ID'] == tier.get_name():
                     sppasEAF._re_format_alignable_annotations(tier_root, tier, time_slots)
+
+        # restore the hierarchy...
+        self._hierarchy = hierarchy_backup
 
         return time_slots
 

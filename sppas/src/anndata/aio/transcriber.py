@@ -218,9 +218,9 @@ class sppasTRS(sppasBaseIO):
         # "TimeAssociation" of Turns but... sparse data (?) !
 
         # Remove empty tiers.
-        for tier in self:
-            if len(tier) == 0:
-                self.pop(self.get_tier_index(tier.get_name()))
+        for i in reversed(range(len(self))):
+           if len(self[i]) == 0:
+               self.pop(i)
 
     # -----------------------------------------------------------------------
 
