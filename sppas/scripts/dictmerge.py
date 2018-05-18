@@ -36,6 +36,7 @@
     ... a script to merge dictionaries.
 
 """
+import logging
 import sys
 import os.path
 from argparse import ArgumentParser
@@ -45,6 +46,7 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas.src.resources.dictpron import sppasDictPron
+from sppas.src.utils.fileutils import setup_logging
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -80,6 +82,13 @@ if len(sys.argv) <= 1:
     sys.argv.append('-h')
 
 args = parser.parse_args()
+
+# ----------------------------------------------------------------------------
+
+if not args.quiet:
+    setup_logging(0, None)
+else:
+    setup_logging(30, None)
 
 # ----------------------------------------------------------------------------
 

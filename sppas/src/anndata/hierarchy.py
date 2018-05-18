@@ -92,7 +92,7 @@ class sppasHierarchy(object):
     """
     types = {"TimeAssociation", "TimeAlignment"}
 
-    def __init__(self, ):
+    def __init__(self):
         """ Creates a new sppasHierarchy instance. """
 
         super(sppasHierarchy, self).__init__()
@@ -295,7 +295,7 @@ class sppasHierarchy(object):
         for child_tier in to_remove:
             del self.__hierarchy[child_tier]
 
-    # ------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def remove_tier(self, tier):
         """ Remove all occurrences of a tier inside the hierarchy.
@@ -311,6 +311,20 @@ class sppasHierarchy(object):
 
         for child_tier in to_remove:
             del self.__hierarchy[child_tier]
+
+    # -----------------------------------------------------------------------
+
+    def copy(self):
+        """ Returns a deep copy of the hierarchy. """
+
+        h = sppasHierarchy()
+
+        for child_tier in self.__hierarchy:
+            parent_tier = self.__hierarchy[child_tier][0]
+            link_type = self.__hierarchy[child_tier][1]
+            h.add_link(link_type, parent_tier, child_tier)
+
+        return h
 
     # -----------------------------------------------------------------------
     # Automatic hierarchy

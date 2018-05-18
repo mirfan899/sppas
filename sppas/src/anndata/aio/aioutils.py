@@ -221,7 +221,7 @@ def check_gaps(tier, min_loc=None, max_loc=None):
 
     """
     if tier.is_empty():
-        return False
+        return True
 
     if min_loc is not None and format_point_to_float(tier.get_first_point()) > format_point_to_float(min_loc):
         return True
@@ -252,6 +252,15 @@ def fill_gaps(tier, min_loc=None, max_loc=None):
     :returns: (sppasTier)
 
     """
+    if tier.is_empty() and min_loc is not None and max_loc is not None:
+        new_tier = tier.copy()
+        interval = sppasInterval(min_loc, max_loc)
+        new_tier.add(sppasAnnotation(sppasLocation(interval)))
+        return new_tier
+
+    if tier.is_empty():
+        return tier
+
     # find gaps only if the tier is an IntervalTier
     if tier.is_interval() is False:
         return tier

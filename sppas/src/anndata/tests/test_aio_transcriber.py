@@ -174,6 +174,7 @@ class TestTranscriber(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_parse_turn_attributes(self):
+        """ Test Turn. """
 
         turns = '<Section type="report" startTime="0" endTime="32.114" topic="to1"> ' \
                 '<Turn speaker="spk1 spk2" startTime="0.000" endTime="0.387"> </Turn> '\
@@ -222,6 +223,7 @@ class TestTranscriber(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_parse_turn_emptied(self):
+        """ Test Turn. """
 
         turns = '<Section type="report" startTime="0" endTime="32.114" topic="to1"> ' \
                 '<Turn speaker="spk1 spk2" startTime="0.000" endTime="0.387"> </Turn> '\
@@ -246,6 +248,7 @@ class TestTranscriber(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_parse_turn_filled(self):
+        """ Test Turn. """
 
         turns = '<Section type="report" startTime="0" endTime="32.114" topic="to1"> ' \
                 '<Turn speaker="spk1 spk2" startTime="0.000" endTime="0.387"> </Turn> '\

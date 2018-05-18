@@ -436,6 +436,7 @@ class sppasTranscription(sppasMetaData):
         :returns: index or -1 if not found
 
         """
+        name = sppasUnicode(name).to_strip()
         t = self.find(name, case_sensitive)
         if t is None:
             return -1

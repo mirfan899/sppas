@@ -39,7 +39,7 @@ import re
 
 from sppas.src.resources.dictrepl import sppasDictRepl
 from sppas.src.utils.makeunicode import u, sppasUnicode
-from .language import without_whitespace
+from .language import sppasLangISO
 
 # ---------------------------------------------------------------------------
 
@@ -107,14 +107,14 @@ class sppasTokSplitter(object):
 
         """
         s = utt
-        if without_whitespace(self.__lang) is True:
+        if sppasLangISO.without_whitespace(self.__lang) is True:
             s = self.split_characters(s)
 
         toks = []
         for t in s.split():
             # if not a phonetized entry
             if t.startswith("/") is False and t.endswith("/") is False:
-                if without_whitespace(self.__lang) is False:
+                if sppasLangISO.without_whitespace(self.__lang) is False:
                     # Split numbers if stick to characters
                     # attention: do not replace [a-zA-Z] by [\w] (because \w includes numbers)
                     # and not on Asian languages: it can be a tone!

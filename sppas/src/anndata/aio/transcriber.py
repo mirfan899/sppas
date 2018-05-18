@@ -217,9 +217,10 @@ class sppasTRS(sppasBaseIO):
         # TurnRecordingQuality, TurnElocutionMode and TurnChannel should be
         # "TimeAssociation" of Turns but... sparse data (?) !
 
-        # All turns/events were assigned to a speaker.
-        if len(self.find(NO_SPK_TIER)) == 0:
-            self.pop(self.get_tier_index(NO_SPK_TIER))
+        # Remove empty tiers.
+        for i in reversed(range(len(self))):
+            if len(self[i]) == 0:
+                self.pop(i)
 
     # -----------------------------------------------------------------------
 

@@ -49,7 +49,6 @@ import re
 import sppas
 from sppas.src.utils.makeunicode import u
 
-from ..anndataexc import AioError
 from ..anndataexc import AioEncodingError
 from ..anndataexc import AioEmptyTierError
 from ..anndataexc import AioMultiTiersError
@@ -510,6 +509,11 @@ class sppasTextGrid(sppasBasePraat):
             # only empty tiers in the transcription
             raise AioNoTiersError("TextGrid")
 
+        # we have to remove the hierarchy because instead we can't fill gaps
+        hierarchy_backup = self.get_hierarchy().copy()
+        for tier in self:
+            self.get_hierarchy().remove_tier(tier)
+
         with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
 
             # Write the header
@@ -524,26 +528,29 @@ class sppasTextGrid(sppasBasePraat):
                     continue
 
                 # intervals of annotations must be in a continuum
-                if tier.is_interval() is True:
-                    tier = fill_gaps(tier, min_time_point, max_time_point)
-                    tier = merge_overlapping_annotations(tier)
+                # (this won't do anything if it's not necessary...)
+                new_tier = fill_gaps(tier, min_time_point, max_time_point)
+                new_tier = merge_overlapping_annotations(new_tier)
 
                 # Write the header of the tier
                 try:
-                    fp.write(sppasTextGrid._serialize_tier_header(tier, i+1))
+                    fp.write(sppasTextGrid._serialize_tier_header(new_tier, i+1))
                 except:
                     fp.close()
                     raise
 
                 # Write annotations of the tier
-                is_point = tier.is_point()
-                for a, annotation in enumerate(tier):
+                is_point = new_tier.is_point()
+                for a, annotation in enumerate(new_tier):
                     if is_point is True:
                         fp.write(sppasTextGrid._serialize_point_annotation(annotation, a+1))
                     else:
                         fp.write(sppasTextGrid._serialize_interval_annotation(annotation, a+1))
 
             fp.close()
+
+        # restore the hierarchy...
+        self._hierarchy = hierarchy_backup
 
     # -----------------------------------------------------------------------
 

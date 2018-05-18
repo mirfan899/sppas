@@ -34,15 +34,18 @@
     Class to manage pronunciation dictionaries.
 
 """
+import os
 import codecs
 import logging
+import xml.etree.cElementTree as ET
 
 from sppas import encoding
 from sppas import unk_stamp
+from sppas import RESOURCES_PATH
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .dumpfile import sppasDumpFile
-from .resourcesexc import FileIOError, FileFormatError
+from .resourcesexc import FileIOError, FileUnicodeError, FileFormatError
 
 # ---------------------------------------------------------------------------
 
@@ -66,7 +69,7 @@ class sppasDictPron(object):
     The first columns indicates the tokens, eventually followed by the variant
     number into braces. The second column (with brackets) is ignored. It should
     contain the token. Other columns are the phones separated by whitespace.
-    sppasDictPron accepts missing variant numbers, empty brackets, or  missing
+    sppasDictPron accepts missing variant numbers, empty brackets, or missing
     brackets.
 
         >>> d = sppasDictPron('eng.dict')
@@ -99,7 +102,7 @@ class sppasDictPron(object):
         :param nodump: (bool) Create or not a dump file.
 
         A dump file is a binary version of the dictionary. Its size is greater
-        than the original ASCII dictionary but the time to load it is divided
+        than the original ASCII dictionary but the time to load is divided
         by two or three.
 
         """
@@ -122,7 +125,7 @@ class sppasDictPron(object):
             # Load from ascii if:
             # 1st load, or, dump load error, or dump older than ascii
             if data is None:
-                self.load_from_ascii(dict_filename)
+                self.load(dict_filename)
                 if nodump is False:
                     dp.save_as_dump(self._dict)
             else:
@@ -260,6 +263,28 @@ class sppasDictPron(object):
     # File management
     # -----------------------------------------------------------------------
 
+    def load(self, filename):
+        """ Load a pronunciation dictionary.
+
+        :param filename: (str) Pronunciation dictionary file name
+
+        """
+        try:
+            with codecs.open(filename, 'r', encoding) as fd:
+                first_line = fd.readline()
+                fd.close()
+        except IOError:
+            raise FileIOError(filename)
+        except UnicodeDecodeError:
+            raise FileUnicodeError(filename)
+
+        if first_line.startswith('<?xml'):
+            self.load_from_pls(filename)
+        else:
+            self.load_from_ascii(filename)
+
+    # -----------------------------------------------------------------------
+
     def load_from_ascii(self, filename):
         """ Load a pronunciation dictionary from an HTK-ASCII file.
 
@@ -269,6 +294,7 @@ class sppasDictPron(object):
         try:
             with codecs.open(filename, 'r', encoding) as fd:
                 lines = fd.readlines()
+                fd.close()
         except Exception:
             raise FileIOError(filename)
 
@@ -333,6 +359,97 @@ class sppasDictPron(object):
             return False
 
         return True
+
+    # ------------------------------------------------------------------------
+
+    def load_from_pls(self, filename):
+        """ Load a pronunciation dictionary from a pls file (xml).
+
+        xmlns="http://www.w3.org/2005/01/pronunciation-lexicon
+
+        :param filename: (str) Pronunciation dictionary file name
+
+        """
+        # Load the file in an XML element tree.
+        try:
+            tree = ET.parse(filename)
+            root = tree.getroot()
+            try:
+                uri = root.tag[:root.tag.index('}') + 1]
+            except ValueError:
+                # raised by index if uri is not specified
+                uri = ""
+        except Exception as e:
+            logging.info('{:s}: {:s}'.format(str(FileIOError(filename)), str(e)))
+            raise FileIOError(filename)
+
+        # Load the sampa-ipa conversion dict (if any)
+        conversion = dict()
+        alphabet = root.attrib['alphabet']
+        if alphabet == "ipa":
+            conversion = sppasDictPron.load_sampa_ipa()
+
+        # Get each grapheme/phoneme association.
+        for lexeme_root in tree.iter(tag=uri+'lexeme'):
+
+            # Get the grapheme
+            grapheme_root = lexeme_root.find(uri+'grapheme')
+            if grapheme_root.text is None:
+                continue
+            grapheme = grapheme_root.text
+
+            # Get each pronunciation
+            for phoneme_root in lexeme_root.findall(uri+'phoneme'):
+                if phoneme_root.text is None:
+                    continue
+                phoneme = sppasUnicode(phoneme_root.text).to_strip()
+                if len(phoneme) == 0:
+                    continue
+                if alphabet == "ipa":
+                    phoneme = sppasDictPron.ipa_to_sampa(conversion, phoneme)
+                self.add_pron(grapheme, phoneme)
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
+    def load_sampa_ipa():
+        """ Load the sampa-ipa conversion file. Return is as a dict(). """
+
+        conversion = dict()
+        ipa_sampa_mapfile = os.path.join(RESOURCES_PATH, "dict", "sampa-ipa.txt")
+        with codecs.open(ipa_sampa_mapfile, "r", 'utf-8') as f:
+            for line in f.readlines():
+                tab_line = line.split()
+                if len(tab_line) > 1:
+                    # 1: IPA; 0: SAMPA
+                    conversion[tab_line[1].strip()] = tab_line[0].strip()
+            f.close()
+
+        return conversion
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
+    def ipa_to_sampa(conversion, ipa_entry):
+        """ Convert a string in IPA to SAMPA.
+
+        :param conversion: (dict)
+        :param ipa_entry: (str)
+
+        """
+        sampa = list()
+
+        for p in ipa_entry:
+            # the "_" is used in the conversion file to represent a symbol to
+            # ignore. Also used here to represent any unknown symbol.
+            sampa_p = conversion.get(p, "_")
+            if sampa_p != "_":
+                if len(sampa) > 0 and sampa_p == ":" or sampa_p.startswith("_"):
+                    sampa[-1] = sampa[-1]+sampa_p
+                else:
+                    sampa.append(sampa_p)
+
+        return sppasDictPron.PHONEMES_SEPARATOR.join(sampa)
 
     # ------------------------------------------------------------------------
     # Overloads

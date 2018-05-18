@@ -68,11 +68,17 @@ if sys.version_info < (3,):
         # here we take care to not raise "AttributeError", like:
         # AttributeError: 'int' object has no attribute 'decode'
         s = str(x)
-        return s.decode(encoding)
+        try:
+            return s.decode(encoding)
+        except UnicodeDecodeError:
+            return s
 
     def b(x):
         s = str(x)
-        return s.encode(encoding)
+        try:
+            return s.encode(encoding)
+        except UnicodeDecodeError:
+            return s
 
 else:
     """ Unicode conversion for Python > 3.2 """

@@ -224,7 +224,7 @@ class sppasFileUtils(object):
                 filename = filename + pid + "_"
 
             # random float value
-            filename = filename + '{:04d}'.format(int(random.random() * 9999))
+            filename = filename + '{:06d}'.format(int(random.random() * 999999))
 
             # final file name is path/filename
             name = os.path.join(tempdir, filename)

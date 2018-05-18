@@ -900,6 +900,7 @@ class sppasTrainingCorpus(object):
             fp.write('"*/%s/%s.lab"\n' % (os.path.basename(self.datatrainer.get_storetrs()),
                                           os.path.basename(outfile)))
             fp.write('%s\n' % lab)
+            fp.close()
 
         return True
 
@@ -1430,6 +1431,17 @@ class sppasHTKModelTrainer(object):
 
             # Get only the phonetization from the time-alignment
             tiera = trsalign.Find('PhonAlign')
+            if len(tiera) == 0:
+                logging.info(" ... [ERROR] "
+                             "Empty result for file {:s}. "
+                             "".format(trs_workfile))
+                return False
+            if len(tiera) == 1 and tiera[0].GetLabel().GetValue() == "":
+                logging.info(" ... [ERROR] "
+                             "Empty result for file {:s}. "
+                             "".format(trs_workfile))
+                return False
+
             tiera = self.corpus.map_phonemes(tiera, unkstamp=unk_stamp)
             tier = tierutils.align2phon(tiera)
             trs = Transcription()
