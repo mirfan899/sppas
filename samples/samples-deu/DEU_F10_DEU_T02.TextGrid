@@ -43,7 +43,7 @@ item []:
 		intervals [8]:
 			xmin = 13.16
 			xmax = 16.44
-			text = "Ddas ist der einzige Tag in dieser Woche, an dem ich zuhause sein kann"
+			text = "Das ist der einzige Tag in dieser Woche, an dem ich zuhause sein kann"
 		intervals [9]:
 			xmin = 16.44
 			xmax = 17.46

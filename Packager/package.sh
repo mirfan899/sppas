@@ -302,6 +302,24 @@ function fct_get_args {
 
 
 # Execute SPPAS on the test corpus
+function fct_exec_samples_sppas {
+    for language in 'cat' 'cmn' 'deu' 'eng' 'fra' 'ita' 'jpn' 'kor' 'nan' 'pcm' 'pol' 'por' 'spa' 'yue'; do echo $language;
+        echo "Annotations on samples of $language" >> $LOG_DIAGNOSIS
+        python $PROGRAM_DIR/sppas/bin/annotation.py \
+            -w $PROGRAM_DIR/samples/samples-$language \
+            -l $language \
+            --ipu --tok --phon --align;
+        echo "List of errors: " >> $LOG_DIAGNOSIS
+        grep "ERROR" $PROGRAM_DIR/samples/samples-$language.log >> $LOG_DIAGNOSIS
+        echo "List of warnings: " >> $LOG_DIAGNOSIS
+        grep "WARNING" $PROGRAM_DIR/samples/samples-$language.log >> $LOG_DIAGNOSIS
+        echo " ----------------------------------------- " >> $LOG_DIAGNOSIS
+        fct_clean_sppas
+    done
+}
+
+
+# Execute SPPAS on the test corpus
 function fct_exec_sppas {
 
     echo " ... Test automatic annotation of French"
@@ -428,6 +446,7 @@ function fct_diagnosis {
     fct_echo_title "${PROGRAM_NAME} - Diagnosis"
     fct_test_api
     fct_test_bin
+    fct_exec_samples_sppas
     fct_compare_sppas_results
     echo "Check out the $LOG_DIAGNOSIS file for details."
 }
