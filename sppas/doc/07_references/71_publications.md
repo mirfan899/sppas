@@ -39,6 +39,7 @@ related specific publication. All the papers are available on
 France, pp. 62-65.
 
 
+
 ### About Text Normalization
 
 >*Brigitte Bigi* (2011).
@@ -90,6 +91,15 @@ France, pp. 62-65.
 >Editors R. Basili, A. Lenci, B. Magnini. ISBN 978-886741-472-7.
 >Volume 2. Pages 127-130.
 
+>*Brigitte Bigi, Christine Meunier* (2018).
+>**euh, rire et bruits en parole spontanée : application à l'alignement forcé**,
+>Actes des 32èmes Journées d'études sur la Parole, 
+>Aix-en-Provence, France.
+
+>*Brigitte Bigi, Christine Meunier* (2018).
+>**Automatic segmentation of spontaneous speech.**
+>Revista de Estudos da Linguagem, 26, pp. --. TO BE PUBLISHED
+
 
 ### About Syllabification
 
@@ -117,7 +127,7 @@ France, pp. 62-65.
 
 >*Brigitte Bigi, Roxane Bertrand, Mathilde Guardiola* (2014).
 >**Automatic detection of other-repetition occurrences: application to French conversational speech**,
->9th International conference on Language Resources and Evaluation (LREC), Reykjavik (Iceland), pages 2648-2652. ISBN: 978-2-9517408-8-4.
+>9th International conference on Language Resources and Evaluation (LREC), Reykjavik (Iceland), pp. 2648-2652. ISBN: 978-2-9517408-8-4.
 
 
 ### About analyses tools
@@ -132,6 +142,10 @@ France, pp. 62-65.
 >*Brigitte Bigi, Tatsuya Watanabe, Laurent Prévot* (2014).
 >**Representing Multimodal Linguistics Annotated Data**,
 >9th International conference on Language Resources and Evaluation (LREC), Reykjavik (Iceland), pages 3386-3392. ISBN: 978-2-9517408-8-4.
+
+>*Brigitte Bigi* (2017).
+>**Annotation representation and file conversion tool**,
+>Contributi del Centro Linceo Interdisciplinare ‘Beniamino Segre’ (ISSN 0394-0705), vol. --, pp. --. (TO BE PUBLISHED)
 
 
 ### Related references

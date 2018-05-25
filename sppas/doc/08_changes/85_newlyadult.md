@@ -240,7 +240,7 @@ A few tutorials are available on the web site.
 
 ### SPPAS 1.9.5 
 
-(2018, 25th April)
+(2018, 26th April)
 
 #### Programming:
 
@@ -249,4 +249,24 @@ A few tutorials are available on the web site.
   package instead of the old 'annotationdata' package.
   This was a big issue and it allows a better support of annotated files
   (less bugs and the amount of lost information is drastically reduced).
+
+
+
+### SPPAS 1.9.6
+
+(2018, 25th May)
+
+#### Resources: 
+
+- New: support of German language for Text Normalization (except num2letter), Phonetization and Alignment.
+- French: new acoustic model with an updated phoneset and a better accuracy.
+- Laugh and noise are uniformly represented in all languages.
+- English: context-independent model is the default, instead of context-dependent model, for Alignment.
+
+
+#### Development
+
+- debug of the Transcriber file reader. 
+- debug in the management of the hierarchy in file readers/writers.
+- Resources package: add compatibility with PLS (W3C xml) pronunciation dictionaries
 
