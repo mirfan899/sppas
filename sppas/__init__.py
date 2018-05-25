@@ -104,8 +104,10 @@ SYMBOLS = {
     'sp': "pause",
     '*': "noise",
     'gb': "noise",
+    'noise': "noise",
     '@': "laughter",
     '@@': "laughter",
     'lg': "laughter",
+    'laugh': "laughter",
     'dummy': 'dummy'
 }
