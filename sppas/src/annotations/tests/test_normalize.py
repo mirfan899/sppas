@@ -11,8 +11,220 @@ from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
 
 from ..TextNorm.normalize import TextNormalizer
-from ..TextNorm.transcription import sppasTranscription
-from ..TextNorm.tokenize import sppasTokenizer
+from ..TextNorm.orthotranscription import sppasOrthoTranscription
+from ..TextNorm.tokenize import sppasTokenSegmenter
+from ..TextNorm.num2letter import sppasNum
+from ..TextNorm.splitter import sppasSimpleSplitter
+
+# ---------------------------------------------------------------------------
+
+ref_es = [
+u("cero"),
+u("uno"),
+u("dos"),
+u("tres"),
+u("cuatro"),
+u("cinco"),
+u("seis"),
+u("siete"),
+u("ocho"),
+u("nueve"),
+u("diez"),
+u("once"),
+u("doce"),
+u("trece"),
+u("catorce"),
+u("quince"),
+u("dieciséis"),
+u("diecisiete"),
+u("dieciocho"),
+u("diecinueve"),
+u("veinte"),
+u("veintiuno"),
+u("veintidós"),
+u("veintitrés"),
+u("veinticuatro"),
+u("veinticinco"),
+u("veintiséis"),
+u("veintisiete"),
+u("veintiocho"),
+u("veintinueve"),
+u("treinta"),
+u("treinta-y-uno"),
+u("treinta-y-dos"),
+u("treinta-y-tres"),
+u("treinta-y-cuatro"),
+u("treinta-y-cinco"),
+u("treinta-y-seis"),
+u("treinta-y-siete"),
+u("treinta-y-ocho"),
+u("treinta-y-nueve"),
+u("cuarenta")
+]
+
+# ---------------------------------------------------------------------------
+
+
+class TestOrthoTranscription(unittest.TestCase):
+    """ Test of the class sppasOrthoTranscription.
+    Manager of an orthographic transcription.
+
+    """
+
+    def test_clean_toe(self):
+        """ Clean Enriched Orthographic Transcription to get a standard ortho. trs."""
+
+        s = sppasOrthoTranscription().clean_toe(u('(il) (ne) faut pas rêver'))
+        self.assertEqual(u("faut pas rêver"), s)
+
+        s = sppasOrthoTranscription().clean_toe(u('i(l) (ne) faut pas réver'))
+        self.assertEqual(u("i(l) faut pas réver"), s)
+
+        s = sppasOrthoTranscription().clean_toe(u('i(l) (ne) faut pas réver'))
+        self.assertEqual(u("i(l) faut pas réver"), s)
+
+        s = sppasOrthoTranscription().clean_toe(u(' (il) faut pas réver i(l)'))
+        self.assertEqual(u("faut pas réver i(l)"), s)
+
+        s = sppasOrthoTranscription().clean_toe(u(' euh [je sais, ché] pas '))
+        self.assertEqual(u("euh [je_sais,ché] pas"), s)
+
+        s = sppasOrthoTranscription().clean_toe(u("  j'[ avais,  avé ] "))
+        self.assertEqual(u("j' [avais,avé]"), s)
+
+        s = sppasOrthoTranscription().clean_toe(u("  [j(e) sais,  ché ] "))
+        self.assertEqual(u("[je_sais,ché]"), s)
+
+        s = sppasOrthoTranscription().clean_toe(u("  [peut-êt(re),  pe êt] "))
+        self.assertEqual(u("[peut-être,peêt]"), s)
+
+        s = sppasOrthoTranscription().clean_toe(u(" (pu)tai(n) j'ai"))
+        self.assertEqual(u("(pu)tai(n) j'ai"), s)
+
+        s = sppasOrthoTranscription().clean_toe(u("gpd_100y en a un  qu(i) est devenu complèt(e)ment  "))
+        self.assertEqual(u("y en a un qu(i) est devenu complèt(e)ment"), s)
+
+        s = sppasOrthoTranscription().clean_toe(u("[$Londre, T/$, Londreu]"))
+        self.assertEqual(u("[Londre,Londreu]"), s)
+
+        s = sppasOrthoTranscription().clean_toe(u("t(u) vois [$Isabelle,P /$, isabelleu] $Armelle,P /$ t(out) ça"))
+        self.assertEqual(u("t(u) vois [Isabelle,isabelleu] Armelle t(out) ça"), s)
+
+        s = sppasOrthoTranscription().clean_toe(u("gpd_1324ah euh"))
+        self.assertEqual(u("ah euh"), s)
+
+        s = sppasOrthoTranscription().clean_toe(u("ipu_1324ah euh"))
+        self.assertEqual(u("ah euh"), s)
+
+        s = sppasOrthoTranscription().clean_toe(u("ah a/b euh"))
+        self.assertEqual(u("ah a/b euh"), s)
+
+    def test_toe_spelling(self):
+
+        s = sppasOrthoTranscription().toe_spelling(u('je, fais: "un essai".'))
+        self.assertEqual(u('je , fais : " un essai " .'), s)
+
+        s = sppasOrthoTranscription().toe_spelling(u('€&serie de punctuations!!!):-)".'))
+        self.assertEqual(u('€ & serie de punctuations ! ! ! ) : - ) " .'), s)
+
+        s = sppasOrthoTranscription().toe_spelling(u('123,2...'))
+        self.assertEqual(u('123,2 . . .'), s)
+
+        # this is sampa to be sent directly to the phonetizer
+        s = sppasOrthoTranscription().toe_spelling(u(" /l-e-f-o~-n/ "))
+        self.assertEqual(u('/l-e-f-o~-n/'), s)
+
+        # this is not sampa, because sampa can't contain whitespace.
+        s = sppasOrthoTranscription().toe_spelling(u('/le mot/'))
+        self.assertEqual(u('/ le mot /'), s)
+
+        s = sppasOrthoTranscription().toe_spelling(u('(/'))
+        self.assertEqual(u('( / '), s)
+
+    def test_toe(self):
+
+        s = sppasOrthoTranscription().clean_toe(u(" /l-e-f-o~-n/ "))
+        s = sppasOrthoTranscription().toe_spelling(s)
+        self.assertEqual(u('/l-e-f-o~-n/'), s)
+
+        s = sppasOrthoTranscription().clean_toe(u(" /le mot/ "))
+        s = sppasOrthoTranscription().toe_spelling(s)
+        self.assertEqual(u('/ le mot /'), s)
+
+# ---------------------------------------------------------------------------
+
+
+class TestSimpleSplitter(unittest.TestCase):
+    """ Test of Utterance splitter. """
+
+    def test_split_characters(self):
+        """ Split character-based string. """
+
+        splitter = sppasSimpleSplitter("cmn")
+        result = splitter.split_characters("干脆就把那部蒙人的闲法给废了拉倒")
+        expected = u("干 脆 就 把 那 部 蒙 人 的 闲 法 给 废 了 拉 倒")
+        self.assertEqual(expected, result)
+
+        result = splitter.split_characters("abc123")
+        expected = u(" abc123 ")
+        self.assertEqual(expected, result)
+
+    def test_split(self):
+        """ Split character-based or romanized string. """
+
+        splitter = sppasSimpleSplitter("cmn")
+        result = splitter.split("干脆就把那部蒙人.的闲法给废了拉倒")
+        expected = u("干 脆 就 把 那 部 蒙 人 . 的 闲 法 给 废 了 拉 倒")
+        self.assertEqual(expected.split(), result)
+
+        splitter = sppasSimpleSplitter("fra")
+        result = splitter.split("abc~ /sa~mpa/")
+        expected = u("abc~ /sa~mpa/")
+        self.assertEqual(expected.split(), result)
+
+        result = splitter.split("abc. abc")
+        expected = u("abc. abc")
+        self.assertEqual(expected.split(), result)
+
+# ---------------------------------------------------------------------------
+
+
+class TestNum2Letter(unittest.TestCase):
+    """ Convert number to their written form. """
+
+    def test_init(self):
+        # Unknown language
+        num = sppasNum('zzz')
+        with self.assertRaises(ValueError):
+            num.convert('3')
+        # Known language
+        num = sppasNum('fra')
+        num.convert("03")
+        num.convert("3")
+        with self.assertRaises(ValueError):
+            num.convert('3.0')
+
+    def test_num2letterFR(self):
+        num = sppasNum('fra')
+        s = num.convert("123")
+        self.assertEquals(s, u("cent-vingt-trois"))
+
+    def test_num2letterES(self):
+        num = sppasNum('spa')
+        ret = [num.convert(i) for i in range(41)]
+        self.assertEquals(ret, ref_es)
+
+        s = num.convert(1241)
+        self.assertEquals(s, u("mil-doscientos-cuarenta-y-uno"))
+
+        s = num.convert(2346022)
+        self.assertEquals(s, u("dos-millones-trescientos-cuarenta-y-seis-mil-veintidós"))
+
+        s = num.convert(382121)
+        self.assertEquals(s, u("trescientos-ochenta-y-dos-mil-ciento-veintiuno"))
+
+        s = num.convert(739499)
+        self.assertEquals(s, u("setecientos-treinta-y-nueve-mil-cuatrocientos-noventa-y-nueve"))
 
 # ---------------------------------------------------------------------------
 
@@ -27,86 +239,6 @@ class TestNormalizer(unittest.TestCase):
         puncts = sppasVocabulary(punct_file)
         self.tok = TextNormalizer(wds, "fra")
         self.tok.set_punct(puncts)
-
-    def test_clean_toe(self):
-
-        t = sppasTranscription()
-
-        s = t.clean_toe(u('(il) (ne) faut pas rêver'))
-        self.assertEqual(s, u("faut pas rêver"))
-
-        s = t.clean_toe(u('i(l) (ne) faut pas réver'))
-        self.assertEqual(s, u("i(l) faut pas réver"))
-
-        s = t.clean_toe(u('i(l) (ne) faut pas réver'))
-        self.assertEqual(s, u("i(l) faut pas réver"))
-
-        s = t.clean_toe(u(' (il) faut pas réver i(l)'))
-        self.assertEqual(s, u("faut pas réver i(l)"))
-
-        s = t.clean_toe(u(' euh [je sais, ché] pas '))
-        self.assertEqual(s, u("euh [je_sais,ché] pas"))
-
-        s = t.clean_toe(u("  j'[ avais,  avé ] "))
-        self.assertEqual(s, u("j' [avais,avé]"))
-
-        s = t.clean_toe(u("  [j(e) sais,  ché ] "))
-        self.assertEqual(s, u("[je_sais,ché]"))
-
-        s = t.clean_toe(u("  [peut-êt(re),  pe êt] "))
-        self.assertEqual(s, u("[peut-être,peêt]"))
-
-        s = t.clean_toe(u(" (pu)tai(n) j'ai"))
-        self.assertEqual(s, u("(pu)tai(n) j'ai"))
-
-        s = t.clean_toe(u("gpd_100y en a un  qu(i) est devenu complèt(e)ment  "))
-        self.assertEqual(s, u("y en a un qu(i) est devenu complèt(e)ment"))
-
-        s = t.clean_toe(u("[$Londre, T/$, Londreu]"))
-        self.assertEqual(s, u("[Londre,Londreu]"))
-
-        s = t.clean_toe(u("t(u) vois [$Isabelle,P /$, isabelleu] $Armelle,P /$ t(out) ça"))
-        self.assertEqual(s, u("t(u) vois [Isabelle,isabelleu] Armelle t(out) ça"))
-
-        s = t.clean_toe(u("gpd_1324ah euh"))
-        self.assertEqual(s, u("ah euh"))
-
-        s = t.clean_toe(u("ah a/b euh"))
-        self.assertEqual(s, u("ah a/b euh"))
-
-    def test_toe_spelling(self):
-
-        t = sppasTranscription()
-        s = t.toe_spelling(u('je, fais: "un essai".'))
-        self.assertEqual(s, u('je , fais : " un essai " .'))
-
-        s = t.toe_spelling(u('€&serie de punctuations!!!):-)".'))
-        self.assertEqual(s, u('€ & serie de punctuations ! ! ! ) : - ) " .'))
-
-        s = t.toe_spelling(u('123,2...'))
-        self.assertEqual(s, u('123,2 . . .'))
-
-        # this is sampa to be sent directly to the phonetizer
-        s = t.toe_spelling(u(" /l-e-f-o~-n/ "))
-        self.assertEqual(s, u('/l-e-f-o~-n/'))
-
-        # this is not sampa, because sampa can't contain whitespace.
-        s = t.toe_spelling(u('/le mot/'))
-        self.assertEqual(s, u('/ le mot /'))
-
-        s = t.toe_spelling(u('(/'))
-        self.assertEqual(s, u('( / '))
-
-    def test_toe(self):
-
-        t = sppasTranscription()
-        s = t.clean_toe(u(" /l-e-f-o~-n/ "))
-        s = t.toe_spelling(s)
-        self.assertEqual(s, u('/l-e-f-o~-n/'))
-
-        s = t.clean_toe(u(" /le mot/ "))
-        s = t.toe_spelling(s)
-        self.assertEqual(s, u('/ le mot /'))
 
     def test_replace(self):
 
@@ -186,7 +318,7 @@ class TestNormalizer(unittest.TestCase):
 
     def test_stick(self):
 
-        t = sppasTokenizer(self.tok.vocab)
+        t = sppasTokenSegmenter(self.tok.vocab)
         s = t.bind([u("123")])
         self.assertEquals(s, [u("123")])
         s = t.bind([u("au fur et à mesure")])
@@ -216,10 +348,6 @@ class TestNormalizer(unittest.TestCase):
         # whitespace is not accepted in sampa transcription
         s = self.tok.normalize(u(" /le mot/ "))
         self.assertEqual(u("le mot"), s)
-
-        t = sppasTranscription()
-        s = t.clean_toe(u("ah a/b euh"))
-        self.assertEqual(s, u("ah a/b euh"))
 
     def test_code_switching(self):
 

@@ -36,7 +36,6 @@
     normalization system.
 
 """
-import re
 
 from sppas.src.utils.makeunicode import u
 
@@ -49,7 +48,7 @@ class sppasNum(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Numerical conversion using a multilingual algorithm.
 
     For details, read the following reference:
@@ -70,11 +69,23 @@ class sppasNum(object):
     >>> sppasNum('3.0')
     ValueError
 
+    Notice that this class should be fully re-implemented.
+    It should use an external resource file to make the match
+    between numbers and letters, for each language:
+        0 zéro
+        1 un
+        ...
+        10 dix
+        100 cent
+        1000 mille
+        1000000 million
+        1000000000 milliard
+
     """
     LANGUAGES = ["und", "yue", "cmn", "fra", "ita", "eng", "spa", "khm", "vie", "jpn", "pol", "por", "pcm"]
 
     ZERO = dict()
-    ZERO["und"] = "0"
+    ZERO["und"] = u("0")
     ZERO["yue"] = u("零")
     ZERO["cmn"] = u("零")
     ZERO["fra"] = u("zéro")
@@ -1400,16 +1411,13 @@ class sppasNum(object):
 
         if self._lang == "ita":
             res = self.__milliards_ita(number)
-            res = re.sub("oo", "o", res)  # ex: centoottanta -> centottanta
-            return res
+            return res.replace('oo', 'o')  # ex: centoottanta -> centottanta
 
         if self._lang == "pol":
-            res = self.__milliards_pol(number)
-            return res
+            return self.__milliards_pol(number)
 
         if self._lang == "por":
-            res = self.__milliards_por(number)
-            return res
+            return self.__milliards_por(number)
 
         raise ValueError("Unknown language {:s} for numerical conversion".format(self._lang))
 

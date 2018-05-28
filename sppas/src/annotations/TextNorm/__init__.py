@@ -29,27 +29,38 @@
         ---------------------------------------------------------------------
 
     src.annotations.TextNorm.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     The creation of text corpora requires a sequence of processing steps in
     order to constitute, normalize, and then to directly exploit it by a given
-    application. This package implements a generic approach for text
-    normalization that can be applied on a multipurpose multilingual text or
-    transcribed corpus.
+    application.
+    This package implements a generic approach for text normalization that can
+    be applied on a multipurpose multilingual text or transcribed corpus.
     It consists in splitting the text normalization problem in a set of minor
     sub-problems as language-independent as possible. The portability to a new
     language consists of heritage of all language independent methods and
     rapid adaptation of other language dependent methods or classes.
 
+    For details, read the following reference:
+
+        | Brigitte Bigi (2011).
+        | A Multilingual Text Normalization Approach.
+        | 2nd Less-Resourced Languages workshop,
+        | 5th Language & Technology Conference, Poznan (Poland).
+
 """
-from .sppastok import sppasTok
+from .sppastextnorm import sppasTextNorm
+from .orthotranscription import sppasOrthoTranscription
+from .splitter import sppasSimpleSplitter
 
 __all__ = [
-    'sppasTok',
+    'sppasTextNorm',
+    'sppasOrthoTranscription',
+    'sppasSimpleSplitter'
 ]

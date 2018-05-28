@@ -51,7 +51,7 @@ sys.path.append(SPPAS)
 
 from sppas import RESOURCES_PATH
 
-from sppas.src.annotations.TextNorm.sppastok import sppasTok
+from sppas.src.annotations.TextNorm.sppastextnorm import sppasTextNorm
 from sppas.src.annotations.TextNorm.normalize import TextNormalizer
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
@@ -114,7 +114,7 @@ lang = base[:3]
 
 if args.i:
 
-    p = sppasTok(args.vocab, lang)
+    p = sppasTextNorm(args.vocab, lang)
     if args.nofaked:
         p.set_faked(False)
     if args.std:

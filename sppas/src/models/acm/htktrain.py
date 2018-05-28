@@ -48,7 +48,7 @@ from sppas.src.utils.fileutils import sppasDirUtils
 
 from sppas.src.annotations.searchtier import sppasSearchTier
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
-from sppas.src.annotations.TextNorm.sppastok import sppasTok
+from sppas.src.annotations.TextNorm.sppastextnorm import sppasTextNorm
 from sppas.src.annotations.Align.sppasalign import sppasAlign
 from sppas.src.annotations.annotationsexc import NoInputError
 
@@ -1350,7 +1350,7 @@ class sppasHTKModelTrainer(object):
 
         # Create Tokenizer, Phonetizer, Aligner
         try:
-            tokenizer = sppasTok(self.corpus.vocabfile, self.corpus.lang, logfile=None)
+            tokenizer = sppasTextNorm(self.corpus.vocabfile, self.corpus.lang, logfile=None)
             tokenizer.set_std(False)
             tokenizer.set_custom(False)
 

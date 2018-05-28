@@ -29,16 +29,10 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.sppastok.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations.sppastextnorm.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     SPPAS integration of Text Normalization.
-    For details, read the following reference:
-
-        | Brigitte Bigi (2011).
-        | A Multilingual Text Normalization Approach.
-        | 2nd Less-Resourced Languages workshop,
-        | 5th Language & Technology Conference, Poznan (Poland).
 
 """
 import os.path
@@ -46,6 +40,7 @@ import os.path
 from sppas import RESOURCES_PATH
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
+
 from sppas.src.annotationdata.transcription import Transcription
 from sppas.src.annotationdata.tier import Tier
 import sppas.src.annotationdata.aio
@@ -60,18 +55,18 @@ from .normalize import TextNormalizer
 # ---------------------------------------------------------------------------
 
 
-class sppasTok(sppasBaseAnnotation):
+class sppasTextNorm(sppasBaseAnnotation):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Text normalization automatic annotation.
 
     """
     def __init__(self, vocab, lang="und", logfile=None):
-        """ Create a sppasTok instance.
+        """ Create a sppasTextNorm instance.
 
         :param vocab: (str) name of the file with the orthographic transcription
         :param lang: (str) the language code
@@ -170,7 +165,10 @@ class sppasTok(sppasBaseAnnotation):
         """ Tokenization of all labels of a tier.
 
         :param tier: (Tier) contains the orthographic transcription
-        :returns: A tuple with 3 tiers named "Tokens-Faked", "Tokens-Std" and "Tokens-Custom"
+        :returns: A tuple with 3 tiers named:
+            - "Tokens-Faked",
+            - "Tokens-Std",
+            - "Tokens-Custom"
 
         """
         if tier.IsEmpty() is True:
@@ -199,7 +197,7 @@ class sppasTok(sppasBaseAnnotation):
 
         return tokens_faked, tokens_std, tokens_custom
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def align_tiers(self, std_tier, faked_tier):
         """ Force standard spelling and faked spelling to share the same
@@ -216,15 +214,19 @@ class sppasTok(sppasBaseAnnotation):
         for astd, afaked in zip(std_tier, faked_tier):
                 i += 1
 
-                for text_std, text_faked in zip(astd.GetLabel().GetLabels(),afaked.GetLabel().GetLabels()):
+                for text_std, text_faked in zip(astd.GetLabel().GetLabels(),
+                                                afaked.GetLabel().GetLabels()):
 
                     try:
-                        texts, textf = self.__align_tiers(text_std.GetValue(), text_faked.GetValue())
+                        texts, textf = self.__align_tiers(text_std.GetValue(),
+                                                          text_faked.GetValue())
                         text_std.SetValue(texts)
                         text_faked.SetValue(textf)
 
                     except Exception:
-                        self.print_message("Standard/Faked tokens matching error, at interval {:d}\n".format(i), indent=2, status=1)
+                        self.print_message("Standard/Faked tokens matching error, "
+                                           "at interval {:d}\n".format(i),
+                                           indent=2, status=1)
                         self.print_message(astd.GetLabel().GetValue(), indent=3)
                         self.print_message(afaked.GetLabel().GetValue(), indent=3)
                         self.print_message("Fall back on faked.", indent=3, status=3)
@@ -250,7 +252,7 @@ class sppasTok(sppasBaseAnnotation):
         tier_faked_tokens, tier_std_tokens, tier_custom = self.convert(tier_input)
 
         # Save
-        trs_output = Transcription("SPPAS Text Normalization")
+        trs_output = Transcription("Text Normalization")
         if tier_faked_tokens is not None:
             trs_output.Add(tier_faked_tokens)
         if tier_std_tokens is not None:
@@ -338,5 +340,5 @@ class sppasTok(sppasBaseAnnotation):
             i += 1
 
         if len(stds) != len(fakeds):
-            raise
+            raise ValueError
         return std, " ".join(fakeds)

@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.transcription.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations.orthotranscription.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Module managing the orthographic transcription for the multilingual text
     normalization system.
@@ -44,14 +44,17 @@ from sppas.src.utils.makeunicode import u, sppasUnicode
 # ---------------------------------------------------------------------------
 
 
-class sppasTranscription(object):
+class sppasOrthoTranscription(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Manager of orthographic transcription.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Manager of an orthographic transcription.
+
+    This is a totally language-independent class. It supports the orthographic
+    transcription defined into SPPAS software tool.
 
     From the manual Enriched Orthographic Transcription, two derived ortho.
     transcriptions are generated automatically by the tokenizer: the "standard"
@@ -61,11 +64,15 @@ class sppasTranscription(object):
 
     The following illustrates an utterance text normalization in French:
 
-    - Transcription:   j'ai on a j'ai p- (en)fin j'ai trouvé l(e) meilleur moyen c'était d(e) [loger,locher] chez  des amis
+    - Transcription:
+    j'ai on a j'ai p- (en)fin j'ai trouvé l(e) meilleur moyen c'était d(e) [loger,locher] chez  des amis
     (English translation is: I've we've I've - well I found the best way was to live in friends' apartment')
 
-    - Resulting Standard tokens:  j' ai on a j' ai p- enfin j' ai trouvé le meilleur moyen c' était de loger  chez  des amis
-    - Resulting Faked tokens:     j' ai on a j' ai p-   fin j' ai trouvé l  meilleur moyen c' était d  loche  chez  des amis
+    - Result of the standard tokens:
+    j' ai on a j' ai p- enfin j' ai trouvé le meilleur moyen c' était de loger  chez  des amis
+
+    - Result of the faked tokens:
+    j' ai on a j' ai p-   fin j' ai trouvé l  meilleur moyen c' était d  loche  chez  des amis
 
     """
     def __init__(self):
@@ -73,29 +80,8 @@ class sppasTranscription(object):
 
     # ------------------------------------------------------------------
 
-    def __replace(self, obj):
-        """ Callback for clean_toe.
-
-        :param obj: (MatchObject)
-        :returns: (str)
-
-        """
-        # Left part
-        # Remove parentheses
-        left = obj.group(1).replace('(', '')
-        left = left.replace(')', '')
-        # Replace spaces with underscores
-        left = "_".join(left.split())
-
-        # Right part
-        # Remove spaces
-        right = obj.group(2)
-        right = "".join(right.split())
-        return " [{:s},{:s}]".format(left, right)
-
-    # ------------------------------------------------------------------
-
-    def clean_toe(self, entry):
+    @staticmethod
+    def clean_toe(entry):
         """ Clean Enriched Orthographic Transcription.
         The convention includes information that must be removed.
 
@@ -104,25 +90,26 @@ class sppasTranscription(object):
 
         """
         # Proper names: $ name ,P\$
-        entry = re.sub(u',\s?[PTS]+\s?[\\/\\\]+\s?\\$', ur'', entry, re.UNICODE)
-        entry = re.sub(ur'\$', ur'', entry, re.UNICODE)
+        entry = re.sub(u(',\s?[PTS]+\s?[\\/\\\]+\s?\\$'), r'', entry, re.UNICODE)
+        entry = re.sub(u('\$'), r'', entry, re.UNICODE)
 
-        entry = re.sub(u'(gpd_[0-9]+)', ur" ", entry, re.UNICODE)
-        entry = re.sub(u'(gpf_[0-9]+)', ur" ", entry, re.UNICODE)
-        entry = re.sub(u'(ipu_[0-9]+)', ur" ", entry, re.UNICODE)
+        entry = re.sub(u('(gpd_[0-9]+)'), r" ", entry, re.UNICODE)
+        entry = re.sub(u('(gpf_[0-9]+)'), r" ", entry, re.UNICODE)
+        entry = re.sub(u('(ipu_[0-9]+)'), r" ", entry, re.UNICODE)
 
         # Remove invalid parenthesis content
-        entry = re.sub(ur'\s+\([\w\xaa-\xff]+\)\s+', ' ', entry, re.UNICODE)
-        entry = re.sub(ur'^\([\w\xaa-\xff]+\)\s+', ' ', entry, re.UNICODE)
-        entry = re.sub(ur'\s+\([\w\xaa-\xff]+\)$', ' ', entry, re.UNICODE)
+        entry = re.sub(u('\s+\([\w\xaa-\xff]+\)\s+'), ' ', entry, re.UNICODE)
+        entry = re.sub(u('^\([\w\xaa-\xff]+\)\s+'), ' ', entry, re.UNICODE)
+        entry = re.sub(u('\s+\([\w\xaa-\xff]+\)$'), ' ', entry, re.UNICODE)
 
-        entry = re.sub(ur'\s*\[([^,]+),([^,]+)\]', self.__replace, entry, re.UNICODE)
+        entry = re.sub(u('\s*\[([^,]+),([^,]+)\]'), sppasOrthoTranscription.__replace, entry, re.UNICODE)
 
         return " ".join(entry.split())
 
     # ------------------------------------------------------------------
 
-    def toe_spelling(self, entry, std=False):
+    @staticmethod
+    def toe_spelling(entry, std=False):
         """ Create a specific spelling from an Enriched Orthographic Transcription.
 
         :param entry: (str) the EOT string
@@ -141,51 +128,51 @@ class sppasTranscription(object):
 
         if std is False:
             # Stick un-regular liaisons to the previous token
-            _fentry = re.sub(u' =([\w]+)=', ur'-\1', _fentry, re.UNICODE)
+            _fentry = re.sub(u(' =([\w]+)=', r'-\1'), _fentry, re.UNICODE)
         else:
             # Remove liaisons
-            _fentry = re.sub(u' =([\w]+)=', ur' ', _fentry, re.UNICODE)
+            _fentry = re.sub(u(' =([\w]+)='), u(' '), _fentry, re.UNICODE)
 
         # Laughing sequences
-        _fentry = re.sub(u"\s?@\s?@\s?", u" ", _fentry, re.UNICODE)
+        _fentry = re.sub(u("\s?@\s?@\s?"), u(' '), _fentry, re.UNICODE)
 
         # Laughing
-        _fentry = re.sub(u"([\w\xaa-\xff]+)@", ur"\1 @", _fentry, re.UNICODE)
-        _fentry = re.sub(u"@([\w\xaa-\xff]+)", ur"@ \1", _fentry, re.UNICODE)
+        _fentry = re.sub(u("([\w\xaa-\xff]+)@"), u(r"\1 @"), _fentry, re.UNICODE)
+        _fentry = re.sub(u("@([\w\xaa-\xff]+)"), u(r"@ \1"), _fentry, re.UNICODE)
 
         # Noises
-        _fentry = re.sub(u"([\w\xaa-\xff]+)\*", ur"\1 *", _fentry, re.UNICODE)
-        _fentry = re.sub(u"\*([\w\xaa-\xff]+)", ur"* \1", _fentry, re.UNICODE)
+        _fentry = re.sub(u("([\w\xaa-\xff]+)\*"), u(r"\1 *"), _fentry, re.UNICODE)
+        _fentry = re.sub(u("\*([\w\xaa-\xff]+)"), u(r"* \1"), _fentry, re.UNICODE)
 
         # Transcriptor comment's: {comment}
-        _fentry = re.sub(u'\\{[\s\w\xaa-\xff\-:]+\\}', ur'', _fentry, re.UNICODE)
+        _fentry = re.sub(u('\\{[\s\w\xaa-\xff\-:]+\\}'), '', _fentry, re.UNICODE)
         # Transcriptor comment's: [comment]
-        _fentry = re.sub(u'\\[[\s\w\xaa-\xff\-:]+\\]', ur'', _fentry, re.UNICODE)
+        _fentry = re.sub(u('\\[[\s\w\xaa-\xff\-:]+\\]'), '', _fentry, re.UNICODE)
 
         if std is False:
             # Special elisions (remove parenthesis content)
-            _fentry = re.sub(u'\\([\s\w\xaa-\xff\-\']+\\)', ur'', _fentry, re.UNICODE)
+            _fentry = re.sub(u('\\([\s\w\xaa-\xff\-\']+\\)'), '', _fentry, re.UNICODE)
         else:
             # Special elisions (keep parenthesis content)
-            _fentry = re.sub(u'\\(([\s\w\xaa-\xff\-]+)\\)', ur'\1', _fentry, re.UNICODE)
+            _fentry = re.sub(u('\\(([\s\w\xaa-\xff\-]+)\\)'), u(r'\1'), _fentry, re.UNICODE)
 
         # Morphological variants are ignored for phonetization (same pronunciation!)
-        _fentry = re.sub(u'\s+\\<([\-\'\s\w\xaa-\xff]+),[\-\'\s\w\xaa-\xff]+\\>', ur' \1', _fentry, re.UNICODE)
-        _fentry = re.sub(u'\s+\\{([\-\'\s\w\xaa-\xff]+),[\-\'\s\w\xaa-\xff]+\\}', ur' \1', _fentry, re.UNICODE)
+        _fentry = re.sub(u('\s+\\<([\-\'\s\w\xaa-\xff]+),[\-\'\s\w\xaa-\xff]+\\>'), u(r' \1'), _fentry, re.UNICODE)
+        _fentry = re.sub(u('\s+\\{([\-\'\s\w\xaa-\xff]+),[\-\'\s\w\xaa-\xff]+\\}'), u(r' \1'), _fentry, re.UNICODE)
 
         if std is False:
             # Special pronunciations (keep right part)
-            _fentry = re.sub(u'\s+\\[([\s\w\xaa-\xff/-]+),([\s\w\xaa-\xff/]+)\\]', ur' \2', _fentry, re.UNICODE)
+            _fentry = re.sub(u('\s+\\[([\s\w\xaa-\xff/-]+),([\s\w\xaa-\xff/]+)\\]'), u(r' \2'), _fentry, re.UNICODE)
         else:
             # Special pronunciations (keep left part)
-            _fentry = re.sub(u'\s+\\[([\s\w\xaa-\xff\\/-]+),[\s\w\xaa-\xff\\/]+\\]', ur' \1', _fentry, re.UNICODE)
+            _fentry = re.sub(u('\s+\\[([\s\w\xaa-\xff\\/-]+),[\s\w\xaa-\xff\\/]+\\]'), u(r' \1'), _fentry, re.UNICODE)
 
         # Proper names: $ name ,P\$
-        _fentry = re.sub(u',\s?[PTS]+\s?[\\/\\\]+\s?\\$', ur'', _fentry, re.UNICODE)
-        _fentry = re.sub(u'\\$', ur'', _fentry, re.UNICODE)
+        _fentry = re.sub(u(',\s?[PTS]+\s?[\\/\\\]+\s?\\$'), '', _fentry, re.UNICODE)
+        _fentry = re.sub(u('\\$'), '', _fentry, re.UNICODE)
 
         # specific case with numbers
-        _fentry = re.sub(u"\s(?=,[0-9]+)", "", _fentry, re.UNICODE)
+        _fentry = re.sub(u("\s(?=,[0-9]+)"), '', _fentry, re.UNICODE)
 
         # ok, now stop regexp and work with unicode:
         _fentry = sppasUnicode(_fentry).to_strip()
@@ -229,3 +216,26 @@ class sppasTranscription(object):
                     s[-1] += c
 
         return " ".join(s)
+
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def __replace(obj):
+        """ Callback for clean_toe.
+
+        :param obj: (MatchObject)
+        :returns: (str)
+
+        """
+        # Left part
+        # Remove parentheses
+        left = obj.group(1).replace('(', '')
+        left = left.replace(')', '')
+        # Replace spaces with underscores
+        left = "_".join(left.split())
+
+        # Right part
+        # Remove spaces
+        right = obj.group(2)
+        right = "".join(right.split())
+        return " [{:s},{:s}]".format(left, right)
