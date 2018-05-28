@@ -68,8 +68,10 @@ class sppasVocabulary(object):
         # Set the list of entries to be case-sensitive or not.
         self.__case_sensitive = case_sensitive
 
+        self.__filename = ""
         if filename is not None:
 
+            self.__filename = filename
             dp = sppasDumpFile(filename)
 
             # Try first to get the dict from a dump file
@@ -83,6 +85,12 @@ class sppasVocabulary(object):
                     dp.save_as_dump(self.__entries)
             else:
                 self.__entries = data
+
+    # -----------------------------------------------------------------------
+
+    def get_filename(self):
+        """ Return the name of the file from which the vocab comes from. """
+        return self.__filename
 
     # -----------------------------------------------------------------------
     # Data management
@@ -159,11 +167,15 @@ class sppasVocabulary(object):
 
         """
         with codecs.open(filename, 'r', encoding) as fd:
+            self.__filename = filename
+
             for nbl, line in enumerate(fd, 1):
                 try:
                     self.add(line)
                 except Exception:
                     raise FileFormatError(nbl, line)
+
+            fd.close()
 
     # -----------------------------------------------------------------------
 

@@ -41,14 +41,15 @@ from sppas import RESOURCES_PATH
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
 
-from sppas.src.annotationdata.transcription import Transcription
-from sppas.src.annotationdata.tier import Tier
-import sppas.src.annotationdata.aio
+from sppas.src.anndata import sppasRW
+from sppas.src.anndata import sppasTranscription
+from sppas.src.anndata import sppasTier
 
 from ..baseannot import sppasBaseAnnotation
-from ..searchtier import sppasSearchTier
+from ..searchtier import sppasFindTier
 from ..annotationsexc import AnnotationOptionError
 from ..annotationsexc import EmptyInputError
+from ..annotationsexc import EmptyOutputError
 
 from .normalize import TextNormalizer
 
@@ -164,32 +165,36 @@ class sppasTextNorm(sppasBaseAnnotation):
     def convert(self, tier):
         """ Tokenization of all labels of a tier.
 
-        :param tier: (Tier) contains the orthographic transcription
+        :param tier: (sppasTier) contains the orthographic transcription
         :returns: A tuple with 3 tiers named:
             - "Tokens-Faked",
             - "Tokens-Std",
             - "Tokens-Custom"
 
         """
-        if tier.IsEmpty() is True:
-            raise EmptyInputError(name=tier.GetName())
+        if tier.is_empty() is True:
+            raise EmptyInputError(name=tier.get_name())
 
         tokens_faked = None
         if self._options['faked'] is True:
-            tokens_faked = self.__convert(tier, [])
-            tokens_faked.SetName("Tokens")
+            actions = ['replace', "tokenize", "numbers", "lower", "punct"]
+            tokens_faked = self.__convert(tier, actions)
+            tokens_faked.set_name("Tokens")
+            sppasTextNorm.__add_meta_in_token_tier(tokens_faked, actions)
 
         tokens_std = None
         if self._options['std'] is True:
             actions = ['std']
             tokens_std = self.__convert(tier, actions)
-            tokens_std.SetName("Tokens-Std")
+            tokens_std.set_name("Tokens-Std")
+            sppasTextNorm.__add_meta_in_token_tier(tokens_std, actions)
 
         tokens_custom = None
         if self._options['custom'] is True:
             actions = ['std', 'tokenize']
             tokens_custom = self.__convert(tier, actions)
-            tokens_custom.SetName("Tokens-Custom")
+            tokens_custom.set_name("Tokens-Custom")
+            sppasTextNorm.__add_meta_in_token_tier(tokens_custom, actions)
 
         # Align Faked and Standard
         if tokens_faked is not None and tokens_std is not None:
@@ -199,38 +204,51 @@ class sppasTextNorm(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
+    @staticmethod
+    def __add_meta_in_token_tier(tier, enable_actions):
+        """ Add metadata into a normalized tier. """
+
+        for action in ['replace', "tokenize", "numbers", "lower", "punct"]:
+            if action in enable_actions:
+                tier.set_meta('text_normalization_enable_action_'+action, 'true')
+            else:
+                tier.set_meta('text_normalization_enable_action_'+action, 'false')
+
+    # -----------------------------------------------------------------------
+
     def align_tiers(self, std_tier, faked_tier):
         """ Force standard spelling and faked spelling to share the same
         number of tokens.
 
-        :param std_tier: (Tier)
-        :param faked_tier: (Tier)
+        :param std_tier: (sppasTier)
+        :param faked_tier: (sppasTier)
 
         """
         if self._options['std'] is False:
             return
 
         i = 0
-        for astd, afaked in zip(std_tier, faked_tier):
-                i += 1
-
-                for text_std, text_faked in zip(astd.GetLabel().GetLabels(),
-                                                afaked.GetLabel().GetLabels()):
-
+        # for each annotation of both tiers
+        for ann_std, ann_faked in zip(std_tier, faked_tier):
+            i += 1
+            # for each label of both annotations
+            for label_std, label_faked in zip(ann_std.get_labels(), ann_faked.get_labels()):
+                # for each alternative tag of each label
+                for ((text_std, s1), (text_faked, s2)) in zip(label_std, label_faked):
                     try:
-                        texts, textf = self.__align_tiers(text_std.GetValue(),
-                                                          text_faked.GetValue())
-                        text_std.SetValue(texts)
-                        text_faked.SetValue(textf)
+                        texts, textf = self.__align_tiers(text_std.get_content(),
+                                                          text_faked.get_content())
+                        text_std.set_content(texts)
+                        text_faked.set_content(textf)
 
                     except Exception:
                         self.print_message("Standard/Faked tokens matching error, "
                                            "at interval {:d}\n".format(i),
                                            indent=2, status=1)
-                        self.print_message(astd.GetLabel().GetValue(), indent=3)
-                        self.print_message(afaked.GetLabel().GetValue(), indent=3)
+                        self.print_message(text_std.get_content(), indent=3)
+                        self.print_message(text_faked.get_content(), indent=3)
                         self.print_message("Fall back on faked.", indent=3, status=3)
-                        text_std.SetValue(textf)
+                        text_std.set_content(text_faked.get_content())
 
     # ------------------------------------------------------------------------
 
@@ -245,52 +263,60 @@ class sppasTextNorm(sppasBaseAnnotation):
         self.print_diagnosis(input_filename)
 
         # Get input tier to tokenize
-        trs_input = sppas.src.annotationdata.aio.read(input_filename)
-        tier_input = sppasSearchTier.transcription(trs_input)
+        parser = sppasRW(input_filename)
+        trs_input = parser.read()
+        tier_input = sppasFindTier.transcription(trs_input)
 
         # Tokenize the tier
         tier_faked_tokens, tier_std_tokens, tier_custom = self.convert(tier_input)
 
         # Save
-        trs_output = Transcription("Text Normalization")
+        trs_output = sppasTranscription("Text Normalization")
         if tier_faked_tokens is not None:
-            trs_output.Add(tier_faked_tokens)
+            trs_output.append(tier_faked_tokens)
         if tier_std_tokens is not None:
-            trs_output.Add(tier_std_tokens)
+            trs_output.append(tier_std_tokens)
         if tier_custom is not None:
-            trs_output.Add(tier_custom)
+            trs_output.append(tier_custom)
+
+        trs_output.set_meta('text_normalization_result_of', input_filename)
+        trs_output.set_meta('text_normalization_vocab', self.normalizer.vocab.get_filename())
+        trs_output.set_meta('text_normalization_lang', self.normalizer.lang)
 
         # Save in a file
         if len(trs_output) > 0:
-            sppas.src.annotationdata.aio.write(output_filename, trs_output)
+            parser = sppasRW(output_filename)
+            parser.write(trs_output)
         else:
-            raise IOError("No resulting tier. No file created.")    
+            raise EmptyOutputError
 
     # ------------------------------------------------------------------------
     # Private: some workers...
     # ------------------------------------------------------------------------
 
     def __convert(self, tier, actions):
-        """ Normalize all labels of an annotation.
-        (normalize not only the one with the best score!).
+        """ Normalize all tags of all labels of an annotation.
 
         """
-        tokens = Tier("Tokens")
+        tokens = sppasTier("Tokens")
         for i, ann in enumerate(tier):
-            af = ann.Copy()
-            for text in af.GetLabel().GetLabels():
-                # Do not tokenize an empty label, noises, laughter...
-                if text.IsSpeech() is True:
-                    try:
-                        normalized = self.normalizer.normalize(text.GetValue(), actions)
-                    except Exception as e:
-                        normalized = ""
-                        if self.logfile is not None:
-                            self.logfile.print_message("Error while normalizing interval {:d}: {:s}".format(i, str(e)), indent=3)
-                        else:
-                            print("Error while normalizing interval {:d}: {:s}".format(i, str(e)))
-                    text.SetValue(normalized)
-            tokens.Append(af)
+            af = ann.copy()
+            for label in af.get_labels():
+
+                for text, score in label:
+                    # Do not tokenize an empty label, noises, laughter...
+                    if text.is_speech() is True:
+                        try:
+                            normalized = self.normalizer.normalize(text.get_content(), actions)
+                        except Exception as e:
+                            normalized = ""
+                            message = "Error while normalizing interval {:d}: {:s}".format(i, str(e))
+                            if self.logfile is not None:
+                                self.logfile.print_message(message, indent=3)
+                            else:
+                                print(message)
+                        text.set_content(normalized)
+            tokens.append(af)
 
         return tokens
 

@@ -128,7 +128,7 @@ class sppasOrthoTranscription(object):
 
         if std is False:
             # Stick un-regular liaisons to the previous token
-            _fentry = re.sub(u(' =([\w]+)=', r'-\1'), _fentry, re.UNICODE)
+            _fentry = re.sub(u(' =([\w]+)='), r'-\1', _fentry, re.UNICODE)
         else:
             # Remove liaisons
             _fentry = re.sub(u(' =([\w]+)='), u(' '), _fentry, re.UNICODE)
