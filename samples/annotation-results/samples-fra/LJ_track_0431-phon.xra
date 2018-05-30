@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:19+02:00" format="1.4" name="SPPAS Phonetization">
+	<Metadata>
+		<Entry key="id">4b464c3e-3e92-4d73-0cb1-4986ef8d888f</Entry>
+		<Entry key="software_name">SPPAS</Entry>
+		<Entry key="software_version">1.9.6</Entry>
+		<Entry key="software_url">http://www.sppas.org/</Entry>
+		<Entry key="software_author">Brigitte Bigi</Entry>
+		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
+		<Entry key="software_copyright">Copyright (C) 2011-2018 Brigitte Bigi</Entry>
+		<Entry key="language_iso">iso639-3</Entry>
+		<Entry key="language_code_0">und</Entry>
+		<Entry key="language_name_0">Undetermined</Entry>
+		<Entry key="language_url_0">https://iso639-3.sil.org/code/und</Entry>
+		<Entry key="file_license_text_0">GNU GPL V3</Entry>
+		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
+		<Entry key="file_writer">sppasXRA</Entry>
+		<Entry key="file_name">LJ_track_0431-phon.xra</Entry>
+		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_ext">.xra</Entry>
+		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_version">1</Entry>
+		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+	</Metadata>
+
+	<Tier id="2c913a6d-8d61-3f46-7ab2-3363df7a034b" tiername="Phonetization">
+		<Annotation id="3a643e5f-6a59-0a81-3af0-8089dc3c005f">
+			<Location>
+				<Interval>
+					<Begin midpoint="0.0" />
+					<End midpoint="7.782" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">U~/|U~/-n t-R-y-k k O~|O~-n n A/ p-A/-z|p-A/ t-R-O/-p|t-R-O/ i-s-i p-A/-R-s-k|p-A/-R-s-@-k-@|p-s-k|p-A/-s-k-@|p-A/-s-@ b-O~|b-O/|b-O/-n|b-O~-n l-A/ p-A/-R-O/-l|p-A/-R-O/-l-@ E-l-@|E-l|e-l|E e|E-t|E|E-s-t|e-t|E-s-t-@|t a~-t-E-n-d-@|a~-t-E-n-@-d-@|A/ t-u-l-@-m-O~-d|t-u-l-m-O~-d a~-t-E-n-d-@|a~-t-E-n-@-d-@|A/ l-A/ l-i-m-i-t-@|l-i-m-i-t fp t a~-R-2-Z-i-s-t-R|a~-R-2-Z-i-s-t-R-2 l-A/ R-A/-d-j-O/ u U~/|U~/-n m-A/-S-U~/ b-O~|b-O/|b-O/-n|b-O~-n s-O/-f k-a~-t|k-a~ t A/-s|A/|A/-E-s|A/-z a~-R-2-Z-i-s-t-R-e U~/|U~/-n k-O/-R-p-y-s e|E k|k-@ t-y|t|t-j v-2-z|v-@|v-9 p-A/-z|p-A/ l|l-@|l-e d-O/-n-e-R|d-O/-n-e m-E-z|m-e|m-E|m-e-z|m b-O~|b-O/|b-O/-n|b-O~-n</Tag>
+			</Label>
+		</Annotation>
+	</Tier>
+
+	<Hierarchy />
+</Document>
+

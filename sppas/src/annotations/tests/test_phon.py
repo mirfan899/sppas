@@ -119,6 +119,7 @@ class TestDictPhon(unittest.TestCase):
         the = "z-@|D-@|v-@|v-V|D-V|z-V|z-9|D-9|v-9|z-i:|z-i|D-i|v-i|D-i:|v-i:"
         ur = "3:r|9-R|u-r\|U-w|u-w|U-R|U-r\|u-R"
         are = "a-R|A-R|a-w|A-w|a-r\|A-r\|3:r|9-R"
+        grph.set_unk_variants(0)
         self.assertEqual(set(grph.get_phon_entry("THE").split("|")), set(the.split("|")))
         self.assertEqual(set(grph.get_phon_entry("UR").split("|")), set(ur.split("|")))
         self.assertEqual(set(grph.get_phon_entry("ARE").split("|")), set(are.split("|")))
@@ -190,7 +191,8 @@ class TestSppasPhon(unittest.TestCase):
 
     def test_phonetize_learners(self):
         self.sp.set_unk(True)
-        self.assertEqual(self.spl.phonetize("THE"), "D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i:")
+        self.assertEqual(set(self.spl.phonetize("THE").split('|')),
+                         set("D-@|z-@|v-@|z-9|D-V|v-9|v-V|D-9|z-V|D-i:|z-i|v-i|D-i|v-i:|z-i:"))
         result = "i|h-i:|h-i|i:"
         self.assertEqual(set(self.spl.phonetize("HE").split("|")), set(result.split("|")))
 

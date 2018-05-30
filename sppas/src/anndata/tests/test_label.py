@@ -169,7 +169,7 @@ class TestEvents(unittest.TestCase):
     def test_IsNoise(self):
         label = sppasLabel(sppasTag("*"))
         self.assertTrue(label.get_best().is_noise())
-        label = sppasLabel(sppasTag("gb"))
+        label = sppasLabel(sppasTag("noise"))
         self.assertTrue(label.get_best().is_noise())
 
 # ---------------------------------------------------------------------------

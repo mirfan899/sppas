@@ -917,8 +917,8 @@ class sppasTrainingCorpus(object):
         if self.phonemap.is_key("sp") is False:
             self.phonemap.add('sp', '+')
 
-        # if self.phonemap.is_key("gb") is False:
-        #     self.phonemap.add('gb', '*')
+        # if self.phonemap.is_key("noise") is False:
+        #     self.phonemap.add('noise', 'noise')
 
         self.phonemap.set_reverse(True)
 

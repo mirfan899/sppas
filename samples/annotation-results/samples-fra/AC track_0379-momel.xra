@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:13+02:00" format="1.4" name="TrsMomel">
+	<Metadata>
+		<Entry key="id">6e639f9e-8c13-4d09-2de1-7408cb4e558c</Entry>
+		<Entry key="software_name">SPPAS</Entry>
+		<Entry key="software_version">1.9.6</Entry>
+		<Entry key="software_url">http://www.sppas.org/</Entry>
+		<Entry key="software_author">Brigitte Bigi</Entry>
+		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
+		<Entry key="software_copyright">Copyright (C) 2011-2018 Brigitte Bigi</Entry>
+		<Entry key="language_iso">iso639-3</Entry>
+		<Entry key="language_code_0">und</Entry>
+		<Entry key="language_name_0">Undetermined</Entry>
+		<Entry key="language_url_0">https://iso639-3.sil.org/code/und</Entry>
+		<Entry key="file_license_text_0">GNU GPL V3</Entry>
+		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
+		<Entry key="file_writer">sppasXRA</Entry>
+		<Entry key="file_name">AC track_0379-momel.xra</Entry>
+		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_ext">.xra</Entry>
+		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_version">1</Entry>
+		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+	</Metadata>
+
+	<Tier id="4e924f5f-4b50-8f47-6ac6-9294dc1a941a" tiername="Momel">
+		<Annotation id="2a276c9e-7f40-9f04-6fd1-6326dd0b143a">
+			<Location>
+				<Point midpoint="0.153845344311" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">183</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="0e442b2d-8e10-7e49-8cb8-3884be0a386d">
+			<Location>
+				<Point midpoint="0.244632606891" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">531</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="0c627e1e-3b43-7f33-7ef2-4312ed6a900a">
+			<Location>
+				<Point midpoint="0.564237424784" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">193</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="2c395f9a-0e20-6a61-6fc1-3251df3b506d">
+			<Location>
+				<Point midpoint="0.88193636057" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">230</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="2f277f2c-5c21-0a23-7de7-6803ab2d564d">
+			<Location>
+				<Point midpoint="1.12110779434" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">168</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="1c928f1f-1c99-6d53-8ed4-8210eb9b939f">
+			<Location>
+				<Point midpoint="1.43852686296" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">207</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9b442c1d-0b62-4d06-3cc0-6574cf2d010b">
+			<Location>
+				<Point midpoint="1.74116444761" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">158</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="6d926c5a-9a60-7c08-1df5-9004be9f009c">
+			<Location>
+				<Point midpoint="1.95027113774" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">159</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="1d535c5e-7b27-3b52-7ec3-0944dd7e003a">
+			<Location>
+				<Point midpoint="2.15878670474" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">285</Tag>
+			</Label>
+		</Annotation>
+	</Tier>
+
+	<Hierarchy />
+</Document>
+

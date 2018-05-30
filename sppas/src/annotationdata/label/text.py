@@ -208,7 +208,7 @@ class Text(object):
         Return True if the text value is a short pause.
 
         """
-        return self.__value == "+"
+        return self.__value == "+" or self.__value == "sp"
 
     # -----------------------------------------------------------------------
 
@@ -217,7 +217,7 @@ class Text(object):
         Return True if the text value is a laughing.
 
         """
-        return self.__value == "@@"
+        return self.__value == "laugh" or self.__value == "@"
 
     # -----------------------------------------------------------------------
 
@@ -226,7 +226,7 @@ class Text(object):
         Return True if the text value is a noise.
 
         """
-        return self.__value == "*"
+        return self.__value == "*" or self.__value == "noise"
 
     # -----------------------------------------------------------------------
 

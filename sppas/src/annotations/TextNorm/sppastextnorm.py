@@ -38,6 +38,7 @@
 import os.path
 
 from sppas import RESOURCES_PATH
+from sppas import ORTHO_SYMBOLS
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
 
@@ -163,9 +164,9 @@ class sppasTextNorm(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def convert(self, tier):
-        """ Tokenization of all labels of a tier.
+        """ Text normalization of all labels of a tier.
 
-        :param tier: (sppasTier) contains the orthographic transcription
+        :param tier: (sppasTier) the orthographic transcription (standard or EOT)
         :returns: A tuple with 3 tiers named:
             - "Tokens-Faked",
             - "Tokens-Std",
@@ -198,9 +199,94 @@ class sppasTextNorm(sppasBaseAnnotation):
 
         # Align Faked and Standard
         if tokens_faked is not None and tokens_std is not None:
-            self.align_tiers(tokens_std, tokens_faked)
+            self.__force_align_tiers(tokens_std, tokens_faked)
 
         return tokens_faked, tokens_std, tokens_custom
+
+    # ------------------------------------------------------------------------
+
+    def run(self, input_filename, output_filename=None):
+        """ Run the Text Normalization process on an input file.
+
+        :param input_filename: (str) Name of the input file with the transcription
+        :param output_filename: (str) Name of the resulting file with normalization
+        :returns: (sppasTranscription)
+
+        """
+        self.print_options()
+        self.print_diagnosis(input_filename)
+
+        # Get input tier to tokenize
+        parser = sppasRW(input_filename)
+        trs_input = parser.read()
+        tier_input = sppasFindTier.transcription(trs_input)
+
+        # Tokenize the tier
+        tier_faked_tokens, tier_std_tokens, tier_custom = self.convert(tier_input)
+
+        # Save
+        trs_output = sppasTranscription("Text Normalization")
+        if tier_faked_tokens is not None:
+            trs_output.append(tier_faked_tokens)
+        if tier_std_tokens is not None:
+            trs_output.append(tier_std_tokens)
+        if tier_custom is not None:
+            trs_output.append(tier_custom)
+
+        trs_output.set_meta('text_normalization_result_of', input_filename)
+        trs_output.set_meta('text_normalization_vocab', self.normalizer.vocab.get_filename())
+        trs_output.set_meta('language_iso', "iso639-3")
+        trs_output.set_meta('language_code_0', self.normalizer.lang)
+        trs_output.set_meta('language_name_0', "Undetermined")
+        trs_output.set_meta('language_url_0', "https://iso639-3.sil.org/code/"+self.normalizer.lang)
+
+        # Save in a file
+        if output_filename is not None:
+            if len(trs_output) > 0:
+                parser = sppasRW(output_filename)
+                parser.write(trs_output)
+            else:
+                raise EmptyOutputError
+
+        return trs_output
+
+    # ------------------------------------------------------------------------
+    # Private: some workers...
+    # ------------------------------------------------------------------------
+
+    def __convert(self, tier, actions):
+        """ Normalize all tags of all labels of an annotation.
+
+        """
+        tokens_tier = sppasTier("Tokens")
+        for i, ann in enumerate(tier):
+            af = ann.copy()
+            for label in af.get_labels():
+
+                for text, score in label:
+                    # Do not tokenize an empty label, noises, laughter...
+                    if text.is_speech() is True:
+                        try:
+                            tokens = self.normalizer.normalize(text.get_content(), actions)
+                        except Exception as e:
+                            tokens = list()
+                            message = "Error while normalizing interval {:d}: {:s}".format(i, str(e))
+                            if self.logfile is not None:
+                                self.logfile.print_message(message, indent=3)
+                            else:
+                                print(message)
+                        text.set_content(" ".join(tokens))
+
+                    elif text.is_silence():
+                        # in ortho a silence could be one of "#" or "gpf_".
+                        # we normalize!
+                        for s in ORTHO_SYMBOLS:
+                            if ORTHO_SYMBOLS[s] == "silence":
+                                text.set_content(s)
+
+            tokens_tier.append(af)
+
+        return tokens_tier
 
     # -----------------------------------------------------------------------
 
@@ -208,6 +294,7 @@ class sppasTextNorm(sppasBaseAnnotation):
     def __add_meta_in_token_tier(tier, enable_actions):
         """ Add metadata into a normalized tier. """
 
+        tier.set_meta("language", "0")
         for action in ['replace', "tokenize", "numbers", "lower", "punct"]:
             if action in enable_actions:
                 tier.set_meta('text_normalization_enable_action_'+action, 'true')
@@ -216,7 +303,7 @@ class sppasTextNorm(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def align_tiers(self, std_tier, faked_tier):
+    def __force_align_tiers(self, std_tier, faked_tier):
         """ Force standard spelling and faked spelling to share the same
         number of tokens.
 
@@ -249,76 +336,6 @@ class sppasTextNorm(sppasBaseAnnotation):
                         self.print_message(text_faked.get_content(), indent=3)
                         self.print_message("Fall back on faked.", indent=3, status=3)
                         text_std.set_content(text_faked.get_content())
-
-    # ------------------------------------------------------------------------
-
-    def run(self, input_filename, output_filename):
-        """ Run the Text Normalization process on an input file.
-
-        :param input_filename: (str) Name of the input file with the transcription
-        :param output_filename: (str) Name of the resulting file with normalization
-
-        """
-        self.print_options()
-        self.print_diagnosis(input_filename)
-
-        # Get input tier to tokenize
-        parser = sppasRW(input_filename)
-        trs_input = parser.read()
-        tier_input = sppasFindTier.transcription(trs_input)
-
-        # Tokenize the tier
-        tier_faked_tokens, tier_std_tokens, tier_custom = self.convert(tier_input)
-
-        # Save
-        trs_output = sppasTranscription("Text Normalization")
-        if tier_faked_tokens is not None:
-            trs_output.append(tier_faked_tokens)
-        if tier_std_tokens is not None:
-            trs_output.append(tier_std_tokens)
-        if tier_custom is not None:
-            trs_output.append(tier_custom)
-
-        trs_output.set_meta('text_normalization_result_of', input_filename)
-        trs_output.set_meta('text_normalization_vocab', self.normalizer.vocab.get_filename())
-        trs_output.set_meta('text_normalization_lang', self.normalizer.lang)
-
-        # Save in a file
-        if len(trs_output) > 0:
-            parser = sppasRW(output_filename)
-            parser.write(trs_output)
-        else:
-            raise EmptyOutputError
-
-    # ------------------------------------------------------------------------
-    # Private: some workers...
-    # ------------------------------------------------------------------------
-
-    def __convert(self, tier, actions):
-        """ Normalize all tags of all labels of an annotation.
-
-        """
-        tokens = sppasTier("Tokens")
-        for i, ann in enumerate(tier):
-            af = ann.copy()
-            for label in af.get_labels():
-
-                for text, score in label:
-                    # Do not tokenize an empty label, noises, laughter...
-                    if text.is_speech() is True:
-                        try:
-                            normalized = self.normalizer.normalize(text.get_content(), actions)
-                        except Exception as e:
-                            normalized = ""
-                            message = "Error while normalizing interval {:d}: {:s}".format(i, str(e))
-                            if self.logfile is not None:
-                                self.logfile.print_message(message, indent=3)
-                            else:
-                                print(message)
-                        text.set_content(normalized)
-            tokens.append(af)
-
-        return tokens
 
     # -----------------------------------------------------------------------
 

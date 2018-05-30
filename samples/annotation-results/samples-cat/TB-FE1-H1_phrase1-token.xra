@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T08:54:49+02:00" format="1.4" name="Text Normalization">
+	<Metadata>
+		<Entry key="id">6b452b9b-5c89-4a34-7be2-0882ad5b451c</Entry>
+		<Entry key="software_name">SPPAS</Entry>
+		<Entry key="software_version">1.9.6</Entry>
+		<Entry key="software_url">http://www.sppas.org/</Entry>
+		<Entry key="software_author">Brigitte Bigi</Entry>
+		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
+		<Entry key="software_copyright">Copyright (C) 2011-2018 Brigitte Bigi</Entry>
+		<Entry key="language_iso">iso639-3</Entry>
+		<Entry key="language_code_0">cat</Entry>
+		<Entry key="language_name_0">Undetermined</Entry>
+		<Entry key="language_url_0">https://iso639-3.sil.org/code/cat</Entry>
+		<Entry key="file_license_text_0">GNU GPL V3</Entry>
+		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
+		<Entry key="text_normalization_result_of">E:\bigi\Workspace\sppas\samples\samples-cat\TB-FE1-H1_phrase1.TextGrid</Entry>
+		<Entry key="text_normalization_vocab">E:\bigi\Workspace\sppas\resources\vocab\cat.vocab</Entry>
+		<Entry key="file_writer">sppasXRA</Entry>
+		<Entry key="file_name">TB-FE1-H1_phrase1-token.xra</Entry>
+		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-cat</Entry>
+		<Entry key="file_ext">.xra</Entry>
+		<Entry key="file_write_date">2018-54-30 08:54</Entry>
+		<Entry key="file_version">1</Entry>
+		<Entry key="file_created_date">2018-54-30 08:54</Entry>
+	</Metadata>
+
+	<Tier id="1f890f7f-3c12-9f66-4de0-4623da3b406b" tiername="Tokens">
+		<Metadata>
+			<Entry key="language">0</Entry>
+			<Entry key="text_normalization_enable_action_replace">true</Entry>
+			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
+			<Entry key="text_normalization_enable_action_numbers">true</Entry>
+			<Entry key="text_normalization_enable_action_lower">true</Entry>
+			<Entry key="text_normalization_enable_action_punct">true</Entry>
+		</Metadata>
+		<Annotation id="5b246f4c-2b17-8a51-4bc4-6646aa0c849c">
+			<Location>
+				<Interval>
+					<Begin midpoint="0.0" radius="0.0" />
+					<End midpoint="6.901" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">l altre dia la meva professora de xinès em va recomanar un plat típic d' allà i + em faria gràcia + tastar -lo</Tag>
+			</Label>
+		</Annotation>
+	</Tier>
+
+	<Tier id="6e733e8f-3b42-4b41-8df2-8620bf6e085c" tiername="Tokens-Std">
+		<Metadata>
+			<Entry key="language">0</Entry>
+			<Entry key="text_normalization_enable_action_replace">true</Entry>
+			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
+			<Entry key="text_normalization_enable_action_numbers">true</Entry>
+			<Entry key="text_normalization_enable_action_lower">true</Entry>
+			<Entry key="text_normalization_enable_action_punct">true</Entry>
+		</Metadata>
+		<Annotation id="5b246f4c-2b17-8a51-4bc4-6646aa0c849c">
+			<Location>
+				<Interval>
+					<Begin midpoint="0.0" radius="0.0" />
+					<End midpoint="6.901" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">l altre dia la meva professora de xinès em va recomanar un plat típic d' allà i + em faria gràcia + tastar -lo</Tag>
+			</Label>
+		</Annotation>
+	</Tier>
+
+	<Tier id="2c680c8a-8b25-2f36-1bd6-7888ab2d574b" tiername="Tokens-Custom">
+		<Metadata>
+			<Entry key="language">0</Entry>
+			<Entry key="text_normalization_enable_action_replace">false</Entry>
+			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
+			<Entry key="text_normalization_enable_action_numbers">false</Entry>
+			<Entry key="text_normalization_enable_action_lower">false</Entry>
+			<Entry key="text_normalization_enable_action_punct">false</Entry>
+		</Metadata>
+		<Annotation id="5b246f4c-2b17-8a51-4bc4-6646aa0c849c">
+			<Location>
+				<Interval>
+					<Begin midpoint="0.0" radius="0.0" />
+					<End midpoint="6.901" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">L ' altre dia la meva professora de xinès em va recomanar un plat típic d' allà i + em faria gràcia + tastar -lo</Tag>
+			</Label>
+		</Annotation>
+	</Tier>
+
+	<Hierarchy />
+</Document>
+

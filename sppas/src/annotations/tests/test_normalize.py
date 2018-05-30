@@ -4,17 +4,19 @@
 import unittest
 import os.path
 
-from sppas import RESOURCES_PATH
+from sppas import RESOURCES_PATH, SAMPLES_PATH
 
 from sppas.src.utils.makeunicode import u
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
+from sppas.src.anndata import sppasRW
 
 from ..TextNorm.normalize import TextNormalizer
 from ..TextNorm.orthotranscription import sppasOrthoTranscription
 from ..TextNorm.tokenize import sppasTokenSegmenter
 from ..TextNorm.num2letter import sppasNum
 from ..TextNorm.splitter import sppasSimpleSplitter
+from ..TextNorm.sppastextnorm import sppasTextNorm
 
 # ---------------------------------------------------------------------------
 
@@ -282,16 +284,13 @@ class TestNormalizer(unittest.TestCase):
         splitfra = self.tok.tokenize(u("l'assiette l'abat-jour paris-brest et paris-marseille").split())
         self.assertEqual(splitfra, u("l' assiette l' abat-jour paris-brest et paris - marseille").split())
 
-        s = self.tok.normalize(u("ah a/b euh"))
-        self.assertEqual(s, u("ah a/b euh"))
+        self.assertEqual(u("ah a/b euh").split(), self.tok.normalize(u("ah a/b euh")))
 
         # sampa
-        s = self.tok.normalize(u("/l-e-f-o~-n/"))
-        self.assertEqual(s, u('/l-e-f-o~-n/'))
+        self.assertEqual([u('/l-e-f-o~-n/')], self.tok.normalize(u("/l-e-f-o~-n/")))
 
         # not sampa...
-        s = self.tok.normalize(u("/le mot/"))
-        self.assertEqual(s, u('le mot'))
+        self.assertEqual(u('le mot').split(), self.tok.normalize(u("/le mot/")))
 
     def test_num2letter(self):
         """ Test the integration of num2letter into the TextNormalizer. """
@@ -300,21 +299,18 @@ class TestNormalizer(unittest.TestCase):
         self.tok.set_repl(repl)
         self.tok.set_lang("fra")
 
-        s = self.tok.normalize(u("123"))
-        self.assertEquals(s, u("cent-vingt-trois"))
+        self.assertEquals([u("cent-vingt-trois")], self.tok.normalize(u("123")))
 
-        s = self.tok.normalize(u("1,24"))
-        self.assertEquals(s, u("un virgule vingt-quatre"))
+        self.assertEquals(u("un virgule vingt-quatre").split(), self.tok.normalize(u("1,24")))
 
-        self.tok.set_lang("cat")
+        self.tok.set_lang("deu")
         with self.assertRaises(ValueError):
             self.tok.normalize(u("123"))
 
     def test_remove_punct(self):
 
         self.tok.set_lang("fra")
-        s = self.tok.normalize(u("/un, deux!!!"))
-        self.assertEquals(s, u("un deux"))
+        self.assertEquals(u("un deux").split(), self.tok.normalize(u("/un, deux!!!")))
 
     def test_stick(self):
 
@@ -331,23 +327,16 @@ class TestNormalizer(unittest.TestCase):
         repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
 
-        s = self.tok.normalize(u("[le mot,/lemot/]"), [])
-        self.assertEqual(u("/lemot/"), s)
-        s = self.tok.normalize(u("[le mot,/lemot/]"), ["std"])
-        self.assertEqual(u("le_mot"), s)
-        s = self.tok.normalize(u("[le mot,/lemot/]"))
-        self.assertEqual(u("/lemot/"), s)
+        self.assertEqual([u("/lemot/")], self.tok.normalize(u("[le mot,/lemot/]"), []))
+        self.assertEqual([u("le_mot")], self.tok.normalize(u("[le mot,/lemot/]"), ["std"]))
+        self.assertEqual([u("/lemot/")], self.tok.normalize(u("[le mot,/lemot/]")))
 
         # minus is accepted in sampa transcription (it is the phonemes separator)
-        s = self.tok.normalize(u(" /l-e-f-o~-n/ "))
-        self.assertEqual(u("/l-e-f-o~-n/"), s)
-
-        s = self.tok.normalize(u(" /le~/ "))
-        self.assertEqual(u("/le~/"), s)
+        self.assertEqual([u("/l-e-f-o~-n/")], self.tok.normalize(u(" /l-e-f-o~-n/ ")))
+        self.assertEqual([u("/le~/")], self.tok.normalize(u(" /le~/ ")))
 
         # whitespace is not accepted in sampa transcription
-        s = self.tok.normalize(u(" /le mot/ "))
-        self.assertEqual(u("le mot"), s)
+        self.assertEqual(u("le mot").split(), self.tok.normalize(u(" /le mot/ ")))
 
     def test_code_switching(self):
 
@@ -366,4 +355,67 @@ class TestNormalizer(unittest.TestCase):
     def test_acronyms(self):
 
         self.tok.set_lang("fra")
-        print(self.tok.normalize(""))
+        # todo
+
+# ---------------------------------------------------------------------------
+
+
+class TestTextNorm(unittest.TestCase):
+    """ Test the SPPAS integration of the TextNormalizer. """
+
+    def test_samples(self):
+
+        for samples_folder in os.listdir(SAMPLES_PATH):
+            if samples_folder.startswith("samples-") is False:
+                continue
+
+            # Create a TextNormalizer for the given set of samples
+            lang = samples_folder[-3:]
+            vocab = os.path.join(RESOURCES_PATH, "vocab", lang+".vocab")
+            tn = sppasTextNorm(vocab, lang)
+            tn.set_faked(True)
+            tn.set_std(True)
+            tn.set_custom(True)
+
+            # Apply TextNormalization on each sample
+            for filename in os.listdir(os.path.join(SAMPLES_PATH, samples_folder)):
+                if filename.endswith(".TextGrid") is False:
+                    continue
+
+                # Get the expected result
+                expected_result_dir = os.path.join(SAMPLES_PATH,
+                                                   "annotation-results",
+                                                   samples_folder)
+                expected_result_filename = os.path.join(expected_result_dir,
+                                                        filename[:-9] + "-token.xra")
+                if os.path.exists(expected_result_filename) is False:
+                    continue
+                parser = sppasRW(expected_result_filename)
+                expected_result = parser.read()
+
+                # Estimate the result and check if it's like expected.
+                result = tn.run(os.path.join(SAMPLES_PATH, samples_folder, filename))
+
+                expected_tier_tokens = expected_result.find('Tokens')
+                if expected_tier_tokens is not None:
+                    self.compare_tiers(expected_tier_tokens, result.find('Tokens'))
+
+                expected_tier_tokens = expected_result.find('TokensStd')
+                if expected_tier_tokens is not None:
+                    self.compare_tiers(expected_tier_tokens, result.find('TokensStd'))
+
+                expected_tier_tokens = expected_result.find('TokensCustom')
+                if expected_tier_tokens is not None:
+                    self.compare_tiers(expected_tier_tokens, result.find('TokensCustom'))
+
+    def compare_tiers(self, expected, result):
+        self.assertEqual(len(expected), len(result))
+        for a1, a2 in zip(expected, result):
+            self.assertEqual(a1, a2)
+            for key in a1.get_meta_keys():
+                if key != 'id':
+                    self.assertEqual(a1.get_meta(key), a2.get_meta(key))
+        for key in expected.get_meta_keys():
+            if key != 'id':
+                self.assertEqual(expected.get_meta(key), result.get_meta(key))
+

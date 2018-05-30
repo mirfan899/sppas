@@ -140,4 +140,6 @@ else:
 
     # Will output the faked orthography
     for line in sys.stdin:
-        print(normalizer.normalize(line).encode('utf8'))
+        tokens = normalizer.normalize(line)
+        for token in tokens:
+            print("{!s:s}".format(token))  #.encode('utf8'))

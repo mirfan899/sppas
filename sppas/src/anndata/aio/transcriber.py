@@ -75,7 +75,7 @@ NOISE_EVENTS = {
     "musique": "* {music}",
     "applaude": "* {applaude}",
     "rire": "@",
-    "rire-": "@@",
+    "rire-": "@@",       # begin/end of a laughing sequence
     "rire_begin": "@@",
     "rire_end": "@@",
     "-rire": "@@",

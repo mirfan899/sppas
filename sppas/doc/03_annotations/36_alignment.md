@@ -9,24 +9,21 @@ unit along with a phonetic representation of the unit.
 
 **SPPAS Alignment does not perform the segmentation itself. It is a wrapper
 either for the `Julius` Speech Recognition Engine (SRE) or the `HVite` command
-of HTK-Toolkit.**
+of HTK-Toolkit**. In addition, SPPAS can perform a "basic" alignment, 
+assigning the same duration to each sound.
 
 Speech Alignment requires an Acoustic Model in order to align speech.
 An acoustic model is a file that contains statistical representations of each
-of the distinct sounds of one language. Each phoneme is represented by one
+of the distinct sounds of one language. Each sound is represented by one
 of these statistical representations.
 The quality of the alignment result only depends on both this resource and 
 on the aligner. From our past experiences, we got better results with Julius.
+See the chapter 4 "Resources for Automatic Annotations" to get the list of 
+sounds of each language.
 
-In addition, all acoustic models (except English, Japanese and Cantonese) 
-include the following fillers:
-- dummy: un-transcribed speech
-- gb: garbage, for noises
-- @@: laughter
-
-They allow SPPAS to time-align automatically these phenomena whose can be 
-very frequent in speech, like laugh items (Bigi and Bertrand 2015).
-No other system is able to achieves this task!
+Notice that SPPAS allows to time-align automatically laugh, noises, or 
+filled pauses (depending on the language): No other system is able to 
+achieves this task!
 
 ![SPPAS alignment output example](./etc/screenshots/alignment.png)
 

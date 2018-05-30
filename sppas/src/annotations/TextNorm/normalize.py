@@ -275,7 +275,7 @@ class TextNormalizer(object):
         return _utt
 
     # ------------------------------------------------------------------
-    # The main tokenize is HERE!
+    # The main normalizer is HERE!
     # ------------------------------------------------------------------
 
     def normalize(self, entry, actions=[]):
@@ -291,7 +291,7 @@ class TextNormalizer(object):
             - "lower": change case of characters to lower
             - "punct": remove punctuation
 
-        :returns: (str) the normalized entry
+        :returns: (str) the list of normalized tokens
 
         Important:
         An empty actions list or a list containing only "std" means to
@@ -340,15 +340,14 @@ class TextNormalizer(object):
         if "punct" in actions:
             utt = self.remove(utt, self.punct)
 
-        # Finally, prepare the result
-        # ---------------------------
-        result = ""
-        for s in utt:
-            s = sppasUnicode(s).to_strip()
-            result = result + " " + s.replace(" ", "_")
+        return [sppasUnicode(s).to_strip() for s in utt]
 
-        result = sppasUnicode(result).to_strip()
-        if len(result) == 0:
-            return ""  # Nothing valid!
-
-        return result.replace(" ", self.delimiter)
+        # Until SPPAS 1.9.5:
+        # result = ""
+        # for s in utt:
+        #     s = sppasUnicode(s).to_strip()
+        #     result = result + " " + s.replace(" ", "_")
+        # result = sppasUnicode(result).to_strip()
+        # if len(result) == 0:
+        #     return ""  # Nothing valid!
+        # return result.replace(" ", self.delimiter)

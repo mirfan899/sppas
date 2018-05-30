@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:19+02:00" format="1.4" name="SPPAS Phonetization">
+	<Metadata>
+		<Entry key="id">2a547c8e-2e54-6c62-7fb1-2787ab8e290e</Entry>
+		<Entry key="software_name">SPPAS</Entry>
+		<Entry key="software_version">1.9.6</Entry>
+		<Entry key="software_url">http://www.sppas.org/</Entry>
+		<Entry key="software_author">Brigitte Bigi</Entry>
+		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
+		<Entry key="software_copyright">Copyright (C) 2011-2018 Brigitte Bigi</Entry>
+		<Entry key="language_iso">iso639-3</Entry>
+		<Entry key="language_code_0">und</Entry>
+		<Entry key="language_name_0">Undetermined</Entry>
+		<Entry key="language_url_0">https://iso639-3.sil.org/code/und</Entry>
+		<Entry key="file_license_text_0">GNU GPL V3</Entry>
+		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
+		<Entry key="file_writer">sppasXRA</Entry>
+		<Entry key="file_name">BX_track_0451-phon.xra</Entry>
+		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_ext">.xra</Entry>
+		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_version">1</Entry>
+		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+	</Metadata>
+
+	<Tier id="4a513d1b-9c32-3b84-1ab8-9020fe0d530b" tiername="Phonetization">
+		<Annotation id="8c029d6c-1d24-9b89-6fd4-8890bc8d646a">
+			<Location>
+				<Interval>
+					<Begin midpoint="0.0" />
+					<End midpoint="3.84" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">e-p-H-i|e-p-H-i-z|E-p-H-i|E-p-H-i-z O~|O~-n fp m-E-m|m-E-m-@ s-i|s O~|O~-n e-s-E-j|E-s-E|E-s-E-j|e-s-e-j d-@|d|t m-e-m-O/-R-i-z-e|m-e-m-O/-R-i-z-e-R p-u-R p-A/-z|p-A/ s-@|s t-R-O~-p-e|t-R-O~-p-e-R l-A/ f-w-A/-z|f-w-A/ d-A/-p-R-E|d-A/-p-R-e l-A/ f-w-A/-z|f-w-A/ d-A/-p-R-E|d-A/-p-R-e s-A/|s A/ S-a~-Z-e</Tag>
+			</Label>
+		</Annotation>
+	</Tier>
+
+	<Hierarchy />
+</Document>
+
