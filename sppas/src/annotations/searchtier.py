@@ -39,6 +39,53 @@ from .annotationsexc import NoInputError
 # ----------------------------------------------------------------------------
 
 
+class sppasFindTier(object):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :summary:      SPPAS tier finder.
+
+    """
+
+    def __init__(self):
+        pass
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
+    def transcription(trs):
+        """ Return the tier with orthographic transcription.
+
+        :param trs: (sppasTranscription)
+        :returns: (sppasTier)
+
+        """
+        for tier in trs:
+            tier_name = tier.get_name().lower()
+            if "transcription" in tier_name:
+                return tier
+
+        for tier in trs:
+            tier_name = tier.get_name().lower()
+            if "trans" in tier_name:
+                return tier
+            elif "trs" in tier_name:
+                return tier
+            elif "toe" in tier_name:
+                return tier
+            elif "ortho" in tier_name:
+                return tier
+            elif "ipu" in tier_name:
+                return tier
+
+        raise NoInputError
+
+# ----------------------------------------------------------------------------
+
+
 class sppasSearchTier(object):
     """
     :author:       Brigitte Bigi

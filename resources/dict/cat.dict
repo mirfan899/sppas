@@ -1,6 +1,11 @@
 # [] #
-* [] *
+* [] noise
 + [] #
+@ [] laugh
+</s> [] sil
+<s> [] sil
+<unk> [] dummy
+dummy [] dummy
 -lo [] l u
 1r [] u E 4 @
 2n [] d O s E n @
@@ -11,8 +16,6 @@
 7è [] s E t E
 8è [] b u j t E
 9è [] n o w E
-<unk> [] dummy
-@ [] @@
 a [] a
 a(2) [] @
 a(3) [] @ @

@@ -413,7 +413,7 @@ class sppasDictPron(object):
 
     @staticmethod
     def load_sampa_ipa():
-        """ Load the sampa-ipa conversion file. Return is as a dict(). """
+        """ Load the sampa-ipa conversion file. Return it as a dict(). """
 
         conversion = dict()
         ipa_sampa_mapfile = os.path.join(RESOURCES_PATH, "dict", "sampa-ipa.txt")

@@ -9,7 +9,6 @@ b b
 c c
 d d
 dZ dZ
-dummy dummy
 dz dz
 e e
 e~ e~
@@ -28,7 +27,6 @@ p p
 R\ R\
 s s
 s\ s\
-sil #
 t t
 tS tS
 ts ts
@@ -40,6 +38,9 @@ x x
 y y
 z z
 z\ z\
-@@ @@
-gb *
 o~ o~
+dummy dummy
+laugh laugh
+noise noise
+sil #
+sp +

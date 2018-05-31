@@ -56,7 +56,7 @@ class sppasLangISO(object):
         """ Return true if 'lang' is not using whitespace.
 
         Mandarin Chinese or Japanese languages return True, but English
-        or French languages return False.
+        or French return False.
 
         :param lang: (str) iso639-3 language code or a string starting with
             such code, like "yue" or "yue-chars" for example.

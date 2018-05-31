@@ -1,0 +1,387 @@
+# -*- coding: UTF-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
+
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.sppastextnorm.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    SPPAS integration of Text Normalization.
+
+"""
+import os.path
+
+from sppas import RESOURCES_PATH
+from sppas import ORTHO_SYMBOLS
+from sppas.src.resources.vocab import sppasVocabulary
+from sppas.src.resources.dictrepl import sppasDictRepl
+
+from sppas.src.anndata import sppasRW
+from sppas.src.anndata import sppasTranscription
+from sppas.src.anndata import sppasTier
+
+from ..baseannot import sppasBaseAnnotation
+from ..searchtier import sppasFindTier
+from ..annotationsexc import AnnotationOptionError
+from ..annotationsexc import EmptyInputError
+from ..annotationsexc import EmptyOutputError
+
+from .normalize import TextNormalizer
+
+# ---------------------------------------------------------------------------
+
+
+class sppasTextNorm(sppasBaseAnnotation):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Text normalization automatic annotation.
+
+    """
+    def __init__(self, vocab, lang="und", logfile=None):
+        """ Create a sppasTextNorm instance.
+
+        :param vocab: (str) name of the file with the orthographic transcription
+        :param lang: (str) the language code
+        :param logfile: (sppasLog)
+
+        """
+        sppasBaseAnnotation.__init__(self, logfile)
+
+        self.normalizer = None
+        voc = sppasVocabulary(vocab)
+        self.normalizer = TextNormalizer(voc, lang)
+
+        # Replacement dictionary
+        replace_filename = os.path.join(RESOURCES_PATH, "repl", lang + ".repl")
+        if os.path.exists(replace_filename) is True:
+            dict_replace = sppasDictRepl(replace_filename, nodump=True)
+        else:
+            dict_replace = sppasDictRepl()
+        self.normalizer.set_repl(dict_replace)
+
+        # Punctuations dictionary
+        punct_filename = os.path.join(RESOURCES_PATH, "vocab", "Punctuations.txt")
+        if os.path.exists(punct_filename) is True:
+            vocab_punct = sppasVocabulary(punct_filename, nodump=True)
+        else:
+            vocab_punct = sppasVocabulary()
+        self.normalizer.set_punct(vocab_punct)
+
+        # List of options to configure this automatic annotation
+        self._options['faked'] = True
+        self._options['std'] = False
+        self._options['custom'] = False
+
+    # -----------------------------------------------------------------------
+    # Methods to fix options
+    # -----------------------------------------------------------------------
+
+    def fix_options(self, options):
+        """ Fix all options. Available options are:
+
+            - faked
+            - std
+            - custom
+
+        :param options: (sppasOption)
+
+        """
+        for opt in options:
+
+            key = opt.get_key()
+            if key == "faked":
+                self.set_faked(opt.get_value())
+            elif key == "std":
+                self.set_std(opt.get_value())
+            elif key == "custom":
+                self.set_custom(opt.get_value())
+
+            else:
+                raise AnnotationOptionError(key)
+
+    # -----------------------------------------------------------------------
+
+    def set_faked(self, value):
+        """ Fix the faked option.
+
+        :param value: (bool) Create a faked tokenization
+
+        """
+        self._options['faked'] = value
+
+    # -----------------------------------------------------------------------
+
+    def set_std(self, value):
+        """ Fix the std option.
+
+        :param value: (bool) Create a standard tokenization
+
+        """
+        self._options['std'] = value
+
+    # -----------------------------------------------------------------------
+
+    def set_custom(self, value):
+        """ Fix the custom option.
+
+        :param value: (bool) Create a customized tokenization
+
+        """
+        self._options['custom'] = value
+
+    # -----------------------------------------------------------------------
+    # Methods to tokenize series of data
+    # -----------------------------------------------------------------------
+
+    def convert(self, tier):
+        """ Text normalization of all labels of a tier.
+
+        :param tier: (sppasTier) the orthographic transcription (standard or EOT)
+        :returns: A tuple with 3 tiers named:
+            - "Tokens-Faked",
+            - "Tokens-Std",
+            - "Tokens-Custom"
+
+        """
+        if tier.is_empty() is True:
+            raise EmptyInputError(name=tier.get_name())
+
+        tokens_faked = None
+        if self._options['faked'] is True:
+            actions = ['replace', "tokenize", "numbers", "lower", "punct"]
+            tokens_faked = self.__convert(tier, actions)
+            tokens_faked.set_name("Tokens")
+            sppasTextNorm.__add_meta_in_token_tier(tokens_faked, actions)
+
+        tokens_std = None
+        if self._options['std'] is True:
+            actions = ['std']
+            tokens_std = self.__convert(tier, actions)
+            tokens_std.set_name("Tokens-Std")
+            sppasTextNorm.__add_meta_in_token_tier(tokens_std, actions)
+
+        tokens_custom = None
+        if self._options['custom'] is True:
+            actions = ['std', 'tokenize']
+            tokens_custom = self.__convert(tier, actions)
+            tokens_custom.set_name("Tokens-Custom")
+            sppasTextNorm.__add_meta_in_token_tier(tokens_custom, actions)
+
+        # Align Faked and Standard
+        if tokens_faked is not None and tokens_std is not None:
+            self.__force_align_tiers(tokens_std, tokens_faked)
+
+        return tokens_faked, tokens_std, tokens_custom
+
+    # ------------------------------------------------------------------------
+
+    def run(self, input_filename, output_filename=None):
+        """ Run the Text Normalization process on an input file.
+
+        :param input_filename: (str) Name of the input file with the transcription
+        :param output_filename: (str) Name of the resulting file with normalization
+        :returns: (sppasTranscription)
+
+        """
+        self.print_options()
+        self.print_diagnosis(input_filename)
+
+        # Get input tier to tokenize
+        parser = sppasRW(input_filename)
+        trs_input = parser.read()
+        tier_input = sppasFindTier.transcription(trs_input)
+
+        # Tokenize the tier
+        tier_faked_tokens, tier_std_tokens, tier_custom = self.convert(tier_input)
+
+        # Save
+        trs_output = sppasTranscription("Text Normalization")
+        if tier_faked_tokens is not None:
+            trs_output.append(tier_faked_tokens)
+        if tier_std_tokens is not None:
+            trs_output.append(tier_std_tokens)
+        if tier_custom is not None:
+            trs_output.append(tier_custom)
+
+        trs_output.set_meta('text_normalization_result_of', input_filename)
+        trs_output.set_meta('text_normalization_vocab', self.normalizer.vocab.get_filename())
+        trs_output.set_meta('language_iso', "iso639-3")
+        trs_output.set_meta('language_code_0', self.normalizer.lang)
+        trs_output.set_meta('language_name_0', "Undetermined")
+        trs_output.set_meta('language_url_0', "https://iso639-3.sil.org/code/"+self.normalizer.lang)
+
+        # Save in a file
+        if output_filename is not None:
+            if len(trs_output) > 0:
+                parser = sppasRW(output_filename)
+                parser.write(trs_output)
+            else:
+                raise EmptyOutputError
+
+        return trs_output
+
+    # ------------------------------------------------------------------------
+    # Private: some workers...
+    # ------------------------------------------------------------------------
+
+    def __convert(self, tier, actions):
+        """ Normalize all tags of all labels of an annotation.
+
+        """
+        tokens_tier = sppasTier("Tokens")
+        for i, ann in enumerate(tier):
+            af = ann.copy()
+            for label in af.get_labels():
+
+                for text, score in label:
+                    # Do not tokenize an empty label, noises, laughter...
+                    if text.is_speech() is True:
+                        try:
+                            tokens = self.normalizer.normalize(text.get_content(), actions)
+                        except Exception as e:
+                            tokens = list()
+                            message = "Error while normalizing interval {:d}: {:s}".format(i, str(e))
+                            if self.logfile is not None:
+                                self.logfile.print_message(message, indent=3)
+                            else:
+                                print(message)
+                        text.set_content(" ".join(tokens))
+
+                    elif text.is_silence():
+                        # in ortho a silence could be one of "#" or "gpf_".
+                        # we normalize!
+                        for s in ORTHO_SYMBOLS:
+                            if ORTHO_SYMBOLS[s] == "silence":
+                                text.set_content(s)
+
+            tokens_tier.append(af)
+
+        return tokens_tier
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def __add_meta_in_token_tier(tier, enable_actions):
+        """ Add metadata into a normalized tier. """
+
+        tier.set_meta("language", "0")
+        for action in ['replace', "tokenize", "numbers", "lower", "punct"]:
+            if action in enable_actions:
+                tier.set_meta('text_normalization_enable_action_'+action, 'true')
+            else:
+                tier.set_meta('text_normalization_enable_action_'+action, 'false')
+
+    # -----------------------------------------------------------------------
+
+    def __force_align_tiers(self, std_tier, faked_tier):
+        """ Force standard spelling and faked spelling to share the same
+        number of tokens.
+
+        :param std_tier: (sppasTier)
+        :param faked_tier: (sppasTier)
+
+        """
+        if self._options['std'] is False:
+            return
+
+        i = 0
+        # for each annotation of both tiers
+        for ann_std, ann_faked in zip(std_tier, faked_tier):
+            i += 1
+            # for each label of both annotations
+            for label_std, label_faked in zip(ann_std.get_labels(), ann_faked.get_labels()):
+                # for each alternative tag of each label
+                for ((text_std, s1), (text_faked, s2)) in zip(label_std, label_faked):
+                    try:
+                        texts, textf = self.__align_tiers(text_std.get_content(),
+                                                          text_faked.get_content())
+                        text_std.set_content(texts)
+                        text_faked.set_content(textf)
+
+                    except Exception:
+                        self.print_message("Standard/Faked tokens matching error, "
+                                           "at interval {:d}\n".format(i),
+                                           indent=2, status=1)
+                        self.print_message(text_std.get_content(), indent=3)
+                        self.print_message(text_faked.get_content(), indent=3)
+                        self.print_message("Fall back on faked.", indent=3, status=3)
+                        text_std.set_content(text_faked.get_content())
+
+    # -----------------------------------------------------------------------
+
+    def __align_tiers(self, std, faked):
+        """ Align standard spelling tokens with faked spelling tokens.
+
+        :param std: (str)
+        :param faked: (str)
+        :returns: a tuple of std and faked
+
+        """
+        stds = std.split()
+        fakeds = faked.split()
+        if len(stds) == len(fakeds):
+            return std, faked
+
+        tmp = []
+        for f in fakeds:
+            toks = f.split('_')
+            for t in toks:
+                tmp.append(t)
+        fakeds = tmp[:]
+
+        num_tokens = len(stds)
+        i = 0
+        while i < num_tokens:
+            if "'" in stds[i]:
+                if not stds[i].endswith("'") and fakeds[i].endswith("'"):
+                    fakeds[i] = fakeds[i] + fakeds[i+1]
+                    del fakeds[i+1]
+
+            if "-" in stds[i]:
+                if not stds[i].endswith("-") and "-" not in fakeds[i]:
+
+                    fakeds[i] = fakeds[i] + fakeds[i+1]
+                    del fakeds[i+1]
+
+            num_underscores = stds[i].count('_')
+            if num_underscores > 0:
+                if not self.normalizer.vocab.is_unk(stds[i]):
+                    n = num_underscores + 1
+                    fakeds[i] = "_".join(fakeds[i:i+n])
+                    del fakeds[i+1:i+n]
+
+            i += 1
+
+        if len(stds) != len(fakeds):
+            raise ValueError
+        return std, " ".join(fakeds)

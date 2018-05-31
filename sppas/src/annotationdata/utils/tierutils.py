@@ -37,15 +37,12 @@
 
 import collections
 
+from sppas import SYMBOLS
 from ..tier import Tier
 from ..annotation import Annotation
 from ..ptime.interval import TimeInterval
 from ..ptime.point import TimePoint
 from ..label.label import Label
-
-# ---------------------------------------------------------------------------
-
-DEFAULT_SEP = ["sil", "#", "+", "@@", "gb", "*", "dummy"]
 
 # ---------------------------------------------------------------------------
 
@@ -102,9 +99,11 @@ def has_bound(tier, bound):
 # ---------------------------------------------------------------------------
 
 
-def align2phon(aligntier, separators=DEFAULT_SEP):
-    """
-    Return the phonetization of a time-aligned tier.
+def align2phon(aligntier, separators=SYMBOLS):
+    """ Return the phonetization of a time-aligned tier.
+
+    :param aligntier: (sppasTier)
+    :param separators: (list)
 
     """
     phontier = Tier("Phonetization")

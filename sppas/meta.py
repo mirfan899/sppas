@@ -45,7 +45,7 @@
 
 """
 metadata = dict(
-    __version__="1.9.5",
+    __version__="1.9.6",
     __author__="Brigitte Bigi",
     __contact__="brigite.bigi@gmail.com",
     __copyright__="Copyright (C) 2011-2018 Brigitte Bigi",

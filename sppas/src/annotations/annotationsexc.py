@@ -41,6 +41,7 @@ from . import t
 SECT_CFG_FILE_ERROR = ":ERROR 4014: "
 OPTION_KEY_ERROR = ":ERROR 1010: "
 EMPTY_INPUT_ERROR = ":ERROR 1020: "
+EMPTY_OUTPUT_ERROR = ":ERROR 1025: "
 NO_INPUT_ERROR = ":ERROR 1030: "
 BAD_INPUT_ERROR = ":ERROR 1040: "
 SIZE_INPUT_ERROR = ":ERROR 1050: "
@@ -79,6 +80,18 @@ class EmptyInputError(IOError):
 
     def __init__(self, name):
         self.parameter = EMPTY_INPUT_ERROR + (t.gettext(EMPTY_INPUT_ERROR)).format(name=name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class EmptyOutputError(IOError):
+    """ :ERROR 1025: Empty output result. No file created. """
+
+    def __init__(self, name):
+        self.parameter = EMPTY_OUTPUT_ERROR + (t.gettext(EMPTY_OUTPUT_ERROR)).format(name=name)
 
     def __str__(self):
         return repr(self.parameter)

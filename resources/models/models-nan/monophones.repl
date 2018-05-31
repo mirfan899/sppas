@@ -1,5 +1,4 @@
 @ @
-@@ @@
 N N
 O O
 O~ O~
@@ -40,5 +39,6 @@ y y
 z z
 sp +
 sil #
-gb *
+noise noise
 dummy dummy
+laugh laugh

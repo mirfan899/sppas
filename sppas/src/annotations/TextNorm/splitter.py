@@ -39,25 +39,29 @@ import re
 
 from sppas.src.resources.dictrepl import sppasDictRepl
 from sppas.src.utils.makeunicode import u, sppasUnicode
+
 from .language import sppasLangISO
 
 # ---------------------------------------------------------------------------
 
 
-class sppasTokSplitter(object):
+class sppasSimpleSplitter(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Utterance splitter
 
     Split an utterance into tokens using whitespace or characters.
 
+    Should be extended to properly split telephone numbers or dates, etc.
+    (for written texts).
+
     """
     def __init__(self, lang, dict_replace=None, speech=True):
-        """ Creates a sppasTokSplitter.
+        """ Creates a sppasSimpleSplitter.
 
         :param lang: the language code in iso639-3.
         :param dict_replace: Replacement dictionary
@@ -77,20 +81,21 @@ class sppasTokSplitter(object):
         """ Split an utterance by characters.
 
         :param utt: (str) the utterance (a transcription, a sentence, ...) in utf-8
-        :returns: A string (split character by character, using spaces)
+        :returns: A string (split character by character, using whitespace)
 
         """
         y = u(utt)
         tmp = " ".join(y)
 
         # split all characters except numbers and ascii characters
-        sstr = re.sub(u"([０-９0-9a-zA-ZＡ-Ｔ\s]+\.?[０-９0-9a-zA-ZＡ-Ｔ\s]+)",
-                      lambda o: u" %s " % o.group(0).replace(" ", ""), tmp)
+        sstr = re.sub(u("([０-９0-9a-zA-ZＡ-Ｔ\s]+\.?[０-９0-9a-zA-ZＡ-Ｔ\s]+)"),
+                      lambda o: u(" %s " % o.group(0).replace(" ", "")), tmp)
         # and dates...
         if self.__speech is False:
-            sstr = re.sub(u"([０-９0-9\s]+\.?[月年日\s]+)", lambda o: u" %s " % o.group(0).replace(" ", ""), sstr)
+            sstr = re.sub(u("([０-９0-9\s]+\.?[月年日\s]+)"),
+                          lambda o: u(" %s " % o.group(0).replace(" ", "")), sstr)
         # and ・
-        sstr = re.sub(u'[\s]*・[\s]*', u"・", sstr)
+        sstr = re.sub(u('[\s]*・[\s]*'), u("・"), sstr)
 
         return sstr
 
@@ -110,35 +115,38 @@ class sppasTokSplitter(object):
         if sppasLangISO.without_whitespace(self.__lang) is True:
             s = self.split_characters(s)
 
-        toks = []
+        toks = list()
         for t in s.split():
+
             # if not a phonetized entry
             if t.startswith("/") is False and t.endswith("/") is False:
+
                 if sppasLangISO.without_whitespace(self.__lang) is False:
                     # Split numbers if stick to characters
                     # attention: do not replace [a-zA-Z] by [\w] (because \w includes numbers)
                     # and not on Asian languages: it can be a tone!
-                    t = re.sub(u'([0-9])([a-zA-Z])', ur'\1 \2', t)
-                    t = re.sub(u'([a-zA-Z])([0-9])', ur'\1 \2', t)
+                    t = re.sub(u('([0-9])([a-zA-Z])'), u(r'\1 \2'), t)
+                    t = re.sub(u('([a-zA-Z])([0-9])'), u(r'\1 \2'), t)
 
                 # Split some punctuation
-                t = re.sub(u'\\[\\]', ur'\\] \\[', t)
+                t = re.sub(u('\\[\\]'), u(r'\\] \\['), t)
 
                 # Split dots if stick to the beginning of a word
                 # info: a dot at the end of a word is analyzed by the tokenizer
-                t = re.sub(u' \.([\w-])', ur' . \1', t)
-                t = re.sub(u'^\.([\w-])', ur' . \1', t)
+                t = re.sub(u(' \.([\w-])'), u(r' . \1'), t)
+                t = re.sub(u('^\.([\w-])'), u(r' . \1'), t)
 
                 # Split replacement characters
                 for r in self.__repl:
                     if t.endswith(r):
                         t = t[:-len(r)]
                         t = t + ' ' + r
+
             toks.append(t.strip())
 
-        s = " ".join(toks)
+        # s = " ".join(toks)
 
         # Then split each time there is a space and return result
-        s = sppasUnicode(s).to_strip()
+        # s = sppasUnicode(s).to_strip()
 
         return s.split()

@@ -107,6 +107,7 @@ class sppasBaseAnnotation(object):
         :param status: (int) A status identifier
         
         """
+        message = u(message)
         if self.logfile:
             self.logfile.print_message(message, indent=indent, status=status)
 
@@ -130,7 +131,7 @@ class sppasBaseAnnotation(object):
         
         self.print_message(MSG_OPTIONS + ": ", indent=2, status=None)
         for k, v in self._options.items():
-            self.print_message(u(" - {}: {}").format(k, v), indent=3, status=None)
+            self.print_message(" - {!s:s}: {!s:s}".format(k, v), indent=3, status=None)
 
     # -----------------------------------------------------------------------
 
@@ -144,4 +145,4 @@ class sppasBaseAnnotation(object):
         for filename in filenames:
             if filename is not None:
                 (s, m) = sppasDiagnosis.check_file(filename)
-                self.print_message(u(" - {}: {}").format(filename, m), indent=3, status=None)
+                self.print_message(" - {!s:s}: {!s:s}".format(filename, m), indent=3, status=None)

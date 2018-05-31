@@ -66,7 +66,7 @@ class TestMIO(unittest.TestCase):
         self.assertEqual(len(model), 3)
         with self.assertRaises(ValueError):
             model.get_hmm("toto")
-        laughter = model.get_hmm("@@")
+        laughter = model.get_hmm("laugh")
         proto = model.get_hmm("proto")
         silence = model.get_hmm("sil")
 

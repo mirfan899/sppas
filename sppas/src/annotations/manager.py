@@ -47,7 +47,7 @@ from sppas.src.annotations.log import sppasLog
 from sppas.src.annotations.Momel.sppasmomel import sppasMomel
 from sppas.src.annotations.Intsint.sppasintsint import sppasIntsint
 from sppas.src.annotations.IPUs.sppasipusseg import sppasIPUseg
-from sppas.src.annotations.TextNorm.sppastok import sppasTok
+from sppas.src.annotations.TextNorm.sppastextnorm import sppasTextNorm
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
 from sppas.src.annotations.Chunks.sppaschunks import sppasChunks
 from sppas.src.annotations.Align.sppasalign import sppasAlign
@@ -480,7 +480,7 @@ class sppasAnnotationsManager(Thread):
         # Create annotation instance
         try:
             self._progress.set_text("Loading resources...")
-            t = sppasTok(step.get_langresource(), logfile=self._logfile, lang=step.get_lang())
+            t = sppasTextNorm(step.get_langresource(), logfile=self._logfile, lang=step.get_lang())
         except Exception as e:
             if self._logfile is not None:
                 self._logfile.print_message("%s\n"%str(e), indent=1,status=4)

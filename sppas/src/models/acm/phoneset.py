@@ -44,7 +44,7 @@ class sppasPhoneSet(sppasVocabulary):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Manager of the list of phonemes.
 
     This class allows to manage the list of phonemes:
@@ -64,9 +64,9 @@ class sppasPhoneSet(sppasVocabulary):
         """
         sppasVocabulary.__init__(self, filename, nodump=True, case_sensitive=True)
 
-        self.add("lg")
+        self.add("laugh")
         self.add("dummy")
-        self.add("gb")
+        self.add("noise")
         self.add("sil")
 
     # -----------------------------------------------------------------------

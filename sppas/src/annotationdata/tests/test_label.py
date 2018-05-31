@@ -115,7 +115,7 @@ class TestLabel(unittest.TestCase):
         self.assertFalse(text.IsSpeech())
         text = Label("*")
         self.assertFalse(text.IsSpeech())
-        text = Label("@@")
+        text = Label("@")
         self.assertFalse(text.IsSpeech())
         text = Label("dummy")
         self.assertFalse(text.IsSpeech())

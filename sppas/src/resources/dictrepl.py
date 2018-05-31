@@ -82,9 +82,11 @@ class sppasDictRepl(object):
 
         """
         self._dict = dict()
+        self.__filename = ""
 
         if dict_filename is not None:
 
+            self.__filename = dict_filename
             data = None
             dp = sppasDumpFile(dict_filename)
 
@@ -99,6 +101,12 @@ class sppasDictRepl(object):
                     dp.save_as_dump(self._dict)
             else:
                 self._dict = data
+
+    # -----------------------------------------------------------------------
+
+    def get_filename(self):
+        """ Return the name of the file from which the vocab comes from. """
+        return self.__filename
 
     # -----------------------------------------------------------------------
     # Getters
@@ -290,19 +298,22 @@ class sppasDictRepl(object):
             except UnicodeDecodeError:
                 raise FileUnicodeError(filename=filename)
 
-        for line in lines:
-            line = " ".join(line.split())
-            if len(line) == 0:
-                continue
+            self.__filename = filename
+            for line in lines:
+                line = " ".join(line.split())
+                if len(line) == 0:
+                    continue
 
-            tab_line = line.split()
-            if len(tab_line) < 2:
-                continue
+                tab_line = line.split()
+                if len(tab_line) < 2:
+                    continue
 
-            # Add (or modify) the entry in the dict
-            key = tab_line[0]
-            value = sppasDictRepl.REPLACE_SEPARATOR.join(tab_line[1:])
-            self.add(key, value)
+                # Add (or modify) the entry in the dict
+                key = tab_line[0]
+                value = sppasDictRepl.REPLACE_SEPARATOR.join(tab_line[1:])
+                self.add(key, value)
+
+            fd.close()
 
     # -----------------------------------------------------------------------
 

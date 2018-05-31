@@ -1,0 +1,599 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:13+02:00" format="1.4" name="TrsMomel">
+	<Metadata>
+		<Entry key="id">9b119b4f-6c63-7d11-9da4-5738ae9d482f</Entry>
+		<Entry key="software_name">SPPAS</Entry>
+		<Entry key="software_version">1.9.6</Entry>
+		<Entry key="software_url">http://www.sppas.org/</Entry>
+		<Entry key="software_author">Brigitte Bigi</Entry>
+		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
+		<Entry key="software_copyright">Copyright (C) 2011-2018 Brigitte Bigi</Entry>
+		<Entry key="language_iso">iso639-3</Entry>
+		<Entry key="language_code_0">und</Entry>
+		<Entry key="language_name_0">Undetermined</Entry>
+		<Entry key="language_url_0">https://iso639-3.sil.org/code/und</Entry>
+		<Entry key="file_license_text_0">GNU GPL V3</Entry>
+		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
+		<Entry key="file_writer">sppasXRA</Entry>
+		<Entry key="file_name">F_F_B003-P9-momel.xra</Entry>
+		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_ext">.xra</Entry>
+		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_version">1</Entry>
+		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+	</Metadata>
+
+	<Tier id="2d154f4b-1c93-3c38-4dd3-5991ab4b652e" tiername="Momel">
+		<Annotation id="7b500b0c-6a99-5b83-9ca3-0471ef4a943b">
+			<Location>
+				<Point midpoint="1.26174888512" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">102</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="7c733b2c-7f74-8c87-4ac5-5182ca6e980c">
+			<Location>
+				<Point midpoint="1.46275491282" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">133</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9d657a3e-7e29-4d62-0cf1-0041db5e521c">
+			<Location>
+				<Point midpoint="1.64943091819" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">120</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="5d172e1c-4c39-5a20-1ce2-1615fe0f047d">
+			<Location>
+				<Point midpoint="1.72215172972" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">133</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="3e244b1d-7d61-0c67-6fd5-3302af5c282b">
+			<Location>
+				<Point midpoint="1.9362652812" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">105</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="1b078f7b-5e23-7d47-1ea6-4207cd4d687f">
+			<Location>
+				<Point midpoint="2.16173487429" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">123</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="0d550e6b-0a34-5f74-4ea6-2274df8d273f">
+			<Location>
+				<Point midpoint="2.35696344354" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">102</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="7b692c2c-8f58-1c87-3dd5-7629cb1e642c">
+			<Location>
+				<Point midpoint="2.49849207443" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">98</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="4c845b9d-3c85-2f03-3aa9-7594bc2f309b">
+			<Location>
+				<Point midpoint="2.71945753624" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">113</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="1a416c2e-4c39-9b02-2bd7-2389db7c388d">
+			<Location>
+				<Point midpoint="2.92144516971" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">103</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9a205c8d-0a06-7d67-3ce9-7628ff6a878a">
+			<Location>
+				<Point midpoint="3.34262025866" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">100</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="7d574b4f-8a90-6d66-0fe6-2088eb0a308f">
+			<Location>
+				<Point midpoint="4.11817548656" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">103</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="6b457f1b-1c72-1d70-1bd1-8351aa3b438b">
+			<Location>
+				<Point midpoint="4.19739229149" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">97</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="2f427d0a-4b83-0e42-4ba3-0114fd8c469f">
+			<Location>
+				<Point midpoint="4.36109726144" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">125</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="8c391b9a-8c03-2c96-5ff2-5283ed4d530f">
+			<Location>
+				<Point midpoint="4.56556124966" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">99</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="4f010e3c-6a66-5f34-7cd0-4120ae9e359b">
+			<Location>
+				<Point midpoint="4.75657054915" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">96</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="3b469f9d-5a00-5f83-1dc8-2827ec5d394b">
+			<Location>
+				<Point midpoint="4.97748690977" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">104</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="2f908c5d-8a31-2a50-9de9-1540bc9a470d">
+			<Location>
+				<Point midpoint="5.41336147219" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">99</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="8d465c2e-7a67-8b38-1ff0-1003ab5d817f">
+			<Location>
+				<Point midpoint="5.63337920121" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">103</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9b575b8b-3c35-5e54-4da0-5321fb3e478c">
+			<Location>
+				<Point midpoint="5.80000396815" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">98</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="6a284b1f-4e07-1d28-3dd8-7480ca1c892b">
+			<Location>
+				<Point midpoint="5.94514166544" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">181</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9f915b9d-1a93-8c08-3af0-6249fb4f589f">
+			<Location>
+				<Point midpoint="6.22607289285" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">92</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="0d732b2f-6a38-8a33-7bb8-5628de7c076d">
+			<Location>
+				<Point midpoint="6.5473628045" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">102</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="2c246d6d-6e40-0b44-4fe7-4502ca1f114e">
+			<Location>
+				<Point midpoint="6.87871754953" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">101</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="6b303b4c-0f20-4c78-0db1-8870ac2a748c">
+			<Location>
+				<Point midpoint="7.24383907322" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">94</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="4c712f1b-6b10-9e44-0cb8-0543ed0f117b">
+			<Location>
+				<Point midpoint="7.90854244898" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">101</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="0c354a2b-2b52-8a02-0bb6-7541ac1b519e">
+			<Location>
+				<Point midpoint="8.05825362915" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">123</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="0d615f4d-8d60-7b78-4bb8-7783af5e305e">
+			<Location>
+				<Point midpoint="8.42040821135" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">95</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="8d334c7b-1b15-2a87-5cf8-6775be8d418c">
+			<Location>
+				<Point midpoint="8.64207299728" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">106</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9c353e0b-3b54-9b43-0eb2-7767cb9c876a">
+			<Location>
+				<Point midpoint="8.90668660584" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">96</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="0c028f0a-2b50-1a68-7aa0-6248fc3b481c">
+			<Location>
+				<Point midpoint="9.12713804307" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">92</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="5b496f9d-8e28-2c64-1ca5-3650ca9b141d">
+			<Location>
+				<Point midpoint="9.75970501079" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">100</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9d845a1b-1d31-4e49-8fa9-4031de2e550d">
+			<Location>
+				<Point midpoint="10.0258955448" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">110</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9c518b5e-7d95-1d28-4fa9-3757fc1a246e">
+			<Location>
+				<Point midpoint="10.1575983908" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">115</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="7a243e8b-7c40-4f85-6df1-3921fa5a747a">
+			<Location>
+				<Point midpoint="10.2906615002" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">108</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="1d610e7e-3b24-9d63-7bb3-5211fd7e459e">
+			<Location>
+				<Point midpoint="10.4558357915" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">101</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="2e812a5f-8a68-9d75-0ca9-4611ff4c361a">
+			<Location>
+				<Point midpoint="10.6196079843" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">92</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="1f634e9b-7d12-9c64-5fa0-1050bc6a792c">
+			<Location>
+				<Point midpoint="10.8073587736" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">113</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9a921b5e-2a26-6d03-3fa0-9053ad2f570e">
+			<Location>
+				<Point midpoint="10.9024122717" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">66</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="3a797b4a-7e88-2f82-4aa7-9292ef8a614d">
+			<Location>
+				<Point midpoint="11.5947800158" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">115</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="2c586f3c-6e90-7c65-9ac9-1008ea2f228e">
+			<Location>
+				<Point midpoint="11.9333983807" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">101</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="0e543c5f-4a05-2d79-2cf1-4913fc5b155f">
+			<Location>
+				<Point midpoint="12.2059097074" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">93</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="4d742b9a-4f96-1e07-4fb8-2330ab8d707e">
+			<Location>
+				<Point midpoint="12.296696527" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">90</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="0d012a0b-4c09-5c67-3ab8-6709fd5f439e">
+			<Location>
+				<Point midpoint="12.4299342872" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">95</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="6c163f5e-9c36-7d30-4aa7-8766cf6d208e">
+			<Location>
+				<Point midpoint="13.1056115343" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">98</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="6f577f8b-5c11-0f31-9ae6-6760ef2b390f">
+			<Location>
+				<Point midpoint="13.5117276179" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">98</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9c842a6d-6e84-1c89-7ec6-5262be5d984e">
+			<Location>
+				<Point midpoint="13.7065868901" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">106</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="6f272e2f-8f59-0b31-0ec2-4467ee8c755d">
+			<Location>
+				<Point midpoint="13.8901185711" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">111</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="2b223b3b-6b08-4b15-6ee2-1884dd7a483e">
+			<Location>
+				<Point midpoint="14.0984111177" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">94</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="3e395f4e-5f57-6b58-2ec8-5851cf6c393f">
+			<Location>
+				<Point midpoint="14.2615581154" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">111</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="4e085e7c-9b98-1b79-1ae2-6868ee5b087f">
+			<Location>
+				<Point midpoint="14.4232368426" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">97</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="6b598c0c-5f67-3c77-5de2-0034ea1e028f">
+			<Location>
+				<Point midpoint="14.6213189423" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">111</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="6b045f9f-4e91-8e14-7fe7-6343aa3d109d">
+			<Location>
+				<Point midpoint="14.9401810343" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">97</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="6e477a2c-1a36-5d66-9fc9-3953fc6f736a">
+			<Location>
+				<Point midpoint="15.0684476113" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">94</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="5c691c2b-5b19-1f28-2da0-0633cd3f808e">
+			<Location>
+				<Point midpoint="15.2982959533" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">97</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="3c235b6f-1e31-6a97-8ae5-9417ca8d778b">
+			<Location>
+				<Point midpoint="15.9821563695" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">98</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="5a780c1e-7b47-0f14-2fa0-4246af5d606d">
+			<Location>
+				<Point midpoint="16.1130869541" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">118</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="4e770b4e-6e98-7e05-0de6-5736da5a813e">
+			<Location>
+				<Point midpoint="16.3272575068" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">57</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="3d112c0e-4e72-7c53-3bc7-5858eb8d718b">
+			<Location>
+				<Point midpoint="16.7125373494" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">98</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="5a116f9b-7e46-7c92-2df7-4609dc8d874d">
+			<Location>
+				<Point midpoint="17.0133656453" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">122</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="6c889c3a-3e45-6d11-0ef8-8854fa3f319d">
+			<Location>
+				<Point midpoint="17.2675075229" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">91</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="5c178f0c-0b95-9a56-8ef4-0057fd4e298e">
+			<Location>
+				<Point midpoint="17.4770565229" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">104</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="1e412d4e-0e72-9d09-1cf5-2612ff3c168c">
+			<Location>
+				<Point midpoint="17.6961825914" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">96</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="7c215e8f-8a71-0e64-6df0-1006fe3c126d">
+			<Location>
+				<Point midpoint="17.8432693971" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">93</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9d633f4f-2d34-0b09-7fa3-5780ae9d752c">
+			<Location>
+				<Point midpoint="18.121259407" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">117</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="4a304f9d-9b57-0c28-3fa6-2214fb7e906f">
+			<Location>
+				<Point midpoint="18.6576694825" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">101</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9e341c7d-8d47-6e37-4ba2-6697bc3e029b">
+			<Location>
+				<Point midpoint="18.8547932538" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">108</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="2f670d9b-9a59-9f96-0df9-4149dc7d597d">
+			<Location>
+				<Point midpoint="19.0276283509" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">93</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9e763e2f-9e71-1d86-3fd9-7702ac1e225e">
+			<Location>
+				<Point midpoint="19.2092954017" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">108</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="1e170d9b-3c63-0e64-3eb7-1011fa2d929a">
+			<Location>
+				<Point midpoint="19.5595294149" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">92</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9b814b0e-4f82-2d80-3eb0-9090ca9e402d">
+			<Location>
+				<Point midpoint="19.7108972406" radius="0.005" />
+			</Location>
+			<Label>
+				<Tag type="str">103</Tag>
+			</Label>
+		</Annotation>
+	</Tier>
+
+	<Hierarchy />
+</Document>
+

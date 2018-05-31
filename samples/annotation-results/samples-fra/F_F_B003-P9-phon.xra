@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:19+02:00" format="1.4" name="SPPAS Phonetization">
+	<Metadata>
+		<Entry key="id">6c959a2f-2c40-5f31-0dd2-2427ae3e035e</Entry>
+		<Entry key="software_name">SPPAS</Entry>
+		<Entry key="software_version">1.9.6</Entry>
+		<Entry key="software_url">http://www.sppas.org/</Entry>
+		<Entry key="software_author">Brigitte Bigi</Entry>
+		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
+		<Entry key="software_copyright">Copyright (C) 2011-2018 Brigitte Bigi</Entry>
+		<Entry key="language_iso">iso639-3</Entry>
+		<Entry key="language_code_0">und</Entry>
+		<Entry key="language_name_0">Undetermined</Entry>
+		<Entry key="language_url_0">https://iso639-3.sil.org/code/und</Entry>
+		<Entry key="file_license_text_0">GNU GPL V3</Entry>
+		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
+		<Entry key="file_writer">sppasXRA</Entry>
+		<Entry key="file_name">F_F_B003-P9-phon.xra</Entry>
+		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_ext">.xra</Entry>
+		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_version">1</Entry>
+		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+	</Metadata>
+
+	<Tier id="3c305d1e-6f11-8f93-7cc5-8912fe3e341d" tiername="Phonetization">
+		<Annotation id="8d496a0b-8f93-9e14-2ad6-5390ff9b140b">
+			<Location>
+				<Interval>
+					<Begin midpoint="0.0" />
+					<End midpoint="1.222" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">#</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="7e255e2a-8d22-1c12-9fb7-8775df3a455e">
+			<Location>
+				<Interval>
+					<Begin midpoint="1.222" radius="0.0005" />
+					<End midpoint="3.47487167564" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">S|Z e|E Z-A/-m-E|Z-A/-m-e|Z-A/-m-E-z|Z-A/-m-e-z R-E-y-s-i|R-e-y-s-i a~-t-E-n-d-@|a~-t-E-n-@-d-@|A/ d-O/-R-m-i-R p-a~-d-a~-t|p-a~-d-a~ d-@|d|t l-O~-z|l-O~ t-R-A/-Z-E|t-R-A/-Z-E-z a~-t-R-U~/</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="2e976d4b-0c67-3b40-3fa2-1604dd3c981e">
+			<Location>
+				<Interval>
+					<Begin midpoint="3.47487167564" radius="0.0005" />
+					<End midpoint="4.148" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">#</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9a578a4e-3b21-6d92-2bd8-9156fe9c670f">
+			<Location>
+				<Interval>
+					<Begin midpoint="4.148" radius="0.0005" />
+					<End midpoint="7.486" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">d-A/-b-O/-R p-A/-R-s-k|p-A/-R-s-@-k-@|p-s-k|p-A/-s-k-@|p-A/-s-@ S|Z e|E Z-A/-m-E|Z-A/-m-e|Z-A/-m-E-z|Z-A/-m-e-z p-y t-R-u-v-e-R|t-R-u-v-e y-n-@|y-n b-O/-n-@|b-O/-n p-O/-z-i-s-j-O~ p-u-R m|E-m A/-s-w-A/-R k-O~-f-O/-R-t-A/-b-l-2-m-a~-t|k-O~-f-O/-R-t-A/-b-l-2-m-a~</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="7e652c7f-2c27-8c67-7ab1-6638de9b935c">
+			<Location>
+				<Interval>
+					<Begin midpoint="7.486" radius="0.0005" />
+					<End midpoint="7.86483108852" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">#</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="2e221d1a-1e75-6e34-1bb0-5857fc2f430b">
+			<Location>
+				<Interval>
+					<Begin midpoint="7.86483108852" radius="0.0005" />
+					<End midpoint="9.308" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">a~-s-H-i-t-@|a~-s-H-i-t j-A/|i-l-i-j-A/|i-l-j-A/ l-E|l-E-z|l-e|l-e-z|l-@ O/-t-R|O/-t-R-z|O/-t-R-@|O/-t-R-@-z|O/-t v-w-A/-j-A/-Z-9-R-z|v-w-A/-j-A/-Z-9-R</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="7c436a9c-4e25-7d61-9eb7-6685ec4e901f">
+			<Location>
+				<Interval>
+					<Begin midpoint="9.308" radius="0.0005" />
+					<End midpoint="9.73719010164" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">#</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="8a712f2b-8b60-5c80-5ce1-8276cd4c077c">
+			<Location>
+				<Interval>
+					<Begin midpoint="9.73719010164" radius="0.0005" />
+					<End midpoint="12.544" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">k-a~-t|k-a~ s e|E-t|E|E-s-t|e-t|E-s-t-@|t p-A/-z|p-A/ s-2|s-2-z k-i|k-j|k p-A/-R-l-@|p-A/-R-l-2-t|p-A/-R-l f-O/-R|f-O/-R-t noise s e|E-t|E|E-s-t|e-t|E-s-t-@|t s-2|s-2-z k-i|k-j|k s-@|s m-E-t-2-t|m-E-t a~-t-E-n-d-@|a~-t-E-n-@-d-@|A/ R-O~-f-l-e|R-O~-f-l-e-R</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="7f341a2a-9c96-3f26-5db7-4440dd6f472d">
+			<Location>
+				<Interval>
+					<Begin midpoint="12.544" radius="0.0005" />
+					<End midpoint="13.0358032032" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">#</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="8c883f8b-8f35-0f58-5ae6-5483ec9d176e">
+			<Location>
+				<Interval>
+					<Begin midpoint="13.0358032032" radius="0.0005" />
+					<End midpoint="19.766" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">e|E a~-n-p-l-y-s|p-l-y-z|a~-n-p-l-y|a~-n-p-l-y-z|a~-p-l-y-s|a~-p-l-y|a~-p-l-y-z|p-l-y-s|p-l-y A/ s-a~-z|s-a~ A/-R-e|A/-R-E d-y|d b-R-y-i-t|b-R-y-i d-E-z|d-e|d-E|d-e-z|d R-u|R-u-z s-y-R l-E|l-E-z|l-e|l-e-z|l-@ R-A/-j|R-A/-j-z noise e|E s-i|s sil p-A/-R S-a~-s-@|S-a~-s S|Z A/-R-i-v-@|A/-R-i-v a~-t-E-n-d-@|a~-t-E-n-@-d-@|A/ m|E-m a~-d-O/-R-m-i-R noise v-w-A/-l-A/|v-l-A/ l|l-@|l-e k-O~-t-R-O/-l-9-R k-i|k-j|k A/-R-i-v-@|A/-R-i-v</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="2c757d7c-9a88-9d36-6de9-4509fe5d377f">
+			<Location>
+				<Interval>
+					<Begin midpoint="19.766" radius="0.0005" />
+					<End midpoint="20.7557" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">#</Tag>
+			</Label>
+		</Annotation>
+	</Tier>
+
+	<Hierarchy />
+</Document>
+

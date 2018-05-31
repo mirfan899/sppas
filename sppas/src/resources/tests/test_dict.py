@@ -348,12 +348,11 @@ class TestMapping(unittest.TestCase):
         self.assertEqual("@", dict1.map_entry("@"))
 
         self.assertEqual("a-9+@", dict1.map("a-oe+@"))
-        self.assertEqual("l|l.eu|l.e k.o~.b.l.eu|k.o~.b.l", dict1.map("l|l.eu|l.e k.o~.b.l.eu|k.o~.b.l"))
-        self.assertEqual("l|l-eu|l-e k-o~-b-l-eu|k-o~-b-l", dict1.map("l|l-eu|l-e k-o~-b-l-eu|k-o~-b-l"))
+        self.assertEqual("l|l.2|l.e k.O~.b.l.2|k.O~.b.l", dict1.map("l|l.eu|l.e k.ooo~.b.l.eu|k.ooo~.b.l"))
 
         dict1.set_reverse(True)
-        self.assertEqual("l|l.eu|l.e k.o~.b.l.eu|k.o~.b.l", dict1.map("l|l.eu|l.e k.o~.b.l.eu|k.o~.b.l"))
-        self.assertEqual("l|l-eu|l-e k-o~-b-l-eu|k-o~-b-l", dict1.map("l|l-eu|l-e k-o~-b-l-eu|k-o~-b-l"))
+        self.assertEqual("l|l.eu|l.e k.ooo~.b.l.eu|k.ooo~.b.l", dict1.map("l|l.2|l.e k.O~.b.l.2|k.O~.b.l"))
+        self.assertEqual("l|l-eu|l-e k-ooo~-b-l-eu|k-ooo~-b-l", dict1.map("l|l-2|l-e k-O~-b-l-2|k-O~-b-l"))
 
         dict1.set_reverse(False)
         self.assertEqual("a", dict1.map("a", delimiters=()))
@@ -364,7 +363,7 @@ class TestMapping(unittest.TestCase):
         self.assertEqual("-", dict1.map("-", delimiters=()))
         self.assertEqual("9 ", dict1.map("oe ", delimiters=()))
         self.assertEqual("a-9@", dict1.map("a-oe@", delimiters=()))
-        self.assertEqual("lleu ko~.bl9", dict1.map("lleu ko~.bloe", delimiters=()))
+        self.assertEqual("ll2 kO~.bl9", dict1.map("lleu kooo~.bloe", delimiters=()))
 
     # -----------------------------------------------------------------
 

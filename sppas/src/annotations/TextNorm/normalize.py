@@ -41,11 +41,11 @@ from sppas.src.utils.makeunicode import sppasUnicode, u
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
 
-from .transcription import sppasTranscription
-from .tokenize import sppasTokenizer
+from .orthotranscription import sppasOrthoTranscription
+from .tokenize import sppasTokenSegmenter
 from .num2letter import sppasNum
 from .language import sppasLangISO
-from .splitter import sppasTokSplitter
+from .splitter import sppasSimpleSplitter
 
 # ---------------------------------------------------------------------------
 
@@ -82,7 +82,7 @@ class TextNormalizer(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Multilingual text normalization
 
     """
@@ -164,7 +164,7 @@ class TextNormalizer(object):
         self.lang = lang
 
     # -------------------------------------------------------------------------
-    # Language independent modules
+    # Language independent modules (or not!)
     # -------------------------------------------------------------------------
 
     def replace(self, utt):
@@ -177,13 +177,13 @@ class TextNormalizer(object):
         """
         # Specific case of float numbers
         sent = ' '.join(utt)
-        sent = re.sub('([0-9])\.([0-9])', r'\1 NUMBER_SEP_POINT \2', sent)
-        sent = re.sub('([0-9])\,([0-9])', r'\1 NUMBER_SEP \2', sent)
+        sent = re.sub(u('([0-9])\.([0-9])'), u(r'\1 NUMBER_SEP_POINT \2'), sent)
+        sent = re.sub(u('([0-9])\,([0-9])'), u(r'\1 NUMBER_SEP \2'), sent)
         sent = sppasUnicode(sent).to_strip()
         _utt = sent.split()
 
         # Other generic replacements
-        _result = []
+        _result = list()
         for s in _utt:
             if self.repl.is_key(s):
                 s = s.replace(s, self.repl.replace(s))
@@ -194,23 +194,27 @@ class TextNormalizer(object):
     # ------------------------------------------------------------------
 
     def tokenize(self, utt):
-        """ Tokenize.
+        """ Tokenize is the text segmentation, ie segment into tokens.
 
         :param utt: (list)
         :returns: (list)
 
         """
-        tok = sppasTokenizer(self.vocab)
+        tok = sppasTokenSegmenter(self.vocab)
 
         # rules for - ' .
         unbind_result = tok.unbind(utt)
 
         # longest matching for whitespace
         if sppasLangISO.without_whitespace(self.lang):
-            tok.separator = ""
-            tok.aggregate_max = 15
+            tok.set_separator("")
+            tok.set_aggregate_max(15)
 
         bind_result = tok.bind(unbind_result)
+
+        # restore default values to the tokenizer
+        tok.set_aggregate_max()
+        tok.set_separator()
 
         return bind_result
 
@@ -225,7 +229,7 @@ class TextNormalizer(object):
         """
         num2letter = sppasNum(self.lang)
 
-        _result = []
+        _result = list()
         for token in utt:
             if token.isdigit():
                 _result.append(num2letter.convert(token))
@@ -242,7 +246,7 @@ class TextNormalizer(object):
         :param utt: (list)
 
         """
-        _utt = []
+        _utt = list()
         for tok in utt:
             # if it's not an already phonetized string:
             if "/" not in tok:
@@ -271,7 +275,7 @@ class TextNormalizer(object):
         return _utt
 
     # ------------------------------------------------------------------
-    # The main tokenize is HERE!
+    # The main normalizer is HERE!
     # ------------------------------------------------------------------
 
     def normalize(self, entry, actions=[]):
@@ -287,7 +291,7 @@ class TextNormalizer(object):
             - "lower": change case of characters to lower
             - "punct": remove punctuation
 
-        :returns: (str) the normalized entry
+        :returns: (str) the list of normalized tokens
 
         Important:
         An empty actions list or a list containing only "std" means to
@@ -301,7 +305,7 @@ class TextNormalizer(object):
             _str = _str.replace(key, self.dicoutf.replace(key))
 
         # Clean the Enriched Orthographic Transcription
-        ortho = sppasTranscription()
+        ortho = sppasOrthoTranscription()
         _str = ortho.clean_toe(_str)
         if "std" in actions:
             _str = ortho.toe_spelling(_str, True)
@@ -309,7 +313,7 @@ class TextNormalizer(object):
             _str = ortho.toe_spelling(_str, False)
 
         # Split using whitespace or characters.
-        splitter = sppasTokSplitter(self.lang, self.repl)
+        splitter = sppasSimpleSplitter(self.lang, self.repl)
         utt = splitter.split(_str)
 
         # The entry is now a list of strings on which we'll perform actions
@@ -336,14 +340,14 @@ class TextNormalizer(object):
         if "punct" in actions:
             utt = self.remove(utt, self.punct)
 
-        # Finally, prepare the result
-        result = ""
-        for s in utt:
-            s = sppasUnicode(s).to_strip()
-            result = result + " " + s.replace(" ", "_")
+        return [sppasUnicode(s).to_strip() for s in utt]
 
-        result = sppasUnicode(result).to_strip()
-        if len(result) == 0:
-            return ""  # Nothing valid!
-
-        return result.replace(" ", self.delimiter)
+        # Until SPPAS 1.9.5:
+        # result = ""
+        # for s in utt:
+        #     s = sppasUnicode(s).to_strip()
+        #     result = result + " " + s.replace(" ", "_")
+        # result = sppasUnicode(result).to_strip()
+        # if len(result) == 0:
+        #     return ""  # Nothing valid!
+        # return result.replace(" ", self.delimiter)

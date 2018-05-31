@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:19+02:00" format="1.4" name="SPPAS Phonetization">
+	<Metadata>
+		<Entry key="id">6a006b7c-0a37-4b09-0dd3-1284df8d448d</Entry>
+		<Entry key="software_name">SPPAS</Entry>
+		<Entry key="software_version">1.9.6</Entry>
+		<Entry key="software_url">http://www.sppas.org/</Entry>
+		<Entry key="software_author">Brigitte Bigi</Entry>
+		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
+		<Entry key="software_copyright">Copyright (C) 2011-2018 Brigitte Bigi</Entry>
+		<Entry key="language_iso">iso639-3</Entry>
+		<Entry key="language_code_0">und</Entry>
+		<Entry key="language_name_0">Undetermined</Entry>
+		<Entry key="language_url_0">https://iso639-3.sil.org/code/und</Entry>
+		<Entry key="file_license_text_0">GNU GPL V3</Entry>
+		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
+		<Entry key="file_writer">sppasXRA</Entry>
+		<Entry key="file_name">MB_track_0674-phon.xra</Entry>
+		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_ext">.xra</Entry>
+		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_version">1</Entry>
+		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+	</Metadata>
+
+	<Tier id="0b611c5c-4c18-5f30-5ea8-1321af2d718f" tiername="Phonetization">
+		<Annotation id="6d566c6a-8b10-1f96-3fc9-5172ab4e647a">
+			<Location>
+				<Interval>
+					<Begin midpoint="0.0" />
+					<End midpoint="6.26" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">v-w-A/-l-A/|v-l-A/ sil e|E d-O~-k|d-O~ Z|Z-@|S v-w-A/-z|v-w-A/ l|l-@|l-e g-A/-m-U~/|g-A/-m-i|g-A/-m-i-n A/-v-E-k l|l-@|l-e b-R-A/-z|b-R-A/ d-a~-z|d-a~ l|l-@|l-e p-l-A/-t-R-@|p-l-A/-t-R i-l|i m|m-@ d-i-t|d-i Z|Z-@|S s-y-i|s-y-i-z t-O~-b-e d-@|d|t l E-s-k-A/-b-O/ Z|Z-@|S d-i-z|d-i k E-s|e-s-@ t-y|t|t-j f-E-z|f-e|f-E|f-e-z s-y-R U~/|U~/-n E-s-k-A/-b-O/ t-y|t|t-j v-w-A/-z|v-w-A/ Z|Z-@|S k-O~-p-R-2-n-E|k-O~-p-R-2-n-E-z p-A/-z|p-A/ t-R-O/-p|t-R-O/</Tag>
+			</Label>
+		</Annotation>
+	</Tier>
+
+	<Hierarchy />
+</Document>
+

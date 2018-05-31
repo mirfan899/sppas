@@ -15,4 +15,4 @@ item []:
         intervals [0]:
                 xmin = 0.0000
                 xmax = 6.241250
-                text = "__ <breath> __ no allora questa è un <sp> una differenza perchè il mio proprio è un minimo più lungo <sp> proprio poco __"
+                text = "__ * {breath} __ no allora questa è un + una differenza perchè il mio proprio è un minimo più lungo + proprio poco __"

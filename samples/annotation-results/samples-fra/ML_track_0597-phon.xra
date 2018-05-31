@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:19+02:00" format="1.4" name="SPPAS Phonetization">
+	<Metadata>
+		<Entry key="id">0b032c4a-7e79-1d10-4ba3-5785ad3d821c</Entry>
+		<Entry key="software_name">SPPAS</Entry>
+		<Entry key="software_version">1.9.6</Entry>
+		<Entry key="software_url">http://www.sppas.org/</Entry>
+		<Entry key="software_author">Brigitte Bigi</Entry>
+		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
+		<Entry key="software_copyright">Copyright (C) 2011-2018 Brigitte Bigi</Entry>
+		<Entry key="language_iso">iso639-3</Entry>
+		<Entry key="language_code_0">und</Entry>
+		<Entry key="language_name_0">Undetermined</Entry>
+		<Entry key="language_url_0">https://iso639-3.sil.org/code/und</Entry>
+		<Entry key="file_license_text_0">GNU GPL V3</Entry>
+		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
+		<Entry key="file_writer">sppasXRA</Entry>
+		<Entry key="file_name">ML_track_0597-phon.xra</Entry>
+		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_ext">.xra</Entry>
+		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_version">1</Entry>
+		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+	</Metadata>
+
+	<Tier id="0d888b4c-7c00-5b97-2fb8-5082ed0d080e" tiername="Phonetization">
+		<Annotation id="2a224a7f-1f61-2b95-2fe9-9687ef9d286c">
+			<Location>
+				<Interval>
+					<Begin midpoint="0.0" />
+					<End midpoint="6.29" radius="0.0005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag type="str">n-O~|n-O~-n|n-a~|n-O/ m-E-z|m-e|m-E|m-e-z|m p-A/-z|p-A/ l-A/ v-i-R-e|v-i-R-e-R m-E-z|m-e|m-E|m-e-z|m s-i|s E-l-@|E-l|e-l|E f-u|f-u-t d-E-z|d-e|d-E|d-e-z|d b-A/-f|b-A/-f-z O/-z|O/ g-A/-m-U~/|g-A/-m-U~/-z A/-l-O/-R|A/-l-O/-R-z|A/-l-R|l-O/-R Z|Z-@|S v-w-A/-z|v-w-A/ p-A/-z|p-A/ p-u-R-k-w-A/ E-l-@|E-l|e-l|E e|E-t|E|E-s-t|e-t|E-s-t-@|t A/-v-E-k d-E-z|d-e|d-E|d-e-z|d g-A/-m-U~/|g-A/-m-U~/-z O~|O~-n l-A/ f-u|f-u-t d-a~-z|d-a~ U~/|U~/-n b-y-R-O/ e-p-H-i|e-p-H-i-z|E-p-H-i|E-p-H-i-z v-w-A/-l-A/|v-l-A/ k-w-A/ i|i-j|j|H-i-g-R-E-k A/ k a~-t-E-n-d-@|a~-t-E-n-@-d-@|A/ l-A/ m-E-t-R|m-E-t-R-@ a~-t-E-n-d-@|a~-t-E-n-@-d-@|A/ l-A/ k-a~-t-i-n|k-a~-t-i-n-@ laugh</Tag>
+			</Label>
+		</Annotation>
+	</Tier>
+
+	<Hierarchy />
+</Document>
+

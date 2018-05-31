@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     src.annotations.tokenize.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Tokenization module for the multilingual text normalization system.
 
@@ -42,13 +42,13 @@ from sppas.src.utils.makeunicode import sppasUnicode
 # ---------------------------------------------------------------------------
 
 
-class sppasTokenizer(object):
+class sppasTokenSegmenter(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Create words from tokens on the basis of a lexicon.
 
     This is a totally language independent method, based on a longest
@@ -73,14 +73,48 @@ class sppasTokenizer(object):
     # -------------------------------------------------------------------------
 
     def __init__(self, vocab=None):
-        """ Create a new sppasTokenizer instance.
+        """ Create a new sppasTokenSegmenter instance.
 
         :param vocab: (Vocabulary)
 
         """
         self.__vocab = vocab
-        self.separator = sppasTokenizer.SEPARATOR
-        self.aggregate_max = sppasTokenizer.STICK_MAX
+        self.__separator = sppasTokenSegmenter.SEPARATOR
+        self.__aggregate_max = sppasTokenSegmenter.STICK_MAX
+
+    # -------------------------------------------------------------------------
+
+    def set_aggregate_max(self, value=STICK_MAX):
+        """ Fix the maximum number of words to stick. 
+        This is a language dependant value. For French, it's 5 with the word:
+        "au fur et à mesure". But it can be more to stick phrases instead of
+        words for example.
+
+        :param value: (int) Maximum number of tokens to aggregate/stick.
+
+        """
+        value = int(value)
+        if value < 1:
+            raise ValueError('set_aggregate_max: value should be > 0.')
+        
+        if value > 100:
+            raise ValueError('set_aggregate_max: value should be < 100.')
+
+        self.__aggregate_max = value
+
+    # -------------------------------------------------------------------------
+
+    def set_separator(self, char=SEPARATOR):
+        """ Fix the character to separate tokens.
+
+        :param char: (char) Separator character. Can be an empty string.
+
+        """
+        char = str(char)
+        if len(char) > 0:
+            char = char[0]
+
+        self.__separator = char
 
     # -------------------------------------------------------------------------
 
@@ -129,9 +163,9 @@ class sppasTokenizer(object):
         while idx_start < len(utt):
 
             # use a longest matching to aggregate the current token with the next ones
-            idx_end = min(len(utt), idx_start+self.aggregate_max+1)
+            idx_end = min(len(utt), idx_start+self.__aggregate_max+1)
             phrase = " ".join(utt[idx_start:idx_end])
-            idx_end, word = self.__stick_longest_lr(sppasUnicode(phrase).to_strip(), self.separator)
+            idx_end, word = self.__stick_longest_lr(sppasUnicode(phrase).to_strip(), self.__separator)
 
             new_utt.append(word)
             idx_start += idx_end + 1

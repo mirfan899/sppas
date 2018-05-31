@@ -132,6 +132,16 @@ class sppasDictPhonetizer(object):
 
     # -----------------------------------------------------------------------
 
+    def set_unk_variants(self, value):
+        """ Fix the maximum number of variants for unknown entries.
+
+        :param value: (int) If v is set to 0, all variants will be returned.
+
+        """
+        self._dag_phon.set_variants(value)
+
+    # -----------------------------------------------------------------------
+
     def get_phon_entry(self, entry):
         """ Return the phonetization of an entry.
         Unknown entries are not automatically phonetized.

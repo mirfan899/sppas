@@ -97,15 +97,24 @@ unk_stamp = "<UNK>"
 # ---------------------------------------------------------------------------
 # Symbols used by SPPAS to represent an event:
 
+# Symbols in an orthographic transcription, or after a text normalization:
+ORTHO_SYMBOLS = {
+    '#': "silence",
+    '+': "pause",
+    '*': "noise",
+    '@': "laugh",
+    'dummy': 'dummy'
+}
+
+# All possible symbols:
 SYMBOLS = {
     '#': "silence",
     'sil': "silence",
     '+': "pause",
     'sp': "pause",
     '*': "noise",
-    'gb': "noise",
-    '@': "laughter",
-    '@@': "laughter",
-    'lg': "laughter",
+    'noise': "noise",
+    '@': "laugh",
+    'laugh': "laugh",
     'dummy': 'dummy'
 }

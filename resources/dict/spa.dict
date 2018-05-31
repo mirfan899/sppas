@@ -1,15 +1,15 @@
-! [] *
+! [] noise
 # [] #
-## [] *
-$ [] *
-% [] *
+## [] noise
+$ [] noise
+% [] noise
 & [] i
 &(2) [] e n d
 + [] #
-* [] *
+* [] noise
 + [] #
-, [] *
-- [] *
+, [] noise
+- [] noise
 . [] #
 / [] #
 : [] #
@@ -18,8 +18,8 @@ $ [] *
 <s> [] #
 <unk> [] dummy
 ? [] #
-@ [] lg
-_ [] *
+@ [] laugh
+_ [] noise
 _a [] a
 _a_b_c [] a b e s e
 _a_d_n [] a d e e n e
@@ -23523,7 +23523,7 @@ unión [] u n j o m
 unión(2) [] u n j o n
 unión(3) [] u n i o n
 unión(4) [] a n j o n
-unk [] *
+unk [] noise
 uno [] u n o
 unos [] u n o s
 unánime [] u n a n i m e

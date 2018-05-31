@@ -65,9 +65,9 @@ class TestTrainer(unittest.TestCase):
 
     def test_phoneset(self):
         pho = sppasPhoneSet()
-        self.assertEqual(len(pho), 4)
+        self.assertEqual(4, len(pho))
         pho.add_from_dict(os.path.join(RESOURCES_PATH, "dict", "nan.dict"))
-        self.assertEqual(len(pho), 45)
+        self.assertEqual(44, len(pho))
         pho.save(os.path.join(TEMP, "monophones"))
 
         pho2 = sppasPhoneSet(os.path.join(TEMP, "monophones"))
