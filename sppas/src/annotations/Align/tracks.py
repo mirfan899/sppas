@@ -178,6 +178,7 @@ class TrackSplitter(Transcription):
             # we don't care about alternative text-labels
             fnp = self._tracknames.phones_filename(diralign, len(units))
             textp = annp.GetLabel().GetValue()
+            textp = textp.replace('\n', ' ')
             self._write_text_track(fnp, textp)
 
             fnt = self._tracknames.tokens_filename(diralign, len(units))
@@ -186,6 +187,8 @@ class TrackSplitter(Transcription):
                 textt = " ".join(["w_"+str(i+1) for i in range(len(textp.split()))])
             else:
                 textt = label.GetValue()
+                textt = textt.replace('\n', ' ')
+
             self._write_text_track(fnt, textt)
 
         return units

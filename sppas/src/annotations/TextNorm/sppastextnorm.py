@@ -45,6 +45,8 @@ from sppas.src.resources.dictrepl import sppasDictRepl
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
 from sppas.src.anndata import sppasTier
+from sppas.src.anndata import sppasLabel
+from sppas.src.anndata import sppasTag
 
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasFindTier
@@ -224,7 +226,7 @@ class sppasTextNorm(sppasBaseAnnotation):
         # Tokenize the tier
         tier_faked_tokens, tier_std_tokens, tier_custom = self.convert(tier_input)
 
-        # Save
+        # Create the transcription result
         trs_output = sppasTranscription("Text Normalization")
         if tier_faked_tokens is not None:
             trs_output.append(tier_faked_tokens)
@@ -260,31 +262,41 @@ class sppasTextNorm(sppasBaseAnnotation):
         """
         tokens_tier = sppasTier("Tokens")
         for i, ann in enumerate(tier):
-            af = ann.copy()
-            for label in af.get_labels():
+            location = ann.get_location().copy()
+            labels = list()
+            # Normalize all labels of the orthographic transcription
+            for label in ann.get_labels():
 
-                for text, score in label:
-                    # Do not tokenize an empty label, noises, laughter...
-                    if text.is_speech() is True:
-                        try:
-                            tokens = self.normalizer.normalize(text.get_content(), actions)
-                        except Exception as e:
-                            tokens = list()
-                            message = "Error while normalizing interval {:d}: {:s}".format(i, str(e))
-                            if self.logfile is not None:
-                                self.logfile.print_message(message, indent=3)
-                            else:
-                                print(message)
-                        text.set_content(" ".join(tokens))
+                tokens = list()
+                # Normalize only the best tag because each label of an ortho
+                # should only concern 1 tag!
+                text = label.get_best()
+                # Do not tokenize an empty label, noises, laughter...
+                if text.is_speech() is True:
+                    try:
+                        tokens = self.normalizer.normalize(text.get_content(), actions)
+                    except Exception as e:
+                        tokens = list()
+                        message = "Error while normalizing interval {:d}: {:s}".format(i, str(e))
+                        if self.logfile is not None:
+                            self.logfile.print_message(message, indent=3)
+                        else:
+                            print(message)
 
-                    elif text.is_silence():
-                        # in ortho a silence could be one of "#" or "gpf_".
-                        # we normalize!
-                        for s in ORTHO_SYMBOLS:
-                            if ORTHO_SYMBOLS[s] == "silence":
-                                text.set_content(s)
+                elif text.is_silence():
+                    # in ortho a silence could be one of "#" or "gpf_".
+                    # we normalize!
+                    for s in ORTHO_SYMBOLS:
+                        if ORTHO_SYMBOLS[s] == "silence":
+                            tokens = [s]
+                else:
+                    tokens = [text.get_content()]
 
-            tokens_tier.append(af)
+                # New in SPPAS 1.9.6. The result is a sequence of labels.
+                for tok in tokens:
+                    labels.append(sppasLabel(sppasTag(tok)))
+
+            tokens_tier.create_annotation(location, labels)
 
         return tokens_tier
 
