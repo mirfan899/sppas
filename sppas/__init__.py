@@ -106,15 +106,13 @@ ORTHO_SYMBOLS = {
     'dummy': 'dummy'
 }
 
-# All possible symbols:
-SYMBOLS = {
-    '#': "silence",
+PHONE_SYMBOLS = {
     'sil': "silence",
-    '+': "pause",
     'sp': "pause",
-    '*': "noise",
     'noise': "noise",
-    '@': "laugh",
     'laugh': "laugh",
     'dummy': 'dummy'
 }
+
+# All possible symbols:
+SYMBOLS = dict(ORTHO_SYMBOLS.items() + PHONE_SYMBOLS.items())

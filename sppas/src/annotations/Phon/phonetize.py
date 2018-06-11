@@ -37,6 +37,7 @@
 """
 import re
 
+from sppas import PHONE_SYMBOLS
 from sppas.src.utils.makeunicode import sppasUnicode, u
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.resources.dictpron import sppasDictPron
@@ -44,6 +45,10 @@ from sppas.src.resources.dictpron import sppasDictPron
 from .. import ERROR_ID, WARNING_ID, OK_ID
 from .phonunk import sppasPhonUnk
 from .dagphon import sppasDAGPhonetizer
+
+# ---------------------------------------------------------------------------
+
+SIL = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
 
 # ---------------------------------------------------------------------------
 
@@ -76,13 +81,6 @@ class sppasDictPhonetizer(object):
     on the idea that given enough examples it should be possible to predict
     the pronunciation of unseen words purely by analogy.
 
-    See the whole description in the following reference:
-
-        | Brigitte Bigi (2016).
-        | A phonetization approach for the forced-alignment task in SPPAS.
-        | Human Language Technology. Challenges for Computer Science and
-        | Linguistics, LNAI 9561, Springer, pp. 515–526.
-
     """
     def __init__(self, pdict, maptable=None):
         """ Create a sppasDictPhonetizer instance.
@@ -98,6 +96,13 @@ class sppasDictPhonetizer(object):
 
         self.set_dict(pdict)
         self.set_maptable(maptable)
+
+    # -----------------------------------------------------------------------
+
+    def get_dict_filename(self):
+        if self._pdict is None:
+            return ""
+        return self._pdict.get_filename()
 
     # -----------------------------------------------------------------------
 
@@ -144,6 +149,7 @@ class sppasDictPhonetizer(object):
 
     def get_phon_entry(self, entry):
         """ Return the phonetization of an entry.
+
         Unknown entries are not automatically phonetized.
         This is a pure dictionary-based method.
 
@@ -166,7 +172,7 @@ class sppasDictPhonetizer(object):
         # Specific strings used in the CID transcriptions...
         # CID is Corpus of Interactionnal Data, http://sldr.org/sldr000720
         if entry.startswith(u("gpf_")) is True:
-            return "sil"
+            return SIL
         if entry.startswith(u("gpd_")) is True:
             return ""
 

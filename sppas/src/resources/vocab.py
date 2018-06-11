@@ -38,7 +38,7 @@ import logging
 from sppas import encoding
 from sppas.src.utils.makeunicode import sppasUnicode
 
-from .resourcesexc import FileFormatError
+from .resourcesexc import FileIOError, FileUnicodeError, FileFormatError
 from .dumpfile import sppasDumpFile
 
 # ---------------------------------------------------------------------------
@@ -166,16 +166,22 @@ class sppasVocabulary(object):
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'r', encoding) as fd:
-            self.__filename = filename
+        try:
+            with codecs.open(filename, 'r', encoding) as fd:
+                self.__filename = filename
 
-            for nbl, line in enumerate(fd, 1):
-                try:
-                    self.add(line)
-                except Exception:
-                    raise FileFormatError(nbl, line)
+                for nbl, line in enumerate(fd, 1):
+                    try:
+                        self.add(line)
+                    except Exception:
+                        raise FileFormatError(nbl, line)
 
-            fd.close()
+                fd.close()
+
+        except IOError:
+            raise FileIOError(filename)
+        except UnicodeDecodeError:
+            raise FileUnicodeError(filename)
 
     # -----------------------------------------------------------------------
 

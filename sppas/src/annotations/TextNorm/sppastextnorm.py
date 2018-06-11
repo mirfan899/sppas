@@ -58,6 +58,10 @@ from .normalize import TextNormalizer
 
 # ---------------------------------------------------------------------------
 
+SIL_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("silence")]
+
+# ---------------------------------------------------------------------------
+
 
 class sppasTextNorm(sppasBaseAnnotation):
     """
@@ -236,7 +240,7 @@ class sppasTextNorm(sppasBaseAnnotation):
             trs_output.append(tier_custom)
 
         trs_output.set_meta('text_normalization_result_of', input_filename)
-        trs_output.set_meta('text_normalization_vocab', self.normalizer.vocab.get_filename())
+        trs_output.set_meta('text_normalization_vocab', self.normalizer.get_vocab_filename())
         trs_output.set_meta('language_iso', "iso639-3")
         trs_output.set_meta('language_code_0', self.normalizer.lang)
         trs_output.set_meta('language_name_0', "Undetermined")
@@ -278,17 +282,12 @@ class sppasTextNorm(sppasBaseAnnotation):
                     except Exception as e:
                         tokens = list()
                         message = "Error while normalizing interval {:d}: {:s}".format(i, str(e))
-                        if self.logfile is not None:
-                            self.logfile.print_message(message, indent=3)
-                        else:
-                            print(message)
+                        self.print_message(message, indent=3)
 
                 elif text.is_silence():
                     # in ortho a silence could be one of "#" or "gpf_".
                     # we normalize!
-                    for s in ORTHO_SYMBOLS:
-                        if ORTHO_SYMBOLS[s] == "silence":
-                            tokens = [s]
+                    tokens = [SIL_ORTHO]
                 else:
                     tokens = [text.get_content()]
 
@@ -340,7 +339,7 @@ class sppasTextNorm(sppasBaseAnnotation):
                         text_std.set_content(texts)
                         text_faked.set_content(textf)
 
-                    except Exception:
+                    except:
                         self.print_message("Standard/Faked tokens matching error, "
                                            "at interval {:d}\n".format(i),
                                            indent=2, status=1)

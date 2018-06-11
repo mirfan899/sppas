@@ -63,11 +63,19 @@ class sppasFindTier(object):
         :returns: (sppasTier)
 
         """
+        # Search for a tier with exact name "transcription"
+        tier = trs.find('transcription', case_sensitive=False)
+        if tier is not None:
+            return tier
+
+        # Search for a tier containing "transcription" in its name
         for tier in trs:
             tier_name = tier.get_name().lower()
             if "transcription" in tier_name:
                 return tier
 
+        # Search for a tier containing either
+        # "trans", "trs", "toe", "ortho" or "ipu" in its name
         for tier in trs:
             tier_name = tier.get_name().lower()
             if "trans" in tier_name:
@@ -79,6 +87,86 @@ class sppasFindTier(object):
             elif "ortho" in tier_name:
                 return tier
             elif "ipu" in tier_name:
+                return tier
+
+        raise NoInputError
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
+    def tokenization(trs, pattern=""):
+        """ Return the tier with tokenization.
+
+        In case of EOT, several tiers with tokens are available.
+        Priority is given to faked.
+
+        :param trs: (Transcription)
+        :param pattern: (str) Priority pattern
+
+        """
+        # Search with the pattern
+        if len(pattern) > 0:
+            for tier in trs:
+                tier_name = tier.get_name().lower()
+                if pattern in tier_name and "token" in tier_name:
+                    return tier
+
+        # Search with known patterns
+        if len(trs) == 1:
+            if "token" in trs[0].get_name().lower():
+                return trs[0]
+
+        else:
+            tok_tier = None  # generic tier with tokens
+            std_tier = None  # tier with standard tokens
+
+            for tier in trs:
+                tier_name = tier.get_name().lower()
+                if "align" in tier_name:
+                    continue
+                if tier_name == "tokens":
+                    return tier
+                elif "std" in tier_name and "token" in tier_name:
+                    std_tier = tier
+                elif "token" in tier_name:
+                    tok_tier = tier
+
+            if std_tier is not None:
+                return std_tier
+
+            if tok_tier is not None:
+                return tok_tier
+
+        raise NoInputError
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
+    def phonetization(trs):
+        """ Return the tier with phonetization.
+
+        :param trs: (Transcription)
+
+        """
+        # Search for a tier with exact name "phones"
+        tier = trs.find('phones', case_sensitive=False)
+        if tier is not None:
+            return tier
+
+        # Search for a tier starting with "phon"
+        for tier in trs:
+            tier_name = tier.get_name().lower()
+            if "align" in tier_name:
+                continue
+            if tier_name.startswith("phon") is True:
+                return tier
+
+        # Search for a tier containing "phon"
+        for tier in trs:
+            tier_name = tier.get_name().lower()
+            if "align" in tier_name:
+                continue
+            if "phon" in tier_name:
                 return tier
 
         raise NoInputError

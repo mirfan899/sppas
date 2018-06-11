@@ -267,7 +267,7 @@ class sppasTag(object):
         # create a list of laughter symbols from the list of all symbols
         laugh = list()
         for symbol in SYMBOLS:
-            if SYMBOLS[symbol] == "laughter":
+            if SYMBOLS[symbol] == "laugh":
                 laugh.append(symbol)
 
         return self.__tag_content in laugh

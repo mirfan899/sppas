@@ -5,6 +5,7 @@ import os.path
 import shutil
 import glob
 
+from sppas import ORTHO_SYMBOLS, PHONE_SYMBOLS
 from sppas import RESOURCES_PATH, SAMPLES_PATH
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.compare import sppasCompare
@@ -19,6 +20,10 @@ from ..modelsexc import MioFileFormatError
 TEMP = sppasFileUtils().set_random()
 MODEL_PATH = os.path.join(RESOURCES_PATH, "models")
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+
+SIL_PHON = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
+LAUGH_PHON = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("laugh")]
+SIL_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("silence")]
 
 # ---------------------------------------------------------------------------
 
@@ -66,9 +71,9 @@ class TestMIO(unittest.TestCase):
         self.assertEqual(len(model), 3)
         with self.assertRaises(ValueError):
             model.get_hmm("toto")
-        laughter = model.get_hmm("laugh")
+        laughter = model.get_hmm(LAUGH_PHON)
         proto = model.get_hmm("proto")
-        silence = model.get_hmm("sil")
+        silence = model.get_hmm(SIL_PHON)
 
         # Read macros, hmmdefs, monophones.repl
         rw = sppasACMRW(os.path.join(MODEL_PATH, "models-cat"))

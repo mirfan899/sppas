@@ -37,17 +37,23 @@
 """
 from sppas import unk_stamp
 
-import sppas.src.annotationdata.aio
-from sppas.src.annotationdata.tier import Tier
-from sppas.src.annotationdata.transcription import Transcription
+from sppas import PHONE_SYMBOLS, ORTHO_SYMBOLS
+
+from sppas.src.anndata import sppasRW
+from sppas.src.anndata import sppasTranscription
+from sppas.src.anndata import sppasTier
+from sppas.src.anndata import sppasLabel
+from sppas.src.anndata import sppasTag
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.mapping import sppasMapping
 
 from .. import ERROR_ID, WARNING_ID
 from .. import t
 from ..annotationsexc import AnnotationOptionError
+from ..annotationsexc import EmptyInputError
+from ..annotationsexc import EmptyOutputError
 from ..baseannot import sppasBaseAnnotation
-from ..searchtier import sppasSearchTier
+from ..searchtier import sppasFindTier
 
 from .phonetize import sppasDictPhonetizer
 
@@ -56,6 +62,9 @@ from .phonetize import sppasDictPhonetizer
 MISSING = ":INFO 1110: "
 PHONETIZED = ":INFO 1112: "
 NOT_PHONETIZED = ":INFO 1114: "
+
+SIL = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
+SIL_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("silence")]
 
 # ---------------------------------------------------------------------------
 
@@ -164,7 +173,7 @@ class sppasPhon(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def phonetize(self, entry):
+    def phonetize(self, entry, idx=0):
         """ Phonetize a text.
 
         Because we absolutely need to match with the number of tokens, this
@@ -172,12 +181,13 @@ class sppasPhon(sppasBaseAnnotation):
         (from dict or from phonunk) or the unk_stamp.
 
         :param entry: (str) The string to be phonetized.
+        :param idx: (int) number to communicate in the error/warning message. 0=disabled
         :returns: phonetization of the given entry
 
         """
         tab = self.phonetizer.get_phon_tokens(entry.split(),
                                               phonunk=self._options['phonunk'])
-        tabphon = list()
+        tab_phones = list()
         for tex, p, s in tab:
             message = None
             if s == ERROR_ID:
@@ -192,12 +202,12 @@ class sppasPhon(sppasBaseAnnotation):
                     else:
                         message = message + t.gettext(NOT_PHONETIZED)
                         p = unk_stamp
-                tabphon.append(p)
+                tab_phones.append(p)
 
             if message:
                 self.print_message(message, indent=3, status=s)
 
-        return " ".join(tabphon)
+        return tab_phones
 
     # -----------------------------------------------------------------------
 
@@ -208,29 +218,39 @@ class sppasPhon(sppasBaseAnnotation):
         :returns: (Tier) phonetized tier with name "Phones"
 
         """
-        new_tier = Tier("Phones")
-        if tier is None:
-            return new_tier
+        if tier.is_empty() is True:
+            raise EmptyInputError(name=tier.get_name())
 
-        for a in tier:
+        phones_tier = sppasTier("Phones")
+        for i, ann in enumerate(tier):
+            location = ann.get_location().copy()
+            labels = list()
 
-            af = a.Copy()
-            for text in af.GetLabel().GetLabels():
+            # Normalize all labels of the orthographic transcription
+            for label in ann.get_labels():
 
-                if text.IsPause() is True:
-                    # In case the pronunciation dictionary were not properly fixed.
-                    text.SetValue("sil")
+                phonetizations = list()
+                # TEMPORARILY, phonetize only the best tag
+                # TODO: phonetize also alternative tags
+                text = label.get_best()
+                if text.is_pause():
+                    # It's in case the pronunciation dictionary
+                    # were not properly fixed.
+                    phonetizations = [SIL]
 
-                elif text.IsSilence() is True:
-                    text.SetValue("#")
+                elif text.is_silence():
+                    phonetizations = [SIL_ORTHO]
 
-                elif text.IsEmpty() is False:
-                    phon = self.phonetize(text.GetValue())
-                    text.SetValue(phon)
+                elif text.is_empty() is False:
+                    phonetizations = self.phonetize(text.get_content(), i)
 
-            new_tier.Append(af)
+                # New in SPPAS 1.9.6. The result is a sequence of labels.
+                for phones in phonetizations:
+                    labels.append(sppasLabel(sppasTag(phones)))
 
-        return new_tier
+            phones_tier.create_annotation(location, labels)
+
+        return phones_tier
 
     # ------------------------------------------------------------------------
 
@@ -249,18 +269,27 @@ class sppasPhon(sppasBaseAnnotation):
         pattern = ""
         if self._options['usestdtokens'] is True:
             pattern = "std"
-        trs_input = sppas.src.annotationdata.aio.read(input_filename)
-        tier_input = sppasSearchTier.tokenization(trs_input, pattern)
+        parser = sppasRW(input_filename)
+        trs_input = parser.read()
+        tier_input = sppasFindTier.tokenization(trs_input, pattern)
 
         # Phonetize the tier
         tier_phon = self.convert(tier_input)
 
-        # Save
-        trs_output = Transcription("SPPAS Phonetization")
-        trs_output.Append(tier_phon)
+        # Create the transcription result
+        trs_output = sppasTranscription("Phonetization")
+        if tier_phon is not None:
+            trs_output.append(tier_phon)
+
+        trs_output.set_meta('text_phonetization_result_of', input_filename)
+        trs_output.set_meta('text_phonetization_dict', self.phonetizer.get_dict_filename())
 
         # Save in a file
         if output_filename is not None:
-            sppas.src.annotationdata.aio.write(output_filename, trs_output)
+            if len(trs_output) > 0:
+                parser = sppasRW(output_filename)
+                parser.write(trs_output)
+            else:
+                raise EmptyOutputError
 
         return trs_output

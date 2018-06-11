@@ -5,6 +5,7 @@ import os.path
 import copy
 import shutil
 
+from sppas import ORTHO_SYMBOLS, PHONE_SYMBOLS
 from sppas import RESOURCES_PATH, SAMPLES_PATH
 from sppas.src.utils.compare import sppasCompare
 from sppas.src.utils.fileutils import sppasFileUtils
@@ -18,6 +19,9 @@ from ..acm.htktrain import sppasHTKModelTrainer, sppasDataTrainer, \
 TEMP = sppasFileUtils().set_random()
 MODEL_PATH = os.path.join(RESOURCES_PATH, "models")
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+
+SIL_PHON = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
+SIL_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("silence")]
 
 # ---------------------------------------------------------------------------
 
@@ -90,7 +94,7 @@ class TestTrainer(unittest.TestCase):
 
         corpus.fix_resources(dict_file=os.path.join(RESOURCES_PATH, "dict", "nan.dict"),
                              mapping_file=os.path.join(RESOURCES_PATH, "models", "models-nan", "monophones.repl"))
-        self.assertEqual(corpus.phonemap.map_entry('#'), "sil")
+        self.assertEqual(corpus.phonemap.map_entry(SIL_ORTHO), SIL_PHON)
 
         self.assertFalse(corpus.add_file("toto", "toto"))
         self.assertTrue(corpus.add_file(os.path.join(DATA, "F_F_B003-P8-palign.TextGrid"), os.path.join(DATA, "F_F_B003-P8.wav")))

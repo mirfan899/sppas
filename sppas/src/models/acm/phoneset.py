@@ -32,6 +32,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+from sppas import PHONE_SYMBOLS
+
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.vocab import sppasVocabulary
 
@@ -57,6 +59,7 @@ class sppasPhoneSet(sppasVocabulary):
     """
     def __init__(self, filename=None):
         """ Create a sppasPhoneSet instance.
+
         Add events to the list: laugh, dummy, noise, silence.
 
         :param filename (str) A file with 1 column containing the list of phonemes.
@@ -64,10 +67,13 @@ class sppasPhoneSet(sppasVocabulary):
         """
         sppasVocabulary.__init__(self, filename, nodump=True, case_sensitive=True)
 
-        self.add("laugh")
-        self.add("dummy")
-        self.add("noise")
-        self.add("sil")
+        for key in PHONE_SYMBOLS:
+            if PHONE_SYMBOLS[key] != "pause":
+                self.add(key)
+        # self.add("laugh")
+        # self.add("dummy")
+        # self.add("noise")
+        # self.add("sil")
 
     # -----------------------------------------------------------------------
 

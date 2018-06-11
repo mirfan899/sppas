@@ -118,6 +118,8 @@ class AlignIO(object):
     ??? HOW TO DO: READ ALL ALTERNATIVE LABELS AND MERGE ALTERNATIVE RESULTS ???
 
     """
+    DELIMITERS = (" ", "|", "-")
+
     def __init__(self, mapping, model):
         """ Creates a new AlignIO instance.
 
@@ -242,7 +244,8 @@ class AlignIO(object):
         # Map phonetizations (even the alternatives)
         for ann in phontier:
             for text in ann.GetLabel().GetLabels():
-                text.SetValue(self._mapping.map(text.GetValue()))
+                text.SetValue(self._mapping.map(text.GetValue().replace('\n', ' '),
+                                                AlignIO.DELIMITERS))
 
         sgmt = TrackSplitter()
         sgmt.set_tracksnames(self._tracknames)

@@ -30,9 +30,9 @@
         ---------------------------------------------------------------------
 
     src.annotations.dagphon.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    A Direct Acyclic Graph is used to phonetize.
+    A Direct Acyclic Graph is used to phonetize unknown entries.
 
 """
 import re
@@ -82,10 +82,8 @@ class sppasDAGPhonetizer(object):
 
         """
         tabpron = pron.split()
-
         graph = DAG()        # the Graph, used to store segments and to get all paths
         prongraph = list()   # the pronunciation of each segment
-        variants = None
 
         # A Start node (required if the 1st segment has variants)
         graph.add_node(0)
@@ -150,7 +148,7 @@ class sppasDAGPhonetizer(object):
         """ Create a decomposed phonetization from a string as follow:
 
             >>> self.decompose("p1 p2|x2 p3|x3")
-            p1-p2-p3|p1-p2-x3|p1-x2-p3|p1-x2-x3
+            >>> p1-p2-p3|p1-p2-x3|p1-x2-p3|p1-x2-x3
 
         The input string is converted into a DAG, then output corresponds
         to all paths.

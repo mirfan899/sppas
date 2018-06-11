@@ -106,7 +106,7 @@ class sppasDictPron(object):
         by two or three.
 
         """
-        self._filename = dict_filename
+        self._filename = ""
 
         # The pronunciation dictionary
         self._dict = dict()
@@ -115,6 +115,7 @@ class sppasDictPron(object):
         # ASCII one.
         if dict_filename is not None:
 
+            self._filename = dict_filename
             dp = sppasDumpFile(dict_filename)
             data = None
 
@@ -133,6 +134,12 @@ class sppasDictPron(object):
 
     # -----------------------------------------------------------------------
     # Getters
+    # -----------------------------------------------------------------------
+
+    def get_filename(self):
+        """ Return the name of the file from which the dict comes from. """
+        return self._filename
+
     # -----------------------------------------------------------------------
 
     def get_unkstamp(self):
@@ -271,6 +278,7 @@ class sppasDictPron(object):
         """
         try:
             with codecs.open(filename, 'r', encoding) as fd:
+                self._filename = filename
                 first_line = fd.readline()
                 fd.close()
         except IOError:

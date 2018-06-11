@@ -37,6 +37,7 @@ import codecs
 from subprocess import Popen, PIPE, STDOUT
 
 from sppas import encoding
+from sppas import PHONE_SYMBOLS
 from sppas.src.models.slm.ngramsmodel import sppasNgramsModel
 from sppas.src.models.slm.arpaio import sppasArpaIO
 from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
@@ -49,6 +50,7 @@ from .basealigner import BaseAligner
 
 JULIUS_EXT_OUT = ["palign", "walign"]
 DEFAULT_EXT_OUT = JULIUS_EXT_OUT[0]
+SIL_PHON = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
 
 # ----------------------------------------------------------------------------
 
@@ -169,9 +171,9 @@ class JuliusAligner(BaseAligner):
                 dictpron.add_pron(token, variant.replace("-", " "))
 
         if dictpron.is_unk(START_SENT_SYMBOL) is True:
-            dictpron.add_pron(START_SENT_SYMBOL, "sil")
+            dictpron.add_pron(START_SENT_SYMBOL, SIL_PHON)
         if dictpron.is_unk(END_SENT_SYMBOL) is True:
-            dictpron.add_pron( END_SENT_SYMBOL, "sil")
+            dictpron.add_pron( END_SENT_SYMBOL, SIL_PHON)
 
         dictpron.save_as_ascii(dictname, False)
 

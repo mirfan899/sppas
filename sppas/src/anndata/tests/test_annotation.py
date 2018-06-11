@@ -43,12 +43,18 @@
 
 import unittest
 
+from sppas import ORTHO_SYMBOLS, PHONE_SYMBOLS
 from ..annlocation.location import sppasLocation
 from ..annlocation.interval import sppasInterval
 from ..annlocation.point import sppasPoint
 from ..annlabel.label import sppasTag
 from ..annlabel.label import sppasLabel
 from ..annotation import sppasAnnotation
+
+# ---------------------------------------------------------------------------
+
+SIL_PHON = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
+SIL_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("silence")]
 
 # ---------------------------------------------------------------------------
 
@@ -140,8 +146,8 @@ class TestAnnotation(unittest.TestCase):
         self.assertFalse(self.annotationP.get_best_tag().is_silence())
         self.assertFalse(self.annotationI.get_best_tag().is_silence())
 
-        self.annotationI.get_best_tag().set(sppasTag("#"))
-        self.annotationP.get_best_tag().set(sppasTag("sil"))
+        self.annotationI.get_best_tag().set(sppasTag(SIL_ORTHO))
+        self.annotationP.get_best_tag().set(sppasTag(SIL_PHON))
         self.assertTrue(self.annotationI.get_best_tag().is_silence())
         self.assertTrue(self.annotationP.get_best_tag().is_silence())
 

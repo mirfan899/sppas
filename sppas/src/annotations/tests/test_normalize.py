@@ -253,29 +253,30 @@ class TestNum2Letter(unittest.TestCase):
 
     # -----------------------------------------------------------------------
 
-    def test_num2letterFR(self):
+    def test_num2letter_fra(self):
+
         num = sppasNum('fra')
-        s = num.convert("123")
-        self.assertEquals(s, u("cent-vingt-trois"))
+        self.assertEquals(u("cent-vingt-trois"),
+                          num.convert("123"))
 
     # -----------------------------------------------------------------------
 
-    def test_num2letterES(self):
+    def test_num2letter_spa(self):
         num = sppasNum('spa')
         ret = [num.convert(i) for i in range(41)]
-        self.assertEquals(ret, ref_es)
+        self.assertEquals(ref_es, ret)
 
-        s = num.convert(1241)
-        self.assertEquals(s, u("mil-doscientos-cuarenta-y-uno"))
+        self.assertEquals(u("mil-doscientos-cuarenta-y-uno"),
+                          num.convert(1241))
 
-        s = num.convert(2346022)
-        self.assertEquals(s, u("dos-millones-trescientos-cuarenta-y-seis-mil-veintidós"))
+        self.assertEquals(u("dos-millones-trescientos-cuarenta-y-seis-mil-veintidós"),
+                          num.convert(2346022))
 
-        s = num.convert(382121)
-        self.assertEquals(s, u("trescientos-ochenta-y-dos-mil-ciento-veintiuno"))
+        self.assertEquals(u("trescientos-ochenta-y-dos-mil-ciento-veintiuno"),
+                          num.convert(382121))
 
-        s = num.convert(739499)
-        self.assertEquals(s, u("setecientos-treinta-y-nueve-mil-cuatrocientos-noventa-y-nueve"))
+        self.assertEquals(u("setecientos-treinta-y-nueve-mil-cuatrocientos-noventa-y-nueve"),
+                          num.convert(739499))
 
 # ---------------------------------------------------------------------------
 
@@ -306,28 +307,32 @@ class TestNormalizer(unittest.TestCase):
         repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "eng.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
-        self.assertEquals(" ".join(s), u("square percent degrees_Celsius km/h etc euros yens dollars"))
+        self.assertEquals(u("square percent degrees_Celsius km/h etc euros yens dollars"),
+                          " ".join(s))
 
         repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "spa.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
-        self.assertEquals(" ".join(s), u("quadrados por_ciento grados_Celsius km/h etc euros yens dollars"))
+        self.assertEquals(u("quadrados por_ciento grados_Celsius km/h etc euros yens dollars"),
+                          " ".join(s))
 
         repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
-        self.assertEquals(" ".join(s),
-                          u("carrés pourcents degrés_celcius kilomètres_heure etcetera euros yens dollars"))
+        self.assertEquals(u("carrés pourcents degrés_celcius kilomètres_heure etcetera euros yens dollars"),
+                          " ".join(s))
 
         repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "ita.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
-        self.assertEquals(" ".join(s), u("quadrato percento gradi_Celsius km/h etc euros yens dollars"))
+        self.assertEquals(u("quadrato percento gradi_Celsius km/h etc euros yens dollars"),
+                          " ".join(s))
 
         repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "cmn.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
-        self.assertEquals(" ".join(s), u("的平方 个百分比 摄氏度 公里每小时 etc € ¥ $"))
+        self.assertEquals(u("的平方 个百分比 摄氏度 公里每小时 etc € ¥ $"),
+                          " ".join(s))
 
     # -----------------------------------------------------------------------
 

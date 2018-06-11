@@ -44,9 +44,18 @@
 """
 import unittest
 
+from sppas import ORTHO_SYMBOLS, PHONE_SYMBOLS
 from sppas.src.utils.makeunicode import u, b, text_type
 from ..annlabel.tag import sppasTag
 from ..annlabel.label import sppasLabel
+
+# ---------------------------------------------------------------------------
+
+SIL_PHON = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
+NOISE_PHON = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("noise")]
+SIL_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("silence")]
+PAUSE_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("pause")]
+NOISE_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("noise")]
 
 # ---------------------------------------------------------------------------
 
@@ -154,22 +163,22 @@ class TestEvents(unittest.TestCase):
 
     """
     def test_is_silence(self):
-        label = sppasLabel(sppasTag("sil"))
+        label = sppasLabel(sppasTag(SIL_PHON))
         text = label.get_best()
         self.assertTrue(text.is_silence())
         self.assertFalse(text.is_silence() is False)
-        label = sppasLabel(sppasTag("#"))
+        label = sppasLabel(sppasTag(SIL_ORTHO))
         text = label.get_best()
         self.assertTrue(text.is_silence())
 
     def test_IsPause(self):
-        label = sppasLabel(sppasTag("+"))
+        label = sppasLabel(sppasTag(PAUSE_ORTHO))
         self.assertTrue(label.get_best().is_pause())
 
     def test_IsNoise(self):
-        label = sppasLabel(sppasTag("*"))
+        label = sppasLabel(sppasTag(NOISE_ORTHO))
         self.assertTrue(label.get_best().is_noise())
-        label = sppasLabel(sppasTag("noise"))
+        label = sppasLabel(sppasTag(NOISE_PHON))
         self.assertTrue(label.get_best().is_noise())
 
 # ---------------------------------------------------------------------------
@@ -187,7 +196,7 @@ class TestLabel(unittest.TestCase):
         self.assertIsInstance(label.get_best().get_typed_content(), int)
 
     def test_is_label(self):
-        label = sppasLabel(sppasTag("#"))
+        label = sppasLabel(sppasTag(SIL_ORTHO))
         text = label.get_best()
         self.assertFalse(text.is_speech())
 

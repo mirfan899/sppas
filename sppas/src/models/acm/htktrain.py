@@ -42,6 +42,7 @@ import collections
 import codecs
 
 from sppas import unk_stamp, encoding
+from sppas import PHONE_SYMBOLS, ORTHO_SYMBOLS
 
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.fileutils import sppasDirUtils
@@ -87,6 +88,11 @@ DEFAULT_PROTO_DIR = "protos"
 DEFAULT_SCRIPTS_DIR = "scripts"
 DEFAULT_FEATURES_DIR = "features"
 DEFAULT_LOG_DIR = "log"
+
+SIL_PHON = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
+SP_PHON = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("pause")]
+SIL_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("silence")]
+SP_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("pause")]
 
 # ---------------------------------------------------------------------------
 
@@ -723,14 +729,14 @@ class sppasTrainingCorpus(object):
         # Map phonemes.
         for ann in tier:
             label = ann.GetLabel().GetValue()
-            if label == "sp":
-                newlabel = "sil"
+            if label == SP_PHON:
+                new_label = SIL_PHON
             elif label == unkstamp:
-                newlabel = "dummy"
+                new_label = "dummy"
             else:
-                newlabel = self.phonemap.map_entry(label)
-            if label != newlabel:
-                ann.GetLabel().SetValue(newlabel)
+                new_label = self.phonemap.map_entry(label)
+            if label != new_label:
+                ann.GetLabel().SetValue(new_label)
 
         return tier
 
@@ -744,7 +750,9 @@ class sppasTrainingCorpus(object):
         # Fix current storage dir.
         self.datatrainer.fix_storage_dirs("align")
         sf = sppasFileUtils()
-        outfile = os.path.basename(sf.set_random(root="track_aligned", add_today=False, add_pid=False))
+        outfile = os.path.basename(sf.set_random(root="track_aligned",
+                                                 add_today=False,
+                                                 add_pid=False))
 
         # Add the tier
         res = self._append_tier(tier, outfile, trs_filename, audio_filename)
@@ -761,8 +769,8 @@ class sppasTrainingCorpus(object):
         # Map phonemes.
         for ann in tier:
             label = ann.GetLabel().GetValue()
-            label = label.replace('sp', "sil")
-            label = label.replace('+', "#")
+            label = label.replace(SP_PHON, SIL_PHON)
+            label = label.replace(SP_ORTHO, SIL_ORTHO)
             new_label = self.phonemap.map(label, delimiters=[" ", "-", "|"])
             new_label = sppasTrainingCorpus._format_phonetization(new_label)
             ann.GetLabel().SetValue(new_label)
@@ -911,11 +919,11 @@ class sppasTrainingCorpus(object):
 
         self.phonemap = sppasMapping(mapfile)
 
-        if self.phonemap.is_key("sil") is False:
-            self.phonemap.add('sil', '#')
+        if self.phonemap.is_key(SIL_PHON) is False:
+            self.phonemap.add(SIL_PHON, SIL_ORTHO)
 
-        if self.phonemap.is_key("sp") is False:
-            self.phonemap.add('sp', '+')
+        if self.phonemap.is_key(SP_PHON) is False:
+            self.phonemap.add(SP_PHON, SP_ORTHO)
 
         # if self.phonemap.is_key("noise") is False:
         #     self.phonemap.add('noise', 'noise')
@@ -924,7 +932,7 @@ class sppasTrainingCorpus(object):
 
         # Update the list of monophones from the phonemap table.
         for phoneme in self.phonemap:
-            if phoneme != "sp":
+            if phoneme != SP_PHON:
                 self.monophones.add(phoneme)
 
     # -----------------------------------------------------------------------
@@ -1305,7 +1313,7 @@ class sppasHTKModelTrainer(object):
         self.init_epoch_dir()
 
         # Manage sil (to extract the "silst" state).
-        sil = model.get_hmm("sil")
+        sil = model.get_hmm(SIL_PHON)
         silst = copy.deepcopy(sil.get_state(3))
         states = sil.definition['states']
         for item in states:

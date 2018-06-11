@@ -37,6 +37,8 @@ import os
 import logging
 
 from sppas import unk_stamp
+from sppas import PHONE_SYMBOLS
+
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.autils as autils
 from sppas.src.annotationdata.transcription import Transcription
@@ -54,6 +56,10 @@ import sppas.src.annotations.Align.aligners as aligners
 from ..Align.aligners.alignerio import AlignerIO
 from .spkrate import SpeakerRate
 from .anchors import AnchorTier
+
+# ----------------------------------------------------------------------------
+
+SIL_PHON = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
 
 # ----------------------------------------------------------------------------
 
@@ -578,7 +584,7 @@ class Chunks(object):
                     besttext = self._mapping.map(besttext)
 
                 if unk_stamp in besttext:
-                    besttext = besttext.replace(unk_stamp, "sil")
+                    besttext = besttext.replace(unk_stamp, SIL_PHON)
                 raw = raw + " " + besttext
 
         return sppasUnicode(raw).to_strip()

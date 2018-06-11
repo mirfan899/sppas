@@ -54,7 +54,7 @@ class sppasPhonUnk(object):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Perform a G2P conversion for unknown entries.
+    :summary:      Perform a dictionary-based phonetization for unknown entries.
 
     This class implements a language-independent algorithm to phonetize unknown
     tokens. The algorithm is based on the idea that given enough examples it
