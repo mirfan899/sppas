@@ -38,7 +38,7 @@ item []:
 			text = "non mais pas la virer mais si elle fout des baffes aux gamins alors je vois pas pourquoi elle est avec des gamins on la fout dans un bureau et_puis voilà quoi y a qu' à la mettre à la cantine @"
 	item [4]:
 		class = "IntervalTier"
-		name = "Phonetization"
+		name = "Phones"
 		xmin = 0.0
 		xmax = 6.29
 		intervals: size = 1

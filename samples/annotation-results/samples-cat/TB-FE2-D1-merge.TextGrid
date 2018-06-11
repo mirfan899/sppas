@@ -38,7 +38,7 @@ item []:
 			text = "aquell any va ser + una mica caòtic perquè nosaltres no som un país que nevi ni que estiguem preparats per la neu"
 	item [4]:
 		class = "IntervalTier"
-		name = "Phonetization"
+		name = "Phones"
 		xmin = 0.0
 		xmax = 7.22
 		intervals: size = 1

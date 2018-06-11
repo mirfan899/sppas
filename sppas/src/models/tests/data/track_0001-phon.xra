@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <Document Author="SPPAS" Date="2016-03-16" Format="1.2">
-  <Tier id="0e140d7a-1d58-0c48-5af0-9739dd2f502e" tiername="Phonetization">
+  <Tier id="0e140d7a-1d58-0c48-5af0-9739dd2f502e" tiername="Phones">
     <Metadata>
       <Entry key="id">0e140d7a-1d58-0c48-5af0-9739dd2f502e</Entry>
     </Metadata>

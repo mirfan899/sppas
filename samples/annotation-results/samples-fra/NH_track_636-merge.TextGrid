@@ -38,7 +38,7 @@ item []:
 			text = "elle divisait tout tu vois par_exemple une série de casseroles en cuivre elle disait c' est pas tu pars avec la série de casseroles non on la divise tu vois on divisait tout en deux"
 	item [4]:
 		class = "IntervalTier"
-		name = "Phonetization"
+		name = "Phones"
 		xmin = 0.0
 		xmax = 6.28
 		intervals: size = 1

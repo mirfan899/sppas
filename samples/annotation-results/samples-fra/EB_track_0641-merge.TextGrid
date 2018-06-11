@@ -38,7 +38,7 @@ item []:
 			text = "et ouais mais de_toute_façon et en_plus c' est euh tu euh quand tu vois les les brèves scientifiques que tu peux voir dans les journaux euh c ' normal que les gens se posent des questions quoi parce_que"
 	item [4]:
 		class = "IntervalTier"
-		name = "Phonetization"
+		name = "Phones"
 		xmin = 0.0
 		xmax = 6.44
 		intervals: size = 1

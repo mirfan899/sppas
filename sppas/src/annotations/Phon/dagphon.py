@@ -37,143 +37,7 @@
 """
 import re
 from sppas.src.resources.dictpron import sppasDictPron
-
-# ----------------------------------------------------------------------------
-
-
-class DAG(object):
-    """ Direct Acyclic Graph.
-
-    Implementation inspired from: http://www.python.org/doc/essays/graphs/
-
-    """
-    def __init__(self):
-        """ Create a new DAG instance.
-
-        This class represents the DAG as a dictionary.
-        For example:
-            - A -> B
-            - A -> C
-            - B -> C
-            - B -> D
-            - C -> D
-        will be represented as:
-        {'A': ['B', 'C'], 'B': ['C', 'D'], 'C': ['D'],}
-
-        """
-        self.__graph = {}
-
-    # -----------------------------------------------------------------------
-
-    def __Get(self):
-        return self.__graph
-
-    def __Set(self, dag):
-        self.__graph = dag
-
-    Graph = property(__Get, __Set)
-
-    # -----------------------------------------------------------------------
-
-    def add_node(self, node):
-        """ Add a new node (not added if already in the DAG). """
-
-        if node not in self.__graph.keys():
-            self.__graph[node] = list()
-
-    def add_edge(self, src, dst):
-        """ Add a new edge to a node. """
-
-        # TODO. Must check if no cycle...
-        self.__graph[src].append(dst)
-
-    def remove_node(self, node):
-        """ Remove a node. """
-
-        if node in self.__graph.keys():
-            del self.__graph[node]
-
-    def remove_edge(self, src, dst):
-        self.__graph[src].pop(dst)
-
-    # -----------------------------------------------------------------------
-
-    def find_path(self, start, end, path=[]):
-        """ Determine a path between two nodes.
-
-        It takes a graph and the start and end nodes as arguments. It
-        will return a list of nodes (including the start and end nodes)
-        comprising the path. When no path can be found, it returns None.
-        Note: The same node will not occur more than once on the path
-        returned (i.e. it won't contain cycles).
-
-            >>> find_path(graph, 'A', 'C')
-            >>> ['A', 'B', 'C'']
-        """
-        path += [start]
-        if start == end:
-            return [path]
-        if start not in self.__graph:
-            return []
-
-        for node in self.__graph[start]:
-            if node not in path:
-                newpath = self.find_path(node, end, path)
-                if len(newpath)>0:
-                    return newpath
-        return []
-
-    # -----------------------------------------------------------------------
-
-    def find_all_paths(self, start, end, path=[]):
-        path = path + [start]
-        if start == end:
-            return [path]
-        if start not in self.__graph:
-            return []
-
-        paths = []
-        for node in self.__graph[start]:
-            if node not in path:
-                newpaths = self.find_all_paths(node, end, path)
-                for newpath in newpaths:
-                    paths.append(newpath)
-
-        return paths
-
-    # -----------------------------------------------------------------------
-
-    def find_shortest_path(self, start, end, path=[]):
-        path += [start]
-        if start == end:
-            return path
-        if start not in self.__graph.keys():
-            return None
-
-        shortest = None
-        for node in self.__graph[start]:
-            if node not in path:
-                newpath = self.find_shortest_path(node, end, path)
-                if newpath:
-                    if not shortest or len(newpath) < len(shortest):
-                        shortest = newpath
-
-        return shortest
-
-    # -----------------------------------------------------------------------
-    # Overloads
-    # -----------------------------------------------------------------------
-
-    def __repr__(self):
-        print("Number of nodes:", len(self.__graph.keys()))
-        for i in self.__graph.keys():
-            if self.__graph[i]:
-                print("  Node ", i, " has edge to --> ", self.__graph[i])
-            else:
-                print("  Node ", i, " has no edge ")
-
-    def __len__(self):
-        return len(self.__graph)
+from sppas.src.structs.dag import DAG
 
 # ----------------------------------------------------------------------------
 
@@ -184,7 +48,7 @@ class sppasDAGPhonetizer(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Utility class to manage phonetizations with a DAG.
 
     """
@@ -219,8 +83,8 @@ class sppasDAGPhonetizer(object):
         """
         tabpron = pron.split()
 
-        graph = DAG()    # the Graph, used to store segments and to get all paths
-        prongraph = []   # the pronunciation of each segment
+        graph = DAG()        # the Graph, used to store segments and to get all paths
+        prongraph = list()   # the pronunciation of each segment
         variants = None
 
         # A Start node (required if the 1st segment has variants)
@@ -228,7 +92,7 @@ class sppasDAGPhonetizer(object):
         prongraph.append("start")
 
         # Init values
-        prec  = 1
+        prec = 1
         precv = 1
 
         # Get all longest-segments of a token
@@ -256,7 +120,7 @@ class sppasDAGPhonetizer(object):
         for k in range(prec-precv, prec):
             graph.add_edge(k, prec)
 
-        return (graph, prongraph)
+        return graph, prongraph
 
     # -----------------------------------------------------------------------
 
@@ -270,7 +134,7 @@ class sppasDAGPhonetizer(object):
         """
         pathslist = graph.find_all_paths(0, len(graph)-1)
 
-        pron = {}
+        pron = dict()
         for variant in pathslist:
             p = ""
             for i in variant[1:len(variant)-1]:  # do not include Start and End nodes
@@ -297,6 +161,7 @@ class sppasDAGPhonetizer(object):
 
         # Complex phonetization: converted into a DAG
         (graph1, prongraph1) = self.phon2DAG(pron1)
+        (graph2, prongraph2) = DAG(), list()
         if len(pron2) > 0:
             (graph2, prongraph2) = self.phon2DAG(pron2)
 
@@ -305,7 +170,7 @@ class sppasDAGPhonetizer(object):
         if len(pron2) > 0:
             pron2 = self.DAG2phon(graph2, prongraph2)
         else:
-            pron2 = {}
+            pron2 = dict()
 
         # Merge =======>
         # TODO: MERGE DAGs instead of merging prons

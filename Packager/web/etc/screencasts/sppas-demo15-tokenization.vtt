@@ -4,7 +4,7 @@
 Select audio files or the whole directory
 
 00:00:05.500 --> 00:00:07.500
-Enable "Tokenization"
+Enable "Text Normalization"
 
 00:00:10.500 --> 00:00:12.500
 Click on the "Configure" blue text
@@ -43,7 +43,7 @@ Find the wrong item(s) then delete it/them
 Be careful to save in UTF-8 encoding
 
 00:02:24.800 --> 00:02:26.767
-Perform "Tokenization" again
+Perform "Text Normalization" again
 
 00:03:02.200 --> 00:03:04.200
-Check the result and be happy!
+Check the result and (hopefully) be happy!

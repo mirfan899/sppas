@@ -92,7 +92,7 @@ The first tier that matches one of these requirements is used
 Phonetization produces a file with "-phon" appended to its name,
 i.e. "oriana1-phon.xra" for the previous example.
 This file contains only one tier with the resulting phonetization and with
-name "Phonetization".
+name "Phones".
 
 ![Phonetization workflow](./etc/figures/phonworkflow.bmp)
 

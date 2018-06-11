@@ -38,7 +38,7 @@ item []:
 			text = "oui ben oui puisque de_toute_façon il m' a dit il a trouvé un appart et tout là-haut donc c' est que euh"
 	item [4]:
 		class = "IntervalTier"
-		name = "Phonetization"
+		name = "Phones"
 		xmin = 0.0
 		xmax = 3.51
 		intervals: size = 1

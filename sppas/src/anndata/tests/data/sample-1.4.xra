@@ -108,7 +108,7 @@
 		</Annotation>
 	</Tier>
 
-	<Tier id="t4" tiername="Tokenization">
+	<Tier id="t4" tiername="Tokens">
 		<Annotation>
             <Location>
                 <Interval score="0.8">
@@ -132,7 +132,7 @@
 		</Annotation>
 	</Tier>
 
-	<Tier id="t5" tiername="Phonetization">
+	<Tier id="t5" tiername="Phones">
 		<Annotation>
             <Location>
                 <Interval score="0.8">

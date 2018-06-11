@@ -58,9 +58,13 @@
 from .sppastextnorm import sppasTextNorm
 from .orthotranscription import sppasOrthoTranscription
 from .splitter import sppasSimpleSplitter
+from .tokenize import sppasTokenSegmenter
+from .num2letter import sppasNum
 
 __all__ = [
     'sppasTextNorm',
     'sppasOrthoTranscription',
-    'sppasSimpleSplitter'
+    'sppasSimpleSplitter',
+    'sppasTokenSegmenter',
+    'sppasNum'
 ]

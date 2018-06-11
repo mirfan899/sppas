@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -76,7 +77,33 @@
         - minus separate phonemes,
         - pipes separate phonetic variants.
 
+    For details, read the following reference:
+
+        | Brigitte Bigi (2016).
+        | A phonetization approach for the forced-alignment task in SPPAS.
+        | Human Language Technology. Challenges for Computer Science and
+        | Linguistics, LNAI 9561, Springer, pp. 515–526.
+
+    To summarize:
+    -------------
+
+    A phoneme is the smallest structural unit that distinguishes meaning
+    in a language. Phonemes are not the physical segments themselves, but
+    are cognitive abstractions or categorizations of them.
+    On the other hand, phones refer to the instances of phonemes in the actual
+    utterances - i.e. the physical segments.
+
+    Phonetization consists in searching the possible phones of the given
+    utterance. In the approach implemented in this package, phonetic variants
+    are included in the result.
+
 """
 from .sppasphon import sppasPhon
+from .phonunk import sppasPhonUnk
+from .phonetize import sppasDictPhonetizer
 
-__all__ = ['sppasPhon']
+__all__ = [
+    'sppasPhon',
+    'sppasPhonUnk',
+    'sppasDictPhonetizer'
+]

@@ -38,7 +38,7 @@ item []:
 			text = "Nevar nevar + mm no mm va ser aquell dia però clar la neu vulguis que no s'hi està uns quants dies més"
 	item [4]:
 		class = "IntervalTier"
-		name = "Phonetization"
+		name = "Phones"
 		xmin = 0.0
 		xmax = 6.0
 		intervals: size = 1

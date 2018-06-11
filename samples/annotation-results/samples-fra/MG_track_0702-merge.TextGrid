@@ -38,7 +38,7 @@ item []:
 			text = "Elle habite sur Arles depuis que je la connais , mais je crois qu ' elle a pas toujours habité là-bas . Enfin , je sais plus exactement , je connais pas très très bien son parcours . @ mais euh"
 	item [4]:
 		class = "IntervalTier"
-		name = "Phonetization"
+		name = "Phones"
 		xmin = 0.0
 		xmax = 6.76
 		intervals: size = 1

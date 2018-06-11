@@ -3,20 +3,23 @@
 import unittest
 import os.path
 
-from sppas import RESOURCES_PATH
+from sppas import RESOURCES_PATH, SAMPLES_PATH
 from sppas import unk_stamp
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.mapping import sppasMapping
-from .. import ERROR_ID, WARNING_ID, OK_ID
-from ..Phon.phonetize import sppasDictPhonetizer
-from ..Phon.dagphon import sppasDAGPhonetizer
-from ..Phon.phonunk import sppasPhonUnk
-from ..Phon.sppasphon import sppasPhon
+from sppas.src.anndata import sppasRW
+
 from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.annotation import Annotation
 from sppas.src.annotationdata.ptime.interval import TimeInterval
 from sppas.src.annotationdata.ptime.point import TimePoint
 from sppas.src.annotationdata.label.label import Label
+
+from .. import ERROR_ID, WARNING_ID, OK_ID
+from ..Phon.phonetize import sppasDictPhonetizer
+from ..Phon.dagphon import sppasDAGPhonetizer
+from ..Phon.phonunk import sppasPhonUnk
+from ..Phon.sppasphon import sppasPhon
 
 # ---------------------------------------------------------------------------
 
@@ -174,7 +177,7 @@ class TestSppasPhon(unittest.TestCase):
     def test_phonetize_tier(self):
         self.sp.set_unk(True)
         self.sp.set_usestdtokens(False)
-        tier = Tier("Tokenization")
+        tier = Tier("Tokens")
         tier.Add(Annotation(TimeInterval(TimePoint(0.), TimePoint(4.2375)),
                             Label("gpd_1    the  ")))
         tier.Add(Annotation(TimeInterval(TimePoint(4.2375), TimePoint(4.6466)),
@@ -217,3 +220,59 @@ class TestPhonUnk(unittest.TestCase):
 
         self.assertEqual(self.p.get_phon('abc'), 'a-b-c|a-b-cc|aa-b-c|aa-b-cc')
         self.assertEqual(self.p.get_phon('abd'), 'a-b|aa-b')
+
+
+# ---------------------------------------------------------------------------
+
+
+class TestPhonetization(unittest.TestCase):
+    """ Test the SPPAS integration of the Phonetization. """
+
+    def test_samples(self):
+        """ Test if the current result is the same as the existing one. """
+
+        for samples_folder in os.listdir(SAMPLES_PATH):
+            if samples_folder.startswith("samples-") is False:
+                continue
+            expected_result_dir = os.path.join(SAMPLES_PATH,
+                                               "annotation-results",
+                                               samples_folder)
+
+            # Create a Phonetizer for the given set of samples
+            lang = samples_folder[-3:]
+            pron_dict = os.path.join(RESOURCES_PATH, "dict", lang+".dict")
+            tn = sppasPhon(pron_dict)
+
+            # Apply Phonetization on each sample
+            for filename in os.listdir(expected_result_dir):
+                if filename.endswith("-token.xra") is False:
+                    continue
+
+                # Get the expected result
+                expected_result_filename = os.path.join(expected_result_dir,
+                                                        filename[:-10] + "-phon.xra")
+                if os.path.exists(expected_result_filename) is False:
+                    print("no match token/phon for:", filename)
+                    continue
+                parser = sppasRW(expected_result_filename)
+                expected_result = parser.read()
+
+                # Estimate the result and check if it's like expected.
+                result = tn.run(os.path.join(SAMPLES_PATH, samples_folder, filename))
+
+                # expected_tier_tokens = expected_result.find('Phones')
+                # if expected_tier_tokens is not None:
+                #     self.compare_tiers(expected_tier_tokens, result.find('Tokens'))
+
+    # -----------------------------------------------------------------------
+
+    def compare_tiers(self, expected, result):
+        self.assertEqual(len(expected), len(result))
+        for a1, a2 in zip(expected, result):
+            self.assertEqual(a1, a2)
+            for key in a1.get_meta_keys():
+                if key != 'id':
+                    self.assertEqual(a1.get_meta(key), a2.get_meta(key))
+        for key in expected.get_meta_keys():
+            if key != 'id':
+                self.assertEqual(expected.get_meta(key), result.get_meta(key))

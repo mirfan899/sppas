@@ -7,7 +7,7 @@
 ### Text normalization
 
 * Select audio files or the whole directory
-* Enable "Tokenization"
+* Enable "Text normalization"
 * Click on the "Configure" blue text
 * Fix the options
 * Choose the language in the list

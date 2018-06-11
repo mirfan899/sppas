@@ -38,7 +38,7 @@ item []:
 			text = "L ' altre dia la meva professora de xinès em va recomanar un plat típic d' allà i + em faria gràcia + tastar -lo"
 	item [4]:
 		class = "IntervalTier"
-		name = "Phonetization"
+		name = "Phones"
 		xmin = 0.0
 		xmax = 6.901
 		intervals: size = 1

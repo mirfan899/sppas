@@ -208,7 +208,7 @@ class sppasDictPhonetizer(object):
             # entry can be already in SAMPA.
             if entry.startswith("/") is True and entry.endswith("/") is True:
                 phon = entry.strip("/")
-                # Must use SAMPA (including minus to separate phones)
+                # It must use X-SAMPA, including minus character to separate phonemes.
 
             else:
 
@@ -232,7 +232,7 @@ class sppasDictPhonetizer(object):
                         try:
                             phon = self._phonunk.get_phon(entry)
                             status = WARNING_ID
-                        except Exception:
+                        except:
                             phon = self._pdict.get_unkstamp()
                             status = ERROR_ID
 
@@ -246,9 +246,10 @@ class sppasDictPhonetizer(object):
     def phonetize(self, utterance, phonunk=True, delimiter=" "):
         """ Return the phonetization of an utterance.
 
-        :param utterance: (str) is the utterance to phonetize.
+        :param utterance: (str) The utterance string to be phonetized.
         :param phonunk: (bool) Phonetize unknown words (or not).
-        :param delimiter: (char) The character to be used as token separator in utterance.
+        :param delimiter: (char) The character to be used to separate entries
+        in the result and which was used in the given utterance.
 
         :returns: A string with the phonetization of the given utterance.
 

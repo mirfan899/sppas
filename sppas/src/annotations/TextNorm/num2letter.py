@@ -34,6 +34,7 @@
 
     Module to convert numbers to their written form the multilingual text
     normalization system.
+    Num2Letter conversion is language-specific.
 
 """
 
@@ -51,14 +52,6 @@ class sppasNum(object):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Numerical conversion using a multilingual algorithm.
 
-    For details, read the following reference:
-        - Brigitte Bigi (2011).
-        - A Multilingual Text Normalization Approach.
-        - 2nd Less-Resourced Languages workshop,
-        - 5th Language & Technology Conference, Poznan (Poland).
-
-    Num2Letter conversion is language-specific.
-
     The language names used in this class are based on iso639-3.
 
     >>> num = sppasNum('fra')
@@ -68,6 +61,9 @@ class sppasNum(object):
     >>>zéro-trois
     >>> sppasNum('3.0')
     ValueError
+
+    IMPORTANT:
+    ==========
 
     Notice that this class should be fully re-implemented.
     It should use an external resource file to make the match

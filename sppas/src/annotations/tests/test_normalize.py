@@ -1,6 +1,45 @@
-#!/usr/bin/env python2
-# -*- coding:utf-8 -*-
+# -*- coding: UTF-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.tests.test_normalize.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Test the SPPAS Text Normalization.
+
+"""
 import unittest
 import os.path
 
@@ -21,47 +60,47 @@ from ..TextNorm.sppastextnorm import sppasTextNorm
 # ---------------------------------------------------------------------------
 
 ref_es = [
-u("cero"),
-u("uno"),
-u("dos"),
-u("tres"),
-u("cuatro"),
-u("cinco"),
-u("seis"),
-u("siete"),
-u("ocho"),
-u("nueve"),
-u("diez"),
-u("once"),
-u("doce"),
-u("trece"),
-u("catorce"),
-u("quince"),
-u("dieciséis"),
-u("diecisiete"),
-u("dieciocho"),
-u("diecinueve"),
-u("veinte"),
-u("veintiuno"),
-u("veintidós"),
-u("veintitrés"),
-u("veinticuatro"),
-u("veinticinco"),
-u("veintiséis"),
-u("veintisiete"),
-u("veintiocho"),
-u("veintinueve"),
-u("treinta"),
-u("treinta-y-uno"),
-u("treinta-y-dos"),
-u("treinta-y-tres"),
-u("treinta-y-cuatro"),
-u("treinta-y-cinco"),
-u("treinta-y-seis"),
-u("treinta-y-siete"),
-u("treinta-y-ocho"),
-u("treinta-y-nueve"),
-u("cuarenta")
+    u("cero"),
+    u("uno"),
+    u("dos"),
+    u("tres"),
+    u("cuatro"),
+    u("cinco"),
+    u("seis"),
+    u("siete"),
+    u("ocho"),
+    u("nueve"),
+    u("diez"),
+    u("once"),
+    u("doce"),
+    u("trece"),
+    u("catorce"),
+    u("quince"),
+    u("dieciséis"),
+    u("diecisiete"),
+    u("dieciocho"),
+    u("diecinueve"),
+    u("veinte"),
+    u("veintiuno"),
+    u("veintidós"),
+    u("veintitrés"),
+    u("veinticuatro"),
+    u("veinticinco"),
+    u("veintiséis"),
+    u("veintisiete"),
+    u("veintiocho"),
+    u("veintinueve"),
+    u("treinta"),
+    u("treinta-y-uno"),
+    u("treinta-y-dos"),
+    u("treinta-y-tres"),
+    u("treinta-y-cuatro"),
+    u("treinta-y-cinco"),
+    u("treinta-y-seis"),
+    u("treinta-y-siete"),
+    u("treinta-y-ocho"),
+    u("treinta-y-nueve"),
+    u("cuarenta")
 ]
 
 # ---------------------------------------------------------------------------
@@ -121,6 +160,8 @@ class TestOrthoTranscription(unittest.TestCase):
         s = sppasOrthoTranscription().clean_toe(u("ah a/b euh"))
         self.assertEqual(u("ah a/b euh"), s)
 
+    # -----------------------------------------------------------------------
+
     def test_toe_spelling(self):
 
         s = sppasOrthoTranscription().toe_spelling(u('je, fais: "un essai".'))
@@ -142,6 +183,8 @@ class TestOrthoTranscription(unittest.TestCase):
 
         s = sppasOrthoTranscription().toe_spelling(u('(/'))
         self.assertEqual(u('( / '), s)
+
+    # -----------------------------------------------------------------------
 
     def test_toe(self):
 
@@ -170,6 +213,8 @@ class TestSimpleSplitter(unittest.TestCase):
         result = splitter.split_characters("abc123")
         expected = u(" abc123 ")
         self.assertEqual(expected, result)
+
+    # -----------------------------------------------------------------------
 
     def test_split(self):
         """ Split character-based or romanized string. """
@@ -206,10 +251,14 @@ class TestNum2Letter(unittest.TestCase):
         with self.assertRaises(ValueError):
             num.convert('3.0')
 
+    # -----------------------------------------------------------------------
+
     def test_num2letterFR(self):
         num = sppasNum('fra')
         s = num.convert("123")
         self.assertEquals(s, u("cent-vingt-trois"))
+
+    # -----------------------------------------------------------------------
 
     def test_num2letterES(self):
         num = sppasNum('spa')
@@ -241,6 +290,8 @@ class TestNormalizer(unittest.TestCase):
         puncts = sppasVocabulary(punct_file)
         self.tok = TextNormalizer(wds, "fra")
         self.tok.set_punct(puncts)
+
+    # -----------------------------------------------------------------------
 
     def test_replace(self):
 
@@ -278,6 +329,8 @@ class TestNormalizer(unittest.TestCase):
         s = self.tok.replace(text)
         self.assertEquals(" ".join(s), u("的平方 个百分比 摄氏度 公里每小时 etc € ¥ $"))
 
+    # -----------------------------------------------------------------------
+
     def test_tokenize(self):
 
         self.tok.set_lang("fra")
@@ -291,6 +344,8 @@ class TestNormalizer(unittest.TestCase):
 
         # not sampa...
         self.assertEqual(u('le mot').split(), self.tok.normalize(u("/le mot/")))
+
+    # -----------------------------------------------------------------------
 
     def test_num2letter(self):
         """ Test the integration of num2letter into the TextNormalizer. """
@@ -307,10 +362,14 @@ class TestNormalizer(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.tok.normalize(u("123"))
 
+    # -----------------------------------------------------------------------
+
     def test_remove_punct(self):
 
         self.tok.set_lang("fra")
         self.assertEquals(u("un deux").split(), self.tok.normalize(u("/un, deux!!!")))
+
+    # -----------------------------------------------------------------------
 
     def test_stick(self):
 
@@ -321,6 +380,8 @@ class TestNormalizer(unittest.TestCase):
         self.assertEquals(s, [u("au_fur_et_à_mesure")])
         s = t.bind([u("rock'n roll")])   # not in lexicon
         self.assertEquals(s, [u("rock'n")])
+
+    # -----------------------------------------------------------------------
 
     def test_sampa(self):
 
@@ -338,6 +399,8 @@ class TestNormalizer(unittest.TestCase):
         # whitespace is not accepted in sampa transcription
         self.assertEqual(u("le mot").split(), self.tok.normalize(u(" /le mot/ ")))
 
+    # -----------------------------------------------------------------------
+
     def test_code_switching(self):
 
         dictdir  = os.path.join(RESOURCES_PATH, "vocab")
@@ -351,6 +414,8 @@ class TestNormalizer(unittest.TestCase):
         #self.tok.set_vocab(wds)
         #splitswitch = self.tok.tokenize(u'et il m\'a dit : "《干脆就把那部蒙人的闲法给废了拉倒！》RT @laoshipukong : 27日"')
         #self.assertEqual(splitswitch, u"et il m' a dit 干脆 就 把 那 部 蒙 人 的 闲 法 给 废 了 拉倒 rt @ laoshipukong 二十七 日")
+
+    # -----------------------------------------------------------------------
 
     def test_acronyms(self):
 
@@ -368,6 +433,9 @@ class TestTextNorm(unittest.TestCase):
         for samples_folder in os.listdir(SAMPLES_PATH):
             if samples_folder.startswith("samples-") is False:
                 continue
+            expected_result_dir = os.path.join(SAMPLES_PATH,
+                                               "annotation-results",
+                                               samples_folder)
 
             # Create a TextNormalizer for the given set of samples
             lang = samples_folder[-3:]
@@ -383,9 +451,6 @@ class TestTextNorm(unittest.TestCase):
                     continue
 
                 # Get the expected result
-                expected_result_dir = os.path.join(SAMPLES_PATH,
-                                                   "annotation-results",
-                                                   samples_folder)
                 expected_result_filename = os.path.join(expected_result_dir,
                                                         filename[:-9] + "-token.xra")
                 if os.path.exists(expected_result_filename) is False:
@@ -408,6 +473,8 @@ class TestTextNorm(unittest.TestCase):
                 if expected_tier_tokens is not None:
                     self.compare_tiers(expected_tier_tokens, result.find('TokensCustom'))
 
+    # -----------------------------------------------------------------------
+
     def compare_tiers(self, expected, result):
         self.assertEqual(len(expected), len(result))
         for a1, a2 in zip(expected, result):
@@ -418,4 +485,3 @@ class TestTextNorm(unittest.TestCase):
         for key in expected.get_meta_keys():
             if key != 'id':
                 self.assertEqual(expected.get_meta(key), result.get_meta(key))
-

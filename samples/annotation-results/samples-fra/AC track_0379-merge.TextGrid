@@ -38,7 +38,7 @@ item []:
 			text = "une classe entière qui a bien vu comment ça s'est passé"
 	item [4]:
 		class = "IntervalTier"
-		name = "Phonetization"
+		name = "Phones"
 		xmin = 0.0
 		xmax = 2.328813
 		intervals: size = 1

@@ -106,7 +106,7 @@ def align2phon(aligntier, separators=SYMBOLS):
     :param separators: (list)
 
     """
-    phontier = Tier("Phonetization")
+    phontier = Tier("Phones")
     b = TimePoint(aligntier.GetBegin().GetMidpoint())
     e = b
     l = ""

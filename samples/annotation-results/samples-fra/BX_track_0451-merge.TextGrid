@@ -38,7 +38,7 @@ item []:
 			text = "et_puis on euh même si on essaie de mémoriser pour pas se tromper la fois d'après la fois d'après ça a changé"
 	item [4]:
 		class = "IntervalTier"
-		name = "Phonetization"
+		name = "Phones"
 		xmin = 0.0
 		xmax = 3.84
 		intervals: size = 1

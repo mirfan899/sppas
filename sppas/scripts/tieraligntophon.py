@@ -143,7 +143,7 @@ try:
     align_tier = sppasSearchTier.aligned_phones(trs_input)
     logging.info("PhonAlign tier found.")
     phon_tier = unalign(align_tier)
-    phon_tier.SetName("Phonetization")
+    phon_tier.SetName("Phones")
     trs_out.Add(phon_tier)
 except IOError:
     logging.info("PhonAlign tier not found.")
@@ -156,7 +156,7 @@ if args.tok:
         align_tier = sppasSearchTier.aligned_tokens(trs_input)
         logging.info("TokensAlign tier found.")
         token_tier = unalign(align_tier)
-        token_tier.SetName("Tokenization")
+        token_tier.SetName("Tokens")
         trs_out.Add(token_tier)
     except IOError:
         logging.info("TokensAlign tier not found.")

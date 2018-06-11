@@ -33,12 +33,6 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     SPPAS integration of Phonetization.
-    For details, read the following reference:
-
-        | Brigitte Bigi (2016).
-        | A phonetization approach for the forced-alignment task in SPPAS.
-        | Human Language Technology. Challenges for Computer Science and 
-        | Linguistics, LNAI 9561, Springer, pp. 515–526.
 
 """
 from sppas import unk_stamp
@@ -133,7 +127,7 @@ class sppasPhon(sppasBaseAnnotation):
     def set_unk(self, unk):
         """ Fix the unk option value.
 
-        :param unk: (bool) If unk is set to True, the system will attempt
+        :param unk: (bool) If unk is set to True, the system attempts
         to phonetize unknown entries (i.e. tokens missing in the dictionary).
         Otherwise, the phonetization of an unknown entry unit is set to the
         default stamp.
@@ -147,7 +141,7 @@ class sppasPhon(sppasBaseAnnotation):
         """ Fix the stdtokens option.
 
         :param stdtokens: (bool) If it is set to True, the phonetization
-        will use the standard transcription as input, instead of the faked
+        uses the standard transcription as input, instead of the faked
         transcription. This option does make sense only for an Enriched
         Orthographic Transcription.
 
@@ -172,6 +166,7 @@ class sppasPhon(sppasBaseAnnotation):
 
     def phonetize(self, entry):
         """ Phonetize a text.
+
         Because we absolutely need to match with the number of tokens, this
         method will always return a string: either the automatic phonetization
         (from dict or from phonunk) or the unk_stamp.
@@ -180,7 +175,8 @@ class sppasPhon(sppasBaseAnnotation):
         :returns: phonetization of the given entry
 
         """
-        tab = self.phonetizer.get_phon_tokens(entry.split(), phonunk=self._options['phonunk'])
+        tab = self.phonetizer.get_phon_tokens(entry.split(),
+                                              phonunk=self._options['phonunk'])
         tabphon = list()
         for tex, p, s in tab:
             message = None
@@ -209,10 +205,10 @@ class sppasPhon(sppasBaseAnnotation):
         """ Phonetize annotations of a tokenized tier.
 
         :param tier: (Tier) the orthographic transcription previously tokenized.
-        :returns: (Tier) phonetized tier with name "Phonetization"
+        :returns: (Tier) phonetized tier with name "Phones"
 
         """
-        new_tier = Tier("Phonetization")
+        new_tier = Tier("Phones")
         if tier is None:
             return new_tier
 
@@ -238,11 +234,12 @@ class sppasPhon(sppasBaseAnnotation):
 
     # ------------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename):
+    def run(self, input_filename, output_filename=None):
         """ Run the Phonetization process on an input file.
 
         :param input_filename (str) Name of the file including a tokenization
         :param output_filename (str) Name of the resulting file with phonetization
+        :returns: (sppasTranscription)
 
         """
         self.print_options()
@@ -263,4 +260,7 @@ class sppasPhon(sppasBaseAnnotation):
         trs_output.Append(tier_phon)
 
         # Save in a file
-        sppas.src.annotationdata.aio.write(output_filename, trs_output)
+        if output_filename is not None:
+            sppas.src.annotationdata.aio.write(output_filename, trs_output)
+
+        return trs_output

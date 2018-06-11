@@ -158,7 +158,7 @@ item []:
 			text = "#"
 	item [4]:
 		class = "IntervalTier"
-		name = "Phonetization"
+		name = "Phones"
 		xmin = 0.0
 		xmax = 21.3471
 		intervals: size = 11

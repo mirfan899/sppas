@@ -23,7 +23,7 @@
 		<Entry key="file_created_date">2018-22-30 09:22</Entry>
 	</Metadata>
 
-	<Tier id="4a513d1b-9c32-3b84-1ab8-9020fe0d530b" tiername="Phonetization">
+	<Tier id="4a513d1b-9c32-3b84-1ab8-9020fe0d530b" tiername="Phones">
 		<Annotation id="8c029d6c-1d24-9b89-6fd4-8890bc8d646a">
 			<Location>
 				<Interval>

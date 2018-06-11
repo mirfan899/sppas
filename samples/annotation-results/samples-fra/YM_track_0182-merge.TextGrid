@@ -38,7 +38,7 @@ item []:
 			text = "et euh donc donc du_coup c' est toi c' est un_peu toi qui a les premiers contacts avec le avec le gosse quoi + et_puis là ils te demandent le prénom donc faut ce soit prêt là @ parce_que putain"
 	item [4]:
 		class = "IntervalTier"
-		name = "Phonetization"
+		name = "Phones"
 		xmin = 0.0
 		xmax = 7.4605
 		intervals: size = 1
