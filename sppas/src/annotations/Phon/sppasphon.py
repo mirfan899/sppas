@@ -36,8 +36,8 @@
 
 """
 from sppas import unk_stamp
-
 from sppas import PHONE_SYMBOLS, ORTHO_SYMBOLS
+from sppas import VARIANTS_SEPARATOR
 
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
@@ -59,10 +59,10 @@ from .phonetize import sppasDictPhonetizer
 
 # ---------------------------------------------------------------------------
 
-MSG_MISSING = ":INFO 1110: "
-MSG_PHONETIZED = ":INFO 1112: "
-MSG_NOT_PHONETIZED = ":INFO 1114: "
-MSG_TRACK = t.gettext(":INFO 1220: ")
+MSG_MISSING = (t.gettext(":INFO 1110: "))
+MSG_PHONETIZED = (t.gettext(":INFO 1112: "))
+MSG_NOT_PHONETIZED = (t.gettext(":INFO 1114: "))
+MSG_TRACK = (t.gettext(":INFO 1220: "))
 
 SIL = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
 SIL_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("silence")]
@@ -192,16 +192,16 @@ class sppasPhon(sppasBaseAnnotation):
         for tex, p, s in tab:
             message = None
             if s == ERROR_ID:
-                message = (t.gettext(MSG_MISSING)).format(tex) + t.gettext(MSG_NOT_PHONETIZED)
+                message = MSG_MISSING.format(tex) + MSG_NOT_PHONETIZED
                 self.print_message(message, indent=3, status=s)
                 return unk_stamp
             else:
                 if s == WARNING_ID:
-                    message = (t.gettext(MSG_MISSING)).format(tex)
+                    message = MSG_MISSING.format(tex)
                     if len(p) > 0:
-                        message = message + (t.gettext(MSG_PHONETIZED)).format(p)
+                        message = message + MSG_PHONETIZED.format(p)
                     else:
-                        message = message + t.gettext(MSG_NOT_PHONETIZED)
+                        message = message + MSG_NOT_PHONETIZED
                         p = unk_stamp
                 tab_phones.append(p)
 
@@ -233,23 +233,22 @@ class sppasPhon(sppasBaseAnnotation):
             for label in ann.get_labels():
 
                 phonetizations = list()
-                # TEMPORARILY, phonetize only the best tag
-                # TODO: phonetize also alternative tags
-                text = label.get_best()
-                if text.is_pause():
-                    # It's in case the pronunciation dictionary
-                    # were not properly fixed.
-                    phonetizations = [SIL]
+                for text, score in label:
+                    if text.is_pause() or text.is_silence():
+                        # It's in case the pronunciation dictionary
+                        # were not properly fixed.
+                        phonetizations.append(SIL)
 
-                elif text.is_silence():
-                    phonetizations = [SIL_ORTHO]
+                    elif text.is_empty() is False:
+                        phones = self.phonetize(text.get_content(), i)
+                        for p in phones:
+                            phonetizations.extend(p.split(VARIANTS_SEPARATOR))
 
-                elif text.is_empty() is False:
-                    phonetizations = self.phonetize(text.get_content(), i)
-
-                # New in SPPAS 1.9.6. The result is a sequence of labels.
-                for phones in phonetizations:
-                    labels.append(sppasLabel(sppasTag(phones)))
+                # New in SPPAS 1.9.6.
+                #  - The result is a sequence of labels.
+                #  - Variants are alternative tags.
+                tags = [sppasTag(p) for p in set(phonetizations)]
+                labels.append(sppasLabel(tags))
 
             phones_tier.create_annotation(location, labels)
 

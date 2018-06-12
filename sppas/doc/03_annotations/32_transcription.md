@@ -23,14 +23,15 @@ what is recommended.
 Convention overview:
 
 * truncated words, noted as a '-' at the end of the token string (an ex- example);
-* noises, noted by a '*' (not available for Japanese and Cantonese);
-* laughs, noted by a '@' (not available for Japanese and Cantonese);
+* noises, noted by a '*' (not available for some languages);
+* laughter, noted by a '@' (not available for some languages);
 * short pauses, noted by a '+';
 * elisions, mentioned in parenthesis;
 * specific pronunciations, noted with brackets [example,eczap];
-* comments are noted inside braces or brackets without using comma {this} or [this and this];
-* liaisons, noted between '=' (an =n= example);
-* morphological variants with \<like,lie ok\>,
+* comments are preferably noted inside braces {this is a comment!};
+* comments can be noted inside brackets without using comma [this and this];
+* liaisons, noted between '=' (this =n= example);
+* morphological variants with \<ice scream,I scream\>,
 * proper name annotation, like \$ John S. Doe \$.
 
 SPPAS also allows to include in the transcription the regular punctuations,

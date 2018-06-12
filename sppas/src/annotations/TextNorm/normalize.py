@@ -267,7 +267,7 @@ class TextNormalizer(object):
         """ Remove data of an utterance if included in a dictionary.
         Only used to remove punctuation.
 
-        :param entry:
+        :param utt: (list)
         :param wlist: (WordList)
 
         """
@@ -342,6 +342,8 @@ class TextNormalizer(object):
         if "lower" in actions:
             utt = self.lower(utt)
 
+        utt = TextNormalizer.variants(utt)
+
         if "punct" in actions:
             utt = self.remove(utt, self.punct)
 
@@ -356,3 +358,34 @@ class TextNormalizer(object):
         # if len(result) == 0:
         #     return ""  # Nothing valid!
         # return result.replace(" ", self.delimiter)
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def variants(utt):
+        """ Convert strings that are varaints in the utterance.
+
+        :param utt: (list)
+
+        """
+        c = " ".join(utt)
+        c = c.replace('{ ', '{')
+        c = c.replace(' }', '}')
+        c = c.replace(' | ', '|')
+
+        inside = False
+        cc = u("")
+        for i, character in enumerate(c):
+            if character == "{":
+                inside = True
+            elif character == "}":
+                inside = False
+
+            if inside is True:
+                if character == " ":
+                    cc += u("_")
+                else:
+                    cc += character
+            else:
+                cc += character
+        return cc.split()

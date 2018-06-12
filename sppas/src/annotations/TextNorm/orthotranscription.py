@@ -93,6 +93,7 @@ class sppasOrthoTranscription(object):
         entry = re.sub(u(',\s?[PTS]+\s?[\\/\\\]+\s?\\$'), r'', entry, re.UNICODE)
         entry = re.sub(u('\$'), r'', entry, re.UNICODE)
 
+        # Tags of the activity
         entry = re.sub(u('(gpd_[0-9]+)'), r" ", entry, re.UNICODE)
         entry = re.sub(u('(gpf_[0-9]+)'), r" ", entry, re.UNICODE)
         entry = re.sub(u('(ipu_[0-9]+)'), r" ", entry, re.UNICODE)
@@ -136,7 +137,7 @@ class sppasOrthoTranscription(object):
         # Laughing sequences
         _fentry = re.sub(u("\s?@\s?@\s?"), u(' '), _fentry, re.UNICODE)
 
-        # Laughing
+        # Laughter
         _fentry = re.sub(u("([\w\xaa-\xff]+)@"), u(r"\1 @"), _fentry, re.UNICODE)
         _fentry = re.sub(u("@([\w\xaa-\xff]+)"), u(r"@ \1"), _fentry, re.UNICODE)
 
@@ -156,9 +157,11 @@ class sppasOrthoTranscription(object):
             # Special elisions (keep parenthesis content)
             _fentry = re.sub(u('\\(([\s\w\xaa-\xff\-]+)\\)'), u(r'\1'), _fentry, re.UNICODE)
 
-        # Morphological variants are ignored for phonetization (same pronunciation!)
-        _fentry = re.sub(u('\s+\\<([\-\'\s\w\xaa-\xff]+),[\-\'\s\w\xaa-\xff]+\\>'), u(r' \1'), _fentry, re.UNICODE)
-        _fentry = re.sub(u('\s+\\{([\-\'\s\w\xaa-\xff]+),[\-\'\s\w\xaa-\xff]+\\}'), u(r' \1'), _fentry, re.UNICODE)
+        # Morphological variants
+        _fentry = re.sub(u('\s+\\<([\-\'\s\w\xaa-\xff]+),([\-\'\s\w\xaa-\xff]+)\\>'), u(r' {\1|\2}'), _fentry, re.UNICODE)
+        # the following is removed from SPPAS 1.9.6. It probably corresponded to a corpus...
+        # dont remember exactly!
+        # _fentry = re.sub(u('\s+\\{([\-\'\s\w\xaa-\xff]+),[\-\'\s\w\xaa-\xff]+\\}'), u(r' \1'), _fentry, re.UNICODE)
 
         if std is False:
             # Special pronunciations (keep right part)

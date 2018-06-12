@@ -36,6 +36,7 @@ import os
 import codecs
 
 from sppas import encoding
+from sppas import VARIANTS_SEPARATOR, PHONEMES_SEPARATOR
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.makeunicode import sppasUnicode
 
@@ -118,7 +119,7 @@ class AlignIO(object):
     ??? HOW TO DO: READ ALL ALTERNATIVE LABELS AND MERGE ALTERNATIVE RESULTS ???
 
     """
-    DELIMITERS = (" ", "|", "-")
+    DELIMITERS = (" ", VARIANTS_SEPARATOR, PHONEMES_SEPARATOR)
 
     def __init__(self, mapping, model):
         """ Creates a new AlignIO instance.
@@ -245,12 +246,12 @@ class AlignIO(object):
         # Map phonetizations (even the alternatives)
         for ann in phontier:
             for text in ann.GetLabel().GetLabels():
-                # in case we previously had a sequence of labels, we serialized into only one
+                # in case we previously had a sequence of labels, which we serialized into only one
                 content = text.GetValue().replace('\n', ' ')
-                # in cas we previously had alternative tags, we serialized into only one
-                # we remove braces but we keep the pipe (!)
+                # in case we previously had alternative tags, which we serialized into only one
                 content = content.replace('{', '')
                 content = content.replace('}', '')
+                content = content.replace('|', VARIANTS_SEPARATOR)
                 text.SetValue(self._mapping.map(content,
                                                 AlignIO.DELIMITERS))
 

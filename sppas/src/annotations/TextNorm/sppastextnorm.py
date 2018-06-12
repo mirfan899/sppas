@@ -298,9 +298,16 @@ class sppasTextNorm(sppasBaseAnnotation):
                 else:
                     tokens = [text.get_content()]
 
-                # New in SPPAS 1.9.6. The result is a sequence of labels.
+                # New in SPPAS 1.9.6.
+                #  - The result is a sequence of labels.
+                #  - Token variants are stored into alternative tags
                 for tok in tokens:
-                    labels.append(sppasLabel(sppasTag(tok)))
+                    if tok.startswith('{') and tok.endswith('}'):
+                        tok = tok[1:-1]
+                        tags = [sppasTag(p) for p in tok.split('|')]
+                    else:
+                        tags = sppasTag(tok)
+                    labels.append(sppasLabel(tags))
 
             tokens_tier.create_annotation(location, labels)
 
