@@ -90,7 +90,7 @@ msgid ":INFO 1037: "
 msgstr "Langages selectionnés"
 
 msgid ":INFO 1038: "
-msgstr "Fichiers sélectionnés"
+msgstr "Fichiers et dossiers sélectionnés"
 
 msgid ":INFO 1039: "
 msgstr "Annotations sélectionnées"
@@ -119,6 +119,12 @@ msgstr "Options"
 msgid ":INFO 1052: "
 msgstr "Diagnostic"
 
+msgid ":INFO 1054: "
+msgstr "Compte-rendu d'exécution"
+
+msgid ":INFO 1056: "
+msgstr "Fichier {!s:s}"
+
 msgid ":INFO 1110: "
 msgstr "{:s} est absent du dictionnaire et "
 
@@ -132,7 +138,7 @@ msgid ":INFO 1210: "
 msgstr "Le modèle donné pour la langue L1 {:s} a été ignoré."
 
 msgid ":INFO 1220: "
-msgstr "Alignement de l'intervalle numéro {number}."
+msgstr "Intervalle numéro {number}."
 
 msgid ":INFO 1222: "
 msgstr "L'intervalle est vide."
@@ -153,7 +159,7 @@ msgid ":INFO 1254: "
 msgstr "Fusion des alignements"
 
 msgid ":INFO 1256: "
-msgstr "Sauvegarde"
+msgstr "Fichier {!s:s}"
 
 msgid ":INFO 1260: "
 msgstr "Alignement des tokens désactivé."

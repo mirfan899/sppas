@@ -66,7 +66,7 @@ class sppasMomel(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        sppasBaseAnnotation.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile, "Momel")
 
         self.momel = Momel()
         self.PAS_TRAME = 10.
@@ -200,6 +200,7 @@ class sppasMomel(sppasBaseAnnotation):
         Apply momel from a pitch file.
 
         """
+        self.print_filename(input_filename)
         self.print_options()
         self.print_diagnosis(input_filename)
 

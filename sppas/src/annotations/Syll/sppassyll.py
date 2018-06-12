@@ -33,12 +33,6 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     SPPAS integration of Syllabification.
-    For details, read the following reference:
-
-        | Brigitte Bigi, Christine Meunier, Irina Nesterenko, Roxane Bertrand (2010).
-        | Automatic detection of syllable boundaries in spontaneous speech.
-        | In Language Resource and Evaluation Conference, pp. 3285–3292,
-        | La Valetta, Malta.
 
 """
 from sppas.src.annotations.Syll.syllabification import Syllabification
@@ -46,9 +40,15 @@ import sppas.src.annotationdata.aio
 from sppas.src.annotationdata.transcription import Transcription
 
 from .. import WARNING_ID
+from .. import t
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasSearchTier
 from ..annotationsexc import AnnotationOptionError
+from ..annotationsexc import EmptyOutputError
+
+# ----------------------------------------------------------------------------
+
+MSG_TRACK = t.gettext(":INFO 1220: ")
 
 # ----------------------------------------------------------------------------
 
@@ -88,7 +88,7 @@ class sppasSyll(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        sppasBaseAnnotation.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile, "Syllabification")
 
         self.syllabifier = Syllabification(config_filename, logfile)
 
@@ -182,13 +182,14 @@ class sppasSyll(sppasBaseAnnotation):
 
     # ------------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename):
+    def run(self, input_filename, output_filename=None):
         """ Perform the Syllabification process.
 
         :param input_filename: (str) Name of the input file with the aligned phonemes
         :param output_filename: (str) Name of the resulting file with syllabification
 
         """
+        self.print_filename(input_filename)
         self.print_options()
         self.print_diagnosis(input_filename)
 
@@ -203,7 +204,14 @@ class sppasSyll(sppasBaseAnnotation):
                 message = "The use of %s is disabled. Tier not found." % (self._options['tiername'])
                 self.logfile.print_message(message, indent=2, status=WARNING_ID)
 
-        syllables = self.convert(phonemes, intervals)
+        trs_output = self.convert(phonemes, intervals)
 
         # Save in a file
-        sppas.src.annotationdata.aio.write(output_filename, syllables)
+        if output_filename is not None:
+            if len(trs_output) > 0:
+                sppas.src.annotationdata.aio.write(output_filename, trs_output)
+                self.print_filename(output_filename, status=0)
+            else:
+                raise EmptyOutputError
+
+        return trs_output

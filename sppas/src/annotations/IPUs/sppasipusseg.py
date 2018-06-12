@@ -61,7 +61,7 @@ class sppasIPUseg(sppasBaseAnnotation):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      SPPAS integration of the IPUs segmentation.
 
     """
@@ -72,7 +72,7 @@ class sppasIPUseg(sppasBaseAnnotation):
         messages to the user.
 
         """
-        sppasBaseAnnotation.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile, "IPUs Segmentation")
 
         self.ipusaudio = IPUsAudio(None)  # Find IPUs from an audio file
         self.ipustrs = IPUsTrs(None)      # Get IPUs from a transcription file
@@ -274,6 +274,7 @@ class sppasIPUseg(sppasBaseAnnotation):
         :param trsoutput: (str) a file name to save the IPUs segmentation result.
 
         """
+        self.print_filename(audiofile)
         self.print_options()
         self.print_diagnosis(audiofile)
 

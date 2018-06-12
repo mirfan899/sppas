@@ -35,6 +35,7 @@
 
 """
 import logging
+import os.path
 
 from sppas.src.utils.makeunicode import u
 from . import ERROR_ID, WARNING_ID, INFO_ID
@@ -45,6 +46,7 @@ from .diagnosis import sppasDiagnosis
 
 MSG_OPTIONS = t.gettext(":INFO 1050: ")
 MSG_DIAGNOSIS = t.gettext(":INFO 1052: ")
+MSG_ANN_FILE = (t.gettext(":INFO 1056: "))
 
 # ---------------------------------------------------------------------------
 
@@ -59,12 +61,15 @@ class sppasBaseAnnotation(object):
     :summary:      SPPAS Base class of any automatic annotation.
 
     """
-    def __init__(self, logfile=None):
+    def __init__(self, logfile=None, name="Annotation"):
         """ Base class for any SPPAS automatic annotation.
 
         :param logfile: (sppasLog) 
         
         """
+        # The public name of the automatic annotation
+        self.name = name
+
         # Log messages for the user
         self.logfile = logfile
 
@@ -126,6 +131,21 @@ class sppasBaseAnnotation(object):
 
     # -----------------------------------------------------------------------
 
+    def print_filename(self, filename, status=None):
+        """ Print the annotation name that is applied on a filename in the user log.
+
+        :param filename: (str) Name of the file to annotate.
+        :param status: (int) 1-4 value or None
+
+        """
+        if self.logfile:
+            fn = os.path.basename(filename)
+            self.print_message(MSG_ANN_FILE.format(fn), indent=1, status=status)
+        else:
+            logging.info(MSG_ANN_FILE.format(filename))
+
+    # -----------------------------------------------------------------------
+
     def print_options(self):
         """ Print the list of options in the user log. """
         
@@ -144,5 +164,6 @@ class sppasBaseAnnotation(object):
         self.print_message(MSG_DIAGNOSIS + ": ", indent=2, status=None)
         for filename in filenames:
             if filename is not None:
+                fn = os.path.basename(filename)
                 (s, m) = sppasDiagnosis.check_file(filename)
-                self.print_message(" - {!s:s}: {!s:s}".format(filename, m), indent=3, status=None)
+                self.print_message(" - {!s:s}: {!s:s}".format(fn, m), indent=3, status=None)

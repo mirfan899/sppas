@@ -83,7 +83,7 @@ class sppasRepet(sppasBaseAnnotation):
         must be ".stp" for stop-words and ".lem" for lemmas (case-sensitive)!
 
         """
-        sppasBaseAnnotation.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile, "Repetitions")
 
         # Members
         self._use_lemmatize = True   # Lemmatize the input
@@ -418,6 +418,7 @@ class sppasRepet(sppasBaseAnnotation):
         :param output_filename: Name of the file to save the result
 
         """
+        self.print_filename(input_filename1)
         self.print_options()
         self.print_diagnosis(input_filename1)
         if input_filename2 is not None:

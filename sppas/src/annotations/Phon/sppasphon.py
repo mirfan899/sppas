@@ -59,9 +59,10 @@ from .phonetize import sppasDictPhonetizer
 
 # ---------------------------------------------------------------------------
 
-MISSING = ":INFO 1110: "
-PHONETIZED = ":INFO 1112: "
-NOT_PHONETIZED = ":INFO 1114: "
+MSG_MISSING = ":INFO 1110: "
+MSG_PHONETIZED = ":INFO 1112: "
+MSG_NOT_PHONETIZED = ":INFO 1114: "
+MSG_TRACK = t.gettext(":INFO 1220: ")
 
 SIL = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
 SIL_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("silence")]
@@ -90,7 +91,7 @@ class sppasPhon(sppasBaseAnnotation):
         :raises: ValueError if loading the dictionary fails
 
         """
-        sppasBaseAnnotation.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile, "Phonetization")
 
         # Pronunciation dictionary
         self.maptable = None
@@ -191,16 +192,16 @@ class sppasPhon(sppasBaseAnnotation):
         for tex, p, s in tab:
             message = None
             if s == ERROR_ID:
-                message = (t.gettext(MISSING)).format(tex) + t.gettext(NOT_PHONETIZED)
+                message = (t.gettext(MSG_MISSING)).format(tex) + t.gettext(MSG_NOT_PHONETIZED)
                 self.print_message(message, indent=3, status=s)
                 return unk_stamp
             else:
                 if s == WARNING_ID:
-                    message = (t.gettext(MISSING)).format(tex)
+                    message = (t.gettext(MSG_MISSING)).format(tex)
                     if len(p) > 0:
-                        message = message + (t.gettext(PHONETIZED)).format(p)
+                        message = message + (t.gettext(MSG_PHONETIZED)).format(p)
                     else:
-                        message = message + t.gettext(NOT_PHONETIZED)
+                        message = message + t.gettext(MSG_NOT_PHONETIZED)
                         p = unk_stamp
                 tab_phones.append(p)
 
@@ -223,6 +224,8 @@ class sppasPhon(sppasBaseAnnotation):
 
         phones_tier = sppasTier("Phones")
         for i, ann in enumerate(tier):
+            self.print_message(MSG_TRACK.format(number=i+1), indent=2)
+
             location = ann.get_location().copy()
             labels = list()
 
@@ -262,6 +265,7 @@ class sppasPhon(sppasBaseAnnotation):
         :returns: (sppasTranscription)
 
         """
+        self.print_filename(input_filename)
         self.print_options()
         self.print_diagnosis(input_filename)
 
@@ -289,6 +293,7 @@ class sppasPhon(sppasBaseAnnotation):
             if len(trs_output) > 0:
                 parser = sppasRW(output_filename)
                 parser.write(trs_output)
+                self.print_filename(output_filename, status=0)
             else:
                 raise EmptyOutputError
 

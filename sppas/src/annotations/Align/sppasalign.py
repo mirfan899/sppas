@@ -71,7 +71,6 @@ MSG_BASIC = (t.gettext(":INFO 1240: "))
 MSG_ACTION_SPLIT_INTERVALS = (t.gettext(":INFO 1250: "))
 MSG_ACTION_ALIGN_INTERVALS = (t.gettext(":INFO 1252: "))
 MSG_ACTION_MERGE_INTERVALS = (t.gettext(":INFO 1254: "))
-MSG_ACTION_SAVE = (t.gettext(":INFO 1256: "))
 MSG_TOKENS_DISABLED = (t.gettext(":INFO 1260: "))
 MSG_NO_TOKENS_ALIGN = (t.gettext(":INFO 1262: "))
 MSG_EXTRA_TIER = (t.gettext(":INFO 1270: "))
@@ -111,7 +110,7 @@ class sppasAlign(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        sppasBaseAnnotation.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile, "Alignment")
         self.mapping = sppasMapping()
         self.alignio = None
 
@@ -306,7 +305,7 @@ class sppasAlign(sppasBaseAnnotation):
 
         track = 1
         while track <= ntracks:
-            self.print_message(MSG_ALIGN_TRACK.format(number=track), indent=3)
+            self.print_message(MSG_ALIGN_TRACK.format(number=track), indent=2)
 
             try:
                 msg = self.alignio.segment_track(track, diralign)
@@ -357,7 +356,6 @@ class sppasAlign(sppasBaseAnnotation):
         # Align each track
         # --------------------------------------------------------------
 
-        self.print_message(MSG_ACTION_ALIGN_INTERVALS, indent=2)
         self.convert_tracks(workdir)
 
         # Merge track alignment results
@@ -474,6 +472,7 @@ class sppasAlign(sppasBaseAnnotation):
         :returns: (Transcription)
 
         """
+        self.print_filename(audioname)
         self.print_options()
         self.print_diagnosis(audioname, phonesname, tokensname)
 
@@ -525,9 +524,9 @@ class sppasAlign(sppasBaseAnnotation):
         # Save results
         # --------------------------------------------------------------
         try:
-            self.print_message(MSG_ACTION_SAVE, indent=3)
             # Save in a file
             sppas.src.annotationdata.aio.write(outputfilename, trs_output)
+            self.print_filename(outputfilename, status=0)
         except Exception:
             if self._options['clean'] is True:
                 shutil.rmtree(workdir)

@@ -66,7 +66,7 @@ class sppasChunks(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        sppasBaseAnnotation.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile, "Chunks")
 
         self.chunks = Chunks(model)
 
@@ -180,6 +180,7 @@ class sppasChunks(sppasBaseAnnotation):
         :returns: Transcription
 
         """
+        self.print_filename(audioname)
         self.print_options()
         self.print_diagnosis(audioname, phonesname, tokensname)
 

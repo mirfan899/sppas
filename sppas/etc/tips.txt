@@ -2,7 +2,6 @@
 "Each automatic annotation can be configured to fix specific parameters."
 "SPPAS supports Enriched Orthographic Transcription."
 "The orthographic transcription can include punctuation."
-"Subscribe to SPPAS-users google group to ask questions, find answers, etc."
 "Phonetization is based on a pronunciation dictionary that can easily be edited, modified or changed."
 "The folder documentation contains PDF files of the main reference."
 "Use Statistics to analyze annotated files, then you can save statistics in a .csv file."
@@ -15,3 +14,4 @@
 "Statistics display frequency distributions of annotation data files."
 "Visualizer displays your files: efficient to take a nice screenshot!"
 "DataFilter is a powerful solution for mining annotated data files."
+"Tutorials are available on the web site."

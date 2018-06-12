@@ -62,7 +62,7 @@ class sppasIntsint(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        sppasBaseAnnotation.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile, "INTSINT")
 
         self.intsint = Intsint()
 
@@ -111,6 +111,8 @@ class sppasIntsint(sppasBaseAnnotation):
         :param output_filename: (str) the output file name of the INTSINT tier
 
         """
+        self.print_filename(input_filename)
+
         # Get the tier to be annotated.
         trs_input = sppas.src.annotationdata.aio.read(input_filename)
         tier_input = sppasSearchTier.pitch_anchors(trs_input)

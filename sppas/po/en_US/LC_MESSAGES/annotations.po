@@ -88,7 +88,7 @@ msgid ":INFO 1037: "
 msgstr "Input languages"
 
 msgid ":INFO 1038: "
-msgstr "Selected files"
+msgstr "Selected files and folders"
 
 msgid ":INFO 1039: "
 msgstr "Selected annotations"
@@ -117,6 +117,12 @@ msgstr "Options"
 msgid ":INFO 1052: "
 msgstr "Diagnosis"
 
+msgid ":INFO 1054: "
+msgstr "Procedure Outcome Report"
+
+msgid ":INFO 1056: "
+msgstr "File {!s:s}"
+
 msgid ":INFO 1110: "
 msgstr "{:s} is missing of the dictionary and "
 
@@ -130,7 +136,7 @@ msgid ":INFO 1210: "
 msgstr "The model of L1 {:s} was ignored."
 
 msgid ":INFO 1220: "
-msgstr "Align interval number {number}."
+msgstr "Interval number {number}."
 
 msgid ":INFO 1222: "
 msgstr "Empty interval."
@@ -149,9 +155,6 @@ msgstr "Align each interval: "
 
 msgid ":INFO 1254: "
 msgstr "Merge interval's alignment:"
-
-msgid ":INFO 1256: "
-msgstr "Save automatic alignment: "
 
 msgid ":INFO 1260: "
 msgstr "Tokens alignment disabled."

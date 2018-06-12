@@ -48,6 +48,7 @@ from sppas.src.anndata import sppasTier
 from sppas.src.anndata import sppasLabel
 from sppas.src.anndata import sppasTag
 
+from .. import t
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasFindTier
 from ..annotationsexc import AnnotationOptionError
@@ -57,6 +58,8 @@ from ..annotationsexc import EmptyOutputError
 from .normalize import TextNormalizer
 
 # ---------------------------------------------------------------------------
+
+MSG_TRACK = t.gettext(":INFO 1220: ")
 
 SIL_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("silence")]
 
@@ -81,7 +84,7 @@ class sppasTextNorm(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        sppasBaseAnnotation.__init__(self, logfile)
+        sppasBaseAnnotation.__init__(self, logfile, name="Text Normalization")
 
         self.normalizer = None
         voc = sppasVocabulary(vocab)
@@ -212,13 +215,14 @@ class sppasTextNorm(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def run(self, input_filename, output_filename=None):
-        """ Run the Text Normalization process on an input file.
+        """ Run the annotation process on an input file.
 
         :param input_filename: (str) Name of the input file with the transcription
         :param output_filename: (str) Name of the resulting file with normalization
         :returns: (sppasTranscription)
 
         """
+        self.print_filename(input_filename)
         self.print_options()
         self.print_diagnosis(input_filename)
 
@@ -231,7 +235,7 @@ class sppasTextNorm(sppasBaseAnnotation):
         tier_faked_tokens, tier_std_tokens, tier_custom = self.convert(tier_input)
 
         # Create the transcription result
-        trs_output = sppasTranscription("Text Normalization")
+        trs_output = sppasTranscription(self.name)
         if tier_faked_tokens is not None:
             trs_output.append(tier_faked_tokens)
         if tier_std_tokens is not None:
@@ -251,6 +255,7 @@ class sppasTextNorm(sppasBaseAnnotation):
             if len(trs_output) > 0:
                 parser = sppasRW(output_filename)
                 parser.write(trs_output)
+                self.print_filename(output_filename, status=0)
             else:
                 raise EmptyOutputError
 
@@ -266,6 +271,8 @@ class sppasTextNorm(sppasBaseAnnotation):
         """
         tokens_tier = sppasTier("Tokens")
         for i, ann in enumerate(tier):
+            self.print_message(MSG_TRACK.format(number=i+1), indent=2)
+
             location = ann.get_location().copy()
             labels = list()
             # Normalize all labels of the orthographic transcription

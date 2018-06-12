@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -46,6 +47,13 @@
     boundary between two vowels.
     As in state-of-the-art systems, phonemes were grouped into classes and
     rules established to deal with these classes.
+
+    For details, read the following reference:
+
+        | Brigitte Bigi, Christine Meunier, Irina Nesterenko, Roxane Bertrand (2010).
+        | Automatic detection of syllable boundaries in spontaneous speech.
+        | In Language Resource and Evaluation Conference, pp. 3285–3292,
+        | La Valetta, Malta.
 
 """
 from .sppassyll import sppasSyll

@@ -60,6 +60,7 @@ MSG_STATUS_INFO = (t.gettext(":INFO 1042: "))
 MSG_STATUS_WARNING = (t.gettext(":INFO 1043: "))
 MSG_STATUS_IGNORE = (t.gettext(":INFO 1044: "))
 MSG_STATUS_ERROR = (t.gettext(":INFO 1045: "))
+MSG_REPORT = t.gettext(":INFO 1054: ")
 
 # ----------------------------------------------------------------------------
 
@@ -70,7 +71,7 @@ class sppasLog(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      A log file utility class.
 
     Class to manage the SPPAS automatic annotations log file, which is also
@@ -250,14 +251,25 @@ class sppasLog(object):
         """ Print the parameters information in the output stream. """
 
         self.logfp.seek(0, 2)  # write at the end of the file
-        self.print_message(sppas.__name__ + ' ' + MSG_VERSION + ' ' + sppas.__version__)
+        self.print_message(sppas.__name__ + ' ' +
+                           MSG_VERSION + ' ' +
+                           sppas.__version__)
         self.print_message(sppas.__copyright__)
         self.print_message(MSG_URL + ': ' + sppas.__url__)
-        self.print_message(MSG_CONTACT + ': ' + sppas.__author__ + "(" + sppas.__contact__ + ")")
+        self.print_message(MSG_CONTACT + ': ' +
+                           sppas.__author__ +
+                           " (" + sppas.__contact__ + ")")
         self.print_newline()
         self.print_separator()
 
-        self.print_message(' '*24 + MSG_AUTO_ANNS + ': ')
+    # ----------------------------------------------------------------------
+
+    def print_annotations_header(self):
+        """ Print the parameters information in the output stream. """
+
+        self.print_message(' '*24 + MSG_REPORT)
+        self.print_newline()
+        self.print_message(' '*24 + MSG_AUTO_ANNS)
         self.print_separator()
         self.print_newline()
 
@@ -268,19 +280,16 @@ class sppasLog(object):
                 self.print_item(self.parameters.get_step_name(i), self.parameters.get_lang(i))
             else:
                 self.print_item(self.parameters.get_step_name(i), "---")
-        self.print_separator()
         self.print_newline()
 
         self.print_message(MSG_SEL_FILES + ': ')
         for sinput in self.parameters.get_sppasinput():
             self.print_item(sinput)
-        self.print_separator()
         self.print_newline()
 
         self.print_message(MSG_SEL_ANNS + ': ')
         for i in range(self.parameters.get_step_numbers()):
             self.print_stat(i)
-        self.print_separator()
         self.print_newline()
 
         self.print_message(MSG_FILE_EXT + ': ' + self.parameters.get_output_format())
