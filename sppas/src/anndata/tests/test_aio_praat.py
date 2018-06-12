@@ -592,6 +592,12 @@ class TestTextGrid(unittest.TestCase):
         self.assertEqual(len(txt[0]), 4)
         self.assertEqual(len(txt[1]), 2)
 
+        txt = sppasTextGrid()
+        txt.read(os.path.join(DATA, "sample2.TextGrid"))
+        self.assertEqual(len(txt), 1)
+        self.assertEqual(txt[0].get_name(), "Tokens")
+        self.assertEqual(len(txt[0]), 1)
+
     # -----------------------------------------------------------------------
     # Writer
     # -----------------------------------------------------------------------

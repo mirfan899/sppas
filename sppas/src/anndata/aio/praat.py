@@ -485,6 +485,8 @@ class sppasTextGrid(sppasBasePraat):
             line = lines[start_line].strip()
             text += "\n" + sppasBasePraat._parse_string(line)
             start_line += 1
+            if line.endswith('"'):
+                break
             if start_line >= len(lines):
                 raise AioLineFormatError(start_line-1, lines[-1])
 
