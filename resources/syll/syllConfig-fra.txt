@@ -32,9 +32,12 @@ PHONCLASS sp #
 PHONCLASS gb #
 PHONCLASS sil #
 PHONCLASS dummy #
-PHONCLASS fp #
+PHONCLASS laugh #
+PHONCLASS noise #
 
 # list of vowels
+# ATTENTION: we never really tested if /fp/ should be considered like a break or like a vowel...
+PHONCLASS fp V
 PHONCLASS i V
 PHONCLASS e V
 PHONCLASS E V
@@ -56,14 +59,21 @@ PHONCLASS U~ V
 PHONCLASS EU V
 PHONCLASS eu V
 PHONCLASS oe V
+PHONCLASS U~/ V
+PHONCLASS A/ V
+PHONCLASS O/ V
+PHONCLASS O~ V
+
 # list of glides, use G symbol
 PHONCLASS j G
 PHONCLASS H G
 PHONCLASS w G
+
 # list of liquids, use L symbol
 PHONCLASS l L
 PHONCLASS R L
 PHONCLASS r L
+
 # list of occlusives, use O symbol
 PHONCLASS p O
 PHONCLASS t O
