@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:16+02:00" format="1.4" name="Text Normalization">
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T09:37:34+02:00" format="1.4" name="Text Normalization">
 	<Metadata>
-		<Entry key="id">4c782e7f-1e36-4c92-3cf2-2399ef8d894d</Entry>
+		<Entry key="id">5b553e4d-7e50-8d64-5ce5-7505be4a530f</Entry>
 		<Entry key="software_name">SPPAS</Entry>
 		<Entry key="software_version">1.9.6</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
@@ -14,18 +14,18 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/fra</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_normalization_result_of">E:\bigi\Workspace\sppas\samples\samples-fra\EB_track_0641.TextGrid</Entry>
-		<Entry key="text_normalization_vocab">E:\bigi\Workspace\sppas\resources\vocab\fra.vocab</Entry>
+		<Entry key="text_normalization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-fra/EB_track_0641.TextGrid</Entry>
+		<Entry key="text_normalization_vocab">/mnt/e/bigi/Workspace/sppas/resources/vocab/fra.vocab</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">EB_track_0641-token.xra</Entry>
-		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_write_date">2018-37-12 09:37</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+		<Entry key="file_created_date">2018-37-12 09:37</Entry>
 	</Metadata>
 
-	<Tier id="5e148b5a-0c34-5e79-7dd3-8752ad9d180f" tiername="Tokens">
+	<Tier id="8a807d3d-4e49-2f07-1ff3-2426dd8f181d" tiername="Tokens">
 		<Metadata>
 			<Entry key="language">0</Entry>
 			<Entry key="text_normalization_enable_action_replace">true</Entry>
@@ -34,7 +34,7 @@
 			<Entry key="text_normalization_enable_action_lower">true</Entry>
 			<Entry key="text_normalization_enable_action_punct">true</Entry>
 		</Metadata>
-		<Annotation id="5e312e4b-2b70-3e26-4bc5-5636ae8a419f">
+		<Annotation id="6d658b1d-9b36-3a04-3de4-2829da4a835d">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />
@@ -42,51 +42,115 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">et ouais mais dtfasson et en_plus c' est euh tu euh quand tu vois les les brèves scientifiques que tu peux voir dans les journaux euh c normal que les gens se posent des questions quoi parce_que</Tag>
+				<Tag type="str">et</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="8f373c2e-4d65-1f23-5fa0-1514af3a751d" tiername="Tokens-Std">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">true</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">true</Entry>
-			<Entry key="text_normalization_enable_action_lower">true</Entry>
-			<Entry key="text_normalization_enable_action_punct">true</Entry>
-		</Metadata>
-		<Annotation id="5e312e4b-2b70-3e26-4bc5-5636ae8a419f">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="6.44" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">et ouais mais de_toute_façon et en_plus c' est euh tu euh quand tu vois les les brèves scientifiques que tu peux voir dans les journaux euh c normal que les gens se posent des questions quoi parce_que</Tag>
+				<Tag type="str">ouais</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="8d920e6d-9f57-0c25-4fd2-1593bd6b120a" tiername="Tokens-Custom">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">false</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">false</Entry>
-			<Entry key="text_normalization_enable_action_lower">false</Entry>
-			<Entry key="text_normalization_enable_action_punct">false</Entry>
-		</Metadata>
-		<Annotation id="5e312e4b-2b70-3e26-4bc5-5636ae8a419f">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="6.44" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">et ouais mais de_toute_façon et en_plus c' est euh tu euh quand tu vois les les brèves scientifiques que tu peux voir dans les journaux euh c ' normal que les gens se posent des questions quoi parce_que</Tag>
+				<Tag type="str">mais</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">dtfasson</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">et</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">en_plus</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">c'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">est</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">euh</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">tu</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">euh</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">quand</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">tu</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">vois</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">les</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">les</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">brèves</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">scientifiques</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">que</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">tu</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">peux</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">voir</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">dans</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">les</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">journaux</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">euh</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">c</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">normal</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">que</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">les</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">gens</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">se</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">posent</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">des</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">questions</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">quoi</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">parce_que</Tag>
 			</Label>
 		</Annotation>
 	</Tier>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:15+02:00" format="1.4" name="Text Normalization">
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T09:37:34+02:00" format="1.4" name="Text Normalization">
 	<Metadata>
-		<Entry key="id">2f676f9f-4d75-5b29-0cf6-3516bd0a745b</Entry>
+		<Entry key="id">6c297a4f-7e58-8e08-7ac8-6069ba5a133d</Entry>
 		<Entry key="software_name">SPPAS</Entry>
 		<Entry key="software_version">1.9.6</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
@@ -14,18 +14,18 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/fra</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_normalization_result_of">E:\bigi\Workspace\sppas\samples\samples-fra\AP_track_0711.TextGrid</Entry>
-		<Entry key="text_normalization_vocab">E:\bigi\Workspace\sppas\resources\vocab\fra.vocab</Entry>
+		<Entry key="text_normalization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-fra/AP_track_0711.TextGrid</Entry>
+		<Entry key="text_normalization_vocab">/mnt/e/bigi/Workspace/sppas/resources/vocab/fra.vocab</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">AP_track_0711-token.xra</Entry>
-		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_write_date">2018-37-12 09:37</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+		<Entry key="file_created_date">2018-37-12 09:37</Entry>
 	</Metadata>
 
-	<Tier id="7d681d1e-0f20-0a06-7ab5-9173fd9e260e" tiername="Tokens">
+	<Tier id="9c502a9e-8c23-6f23-2ca2-6907db1a387b" tiername="Tokens">
 		<Metadata>
 			<Entry key="language">0</Entry>
 			<Entry key="text_normalization_enable_action_replace">true</Entry>
@@ -34,7 +34,7 @@
 			<Entry key="text_normalization_enable_action_lower">true</Entry>
 			<Entry key="text_normalization_enable_action_punct">true</Entry>
 		</Metadata>
-		<Annotation id="3f232d8b-4b27-1a56-5ea0-1153df5d119e">
+		<Annotation id="4b948f1e-4d50-1a19-4be4-7796bd1e620a">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />
@@ -42,51 +42,118 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">ouais tu comprends na na na na na na la solidarité les étudiants et quelle solidarité ah c' est bon je lui dis tu es solidaire toi tu es solidaire de de de tes fesses tu es solidaire</Tag>
+				<Tag type="str">ouais</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="3e191a7f-2b35-5c60-1ef5-4564fc5b568e" tiername="Tokens-Std">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">true</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">true</Entry>
-			<Entry key="text_normalization_enable_action_lower">true</Entry>
-			<Entry key="text_normalization_enable_action_punct">true</Entry>
-		</Metadata>
-		<Annotation id="3f232d8b-4b27-1a56-5ea0-1153df5d119e">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="8.074312" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">ouais tu comprends na na na na na na la solidarité les étudiants et quelle solidarité ah c' est bon je lui dis tu es solidaire toi tu es solidaire de de de tes fesses tu es solidaire</Tag>
+				<Tag type="str">tu</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="2b223c6a-1c04-3b11-3fb5-5204bd1e326f" tiername="Tokens-Custom">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">false</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">false</Entry>
-			<Entry key="text_normalization_enable_action_lower">false</Entry>
-			<Entry key="text_normalization_enable_action_punct">false</Entry>
-		</Metadata>
-		<Annotation id="3f232d8b-4b27-1a56-5ea0-1153df5d119e">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="8.074312" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">ouais tu comprends na na na na na na la solidarité les étudiants et quelle solidarité ah c' est bon je lui dis tu es solidaire toi tu es solidaire de de de tes fesses tu es solidaire</Tag>
+				<Tag type="str">comprends</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">na</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">na</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">na</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">na</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">na</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">na</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">solidarité</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">les</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">étudiants</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">et</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">quelle</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">solidarité</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">ah</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">c'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">est</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">bon</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">je</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">lui</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">dis</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">tu</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">es</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">solidaire</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">toi</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">tu</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">es</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">solidaire</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">de</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">de</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">de</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">tes</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">fesses</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">tu</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">es</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">solidaire</Tag>
 			</Label>
 		</Annotation>
 	</Tier>

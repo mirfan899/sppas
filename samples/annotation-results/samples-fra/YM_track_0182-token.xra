@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:17+02:00" format="1.4" name="Text Normalization">
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T09:37:34+02:00" format="1.4" name="Text Normalization">
 	<Metadata>
-		<Entry key="id">0e538d2c-0d96-7b80-8dc5-3781ac2c342c</Entry>
+		<Entry key="id">0f366e6f-8a07-3b21-3bb6-4213aa2d469d</Entry>
 		<Entry key="software_name">SPPAS</Entry>
 		<Entry key="software_version">1.9.6</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
@@ -14,18 +14,18 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/fra</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_normalization_result_of">E:\bigi\Workspace\sppas\samples\samples-fra\YM_track_0182.TextGrid</Entry>
-		<Entry key="text_normalization_vocab">E:\bigi\Workspace\sppas\resources\vocab\fra.vocab</Entry>
+		<Entry key="text_normalization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-fra/YM_track_0182.TextGrid</Entry>
+		<Entry key="text_normalization_vocab">/mnt/e/bigi/Workspace/sppas/resources/vocab/fra.vocab</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">YM_track_0182-token.xra</Entry>
-		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_write_date">2018-37-12 09:37</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+		<Entry key="file_created_date">2018-37-12 09:37</Entry>
 	</Metadata>
 
-	<Tier id="6d281e7b-1e75-7c82-4ef2-0956fa8f427a" tiername="Tokens">
+	<Tier id="0c030e6b-2c29-6d22-9eb2-1501ed7b288f" tiername="Tokens">
 		<Metadata>
 			<Entry key="language">0</Entry>
 			<Entry key="text_normalization_enable_action_replace">true</Entry>
@@ -34,7 +34,7 @@
 			<Entry key="text_normalization_enable_action_lower">true</Entry>
 			<Entry key="text_normalization_enable_action_punct">true</Entry>
 		</Metadata>
-		<Annotation id="2c969b7a-8c92-4a32-0bf3-6054ad5d369d">
+		<Annotation id="3f222b9b-5c20-9b32-6fd3-8040dc7e300f">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />
@@ -42,51 +42,124 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">et euh donc donc du_coup c' est toi c' est un_peu toi qui a les premiers contacts avec le avec le gosse quoi + et_puis là ils te demandent le prénom donc faut ce soit prêt là @ parce_que putain</Tag>
+				<Tag type="str">et</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="6c757b4f-4b94-5c68-8ec0-0878dd8d547a" tiername="Tokens-Std">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">true</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">true</Entry>
-			<Entry key="text_normalization_enable_action_lower">true</Entry>
-			<Entry key="text_normalization_enable_action_punct">true</Entry>
-		</Metadata>
-		<Annotation id="2c969b7a-8c92-4a32-0bf3-6054ad5d369d">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="7.4605" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">et euh donc donc du_coup c' est toi c' est un_peu toi qui a les premiers contacts avec le avec le gosse quoi + et_puis là ils te demandent le prénom donc faut ce soit prêt là @ parce_que putain</Tag>
+				<Tag type="str">euh</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="0b519f7b-3a43-2d20-8da2-3077bc9b356a" tiername="Tokens-Custom">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">false</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">false</Entry>
-			<Entry key="text_normalization_enable_action_lower">false</Entry>
-			<Entry key="text_normalization_enable_action_punct">false</Entry>
-		</Metadata>
-		<Annotation id="2c969b7a-8c92-4a32-0bf3-6054ad5d369d">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="7.4605" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">et euh donc donc du_coup c' est toi c' est un_peu toi qui a les premiers contacts avec le avec le gosse quoi + et_puis là ils te demandent le prénom donc faut ce soit prêt là @ parce_que putain</Tag>
+				<Tag type="str">donc</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">donc</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">du_coup</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">c'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">est</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">toi</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">c'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">est</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">un_peu</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">toi</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">qui</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">a</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">les</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">premiers</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">contacts</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">avec</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">le</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">avec</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">le</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">gosse</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">quoi</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">+</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">et_puis</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">là</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">ils</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">te</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">demandent</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">le</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">prénom</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">donc</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">faut</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">ce</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">soit</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">prêt</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">là</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">@</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">parce_que</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">putain</Tag>
 			</Label>
 		</Annotation>
 	</Tier>

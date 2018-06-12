@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T08:54:49+02:00" format="1.4" name="Text Normalization">
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T10:20:40+02:00" format="1.4" name="Text Normalization">
 	<Metadata>
-		<Entry key="id">4e283d1e-5b95-5d63-2df2-8053cc7e326a</Entry>
+		<Entry key="id">4a658c7f-6e83-8c66-0ad7-0673de5e965c</Entry>
 		<Entry key="software_name">SPPAS</Entry>
 		<Entry key="software_version">1.9.6</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
@@ -14,18 +14,18 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/cat</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_normalization_result_of">E:\bigi\Workspace\sppas\samples\samples-cat\TB-FE1-H1_phrase2.TextGrid</Entry>
-		<Entry key="text_normalization_vocab">E:\bigi\Workspace\sppas\resources\vocab\cat.vocab</Entry>
+		<Entry key="text_normalization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-cat/TB-FE1-H1_phrase2.TextGrid</Entry>
+		<Entry key="text_normalization_vocab">/mnt/e/bigi/Workspace/sppas/resources/vocab/cat.vocab</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">TB-FE1-H1_phrase2-token.xra</Entry>
-		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-cat</Entry>
+		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-cat</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-54-30 08:54</Entry>
+		<Entry key="file_write_date">2018-20-12 10:20</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-54-30 08:54</Entry>
+		<Entry key="file_created_date">2018-20-12 10:20</Entry>
 	</Metadata>
 
-	<Tier id="7e214d2e-8a30-3d62-4ca7-7474ca7c104f" tiername="Tokens">
+	<Tier id="5d638a0b-7f88-8b57-1dd9-7195ed8d588d" tiername="Tokens">
 		<Metadata>
 			<Entry key="language">0</Entry>
 			<Entry key="text_normalization_enable_action_replace">true</Entry>
@@ -34,7 +34,7 @@
 			<Entry key="text_normalization_enable_action_lower">true</Entry>
 			<Entry key="text_normalization_enable_action_punct">true</Entry>
 		</Metadata>
-		<Annotation id="1b647d3e-7b60-6f23-0ea5-1998ee6a796c">
+		<Annotation id="8e887a4d-3f63-0d22-5de1-6997ea1f120e">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />
@@ -42,51 +42,73 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">nevar nevar + mm no mm va ser aquell dia peò clar la neu vulguis que no s'hi està uns quants dies més</Tag>
+				<Tag type="str">nevar</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="2b646b0c-8e18-2c19-9cb0-0261ff9c708c" tiername="Tokens-Std">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">true</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">true</Entry>
-			<Entry key="text_normalization_enable_action_lower">true</Entry>
-			<Entry key="text_normalization_enable_action_punct">true</Entry>
-		</Metadata>
-		<Annotation id="1b647d3e-7b60-6f23-0ea5-1998ee6a796c">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="6.0" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">nevar nevar + mm no mm va ser aquell dia però clar la neu vulguis que no s'hi està uns quants dies més</Tag>
+				<Tag type="str">nevar</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="8e868a8f-4e86-9e79-4ca2-1134ca5b221a" tiername="Tokens-Custom">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">false</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">false</Entry>
-			<Entry key="text_normalization_enable_action_lower">false</Entry>
-			<Entry key="text_normalization_enable_action_punct">false</Entry>
-		</Metadata>
-		<Annotation id="1b647d3e-7b60-6f23-0ea5-1998ee6a796c">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="6.0" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">Nevar nevar + mm no mm va ser aquell dia però clar la neu vulguis que no s'hi està uns quants dies més</Tag>
+				<Tag type="str">+</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">mm</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">no</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">mm</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">va</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">ser</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">aquell</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">dia</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">peò</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">clar</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">neu</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">vulguis</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">que</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">no</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">s'hi</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">està</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">uns</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">quants</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">dies</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">més</Tag>
 			</Label>
 		</Annotation>
 	</Tier>

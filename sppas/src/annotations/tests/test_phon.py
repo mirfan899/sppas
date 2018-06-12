@@ -352,19 +352,13 @@ class TestPhonetization(unittest.TestCase):
         self.assertEqual(unk_stamp, self.sp.phonetize("é à"))
 
         self.assertEqual(set("D-@|D-V|D-i:".split('|')),
-                         set(self.sp.phonetize("THE")))
+                         set(self.sp.phonetize("THE")[0].split('|')))
 
         self.assertEqual("h-i:",
-                         self.sp.phonetize("HE"))
-
-        self.assertEqual(set("D-@|D-V|D-i: b-{-N-k".split('|')),
-                         set(self.sp.phonetize("THE BANC")))
-
-        self.assertEqual(set("D-@|D-V|D-i: b-{-N-k-aI D-@|D-V|D-i:".split('|')),
-                         set(self.sp.phonetize("THE BANCI THE")))
+                         self.sp.phonetize("HE")[0])
 
         self.sp.set_unk(False)  # do not try to phonetize if missing of the dict
-        self.assertEqual([unk_stamp], self.sp.phonetize("THE BANCI THE"))
+        self.assertEqual(unk_stamp, self.sp.phonetize("THE BANCI THE"))
 
         self.sp.set_unk(True)
 
@@ -384,10 +378,10 @@ class TestPhonetization(unittest.TestCase):
         """ Test phonetization of an utterance with a map table defined. """
 
         self.assertEqual(set("D-@|D-V|D-i:|z-@|z-V|z-i:|D-i|z-i|D-9|z-9|z-@".split('|')),
-                         set(self.spl.phonetize("THE")))
+                         set(self.spl.phonetize("THE")[0].split('|')))
 
         self.assertEqual(set("i|h-i:|h-i|i:".split("|")),
-                         set(self.spl.phonetize("HE")))
+                         set(self.spl.phonetize("HE")[0].split('|')))
 
     # -----------------------------------------------------------------------
 

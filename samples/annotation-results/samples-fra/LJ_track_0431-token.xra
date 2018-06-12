@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:17+02:00" format="1.4" name="Text Normalization">
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T09:37:34+02:00" format="1.4" name="Text Normalization">
 	<Metadata>
-		<Entry key="id">6d703b9f-4d37-8f49-9dc6-0584ca9d058f</Entry>
+		<Entry key="id">8a005e9b-5f37-5c06-8dc8-6258fc8d563d</Entry>
 		<Entry key="software_name">SPPAS</Entry>
 		<Entry key="software_version">1.9.6</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
@@ -14,18 +14,18 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/fra</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_normalization_result_of">E:\bigi\Workspace\sppas\samples\samples-fra\LJ_track_0431.TextGrid</Entry>
-		<Entry key="text_normalization_vocab">E:\bigi\Workspace\sppas\resources\vocab\fra.vocab</Entry>
+		<Entry key="text_normalization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-fra/LJ_track_0431.TextGrid</Entry>
+		<Entry key="text_normalization_vocab">/mnt/e/bigi/Workspace/sppas/resources/vocab/fra.vocab</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">LJ_track_0431-token.xra</Entry>
-		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_write_date">2018-37-12 09:37</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+		<Entry key="file_created_date">2018-37-12 09:37</Entry>
 	</Metadata>
 
-	<Tier id="5a005f7e-1a18-5c46-5ad5-1347cb2a438f" tiername="Tokens">
+	<Tier id="2a266a7b-3a78-4b63-2fa0-1662ff3c474e" tiername="Tokens">
 		<Metadata>
 			<Entry key="language">0</Entry>
 			<Entry key="text_normalization_enable_action_replace">true</Entry>
@@ -34,7 +34,7 @@
 			<Entry key="text_normalization_enable_action_lower">true</Entry>
 			<Entry key="text_normalization_enable_action_punct">true</Entry>
 		</Metadata>
-		<Annotation id="5b893e2f-2e60-9e07-4cb0-2710fb5c271f">
+		<Annotation id="9e876b9a-5e84-5b99-3cb7-6804fb2c035e">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />
@@ -42,51 +42,139 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">un truc qu' on n' a pas trop ici parce_que bon la parole elle est à tout_le_monde à la limite euh t' enregistres la radio ou un machin bon sauf quand t' as enregistré un corpus et que tu veux pas le donner mais bon</Tag>
+				<Tag type="str">un</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="6a739f4e-2d92-6f27-1bf2-8163ad5e608c" tiername="Tokens-Std">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">true</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">true</Entry>
-			<Entry key="text_normalization_enable_action_lower">true</Entry>
-			<Entry key="text_normalization_enable_action_punct">true</Entry>
-		</Metadata>
-		<Annotation id="5b893e2f-2e60-9e07-4cb0-2710fb5c271f">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="7.782" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">un truc qu' on n' a pas trop ici parce_que bon la parole elle est à tout_le_monde à la limite euh t' enregistres la radio ou un machin bon sauf quand t' as enregistré un corpus et que tu veux pas le donner mais bon</Tag>
+				<Tag type="str">truc</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="3d100b8a-6d46-7f49-4dd6-4078fb0f800b" tiername="Tokens-Custom">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">false</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">false</Entry>
-			<Entry key="text_normalization_enable_action_lower">false</Entry>
-			<Entry key="text_normalization_enable_action_punct">false</Entry>
-		</Metadata>
-		<Annotation id="5b893e2f-2e60-9e07-4cb0-2710fb5c271f">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="7.782" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">un truc qu' on n' a pas trop ici parce_que bon la parole elle est à tout_le_monde à la limite euh t' enregistres la radio ou un machin bon sauf quand t' as enregistré un corpus et que tu veux pas le donner mais bon</Tag>
+				<Tag type="str">qu'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">on</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">n'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">a</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">pas</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">trop</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">ici</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">parce_que</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">bon</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">parole</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">elle</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">est</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">à</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">tout_le_monde</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">à</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">limite</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">euh</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">t'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">enregistres</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">radio</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">ou</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">un</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">machin</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">bon</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">sauf</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">quand</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">t'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">as</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">enregistré</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">un</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">corpus</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">et</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">que</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">tu</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">veux</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">pas</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">le</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">donner</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">mais</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">bon</Tag>
 			</Label>
 		</Annotation>
 	</Tier>

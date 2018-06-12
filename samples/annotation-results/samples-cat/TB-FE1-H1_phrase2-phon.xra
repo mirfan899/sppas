@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T08:54:52+02:00" format="1.4" name="SPPAS Phonetization">
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T10:20:40+02:00" format="1.4" name="Phonetization">
 	<Metadata>
-		<Entry key="id">9a824f8c-8d19-1c67-0cb0-0492fd5a952e</Entry>
+		<Entry key="id">5d521f8b-6c11-3d37-3ea3-9031dc9a192c</Entry>
 		<Entry key="software_name">SPPAS</Entry>
 		<Entry key="software_version">1.9.6</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
@@ -14,25 +14,93 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/und</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
+		<Entry key="text_phonetization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-cat/TB-FE1-H1_phrase2-token.xra</Entry>
+		<Entry key="text_phonetization_dict">/mnt/e/bigi/Workspace/sppas/resources/dict/cat.dict</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">TB-FE1-H1_phrase2-phon.xra</Entry>
-		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-cat</Entry>
+		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-cat</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-54-30 08:54</Entry>
+		<Entry key="file_write_date">2018-20-12 10:20</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-54-30 08:54</Entry>
+		<Entry key="file_created_date">2018-20-12 10:20</Entry>
 	</Metadata>
 
-	<Tier id="2b004f5e-8f46-7f95-3bb8-1471df0c323c" tiername="Phones">
-		<Annotation id="5f133f8f-4b57-0f40-3af0-1252fb3b002e">
+	<Tier id="6b903e4b-8d26-5a53-9be4-7121cd2c816d" tiername="Phones">
+		<Annotation id="6b932c0f-6f12-6f85-8ef6-5368ac4d673e">
 			<Location>
 				<Interval>
-					<Begin midpoint="0.0" />
+					<Begin midpoint="0.0" radius="0.0" />
 					<End midpoint="6.0" radius="0.0005" />
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">n-@-b-a n-@-b-a # E-m-@-E-m-@ n-o E-m-@-E-m-@ b-a|v-a s-e|s-e-r|s-e-4 @-k-E-L|@-k-e-L d-i-@ p-E-O|p-@-O|p-e-O|p-e-p-e-O k-l-a l-@|@|l-a n-e-w b-u-l-G-i-s|b-U-l-G-u-j-s k-@|g-@|g-e|k|k-E|k-e|k-u n-o s-i @-s-t-a|e-s-t-a U-n-s|u-n-s|u-n-z k-w-a-n-s d-i-@-z m-e-s|m-e-z</Tag>
+				<Tag type="str">n-@-b-a</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">n-@-b-a</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">sil</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">E-m-@-E-m-@</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">n-o</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">E-m-@-E-m-@</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">b-a|v-a</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">s-e|s-e-r|s-e-4</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">@-k-E-L|@-k-e-L</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">d-i-@</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">p-E-O|p-@-O|p-e-O|p-e-p-e-O</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">k-l-a</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">l-@|@|l-a</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">n-e-w</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">b-u-l-G-i-s|b-U-l-G-u-j-s</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">k-@|g-@|g-e|k|k-E|k-e|k-u</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">n-o</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">s-i</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">@-s-t-a|e-s-t-a</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">U-n-s|u-n-s|u-n-z</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">k-w-a-n-s</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">d-i-@-z</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">m-e-s|m-e-z</Tag>
 			</Label>
 		</Annotation>
 	</Tier>

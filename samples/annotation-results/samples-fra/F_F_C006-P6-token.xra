@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:17+02:00" format="1.4" name="Text Normalization">
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T09:37:34+02:00" format="1.4" name="Text Normalization">
 	<Metadata>
-		<Entry key="id">1a251d9e-5a81-4b75-7bc6-9230cf3b942b</Entry>
+		<Entry key="id">1e134c7c-0f66-8a21-5af0-7529da0c418d</Entry>
 		<Entry key="software_name">SPPAS</Entry>
 		<Entry key="software_version">1.9.6</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
@@ -14,18 +14,18 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/fra</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_normalization_result_of">E:\bigi\Workspace\sppas\samples\samples-fra\F_F_C006-P6.TextGrid</Entry>
-		<Entry key="text_normalization_vocab">E:\bigi\Workspace\sppas\resources\vocab\fra.vocab</Entry>
+		<Entry key="text_normalization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-fra/F_F_C006-P6.TextGrid</Entry>
+		<Entry key="text_normalization_vocab">/mnt/e/bigi/Workspace/sppas/resources/vocab/fra.vocab</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">F_F_C006-P6-token.xra</Entry>
-		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_write_date">2018-37-12 09:37</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+		<Entry key="file_created_date">2018-37-12 09:37</Entry>
 	</Metadata>
 
-	<Tier id="4a820a4f-0b00-4c24-9ce0-2331cf8e329b" tiername="Tokens">
+	<Tier id="5b325b1a-0d22-2f04-8be1-7297ba5e231f" tiername="Tokens">
 		<Metadata>
 			<Entry key="language">0</Entry>
 			<Entry key="text_normalization_enable_action_replace">true</Entry>
@@ -34,7 +34,7 @@
 			<Entry key="text_normalization_enable_action_lower">true</Entry>
 			<Entry key="text_normalization_enable_action_punct">true</Entry>
 		</Metadata>
-		<Annotation id="5c056f6f-5f08-2e07-8be1-2765fd3c275f">
+		<Annotation id="1c105e7a-2a44-3b17-8fe7-7910eb1a203e">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />
@@ -45,7 +45,7 @@
 				<Tag type="str">#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9a515e3a-1a15-6c57-3ef5-3382ae9b653e">
+		<Annotation id="4b602c1a-7b88-7a40-0bf5-2423be5e255f">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.13487640853" radius="0.0005" />
@@ -53,10 +53,64 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">magasins réunis inventaire du six mars mille-neuf-cent-quatre-vingt-neuf + étage + homme + et garçonnet + rayon chemises et sous-vêtements</Tag>
+				<Tag type="str">magasins</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">réunis</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">inventaire</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">du</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">six</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">mars</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">mille-neuf-cent-quatre-vingt-neuf</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">+</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">étage</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">+</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">homme</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">+</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">et</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">garçonnet</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">+</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">rayon</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">chemises</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">et</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">sous-vêtements</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2e425e2c-4c60-1c73-0dd9-8405aa6c059e">
+		<Annotation id="1d773c8b-1d75-0d85-7df4-5828ca0b222a">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.73440919423" radius="0.0005" />
@@ -67,7 +121,7 @@
 				<Tag type="str">#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2d874f2e-2f08-3b12-4fa5-1893cf5e464a">
+		<Annotation id="2f394c8a-3b16-1a73-0ae7-1458fa6e288e">
 			<Location>
 				<Interval>
 					<Begin midpoint="9.26853675284" radius="0.0005" />
@@ -75,10 +129,61 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">chemises manches longues + s- cintrées + stature cent-trente-huit + dix ans * à cent-soixante-deux + quatorze ans</Tag>
+				<Tag type="str">chemises</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">manches</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">longues</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">+</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">s-</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">cintrées</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">+</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">stature</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">cent-trente-huit</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">+</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">dix</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">ans</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">*</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">à</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">cent-soixante-deux</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">+</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">quatorze</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">ans</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4b811d8e-6c14-8f01-2ce9-5760de4a122d">
+		<Annotation id="6d719b8f-7a75-9f51-3db3-4102ba1d853a">
 			<Location>
 				<Interval>
 					<Begin midpoint="16.8712590912" radius="0.0005" />
@@ -89,7 +194,7 @@
 				<Tag type="str">#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5b606a0d-2f41-5a44-3ca8-1886ec6b623c">
+		<Annotation id="4c779c3d-9f53-9a79-4bf6-6653de2b810c">
 			<Location>
 				<Interval>
 					<Begin midpoint="17.8169485442" radius="0.0005" />
@@ -97,10 +202,43 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">trois de chaque taille en blanc + bleu clair + et beige</Tag>
+				<Tag type="str">trois</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">de</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">chaque</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">taille</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">en</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">blanc</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">+</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">bleu</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">clair</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">+</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">et</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">beige</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7b998e1d-7d62-3a59-9ab4-4905be8a529a">
+		<Annotation id="7e099e4c-5b36-6d10-9ee0-7646cb8b860a">
 			<Location>
 				<Interval>
 					<Begin midpoint="21.0525123875" radius="0.0005" />
@@ -111,7 +249,7 @@
 				<Tag type="str">#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6f868b9e-9f30-6a38-6dc3-2480bc8d113b">
+		<Annotation id="7f590b4c-0c07-4c00-0be5-8553ca5a330c">
 			<Location>
 				<Interval>
 					<Begin midpoint="21.751841752" radius="0.0005" />
@@ -119,10 +257,31 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">pulls shetland tailles trente six à quarante six</Tag>
+				<Tag type="str">pulls</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">shetland</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">tailles</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">trente</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">six</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">à</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">quarante</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">six</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3f621c4c-6c97-5a52-6bc0-7791eb0c895c">
+		<Annotation id="5c081f3a-3c12-8c15-6fd2-4588fe6d615d">
 			<Location>
 				<Interval>
 					<Begin midpoint="24.086" radius="0.0005" />
@@ -133,7 +292,7 @@
 				<Tag type="str">#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2f938f3b-2d75-4d00-3bf2-8296da2a365a">
+		<Annotation id="6f795f7d-9b34-2b83-7fc1-1308dc4a330b">
 			<Location>
 				<Interval>
 					<Begin midpoint="24.752" radius="0.0005" />
@@ -141,274 +300,82 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">plus de gris foncé ni de beige en tre- + en trente huit et quarante + quatre de chaque couleur pour toutes les autres tailles</Tag>
+				<Tag type="str">plus</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="6e939e5e-4a38-9e96-6fb7-3812fc3e850e">
-			<Location>
-				<Interval>
-					<Begin midpoint="31.4725844028" radius="0.0005" />
-					<End midpoint="33.2598" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag type="str">de</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="8a520d4c-7a79-5a72-9ce5-1980fa2d006d" tiername="Tokens-Std">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">true</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">true</Entry>
-			<Entry key="text_normalization_enable_action_lower">true</Entry>
-			<Entry key="text_normalization_enable_action_punct">true</Entry>
-		</Metadata>
-		<Annotation id="5c056f6f-5f08-2e07-8be1-2765fd3c275f">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="1.13487640853" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag type="str">gris</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="9a515e3a-1a15-6c57-3ef5-3382ae9b653e">
-			<Location>
-				<Interval>
-					<Begin midpoint="1.13487640853" radius="0.0005" />
-					<End midpoint="8.73440919423" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">magasins réunis inventaire du six mars mille-neuf-cent-quatre-vingt-neuf + étage + homme + et garçonnet + rayon chemises et sous-vêtements</Tag>
+				<Tag type="str">foncé</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="2e425e2c-4c60-1c73-0dd9-8405aa6c059e">
-			<Location>
-				<Interval>
-					<Begin midpoint="8.73440919423" radius="0.0005" />
-					<End midpoint="9.26853675284" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag type="str">ni</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="2d874f2e-2f08-3b12-4fa5-1893cf5e464a">
-			<Location>
-				<Interval>
-					<Begin midpoint="9.26853675284" radius="0.0005" />
-					<End midpoint="16.8712590912" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">chemises manches longues + s- cintrées + stature cent-trente-huit + dix ans * à cent-soixante-deux + quatorze ans</Tag>
+				<Tag type="str">de</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="4b811d8e-6c14-8f01-2ce9-5760de4a122d">
-			<Location>
-				<Interval>
-					<Begin midpoint="16.8712590912" radius="0.0005" />
-					<End midpoint="17.8169485442" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag type="str">beige</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="5b606a0d-2f41-5a44-3ca8-1886ec6b623c">
-			<Location>
-				<Interval>
-					<Begin midpoint="17.8169485442" radius="0.0005" />
-					<End midpoint="21.0525123875" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">trois de chaque taille en blanc + bleu clair + et beige</Tag>
+				<Tag type="str">en</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="7b998e1d-7d62-3a59-9ab4-4905be8a529a">
-			<Location>
-				<Interval>
-					<Begin midpoint="21.0525123875" radius="0.0005" />
-					<End midpoint="21.751841752" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag type="str">tre-</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="6f868b9e-9f30-6a38-6dc3-2480bc8d113b">
-			<Location>
-				<Interval>
-					<Begin midpoint="21.751841752" radius="0.0005" />
-					<End midpoint="24.086" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">pulls shetland tailles trente six à quarante six</Tag>
+				<Tag type="str">+</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="3f621c4c-6c97-5a52-6bc0-7791eb0c895c">
-			<Location>
-				<Interval>
-					<Begin midpoint="24.086" radius="0.0005" />
-					<End midpoint="24.752" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag type="str">en</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="2f938f3b-2d75-4d00-3bf2-8296da2a365a">
-			<Location>
-				<Interval>
-					<Begin midpoint="24.752" radius="0.0005" />
-					<End midpoint="31.4725844028" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">plus de gris foncé ni de beige en tre- + en trente huit et quarante + quatre de chaque couleur pour toutes les autres tailles</Tag>
+				<Tag type="str">trente</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="6e939e5e-4a38-9e96-6fb7-3812fc3e850e">
-			<Location>
-				<Interval>
-					<Begin midpoint="31.4725844028" radius="0.0005" />
-					<End midpoint="33.2598" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag type="str">huit</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="1f008c2e-7f23-1c41-3da3-6233ac7b986d" tiername="Tokens-Custom">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">false</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">false</Entry>
-			<Entry key="text_normalization_enable_action_lower">false</Entry>
-			<Entry key="text_normalization_enable_action_punct">false</Entry>
-		</Metadata>
-		<Annotation id="5c056f6f-5f08-2e07-8be1-2765fd3c275f">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="1.13487640853" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag type="str">et</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="9a515e3a-1a15-6c57-3ef5-3382ae9b653e">
-			<Location>
-				<Interval>
-					<Begin midpoint="1.13487640853" radius="0.0005" />
-					<End midpoint="8.73440919423" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">Magasins réunis inventaire du 6 mars 1989 + étage + homme + et garçonnet + rayon chemises et sous-vêtements</Tag>
+				<Tag type="str">quarante</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="2e425e2c-4c60-1c73-0dd9-8405aa6c059e">
-			<Location>
-				<Interval>
-					<Begin midpoint="8.73440919423" radius="0.0005" />
-					<End midpoint="9.26853675284" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag type="str">+</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="2d874f2e-2f08-3b12-4fa5-1893cf5e464a">
-			<Location>
-				<Interval>
-					<Begin midpoint="9.26853675284" radius="0.0005" />
-					<End midpoint="16.8712590912" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">chemises manches longues + s- cintrées + stature 138 + 10 ans * à 162 + 14 ans</Tag>
+				<Tag type="str">quatre</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="4b811d8e-6c14-8f01-2ce9-5760de4a122d">
-			<Location>
-				<Interval>
-					<Begin midpoint="16.8712590912" radius="0.0005" />
-					<End midpoint="17.8169485442" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag type="str">de</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="5b606a0d-2f41-5a44-3ca8-1886ec6b623c">
-			<Location>
-				<Interval>
-					<Begin midpoint="17.8169485442" radius="0.0005" />
-					<End midpoint="21.0525123875" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">trois de chaque taille en blanc + bleu clair + et beige</Tag>
+				<Tag type="str">chaque</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="7b998e1d-7d62-3a59-9ab4-4905be8a529a">
-			<Location>
-				<Interval>
-					<Begin midpoint="21.0525123875" radius="0.0005" />
-					<End midpoint="21.751841752" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag type="str">couleur</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="6f868b9e-9f30-6a38-6dc3-2480bc8d113b">
-			<Location>
-				<Interval>
-					<Begin midpoint="21.751841752" radius="0.0005" />
-					<End midpoint="24.086" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">pulls shetland tailles trente six à quarante six</Tag>
+				<Tag type="str">pour</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="3f621c4c-6c97-5a52-6bc0-7791eb0c895c">
-			<Location>
-				<Interval>
-					<Begin midpoint="24.086" radius="0.0005" />
-					<End midpoint="24.752" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag type="str">toutes</Tag>
 			</Label>
-		</Annotation>
-		<Annotation id="2f938f3b-2d75-4d00-3bf2-8296da2a365a">
-			<Location>
-				<Interval>
-					<Begin midpoint="24.752" radius="0.0005" />
-					<End midpoint="31.4725844028" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">plus de gris foncé ni de beige en tre- + en trente huit et quarante + quatre de chaque couleur pour toutes les autres tailles</Tag>
+				<Tag type="str">les</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">autres</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">tailles</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6e939e5e-4a38-9e96-6fb7-3812fc3e850e">
+		<Annotation id="5d062f7c-6c19-9f40-4fd4-5555dd5c681b">
 			<Location>
 				<Interval>
 					<Begin midpoint="31.4725844028" radius="0.0005" />

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:16+02:00" format="1.4" name="Text Normalization">
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T09:37:34+02:00" format="1.4" name="Text Normalization">
 	<Metadata>
-		<Entry key="id">5b728d2d-1d91-6c66-8dc0-3495ca1a117b</Entry>
+		<Entry key="id">9c325c9d-8a88-5a24-2fa5-4136fe3f980b</Entry>
 		<Entry key="software_name">SPPAS</Entry>
 		<Entry key="software_version">1.9.6</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
@@ -14,18 +14,18 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/fra</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_normalization_result_of">E:\bigi\Workspace\sppas\samples\samples-fra\F_F_B003-P8.TextGrid</Entry>
-		<Entry key="text_normalization_vocab">E:\bigi\Workspace\sppas\resources\vocab\fra.vocab</Entry>
+		<Entry key="text_normalization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-fra/F_F_B003-P8.TextGrid</Entry>
+		<Entry key="text_normalization_vocab">/mnt/e/bigi/Workspace/sppas/resources/vocab/fra.vocab</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">F_F_B003-P8-token.xra</Entry>
-		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_write_date">2018-37-12 09:37</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+		<Entry key="file_created_date">2018-37-12 09:37</Entry>
 	</Metadata>
 
-	<Tier id="7d795a1a-0b76-9d48-9eb3-5901ff4b787f" tiername="Tokens">
+	<Tier id="3e841a9d-4d96-7e97-1ff9-3487ed3f133a" tiername="Tokens">
 		<Metadata>
 			<Entry key="language">0</Entry>
 			<Entry key="text_normalization_enable_action_replace">true</Entry>
@@ -34,7 +34,7 @@
 			<Entry key="text_normalization_enable_action_lower">true</Entry>
 			<Entry key="text_normalization_enable_action_punct">true</Entry>
 		</Metadata>
-		<Annotation id="3b739b8c-4a54-1a52-9be2-8464fd0a200f">
+		<Annotation id="5f959c4a-7c53-2a73-5ef9-4968fa9c319a">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />
@@ -45,7 +45,7 @@
 				<Tag type="str">#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6b400c7c-2f48-9c85-0bd4-2126fe9b955b">
+		<Annotation id="5f601b8b-0f28-3a45-8de1-7375ad6a407c">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.4971007546" radius="0.0005" />
@@ -53,16 +53,52 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">hier soir j' ai</Tag>
+				<Tag type="str">hier</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">ouvert la porte d' entrée</Tag>
+				<Tag type="str">soir</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">pour laisser chort- sortir le chat</Tag>
+				<Tag type="str">j'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">ai</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">ouvert</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">porte</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">d'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">entrée</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">pour</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">laisser</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">chort-</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">sortir</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">le</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">chat</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9a697e8b-9a98-4e83-9ff8-1584bc4b469b">
+		<Annotation id="7c040d3d-0f00-1b83-7dd0-0599fa8a786b">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.6838880379" radius="0.0005" />
@@ -73,7 +109,7 @@
 				<Tag type="str">#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4f954d3c-3e91-0c83-5ec4-3971df1a631b">
+		<Annotation id="1f203d7b-2e64-6c20-5db0-5171ad6d938e">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.7436026532" radius="0.0005" />
@@ -81,10 +117,52 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">la nuit était si belle que je suis descendu dans la rue prendre le frais</Tag>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">nuit</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">était</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">si</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">belle</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">que</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">je</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">suis</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">descendu</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">dans</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">rue</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">prendre</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">le</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">frais</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3b611b9c-6a97-8c49-2cd6-9243ba4f595e">
+		<Annotation id="5c113e1a-2d32-4a57-4ae4-7775ba7c766a">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.4605955438" radius="0.0005" />
@@ -95,7 +173,7 @@
 				<Tag type="str">#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4e430c9f-7a36-3f66-8af5-5097fc9b903c">
+		<Annotation id="7f218f4a-7f48-6f91-8ab1-6158de0c080e">
 			<Location>
 				<Interval>
 					<Begin midpoint="9.1450000312" radius="0.0005" />
@@ -103,10 +181,55 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">j' avais à peine fait quelque pas que j' ai entendu la porte claquer derrière moi</Tag>
+				<Tag type="str">j'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">avais</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">à</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">peine</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">fait</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">quelque</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">pas</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">que</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">j'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">ai</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">entendu</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">porte</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">claquer</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">derrière</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">moi</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4f986a8d-2f14-9b16-0fd1-7778ce6e521b">
+		<Annotation id="2a037a1d-5d19-3f69-7fb3-5110cf7c203c">
 			<Location>
 				<Interval>
 					<Begin midpoint="11.9485310906" radius="0.0005" />
@@ -117,7 +240,7 @@
 				<Tag type="str">#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2c722d4b-3b80-5e99-0de6-3052fc6f096b">
+		<Annotation id="7e986b6e-0e88-8c23-7be5-1919ef9e525b">
 			<Location>
 				<Interval>
 					<Begin midpoint="12.494" radius="0.0005" />
@@ -125,10 +248,46 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">j' ai réalisé tout d' un coup + que j' étais enfermé dehors</Tag>
+				<Tag type="str">j'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">ai</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">réalisé</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">tout</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">d'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">un</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">coup</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">+</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">que</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">j'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">étais</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">enfermé</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">dehors</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8e311c8b-4d73-2d93-0bb4-5984fd2d910b">
+		<Annotation id="3e926e8a-3f83-9b78-8ad8-7137ba9d119b">
 			<Location>
 				<Interval>
 					<Begin midpoint="15.036" radius="0.0005" />
@@ -139,7 +298,7 @@
 				<Tag type="str">#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6c752b6f-7f05-5c36-2ec6-9322ef4d920c">
+		<Annotation id="1a104f3f-5a15-6f08-4ea9-3068ac1c508c">
 			<Location>
 				<Interval>
 					<Begin midpoint="16.602" radius="0.0005" />
@@ -147,286 +306,61 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">le comble c' est que je me suis fait arrêter alors_que j' essayais de forcer ma propre porte</Tag>
+				<Tag type="str">le</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">comble</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">c'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">est</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">que</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">je</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">me</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">suis</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">fait</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">arrêter</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">alors_que</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">j'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">essayais</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">de</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">forcer</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">ma</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">propre</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">porte</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="0a889a3e-9d27-7a53-7fe2-3594cc4a913d">
-			<Location>
-				<Interval>
-					<Begin midpoint="20.01" radius="0.0005" />
-					<End midpoint="21.3471" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">#</Tag>
-			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="2c678e0f-5d10-9a01-0dd8-2478ab6e073f" tiername="Tokens-Std">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">true</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">true</Entry>
-			<Entry key="text_normalization_enable_action_lower">true</Entry>
-			<Entry key="text_normalization_enable_action_punct">true</Entry>
-		</Metadata>
-		<Annotation id="3b739b8c-4a54-1a52-9be2-8464fd0a200f">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="2.4971007546" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">gpf_0</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="6b400c7c-2f48-9c85-0bd4-2126fe9b955b">
-			<Location>
-				<Interval>
-					<Begin midpoint="2.4971007546" radius="0.0005" />
-					<End midpoint="5.6838880379" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">hier soir j' ai</Tag>
-			</Label>
-			<Label>
-				<Tag type="str">ouvert la porte d' entrée</Tag>
-			</Label>
-			<Label>
-				<Tag type="str">pour laisser chort- sortir le chat</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="9a697e8b-9a98-4e83-9ff8-1584bc4b469b">
-			<Location>
-				<Interval>
-					<Begin midpoint="5.6838880379" radius="0.0005" />
-					<End midpoint="5.7436026532" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">#</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="4f954d3c-3e91-0c83-5ec4-3971df1a631b">
-			<Location>
-				<Interval>
-					<Begin midpoint="5.7436026532" radius="0.0005" />
-					<End midpoint="8.4605955438" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">la nuit était si belle que je suis descendu dans la rue prendre le frais</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="3b611b9c-6a97-8c49-2cd6-9243ba4f595e">
-			<Location>
-				<Interval>
-					<Begin midpoint="8.4605955438" radius="0.0005" />
-					<End midpoint="9.1450000312" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">#</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="4e430c9f-7a36-3f66-8af5-5097fc9b903c">
-			<Location>
-				<Interval>
-					<Begin midpoint="9.1450000312" radius="0.0005" />
-					<End midpoint="11.9485310906" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">j' avais à peine fait quelque pas que j' ai entendu la porte claquer derrière moi</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="4f986a8d-2f14-9b16-0fd1-7778ce6e521b">
-			<Location>
-				<Interval>
-					<Begin midpoint="11.9485310906" radius="0.0005" />
-					<End midpoint="12.494" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">#</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="2c722d4b-3b80-5e99-0de6-3052fc6f096b">
-			<Location>
-				<Interval>
-					<Begin midpoint="12.494" radius="0.0005" />
-					<End midpoint="15.036" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">j' ai réalisé tout d' un coup + que j' étais enfermé dehors</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="8e311c8b-4d73-2d93-0bb4-5984fd2d910b">
-			<Location>
-				<Interval>
-					<Begin midpoint="15.036" radius="0.0005" />
-					<End midpoint="16.602" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">#</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="6c752b6f-7f05-5c36-2ec6-9322ef4d920c">
-			<Location>
-				<Interval>
-					<Begin midpoint="16.602" radius="0.0005" />
-					<End midpoint="20.01" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">le comble c' est que je me suis fait arrêter alors_que j' essayais de forcer ma propre porte</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="0a889a3e-9d27-7a53-7fe2-3594cc4a913d">
-			<Location>
-				<Interval>
-					<Begin midpoint="20.01" radius="0.0005" />
-					<End midpoint="21.3471" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">#</Tag>
-			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="1a565d8f-7b22-8e34-9fc5-6342da4a065d" tiername="Tokens-Custom">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">false</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">false</Entry>
-			<Entry key="text_normalization_enable_action_lower">false</Entry>
-			<Entry key="text_normalization_enable_action_punct">false</Entry>
-		</Metadata>
-		<Annotation id="3b739b8c-4a54-1a52-9be2-8464fd0a200f">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="2.4971007546" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">gpf_0</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="6b400c7c-2f48-9c85-0bd4-2126fe9b955b">
-			<Location>
-				<Interval>
-					<Begin midpoint="2.4971007546" radius="0.0005" />
-					<End midpoint="5.6838880379" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">hier soir j' ai</Tag>
-			</Label>
-			<Label>
-				<Tag type="str">ouvert la porte d' entrée</Tag>
-			</Label>
-			<Label>
-				<Tag type="str">pour laisser chort- sortir le chat</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="9a697e8b-9a98-4e83-9ff8-1584bc4b469b">
-			<Location>
-				<Interval>
-					<Begin midpoint="5.6838880379" radius="0.0005" />
-					<End midpoint="5.7436026532" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">#</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="4f954d3c-3e91-0c83-5ec4-3971df1a631b">
-			<Location>
-				<Interval>
-					<Begin midpoint="5.7436026532" radius="0.0005" />
-					<End midpoint="8.4605955438" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">la nuit était si belle que je suis descendu dans la rue prendre le frais</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="3b611b9c-6a97-8c49-2cd6-9243ba4f595e">
-			<Location>
-				<Interval>
-					<Begin midpoint="8.4605955438" radius="0.0005" />
-					<End midpoint="9.1450000312" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">#</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="4e430c9f-7a36-3f66-8af5-5097fc9b903c">
-			<Location>
-				<Interval>
-					<Begin midpoint="9.1450000312" radius="0.0005" />
-					<End midpoint="11.9485310906" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">j' avais à peine fait quelque pas que j' ai entendu la porte claquer derrière moi</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="4f986a8d-2f14-9b16-0fd1-7778ce6e521b">
-			<Location>
-				<Interval>
-					<Begin midpoint="11.9485310906" radius="0.0005" />
-					<End midpoint="12.494" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">#</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="2c722d4b-3b80-5e99-0de6-3052fc6f096b">
-			<Location>
-				<Interval>
-					<Begin midpoint="12.494" radius="0.0005" />
-					<End midpoint="15.036" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">j' ai réalisé tout d' un coup + que j' étais enfermé dehors</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="8e311c8b-4d73-2d93-0bb4-5984fd2d910b">
-			<Location>
-				<Interval>
-					<Begin midpoint="15.036" radius="0.0005" />
-					<End midpoint="16.602" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">#</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="6c752b6f-7f05-5c36-2ec6-9322ef4d920c">
-			<Location>
-				<Interval>
-					<Begin midpoint="16.602" radius="0.0005" />
-					<End midpoint="20.01" radius="0.0005" />
-				</Interval>
-			</Location>
-			<Label>
-				<Tag type="str">le comble c' est que je me suis fait arrêter alors_que j' essayais de forcer ma propre porte</Tag>
-			</Label>
-		</Annotation>
-		<Annotation id="0a889a3e-9d27-7a53-7fe2-3594cc4a913d">
+		<Annotation id="4c999e4e-4c84-7d54-3ee9-9431bb8a167a">
 			<Location>
 				<Interval>
 					<Begin midpoint="20.01" radius="0.0005" />

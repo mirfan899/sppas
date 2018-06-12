@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:15+02:00" format="1.4" name="Text Normalization">
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T09:37:34+02:00" format="1.4" name="Text Normalization">
 	<Metadata>
-		<Entry key="id">7e353e2f-5c04-1b92-2ca7-1327ad2c176e</Entry>
+		<Entry key="id">9c597e3d-4e90-8f21-8de0-8098ad6b736f</Entry>
 		<Entry key="software_name">SPPAS</Entry>
 		<Entry key="software_version">1.9.6</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
@@ -14,18 +14,18 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/fra</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_normalization_result_of">E:\bigi\Workspace\sppas\samples\samples-fra\BX_track_0451.TextGrid</Entry>
-		<Entry key="text_normalization_vocab">E:\bigi\Workspace\sppas\resources\vocab\fra.vocab</Entry>
+		<Entry key="text_normalization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-fra/BX_track_0451.TextGrid</Entry>
+		<Entry key="text_normalization_vocab">/mnt/e/bigi/Workspace/sppas/resources/vocab/fra.vocab</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">BX_track_0451-token.xra</Entry>
-		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_write_date">2018-37-12 09:37</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+		<Entry key="file_created_date">2018-37-12 09:37</Entry>
 	</Metadata>
 
-	<Tier id="1b855a9f-2f86-3e77-1cd7-9585df7b976c" tiername="Tokens">
+	<Tier id="4d828b3e-9a26-8e05-2ef3-4195ad0f256d" tiername="Tokens">
 		<Metadata>
 			<Entry key="language">0</Entry>
 			<Entry key="text_normalization_enable_action_replace">true</Entry>
@@ -34,7 +34,7 @@
 			<Entry key="text_normalization_enable_action_lower">true</Entry>
 			<Entry key="text_normalization_enable_action_punct">true</Entry>
 		</Metadata>
-		<Annotation id="3c319e9c-2b10-4d87-3ff3-3007da0e982f">
+		<Annotation id="7a214c2b-5e39-3e68-0ed3-8209bf6a660e">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />
@@ -42,51 +42,70 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">et_puis on euh même si on essaie de mémoriser pour pas se tromper la fois d'après la fois d'après ça a changé</Tag>
+				<Tag type="str">et_puis</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="0b010e9e-5b24-0e63-9ed6-6034da7f732e" tiername="Tokens-Std">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">true</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">true</Entry>
-			<Entry key="text_normalization_enable_action_lower">true</Entry>
-			<Entry key="text_normalization_enable_action_punct">true</Entry>
-		</Metadata>
-		<Annotation id="3c319e9c-2b10-4d87-3ff3-3007da0e982f">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="3.84" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">et_puis on euh même si on essaie de mémoriser pour pas se tromper la fois d'après la fois d'après ça a changé</Tag>
+				<Tag type="str">on</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="2c097f0d-0a19-6f87-2fc4-2421cd0d115d" tiername="Tokens-Custom">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">false</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">false</Entry>
-			<Entry key="text_normalization_enable_action_lower">false</Entry>
-			<Entry key="text_normalization_enable_action_punct">false</Entry>
-		</Metadata>
-		<Annotation id="3c319e9c-2b10-4d87-3ff3-3007da0e982f">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="3.84" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">et_puis on euh même si on essaie de mémoriser pour pas se tromper la fois d'après la fois d'après ça a changé</Tag>
+				<Tag type="str">euh</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">même</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">si</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">on</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">essaie</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">de</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">mémoriser</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">pour</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">pas</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">se</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">tromper</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">fois</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">d'après</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">fois</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">d'après</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">ça</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">a</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">changé</Tag>
 			</Label>
 		</Annotation>
 	</Tier>

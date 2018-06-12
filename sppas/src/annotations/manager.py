@@ -841,10 +841,10 @@ class sppasAnnotationsManager(Thread):
         stepname = self.parameters.get_step_name(stepidx)
         files_processed_success = 0
         self._progress.set_header(stepname)
-        self._progress.update(0,"")
+        self._progress.update(0, "")
 
         # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav",not_start=["track_"])
+        filelist = self.set_filelist(".wav", not_start=["track_"])
         if len(filelist) == 0:
             return 0
         total = len(filelist)

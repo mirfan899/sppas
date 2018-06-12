@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-05-30T09:22:17+02:00" format="1.4" name="Text Normalization">
+<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T09:37:34+02:00" format="1.4" name="Text Normalization">
 	<Metadata>
-		<Entry key="id">5f265a8a-9d76-3c58-7ba4-3706be0e553b</Entry>
+		<Entry key="id">2a711f7b-2f35-5e06-9ee4-4778ab5d499b</Entry>
 		<Entry key="software_name">SPPAS</Entry>
 		<Entry key="software_version">1.9.6</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
@@ -14,18 +14,18 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/fra</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_normalization_result_of">E:\bigi\Workspace\sppas\samples\samples-fra\ML_track_0597.TextGrid</Entry>
-		<Entry key="text_normalization_vocab">E:\bigi\Workspace\sppas\resources\vocab\fra.vocab</Entry>
+		<Entry key="text_normalization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-fra/ML_track_0597.TextGrid</Entry>
+		<Entry key="text_normalization_vocab">/mnt/e/bigi/Workspace/sppas/resources/vocab/fra.vocab</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">ML_track_0597-token.xra</Entry>
-		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-22-30 09:22</Entry>
+		<Entry key="file_write_date">2018-37-12 09:37</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-22-30 09:22</Entry>
+		<Entry key="file_created_date">2018-37-12 09:37</Entry>
 	</Metadata>
 
-	<Tier id="6b187b6c-7d09-8f85-5fb7-2531bb3c210f" tiername="Tokens">
+	<Tier id="9d274f6b-2a53-6c20-5fa8-0314ee7b427c" tiername="Tokens">
 		<Metadata>
 			<Entry key="language">0</Entry>
 			<Entry key="text_normalization_enable_action_replace">true</Entry>
@@ -34,7 +34,7 @@
 			<Entry key="text_normalization_enable_action_lower">true</Entry>
 			<Entry key="text_normalization_enable_action_punct">true</Entry>
 		</Metadata>
-		<Annotation id="2e129a1e-1b58-0d90-8ac3-6350dd8f461b">
+		<Annotation id="1c073d8c-6a03-3b77-0bf8-8471ee2b821b">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />
@@ -42,51 +42,130 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">non mais pas la virer mais si elle fout des baffes aux gamins alors je vois pas pourquoi elle est avec des gamins on la fout dans un bureau et_puis voilà quoi y a qu' à la mettre à la cantine @</Tag>
+				<Tag type="str">non</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="9b287e6a-3b21-8d86-2bf6-7635be5b007d" tiername="Tokens-Std">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">true</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">true</Entry>
-			<Entry key="text_normalization_enable_action_lower">true</Entry>
-			<Entry key="text_normalization_enable_action_punct">true</Entry>
-		</Metadata>
-		<Annotation id="2e129a1e-1b58-0d90-8ac3-6350dd8f461b">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="6.29" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">non mais pas la virer mais si elle fout des baffes aux gamins alors je vois pas pourquoi elle est avec des gamins on la fout dans un bureau et_puis voilà quoi y a qu' à la mettre à la cantine @</Tag>
+				<Tag type="str">mais</Tag>
 			</Label>
-		</Annotation>
-	</Tier>
-
-	<Tier id="6e118f8f-4a78-3b16-5cd2-7236be5e485b" tiername="Tokens-Custom">
-		<Metadata>
-			<Entry key="language">0</Entry>
-			<Entry key="text_normalization_enable_action_replace">false</Entry>
-			<Entry key="text_normalization_enable_action_tokenize">true</Entry>
-			<Entry key="text_normalization_enable_action_numbers">false</Entry>
-			<Entry key="text_normalization_enable_action_lower">false</Entry>
-			<Entry key="text_normalization_enable_action_punct">false</Entry>
-		</Metadata>
-		<Annotation id="2e129a1e-1b58-0d90-8ac3-6350dd8f461b">
-			<Location>
-				<Interval>
-					<Begin midpoint="0.0" radius="0.0" />
-					<End midpoint="6.29" radius="0.0005" />
-				</Interval>
-			</Location>
 			<Label>
-				<Tag type="str">non mais pas la virer mais si elle fout des baffes aux gamins alors je vois pas pourquoi elle est avec des gamins on la fout dans un bureau et_puis voilà quoi y a qu' à la mettre à la cantine @</Tag>
+				<Tag type="str">pas</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">virer</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">mais</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">si</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">elle</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">fout</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">des</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">baffes</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">aux</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">gamins</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">alors</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">je</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">vois</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">pas</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">pourquoi</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">elle</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">est</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">avec</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">des</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">gamins</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">on</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">fout</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">dans</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">un</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">bureau</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">et_puis</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">voilà</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">quoi</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">y</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">a</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">qu'</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">à</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">mettre</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">à</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">la</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">cantine</Tag>
+			</Label>
+			<Label>
+				<Tag type="str">@</Tag>
 			</Label>
 		</Annotation>
 	</Tier>
