@@ -169,7 +169,7 @@ def serialize_labels(labels, separator="\n", empty="", alt=True):
 def serialize_label(label, empty="", alt=True):
     """ Convert a label into a string, including or not alternative tags.
 
-    Use the "{ / }" system to serialize the alternative tags.
+    Use the "{ | }" system to serialize the alternative tags.
     Scores of the tags are not returned.
 
     :param label: (sppasLabel)
@@ -206,7 +206,7 @@ def serialize_label(label, empty="", alt=True):
         return tag_contents[0]
 
     # we return the alternative tags
-    return "{ " + " / ".join(tag_contents) + " }"
+    return "{" + "|".join(tag_contents) + "}"
 
 # -----------------------------------------------------------------------
 

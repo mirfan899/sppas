@@ -33,7 +33,8 @@
 
 """
 from sppas import PHONE_SYMBOLS
-
+from sppas import PHONEMES_SEPARATOR
+from sppas import VARIANTS_SEPARATOR
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.vocab import sppasVocabulary
 
@@ -86,9 +87,9 @@ class sppasPhoneSet(sppasVocabulary):
         d = sppasDictPron(dict_filename)
         for key in d:
             value = d.get_pron(key)
-            variants = value.split(sppasDictPron.VARIANTS_SEPARATOR)
+            variants = value.split(VARIANTS_SEPARATOR)
             for variant in variants:
-                phones = variant.split(sppasDictPron.PHONEMES_SEPARATOR)
+                phones = variant.split(PHONEMES_SEPARATOR)
                 for phone in phones:
                     self.add(phone)
 

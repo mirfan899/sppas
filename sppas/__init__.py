@@ -116,3 +116,9 @@ PHONE_SYMBOLS = {
 
 # All possible symbols:
 SYMBOLS = dict(ORTHO_SYMBOLS.items() + PHONE_SYMBOLS.items())
+
+# ---------------------------------------------------------------------------
+# Symbols used by SPPAS to serialize the data (labels/tags)
+
+PHONEMES_SEPARATOR = "-"   # X-SAMPA standard
+VARIANTS_SEPARATOR = "|"   # used for all alternative tags

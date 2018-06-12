@@ -225,6 +225,7 @@ class AlignIO(object):
 
     def split(self, inputaudio, phontier, toktier, diralign):
         """ Write tracks of a Transcription.
+
         If the given phontier is not already time-aligned in intervals,
         an automatic track-segmenter will be applied first and the TimeAligned
         version of the tokenization is returned.
@@ -244,7 +245,13 @@ class AlignIO(object):
         # Map phonetizations (even the alternatives)
         for ann in phontier:
             for text in ann.GetLabel().GetLabels():
-                text.SetValue(self._mapping.map(text.GetValue().replace('\n', ' '),
+                # in case we previously had a sequence of labels, we serialized into only one
+                content = text.GetValue().replace('\n', ' ')
+                # in cas we previously had alternative tags, we serialized into only one
+                # we remove braces but we keep the pipe (!)
+                content = content.replace('{', '')
+                content = content.replace('}', '')
+                text.SetValue(self._mapping.map(content,
                                                 AlignIO.DELIMITERS))
 
         sgmt = TrackSplitter()

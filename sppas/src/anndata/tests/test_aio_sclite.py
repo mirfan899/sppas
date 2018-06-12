@@ -576,4 +576,4 @@ class TestScliteSTM(unittest.TestCase):
                              sppasLabel([sppasTag("label"), sppasTag("level")],
                                         [0.60, 0.4]))
         line = sppasSTM._serialize_annotation(a3, "WAV", "1", "A")
-        self.assertEqual("WAV 1 A 1.0 3.5 { label / level }\n", line)
+        self.assertEqual("WAV 1 A 1.0 3.5 {label|level}\n", line)

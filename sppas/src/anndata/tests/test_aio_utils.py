@@ -109,7 +109,7 @@ class TestUtils(unittest.TestCase):
         tag2 = sppasTag("um")
         label = sppasLabel([tag1, tag2])
         s = serialize_label(label)
-        self.assertEqual("{ uh / um }", s)
+        self.assertEqual("{uh|um}", s)
 
     # -----------------------------------------------------------------------
 

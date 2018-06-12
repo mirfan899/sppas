@@ -42,6 +42,8 @@ import xml.etree.cElementTree as ET
 from sppas import encoding
 from sppas import unk_stamp
 from sppas import RESOURCES_PATH
+from sppas import PHONEMES_SEPARATOR
+from sppas import VARIANTS_SEPARATOR
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .dumpfile import sppasDumpFile
@@ -90,11 +92,6 @@ class sppasDictPron(object):
     Notice that tokens in the dict are case-insensitive.
 
     """
-    PHONEMES_SEPARATOR = "-"
-    VARIANTS_SEPARATOR = "|"
-
-    # -----------------------------------------------------------------------
-
     def __init__(self, dict_filename=None, nodump=False):
         """ Create a sppasDictPron instance.
 
@@ -198,7 +195,7 @@ class sppasDictPron(object):
 
         if s in self._dict:
             p = sppasUnicode(pron).to_strip()
-            return p in self._dict[s].split(sppasDictPron.VARIANTS_SEPARATOR)
+            return p in self._dict[s].split(VARIANTS_SEPARATOR)
 
         return False
 
@@ -229,14 +226,14 @@ class sppasDictPron(object):
         entry = sppasDictPron.format_token(token)
 
         new_pron = sppasUnicode(pron).to_strip()
-        new_pron = new_pron.replace(" ", sppasDictPron.PHONEMES_SEPARATOR)
+        new_pron = new_pron.replace(" ", PHONEMES_SEPARATOR)
 
         # Already a pronunciation for this token?
         cur_pron = ""
         if entry in self._dict:
             # ... don't append an already known pronunciation
             if self.is_pron_of(entry, new_pron) is False:
-                cur_pron = self.get_pron(entry) + sppasDictPron.VARIANTS_SEPARATOR
+                cur_pron = self.get_pron(entry) + VARIANTS_SEPARATOR
             else:
                 cur_pron = self.get_pron(entry)
                 new_pron = ""
@@ -258,7 +255,7 @@ class sppasDictPron(object):
 
         """
         map_table.set_reverse(True)
-        delimiters = [sppasDictPron.VARIANTS_SEPARATOR, sppasDictPron.PHONEMES_SEPARATOR]
+        delimiters = [VARIANTS_SEPARATOR, PHONEMES_SEPARATOR]
         new_dict = sppasDictPron()
 
         for key, value in self._dict.items():
@@ -349,10 +346,10 @@ class sppasDictPron(object):
             with codecs.open(filename, 'w', encoding=encoding) as output:
 
                 for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
-                    variants = value.split(sppasDictPron.VARIANTS_SEPARATOR)
+                    variants = value.split(VARIANTS_SEPARATOR)
 
                     for i, variant in enumerate(variants, 1):
-                        variant = variant.replace(sppasDictPron.PHONEMES_SEPARATOR, " ")
+                        variant = variant.replace(PHONEMES_SEPARATOR, " ")
                         brackets = entry
                         if with_filled_brackets is False:
                             brackets = ""
@@ -457,7 +454,7 @@ class sppasDictPron(object):
                 else:
                     sampa.append(sampa_p)
 
-        return sppasDictPron.PHONEMES_SEPARATOR.join(sampa)
+        return PHONEMES_SEPARATOR.join(sampa)
 
     # ------------------------------------------------------------------------
     # Overloads
