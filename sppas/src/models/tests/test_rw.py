@@ -21,9 +21,9 @@ TEMP = sppasFileUtils().set_random()
 MODEL_PATH = os.path.join(RESOURCES_PATH, "models")
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
-SIL_PHON = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
-LAUGH_PHON = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("laugh")]
-SIL_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("silence")]
+SIL_PHON = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
+LAUGH_PHON = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("laugh")]
+SIL_ORTHO = list(ORTHO_SYMBOLS.keys())[list(ORTHO_SYMBOLS.values()).index("silence")]
 
 # ---------------------------------------------------------------------------
 

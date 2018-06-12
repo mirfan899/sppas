@@ -155,8 +155,6 @@ class TestTier(unittest.TestCase):
             # ctrl_vocab does not contains "error"
             tiercv[0].add_tag(sppasTag("error"))
 
-        print " >>>>>> Should not contain tag error: ", tiercv[0]
-
         # assign a ctrl_vocab before appending annotations
         tiercv = sppasTier(ctrl_vocab=voc)
         tiercv.append(a1)

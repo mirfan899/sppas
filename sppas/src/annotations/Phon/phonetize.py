@@ -50,7 +50,7 @@ from .dagphon import sppasDAGPhonetizer
 
 # ---------------------------------------------------------------------------
 
-SIL = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
+SIL = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
 
 # ---------------------------------------------------------------------------
 

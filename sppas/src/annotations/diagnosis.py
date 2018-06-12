@@ -205,7 +205,8 @@ class sppasDiagnosis(object):
 
         # test encoding
         try:
-            codecs.open(filename, "r", encoding)
+            f = codecs.open(filename, "r", encoding)
+            f.close()
         except UnicodeDecodeError:
             message = MSG_INVALID + MSG_FILE_ENCODING.format(encoding=encoding)
             return ERROR_ID, message

@@ -61,7 +61,7 @@ from .normalize import TextNormalizer
 
 MSG_TRACK = t.gettext(":INFO 1220: ")
 
-SIL_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("silence")]
+SIL_ORTHO = list(ORTHO_SYMBOLS.keys())[list(ORTHO_SYMBOLS.values()).index("silence")]
 
 # ---------------------------------------------------------------------------
 

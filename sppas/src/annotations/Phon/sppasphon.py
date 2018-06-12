@@ -64,8 +64,8 @@ MSG_PHONETIZED = (t.gettext(":INFO 1112: "))
 MSG_NOT_PHONETIZED = (t.gettext(":INFO 1114: "))
 MSG_TRACK = (t.gettext(":INFO 1220: "))
 
-SIL = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
-SIL_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("silence")]
+SIL = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
+SIL_ORTHO = list(ORTHO_SYMBOLS.keys())[list(ORTHO_SYMBOLS.values()).index("silence")]
 
 # ---------------------------------------------------------------------------
 

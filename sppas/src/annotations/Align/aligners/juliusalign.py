@@ -50,7 +50,7 @@ from .basealigner import BaseAligner
 
 JULIUS_EXT_OUT = ["palign", "walign"]
 DEFAULT_EXT_OUT = JULIUS_EXT_OUT[0]
-SIL_PHON = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
+SIL_PHON = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
 
 # ----------------------------------------------------------------------------
 

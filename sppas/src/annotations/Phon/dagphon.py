@@ -174,7 +174,9 @@ class sppasDAGPhonetizer(object):
 
         # Merge =======>
         # TODO: MERGE DAGs instead of merging prons
-        pron = dict(pron1.items() + pron2.items())
+        pron = dict()
+        pron.update(pron1)
+        pron.update(pron2)
 
         # Output selection
 
@@ -190,4 +192,4 @@ class sppasDAGPhonetizer(object):
 
         # Other number of variants: choose shorters
         l = sorted(pron.items(), key=lambda x: x[1])[:self.variants]
-        return v.join(zip(*l)[0])
+        return v.join(list(zip(*l))[0])

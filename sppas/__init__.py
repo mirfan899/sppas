@@ -115,7 +115,9 @@ PHONE_SYMBOLS = {
 }
 
 # All possible symbols:
-SYMBOLS = dict(ORTHO_SYMBOLS.items() + PHONE_SYMBOLS.items())
+SYMBOLS = dict()
+SYMBOLS.update(ORTHO_SYMBOLS)
+SYMBOLS.update(PHONE_SYMBOLS)
 
 # ---------------------------------------------------------------------------
 # Symbols used by SPPAS to serialize the data (labels/tags)

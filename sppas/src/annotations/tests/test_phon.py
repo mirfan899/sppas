@@ -59,9 +59,9 @@ from ..Phon.sppasphon import sppasPhon
 
 # ---------------------------------------------------------------------------
 
-SIL = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("silence")]
-SP = PHONE_SYMBOLS.keys()[PHONE_SYMBOLS.values().index("pause")]
-SP_ORTHO = ORTHO_SYMBOLS.keys()[ORTHO_SYMBOLS.values().index("pause")]
+SIL = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
+SP = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("pause")]
+SP_ORTHO = list(ORTHO_SYMBOLS.keys())[list(ORTHO_SYMBOLS.values()).index("pause")]
 
 # ---------------------------------------------------------------------------
 
@@ -186,8 +186,13 @@ class TestDictPhon(unittest.TestCase):
         self.grph.set_maptable(mapt)
 
         self.assertEqual("c", self.grph._map_phonentry("c"))
-        self.assertEqual("a|A", self.grph._map_phonentry("a"))
-        self.assertEqual("B|b|v", self.grph._map_phonentry("b"))
+
+        self.assertEqual(set("a|A".split('|')),
+                         set(self.grph._map_phonentry("a").split('|')))
+
+        self.assertEqual(set("B|b|v".split('|')),
+                         set(self.grph._map_phonentry("b").split('|')))
+
         self.assertEqual('c.c', self.grph._map_phonentry("c.c"))
 
         self.assertEqual(set('a-b|a-B|A-b|A-B|A-v|a-v'.split("|")),
@@ -206,8 +211,12 @@ class TestDictPhon(unittest.TestCase):
         mapt.add('b', 'b')
         mapt.add('c', 'c')
         self.assertEqual("c", self.grph._map_phonentry("c"))
-        self.assertEqual("a|A", self.grph._map_phonentry("a"))
-        self.assertEqual("B|b|v", self.grph._map_phonentry("b"))
+
+        self.assertEqual(set("a|A".split('|')),
+                         set(self.grph._map_phonentry("a").split('|')))
+
+        self.assertEqual(set("B|b|v".split('|')),
+                         set(self.grph._map_phonentry("b").split('|')))
 
         # reset the mapping table for the next tests...
         self.grph.set_maptable(None)
@@ -273,18 +282,26 @@ class TestDAGPhon(unittest.TestCase):
         to all paths.
 
         """
-        self.assertEqual("a|b", self.dd.decompose("a", "b"))
-        self.assertEqual(self.dd.decompose("a|A b"), "a-b|A-b")
-        self.assertEqual(self.dd.decompose("a|A", "b|B"), "a|A|B|b")
+        self.assertEqual(set("a|b".split('|')),
+                         set(self.dd.decompose("a", "b").split('|')))
+
+        self.assertEqual(set("a-b|A-b".split('|')),
+                         set(self.dd.decompose("a|A b").split('|')))
+
+        self.assertEqual(set("a|A|B|b".split('|')),
+                         set(self.dd.decompose("a|A", "b|B").split('|')))
 
         result = "p1-p2-x3|p1-x2-x3|p1-p2-p3|p1-x2-p3"
-        self.assertEqual(set(self.dd.decompose("p1 p2|x2 p3|x3").split("|")), set(result.split("|")))
+        self.assertEqual(set(result.split("|")),
+                         set(self.dd.decompose("p1 p2|x2 p3|x3").split("|")))
 
         result = 'p1-p2-p3|x1-x2-x3'
-        self.assertEqual(set(self.dd.decompose("p1 p2 p3", "x1 x2 x3").split("|")), set(result.split("|")))
+        self.assertEqual(set(result.split("|")),
+                         set(self.dd.decompose("p1 p2 p3", "x1 x2 x3").split("|")))
 
         result = 'p1-p2-p3|p1-x2-p3|x1-x2-x3'
-        self.assertEqual(set(self.dd.decompose("p1 p2|x2 p3", "x1 x2 x3").split("|")), set(result.split("|")))
+        self.assertEqual(set(result.split("|")),
+                         set(self.dd.decompose("p1 p2|x2 p3", "x1 x2 x3").split("|")))
 
 # ---------------------------------------------------------------------------
 
@@ -306,29 +323,29 @@ class TestPhonUnk(unittest.TestCase):
     def test_phon(self):
         """ Text the phonetization of an unknown entry. """
 
-        self.assertEqual("abb-a|abb-aa",
-                         self.p.get_phon('abba'))
+        self.assertEqual(set("abb-a|abb-aa".split('|')),
+                         set(self.p.get_phon('abba').split('|')))
 
-        self.assertEqual("abb-a|abb-aa",
-                         self.p.get_phon('abba-'))
+        self.assertEqual(set("abb-a|abb-aa".split('|')),
+                         set(self.p.get_phon('abba-').split('|')))
 
-        self.assertEqual("abb-a|abb-aa",
-                         self.p.get_phon("abba'"))
+        self.assertEqual(set("abb-a|abb-aa".split('|')),
+                         set(self.p.get_phon("abba'").split('|')))
 
-        self.assertEqual("abb-a|abb-aa",
-                         self.p.get_phon("<abba>"))
+        self.assertEqual(set("abb-a|abb-aa".split('|')),
+                         set(self.p.get_phon("<abba>").split('|')))
 
         self.assertEqual("",
                          self.p.get_phon("<>"), "")
 
-        self.assertEqual("abb-a|abb-aa",
-                         self.p.get_phon("abb-a"))
+        self.assertEqual(set("abb-a|abb-aa".split('|')),
+                         set(self.p.get_phon("abb-a").split('|')))
 
-        self.assertEqual('a-b-c|a-b-cc|aa-b-c|aa-b-cc',
-                         self.p.get_phon('abc'))
+        self.assertEqual(set('a-b-c|a-b-cc|aa-b-c|aa-b-cc'.split('|')),
+                         set(self.p.get_phon('abc').split('|')))
 
-        self.assertEqual('a-b|aa-b',
-                         self.p.get_phon('abd'))
+        self.assertEqual(set('a-b|aa-b'.split('|')),
+                         set(self.p.get_phon('abd').split('|')))
 
 
 # ---------------------------------------------------------------------------
