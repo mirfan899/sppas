@@ -12,7 +12,7 @@
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2018  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -35,15 +35,6 @@
 # File: filterprocess.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
-
 import operator
 import wx
 import logging
@@ -64,28 +55,28 @@ class FilterProcess:
                        match_all,
                        tier_name,
                        file_manager,
-                       ):
+                ):
         """
-
-        @param sel_predicates (list) list of SinglePredicate
-        @param rel_predicates (RelationPredicate)
-        @param match_all (bool) match all predicates, instead of match any of them
-        @param output (str) output tier name
-        @param file_manager (xFiles)
+        :param sel_predicates: (list) list of SinglePredicate
+        :param rel_predicates: (RelationPredicate)
+        :param match_all: (bool) match all predicates, instead of match any of them
+        :param output: (str) output tier name
+        :param file_manager: (xFiles)
 
         """
         self.sel_predicates = sel_predicates
-        self.rel_predicate  = rel_predicate
-        self.match_all      = match_all
-        self.file_manager   = file_manager
-        self.tier_name      = tier_name
+        self.rel_predicate = rel_predicate
+        self.match_all = match_all
+        self.file_manager = file_manager
+        self.tier_name = tier_name
 
+    # -----------------------------------------------------------------------
 
     def __create_single_predicate(self):
         # Musn't occur, but we take care...
         if not len(self.sel_predicates):
             # create a predicate that will filter... nothing: everything is matching!
-            return Sel( regexp='*' )
+            return Sel(regexp='*')
         # Define operator:
         #    - AND if "Apply All"
         #    - OR  if "Apply any"
@@ -93,8 +84,10 @@ class FilterProcess:
             return functools.reduce(operator.and_, self.sel_predicates)
         return functools.reduce(operator.or_, self.sel_predicates)
 
+    # -----------------------------------------------------------------------
 
     def RunSingleFilter(self):
+
         predicate = self.__create_single_predicate()
 
         for i in range(self.file_manager.GetSize()):
@@ -106,17 +99,18 @@ class FilterProcess:
                 # tier is selected to be filtered
                 if obj.IsSelected(tier.GetName()):
                     # create an apply filter
-                    tierfilter = Filter( tier )
-                    sf = SingleFilter( predicate,tierfilter )
+                    tierfilter = Filter(tier)
+                    sf = SingleFilter(predicate, tierfilter)
                     new_tier = sf.Filter()
-                    new_tier.SetName( self.tier_name )
+                    new_tier.SetName(self.tier_name)
                     # append the new tier both in Transcription and in the list
-                    obj.Append( new_tier )
+                    obj.Append(new_tier)
 
+    # -----------------------------------------------------------------------
 
     def _runRelationFilter(self, tiername, progress, annotformat):
         progress.set_header("Apply RelationFilter")
-        progress.update(0,"")
+        progress.update(0, "")
         total = self.file_manager.GetSize()
 
         # Musn't occur, but we take care...
@@ -131,15 +125,16 @@ class FilterProcess:
             # obj is a TrsList instance
             obj = self.file_manager.GetObject(i)
             trs = obj.GetTranscription()
-            logging.debug (' ... Apply on transcription: %s (%s)'%(self.file_manager.GetFilename(i),trs.GetName()))
+            logging.debug(' ... Apply on transcription: %s (%s)'
+                          '' % (self.file_manager.GetFilename(i), trs.GetName()))
             progress.set_header(self.file_manager.GetFilename(i))
 
             # find the Y-tier
-            ytier = trs.Find( tiername )
+            ytier = trs.Find(tiername)
             if not ytier:
                 logging.debug(' ... ... tier Y is missing.')
                 continue
-            yfilter = Filter( ytier )
+            yfilter = Filter(ytier)
 
             # apply to X-tier
             for tier in trs:
@@ -150,14 +145,14 @@ class FilterProcess:
                     progress.set_text("... %s"%tier.GetName())
 
                     # create an apply filter
-                    xfilter = Filter( tier )
-                    sf = RelationFilter( predicate, xfilter, yfilter )
-                    new_tier = sf.Filter( annotformat )
-                    new_tier.SetName( self.tier_name )
+                    xfilter = Filter(tier)
+                    sf = RelationFilter(predicate, xfilter, yfilter)
+                    new_tier = sf.Filter(annotformat)
+                    new_tier.SetName(self.tier_name)
                     logging.debug(' ... ... ... new tier %s created '%new_tier.GetName())
 
                     # append the new tier both in Transcription and in the list
-                    obj.Append( new_tier )
+                    obj.Append(new_tier)
                     logging.debug(' ... ... ... new tier %s appended '%new_tier.GetName())
 
                 else:
@@ -170,6 +165,8 @@ class FilterProcess:
         progress.update(1, "Completed.\n")
         progress.set_header("")
 
+    # -----------------------------------------------------------------------
+
     def RunRelationFilter(self, parent, tiername, annotformat):
         wx.BeginBusyCursor()
         # Create the progress bar
@@ -177,6 +174,3 @@ class FilterProcess:
         self._runRelationFilter(tiername, p, annotformat)
         p.close()
         wx.EndBusyCursor()
-
-# ----------------------------------------------------------------------------
-

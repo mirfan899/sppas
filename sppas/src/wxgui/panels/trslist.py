@@ -12,7 +12,7 @@
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2018  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -33,15 +33,6 @@
 #
 # ---------------------------------------------------------------------------
 # File: trslist.py
-# ----------------------------------------------------------------------------
-
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
-
-
-# ----------------------------------------------------------------------------
-# Imports
 # ----------------------------------------------------------------------------
 
 import wx
@@ -65,8 +56,8 @@ from sppas.src.wxgui.ui.CustomListCtrl import CheckListCtrl
 # Constants
 # -------------------------------------------------------------------------
 
-FG_FILE_COLOUR = wx.Colour(45,60,10)
-FG_FILE_DIRTY_COLOUR = wx.Colour(45,60,170)
+FG_FILE_COLOUR = wx.Colour(45, 60, 10)
+FG_FILE_DIRTY_COLOUR = wx.Colour(45, 60, 170)
 
 # -------------------------------------------------------------------------
 
@@ -77,7 +68,7 @@ class TrsList(wx.Panel):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Show data about transcriptions, in a panel including a list of tiers.
 
     """
@@ -95,7 +86,7 @@ class TrsList(wx.Panel):
             self._filename = "Empty"
 
         boxtitle = self._create_title()
-        self.tier_list = self._create_list( multiple )
+        self.tier_list = self._create_list(multiple)
 
         # load the Transcription
         if trs is None and len(filename) != 0:
@@ -109,17 +100,17 @@ class TrsList(wx.Panel):
 
         # events
         self.Bind(wx.EVT_LIST_ITEM_SELECTED, self.OnListItemSelected, self.tier_list)
-        self.Bind(wx.EVT_LIST_COL_CLICK,     self.OnListItemSelected, self.tier_list)
+        self.Bind(wx.EVT_LIST_COL_CLICK, self.OnListItemSelected, self.tier_list)
 
         # layout
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(boxtitle,       0, wx.EXPAND|wx.ALL, border=4)
-        sizer.Add(self.tier_list, 1, wx.EXPAND|wx.ALL, border=4)
+        sizer.Add(boxtitle, 0, wx.EXPAND | wx.ALL, border=4)
+        sizer.Add(self.tier_list, 1, wx.EXPAND | wx.ALL, border=4)
 
-        self.SetFont( self._prefs.GetValue( 'M_FONT') )
-        self.SetForegroundColour( self._prefs.GetValue( 'M_FG_COLOUR') )
-        self.SetBackgroundColour( self._prefs.GetValue( 'M_BG_COLOUR') )
-        self._boxtitle.SetForegroundColour( FG_FILE_COLOUR )
+        self.SetFont(self._prefs.GetValue('M_FONT'))
+        self.SetForegroundColour(self._prefs.GetValue('M_FG_COLOUR'))
+        self.SetBackgroundColour(self._prefs.GetValue('M_BG_COLOUR'))
+        self._boxtitle.SetForegroundColour(FG_FILE_COLOUR)
 
         self.SetSizerAndFit(sizer)
         self.SetAutoLayout(True)
@@ -129,31 +120,35 @@ class TrsList(wx.Panel):
 
     def _create_title(self):
         """ Create the title of the panel. """
-        _sizer = wx.BoxSizer( wx.HORIZONTAL )
 
-        self._static_tx = wx.TextCtrl(self, -1, "File: ", style=wx.TE_READONLY|wx.NO_BORDER)
-        self._boxtitle  = wx.TextCtrl(self, -1, self._filename, style=wx.TE_READONLY|wx.NO_BORDER)
+        _sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self._static_tx = wx.TextCtrl(self, -1, "File: ", style=wx.TE_READONLY | wx.NO_BORDER)
+        self._boxtitle = wx.TextCtrl(self, -1, self._filename, style=wx.TE_READONLY | wx.NO_BORDER)
 
         _sizer.Add(self._static_tx, 0, wx.RIGHT, border=2)
         _sizer.Add(self._boxtitle,  1, wx.EXPAND)
+
         return _sizer
+
+    # ----------------------------------------------------------------------
 
     def _create_list(self, multiple=False):
         """ Create the list to show information of a each tier of a transcription. """
-        #tier_list = wx.ListCtrl(self, -1, style=wx.LC_REPORT|wx.LC_SINGLE_SEL|wx.BORDER_NONE)
+
         if multiple:
             tier_list = CheckListCtrl(self, -1, style=wx.LC_REPORT | wx.BORDER_NONE)
         else:
             tier_list = CheckListCtrl(self, -1, style=wx.LC_REPORT | wx.BORDER_NONE | wx.LC_SINGLE_SEL)
 
         # Add all columns
-        colnames = [" Nb ", " Name    ", " Begin   ", " End     ", " Type    ", " Size    "]
-        for i, n in enumerate(colnames):
+        col_names = [" Nb ", " Name    ", " Begin   ", " End     ", " Type    ", " Size    "]
+        for i, n in enumerate(col_names):
             tier_list.InsertColumn(i, n)
 
         # Fix column width
-        for i in range(len(colnames)):
-            tier_list.SetColumnWidth(i,wx.LIST_AUTOSIZE_USEHEADER)
+        for i in range(len(col_names)):
+            tier_list.SetColumnWidth(i, wx.LIST_AUTOSIZE_USEHEADER)
         # Enlarge column with tier name
         tier_list.SetColumnWidth(1, 140)
 
@@ -185,8 +180,8 @@ class TrsList(wx.Panel):
 
             self.tier_list.InsertStringItem(tier_idx, "Tier %d" % (tier_idx+1))
             self.tier_list.SetStringItem(tier_idx, 1, tier.GetName())
-            self.tier_list.SetStringItem(tier_idx, 2, begin )
-            self.tier_list.SetStringItem(tier_idx, 3, end )
+            self.tier_list.SetStringItem(tier_idx, 2, begin)
+            self.tier_list.SetStringItem(tier_idx, 3, end)
             self.tier_list.SetStringItem(tier_idx, 4, tier_type)
             self.tier_list.SetStringItem(tier_idx, 5, str(tier.GetSize()))
 
@@ -212,45 +207,49 @@ class TrsList(wx.Panel):
         """ Set new preferences. """
 
         self._prefs = prefs
-        self.SetBackgroundColour( self._prefs.GetValue("M_BG_COLOUR") )
-        self.SetForegroundColour( self._prefs.GetValue("M_FG_COLOUR") )
-        self.SetFont( self._prefs.GetValue("M_FONT") )
+        self.SetBackgroundColour(self._prefs.GetValue("M_BG_COLOUR"))
+        self.SetForegroundColour(self._prefs.GetValue("M_FG_COLOUR"))
+        self.SetFont(self._prefs.GetValue("M_FONT"))
 
     # -------------------------------------------------------------------------
 
     def SetFont(self, font):
         """ Set a new font. """
 
-        wx.Window.SetFont( self,font )
+        wx.Window.SetFont(self, font)
 
-        self.tier_list.SetFont( font )
+        self.tier_list.SetFont(font)
         for i in range(self._transcription.GetSize()):
-            self.tier_list.SetItemFont( i, font )
-        self._static_tx.SetFont( font )
-        self._boxtitle.SetFont( font )
-        self.Layout() # bigger/smaller font can impact on the layout
+            self.tier_list.SetItemFont(i, font)
+        self._static_tx.SetFont(font)
+        self._boxtitle.SetFont(font)
+        self.Layout()  # bigger/smaller font can impact on the layout
+
+    # -------------------------------------------------------------------------
 
     def SetBackgroundColour(self, color):
         """ Set background. """
 
-        wx.Window.SetBackgroundColour( self,color )
+        wx.Window.SetBackgroundColour(self, color)
 
-        self.tier_list.SetBackgroundColour( color )
+        self.tier_list.SetBackgroundColour(color)
         for i in range(self._transcription.GetSize()):
-            self.tier_list.SetItemBackgroundColour( i, color )
-        self._static_tx.SetBackgroundColour( color )
-        self._boxtitle.SetBackgroundColour( color )
+            self.tier_list.SetItemBackgroundColour(i, color)
+        self._static_tx.SetBackgroundColour(color)
+        self._boxtitle.SetBackgroundColour(color)
         self.Refresh()
+
+    # -------------------------------------------------------------------------
 
     def SetForegroundColour(self, color):
         """ Set foreground and items text color. """
 
-        wx.Window.SetForegroundColour( self,color )
+        wx.Window.SetForegroundColour(self, color)
 
-        self.tier_list.SetForegroundColour( color )
+        self.tier_list.SetForegroundColour(color)
         for i in range(self._transcription.GetSize()):
-            self.tier_list.SetItemTextColour( i, color )
-        self._static_tx.SetForegroundColour( color )
+            self.tier_list.SetItemTextColour(i, color)
+        self._static_tx.SetForegroundColour(color)
         self.Refresh()
 
     # ----------------------------------------------------------------------
@@ -264,7 +263,9 @@ class TrsList(wx.Panel):
         self._protected = []
         for i,t in enumerate(self._transcription):
             self._protected.append(t)
-            self.tier_list.SetItemTextColour( i, wx.Colour(140,10,10) )
+            self.tier_list.SetItemTextColour(i, wx.Colour(140, 10, 10))
+
+    # -------------------------------------------------------------------------
 
     def Unprotect(self):
         """
@@ -299,7 +300,7 @@ class TrsList(wx.Panel):
 
     def Deselect(self):
         #for i in range(self.tier_list.GetItemCount()):
-        #    self.tier_list.Select( i, on=0 )
+        #    self.tier_list.Select(i, on=0)
         self.tier_list.DeSelectAll()
 
     # ----------------------------------------------------------------------
@@ -316,25 +317,34 @@ class TrsList(wx.Panel):
         if sellist == -1:
             return
         # Too many selected items
-        if self.tier_list.GetSelectedItemCount()>1:
-            ShowInformation(self, self._prefs, 'You must check only one tier to rename...', style=wx.ICON_INFORMATION)
+        if self.tier_list.GetSelectedItemCount() > 1:
+            ShowInformation(self,
+                            self._prefs,
+                            'Only one tier has to be checked to be renamed...',
+                            style=wx.ICON_INFORMATION)
             return
 
         tier = self._transcription[sellist]
         if tier in self._protected:
-            ShowInformation(self, self._prefs, "You are attempting to rename a protected tier. It's forbidden!", style=wx.ICON_INFORMATION)
+            ShowInformation(self,
+                            self._prefs,
+                            "Attempt to rename a protected tier: forbidden!",
+                            style=wx.ICON_INFORMATION)
             return
 
         # Ask the user to enter a new name
-        dlg = wx.TextEntryDialog(self, 'What is the new tier name?','Data Roamer', 'Rename a tier.')
-        dlg.SetValue( self._transcription[sellist].GetName() )
+        dlg = wx.TextEntryDialog(self,
+                                 'Indicate the new tier name',
+                                 'Data Roamer',
+                                 'Rename a tier.')
+        dlg.SetValue(self._transcription[sellist].GetName())
         if dlg.ShowModal() == wx.ID_OK:
             # Update tier name of the transcription
-            tier.SetName( dlg.GetValue())
+            tier.SetName(dlg.GetValue())
             # Update tier name of the list
             self.tier_list.SetStringItem(sellist, 1, dlg.GetValue())
             self._dirty = True
-            self._boxtitle.SetForegroundColour( FG_FILE_DIRTY_COLOUR )
+            self._boxtitle.SetForegroundColour(FG_FILE_DIRTY_COLOUR)
             self.Refresh()
         dlg.Destroy()
 
@@ -352,14 +362,20 @@ class TrsList(wx.Panel):
         if sellist == -1:
             return
         # Too many selected items
-        if self.tier_list.GetSelectedItemCount()>1:
-            ShowInformation( self, self._prefs, 'One tier must be checked.', style=wx.ICON_INFORMATION)
+        if self.tier_list.GetSelectedItemCount() > 1:
+            ShowInformation(self,
+                            self._prefs,
+                            'One tier must be checked.',
+                            style=wx.ICON_INFORMATION)
             return
 
         # Copy the tier to the clipboard
         tier = self._transcription[sellist]
         if tier in self._protected:
-            ShowInformation( self, self._prefs, "You are attempting to cut a protected tier. It's forbidden!", style=wx.ICON_INFORMATION)
+            ShowInformation(self,
+                            self._prefs,
+                            "Attempt to cut a protected tier: forbidden!",
+                            style=wx.ICON_INFORMATION)
             return
 
         clipboard = tier.Copy()
@@ -375,7 +391,7 @@ class TrsList(wx.Panel):
         self.Deselect()
         self._checksize()
         self._dirty = True
-        self._boxtitle.SetForegroundColour( FG_FILE_DIRTY_COLOUR )
+        self._boxtitle.SetForegroundColour(FG_FILE_DIRTY_COLOUR)
         self.Refresh()
 
         return clipboard
@@ -393,8 +409,11 @@ class TrsList(wx.Panel):
         if sellist == -1:
             return
         # Too many selected items
-        if self.tier_list.GetSelectedItemCount()>1:
-            ShowInformation( self, self._prefs, "One tier must be checked", style=wx.ICON_INFORMATION)
+        if self.tier_list.GetSelectedItemCount() > 1:
+            ShowInformation(self,
+                            self._prefs,
+                            "One tier must be checked",
+                            style=wx.ICON_INFORMATION)
             return
 
         # Copy the tier to the clipboard
@@ -412,14 +431,14 @@ class TrsList(wx.Panel):
             return
 
         # Append clipboard to the transcription
-        tier = clipboard #.Copy()
+        tier = clipboard  #.Copy()
 
         self.Append(tier)
 
         # The tier comes from another Transcription... must update infos.
         if not (tier.GetTranscription() is self._transcription):
             # parent transcription
-            tier.SetTranscription( self._transcription )
+            tier.SetTranscription(self._transcription)
             # And if CtrlVocab...
             # TODO
 
@@ -442,15 +461,16 @@ class TrsList(wx.Panel):
         # Get Indexes of tiers to remove
         indexes = []
         while sellist != -1:
-            indexes.append( sellist )
+            indexes.append(sellist)
             sellist = self.tier_list.GetNextSelected(sellist)
 
         # Ask the user to confirm before deleting
         delete = 0
-        message = 'Are you sure you want to definitively delete:\n%d tiers in %s?'%(len(indexes),self._filename)
+        message = 'Are you sure you want to definitively delete:\n' \
+                  '%d tiers in %s?' % (len(indexes), self._filename)
         dlg = ShowYesNoQuestion(self, self._prefs, message)
         if dlg == wx.ID_YES:
-            for sellist in reversed( sorted(indexes) ):
+            for sellist in reversed(sorted(indexes)):
 
                 item = self.tier_list.GetItem(sellist)
 
@@ -465,11 +485,11 @@ class TrsList(wx.Panel):
                     self.tier_list.DeleteItem(sellist)
                     delete = delete + 1
                     # Update tier numbers of next items in the list.
-                    for i in range(sellist,self.tier_list.GetItemCount()):
+                    for i in range(sellist, self.tier_list.GetItemCount()):
                         self.tier_list.SetStringItem(i, 0, str(i+1))
 
         self._dirty = True
-        self._boxtitle.SetForegroundColour( FG_FILE_DIRTY_COLOUR )
+        self._boxtitle.SetForegroundColour(FG_FILE_DIRTY_COLOUR)
         self.Refresh
 
         self._checksize()
@@ -489,7 +509,10 @@ class TrsList(wx.Panel):
             return
         # Too many selected items
         if self.tier_list.GetSelectedItemCount()>1:
-            ShowInformation(self, self._prefs, "One tier must be checked", style=wx.ICON_INFORMATION)
+            ShowInformation(self,
+                            self._prefs,
+                            "One tier must be checked",
+                            style=wx.ICON_INFORMATION)
             return
 
         tier = self._transcription[sellist]
@@ -508,14 +531,20 @@ class TrsList(wx.Panel):
         if sellist == -1:
             return
         # Too many selected items
-        if self.tier_list.GetSelectedItemCount()>1:
-            ShowInformation( self, self._prefs, "One tier must be checked", style=wx.ICON_INFORMATION)
+        if self.tier_list.GetSelectedItemCount() > 1:
+            ShowInformation(self,
+                            self._prefs,
+                            "One tier must be checked",
+                            style=wx.ICON_INFORMATION)
             return
 
         #
         tier = self._transcription[sellist]
         if tier in self._protected:
-            ShowInformation(self, self._prefs, "You are attempting to move a protected tier. It's forbidden!", style=wx.ICON_INFORMATION)
+            ShowInformation(self,
+                            self._prefs,
+                            "Attempt to move a protected tier: forbidden!",
+                            style=wx.ICON_INFORMATION)
             return
 
         #Impossible to move up the first tier.
@@ -533,7 +562,7 @@ class TrsList(wx.Panel):
         self.tier_list.DeleteItem(sellist)
 
         # Add tier to the transcription
-        tierindex = self._transcription.Add(tier, sellist-1 )
+        tierindex = self._transcription.Add(tier, sellist-1)
         # Add tier to the list
         self.SetTierProperties(tierindex)
         # Update tier number
@@ -542,7 +571,7 @@ class TrsList(wx.Panel):
         # Let the item selected
         self.tier_list.Select(sellist-1, on=True)
         self._dirty = True
-        self._boxtitle.SetForegroundColour( FG_FILE_DIRTY_COLOUR )
+        self._boxtitle.SetForegroundColour(FG_FILE_DIRTY_COLOUR)
         self.Refresh()
 
     # ----------------------------------------------------------------------
@@ -560,13 +589,19 @@ class TrsList(wx.Panel):
 
         # Too many selected items
         if self.tier_list.GetSelectedItemCount()>1:
-            ShowInformation(self, self._prefs, "One tier must be checked", style=wx.ICON_INFORMATION)
+            ShowInformation(self,
+                            self._prefs,
+                            "One tier must be checked",
+                            style=wx.ICON_INFORMATION)
             return
 
         #
         tier = self._transcription[sellist]
         if tier in self._protected:
-            ShowInformation(self, self._prefs, "You are attempting to move a protected tier. It's forbidden!", style=wx.ICON_INFORMATION)
+            ShowInformation(self,
+                            self._prefs,
+                            "Attempting to move a protected tier: forbidden!",
+                            style=wx.ICON_INFORMATION)
             return
 
         # Impossible to move down the last tier.
@@ -585,19 +620,19 @@ class TrsList(wx.Panel):
 
         # Add tier to the transcription
         if (sellist+1) >= self.tier_list.GetItemCount():
-            tierindex = self._transcription.Add( tier )
+            tierindex = self._transcription.Add(tier)
         else:
-            tierindex = self._transcription.Add( tier, sellist+1 )
+            tierindex = self._transcription.Add(tier, sellist+1)
         # Add tier to the list
         self.SetTierProperties(tierindex)
         # Update tier number
-        self.tier_list.SetStringItem(sellist,   0, "Tier "+str(sellist+1))
+        self.tier_list.SetStringItem(sellist, 0, "Tier "+str(sellist+1))
         self.tier_list.SetStringItem(sellist+1, 0, "Tier "+str(tierindex+1))
 
         # Let the item selected
         self.tier_list.Select(sellist+1, on=True)
         self._dirty = True
-        self._boxtitle.SetForegroundColour( FG_FILE_DIRTY_COLOUR )
+        self._boxtitle.SetForegroundColour(FG_FILE_DIRTY_COLOUR)
         self.Refresh()
 
     # ----------------------------------------------------------------------
@@ -616,26 +651,30 @@ class TrsList(wx.Panel):
         #
         tier = self._transcription[sellist]
         if tier in self._protected:
-            ShowInformation(self, self._prefs, "You are attempting to modify a protected tier. It's forbidden!", style=wx.ICON_INFORMATION)
+            ShowInformation(self,
+                            self._prefs,
+                            "Attempt to modify a protected tier: forbidden!",
+                            style=wx.ICON_INFORMATION)
             return
 
         # Open a dialog to ask the new radius value
         radius = tier.GetBegin().GetRadius()
-        dlg = RadiusChooser( self, self._prefs, radius )
+        dlg = RadiusChooser(self, self._prefs, radius)
         if dlg.ShowModal() == wx.ID_OK:
             # Get the value
             r = dlg.GetValue()
             try:
                 r = float(r)
-                if r > 1.0: raise
-            except Exception:
-                logging.info('Radius cancelled (can not be applied: %f).'%r)
+                if r > 1.0:
+                    raise ValueError('Radius must range 0-1.')
+            except:
+                logging.info('Radius cancelled (can not be applied: %f).' % r)
                 return
 
             # Set the value
             while sellist != -1:
-                tier.SetRadius( r )
-                logging.debug('Radius fixed to %f'%r)
+                tier.SetRadius(r)
+                logging.debug('Radius fixed to %f' % r)
                 sellist = self.tier_list.GetNextSelected(sellist)
 
         dlg.Destroy()
@@ -655,7 +694,10 @@ class TrsList(wx.Panel):
 
         # Too many selected items
         if self.tier_list.GetSelectedItemCount()>1:
-            ShowInformation(self, self._prefs, "One tier only must be checked", style=wx.ICON_INFORMATION)
+            ShowInformation(self,
+                            self._prefs,
+                            "One tier only must be checked",
+                            style=wx.ICON_INFORMATION)
             return
 
         tier = self._transcription[sellist]
@@ -671,14 +713,14 @@ class TrsList(wx.Panel):
 
         """
         # Append tier to the transcription
-        tierindex = self._transcription.Append( newtier )
+        tierindex = self._transcription.Append(newtier)
 
         # Append tier to the list
         self.SetTierProperties(tierindex)
 
         # Display information
         self._dirty = True
-        self._boxtitle.SetForegroundColour( FG_FILE_DIRTY_COLOUR )
+        self._boxtitle.SetForegroundColour(FG_FILE_DIRTY_COLOUR)
         self.Refresh()
 
     # ----------------------------------------------------------------------
@@ -695,9 +737,9 @@ class TrsList(wx.Panel):
             self._transcription = Transcription("Empty")
             return
         try:
-            self._transcription = sppas.src.annotationdata.aio.read( filename )
+            self._transcription = sppas.src.annotationdata.aio.read(filename)
             self._dirty = False
-            self._boxtitle.SetForegroundColour( FG_FILE_COLOUR )
+            self._boxtitle.SetForegroundColour(FG_FILE_COLOUR)
             self.Refresh()
         except Exception as e:
             logging.info('Error loading file %s: %s' % (filename, str(e)))
@@ -715,11 +757,14 @@ class TrsList(wx.Panel):
         try:
             sppas.src.annotationdata.aio.write(self._filename, self._transcription)
             self._dirty = False
-            self._boxtitle.SetForegroundColour( FG_FILE_COLOUR )
+            self._boxtitle.SetForegroundColour(FG_FILE_COLOUR)
             self.Refresh()
         except Exception as e:
             # give information
-            ShowInformation(self, self._prefs, 'File not saved: %s'%str(e), style=wx.ICON_ERROR)
+            ShowInformation(self,
+                            self._prefs,
+                            'File not saved: %s' % str(e),
+                            style=wx.ICON_ERROR)
 
     # ----------------------------------------------------------------------
 
@@ -732,7 +777,10 @@ class TrsList(wx.Panel):
             sppas.src.annotationdata.aio.write(filename, self._transcription)
         except Exception as e:
             # give information
-            ShowInformation(self, self._prefs, 'File not saved: %s'%str(e), style=wx.ICON_ERROR)
+            ShowInformation(self,
+                            self._prefs,
+                            'File not saved: %s' % str(e),
+                            style=wx.ICON_ERROR)
 
     # ----------------------------------------------------------------------
 
@@ -740,6 +788,13 @@ class TrsList(wx.Panel):
         """ Return the Transcription. """
 
         return self._transcription
+
+    # ----------------------------------------------------------------------
+
+    def GetTranscriptionName(self):
+        """ Return the name of the transcription. """
+
+        return self._transcription.GetName()
 
     # ----------------------------------------------------------------------
     # Private
@@ -750,24 +805,22 @@ class TrsList(wx.Panel):
         Check the transcription size. Append an "empty line" if
         transcription is empty. Remove this empty line if transcription
         is not empty. Return True if something has changed.
-        """
 
+        """
         # Append an "empty" line in the ListCtrl
         if self._transcription.GetSize() == 0 and self.tier_list.GetItemCount() == 0:
             self.tier_list.InsertStringItem(0, " ... ")
             if self._transcription.GetName() == "IO-Error":
-                self.tier_list.SetStringItem(0, 1, " Error while reading this file " )
+                self.tier_list.SetStringItem(0, 1, " Error while reading this file ")
             else:
-                self.tier_list.SetStringItem(0, 1, " Empty file: no tiers " )
+                self.tier_list.SetStringItem(0, 1, " Empty file: no tiers ")
             for i in range(2,5):
-                self.tier_list.SetStringItem(0, i, " " )
+                self.tier_list.SetStringItem(0, i, " ")
             return True
 
         # Remove the "empty" line of the ListCtrl
         if self._transcription.GetSize() < self.tier_list.GetItemCount():
-            self.tier_list.DeleteItem( self.tier_list.GetItemCount()-1 )
+            self.tier_list.DeleteItem(self.tier_list.GetItemCount()-1)
             return True
 
         return False
-
-# --------------------------------------------------------------------------

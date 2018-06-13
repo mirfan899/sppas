@@ -414,18 +414,22 @@ class DataStats(wx.Panel):
             return False
 
         # create the object
-        newtrs = TrsList(self._trspanel, filename, multiple=self._prefsIO.GetValue('F_CCB_MULTIPLE'))
-        newtrs.SetPreferences(self._prefsIO)
-        newtrs.Protect()
-        if newtrs.GetTranscription().GetName() == "IO-Error":
-            ShowInformation(self, self._prefsIO, 'Error loading: '+filename, style=wx.ICON_ERROR)
+        new_trs = TrsList(self._trspanel, filename, multiple=self._prefsIO.GetValue('F_CCB_MULTIPLE'))
+        new_trs.SetPreferences(self._prefsIO)
+        new_trs.Protect()
+        if new_trs.GetTranscriptionName() == "IO-Error":
+            ShowInformation(self, 
+                            self._prefsIO, 
+                            'Error loading: '+filename, 
+                            style=wx.ICON_ERROR)
 
         # put the new trs in a sizer (required to enable sizer.Remove())
         s = wx.BoxSizer(wx.HORIZONTAL)
-        s.Add(newtrs, 1, wx.EXPAND)
+        s.Add(new_trs, 1, wx.EXPAND)
         self._trssizer.Add(s, proportion=1, flag=wx.EXPAND|wx.TOP, border=4)
+        
         # add in the list of files
-        self._filetrs.Append(filename,newtrs)
+        self._filetrs.Append(filename,new_trs)
 
         self.Layout()
         self._trspanel.Refresh()
@@ -481,12 +485,12 @@ class DataStats(wx.Panel):
             for tier in trs:
                 name = tier.GetName()
                 if obj.IsSelected(name):
-                    if not name in tiersX:
+                    if name not in tiersX:
                         tiersX.append(name)
-                if not name in tiersY:
+                if name not in tiersY:
                     tiersY.append(name)
 
-        return (sorted(tiersX), sorted(tiersY))
+        return sorted(tiersX), sorted(tiersY)
 
     # -----------------------------------------------------------------------
 
@@ -510,12 +514,10 @@ class DataStats(wx.Panel):
 
     def _get_nbselectedtiers(self, inselection=False):
         """ Get the number of selected tiers. """
+
         nb = 0
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
             if inselection is False or (inselection is True and p == self._selection):
                 nb = nb + p.tier_list.GetSelectedItemCount()
         return nb
-
-# ----------------------------------------------------------------------------
-

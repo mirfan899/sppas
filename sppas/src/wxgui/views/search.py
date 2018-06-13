@@ -12,7 +12,7 @@
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
+#                   Copyright (C) 2011-2018  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -35,16 +35,9 @@
 # File: search.py
 # ----------------------------------------------------------------------------
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
-
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
 import sys
 import os.path
-sys.path.append(  os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) )
+sys.path.append( os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import wx
 import wx.lib.newevent as newevent
@@ -68,68 +61,70 @@ SearchedCommandEvent, spEVT_SEARCHED_COMMAND = newevent.NewCommandEvent()
 
 # ----------------------------------------------------------------------------
 
-class SearchDialog( spBaseDialog ):
+
+class SearchDialog(spBaseDialog):
     """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: This class is used to display a Search dialog.
+    :author:  Brigitte Bigi
+    :contact: brigitte.bigi@gmail.com
+    :license: GPL, v3
+    :summary: This class is used to display a Search dialog.
 
     Open a frame to search patterns in a transcription.
 
     """
     def __init__(self, parent, preferences, trs):
-        """
-        Constructor.
+        """ Constructor.
 
-        @param parent is the parent wx object.
-        @param preferences (Preferences)
-        @param trs (Transcription)
+        :param parent: is the parent wx object.
+        :param preferences: (Preferences)
+        :param trs: (Transcription)
 
         """
         spBaseDialog.__init__(self, parent, preferences, title=" - Search")
-        wx.GetApp().SetAppName( "search" )
+        wx.GetApp().SetAppName("search")
 
         # Members
-        self._trs  = trs
+        self._trs = trs
         self._pmin = 0.
         self._pmax = 0.
 
-        titlebox   = self.CreateTitle(TIER_SEARCH,"Search patterns in a tier")
+        titlebox = self.CreateTitle(TIER_SEARCH,"Search patterns in a tier")
         contentbox = self._create_content()
-        buttonbox  = self._create_buttons()
+        buttonbox = self._create_buttons()
 
-        self.LayoutComponents( titlebox,
-                               contentbox,
-                               buttonbox )
+        self.LayoutComponents(titlebox,
+                              contentbox,
+                              buttonbox)
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
     def _create_buttons(self):
-        btn_next     = self.CreateButton(FORWARD_ICON, " Search forward", "Search after the current position.")
-        btn_previous = self.CreateButton(BACKWARD_ICON," Search backward", "Search before the current position.")
-        btn_close    = self.CreateButton(CLOSE_ICON,   " Close" )
+        btn_next = self.CreateButton(FORWARD_ICON,
+                                     " Search forward",
+                                     "Search after the current position.")
+        btn_previous = self.CreateButton(BACKWARD_ICON,
+                                         " Search backward",
+                                         "Search before the current position.")
+        btn_close = self.CreateButton(CLOSE_ICON,
+                                      " Close")
         btn_close.SetDefault()
         self.Bind(wx.EVT_BUTTON, self.OnFind, btn_next, wx.ID_FORWARD)
         self.Bind(wx.EVT_BUTTON, self.OnFind, btn_previous, wx.ID_BACKWARD)
         self.Bind(wx.EVT_BUTTON, self._on_close, btn_close)
-        return self.CreateButtonBox( [btn_previous,btn_next],[btn_close] )
+        return self.CreateButtonBox([btn_previous, btn_next], [btn_close])
 
-    def _create_gui(self):
-        self._create_next_button()
-        self._create_previous_button()
-        self._create_close_button()
+    # ------------------------------------------------------------------------
 
     def _create_content(self):
         label = wx.StaticText(self, label="Search for:", pos=wx.DefaultPosition, size=wx.DefaultSize)
-        label.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
-        label.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
+        label.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
+        label.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
 
         self.text = wx.TextCtrl(self, size=(150, -1), validator=TextValidator())
         self.text.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
-        self.text.SetForegroundColour(wx.Colour(128,128,128))
+        self.text.SetForegroundColour(wx.Colour(128, 128, 128))
         self.text.SetValue(DEFAULT_LABEL)
         self.text.Bind(wx.EVT_TEXT, self.OnTextChanged)
         self.text.Bind(wx.EVT_SET_FOCUS, self.OnTextClick)
@@ -138,23 +133,24 @@ class SearchDialog( spBaseDialog ):
         self.broom.Bind(wx.EVT_BUTTON, self.OnTextErase)
 
         self.pattern_layout = wx.BoxSizer(wx.HORIZONTAL)
-        self.pattern_layout.Add(label, 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.pattern_layout.Add(self.text, 1, wx.EXPAND|wx.ALIGN_CENTER_VERTICAL)
-        self.pattern_layout.Add(self.broom, 0, wx.LEFT|wx.ALIGN_CENTER_VERTICAL, border=5)
+        self.pattern_layout.Add(label, 0, wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, border=5)
+        self.pattern_layout.Add(self.text, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL)
+        self.pattern_layout.Add(self.broom, 0, wx.LEFT | wx.ALIGN_CENTER_VERTICAL, border=5)
 
         self.tp = TierPanel(self, self._trs)
         self.lp = LabelPanel(self)
         self.sh_layout = wx.BoxSizer(wx.HORIZONTAL)
-        self.sh_layout.Add(self.lp, 1, wx.EXPAND|wx.LEFT,  0)
-        self.sh_layout.Add(self.tp, 2, wx.EXPAND|wx.RIGHT, 0)
+        self.sh_layout.Add(self.lp, 1, wx.EXPAND | wx.LEFT,  0)
+        self.sh_layout.Add(self.tp, 2, wx.EXPAND | wx.RIGHT, 0)
 
         vbox = wx.BoxSizer(wx.VERTICAL)
         vbox.Add(self.pattern_layout, 0, wx.EXPAND|wx.ALL, border=5)
-        vbox.Add(self.sh_layout,      1, flag=wx.ALL|wx.EXPAND|wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_CENTER_HORIZONTAL, border=5)
+        vbox.Add(self.sh_layout,
+                 1,
+                 flag=wx.ALL | wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL,
+                 border=5)
 
         return vbox
-
-    #-------------------------------------------------------------------------
 
     # ------------------------------------------------------------------------
     # Callbacks
@@ -163,17 +159,23 @@ class SearchDialog( spBaseDialog ):
     def _on_close(self,event):
         self.Destroy()
 
+    # -----------------------------------------------------------------------
+
     def OnTextClick(self, event):
-        self.text.SetForegroundColour( wx.BLACK )
+        self.text.SetForegroundColour(wx.BLACK)
         if self.text.GetValue() == DEFAULT_LABEL:
             self.OnTextErase(event)
         event.Skip()
         #self.text.SetFocus()
 
+    # -----------------------------------------------------------------------
+
     def OnTextChanged(self, event):
         self.text.SetFocus()
         self.text.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
         self.text.Refresh()
+
+    # -----------------------------------------------------------------------
 
     def OnTextErase(self, event):
         self.text.SetValue('')
@@ -181,13 +183,13 @@ class SearchDialog( spBaseDialog ):
         self.text.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
         self.text.Refresh()
 
-    #-------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 #
 #     def SetPeriod(self, pmin, pmax):
 #         self._pmin = pmin
 #         self._pmax = pmax
 
-    #-------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def OnFind(self, event):
         """
@@ -204,11 +206,11 @@ class SearchDialog( spBaseDialog ):
         self._pmax = ruler.GetSelectionIndicatorMaxValue()
 
         # Get search criteria
-        criteria  = self.lp.GetCriteria()
-        patterns  = self.text.GetValue().split(',')
+        criteria = self.lp.GetCriteria()
+        patterns = self.text.GetValue().split(',')
 
         # Get search direction
-        forward   = True
+        forward = True
         direction = 1
         if event.GetId() == wx.ID_BACKWARD:
             forward = False
@@ -238,7 +240,7 @@ class SearchDialog( spBaseDialog ):
             self.text.Refresh()
             #logging.debug(' ... no occurrence. ')
         else:
-            self.text.SetForegroundColour( wx.BLACK )
+            self.text.SetForegroundColour(wx.BLACK)
             ann = tier[annidx]
             #logging.debug(' ... success: %s '%ann)
             if ann.GetLocation().IsPoint():
@@ -248,15 +250,13 @@ class SearchDialog( spBaseDialog ):
             else:
                 s = ann.GetLocation().GetBeginMidpoint()
                 e = ann.GetLocation().GetEndMidpoint()
-                evt = SearchedEvent(start=s,end=e)
+                evt = SearchedEvent(start=s, end=e)
                 evt.SetEventObject(self)
                 wx.PostEvent(self.GetParent(), evt)
 
-    #-------------------------------------------------------------------------
-
-    #-------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Getters and Setters
-    #-------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def SetTranscription(self, trs):
         """
@@ -269,14 +269,13 @@ class SearchDialog( spBaseDialog ):
             self.tp.Destroy()
 
             self.tp = TierPanel(self, self._trs)
-            self.sh.Add(self.tp, 0, wx.ALL|wx.EXPAND, 5)
+            self.sh.Add(self.tp, 0, wx.ALL | wx.EXPAND, 5)
 
             self.Layout()
             self.Refresh()
 
-    #-------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-#-----------------------------------------------------------------------------
 
 class LabelPanel(wx.Panel):
     """ A panel with the search modes. """
@@ -285,7 +284,7 @@ class LabelPanel(wx.Panel):
 
         wx.Panel.__init__(self, parent)
         #self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
-        #self.SetBackgroundColour( FRAME_BG_COLOR )
+        #self.SetBackgroundColour(FRAME_BG_COLOR)
 
         self.modes = (
                    ("exact", "exact"),
@@ -298,7 +297,7 @@ class LabelPanel(wx.Panel):
                    ("not ends with", "endswith"),
                    ("match (regexp)", "regexp"),
                    ("not match", "regexp")
-                   )
+                  )
 
         choices = []
         for choice in self.modes:
@@ -306,7 +305,7 @@ class LabelPanel(wx.Panel):
 
         self.radiobox = wx.RadioBox(self, label="Search mode:",
                                     choices=choices, majorDimension=2)
-        self.radiobox.SetForegroundColour(wx.Colour(3,3,87))
+        self.radiobox.SetForegroundColour(wx.Colour(3, 3, 87))
 
         self.checkbox = wx.CheckBox(self, label="Case Sensitive")
         self.checkbox.SetValue(True)
@@ -321,13 +320,14 @@ class LabelPanel(wx.Panel):
     def GetCriteria(self):
         criteria = {}
         idx = self.radiobox.GetSelection()
-        criteria['name']      = self.modes[idx][0]
-        criteria['function']  = self.modes[idx][1]
+        criteria['name'] = self.modes[idx][0]
+        criteria['function'] = self.modes[idx][1]
         criteria['case_sensitive'] = self.checkbox.GetValue()
-        criteria['reverse']   = idx % 2 != 0
+        criteria['reverse'] = idx % 2 != 0
         return criteria
 
-#-----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+
 
 class TierPanel(wx.Panel):
     """ A panel with the radiolist of tiers of the given transcription. """
@@ -339,13 +339,13 @@ class TierPanel(wx.Panel):
         choices = []
         if trs:
             for t in trs:
-                choices.append( t.GetName() )
+                choices.append(t.GetName())
         else:
             choices.append('Empty transcription')
 
         self.radiobox = wx.RadioBox(self, label="Tier:",
                                     choices=choices, majorDimension=1)
-        self.radiobox.SetForegroundColour(wx.Colour(87,3,3))
+        self.radiobox.SetForegroundColour(wx.Colour(87, 3, 3))
         vbox = wx.BoxSizer(wx.VERTICAL)
         vbox.Add(self.radiobox, 1, wx.EXPAND|wx.ALL, border=2)
 
@@ -356,7 +356,8 @@ class TierPanel(wx.Panel):
     def GetSelection(self):
         return self.radiobox.GetSelection()
 
-#-----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+
 
 def ShowSearchDialog(parent, preferences, trs):
     dialog = SearchDialog(parent, preferences, trs)
@@ -369,5 +370,3 @@ if __name__ == "__main__":
     app = wx.PySimpleApp()
     ShowSearchDialog(None,None,None)
     app.MainLoop()
-
-# ---------------------------------------------------------------------------

@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     src.wxgui.cliens.dataroamerclient.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     GUI management of annotated data.
 
@@ -83,7 +83,7 @@ class DataRoamerClient(BaseClient):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Manage the opened files.
 
     This class manages the pages of a notebook with all opened files.
@@ -166,7 +166,7 @@ class DataRoamer(wx.Panel):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      This component allows to manage annotated files.
 
     """
@@ -205,16 +205,58 @@ class DataRoamer(wx.Panel):
         """ Creates a toolbar panel. """
 
         toolbar = MainToolbarPanel(self, self._prefsIO)
-        toolbar.AddButton(RENAME_ID,    TIER_RENAME,   'Rename', tooltip="Rename the selected tier.")
-        toolbar.AddButton(wx.ID_DELETE, TIER_DELETE,   'Delete', tooltip="Delete the selected tier.")
-        toolbar.AddButton(wx.ID_CUT,    TIER_CUT,      'Cut',    tooltip="Cut the selected tier.")
-        toolbar.AddButton(wx.ID_COPY,   TIER_COPY,     "Copy",   tooltip="Copy the selected tier.")
-        toolbar.AddButton(wx.ID_PASTE,  TIER_PASTE,    "Paste",  tooltip="Paste the selected tier.")
-        toolbar.AddButton(DUPLICATE_ID, TIER_DUPLICATE,"Duplicate", tooltip="Duplicate the selected tier.")
-        toolbar.AddButton(wx.ID_UP,     TIER_MOVE_UP,  "Move Up",   tooltip="Move up the selected tier.")
-        toolbar.AddButton(wx.ID_DOWN, TIER_MOVE_DOWN, "Move Down", tooltip="Move down the selected tier.")
-        toolbar.AddButton(TIER_RADIUS_ID, TIER_RADIUS, "Radius", tooltip="Fix the vagueness of each boundary. Efficient only while saving file in .xra format.")
-        toolbar.AddButton(PREVIEW_ID,     TIER_PREVIEW, "View",   tooltip="Preview of the selected tier.")
+
+        toolbar.AddButton(RENAME_ID,
+                          TIER_RENAME,
+                          'Rename',
+                          tooltip="Rename the selected tier.")
+
+        toolbar.AddButton(wx.ID_DELETE,
+                          TIER_DELETE,
+                          'Delete',
+                          tooltip="Delete the selected tier.")
+
+        toolbar.AddButton(wx.ID_CUT,
+                          TIER_CUT,
+                          'Cut',
+                          tooltip="Cut the selected tier.")
+
+        toolbar.AddButton(wx.ID_COPY,
+                          TIER_COPY,
+                          "Copy",
+                          tooltip="Copy the selected tier.")
+
+        toolbar.AddButton(wx.ID_PASTE,
+                          TIER_PASTE,
+                          "Paste",
+                          tooltip="Paste the selected tier.")
+
+        toolbar.AddButton(DUPLICATE_ID,
+                          TIER_DUPLICATE,
+                          "Duplicate",
+                          tooltip="Duplicate the selected tier.")
+
+        toolbar.AddButton(wx.ID_UP,
+                          TIER_MOVE_UP,
+                          "Move Up",
+                          tooltip="Move up the selected tier.")
+
+        toolbar.AddButton(wx.ID_DOWN,
+                          TIER_MOVE_DOWN,
+                          "Move Down",
+                          tooltip="Move down the selected tier.")
+
+        toolbar.AddButton(TIER_RADIUS_ID,
+                          TIER_RADIUS,
+                          "Radius",
+                          tooltip="Fix the vagueness of each boundary. "
+                                  "Useful only for .xra file format.")
+
+        toolbar.AddButton(PREVIEW_ID,
+                          TIER_PREVIEW,
+                          "View",
+                          tooltip="Preview of the selected tier.")
+
         return toolbar
 
     # ----------------------------------------------------------------------
@@ -227,6 +269,7 @@ class DataRoamer(wx.Panel):
         panel.SetSizerAndFit(self._trssizer)
         panel.SetAutoLayout(True)
         panel.SetupScrolling()
+        
         return panel
 
     # ------------------------------------------------------------------------
@@ -237,7 +280,7 @@ class DataRoamer(wx.Panel):
         """ Processes an event.
 
         Processes an event, searching event tables and calling zero or more
-        suitable event handler function(s).  Note that the ProcessEvent
+        suitable event handler function(s). Note that the ProcessEvent
         method is called from the wxPython docview framework directly since
         wxPython does not have a virtual ProcessEvent function.
 
@@ -284,7 +327,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def OnFileWander(self, event):
-        """ A file was checked/unchecked somewhere else, then, set/unset the data.
+        """ A file was checked/unchecked somewhere else, then set/unset the data.
 
         :param event: (wx.Event)
 
@@ -336,6 +379,8 @@ class DataRoamer(wx.Panel):
             if p == self._selection:
                 p.Rename()
 
+    # -----------------------------------------------------------------------
+
     def Delete(self):
         """ Delete a tier. """
 
@@ -343,6 +388,8 @@ class DataRoamer(wx.Panel):
             p = self._filetrs.GetObject(i)
             if p == self._selection:
                 p.Delete()
+
+    # -----------------------------------------------------------------------
 
     def Cut(self):
         """ Cut a tier. """
@@ -352,6 +399,8 @@ class DataRoamer(wx.Panel):
             if p == self._selection:
                 self._clipboard = p.Cut()
 
+    # -----------------------------------------------------------------------
+
     def Copy(self):
         """ Copy a tier. """
 
@@ -359,6 +408,8 @@ class DataRoamer(wx.Panel):
             p = self._filetrs.GetObject(i)
             if p == self._selection:
                 self._clipboard = p.Copy()
+
+    # -----------------------------------------------------------------------
 
     def Paste(self):
         """ Paste a tier. """
@@ -368,6 +419,8 @@ class DataRoamer(wx.Panel):
             if p == self._selection:
                 p.Paste(self._clipboard)
 
+    # -----------------------------------------------------------------------
+
     def Duplicate(self):
         """ Duplicate a tier. """
 
@@ -375,6 +428,8 @@ class DataRoamer(wx.Panel):
             p = self._filetrs.GetObject(i)
             if p == self._selection:
                 p.Duplicate()
+
+    # -----------------------------------------------------------------------
 
     def MoveUp(self):
         """ Move up a tier. """
@@ -384,6 +439,8 @@ class DataRoamer(wx.Panel):
             if p == self._selection:
                 p.MoveUp()
 
+    # -----------------------------------------------------------------------
+
     def MoveDown(self):
         """ Move down a tier. """
 
@@ -392,6 +449,8 @@ class DataRoamer(wx.Panel):
             if p == self._selection:
                 p.MoveDown()
 
+    # -----------------------------------------------------------------------
+
     def Preview(self):
         """ Open a frame to view a tier. """
 
@@ -399,6 +458,8 @@ class DataRoamer(wx.Panel):
             p = self._filetrs.GetObject(i)
             if p == self._selection:
                 p.Preview()
+
+    # -----------------------------------------------------------------------
 
     def Radius(self):
         """ Change radius value of all TimePoint instances of the tier. """
@@ -416,8 +477,11 @@ class DataRoamer(wx.Panel):
         """ Save the selected file. """
 
         if self._selection is None:
-            ShowInformation(self, self._prefsIO, "No file selected!\n"
-                                                 "Click on a tier to select a file...", style=wx.ICON_INFORMATION)
+            ShowInformation(self,
+                            self._prefsIO,
+                            "No file selected!\n"
+                            "Click on a tier to select a file...",
+                            style=wx.ICON_INFORMATION)
             return
 
         for i in range(self._filetrs.GetSize()):
@@ -431,8 +495,11 @@ class DataRoamer(wx.Panel):
         """ Save as... the selected file. """
 
         if self._selection is None:
-            ShowInformation(self, self._prefsIO, "No file selected!\n"
-                                                 "Click on a tier to select a file...", style=wx.ICON_INFORMATION)
+            ShowInformation(self,
+                            self._prefsIO,
+                            "No file selected!\n"
+                            "Click on a tier to select a file...",
+                            style=wx.ICON_INFORMATION)
             return
 
         found = -1
@@ -454,14 +521,16 @@ class DataRoamer(wx.Panel):
 
             # do not erase the file if it is already existing!
             if os.path.exists(filename) and f != filename:
-                ShowInformation(self, self._prefsIO, "File not saved: "
-                                                     "this file name is already existing!", style=wx.ICON_INFORMATION)
-            elif f == filename :
+                ShowInformation(self,
+                                self._prefsIO,
+                                "File not saved: this file name is already existing!",
+                                style=wx.ICON_INFORMATION)
+            elif f == filename:
                 p.Save()
             else:
                 p.SaveAs(filename)
                 # Add the newly created file in the file manager
-                evt = FileWanderEvent(filename=filename,status=True)
+                evt = FileWanderEvent(filename=filename, status=True)
                 evt.SetEventObject(self)
                 wx.PostEvent(self.GetTopLevelParent(), evt)
 
@@ -504,7 +573,7 @@ class DataRoamer(wx.Panel):
     def SetFont(self, font):
         """ Change font of all texts. """
 
-        wx.Window.SetFont(self,font)
+        wx.Window.SetFont(self, font)
         # Apply to all panels
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -544,17 +613,21 @@ class DataRoamer(wx.Panel):
             return False
 
         # create the object
-        newtrs = TrsList(self._trspanel, filename)
-        newtrs.SetPreferences(self._prefsIO)
-        if newtrs.GetTranscription().GetName() == "IO-Error":
-            ShowInformation(self, self._prefsIO, 'Error loading: '+filename, style=wx.ICON_ERROR)
+        new_trs = TrsList(self._trspanel, filename)
+        new_trs.SetPreferences(self._prefsIO)
+        if new_trs.GetTranscriptionName() == "IO-Error":
+            ShowInformation(self,
+                            self._prefsIO,
+                            'Error loading: '+filename,
+                            style=wx.ICON_ERROR)
 
         # put the new trs in a sizer (required to enable sizer.Remove())
         s = wx.BoxSizer(wx.HORIZONTAL)
-        s.Add(newtrs, proportion=1, flag=wx.EXPAND, border=0)
+        s.Add(new_trs, proportion=1, flag=wx.EXPAND, border=0)
         self._trssizer.Add(s, proportion=1, flag=wx.EXPAND | wx.TOP, border=4)
+
         # add in the list of files
-        self._filetrs.Append(filename, newtrs)
+        self._filetrs.Append(filename, new_trs)
 
         self.Layout()
         self._trspanel.Refresh()

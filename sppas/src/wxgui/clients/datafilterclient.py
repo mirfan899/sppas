@@ -559,8 +559,11 @@ class DataFilter(wx.Panel):
         newtrs = TrsList(self._trspanel, filename, multiple=self._prefsIO.GetValue('F_CCB_MULTIPLE'))
         newtrs.SetPreferences(self._prefsIO)
         newtrs.Protect()
-        if newtrs.GetTranscription().GetName() == "IO-Error":
-            ShowInformation(self, self._prefsIO, 'Error loading: '+filename, style=wx.ICON_ERROR)
+        if newtrs.GetTranscriptionName() == "IO-Error":
+            ShowInformation(self,
+                            self._prefsIO,
+                            'Error loading: '+filename,
+                            style=wx.ICON_ERROR)
 
         # put the new trs in a sizer (required to enable sizer.Remove())
         s = wx.BoxSizer(wx.HORIZONTAL)
@@ -585,7 +588,10 @@ class DataFilter(wx.Panel):
 
             if o._dirty is True:
                 # dlg to ask to save or not
-                userChoice = ShowYesNoQuestion(None, self._prefsIO, "Do you want to save changes on the transcription of\n%s?"%f)
+                userChoice = ShowYesNoQuestion(None,
+                                               self._prefsIO,
+                                               "Do you want to save changes "
+                                               "on the transcription of\n%s?" % f)
                 if userChoice == wx.ID_YES:
                     o.Save()
 
@@ -620,6 +626,7 @@ class DataFilter(wx.Panel):
 
     def _get_tiernames(self):
         """ Create a list of selected tier names, and the whole list of tier names."""
+
         tiersX = []
         tiersY = []
 
@@ -634,6 +641,4 @@ class DataFilter(wx.Panel):
                 if not name in tiersY:
                     tiersY.append(name)
 
-        return (sorted(tiersX), sorted(tiersY))
-
-# ----------------------------------------------------------------------------
+        return sorted(tiersX), sorted(tiersY)
