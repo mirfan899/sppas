@@ -107,6 +107,17 @@ class sppasType(object):
     :summary:      Utility class to check data type.
 
     """
+    @staticmethod
+    def is_bool(entry):
+        """ Check if the entry is boolean.
+
+        :param entry: (any type)
+        :returns: (bool)
+
+        """
+        return str(entry) in ['True', 'False']
+
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def is_number(entry):

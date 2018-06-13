@@ -47,7 +47,6 @@ import shutil
 
 from sppas.src.utils.fileutils import sppasFileUtils
 from ..aio.readwrite import sppasRW
-from ..aio.praat import sppasTextGrid
 
 # ---------------------------------------------------------------------------
 
