@@ -32,7 +32,13 @@ msgstr "Invalid index value {:d}."
 msgid ":ERROR 1105: "
 msgstr "The object {!s:s} is not of the same type as the object {!s:s}."
 
-msgid ":ERROR 1110: "
+msgid ":ERROR 1250: "
+msgstr "Invalid key '{!s:s}' for data '{!s:s}'"
+
+msgid ":ERROR 1300: "
+msgstr "Invalid value '{!s:s}' for '{!s:s}'."
+
+msgid ":ERROR 1310: "
 msgstr "Expected a positive value. Got '{:f}'."
 
 msgid ":ERROR 1120: "

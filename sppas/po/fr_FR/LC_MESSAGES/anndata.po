@@ -32,7 +32,13 @@ msgstr "Valeur d'index invalide: {:d}."
 msgid ":ERROR 1105: "
 msgstr "L'objet {!s:s} n'est pas du même type que l'objet {!s:s}."
 
-msgid ":ERROR 1110: "
+msgid ":ERROR 1250: "
+msgstr "Clé inconnue '{!s:s}' pour les données '{!s:s}'"
+
+msgid ":ERROR 1300: "
+msgstr "La valeur '{!s:s}' est incorrecte pour '{!s:s}'."
+
+msgid ":ERROR 1310: "
 msgstr "Une valeur positive été attendue, mais la valeur observée est '{:f}'."
 
 msgid ":ERROR 1120: "

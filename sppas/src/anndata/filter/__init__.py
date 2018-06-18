@@ -34,7 +34,7 @@
 
     Filter system on annotations.
 
-    Reference:
+    Old reference:
 
         | Brigitte Bigi, Jorane Saubesty (2015).
         | Searching and retrieving multi-levels annotated data,
@@ -42,19 +42,20 @@
 
     Example of use:
 
+        >>> # create a filter
+        >>> f = sppasFilters(tier)
+
         >>> # extract pauses.
-        >>> predicate = PatternMatching(exact="sp") | PatternMatching(exact="+")
-        >>> annotations = [a for a in tier if predicate(a)]
+        >>> f.tag(exact="sp") | f.tag(exact="+")
 
         >>> # extract silences >= 250ms.
-        >>> predicate = PatternMatching(exact="#") & PatternDuration(ge=0.250)
-        >>> annotations = [a for a in tier if predicate(a)]
+        >>> f.tag(exact="#") & f.duration(ge=0.250)
 
 """
-from .patternmatch import PatternMatching
-from .patterduration import PatternDuration
+from .filters import sppasFilters
+from .filters import sppasSetFilter
 
 __all__ = [
-    "PatternMatching",
-    "PatternDuration"
+    "sppasFilters",
+    "sppasSetFilter"
 ]

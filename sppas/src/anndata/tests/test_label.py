@@ -39,7 +39,7 @@
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Test the clases of the label package.
 
-    Includes tests of sppasLabel(), sppasTag().
+    Includes tests of sppasLabel(), sppasTag(), sppasTagCompare().
 
 """
 import unittest
@@ -48,6 +48,7 @@ from sppas import ORTHO_SYMBOLS, PHONE_SYMBOLS
 from sppas.src.utils.makeunicode import u, b, text_type
 from ..annlabel.tag import sppasTag
 from ..annlabel.label import sppasLabel
+from ..annlabel.tagcompare import sppasTagCompare
 
 # ---------------------------------------------------------------------------
 
@@ -184,10 +185,177 @@ class TestEvents(unittest.TestCase):
 # ---------------------------------------------------------------------------
 
 
+class TestTagCompare(unittest.TestCase):
+    """ Test methods to compare tags. """
+
+    def setUp(self):
+        self.tc = sppasTagCompare()
+
+    # -----------------------------------------------------------------------
+
+    def test_members(self):
+        """ Test methods getter. """
+
+        self.assertEqual(self.tc.methods['exact'], self.tc.exact)
+        self.assertEqual(self.tc.get('exact'), self.tc.exact)
+
+        self.assertEqual(self.tc.methods['iexact'], self.tc.iexact)
+        self.assertEqual(self.tc.get('iexact'), self.tc.iexact)
+
+        self.assertEqual(self.tc.methods['startswith'], self.tc.startswith)
+        self.assertEqual(self.tc.get('startswith'), self.tc.startswith)
+
+        self.assertEqual(self.tc.methods['istartswith'], self.tc.istartswith)
+        self.assertEqual(self.tc.get('istartswith'), self.tc.istartswith)
+
+        self.assertEqual(self.tc.methods['endswith'], self.tc.endswith)
+        self.assertEqual(self.tc.get('endswith'), self.tc.endswith)
+
+        self.assertEqual(self.tc.methods['iendswith'], self.tc.iendswith)
+        self.assertEqual(self.tc.get('iendswith'), self.tc.iendswith)
+
+        self.assertEqual(self.tc.methods['contains'], self.tc.contains)
+        self.assertEqual(self.tc.get('contains'), self.tc.contains)
+
+        self.assertEqual(self.tc.methods['icontains'], self.tc.icontains)
+        self.assertEqual(self.tc.get('icontains'), self.tc.icontains)
+
+        self.assertEqual(self.tc.methods['regexp'], self.tc.regexp)
+        self.assertEqual(self.tc.get('regexp'), self.tc.regexp)
+
+    # -----------------------------------------------------------------------
+
+    def test_exact(self):
+        """ tag == text (case sensitive). """
+
+        self.assertTrue(self.tc.exact(sppasTag("abc"), u("abc")))
+        self.assertFalse(self.tc.exact(sppasTag("abc"), u("ABC")))
+
+        with self.assertRaises(TypeError):
+            self.tc.exact("abc", u("ABC"))
+        with self.assertRaises(TypeError):
+            self.tc.exact(sppasTag("abc"), "ABC")
+
+    # -----------------------------------------------------------------------
+
+    def test_iexact(self):
+        """ tag == text (case in-sensitive). """
+
+        self.assertTrue(self.tc.iexact(sppasTag("abc"), u("ABC")))
+        self.assertFalse(self.tc.iexact(sppasTag("abc"), u("AAA")))
+
+        with self.assertRaises(TypeError):
+            self.tc.iexact("abc", u("ABC"))
+        with self.assertRaises(TypeError):
+            self.tc.iexact(sppasTag("abc"), "ABC")
+
+    # -----------------------------------------------------------------------
+
+    def test_startswith(self):
+        """ tag startswith text (case sensitive). """
+
+        self.assertTrue(self.tc.startswith(sppasTag("abc"), u("a")))
+        self.assertFalse(self.tc.startswith(sppasTag("abc"), u("b")))
+
+        with self.assertRaises(TypeError):
+            self.tc.startswith("abc", u("a"))
+        with self.assertRaises(TypeError):
+            self.tc.startswith(sppasTag("abc"), "b")
+
+    # -----------------------------------------------------------------------
+
+    def test_istartswith(self):
+        """ tag startswith text (case in-sensitive). """
+
+        self.assertTrue(self.tc.istartswith(sppasTag("abc"), u("A")))
+        self.assertFalse(self.tc.istartswith(sppasTag("abc"), u("b")))
+
+        with self.assertRaises(TypeError):
+            self.tc.istartswith("abc", u("A"))
+        with self.assertRaises(TypeError):
+            self.tc.istartswith(sppasTag("abc"), "b")
+
+    # -----------------------------------------------------------------------
+
+    def test_endswith(self):
+        """ tag endswith text (case sensitive). """
+
+        self.assertTrue(self.tc.endswith(sppasTag("abc"), u("c")))
+        self.assertFalse(self.tc.endswith(sppasTag("abc"), u("b")))
+
+        with self.assertRaises(TypeError):
+            self.tc.endswith("abc", u("c"))
+        with self.assertRaises(TypeError):
+            self.tc.endswith(sppasTag("abc"), "b")
+
+    # -----------------------------------------------------------------------
+
+    def test_iendswith(self):
+        """ tag endswith text (case in-sensitive). """
+
+        self.assertTrue(self.tc.iendswith(sppasTag("abc"), u("C")))
+        self.assertFalse(self.tc.iendswith(sppasTag("abc"), u("b")))
+
+        with self.assertRaises(TypeError):
+            self.tc.iendswith("abc", u("C"))
+        with self.assertRaises(TypeError):
+            self.tc.iendswith(sppasTag("abc"), "b")
+
+    # -----------------------------------------------------------------------
+
+    def test_contains(self):
+        """ tag contains text (case sensitive). """
+
+        self.assertTrue(self.tc.contains(sppasTag("abc"), u("b")))
+        self.assertFalse(self.tc.contains(sppasTag("abc"), u("B")))
+
+        with self.assertRaises(TypeError):
+            self.tc.contains("abc", u("b"))
+        with self.assertRaises(TypeError):
+            self.tc.contains(sppasTag("abc"), "B")
+
+    # -----------------------------------------------------------------------
+
+    def test_icontains(self):
+        """ tag contains text (case in-sensitive). """
+
+        self.assertTrue(self.tc.icontains(sppasTag("abc"), u("B")))
+        self.assertFalse(self.tc.icontains(sppasTag("abc"), u("d")))
+
+        with self.assertRaises(TypeError):
+            self.tc.icontains("abc", u("B"))
+        with self.assertRaises(TypeError):
+            self.tc.icontains(sppasTag("abc"), "d")
+
+    # -----------------------------------------------------------------------
+
+    def test_regexp(self):
+        """ tag matches the regexp. """
+
+        self.assertTrue(self.tc.regexp(sppasTag("abc"), "^a[a-z]"))
+        self.assertFalse(self.tc.regexp(sppasTag("abc"), "d"))
+
+        with self.assertRaises(TypeError):
+            self.tc.regexp("abc", "B")
+
+    # -----------------------------------------------------------------------
+
+    def test_combine_methods(self):
+        self.assertTrue(self.tc.startswith(sppasTag("abc"), u("a")) and self.tc.endswith(sppasTag("abc"), u("c")))
+        self.assertTrue(
+            self.tc.get("startswith")(sppasTag("abc"), u("a")) and self.tc.get("endswith")(sppasTag("abc"), u("c")))
+
+
+# ---------------------------------------------------------------------------
+
+
 class TestLabel(unittest.TestCase):
+    """ Test sppasLabel(). """
 
     def test_unicode(self):
-        label = sppasLabel(sppasTag("être"))
+        sppasLabel(sppasTag("être"))
+
+    # -----------------------------------------------------------------------
 
     def test_label_type(self):
         label = sppasLabel(sppasTag(2, "int"))
@@ -195,10 +363,14 @@ class TestLabel(unittest.TestCase):
         self.assertIsInstance(label.get_best().get_content(), text_type)
         self.assertIsInstance(label.get_best().get_typed_content(), int)
 
+    # -----------------------------------------------------------------------
+
     def test_is_label(self):
         label = sppasLabel(sppasTag(SIL_ORTHO))
         text = label.get_best()
         self.assertFalse(text.is_speech())
+
+    # -----------------------------------------------------------------------
 
     def test_add_tag(self):
         label = sppasLabel(sppasTag("score0.5"), score=0.5)
@@ -219,12 +391,16 @@ class TestLabel(unittest.TestCase):
         with self.assertRaises(TypeError):
             label.append(text2, score=0.2)
 
+    # -----------------------------------------------------------------------
+
     def test_is_empty(self):
         label = sppasLabel(sppasTag(""), score=0.5)
         self.assertTrue(label.get_best().is_empty())
 
         label.append(sppasTag("text"), score=0.8)
         self.assertFalse(label.get_best().is_empty())
+
+    # -----------------------------------------------------------------------
 
     def test_equal(self):
         label = sppasLabel(sppasTag(""), score=0.5)
@@ -234,9 +410,30 @@ class TestLabel(unittest.TestCase):
         self.assertFalse(label == sppasLabel(sppasTag(""), score=0.7))
         self.assertFalse(label == sppasLabel(sppasTag("a"), score=0.5))
 
+    # -----------------------------------------------------------------------
+
     def test_set_score(self):
         tag = sppasTag("toto")
         label = sppasLabel(tag, score=0.5)
         self.assertEqual(label.get_score(tag), 0.5)
         label.set_score(tag, 0.8)
         self.assertEqual(label.get_score(tag), 0.8)
+
+    # -----------------------------------------------------------------------
+
+    def test_match(self):
+        """ Test if a tag matches some functions. """
+
+        t = sppasTagCompare()
+        l = sppasLabel(sppasTag("para"))
+
+        self.assertFalse(l.match([(t.exact, u("par"), False)]))
+        self.assertTrue(l.match([(t.exact, u("par"), True)]))
+
+        f1 = (t.startswith, u("p"), False)
+        f2 = (t.iendswith, u("O"), False)
+        self.assertTrue(l.match([f1, f2], logic_gate="or"))
+        self.assertFalse(l.match([f1, f2], logic_gate="and"))
+
+        l.append(sppasTag("pata"))
+        self.assertTrue(l.match([(t.endswith, u("ta"), False)]))

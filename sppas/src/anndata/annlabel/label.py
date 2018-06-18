@@ -205,64 +205,6 @@ class sppasLabel(object):
 
     # -----------------------------------------------------------------------
 
-    def contains(self, tag, search_function='exact'):
-        """ Return True if the label contains a given tag.
-
-        :param tag: (sppasTag)
-        :param search_function: (str) Can be one of the followings:
-                -    exact (str): exact match
-                -    iexact (str): Case-insensitive exact match
-                -    startswith (str):
-                -    istartswith (str): Case-insensitive startswith
-                -    endswith (str):
-                -    iendswith: (str) Case-insensitive endswith
-                -    contains (str):
-                -    icontains: (str) Case-insensitive contains
-                -    equal (str): is equal (identical as exact)
-                -    greater (str): is greater then
-                -    lower (str): is lower than
-
-        """
-        if self.__tags is None:
-            return False
-        if not isinstance(tag, sppasTag):
-            raise AnnDataTypeError(tag, "sppasTag")
-
-        if search_function == "exact" or search_function == "equal":
-            return any([tag == t[0] for t in self.__tags])
-
-        if tag.get_type() == "str":
-            search_unicode_content = tag.get_content()
-            lsearch_unicode_content = search_unicode_content.lower()
-            for t, s in self.__tags:
-                unicode_content = t.get_content()
-                lunicode_content = unicode_content.lower()
-                if search_function == "iexact" and lunicode_content == lsearch_unicode_content:
-                    return True
-                elif search_function == "startswith" and unicode_content.startswith(search_unicode_content):
-                    return True
-                elif search_function == "istartswith" and lunicode_content.startswith(lsearch_unicode_content):
-                    return True
-                elif search_function == "endswith" and unicode_content.endswith(search_unicode_content):
-                    return True
-                elif search_function == "iendswith" and lunicode_content.endswith(lsearch_unicode_content):
-                    return True
-                elif search_function == "contains" and search_unicode_content in unicode_content:
-                    return True
-                elif search_function == "icontains" and lsearch_unicode_content in lunicode_content:
-                    return True
-
-        elif tag.get_type() in ["float", "int"]:
-            for t, s in self.__tags:
-                if search_function == "greater" and t.get_typed_content() > tag.get_typed_content():
-                    return True
-                if search_function == "lower" and t.get_typed_content() < tag.get_typed_content():
-                    return True
-
-        return False
-
-    # -----------------------------------------------------------------------
-
     def get_type(self):
         """ Return the type of the tags content. """
 
@@ -333,6 +275,112 @@ class sppasLabel(object):
         """ Return a deep copy of the label. """
 
         return copy.deepcopy(self)
+
+    # -----------------------------------------------------------------------
+
+    def match(self, tag_functions, logic_gate="and"):
+        """ Return True if a tag matches all or any of the functions.
+
+        :param tag_functions: list of (function, value, logical_not)
+
+            - function: a function in python with 2 arguments: tag/value
+            - value: the expected value for the tag
+            - logical_not: boolean
+
+        :param logic_gate: (str) Apply a logical "and" or a logical "or" between the functions.
+        :returns: (bool)
+
+        Example to search if a tag is exactly matching "R":
+            >>> l.match([(exact, "R", False)])
+
+        Example to search if a tag is starting with "p" or starting with "t":
+            >>> l.match([(startswith, "p", False), (startswith, "t", False), ], logic_gate="or")
+
+        """
+        is_matching = False
+
+        # any/all tags can match
+        for tag, score in self.__tags:
+
+            matches = list()
+            for func, value, logical_not in tag_functions:
+                if logical_not is True:
+                    matches.append(not func(tag, value))
+                else:
+                    matches.append(func(tag, value))
+
+            if logic_gate == "and":
+                is_matching = all(matches)
+            else:
+                is_matching = any(matches)
+
+            # no need to test the next tags if the current one is matching.
+            if is_matching is True:
+                return True
+
+        return is_matching
+
+    # -----------------------------------------------------------------------
+
+    # WILL BE DEPRECATED (when filter will be finished)
+    # USED ONLY BY "SEARCH" METHOD IN TIERS.
+    def contains(self, tag, search_function='exact'):
+        """ Return True if the label contains a given tag.
+
+        * * * * *   WILL BE DEPRECATED (when filter will be finished)  * * * * *
+
+        :param tag: (sppasTag)
+        :param search_function: (str) Can be one of the followings:
+                -    exact (str): exact match
+                -    iexact (str): Case-insensitive exact match
+                -    startswith (str):
+                -    istartswith (str): Case-insensitive startswith
+                -    endswith (str):
+                -    iendswith: (str) Case-insensitive endswith
+                -    contains (str):
+                -    icontains: (str) Case-insensitive contains
+                -    equal (str): is equal (identical as exact)
+                -    greater (str): is greater then
+                -    lower (str): is lower than
+
+        """
+        if self.__tags is None:
+            return False
+        if not isinstance(tag, sppasTag):
+            raise AnnDataTypeError(tag, "sppasTag")
+
+        if search_function == "exact" or search_function == "equal":
+            return any([tag == t[0] for t in self.__tags])
+
+        if tag.get_type() == "str":
+            search_unicode_content = tag.get_content()
+            lsearch_unicode_content = search_unicode_content.lower()
+            for t, s in self.__tags:
+                unicode_content = t.get_content()
+                lunicode_content = unicode_content.lower()
+                if search_function == "iexact" and lunicode_content == lsearch_unicode_content:
+                    return True
+                elif search_function == "startswith" and unicode_content.startswith(search_unicode_content):
+                    return True
+                elif search_function == "istartswith" and lunicode_content.startswith(lsearch_unicode_content):
+                    return True
+                elif search_function == "endswith" and unicode_content.endswith(search_unicode_content):
+                    return True
+                elif search_function == "iendswith" and lunicode_content.endswith(lsearch_unicode_content):
+                    return True
+                elif search_function == "contains" and search_unicode_content in unicode_content:
+                    return True
+                elif search_function == "icontains" and lsearch_unicode_content in lunicode_content:
+                    return True
+
+        elif tag.get_type() in ["float", "int"]:
+            for t, s in self.__tags:
+                if search_function == "greater" and t.get_typed_content() > tag.get_typed_content():
+                    return True
+                if search_function == "lower" and t.get_typed_content() < tag.get_typed_content():
+                    return True
+
+        return False
 
     # -----------------------------------------------------------------------
     # Overloads

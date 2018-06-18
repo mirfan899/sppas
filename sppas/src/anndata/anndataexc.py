@@ -41,8 +41,14 @@ ANN_DATA_ERROR = ":ERROR 1000: "
 ANN_UNK_TYPE_ERROR = ":ERROR 1050: "
 ANN_DATA_TYPE_ERROR = ":ERROR 1100: "
 ANN_DATA_EQ_TYPE_ERROR = ":ERROR 1105: "
-ANN_DATA_NEG_VALUE_ERROR = ":ERROR 1110: "
+
 ANN_DATA_INDEX_ERROR = ":ERROR 1200: "
+
+ANN_DATA_KEY_ERROR = ":ERROR 1250: "
+
+ANN_DATA_VALUE_ERROR = ":ERROR 1300: "
+ANN_DATA_NEG_VALUE_ERROR = ":ERROR 1310: "
+
 INTERVAL_BOUNDS_ERROR = ":ERROR 1120: "
 CTRL_VOCAB_CONTAINS_ERROR = ":ERROR 1130: "
 CTRL_VOCAB_SET_TIER_ERROR = ":ERROR 1132: "
@@ -149,8 +155,24 @@ class AnnDataEqTypeError(TypeError):
 # -----------------------------------------------------------------------
 
 
+class AnnDataValueError(ValueError):
+    """ :ERROR 1300: ANN_DATA_VALUE_ERROR
+    Invalid value '{!s:s}' for '{!s:s}'.
+
+    """
+
+    def __init__(self, data_name, value):
+        self.parameter = ANN_DATA_VALUE_ERROR + \
+                         (t.gettext(ANN_DATA_VALUE_ERROR)).format(value, data_name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
 class AnnDataNegValueError(ValueError):
-    """ :ERROR 1110: ANN_DATA_NEG_VALUE_ERROR
+    """ :ERROR 1310: ANN_DATA_NEG_VALUE_ERROR
     Expected a positive value. Got '{:f}'.
 
     """
@@ -160,6 +182,23 @@ class AnnDataNegValueError(ValueError):
 
     def __str__(self):
         return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class AnnDataKeyError(KeyError):
+    """ :ERROR 1250: ANN_DATA_KEY_ERROR
+    Invalid key '{!s:s}' for data '{!s:s}'.
+
+    """
+
+    def __init__(self, data_name, value):
+        self.parameter = ANN_DATA_KEY_ERROR + \
+                         (t.gettext(ANN_DATA_KEY_ERROR)).format(value, data_name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
 
 # -----------------------------------------------------------------------
 

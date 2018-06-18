@@ -29,24 +29,25 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.filter.patternbase.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.anndata.basecompare.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+from .anndataexc import AnnDataValueError
 
 
-class sppasPatternBaseCompare(object):
+class sppasBaseCompare(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Base class for pattern matching comparisons.
+    :summary:      Base class for comparisons.
 
     """
     def __init__(self):
-        """ Create a sppasPatternDurationCompare instance. """
+        """ Create a sppasBaseCompare instance. """
 
         self.methods = dict()
 
@@ -60,19 +61,12 @@ class sppasPatternBaseCompare(object):
         """
         if name in self.methods:
             return self.methods[name]
-        raise ValueError('Unknown function name: %s' % name)
+        raise AnnDataValueError(name, "function name")
 
     # -----------------------------------------------------------------------
 
-    def create(self, name, arg, opt="best"):
-        """ Create the function corresponding to the given name.
+    def get_function_names(self):
+        """ Return the list of comparison functions. """
 
-        The name must correspond to only one method of this class.
+        return list(self.methods.keys())
 
-        :param name: (str) Name of the function
-        :param arg: (str) Argument of the function
-        :param opt: (str) Options, for annotation selections
-        :returns: function
-
-        """
-        raise NotImplementedError

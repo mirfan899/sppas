@@ -42,11 +42,19 @@
 """
 import unittest
 import os.path
+import time
 
 from sppas.src.utils.makeunicode import u
-from ..filter import PatternMatching
-from ..filter import PatternDuration
 from ..aio.readwrite import sppasRW
+from ..annlocation.location import sppasLocation
+from ..annlocation.interval import sppasInterval
+from ..annlocation.point import sppasPoint
+from ..annlabel.label import sppasTag
+from ..annlabel.label import sppasLabel
+from ..annotation import sppasAnnotation
+
+from ..filter import sppasFilters
+from ..filter import sppasSetFilter
 
 # ---------------------------------------------------------------------------
 
@@ -55,8 +63,116 @@ DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 # ---------------------------------------------------------------------------
 
 
-class TestPatternMatching(unittest.TestCase):
-    """ Test pattern matching: search in label patterns. """
+class TestSetFilter(unittest.TestCase):
+    """ Test filter result. """
+
+    def setUp(self):
+        self.p1 = sppasPoint(1)
+        self.p2 = sppasPoint(2)
+        self.p4 = sppasPoint(4)
+        self.p9 = sppasPoint(9)
+        self.it1 = sppasInterval(self.p1, self.p2)
+        self.it2 = sppasInterval(self.p2, self.p4)
+        self.it3 = sppasInterval(self.p4, self.p9)
+        self.a1 = sppasAnnotation(sppasLocation(self.it1),
+                                  sppasLabel(sppasTag(" \t\t  être être   être  \n ")))
+        self.a2 = sppasAnnotation(sppasLocation(self.it2),
+                                  sppasLabel([sppasTag("toto"), sppasTag("titi")]))
+        self.a3 = sppasAnnotation(sppasLocation(self.it3),
+                                  [sppasLabel(sppasTag("tata")), sppasLabel(sppasTag("titi"))])
+
+    # -----------------------------------------------------------------------
+
+    def test_append(self):
+        """ Append an annotation and values. """
+
+        d = sppasSetFilter()
+        self.assertEqual(0, len(d))
+
+        d.append(self.a1, ['contains = t'])
+        self.assertEqual(1, len(d))
+        self.assertEqual(1, len(d.get_value(self.a1)))
+
+        # do not append the same value
+        d.append(self.a1, ['contains = t'])
+        self.assertEqual(1, len(d))
+        self.assertEqual(1, len(d.get_value(self.a1)))
+
+        d.append(self.a1, ['contains = o'])
+        self.assertEqual(1, len(d))
+        self.assertEqual(2, len(d.get_value(self.a1)))
+
+    # -----------------------------------------------------------------------
+
+    def test_copy(self):
+        """ Test the copy of a data set. """
+
+        d = sppasSetFilter()
+        d.append(self.a1, ['contains = t', 'contains = o'])
+        d.append(self.a2, ['exact = titi'])
+
+        dc = d.copy()
+        self.assertEqual(len(d), len(dc))
+        for ann in d:
+            self.assertEqual(d.get_value(ann), dc.get_value(ann))
+
+    # -----------------------------------------------------------------------
+
+    def test_or(self):
+        """ Test logical "or" between two data sets. """
+
+        d1 = sppasSetFilter()
+        d2 = sppasSetFilter()
+
+        d1.append(self.a1, ['contains = t'])
+        d2.append(self.a1, ['contains = t'])
+
+        res = d1 | d2
+        self.assertEqual(1, len(res))
+        self.assertEqual(1, len(res.get_value(self.a1)))
+
+        d2.append(self.a1, ['contains = o'])
+        res = d1 | d2
+        self.assertEqual(1, len(res))
+        self.assertEqual(2, len(res.get_value(self.a1)))
+
+        d2.append(self.a2, ['exact = toto'])
+        res = d1 | d2
+        self.assertEqual(2, len(res))
+        self.assertEqual(1, len(res.get_value(self.a2)))
+
+        d2.append(self.a2, ['exact = toto', 'istartswith = T'])
+        res = d1 | d2
+        self.assertEqual(2, len(res))
+        self.assertEqual(2, len(res.get_value(self.a2)))
+
+        d1.append(self.a3, ['istartswith = t'])
+        res = d1 | d2
+        self.assertEqual(3, len(res))
+        self.assertEqual(2, len(res.get_value(self.a1)))
+        self.assertEqual(2, len(res.get_value(self.a2)))
+        self.assertEqual(1, len(res.get_value(self.a3)))
+
+    # -----------------------------------------------------------------------
+
+    def test_and(self):
+        """ Test logical "and" between two data sets. """
+
+        d1 = sppasSetFilter()
+        d2 = sppasSetFilter()
+
+        d1.append(self.a1, ['contains = t'])
+        d2.append(self.a1, ['contains = o'])
+
+        res = d1 & d2
+        self.assertEqual(1, len(res))
+        self.assertEqual(2, len(res.get_value(self.a1)))
+
+# ---------------------------------------------------------------------------
+
+
+class TestTagMatching(unittest.TestCase):
+    """ Test pattern matching on tags. """
 
     def setUp(self):
         parser = sppasRW(os.path.join(DATA, "grenelle.antx"))
@@ -64,58 +180,49 @@ class TestPatternMatching(unittest.TestCase):
 
     # -----------------------------------------------------------------------
 
-    def test_pattern_exact(self):
+    def test_tag(self):
         """ Test str == str (case-sensitive)"""
 
         tier = self.trs.find('P-Phonemes')
 
-        pred = PatternMatching(exact="R") | PatternMatching(exact="l")
-        res = [a.get_labels() for a in tier if pred(a)]
-        for labels in res:
-            texts = list()
-            for label in labels:
-                for tag, score in label:
-                    texts.append(tag.get_typed_content())
-            self.assertTrue(any(t in [u("R"), u("l")] for t in texts))
+        with self.assertRaises(KeyError):
+            f = sppasFilters(tier)
+            f.tag(function="value")
 
-        with self.assertRaises(TypeError):
-            pred = PatternMatching(exact=1)
-            res = [a for a in tier if pred(a)]
+        print('FILTER ======= f.tag(startswith=u("l")) | f.tag(endswith=u("l")) ====== ')
+        start_time = time.time()
+        f = sppasFilters(tier)
+        d1 = f.tag(startswith=u("l"))
+        d2 = f.tag(endswith=u("l"))
+        res = d1 | d2
+        end_time = time.time()
+        print("  - elapsed time: {:f} seconds".format(end_time - start_time))
+        print("  - res size = {:d}".format(len(res)))
 
-        with self.assertRaises(TypeError):
-            pred = PatternMatching(exact=True)
-            res = [a for a in tier if pred(a)]
+        print('FILTER ======= f.tag(startswith=u("l"), endswith=u("l"), logic_gate="and") ====== ')
+        start_time = time.time()
+        f = sppasFilters(tier)
+        res = f.tag(startswith=u("l"), endswith=u("l"), logic_gate="and")
+        end_time = time.time()
+        print("  - elapsed time: {:f} seconds".format(end_time - start_time))
+        print("  - res size = {:d}".format(len(res)))
+
+        print('FILTER ======= f.tag(startswith=u("l"), endswith=u("l"), logic_gate="or") ====== ')
+        start_time = time.time()
+        f = sppasFilters(tier)
+        res = f.tag(startswith=u("l"), endswith=u("l"), logic_gate="or")
+        end_time = time.time()
+        print("  - elapsed time: {:f} seconds".format(end_time - start_time))
+        print("  - res size = {:d}".format(len(res)))
 
     # -----------------------------------------------------------------------
 
-    def test_pattern_iexact(self):
-        """ Test str == str (case-insensitive). """
+    def test_tag_dur(self):
+        """ Test both tag and duration. """
 
         tier = self.trs.find('P-Phonemes')
-
-        pred = PatternMatching(iexact="s")
-        res = [a.get_labels() for a in tier if pred(a)]
-        for labels in res:
-            texts = list()
-            for label in labels:
-                for tag, score in label:
-                    texts.append(tag.get_typed_content())
-            self.assertTrue(any(t in [u("s"), u("S")] for t in texts))
-
-        with self.assertRaises(TypeError):
-            pred = PatternMatching(iexact=1)
-            res = [a for a in tier if pred(a)]
-
-        with self.assertRaises(TypeError):
-            pred = PatternMatching(iexact=True)
-            res = [a for a in tier if pred(a)]
+        f = sppasFilters(tier)
+        res = (f.tag(exact=u("#")) or f.tag(exact=u("+"))) and f.duration(gt=0.2)
 
 # ---------------------------------------------------------------------------
 
-
-class TestPatternDuration(unittest.TestCase):
-    """ Test pattern matching: search in annotation duration. """
-
-    def test_pattern_eq(self):
-        """ """
-        pred = PatternDuration(eq=0.2)
