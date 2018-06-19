@@ -54,7 +54,7 @@ from ..annlabel.label import sppasLabel
 from ..annotation import sppasAnnotation
 
 from ..filter import sppasFilters
-from ..filter import sppasSetFilter
+from ..filter import sppasAnnSet
 
 # ---------------------------------------------------------------------------
 
@@ -77,16 +77,18 @@ class TestSetFilter(unittest.TestCase):
         self.a1 = sppasAnnotation(sppasLocation(self.it1),
                                   sppasLabel(sppasTag(" \t\t  être être   être  \n ")))
         self.a2 = sppasAnnotation(sppasLocation(self.it2),
-                                  sppasLabel([sppasTag("toto"), sppasTag("titi")]))
+                                  sppasLabel([sppasTag("toto"),
+                                              sppasTag("titi")]))
         self.a3 = sppasAnnotation(sppasLocation(self.it3),
-                                  [sppasLabel(sppasTag("tata")), sppasLabel(sppasTag("titi"))])
+                                  [sppasLabel(sppasTag("tata")),
+                                   sppasLabel(sppasTag("titi"))])
 
     # -----------------------------------------------------------------------
 
     def test_append(self):
         """ Append an annotation and values. """
 
-        d = sppasSetFilter()
+        d = sppasAnnSet()
         self.assertEqual(0, len(d))
 
         d.append(self.a1, ['contains = t'])
@@ -107,7 +109,7 @@ class TestSetFilter(unittest.TestCase):
     def test_copy(self):
         """ Test the copy of a data set. """
 
-        d = sppasSetFilter()
+        d = sppasAnnSet()
         d.append(self.a1, ['contains = t', 'contains = o'])
         d.append(self.a2, ['exact = titi'])
 
@@ -121,8 +123,8 @@ class TestSetFilter(unittest.TestCase):
     def test_or(self):
         """ Test logical "or" between two data sets. """
 
-        d1 = sppasSetFilter()
-        d2 = sppasSetFilter()
+        d1 = sppasAnnSet()
+        d2 = sppasAnnSet()
 
         d1.append(self.a1, ['contains = t'])
         d2.append(self.a1, ['contains = t'])
@@ -158,8 +160,8 @@ class TestSetFilter(unittest.TestCase):
     def test_and(self):
         """ Test logical "and" between two data sets. """
 
-        d1 = sppasSetFilter()
-        d2 = sppasSetFilter()
+        d1 = sppasAnnSet()
+        d2 = sppasAnnSet()
 
         d1.append(self.a1, ['contains = t'])
         d2.append(self.a1, ['contains = o'])
@@ -167,6 +169,19 @@ class TestSetFilter(unittest.TestCase):
         res = d1 & d2
         self.assertEqual(1, len(res))
         self.assertEqual(2, len(res.get_value(self.a1)))
+
+        # nothing changed. a2 is only in d1.
+        d1.append(self.a2, ['exact = toto'])
+        res = d1 & d2
+        self.assertEqual(1, len(res))
+        self.assertEqual(2, len(res.get_value(self.a1)))
+
+        # ok. add a2 in d2 too...
+        d2.append(self.a2, ['exact = toto'])
+        res = d1 & d2
+        self.assertEqual(2, len(res))
+        self.assertEqual(2, len(res.get_value(self.a1)))
+        self.assertEqual(1, len(res.get_value(self.a2)))
 
 # ---------------------------------------------------------------------------
 
@@ -181,7 +196,7 @@ class TestTagMatching(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_tag(self):
-        """ Test str == str (case-sensitive)"""
+        """ Test tag is matching str. """
 
         tier = self.trs.find('P-Phonemes')
 
@@ -199,30 +214,50 @@ class TestTagMatching(unittest.TestCase):
         print("  - elapsed time: {:f} seconds".format(end_time - start_time))
         print("  - res size = {:d}".format(len(res)))
 
-        print('FILTER ======= f.tag(startswith=u("l"), endswith=u("l"), logic_gate="and") ====== ')
+        print('FILTER ======= f.tag(startswith=u("l"), endswith=u("l"), logic_bool="and") ====== ')
         start_time = time.time()
         f = sppasFilters(tier)
-        res = f.tag(startswith=u("l"), endswith=u("l"), logic_gate="and")
+        res = f.tag(startswith=u("l"), endswith=u("l"), logic_bool="and")
         end_time = time.time()
         print("  - elapsed time: {:f} seconds".format(end_time - start_time))
         print("  - res size = {:d}".format(len(res)))
 
-        print('FILTER ======= f.tag(startswith=u("l"), endswith=u("l"), logic_gate="or") ====== ')
+        print('FILTER ======= f.tag(startswith=u("l"), endswith=u("l"), logic_bool="or") ====== ')
         start_time = time.time()
         f = sppasFilters(tier)
-        res = f.tag(startswith=u("l"), endswith=u("l"), logic_gate="or")
+        res = f.tag(startswith=u("l"), endswith=u("l"), logic_bool="or")
         end_time = time.time()
         print("  - elapsed time: {:f} seconds".format(end_time - start_time))
         print("  - res size = {:d}".format(len(res)))
 
     # -----------------------------------------------------------------------
 
-    def test_tag_dur(self):
+    def test_dur(self):
+        """ Test localization duration. """
+
+        tier = self.trs.find('P-Phonemes')
+        f = sppasFilters(tier)
+
+        # phonemes during 30ms
+        start_time = time.time()
+        res = f.dur(eq=0.03)
+        end_time = time.time()
+
+        # phonemes during more than 200ms
+        start_time = time.time()
+        res = f.dur(ge=0.2)
+        end_time = time.time()
+
+    # -----------------------------------------------------------------------
+
+    def test_combined(self):
         """ Test both tag and duration. """
 
         tier = self.trs.find('P-Phonemes')
         f = sppasFilters(tier)
-        res = (f.tag(exact=u("#")) or f.tag(exact=u("+"))) and f.duration(gt=0.2)
+
+        # silences or pauses during more than 200ms
+        res = (f.tag(exact=u("#")) or f.tag(exact=u("+"))) and f.dur(ge=0.2)
 
 # ---------------------------------------------------------------------------
 

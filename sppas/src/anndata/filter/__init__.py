@@ -53,9 +53,9 @@
 
 """
 from .filters import sppasFilters
-from .filters import sppasSetFilter
+from .filters import sppasAnnSet
 
 __all__ = [
     "sppasFilters",
-    "sppasSetFilter"
+    "sppasAnnSet"
 ]

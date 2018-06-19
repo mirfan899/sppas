@@ -278,7 +278,7 @@ class sppasLabel(object):
 
     # -----------------------------------------------------------------------
 
-    def match(self, tag_functions, logic_gate="and"):
+    def match(self, tag_functions, logic_bool="and"):
         """ Return True if a tag matches all or any of the functions.
 
         :param tag_functions: list of (function, value, logical_not)
@@ -287,19 +287,19 @@ class sppasLabel(object):
             - value: the expected value for the tag
             - logical_not: boolean
 
-        :param logic_gate: (str) Apply a logical "and" or a logical "or" between the functions.
+        :param logic_bool: (str) Apply a logical "and" or a logical "or" between the functions.
         :returns: (bool)
 
         Example to search if a tag is exactly matching "R":
             >>> l.match([(exact, "R", False)])
 
         Example to search if a tag is starting with "p" or starting with "t":
-            >>> l.match([(startswith, "p", False), (startswith, "t", False), ], logic_gate="or")
+            >>> l.match([(startswith, "p", False), (startswith, "t", False), ], logic_bool="or")
 
         """
         is_matching = False
 
-        # any/all tags can match
+        # any tag can match
         for tag, score in self.__tags:
 
             matches = list()
@@ -309,7 +309,7 @@ class sppasLabel(object):
                 else:
                     matches.append(func(tag, value))
 
-            if logic_gate == "and":
+            if logic_bool == "and":
                 is_matching = all(matches)
             else:
                 is_matching = any(matches)

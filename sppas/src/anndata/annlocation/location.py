@@ -40,6 +40,8 @@
     >>> import sys
     >>> sys.getsizeof(None)
     >>> 16
+    >>> sys.getsizeof(tuple())
+    >>> 56
     >>> sys.getsizeof(list())
     >>> 72
     >>> sys.getsizeof(dict())
@@ -209,7 +211,7 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def contains(self, point):
-        """ Return True if the localization is in the list. """
+        """ Return True if the localization point is in the list. """
 
         if self.is_point():
             return any([point == l[0] for l in self.__localizations])
@@ -222,6 +224,57 @@ class sppasLocation(object):
         """ Return a deep copy of the location. """
 
         return copy.deepcopy(self)
+
+    # -----------------------------------------------------------------------
+
+    def match_duration(self, dur_functions, logic_bool="and"):
+        """ Return True if a duration matches all or any of the functions.
+
+        :param dur_functions: list of (function, value, logical_not)
+
+            - function: a function in python with 2 arguments: dur/value
+            - value: the expected value for the duration
+            - logical_not: boolean
+
+        :param logic_bool: (str) Apply a logical "and" or a logical "or" between the functions.
+        :returns: (bool)
+
+        Example to search if a duration is exactly 30ms:
+            >>> d.match([(eq, 0.03, False)])
+
+        Example to search if a duration is not 30ms:
+            >>> d.match([(eq, 0.03, True)])
+            >>> d.match([(ne, 0.03, False)])
+
+        Example to search if a duration is comprised between 0.3 and 0.7:
+            >>> l.match([(ge, 0.03, False), (le, 0.07, False), ], logic_bool="and")
+
+        See sppasDurationCompare() to get a list of functions.
+
+        """
+        is_matching = False
+
+        # any localization can match
+        for loc, score in self.__localizations:
+
+            dur = loc.duration()
+            matches = list()
+            for func, value, logical_not in dur_functions:
+                if logical_not is True:
+                    matches.append(not func(dur, value))
+                else:
+                    matches.append(func(dur, value))
+
+            if logic_bool == "and":
+                is_matching = all(matches)
+            else:
+                is_matching = any(matches)
+
+            # no need to test the next locs if the current one is matching.
+            if is_matching is True:
+                return True
+
+        return is_matching
 
     # -----------------------------------------------------------------------
     # Overloads

@@ -213,16 +213,19 @@ class sppasDuration(object):
 
     def __ne__(self, other):
         """ Not equals. """
+
         return not (self == other)
 
     # ------------------------------------------------------------------------
 
     def __le__(self, other):
         """ Lesser or equal. """
+
         return (self < other) or (self == other)
 
     # ------------------------------------------------------------------------
 
     def __ge__(self, other):
         """ Greater or equal. """
+
         return (self > other) or (self == other)

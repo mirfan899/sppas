@@ -36,8 +36,8 @@
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__   = """Tatsuya Watanabe, Brigitte Bigi (brigitte.bigi@gmail.com), Grégoire Montcheuil"""
-__copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
+__authors__   = """Grégoire Montcheuil"""
+__copyright__ = """Copyright (C) 2011-2015 Grégoire Montcheuil"""
 
 from ..ptime.point import TimePoint
 from decimal import *

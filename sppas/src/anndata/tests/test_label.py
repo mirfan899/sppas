@@ -37,7 +37,7 @@
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Test the clases of the label package.
+    :summary:      Test the classes of the annlabel package.
 
     Includes tests of sppasLabel(), sppasTag(), sppasTagCompare().
 
@@ -432,8 +432,8 @@ class TestLabel(unittest.TestCase):
 
         f1 = (t.startswith, u("p"), False)
         f2 = (t.iendswith, u("O"), False)
-        self.assertTrue(l.match([f1, f2], logic_gate="or"))
-        self.assertFalse(l.match([f1, f2], logic_gate="and"))
+        self.assertTrue(l.match([f1, f2], logic_bool="or"))
+        self.assertFalse(l.match([f1, f2], logic_bool="and"))
 
         l.append(sppasTag("pata"))
         self.assertTrue(l.match([(t.endswith, u("ta"), False)]))

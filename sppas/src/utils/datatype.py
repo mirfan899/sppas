@@ -130,7 +130,7 @@ class sppasType(object):
         try:
             float(entry)
             return True
-        except ValueError:
+        except (TypeError, ValueError):
             pass
 
         try:

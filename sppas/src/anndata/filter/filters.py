@@ -32,7 +32,50 @@
     src.anndata.filter.filters.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Search in tiers.
+    Search in tiers. The class sppasFilters() allows to create several types
+    of filter (tag, duration, ...), and the class sppasAnnSet() is a data set
+    manager, i.e. it contains the annotations selected by a filter and a
+    string representing the filter.
+
+    Create a filter:
+
+        >>> f = sppasFilters(tier)
+
+    then, apply a filter with some pattern like in the following examples.
+    sppasAnnSet() can be combined with operators & and |, like for any other
+    'set' in Python, 'an unordered collection of distinct hashable objects'.
+
+    Example1: extract silences:
+
+        >>> f.tag(exact=u('#')))
+
+    Example2: extract silences more than 200ms
+
+        >>> f.tag(exact=u("#")) & f.dur(gt=0.2)
+
+    Example3: find the annotations with at least a label with a tag
+    starting by "pa" and ending by "a" like "pa", "papa", "pasta", etc:
+
+        >>> f.tag(startswith="pa", endswith='a')
+
+    It's equivalent to write:
+
+        >>> f.tag(startswith="pa", endswith='a', logic_bool="and")
+
+    The classical "and" and "or" logical boolean predicates are accepted;
+    "and" is the default one. It defines whether all the functions must
+    be True ("and") or any of them ("or").
+
+    The result of the two previous lines of code is the same, but two
+    times faster, compared to use this one:
+
+        >>> f.tag(startswith="pa") & f.tag(endswith='a')
+
+    In the first case, for each tag, the method applies the logical boolean
+    between two predicates and creates the data set matching the combined
+    condition. In the second case, each call to the method creates a data
+    set matching each individual condition, then the data sets are
+    combined.
 
 """
 from ..anndataexc import AnnDataValueError
@@ -44,22 +87,26 @@ from ..annlocation.durationcompare import sppasDurationCompare
 # ---------------------------------------------------------------------------
 
 
-class sppasSetFilter(object):
+class sppasAnnSet(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      The data that are the result of the filter system.
+    :summary:      Manager for the data that are the result of the filter system.
 
     """
     def __init__(self):
+        """ Create a sppasAnnSet instance. """
+
         self._data_set = dict()
 
     # -----------------------------------------------------------------------
 
     def get_value(self, ann):
+        """ Return the value corresponding to an annotation. """
+
         return self._data_set.get(ann, None)
 
     # -----------------------------------------------------------------------
@@ -68,7 +115,7 @@ class sppasSetFilter(object):
         """ Append an annotation in the data set, with the given value.
 
         :param ann: (sppasAnnotation)
-        :param value: (list)
+        :param value: (list of str) List of any string.
 
         """
         if value is None:
@@ -85,11 +132,12 @@ class sppasSetFilter(object):
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """ return a deep copy of self. """
+        """ Make a deep copy of self. """
 
-        d = sppasSetFilter()
+        d = sppasAnnSet()
         for ann, value in self._data_set.items():
             d.append(ann, value)
+
         return d
 
     # -----------------------------------------------------------------------
@@ -103,11 +151,15 @@ class sppasSetFilter(object):
     def __len__(self):
         return len(self._data_set)
 
+    def __contains__(self, ann):
+        return ann in self._data_set
+
     # -----------------------------------------------------------------------
-    # Logical connectors
+    # Operators
     # -----------------------------------------------------------------------
 
     def __or__(self, other):
+        """ When used with data sets, the operator '|' does the intersection operation. """
 
         d = self.copy()
         for ann in other:
@@ -118,8 +170,9 @@ class sppasSetFilter(object):
     # -----------------------------------------------------------------------
 
     def __and__(self, other):
+        """ When used with data sets, the operator '&' does the union operation. """
 
-        d = sppasSetFilter()
+        d = sppasAnnSet()
         for ann in self:
             if ann in other:
                 d.append(ann, self.get_value(ann))
@@ -139,16 +192,6 @@ class sppasFilters(object):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      SPPAS annotated data filter system.
 
-    To create a filter:
-
-        >>> f = sppasFilters(tier)
-
-    To apply a filter...
-
-    Example1 in the requests: extract silences more than 200ms
-
-        >>> f.tag(exact=u("#")) and f.duration(gt=0.2)
-
     """
     def __init__(self, tier):
         """ Create a sppasFilters instance. """
@@ -161,44 +204,24 @@ class sppasFilters(object):
         """ Apply functions on all tags of all labels of annotations of a tier.
 
         Each argument is made of a function name and its expected value.
+        Each function can be prefixed with "not_", like:
 
-        The following returns the annotations with at least a label with a tag
-        starting by "pa" and ending by "a" like "pa", "papa", "pasta", etc:
+            >>> f.tag(startswith="pa", not_endswith='a', logic_bool="and")
+            >>> f.tag(startswith="pa") & f.tag(not_endswith='a')
 
-            >>> f.tag(startswith="pa", endswith='a')
-
-        It's equivalent to write:
-
-            >>> f.tag(startswith="pa", endswith='a', logic_gate="and")
-
-        The classical "and" and "or" logic gates are accepted; "and" is the
-        default one. It defines whether all the functions must be True ("and")
-        or any of them ("or").
-
-        The result is the same, but two times faster, compared to use this:
-
-            >>> f.tag(startswith="pa") and f.tag(endswith='a')
-
-        Return the list of sppasAnnotation instances for which at least one
-        label is True for all the given functions. Each function can be
-        prefixed with "not_", like:
-
-            >>> f.tag(startswith="pa", not_endswith='a', logic_gate="and")
-            >>> f.tag(startswith="pa") and f.tag(not_endswith='a')
-
-        :param kwargs: logic_gate/any sppasTagCompare() method.
-        :returns: (sppasSetFilter)
+        :param kwargs: logic_bool/any sppasTagCompare() method.
+        :returns: (sppasAnnSet)
 
         """
         comparator = sppasTagCompare()
 
         # extract the information from the arguments
         sppasFilters.__test_args(comparator, **kwargs)
-        logic_gate = sppasFilters.__fix_logic_gate(**kwargs)
+        logic_bool = sppasFilters.__fix_logic_bool(**kwargs)
         tag_fct_values = sppasFilters.__fix_function_values(comparator, **kwargs)
         tag_functions = sppasFilters.__fix_functions(comparator, **kwargs)
 
-        data = sppasSetFilter()
+        data = sppasAnnSet()
 
         # search the annotations to be returned:
         for annotation in self.tier:
@@ -206,7 +229,7 @@ class sppasFilters(object):
             # any label can match
             for label in annotation.get_labels():
 
-                is_matching = label.match(tag_functions, logic_gate)
+                is_matching = label.match(tag_functions, logic_bool)
                 # no need to test the next labels if the current one is matching.
                 if is_matching is True:
                     data.append(annotation, tag_fct_values)
@@ -216,28 +239,32 @@ class sppasFilters(object):
 
     # -----------------------------------------------------------------------
 
-    def duration(self, **kwargs):
-        """ Apply functions on durations of all locations of annotations of a tier.
+    def dur(self, **kwargs):
+        """ Apply functions on durations of the location of annotations of a tier.
 
-        :param kwargs: logic_gate/any sppasTagCompare() method.
-        :returns: (sppasSetFilter)
+        :param kwargs: logic_bool/any sppasTagCompare() method.
+        :returns: (sppasAnnSet)
+
+        Examples:
+            >>> f.dur(ge=0.03) & f.dur(le=0.07)
+            >>> f.dur(ge=0.03, le=0.07, logic_bool="and")
 
         """
         comparator = sppasDurationCompare()
 
         # extract the information from the arguments
         sppasFilters.__test_args(comparator, **kwargs)
-        logic_gate = sppasFilters.__fix_logic_gate(**kwargs)
+        logic_bool = sppasFilters.__fix_logic_bool(**kwargs)
         dur_fct_values = sppasFilters.__fix_function_values(comparator, **kwargs)
         dur_functions = sppasFilters.__fix_functions(comparator, **kwargs)
 
-        data = sppasSetFilter()
+        data = sppasAnnSet()
 
         # search the annotations to be returned:
         for annotation in self.tier:
 
             location = annotation.get_location()
-            is_matching = False  # location.match(dur_functions, logic_gate)
+            is_matching = location.match_duration(dur_functions, logic_bool)
             if is_matching is True:
                 data.append(annotation, dur_fct_values)
 
@@ -251,7 +278,7 @@ class sppasFilters(object):
     def __test_args(comparator, **kwargs):
         """ Raise an exception if any of the args is not correct. """
 
-        names = ["logic_gate"] + comparator.get_function_names()
+        names = ["logic_bool"] + comparator.get_function_names()
         for func_name, value in kwargs.items():
             if func_name not in names:
                 raise AnnDataKeyError("kwargs function name", func_name)
@@ -259,13 +286,13 @@ class sppasFilters(object):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __fix_logic_gate(**kwargs):
-        """ Return the value of a logic gate. """
+    def __fix_logic_bool(**kwargs):
+        """ Return the value of a logic boolean predicate. """
 
         for func_name, value in kwargs.items():
-            if func_name == "logic_gate":
+            if func_name == "logic_bool":
                 if value not in ['and', 'or']:
-                    raise AnnDataValueError(value, "logic gate")
+                    raise AnnDataValueError(value, "logic bool")
                 return value
         return "and"
 
