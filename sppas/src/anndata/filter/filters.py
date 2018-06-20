@@ -84,6 +84,7 @@ from ..anndataexc import AnnDataTypeError
 from ..annlabel.tagcompare import sppasTagCompare
 from ..annlocation.durationcompare import sppasDurationCompare
 from ..annlocation.localizationcompare import sppasLocalizationCompare
+from ..annlocation.intervalcompare import sppasIntervalCompare
 
 # ---------------------------------------------------------------------------
 
@@ -208,7 +209,7 @@ class sppasFilters(object):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS annotated data filter system.
+    :summary:      SPPAS tier filter system.
 
     """
     def __init__(self, tier):
@@ -219,7 +220,7 @@ class sppasFilters(object):
     # -----------------------------------------------------------------------
 
     def tag(self, **kwargs):
-        """ Apply functions on all tags of all labels of annotations of a tier.
+        """ Apply functions on all tags of all labels of annotations.
 
         Each argument is made of a function name and its expected value.
         Each function can be prefixed with "not_", like:
@@ -258,7 +259,7 @@ class sppasFilters(object):
     # -----------------------------------------------------------------------
 
     def dur(self, **kwargs):
-        """ Apply functions on durations of the location of annotations of a tier.
+        """ Apply functions on durations of the location of annotations.
 
         :param kwargs: logic_bool/any sppasTagCompare() method.
         :returns: (sppasAnnSet)
@@ -291,7 +292,7 @@ class sppasFilters(object):
     # -----------------------------------------------------------------------
 
     def loc(self, **kwargs):
-        """ Apply functions on localizations of annotations of a tier.
+        """ Apply functions on localizations of annotations.
 
         :param kwargs: logic_bool/any sppasLocalizationCompare() method.
         :returns: (sppasAnnSet)
@@ -318,6 +319,40 @@ class sppasFilters(object):
             is_matching = location.match_localization(loc_functions, logic_bool)
             if is_matching is True:
                 data.append(annotation, loc_fct_values)
+
+        return data
+
+    # -----------------------------------------------------------------------
+
+    def rel(self, other_tier, *args, **kwargs):
+        """ Apply functions of relations between localizations of annotations.
+
+        :param other_tier: the tier to be in relation with.
+        :param args: any sppasIntervalCompare() method.
+        :param kwargs: any option of the methods.
+        :returns: (sppasAnnSet)
+
+        Examples:
+            >>> f.rel(other_tier, "equals", "overlaps", "overlappedby", min_overlap=0.04)
+
+        """
+        comparator = sppasIntervalCompare()
+
+        # extract the information from the arguments
+        rel_functions = sppasFilters.__fix_relation_functions(comparator, *args)
+
+        data = sppasAnnSet()
+
+        # search the annotations to be returned:
+        for annotation in self.tier:
+
+            location = annotation.get_location()
+            match_values = sppasFilters.__connect(location,
+                                                  other_tier,
+                                                  rel_functions,
+                                                  **kwargs)
+            if len(match_values) > 0:
+                data.append(annotation, match_values)
 
         return data
 
@@ -353,12 +388,12 @@ class sppasFilters(object):
     def __fix_function_values(comparator, **kwargs):
         """ Return the list of function names and the expected value. """
 
-        tag_fct_values = list()
+        fct_values = list()
         for func_name, value in kwargs.items():
             if func_name in comparator.get_function_names():
-                tag_fct_values.append("{:s} = {!s:s}".format(func_name, value))
+                fct_values.append("{:s} = {!s:s}".format(func_name, value))
 
-        return tag_fct_values
+        return fct_values
 
     # -----------------------------------------------------------------------
 
@@ -366,16 +401,56 @@ class sppasFilters(object):
     def __fix_functions(comparator, **kwargs):
         """ Parse the arguments to get the list of function/value/complement. """
 
-        tag_functions = list()
+        f_functions = list()
         for func_name, value in kwargs.items():
+
+            logical_not = False
+            if func_name.startswith("not_"):
+                logical_not = True
+                func_name = func_name[4:]
+
             if func_name in comparator.get_function_names():
-                logical_not = False
-                if func_name.startswith("not_"):
-                    logical_not = True
-                    func_name = func_name[4:]
+                f_functions.append((comparator.get(func_name),
+                                    value,
+                                    logical_not))
 
-                tag_functions.append((comparator.get(func_name),
-                                      value,
-                                      logical_not))
+        return f_functions
 
-        return tag_functions
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def __fix_relation_functions(comparator, *args):
+        """ Parse the arguments to get the list of function/complement. """
+
+        f_functions = list()
+        for func_name in args:
+
+            logical_not = False
+            if func_name.startswith("not_"):
+                logical_not = True
+                func_name = func_name[4:]
+
+            if func_name in comparator.get_function_names():
+                f_functions.append((comparator.get(func_name),
+                                    logical_not))
+            else:
+                raise AnnDataKeyError("args function name", func_name)
+
+        return f_functions
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def __connect(location, other_tier, rel_functions, **kwargs):
+        """ Find connections between location and the other tier. """
+
+        values = list()
+        for other_ann in other_tier:
+            for localization, score in location:
+                for other_loc, other_score in other_ann.get_location():
+                    for func_name, complement in rel_functions:
+                        is_connected = func_name(localization, other_loc, **kwargs)
+                        if is_connected:
+                            values.append(str(func_name))
+
+        return values
