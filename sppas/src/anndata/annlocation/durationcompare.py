@@ -71,7 +71,7 @@ class sppasDurationCompare(sppasBaseCompare):
     def eq(duration, x):
         """ Return True if duration is equal to x.
 
-        :param duration: (int, float)
+        :param duration: (sppasDuration)
         :param x: (int, float)
         :returns: (bool)
 
@@ -89,7 +89,7 @@ class sppasDurationCompare(sppasBaseCompare):
     def ne(duration, x):
         """ Return True if duration is different to x.
 
-        :param duration: (int, float)
+        :param duration: (sppasDuration)
         :param x: (int, float)
         :returns: (bool)
 
@@ -107,7 +107,7 @@ class sppasDurationCompare(sppasBaseCompare):
     def gt(duration, x):
         """ Return True if duration is greater than x.
 
-        :param duration: (int, float)
+        :param duration: (sppasDuration)
         :param x: (int, float)
         :returns: (bool)
 
@@ -125,7 +125,7 @@ class sppasDurationCompare(sppasBaseCompare):
     def lt(duration, x):
         """ Return True if duration is lower than x.
 
-        :param duration: (int, float)
+        :param duration: (sppasDuration)
         :param x: (int, float)
         :returns: (bool)
 
@@ -143,7 +143,7 @@ class sppasDurationCompare(sppasBaseCompare):
     def ge(duration, x):
         """ Return True if duration is greater or equal than x.
 
-        :param duration: (int, float)
+        :param duration: (sppasDuration)
         :param x: (int, float)
         :returns: (bool)
 
@@ -161,7 +161,7 @@ class sppasDurationCompare(sppasBaseCompare):
     def le(duration, x):
         """ Return True if duration is lower or equal than x.
 
-        :param duration: (int, float)
+        :param duration: (sppasDuration)
         :param x: (int, float)
         :returns: (bool)
 

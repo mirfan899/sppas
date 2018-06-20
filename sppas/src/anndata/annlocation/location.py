@@ -233,7 +233,7 @@ class sppasLocation(object):
         :param dur_functions: list of (function, value, logical_not)
 
             - function: a function in python with 2 arguments: dur/value
-            - value: the expected value for the duration
+            - value: the expected value for the duration (int/float/sppasDuration)
             - logical_not: boolean
 
         :param logic_bool: (str) Apply a logical "and" or a logical "or" between the functions.
@@ -247,7 +247,7 @@ class sppasLocation(object):
             >>> d.match([(ne, 0.03, False)])
 
         Example to search if a duration is comprised between 0.3 and 0.7:
-            >>> l.match([(ge, 0.03, False), (le, 0.07, False), ], logic_bool="and")
+            >>> l.match([(ge, 0.03, False), (le, 0.07, False)], logic_bool="and")
 
         See sppasDurationCompare() to get a list of functions.
 
@@ -264,6 +264,55 @@ class sppasLocation(object):
                     matches.append(not func(dur, value))
                 else:
                     matches.append(func(dur, value))
+
+            if logic_bool == "and":
+                is_matching = all(matches)
+            else:
+                is_matching = any(matches)
+
+            # no need to test the next locs if the current one is matching.
+            if is_matching is True:
+                return True
+
+        return is_matching
+
+    # -----------------------------------------------------------------------
+
+    def match_localization(self, loc_functions, logic_bool="and"):
+        """ Return True if a localization matches all or any of the functions.
+
+        :param loc_functions: list of (function, value, logical_not)
+
+            - function: a function in python with 2 arguments: loc/value
+            - value: the expected value for the localization (int/float/sppasPoint)
+            - logical_not: boolean
+
+        :param logic_bool: (str) Apply a logical "and" or a logical "or" between the functions.
+        :returns: (bool)
+
+        Example to search if a localization is after (or starts at) 1 minutes:
+            >>> l.match([(rangefrom, 60., False)])
+
+        Example to search if a localization is before (or ends at) 3 minutes:
+            >>> l.match([(rangeto, 180., True)])
+
+        Example to search if a localization is between 1 min and 3 min:
+            >>> l.match([(rangefrom, 60., False), (rangeto, 180., False)], logic_bool="and")
+
+        See sppasLocalizationCompare() to get a list of functions.
+
+        """
+        is_matching = False
+
+        # any localization can match
+        for loc, score in self.__localizations:
+
+            matches = list()
+            for func, value, logical_not in loc_functions:
+                if logical_not is True:
+                    matches.append(not func(loc, value))
+                else:
+                    matches.append(func(loc, value))
 
             if logic_bool == "and":
                 is_matching = all(matches)

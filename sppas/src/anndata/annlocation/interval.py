@@ -100,8 +100,8 @@ class sppasInterval(sppasBaseLocalization):
         if isinstance(other, sppasInterval) is False:
             raise AnnDataTypeError(other, "sppasInterval")
 
-        self.set_begin(other.get_begin())
-        self.set_end(other.get_end())
+        self.__begin = other.get_begin()
+        self.__end = other.get_end()
 
     # -----------------------------------------------------------------------
 

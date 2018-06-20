@@ -186,7 +186,7 @@ class TestSetFilter(unittest.TestCase):
 # ---------------------------------------------------------------------------
 
 
-class TestTagMatching(unittest.TestCase):
+class TestMatching(unittest.TestCase):
     """ Test pattern matching on tags. """
 
     def setUp(self):
@@ -239,14 +239,36 @@ class TestTagMatching(unittest.TestCase):
         f = sppasFilters(tier)
 
         # phonemes during 30ms
-        start_time = time.time()
         res = f.dur(eq=0.03)
-        end_time = time.time()
+        self.assertEqual(2, len(res))
 
         # phonemes during more than 200ms
-        start_time = time.time()
         res = f.dur(ge=0.2)
-        end_time = time.time()
+
+    # -----------------------------------------------------------------------
+
+    def test_loc(self):
+        """ Test localization range. """
+
+        tier = self.trs.find('P-Phonemes')
+        f = sppasFilters(tier)
+
+        # the first 10 phonemes
+        res = f.loc(rangeto=0.858)
+        self.assertEqual(10, len(res))
+
+        # the last 9 phonemes
+        res = f.loc(rangefrom=241.977)
+        self.assertEqual(9, len(res))
+
+        # phonemes ranging from .. seconds of speech to .. seconds
+        res1 = f.loc(rangefrom=219.177) & f.loc(rangeto=sppasPoint(221.369, 0.002))
+        self.assertEqual(34, len(res1))
+
+        res2 = f.loc(rangefrom=219.177, rangeto=sppasPoint(221.369, 0.002), logic_bool="and")
+        self.assertEqual(34, len(res2))
+
+        self.assertEqual(res1, res2)
 
     # -----------------------------------------------------------------------
 

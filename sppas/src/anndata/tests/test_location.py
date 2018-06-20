@@ -49,6 +49,7 @@ from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AnnDataNegValueError
 from ..anndataexc import IntervalBoundsError
 from ..annlocation.location import sppasLocation
+from ..annlocation.localizationcompare import sppasLocalizationCompare
 
 # ---------------------------------------------------------------------------
 
@@ -830,3 +831,37 @@ class TestFrameDisjoint(unittest.TestCase):
         self.assertEqual(t_disjoint.get_end(), sppasPoint(11))
         with self.assertRaises(ValueError):
             t_disjoint.set_end(sppasPoint(9))
+
+# ---------------------------------------------------------------------------
+
+
+class TestLocalizationCompare(unittest.TestCase):
+
+    def test_range(self):
+        pass
+
+    def setUp(self):
+        self.lc = sppasLocalizationCompare()
+
+    # -----------------------------------------------------------------------
+
+    def test_members(self):
+        """ Test methods getter. """
+
+        self.assertEqual(self.lc.methods['rangefrom'], self.lc.rangefrom)
+        self.assertEqual(self.lc.get('rangefrom'), self.lc.rangefrom)
+
+        self.assertEqual(self.lc.methods['rangeto'], self.lc.rangeto)
+        self.assertEqual(self.lc.get('rangeto'), self.lc.rangeto)
+
+    # -----------------------------------------------------------------------
+
+    def test_rangefrom(self):
+        """ localization <= x. """
+
+        self.assertTrue(self.lc.rangefrom(sppasPoint(1., 0.02), 1.01))
+        self.assertTrue(self.lc.rangefrom(sppasPoint(1., 0.02), 0.5))
+        self.assertFalse(self.lc.rangefrom(sppasPoint(1., 0.02), sppasPoint(2)))
+
+        with self.assertRaises(TypeError):
+            self.lc.rangefrom(1, 1)

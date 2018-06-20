@@ -83,6 +83,7 @@ from ..anndataexc import AnnDataKeyError
 from ..anndataexc import AnnDataTypeError
 from ..annlabel.tagcompare import sppasTagCompare
 from ..annlocation.durationcompare import sppasDurationCompare
+from ..annlocation.localizationcompare import sppasLocalizationCompare
 
 # ---------------------------------------------------------------------------
 
@@ -153,6 +154,23 @@ class sppasAnnSet(object):
 
     def __contains__(self, ann):
         return ann in self._data_set
+
+    def __eq__(self, other):
+        """ Check if data sets are equals, i.e. share the same data. """
+
+        # check len
+        if len(self) != len(other):
+            return False
+
+        # check keys and values
+        for key, value in self._data_set.items():
+            if key not in other:
+                return False
+            other_value = other.get_value(key)
+            if set(other_value) != set(value):
+                return False
+
+        return True
 
     # -----------------------------------------------------------------------
     # Operators
@@ -267,6 +285,39 @@ class sppasFilters(object):
             is_matching = location.match_duration(dur_functions, logic_bool)
             if is_matching is True:
                 data.append(annotation, dur_fct_values)
+
+        return data
+
+    # -----------------------------------------------------------------------
+
+    def loc(self, **kwargs):
+        """ Apply functions on localizations of annotations of a tier.
+
+        :param kwargs: logic_bool/any sppasLocalizationCompare() method.
+        :returns: (sppasAnnSet)
+
+        Examples:
+            >>> f.loc(rangefrom=3.01) & f.loc(rangeto=10.07)
+            >>> f.loc(rangefrom=3.01, rangeto=10.07, logic_bool="and")
+
+        """
+        comparator = sppasLocalizationCompare()
+
+        # extract the information from the arguments
+        sppasFilters.__test_args(comparator, **kwargs)
+        logic_bool = sppasFilters.__fix_logic_bool(**kwargs)
+        loc_fct_values = sppasFilters.__fix_function_values(comparator, **kwargs)
+        loc_functions = sppasFilters.__fix_functions(comparator, **kwargs)
+
+        data = sppasAnnSet()
+
+        # search the annotations to be returned:
+        for annotation in self.tier:
+
+            location = annotation.get_location()
+            is_matching = location.match_localization(loc_functions, logic_bool)
+            if is_matching is True:
+                data.append(annotation, loc_fct_values)
 
         return data
 

@@ -167,6 +167,7 @@ class sppasPoint(sppasBaseLocalization):
             self.__midpoint = float(midpoint)
         except ValueError:
             raise AnnDataTypeError(midpoint, "float, int")
+
         if self.__midpoint < 0.:
             self.__midpoint = 0.
             raise AnnDataNegValueError(midpoint)
