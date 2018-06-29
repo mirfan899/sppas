@@ -53,7 +53,7 @@ class sppasLocalizationCompare(sppasBaseCompare):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Comparison methods for sppasLocalization.
+    :summary:      Comparison methods for sppasBaseLocalization.
 
     """
     def __init__(self):
@@ -102,7 +102,7 @@ class sppasLocalizationCompare(sppasBaseCompare):
 
     @staticmethod
     def __get_begin(localization):
-        """ Return the begin point from a localization. """
+        """ Return the begin point of a localization. """
 
         if isinstance(localization, sppasPoint):
             return localization
@@ -115,7 +115,7 @@ class sppasLocalizationCompare(sppasBaseCompare):
 
     @staticmethod
     def __get_end(localization):
-        """ Return the end point from a localization. """
+        """ Return the end point of a localization. """
 
         if isinstance(localization, sppasPoint):
             return localization

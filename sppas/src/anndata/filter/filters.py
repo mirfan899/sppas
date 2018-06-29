@@ -352,7 +352,7 @@ class sppasFilters(object):
                                                   rel_functions,
                                                   **kwargs)
             if len(match_values) > 0:
-                data.append(annotation, match_values)
+                data.append(annotation, list(set(match_values)))
 
         return data
 
@@ -451,6 +451,6 @@ class sppasFilters(object):
                     for func_name, complement in rel_functions:
                         is_connected = func_name(localization, other_loc, **kwargs)
                         if is_connected:
-                            values.append(str(func_name))
+                            values.append(func_name.__name__)
 
         return values
