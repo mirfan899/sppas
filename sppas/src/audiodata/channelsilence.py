@@ -182,11 +182,14 @@ class sppasChannelSilence(object):
         :returns: (int) volume value
 
         """
-        vmin = self._volume_stats.min()
+        vmin = max(self._volume_stats.min(), 0)  # provide negative values
         vmean = self._volume_stats.mean()
         vcvar = 1.5 * self._volume_stats.coefvariation()
-        alt = (vmean-vmin)/5.
-        if alt > vcvar:
+
+        # alternative, in case the audio is not as good as expected!
+        # (too low volume, or outliers which make the coeff variation very high)
+        alt = (vmean-vmin) / 5.
+        if alt > vcvar or vcvar > vmean:
             vcvar = alt
 
         return vmin + int((vmean - vcvar))
