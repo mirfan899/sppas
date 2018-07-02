@@ -249,14 +249,13 @@ class sppasIPUseg(sppasBaseAnnotation):
         if n != nbipus:
             raise Exception("Silence detection failed: unable to find "+str(nbipus)+" Inter-Pausal Units. Got: %d." % n)
 
-        if self.logfile:
-            self.logfile.print_message("Threshold volume value:     "+str(self.ipusaudio.get_vol_threshold()), indent=3)
-            self.logfile.print_message("Threshold silence duration: "+str(self.ipusaudio.get_min_sil_dur()),   indent=3)
-            self.logfile.print_message("Threshold speech duration:  "+str(self.ipusaudio.get_min_ipu_dur()),   indent=3)
-        else:
-            logging.info("Threshold volume value:     "+str(self.ipusaudio.get_vol_threshold()))
-            logging.info("Threshold silence duration: "+str(self.ipusaudio.get_min_sil_dur()))
-            logging.info("Threshold speech duration:  "+str(self.ipusaudio.get_min_ipu_dur()))
+        self.print_message("Information: ", indent=2)
+        m1 = "Threshold volume value:     {:d}".format(self.ipusaudio.get_vol_threshold())
+        m2 = "Threshold silence duration: {:.3f}".format(self.ipusaudio.get_min_sil_dur())
+        m3 = "Threshold speech duration:  {:.3f}".format(self.ipusaudio.get_min_ipu_dur())
+        m4 = "Number of IPUs:             {:d}".format(n)
+        for m in [m1, m2, m3, m4]:
+            self.print_message(m, indent=3)
 
     # ------------------------------------------------------------------
     # Outputs
