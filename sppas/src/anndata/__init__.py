@@ -78,6 +78,8 @@ from .annlocation import sppasInterval
 from .annlocation import sppasPoint
 from .annlocation import sppasDisjoint
 from .aio import aioutils
+from .filters import sppasFilters
+from .filters import sppasAnnSet
 
 __all__ = [
     sppasMetaData,
@@ -95,5 +97,7 @@ __all__ = [
     sppasDisjoint,
     sppasInterval,
     sppasPoint,
+    sppasFilters,
+    sppasAnnSet,
     aioutils
 ]

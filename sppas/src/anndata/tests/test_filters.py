@@ -54,8 +54,8 @@ from ..annlabel.label import sppasTag
 from ..annlabel.label import sppasLabel
 from ..annotation import sppasAnnotation
 
-from ..filter import sppasFilters
-from ..filter import sppasAnnSet
+from ..filters import sppasFilters
+from ..filters import sppasAnnSet
 
 # ---------------------------------------------------------------------------
 
@@ -183,6 +183,39 @@ class TestSetFilter(unittest.TestCase):
         self.assertEqual(2, len(res))
         self.assertEqual(2, len(res.get_value(self.a1)))
         self.assertEqual(1, len(res.get_value(self.a2)))
+
+    # -----------------------------------------------------------------------
+
+    def test_to_tier(self):
+        """ Create a tier from the data set. """
+
+        d = sppasAnnSet()
+        d.append(self.a3, ['contains = t'])
+        d.append(self.a1, ['contains = t'])
+        d.append(self.a2, ['contains = t', 'exact = toto', ])
+
+        # with default parameters
+        t = d.to_tier()
+        self.assertEqual("AnnSet", t.get_name())
+        self.assertEqual(3, len(t))
+
+        self.assertEqual(self.a1, t[0])
+        self.assertEqual(self.a2, t[1])
+        self.assertEqual(self.a3, t[2])
+
+        # with parameters
+        t = d.to_tier(name="Filter", annot_value=True)
+        self.assertEqual("Filter", t.get_name())
+        self.assertEqual(3, len(t))
+
+        self.assertEqual(self.a1.get_location(), t[0].get_location())
+        self.assertEqual(self.a2.get_location(), t[1].get_location())
+        self.assertEqual(self.a3.get_location(), t[2].get_location())
+
+        self.assertEqual(sppasTag('contains = t'), t[0].get_labels()[0].get_best())
+        self.assertEqual(sppasTag('contains = t'), t[2].get_labels()[0].get_best())
+        self.assertEqual(sppasTag('contains = t'), t[1].get_labels()[0].get_best())
+        self.assertEqual(sppasTag('exact = toto'), t[1].get_labels()[1].get_best())
 
 # ---------------------------------------------------------------------------
 

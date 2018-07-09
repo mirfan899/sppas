@@ -78,13 +78,16 @@
     combined.
 
 """
-from ..anndataexc import AnnDataValueError
-from ..anndataexc import AnnDataKeyError
-from ..anndataexc import AnnDataTypeError
-from ..annlabel.tagcompare import sppasTagCompare
-from ..annlocation.durationcompare import sppasDurationCompare
-from ..annlocation.localizationcompare import sppasLocalizationCompare
-from ..annlocation.intervalcompare import sppasIntervalCompare
+from .anndataexc import AnnDataValueError
+from .anndataexc import AnnDataKeyError
+from .anndataexc import AnnDataTypeError
+from .annlabel.tagcompare import sppasTagCompare
+from .annlocation.durationcompare import sppasDurationCompare
+from .annlocation.localizationcompare import sppasLocalizationCompare
+from .annlocation.intervalcompare import sppasIntervalCompare
+from .tier import sppasTier
+from .annlabel.label import sppasLabel
+from .annlabel.tag import sppasTag
 
 # ---------------------------------------------------------------------------
 
@@ -96,7 +99,13 @@ class sppasAnnSet(object):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Manager for the data that are the result of the filter system.
+    :summary:      Manager for a set of annotations.
+
+    Mainly used with the data that are the result of the filter system.
+    A sppasAnnSet() manages a dictionary with:
+
+        - key: an annotation
+        - value: a list of strings
 
     """
     def __init__(self):
@@ -107,8 +116,12 @@ class sppasAnnSet(object):
     # -----------------------------------------------------------------------
 
     def get_value(self, ann):
-        """ Return the value corresponding to an annotation. """
+        """ Return the value corresponding to an annotation.
 
+        :param ann: (sppasAnnotation)
+        :returns: (list of str) the value corresponding to the annotation.
+
+        """
         return self._data_set.get(ann, None)
 
     # -----------------------------------------------------------------------
@@ -133,6 +146,17 @@ class sppasAnnSet(object):
 
     # -----------------------------------------------------------------------
 
+    def remove(self, ann):
+        """ Remove the annotation of the data set.
+
+        :param ann: (sppasAnnotation)
+
+        """
+        if ann in self._data_set:
+            del self._data_set[ann]
+
+    # -----------------------------------------------------------------------
+
     def copy(self):
         """ Make a deep copy of self. """
 
@@ -143,6 +167,45 @@ class sppasAnnSet(object):
         return d
 
     # -----------------------------------------------------------------------
+
+    def to_tier(self, name="AnnSet", annot_value=False):
+        """ Create a tier from the data set.
+
+        :param name: (str) Name of the tier to be returned
+        :param annot_format: (bool) format of the resulting annotation label.
+            By default, the label of the annotation is used. Instead,
+            its value in the data set is used.
+
+        :returns: (sppasTier)
+
+        """
+        tier = sppasTier(name)
+        for ann in self._data_set:
+
+            # create the labels
+            labels = list()
+            if annot_value is True:
+                for value in self._data_set[ann]:
+                    labels.append(sppasLabel(sppasTag(value)))
+            else:
+                for l in ann.get_labels():
+                    labels.append(l.copy())
+
+            # create the annotation
+            new_ann = tier.create_annotation(ann.get_location().copy(),
+                                             labels)
+
+            # Copy all metadata, except the 'id'.
+            for key in ann.get_meta_keys():
+                if key != 'id':
+                    new_ann.set_meta(key, ann.get_meta(key))
+
+        # we should create a new hierarchy link "TimeSubSet" to link the
+        # original tier and the filtered one.
+
+        return tier
+
+    # -----------------------------------------------------------------------
     # Overloads
     # -----------------------------------------------------------------------
 
@@ -150,11 +213,17 @@ class sppasAnnSet(object):
         for ann in list(self._data_set.keys()):
             yield ann
 
+    # -----------------------------------------------------------------------
+
     def __len__(self):
         return len(self._data_set)
 
+    # -----------------------------------------------------------------------
+
     def __contains__(self, ann):
         return ann in self._data_set
+
+    # -----------------------------------------------------------------------
 
     def __eq__(self, other):
         """ Check if data sets are equals, i.e. share the same data. """
