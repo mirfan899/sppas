@@ -1,13 +1,28 @@
 #!/usr/bin python
 """
 
-:author:       Fix Me
-:date:         Now
-:contact:      me@me.org
+:author:       Brigitte Bigi
+:date:         2018-07-09
+:contact:      brigitte.bigi@gmail.com
 :license:      GPL, v3
-:copyright:    Copyright (C) 2017  Fixme
+:copyright:    Copyright (C) 2018 Brigitte Bigi, Laboratoire Parole et Langage
 
 :summary:      Open an annotated file and filter depending on the duration/time.
+
+Use of this software is governed by the GNU Public License, version 3.
+
+This is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this script. If not, see <http://www.gnu.org/licenses/>.
 
 """
 
@@ -15,9 +30,8 @@ import sys
 import os.path
 sys.path.append(os.path.join("..", ".."))
 
-import sppas.src.annotationdata.aio as trsaio
-from sppas.src.annotationdata import Transcription
-from sppas.src.annotationdata import Sel, Filter, SingleFilter
+from sppas.src.anndata import sppasFilters
+from sppas.src.utils.makeunicode import u
 from ex15_annotations_label_filter import get_tier
 
 # ----------------------------------------------------------------------------
@@ -36,25 +50,15 @@ verbose = True
 if __name__ == '__main__':
 
     tier = get_tier(filename, tier_name, verbose)
+    f = sppasFilters(tier)
 
-    # Create predicates
-    p1 = Sel(duration_gt=0.1) & (Sel(startswith='a') | Sel(startswith='e'))
-    p2 = Sel(end_le=5)
+    # Apply a filter: Extract phonemes 'a' or 'e' during more than 100ms
+    # ------------------------------------------------------------------
+    phon_set = f.dur(gt=0.1) & (f.tag(exact=u("e")) | f.tag(exact=u("a")))
 
-    # Create the tier with filtered annotations
-    ft = Filter(tier)
-    tier1 = SingleFilter(p1, ft).Filter()
     if verbose:
-        print("{:s} has {:d} annotations".format(tier1.GetName(), len(tier1)))
-    tier2 = SingleFilter(p2, ft).Filter()
-    if verbose:
-        print("{:s} has {:d} annotations".format(tier2.GetName(), len(tier2)))
-    # both tiers will have the name
+        print("{:s} has the following {:d} 'e' or 'a' during more than 100ms:"
+              "".format(tier.get_name(), len(phon_set)))
 
-    # Save
-    t = Transcription()
-    t.Append(tier1)
-    t.Append(tier2)  # tier is automatically renamed with "-2" at the end of the name
-    trsaio.write(output_filename, t)
-    if verbose:
-        print("File {:s} saved".format(output_filename))
+        for ann in phon_set:
+            print(' - {}: {}'.format(ann.get_location().get_best(), phon_set.get_value(ann)))

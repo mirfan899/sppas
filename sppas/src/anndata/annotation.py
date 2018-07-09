@@ -562,10 +562,20 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        return "Annotation {:s}: {:s} {:s}".format(self.get_meta('id'), self.__location, self.__labels)
+        return "Annotation {:s}: {:s} {:s}".format(self.get_meta('id'),
+                                                   str(self.__location),
+                                                   str(self.__labels))
 
     def __str__(self):
-        return "{:s} {:s} {:s}".format(self.get_meta('id'), self.__location, self.__labels)
+        return "{:s} {:s} {:s}".format(self.get_meta('id'),
+                                       str(self.__location),
+                                       str(self.__labels))
+
+    def __hash__(self):
+        # use the hashcode of self identifier since that is used
+        # for equality checks as well, like "ann in my_dict".
+        # not required by Python 2.7 but necessary for Python 3.4+
+        return hash(self.get_meta("id"))
 
     def __eq__(self, other):
         if self.__score != other.get_score():

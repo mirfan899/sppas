@@ -326,6 +326,14 @@ class sppasLocation(object):
         return is_matching
 
     # -----------------------------------------------------------------------
+
+    def set_radius(self, radius):
+        """ Set a radius value to all localizations. """
+
+        for t, s in self.__localizations:
+            t.set_radius(radius)
+
+    # -----------------------------------------------------------------------
     # Overloads
     # -----------------------------------------------------------------------
 

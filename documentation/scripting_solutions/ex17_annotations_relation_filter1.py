@@ -1,21 +1,38 @@
 #!/usr/bin python
 """
 
-:author:       Fix Me
-:date:         Now
-:contact:      me@me.org
+:author:       Brigitte Bigi
+:date:         2018-07-09
+:contact:      brigitte.bigi@gmail.com
 :license:      GPL, v3
-:copyright:    Copyright (C) 2017  Fixme
+:copyright:    Copyright (C) 2018 Brigitte Bigi, Laboratoire Parole et Langage
 
 :summary:      Open an annotated file and filter to answer the following request:
                get tokens just followed by a silence.
+
+Use of this software is governed by the GNU Public License, version 3.
+
+This is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this script. If not, see <http://www.gnu.org/licenses/>.
+
 """
 
 import sys
 import os.path
 sys.path.append(os.path.join("..", ".."))
 
-from sppas.src.annotationdata import Sel, Rel, Filter, SingleFilter, RelationFilter
+from sppas.src.anndata import sppasFilters
+from sppas.src.utils.makeunicode import u
 from ex15_annotations_label_filter import get_tier
 
 # ----------------------------------------------------------------------------
@@ -29,21 +46,19 @@ filename = 'F_F_B003-P9-merge.TextGrid'
 # ----------------------------------------------------------------------------
 
 tier = get_tier(filename, "TokensAlign")
+f = sppasFilters(tier)
 
-# Create filters
-ft = Filter(tier)
-fX = SingleFilter(~Sel(exact='#'), ft)
-fY = SingleFilter(Sel(exact="#"), ft)
+# get tokens, except silences
+annset_not_sil = f.tag(not_exact=u("#"))
+tier_tokens = annset_not_sil.to_tier('Tokens')
 
-# Create relations
-relation = Rel('meets')
+# get silences
+annset_sil = f.tag(exact=u("#"))
+tier_silences = annset_sil.to_tier('Silences')
 
-# Create the filter
-frel = RelationFilter(relation, fX, fY)
+# tokens just followed by a silence
+fr = sppasFilters(tier_tokens)
+ann_set = fr.rel(tier_silences, 'meets')
 
-# Create a tier
-filtered_tier = frel.Filter()
-
-# Print filtered annotations
-for ann in filtered_tier:
-    print("{:s}".format(ann))
+for ann in ann_set:
+    print(' - {}'.format(ann))

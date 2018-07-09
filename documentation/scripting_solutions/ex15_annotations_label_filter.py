@@ -1,13 +1,28 @@
 #!/usr/bin python
 """
 
-:author:       Fix Me
-:date:         Now
-:contact:      me@me.org
+:author:       Brigitte Bigi
+:date:         2018-07-09
+:contact:      brigitte.bigi@gmail.com
 :license:      GPL, v3
-:copyright:    Copyright (C) 2017  Fixme
+:copyright:    Copyright (C) 2018 Brigitte Bigi, Laboratoire Parole et Langage
 
 :summary:      Open an annotated file and filter depending on the label.
+
+Use of this software is governed by the GNU Public License, version 3.
+
+This is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this script. If not, see <http://www.gnu.org/licenses/>.
 
 """
 
@@ -15,10 +30,10 @@ import sys
 import os.path
 sys.path.append(os.path.join("..", ".."))
 
-import sppas.src.annotationdata.aio as trsaio
-from sppas.src.annotationdata import Transcription
-from sppas.src.annotationdata import Sel, Filter, SingleFilter
-
+from sppas.src.anndata import sppasRW
+from sppas.src.anndata import sppasTranscription
+from sppas.src.anndata import sppasFilters
+from sppas.src.utils.makeunicode import u
 
 # ----------------------------------------------------------------------------
 # Variables
@@ -44,14 +59,16 @@ def get_tier(filename, tier_name, verbose=True):
     # Read an annotated file.
     if verbose:
         print("Read file: {:s}".format(filename))
-    trs = trsaio.read(filename)
+    parser = sppasRW(filename)
+    trs = parser.read()
     if verbose:
         print(" ... [  OK  ] ")
 
     # Get the expected tier
     if verbose:
         print("Get tier {:s}".format(tier_name))
-    tier = trs.Find(tier_name, case_sensitive=False)
+
+    tier = trs.find(tier_name, case_sensitive=False)
     if tier is None:
         print("Tier not found.")
         sys.exit(1)
@@ -66,41 +83,45 @@ def get_tier(filename, tier_name, verbose=True):
 
 if __name__ == '__main__':
 
+    # Get data: the tier with phonemes
+    # -------------------------------------------------------------
+
     verbose = True
-    tier_name = "PhonAlign"
-    tier = get_tier(filename, tier_name, verbose)
+    tier = get_tier(filename, "PhonAlign", verbose)
 
-    # Create a predicate on pattern 'a'"
-    p1 = Sel(exact='a')
+    # Create a filter object
+    f = sppasFilters(tier)
 
-    # Create a predicate on pattern 'a' and 'e'
-    p2 = Sel(icontains="a") | Sel(icontains="e")
+    # Apply a filter: Extract phonemes 'a'
+    # ------------------------------------
+    phon_set_a = f.tag(exact=u("a"))
 
-    # Create a filter
-    ftier = Filter(tier)
-    f1 = SingleFilter(p1, ftier)
-    f2 = SingleFilter(p2, ftier)
-
-    # Put the annotations into tiers
     if verbose:
-        print("Create a tier with 'a'")
-    tier1 = f1.Filter()
-    tier1.SetName('Phon-a')
-    if verbose:
-        print("{:s} has {:d} annotations".format(tier1.GetName(), len(tier1)))
+        print("{:s} has the following {:d} 'a':"
+              "".format(tier.get_name(), len(phon_set_a)))
+        for ann in phon_set_a:
+            print(' - {}: {}'.format(ann.get_location().get_best(),
+                                     phon_set_a.get_value(ann)))
 
-    # solution 2: filter
+    # convert the data set into a tier
+    tier_phon_a = phon_set_a.to_tier(name="Phon-a")
+
+    # Apply a filter: Extract phonemes 'a', 'A', 'E' and 'e'
+    # ------------------------------------------------------
+    phon_set_a_e = f.tag(iexact=u("a")) | f.tag(iexact=u("e"))
+
+    # convert the data set into a tier
+    tier_phon_a_e = phon_set_a_e.to_tier(name="Phon-a-e")
+
     if verbose:
-        print("Create a tier with 'a' and 'e'")
-    tier2 = f2.Filter()
-    tier2.SetName('Phon-a-e')
-    if verbose:
-        print("{:s} has {:d} annotations".format(tier2.GetName(), len(tier2)))
+        print("{:s} has {:d} phonemes 'aeAE'.".format(tier.get_name(), len(tier_phon_a_e)))
 
     # Save
-    t = Transcription()
-    t.Append(tier1)
-    t.Append(tier2)
-    trsaio.write(output_filename, t)
+    # -------------------------------------------------------------
+    t = sppasTranscription()
+    t.append(tier_phon_a)
+    t.append(tier_phon_a_e)
+    parser = sppasRW(output_filename)
+    parser.write(t)
     if verbose:
         print("File {:s} saved".format(output_filename))

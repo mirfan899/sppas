@@ -202,6 +202,14 @@ class sppasDisjoint(sppasBaseLocalization):
         return any([i.is_bound(point) for i in self.__intervals])
 
     # -----------------------------------------------------------------------
+
+    def set_radius(self, radius):
+        """ Set radius value to all points. """
+
+        for i in self.get_intervals():
+            i.set_radius(radius)
+
+    # -----------------------------------------------------------------------
     # Overloads
     # -----------------------------------------------------------------------
 

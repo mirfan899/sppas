@@ -138,11 +138,11 @@ class sppasAnnSet(object):
         if isinstance(value, list) is False:
             raise AnnDataTypeError(value, "list")
 
-        if ann not in self._data_set:
-            self._data_set[ann] = value
-        else:
+        if ann in self._data_set:
             old_value_list = self._data_set[ann]
             self._data_set[ann] = list(set(old_value_list + value))
+        else:
+            self._data_set[ann] = value
 
     # -----------------------------------------------------------------------
 
@@ -435,6 +435,9 @@ class sppasFilters(object):
 
         names = ["logic_bool"] + comparator.get_function_names()
         for func_name, value in kwargs.items():
+            if func_name.startswith("not_"):
+                func_name = func_name[4:]
+
             if func_name not in names:
                 raise AnnDataKeyError("kwargs function name", func_name)
 

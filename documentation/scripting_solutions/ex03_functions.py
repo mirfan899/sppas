@@ -9,6 +9,21 @@
 
 :summary:      Simple script to print lists.
 
+Use of this software is governed by the GNU Public License, version 3.
+
+This is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this script. If not, see <http://www.gnu.org/licenses/>.
+
 """ 
 
 
@@ -21,27 +36,33 @@ def is_empty(string):
     """
     # Clean the string: remove tabs, carriage returns...
     s = string.strip()
+
     # Check the length of the cleaned string
     return len(s) == 0
 
+# ---------------------------------------------------------------------------
 
-def print_list(mylist, message=""):
+
+def print_list(my_list, message=""):
     """ Print a list on the screen.
 
-    :param mylist: (list) the list to print
+    :param my_list: (list) the list to print
     :param message: (str) an optional message to print before each item
 
     """
-    for item in mylist:
+    str_message = str(message)
+
+    for item in my_list:
+
         str_item = str(item)
         if is_empty(str_item) is False:
-            print(message, str_item)
+            print("{:s} {:s}".format(str_message, str_item))
         else:
-            print(message, "Empty item.")
+            print("{:s} Empty item.".format(str_message))
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Main
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 if __name__ == '__main__':
 

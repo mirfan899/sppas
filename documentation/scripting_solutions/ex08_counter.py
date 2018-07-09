@@ -9,6 +9,21 @@
 
 :summary:      Simple script to compare 2 sets of data using NLP techniques.
 
+Use of this software is governed by the GNU Public License, version 3.
+
+This is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this script. If not, see <http://www.gnu.org/licenses/>.
+
 """
 import collections
 import math
@@ -112,6 +127,7 @@ def get_ranks(counter):
 
 def zipf(ranks, item):
     """ Return the Zipf Law value of an item.
+
     Zipf's law states that given some corpus of natural language utterances,
     the frequency of any word is inversely proportional to its rank in the
     frequency table. Thus the most frequent word will occur approximately
@@ -119,7 +135,7 @@ def zipf(ranks, item):
     as the third most frequent word, etc.
 
     :param ranks: (dict) is a dictionary with key=entry, value=rank.
-    :param item:(any) is an entry of the ranks dictionary
+    :param item: (any) is an entry of the ranks dictionary
     :returns: Zipf value or -1 if the entry is missing
 
     """
@@ -142,6 +158,7 @@ def tfidf(documents, item):
 
     :param documents: a list of list of entries.
     :param item: (str)
+    :returns: (float)
 
     """
     # Estimate tf of item in the corpus
@@ -160,6 +177,7 @@ def tfidf(documents, item):
             dw += 1.0
     if dw == 0.0:
         return 0.0
+
     return tf * (math.log(D / dw))
 
 # ---------------------------------------------------------------------------
@@ -198,6 +216,6 @@ if __name__ == '__main__':
             zipf(ranks2, t)))
 
     # TF.IDF
-    print("TF.IDF @: {0}".format(tfidf([phones1,phones2], '@')))
-    print("TF.IDF e: {0}".format(tfidf([phones1,phones2], 'e')))
-    print("TF.IDF E: {0}".format(tfidf([phones1,phones2], 'E')))
+    print("TF.IDF @: {0}".format(tfidf([phones1, phones2], '@')))
+    print("TF.IDF e: {0}".format(tfidf([phones1, phones2], 'e')))
+    print("TF.IDF E: {0}".format(tfidf([phones1, phones2], 'E')))

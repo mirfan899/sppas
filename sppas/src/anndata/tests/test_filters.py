@@ -266,6 +266,17 @@ class TestFilterTier(unittest.TestCase):
 
     # -----------------------------------------------------------------------
 
+    def test_not_tag(self):
+        """ Test tag is not matching str. """
+
+        tier = self.trs.find('P-Phonemes')
+        f = sppasFilters(tier)
+        l = f.tag(exact=u("l"))
+        not_l = f.tag(not_exact=u('l'))
+        self.assertEqual(len(tier), len(l)+len(not_l))
+
+    # -----------------------------------------------------------------------
+
     def test_dur(self):
         """ Test localization duration. """
 
@@ -313,7 +324,13 @@ class TestFilterTier(unittest.TestCase):
         f = sppasFilters(tier)
 
         # silences or pauses during more than 200ms
-        res = (f.tag(exact=u("#")) or f.tag(exact=u("+"))) and f.dur(ge=0.2)
+        res1 = (f.tag(exact=u("#")) | f.tag(exact=u("+"))) & f.dur(ge=0.2)
+        res2 = f.dur(ge=0.2) & (f.tag(exact=u("#")) | f.tag(exact=u("+")))
+        res3 = f.dur(ge=0.2) & (f.tag(exact=u("+")) | f.tag(exact=u("#")))
+
+        self.assertEqual(len(res1), len(res2))
+        self.assertEqual(len(res1), len(res3))
+
 
 # ---------------------------------------------------------------------------
 
@@ -512,7 +529,7 @@ class TestFilterRelationTier(unittest.TestCase):
 
     # -----------------------------------------------------------------------
 
-    def test_combined_relations(self):
+    def test_several_relations(self):
 
         f = sppasFilters(self.tier)
         res = f.rel(self.rtier, "overlaps", "overlappedby")
@@ -540,4 +557,12 @@ class TestFilterRelationTier(unittest.TestCase):
 
         # Add tests with after/before for a better testing of options and results
         # after/before: max_delay
+
+    # -----------------------------------------------------------------------
+
+    def test_combined_relations(self):
+        f = sppasFilters(self.tier)
+        res1 = f.rel(self.rtier, "overlaps", "overlappedby")
+        res2 = f.rel(self.rtier, "overlaps") | f.rel(self.rtier, "overlappedby")
+        self.assertEqual(res1, res2)
 

@@ -980,6 +980,17 @@ class sppasTier(sppasMetaData):
                         self.__ctrl_vocab.add(tag)
 
     # -----------------------------------------------------------------------
+
+    def set_radius(self, radius):
+        """ Fix a radius value to all points of the tier.
+
+        :param radius: (int, float) New radius value
+
+        """
+        for ann in self.__ann:
+            ann.get_location().set_radius(radius)
+
+    # -----------------------------------------------------------------------
     # Private
     # -----------------------------------------------------------------------
 

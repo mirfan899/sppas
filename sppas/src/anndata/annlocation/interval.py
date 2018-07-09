@@ -237,6 +237,14 @@ class sppasInterval(sppasBaseLocalization):
 
     # -----------------------------------------------------------------------
 
+    def set_radius(self, radius):
+        """ Set a radius value to begin and end points. """
+
+        self.get_begin().set_radius(radius)
+        self.get_end().set_radius(radius)
+
+    # -----------------------------------------------------------------------
+
     @staticmethod
     def check_interval_bounds(begin, end):
 
