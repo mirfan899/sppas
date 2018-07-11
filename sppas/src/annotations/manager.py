@@ -276,11 +276,10 @@ class sppasAnnotationsManager(Thread):
     # ------------------------------------------------------------------------
 
     def run_intsint(self, stepidx):
-        """
-        Execute the SPPAS implementation of Intsint.
+        """ Execute the SPPAS implementation of Intsint.
 
-        @param stepidx index of this annotations in the parameters
-        @return number of files processed successfully
+        :param stepidx: index of this annotations in the parameters
+        :returns: number of files processed successfully
 
         """
         # Initializations
@@ -290,7 +289,7 @@ class sppasAnnotationsManager(Thread):
         self._progress.update(0, "")
 
         # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav")#,not_start=["track_"])
+        filelist = self.set_filelist(".wav")  #,not_start=["track_"])
         if len(filelist) == 0:
             return 0
         total = len(filelist)
@@ -308,8 +307,6 @@ class sppasAnnotationsManager(Thread):
 
             # Indicate the file to be processed
             self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
-            if self._logfile is not None:
-                self._logfile.print_message(stepname+" of file " + f, indent=1)
 
             # Get the input file
             ext = ['-momel'+self.parameters.get_output_format()]
@@ -326,14 +323,13 @@ class sppasAnnotationsManager(Thread):
                 try:
                     intsint.run(inname, outname)
                     files_processed_success += 1
-                    if self._logfile is not None:
-                        self._logfile.print_message(outname,indent=2,status=0)
                 except Exception as e:
                     if self._logfile is not None:
                         self._logfile.print_message(outname+": %s" % str(e), indent=2, status=-1)
             else:
                 if self._logfile is not None:
-                    self._logfile.print_message("Failed to find a file with momel targets. Read the documentation for details.",indent=2,status=2)
+                    self._logfile.print_message("Failed to find a file with anchors. "
+                                                "Read the documentation for details.", indent=2, status=2)
 
             # Indicate progress
             self._progress.set_fraction(float((i+1))/float(total))
@@ -341,7 +337,7 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_newline()
 
         # Indicate completed!
-        self._progress.update(1,"Completed (%d files successfully over %d files).\n"%(files_processed_success,total))
+        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success,total))
         self._progress.set_header("")
 
         return files_processed_success
@@ -418,9 +414,14 @@ class sppasAnnotationsManager(Thread):
                 txtfile = self._get_filename(f, [".txt"])
                 if self._logfile is not None:
                     if txtfile:
-                        self._logfile.print_message("A transcription was found, perform Silence/Speech segmentation time-aligned with a transcription %s"%txtfile, indent=2,status=3)
+                        self._logfile.print_message("A transcription was found, "
+                                                    "perform Silence/Speech segmentation "
+                                                    "time-aligned with a transcription "
+                                                    "%s" % txtfile, indent=2,status=3)
                     else:
-                        self._logfile.print_message("No transcription was found, perform Silence/Speech segmentation only.", indent=2,status=3)
+                        self._logfile.print_message("No transcription was found, "
+                                                    "perform Silence/Speech segmentation only."
+                                                    "", indent=2,status=3)
                 try:
                     seg.run(f, trsinputfile=txtfile, ntracks=None, diroutput=None, tracksext=None, trsoutput=outname)
                     files_processed_success += 1
@@ -428,10 +429,11 @@ class sppasAnnotationsManager(Thread):
                         self._logfile.print_message(outname, indent=2,status=0)
                 except Exception as e:
                     if self._logfile is not None:
-                        self._logfile.print_message("%s for file %s\n" % (str(e),outname), indent=2,status=-1)
+                        self._logfile.print_message("%s for file %s\n" % (str(e), outname), indent=2,status=-1)
             else:
                 if seg.get_option('dirtracks') is True:
-                    self._logfile.print_message("A time-aligned transcription was found, split into multiple files", indent=2,status=3)
+                    self._logfile.print_message("A time-aligned transcription was found, "
+                                                "split into multiple files", indent=2, status=3)
                     try:
                         seg.run(f, trsinputfile=tgfname, ntracks=None, diroutput=None, tracksext=None, trsoutput=None)
                         files_processed_success += 1
@@ -439,7 +441,7 @@ class sppasAnnotationsManager(Thread):
                             self._logfile.print_message(tgfname, indent=2,status=0)
                     except Exception as e:
                         if self._logfile is not None:
-                            self._logfile.print_message("%s for file %s\n"%(str(e),tgfname), indent=2,status=-1)
+                            self._logfile.print_message("%s for file %s\n" % (str(e), tgfname), indent=2,status=-1)
                 else:
                     if self._logfile is not None:
                         self._logfile.print_message("because a previous segmentation is existing.", indent=2,status=2)
@@ -450,7 +452,7 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_newline()
 
         # Indicate completed!
-        self._progress.update(1,"Completed (%d files successfully over %d files).\n"%(files_processed_success,total))
+        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success,total))
         self._progress.set_header("")
 
         return files_processed_success
@@ -521,7 +523,7 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_newline()
 
         # Indicate completed!
-        self._progress.update(1,"Completed (%d files successfully over %d files).\n"%(files_processed_success,total))
+        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success,total))
         self._progress.set_header("")
 
         return files_processed_success
@@ -543,7 +545,7 @@ class sppasAnnotationsManager(Thread):
         self._progress.update(0,"")
 
         # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav")#,not_start=["track_"])
+        filelist = self.set_filelist(".wav")  #,not_start=["track_"])
         if len(filelist) == 0:
             return 0
         total = len(filelist)
@@ -554,7 +556,7 @@ class sppasAnnotationsManager(Thread):
             p = sppasPhon(step.get_langresource(), logfile=self._logfile)
         except Exception as e:
             if self._logfile is not None:
-                self._logfile.print_message("%s\n"%e, indent=1,status=4)
+                self._logfile.print_message("%s\n" % e, indent=1,status=4)
             return 0
 
         # Execute the annotation for each file in the list
@@ -598,7 +600,7 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_newline()
 
         # Indicate completed!
-        self._progress.update(1,"Completed (%d files successfully over %d files).\n"%(files_processed_success,total))
+        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success,total))
         self._progress.set_header("")
 
         return files_processed_success
@@ -615,7 +617,7 @@ class sppasAnnotationsManager(Thread):
         stepname = self.parameters.get_step_name(stepidx)
         files_processed_success = 0
         self._progress.set_header(stepname)
-        self._progress.update(0,"")
+        self._progress.update(0, "")
 
         # Get the list of input file names, with the ".wav" (or ".wave") extension
         filelist = self.set_filelist(".wav")#,not_start=["track_"])
@@ -628,7 +630,7 @@ class sppasAnnotationsManager(Thread):
             a = sppasChunks(step.get_langresource(), logfile=self._logfile)
         except Exception as e:
             if self._logfile is not None:
-                self._logfile.print_message("%s\n"%str(e), indent=1,status=4)
+                self._logfile.print_message("%s\n" % str(e), indent=1,status=4)
             return 0
 
         # Execute the annotation for each file in the list
@@ -674,7 +676,7 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_newline()
 
         # Indicate completed!
-        self._progress.update(1, "Completed (%d files successfully over %d files).\n"%(files_processed_success,total))
+        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success,total))
         self._progress.set_header("")
 
         return files_processed_success
@@ -694,7 +696,7 @@ class sppasAnnotationsManager(Thread):
         self._progress.update(0,"")
 
         # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav")#,not_start=["track_"])
+        filelist = self.set_filelist(".wav")  #,not_start=["track_"])
         if len(filelist) == 0:
             return 0
         total = len(filelist)
@@ -753,7 +755,7 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_newline()
 
         # Indicate completed!
-        self._progress.update(1,"Completed (%d files successfully over %d files).\n"%(files_processed_success,total))
+        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success,total))
         self._progress.set_header("")
 
         return files_processed_success

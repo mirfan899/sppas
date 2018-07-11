@@ -29,51 +29,40 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Intsint.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations.tests.test_normalize.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Test INTSINT.
 
-    INTSINT is an acronym for INternational Transcription System for INTonation.
-    It was originally developed by Daniel Hirst in his 1987 thesis as a
-    prosodic equivalent of the International Phonetic Alphabet, and the
-    INTSINT alphabet was subsequently used in Hirst & Di Cristo (eds) 1998
-    in just over half of the chapters.
-
-    INTSINT codes the intonation of an utterance by means of an alphabet of
-    8 discrete symbols constituting a surface phonological representation
-    of the intonation:
-
-        T (Top),
-        H (Higher),
-        U (Upstepped),
-        S (Same),
-        M (mid),
-        D (Downstepped),
-        L (Lower),
-        B (Bottom).
-
-    These tonal symbols are considered phonological in that they represent
-    discrete categories and surface since each tonal symbol corresponds to
-    a directly observable property of the speech signal.
-
-    INTSINT is computed from a set of selected F0 anchors. The implementation
-    into SPPAS corresponds to the most recent version of the algorithm:
-
-        | De Looze, Céline & Hirst, Daniel. (2010).
-        | Integrating changes of register into automatic intonation analysis.
-        | Proceedings of the Fifth International Conference on Speech Prosody,
-        | Chicago
+    These tests should be extended...
 
 """
-from .intsint import Intsint
-from .sppasintsint import sppasIntsint
+import unittest
 
-__all__ = [
-    Intsint,
-    sppasIntsint
-]
+from ..Intsint import Intsint, sppasIntsint
+
+# ---------------------------------------------------------------------------
+
+
+class TestIntsint(unittest.TestCase):
+    """ Test of the class Intsint. """
+
+    def setUp(self):
+        self.anchors = [(0.1, 240), (0.4, 340), (0.6, 240), (0.7, 286)]
+
+    def test_intsint(self):
+        result = Intsint().annotate(self.anchors)
+        self.assertEqual(len(self.anchors), len(result))
+        self.assertEqual(['M', 'T', 'L', 'H'], result)
+
+        with self.assertRaises(IOError):
+            Intsint().annotate([(0.1, 240)])
+
+    def test_sppasintsint(self):
+        si = sppasIntsint()
+        # to be continued...

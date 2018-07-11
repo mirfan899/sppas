@@ -20,6 +20,9 @@ msgstr ""
 msgid ":ERROR 1000: "
 msgstr "No annotated file defined."
 
+msgid ":ERROR 1010: "
+msgstr "Values are expected to be equals but are {:s!s} and {:s!s}."
+
 msgid ":ERROR 1050: "
 msgstr "{!s:s} is not a valid data type."
 

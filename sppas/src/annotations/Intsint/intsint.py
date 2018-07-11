@@ -39,12 +39,6 @@ import math
 
 BIG_NUMBER = 32764
 
-# List of "absolute" tones
-TONES_ABSOLUTE = ['T', 'M', 'B']
-
-# List of "relative" tones
-TONES_RELATIVE = ['H', 'L', 'U', 'D', 'S']
-
 # ----------------------------------------------------------------------------
 
 
@@ -62,62 +56,45 @@ def linear(value):
 
 class Intsint(object):
     """
-    :author:       Tatsuya Watanabe, Brigitte Bigi
+    :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Provide optimal INTSINT coding for sequence of target points.
-
-    INTSINT is an acronym for INternational Transcription System for INTonation.
-    It was originally developed by Daniel Hirst in his 1987 thesis as a
-    prosodic equivalent of the International Phonetic Alphabet, and the
-    INTSINT alphabet was subsequently used in Hirst & Di Cristo (eds) 1998
-    in just over half of the chapters.
-
-    INTSINT codes the intonation of an utterance by means of an alphabet of
-    8 discrete symbols constituting a surface phonological representation
-    of the intonation:
-
-        T (Top),
-        H (Higher),
-        U (Upstepped),
-        S (Same),
-        M (mid),
-        D (Downstepped),
-        L (Lower),
-        B (Bottom).
-
-    These tonal symbols are considered phonological in that they represent
-    discrete categories and surface since each tonal symbol corresponds to
-    a directly observable property of the speech signal.
-
-    INTSINT is evaluated from a set of selected F0 targets.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Provide optimal INTSINT coding for anchor points.
 
     """
+    # parameters for data checking.
+    MIN_F0 = 60  # (Hz)
+    MAX_F0 = 600  # (Hz)
+
+    # parameters for optimization.
+    MIN_PAUSE = 0.5  # seconds
+    MIN_RANGE = 0.5  # octaves
+    MAX_RANGE = 2.5  # octaves
+    STEP_RANGE = 0.1  # octaves
+    MEAN_SHIFT = 50  # (Hz)
+    STEP_SHIFT = 1  # (Hz)
+
+    # parameters for target estimation.
+    HIGHER = 0.5
+    LOWER = 0.5
+    UP = 0.25
+    DOWN = 0.25
+
+    # List of "absolute" tones
+    TONES_ABSOLUTE = ['T', 'M', 'B']
+
+    # List of "relative" tones
+    TONES_RELATIVE = ['H', 'L', 'U', 'D', 'S']
+
+    # All tones
+    TONES = TONES_ABSOLUTE + TONES_RELATIVE
+
+    # -------------------------------------------------------------------
+
     def __init__(self):
-        """ Create a new INTSINT instance. """
-        
-        # parameters for data checking.
-        self.MIN_F0 = 60   # (Hz)
-        self.MAX_F0 = 600  # (Hz)
-
-        # parameters for optimization.
-        self.MIN_PAUSE = 0.5   # seconds
-        self.MIN_RANGE = 0.5   # octaves
-        self.MAX_RANGE = 2.5   # octaves
-        self.STEP_RANGE = 0.1  # octaves
-        self.MEAN_SHIFT = 50   # (Hz)
-        self.STEP_SHIFT = 1    # (Hz)
-
-        # parameters for target estimation.
-        self.HIGHER = 0.5
-        self.LOWER = 0.5
-        self.UP = 0.25
-        self.DOWN = 0.25
-
-        # All tones
-        self.TONES = TONES_ABSOLUTE + TONES_RELATIVE
+        """ Create a new Intsint instance. """
 
         self.best_intsint = None
         self.best_estimate = None
@@ -168,14 +145,14 @@ class Intsint(object):
         """ Return F0 value within self range of values.
 
         :param f0: (float) Input pitch value.
-        :returns: Normalized pitch value.
+        :returns: (float) Normalized pitch value.
 
         """
-        if f0 < self.MIN_F0:
-            return self.MIN_F0
+        if f0 < Intsint.MIN_F0:
+            return Intsint.MIN_F0
 
-        if f0 > self.MAX_F0:
-            return self.MAX_F0
+        if f0 > Intsint.MAX_F0:
+            return Intsint.MAX_F0
 
         return f0
 
@@ -184,7 +161,7 @@ class Intsint(object):
     def init(self, momel_anchors):
         """ Initialize INTSINT attributes from a list of targets.
 
-        :param momel_anchors: (list) List of tuples with time (in seconds) and target (Hz).
+        :param momel_anchors: (list of tuple) List of time (in seconds) and target (Hz).
 
         """
         self.reset()
@@ -199,8 +176,8 @@ class Intsint(object):
         sum_octave = sum(self.targets)
         mean_f0 = float(sum_octave) / float(len(self.targets))
         linear_mean_f0 = round(linear(mean_f0))
-        self.min_mean = linear_mean_f0 - self.MEAN_SHIFT
-        self.max_mean = linear_mean_f0 + self.MEAN_SHIFT
+        self.min_mean = linear_mean_f0 - Intsint.MEAN_SHIFT
+        self.max_mean = linear_mean_f0 + Intsint.MEAN_SHIFT
         self.min_ss_error = BIG_NUMBER
 
     # -------------------------------------------------------------------
@@ -223,17 +200,17 @@ class Intsint(object):
         else:
             self.intsint[0] = "M"
 
-        estimate = self.estimate(self.intsint[0], self.last_estimate)
-        self.estimates[0] = estimate
-        error = math.fabs(estimate - self.targets[0])
+        estimated = self.estimate(self.intsint[0], self.last_estimate)
+        self.estimates[0] = estimated
+        error = math.fabs(estimated - self.targets[0])
         ss_error = error * error
-        self.last_estimate = estimate
+        self.last_estimate = estimated
 
         for i in range(1, len(self.targets)):
             target = self.targets[i]
 
             # after pause choose from (MTB)
-            if self.time[i] - self.time[i - 1] > self.MIN_PAUSE:
+            if self.time[i] - self.time[i - 1] > Intsint.MIN_PAUSE:
                 if self.top - target < math.fabs(target - mid):
                     self.intsint[i] = "T"
                 elif target - self.bottom < math.fabs(target - mid):
@@ -244,7 +221,7 @@ class Intsint(object):
             else:
                 min_difference = BIG_NUMBER
                 best_tone = ""
-                for tone in self.TONES:
+                for tone in Intsint.TONES:
                     if tone != "M":
                         estimate = self.estimate(tone, self.last_estimate)
                         difference = math.fabs(target - estimate)
@@ -284,15 +261,15 @@ class Intsint(object):
         elif tone == "T":
             estimated = self.top
         elif tone == "H":
-            estimated = last_anchor + (self.top - last_anchor) * self.HIGHER
+            estimated = last_anchor + (self.top - last_anchor) * Intsint.HIGHER
         elif tone == "U":
-            estimated = last_anchor + (self.top - last_anchor) * self.UP
+            estimated = last_anchor + (self.top - last_anchor) * Intsint.UP
         elif tone == "B":
             estimated = self.bottom
         elif tone == "L":
-            estimated = last_anchor - (last_anchor - self.bottom) * self.LOWER
+            estimated = last_anchor - (last_anchor - self.bottom) * Intsint.LOWER
         elif tone == "D":
-            estimated = last_anchor - (last_anchor - self.bottom) * self.DOWN
+            estimated = last_anchor - (last_anchor - self.bottom) * Intsint.DOWN
 
         return estimated
 
@@ -303,23 +280,23 @@ class Intsint(object):
         mean +/- 50 Hz for key and [0.5..2.5 octaves] for range.
 
         """
-        _range = self.MIN_RANGE
+        _range = Intsint.MIN_RANGE
 
-        while _range < self.MAX_RANGE:
+        while _range < Intsint.MAX_RANGE:
             lm = self.min_mean
             while lm < self.max_mean:
                 self.mid = octave(lm)
                 self.optimise(self.mid, _range)
-                lm += self.STEP_SHIFT
+                lm += Intsint.STEP_SHIFT
 
-            _range += self.STEP_RANGE
+            _range += Intsint.STEP_RANGE
 
     # -------------------------------------------------------------------
 
     def annotate(self, momel_anchors):
         """ Provide optimal INTSINT coding for sequence of target points.
 
-        :param momel_anchors:
+        :param momel_anchors: (list of tuple) List of time (in seconds) and target (Hz).
 
         """
         if len(momel_anchors) < 2:
@@ -328,10 +305,3 @@ class Intsint(object):
         self.init(momel_anchors)
         self.recode()
         return self.best_intsint
-
-# -----------------------------------------------------------------------
-
-if __name__ == "__main__":
-    intsint = Intsint()
-    momel_anchors = [(0.1, 240), (0.4, 340), (0.6, 240), (0.7, 286)]
-    print(intsint.annotate(momel_anchors))

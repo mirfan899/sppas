@@ -20,6 +20,9 @@ msgstr ""
 msgid ":ERROR 1000: "
 msgstr "Aucun fichier annoté n'a été défini."
 
+msgid ":ERROR 1010: "
+msgstr "Les valeurs devraient être égales mais {:s!s} diffère de {:s!s}."
+
 msgid ":ERROR 1050: "
 msgstr "{!s:s} n'est pas un type valide."
 

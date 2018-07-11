@@ -38,12 +38,13 @@
 from . import t
 
 ANN_DATA_ERROR = ":ERROR 1000: "
+ANN_DATA_EQ_ERROR = ":ERROR 1010: "
+
 ANN_UNK_TYPE_ERROR = ":ERROR 1050: "
 ANN_DATA_TYPE_ERROR = ":ERROR 1100: "
 ANN_DATA_EQ_TYPE_ERROR = ":ERROR 1105: "
 
 ANN_DATA_INDEX_ERROR = ":ERROR 1200: "
-
 ANN_DATA_KEY_ERROR = ":ERROR 1250: "
 
 ANN_DATA_VALUE_ERROR = ":ERROR 1300: "
@@ -88,6 +89,21 @@ class AnnDataError(Exception):
     """
     def __init__(self):
         self.parameter = ANN_DATA_ERROR + (t.gettext(ANN_DATA_ERROR))
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class AnnDataEqError(Exception):
+    """ :ERROR 1010: ANN_DATA_EQ_ERROR
+    Values are expected to be equals but are {:s!s} and {:s!s}.
+
+    """
+    def __init__(self, v1, v2):
+        self.parameter = ANN_DATA_EQ_ERROR + \
+                         (t.gettext(ANN_DATA_EQ_ERROR)).format(v1, v2)
 
     def __str__(self):
         return repr(self.parameter)

@@ -102,6 +102,7 @@ class sppasFindTier(object):
 
         :param trs: (Transcription)
         :param pattern: (str) Priority pattern
+        :returns: (sppasTier)
 
         """
         # Search with the pattern
@@ -146,6 +147,7 @@ class sppasFindTier(object):
         """ Return the tier with phonetization.
 
         :param trs: (Transcription)
+        :returns: (sppasTier)
 
         """
         # Search for a tier with exact name "phones"
@@ -167,6 +169,26 @@ class sppasFindTier(object):
             if "align" in tier_name:
                 continue
             if "phon" in tier_name:
+                return tier
+
+        raise NoInputError
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
+    def pitch_anchors(trs):
+        """ Return the tier with pitch anchors, like momel.
+
+        :param trs: (Transcription)
+        :returns: (sppasTier)
+
+        """
+        for tier in trs:
+            if "momel" in tier.get_name().lower():
+                return tier
+
+        for tier in trs:
+            if "anchors" in tier.get_name().lower():
                 return tier
 
         raise NoInputError

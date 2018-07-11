@@ -32,14 +32,16 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-
-import sppas.src.annotationdata.aio
-from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.anndata import sppasRW
+from sppas.src.anndata import sppasTranscription
+from sppas.src.anndata.anndataexc import AnnDataTypeError
+from sppas.src.anndata.anndataexc import AnnDataEqError
+from sppas.src.anndata import sppasTier
+from sppas.src.anndata import sppasLabel
+from sppas.src.anndata import sppasTag
 
 from ..baseannot import sppasBaseAnnotation
-from ..searchtier import sppasSearchTier
-from ..annotationsexc import NoInputError
-from ..annotationsexc import EmptyInputError
+from ..searchtier import sppasFindTier
 
 from .intsint import Intsint
 
@@ -48,11 +50,11 @@ from .intsint import Intsint
 
 class sppasIntsint(sppasBaseAnnotation):
     """
-    :author:       Tatsuya Watanabe, Brigitte Bigi
+    :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      SPPAS integration of the INTSINT automatic annotation.
 
     """
@@ -71,64 +73,95 @@ class sppasIntsint(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def anchors_from_tiers(momel_tier):
+    def tier_to_anchors(momel_tier):
         """ Initialize INTSINT attributes from a Tier with anchors.
         
-        :param momel_tier: (Tier)
+        :param momel_tier: (sppasTier)
+        :returns: List of tuples (time, f0 value)
 
         """
-        targets = []
-        for target in momel_tier:
-            f0 = float(target.GetLabel().GetValue())
-            targets.append((target.GetLocation().GetPointMidpoint(), f0))
+        if momel_tier.is_point() is False:
+            raise AnnDataTypeError(momel_tier.get_name(), 'PointTier')
+
+        targets = list()
+        for ann in momel_tier:
+
+            # Get the f0 value
+            tag = ann.get_best_tag(label_idx=0)
+            try:
+                f0 = float(tag.get_content())
+            except TypeError:
+                raise AnnDataTypeError(tag, 'float')
+            except ValueError:
+                raise AnnDataTypeError(tag, 'float')
+
+            # Get the time value
+            try:
+                time = float(ann.get_highest_localization().get_midpoint())
+            except TypeError:
+                raise AnnDataTypeError(ann.get_highest_localization(), 'float')
+            except ValueError:
+                raise AnnDataTypeError(ann.get_highest_localization(), 'float')
+
+            targets.append((time, f0))
 
         return targets
 
     # -------------------------------------------------------------------
 
     @staticmethod
-    def tones_to_tier(tones, momel_tier):
+    def tones_to_tier(tones, anchors_tier):
         """ Convert the INTSINT result into a tier.
         
         :param tones: (list)
-        :param momel_tier: (Tier)
+        :param anchors_tier: (sppasTier)
 
         """
-        intsint_tier = momel_tier.Copy()
-        intsint_tier.SetName("INTSINT")
+        if len(tones) != len(anchors_tier):
+            raise AnnDataEqError("tones:"+str(len(tones)), "anchors:"+str(len(anchors_tier)))
 
-        for tone, target in zip(tones, intsint_tier):
-            target.GetLabel().SetValue(tone)
+        tier = sppasTier("INTSINT")
+        for tone, anchor_ann in zip(tones, anchors_tier):
+            # Create the label
+            tag = sppasTag(tone)
+            # Create the location
+            location = anchor_ann.get_location().copy()
+            # Create the annotation
+            tier.create_annotation(location, sppasLabel(tag))
 
-        return intsint_tier
+        return tier
 
     # -----------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename):
+    def run(self, input_filename, output_filename=None):
         """ Run the INTSINT annotation process on an input file.
 
         :param input_filename: (str) the input file name with momel
         :param output_filename: (str) the output file name of the INTSINT tier
+        :returns: (sppasTranscription)
 
         """
         self.print_filename(input_filename)
 
         # Get the tier to be annotated.
-        trs_input = sppas.src.annotationdata.aio.read(input_filename)
-        tier_input = sppasSearchTier.pitch_anchors(trs_input)
-        if tier_input is None:
-            raise NoInputError
-        if tier_input.IsEmpty() is True:
-            raise EmptyInputError(name=tier_input.GetName())
+        parser = sppasRW(input_filename)
+        trs_input = parser.read()
+        tier_input = sppasFindTier.pitch_anchors(trs_input)
 
         # Annotate the tier
-        targets = sppasIntsint.anchors_from_tiers(tier_input)
+        targets = sppasIntsint.tier_to_anchors(tier_input)
         tones = self.intsint.annotate(targets)
         tier_intsint = sppasIntsint.tones_to_tier(tones, tier_input)
 
-        # Save
-        trs_output = Transcription("sppasINTSINT")
-        trs_output.Append(tier_intsint)
+        # Create the transcription result
+        trs_output = sppasTranscription(self.name)
+        trs_output.append(tier_intsint)
+        trs_output.set_meta('intsint_result_of', input_filename)
 
         # Save in a file
-        sppas.src.annotationdata.aio.write(output_filename, trs_output)
+        if output_filename is not None:
+            parser = sppasRW(output_filename)
+            parser.write(trs_output)
+            self.print_filename(output_filename, status=0)
+
+        return trs_output
