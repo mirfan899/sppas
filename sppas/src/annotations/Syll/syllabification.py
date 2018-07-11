@@ -34,6 +34,7 @@
 
 """
 import sys
+from sppas import PHONEMES_SEPARATOR
 
 from sppas.src.annotationdata.transcription import Transcription
 from sppas.src.annotationdata.annotation import Annotation
@@ -248,7 +249,7 @@ class Syllabification(object):
 
     def syllabificationVV(self):
         """ Break down into syllables: continue until positioning itself
-        betwee two vowels (others cases are systematics), apply the suited
+        between two vowels (others cases are systematics), apply the suited
         rule.
 
         """
@@ -261,16 +262,16 @@ class Syllabification(object):
         classes = "V"
         phones = self.phonemes[self.vow1].GetLabel().GetValue()
         for i in range(self.vow1+1, self.vow2+1):
-            classes += self.rules.get_class( self.phonemes[i].GetLabel().GetValue() )
-            phones += " "+self.phonemes[i].GetLabel().GetValue()
+            classes += self.rules.get_class(self.phonemes[i].GetLabel().GetValue())
+            phones += PHONEMES_SEPARATOR + self.phonemes[i].GetLabel().GetValue()
 
         # Apply the rule, add the syllable
         d = self.rules.get_boundary(phones)
-        if d ==-1:
+        if d == -1:
             if self.logfile:
-                self.logfile.print_message("No rule found for" +classes, status=3)
+                self.logfile.print_message("No rule found for" + classes, status=3)
             else:
-                sys.stderr.write("INFO: no rule found for" +classes+"\n")
+                sys.stderr.write("INFO: no rule found for" + classes+"\n")
             d = 0
 
         self.shift(self.vow1 + d)

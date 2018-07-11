@@ -33,7 +33,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import re
+from sppas import SYMBOLS
+from sppas import PHONEMES_SEPARATOR
 
 from sppas.src.utils.makeunicode import sppasUnicode
 
@@ -46,82 +47,102 @@ class Rules(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      SPPAS syllabification set of rules.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Manager of a set of rules for syllabification.
+
     """
+    BREAK_SYMBOL = "#"
+
+    # -----------------------------------------------------------------------
 
     def __init__(self, filename=None):
         """ Create a new Rules instance.
 
-        :param filename: (str) Name of the file with the syllabification rules.
+        :param filename: (str) Name of the file with the rules.
+
         """
         self.general = dict()    # list of general rules
         self.exception = dict()  # list of exception rules
         self.gap = dict()        # list of gap rules
-        self.phonclass = dict()  # list of couples phoneme/classe
+        self.phonclass = dict()  # list of tuple (phoneme, classe)
 
         if filename is not None:
             self.load(filename)
 
     # ------------------------------------------------------------------------
 
-    def load(self, filename):
-        """ Load the rules using the file "filename".
+    def reset(self):
+        """ Reset the set of rules. """
 
-        :param filename: (str) Name of the file with the syllabification rules.
+        self.general = dict()  # list of general rules
+        self.general["VV"] = 0
+        self.general["VXV"] = 0
+        self.general["VXXV"] = 1
+        self.general["VXXXV"] = 1
+        self.general["VXXXXV"] = 1
+        self.general["VXXXXXV"] = 2
+        self.general["VXXXXXV"] = 3
+        self.general["VXXXXXXV"] = 3
 
-        """
-        self.general = dict()    # list of general rules
         self.exception = dict()  # list of exception rules
         self.gap = dict()        # list of gap rules
-        self.phonclass = dict()  # list of couples phoneme/classe
-        with open(filename, "r") as file_in:
 
-            for line_nb, line in enumerate(file_in, 1):
-                sp = sppasUnicode(line)
-                line = sp.to_strip()
+        self.phonclass = dict()  # list of tuple (phoneme, class)
+        for phone in SYMBOLS:
+            self.phonclass[phone] = Rules.BREAK_SYMBOL
 
-                wds = line.split()
-                if len(wds) == 3:
-                    if wds[0] == "PHONCLASS":
-                        self.phonclass[wds[1]] = wds[2]
-                    elif wds[0] == "GENRULE":
-                        self.general[wds[1]] = int(wds[2])
-                    elif wds[0] == "EXCRULE":
-                        self.exception[wds[1]] = int(wds[2])
-                if len(wds) == 7:
-                    if wds[0] == "OTHRULE":
-                        s = " ".join(wds[1:6])
-                        self.gap[s] = int(wds[6])
+    # ------------------------------------------------------------------------
 
-        if len(self.general) < 4:
-            raise IOError('Syllabification rules file corrupted. '
-                          'Got {:d} general rules, {:d} exceptions '
-                          'and {:d} other rules.'.format(len(self.general), len(self.exception), len(self.gap)))
+    def load(self, filename):
+        """ Load the rules from a file.
 
-        if "UNK" not in self.phonclass:
-            self.phonclass["UNK"] = "#"
+        :param filename: (str) Name of the file with the rules.
+
+        """
+        self.reset()
+
+        with open(filename, "r") as f:
+            lines = f.readlines()
+            f.close()
+
+        for line_nb, line in enumerate(lines, 1):
+            sp = sppasUnicode(line)
+            line = sp.to_strip()
+
+            wds = line.split()
+            if len(wds) == 3:
+                if wds[0] == "PHONCLASS":
+                    self.phonclass[wds[1]] = wds[2]
+
+                elif wds[0] == "GENRULE":
+                    self.general[wds[1]] = int(wds[2])
+
+                elif wds[0] == "EXCRULE":
+                    self.exception[wds[1]] = int(wds[2])
+
+            if len(wds) == 7:
+                if wds[0] == "OTHRULE":
+                    s = " ".join(wds[1:6])
+                    self.gap[s] = int(wds[6])
 
     # ------------------------------------------------------------------------
 
     def get_class(self, phoneme):
         """ Return the class identifier of the phoneme.
+        If the phoneme is unknown, the break symbol is returned.
 
-        :param phoneme: (str)
-        :returns: class of the phoneme
+        :param phoneme: (str) A phoneme
+        :returns: class of the phoneme or break symbol
 
         """
-        if phoneme in self.phonclass:
-            return self.phonclass[phoneme]
-
-        return self.phonclass["UNK"]
+        return self.phonclass.get(phoneme, Rules.BREAK_SYMBOL)
 
     # ------------------------------------------------------------------------
 
     def is_exception(self, rule):
         """ Return True if the rule is an exception rule.
 
-        :param rule:
+        :param rule: (str)
 
         """
         return rule in self.exception
@@ -131,13 +152,15 @@ class Rules(object):
     def get_boundary(self, phonemes):
         """ Get the index of the syllable boundary (EXCRULES or GENRULES).
 
-        :param phonemes: (str) Phonemes to syllabify
+        Phonemes are separated with the symbol defined by PHONEMES_SEPARATOR variable.
+
+        :param phonemes: (str) Sequence of phonemes to syllabify
         :returns: (int) boundary index or -1 if phonemes does not match any rule.
 
         """
         sp = sppasUnicode(phonemes)
         phonemes = sp.to_strip()
-        phon_list = phonemes.split(" ")
+        phon_list = phonemes.split(PHONEMES_SEPARATOR)
         classes = ""
         for phon in phon_list:
             classes += self.get_class(phon)
@@ -152,6 +175,26 @@ class Rules(object):
                 return val
 
         return -1
+
+    # ------------------------------------------------------------------------
+
+    def get_class_rules_boundary(self, classes):
+        """ Get the index of the syllable boundary (EXCRULES or GENRULES).
+
+        :param classes: (str) The class sequence to syllabify
+        :returns: (int) boundary index or -1 if it does not match any rule.
+
+        """
+        # search into exception
+        if classes in self.exception:
+            return self.exception[classes]
+
+        # search into general
+        for key, val in self.general.items():
+            if len(key) == len(classes):
+                return val
+
+        return 0
 
     # ------------------------------------------------------------------------
 

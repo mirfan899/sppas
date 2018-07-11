@@ -36,13 +36,15 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     The syllabification of phonemes is performed with a rule-based system.
     This RBS phoneme-to-syllable segmentation system is based on 2 main
     principles:
+
         - a syllable contains a vowel, and only one.
         - a pause is a syllable boundary.
+
     These two principles focus the problem of the task of finding a syllabic
     boundary between two vowels.
     As in state-of-the-art systems, phonemes were grouped into classes and
@@ -50,13 +52,18 @@
 
     For details, read the following reference:
 
-        | Brigitte Bigi, Christine Meunier, Irina Nesterenko, Roxane Bertrand (2010).
+        | B. Bigi, C. Meunier, I. Nesterenko, R. Bertrand (2010).
         | Automatic detection of syllable boundaries in spontaneous speech.
         | In Language Resource and Evaluation Conference, pp. 3285–3292,
         | La Valetta, Malta.
 
 """
+from .rules import Rules
+from .syllabification import Syllabification
 from .sppassyll import sppasSyll
 
-__all__ = ['sppasSyll']
-
+__all__ = [
+    'Rules',
+    'Syllabification',
+    'sppasSyll'
+]

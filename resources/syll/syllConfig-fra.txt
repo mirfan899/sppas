@@ -11,33 +11,17 @@
 # ---------------------------------------------------------------------------
 # Here is the list of phonemes and their class.
 # ---------------------------------------------------------------------------
-# It is important to note that:
-# 	- a vowel must be mentioned with the class-symbol "V"
-#	- a pause must be mentioned with the class-symbol "#"
-#	- if a phoneme contains the character '=', it will be removed!
-#	- the letter "X" means "a non-vowel" phoneme and so, it cannot be
-#         used as a single class-symbol.
-# So... the couples phoneme/class are made as 3 columns:
-# 	- first  column is the key-word "PHONCLASS",
-#	- second column is the phoneme symbol,
-#	- third  column is the class symbol.
+# A phoneme/class definition is made as 3 columns:
+# 	- first column is the key-word "PHONCLASS",
+#	- second column is the phoneme,
+#	- third column is the class-symbol.
 #
-# the pause (or equivalents)
-PHONCLASS # #
-PHONCLASS ## #
-PHONCLASS + #
-PHONCLASS * #
-PHONCLASS @@ #
-PHONCLASS sp #
-PHONCLASS gb #
-PHONCLASS sil #
-PHONCLASS dummy #
-PHONCLASS laugh #
-PHONCLASS noise #
+# It is important to note that:
+# 	- a vowel has to be mentioned with the class-symbol "V"
+#	- the class-symbol to represent a break is "#"
+#	- the letter "X" cannot be a class-symbol.
 
-# list of vowels
-# ATTENTION: we never really tested if /fp/ should be considered like a break or like a vowel...
-PHONCLASS fp V
+# list of vowels, use V symbol
 PHONCLASS i V
 PHONCLASS e V
 PHONCLASS E V
@@ -74,18 +58,20 @@ PHONCLASS l L
 PHONCLASS R L
 PHONCLASS r L
 
-# list of occlusives, use O symbol
-PHONCLASS p O
-PHONCLASS t O
-PHONCLASS k O
-PHONCLASS b O
-PHONCLASS d O
-PHONCLASS g O
+# list of plosives, use P symbol
+PHONCLASS p P
+PHONCLASS t P
+PHONCLASS k P
+PHONCLASS b P
+PHONCLASS d P
+PHONCLASS g P
+
 # list of nasals, use N symbol
 PHONCLASS n N
 PHONCLASS m N
 PHONCLASS N N
 PHONCLASS J N
+
 # list of fricatives, use F symbol
 PHONCLASS s F
 PHONCLASS S F
@@ -93,8 +79,12 @@ PHONCLASS z F
 PHONCLASS Z F
 PHONCLASS v F
 PHONCLASS f F
-# unknown phoneme (do not remove this entry)
-PHONCLASS UNK #
+
+# The filled pause
+# BUT we never really tested if /fp/ should be considered
+# a break or a vowel... so it can be 'V' or '#' class.
+PHONCLASS fp V
+
 # ---------------------------------------------------------------------------
 
 
@@ -103,16 +93,16 @@ PHONCLASS UNK #
 # ---------------------------------------------------------------------------
 #
 # The rules are made as:
-# 	- first  column is a rule-type,
+# 	- first column is a rule-type,
 #	- second column is the classes between two vowels,
-#	- third  column is the boundary location.
-# First column can be: GENRULE, EXCRULE, OTHRULE.
+#	- third column is the boundary location.
+# First column can be one of: GENRULE, EXCRULE, OTHRULE.
 # In the third column, 0 means the boundary is after the first vowel,
 # 1 means the boundary is one phoneme after the first vowel, etc.
 #
 
 # General rules contains only X between vowels
-# Here, class symbols are forbidden
+# Here, the use of class symbols is forbidden
 # -------------
 GENRULE VV 0
 GENRULE VXV 0
@@ -124,25 +114,25 @@ GENRULE VXXXXXXV 3
 
 #
 # Exceptions rules contains only class symbols
-# Here, the use of X is forbidden
+# Here, the use of class symbols is required (X is forbidden)
 # ----------------
 # rule: VCGV -> V.CGV
 EXCRULE VLGV 0
-EXCRULE VOGV 0
+EXCRULE VPGV 0
 EXCRULE VNGV 0
 EXCRULE VFGV 0
 EXCRULE VGGV 0
 
-EXCRULE VOLV 0
+EXCRULE VPLV 0
 EXCRULE VFLV 0
 
-EXCRULE VOLGV 0
+EXCRULE VPLGV 0
 EXCRULE VFLGV 0
-EXCRULE VOLOV 2
+EXCRULE VPLPV 2
 
 #
 # Specific rules are used to define which phoneme sequences must not be cut.
-# Class symbols are forbidden, except V (since SPPAS-1.7.3)
+# Class symbols are forbidden, except V.
 # ----------------
 # Specific rules contains only phonemes or the symbol "ANY" which means
 # "any phoneme". Classes are forbidden. It is made with 6 columns: first one is
@@ -162,4 +152,3 @@ OTHRULE ANY p s k ANY -2
 OTHRULE p s k ANY ANY 1
 # "d[i]sonst"
 OTHRULE ANY ANY V d z -1
-# ---------------------------------------------------------------------------
