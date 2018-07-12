@@ -35,16 +35,20 @@
     SPPAS integration of Syllabification.
 
 """
-from sppas.src.annotations.Syll.syllabification import Syllabification
-import sppas.src.annotationdata.aio
-from sppas.src.annotationdata.transcription import Transcription
+from sppas.src.anndata import sppasRW
+from sppas.src.anndata import sppasTranscription
+from sppas.src.anndata import sppasTier
+from sppas.src.anndata import sppasInterval
+from sppas.src.anndata import sppasLocation
 
 from .. import WARNING_ID
 from .. import t
 from ..baseannot import sppasBaseAnnotation
-from ..searchtier import sppasSearchTier
+from ..searchtier import sppasFindTier
 from ..annotationsexc import AnnotationOptionError
 from ..annotationsexc import EmptyOutputError
+
+from .syllabify import Syllabifier
 
 # ----------------------------------------------------------------------------
 
@@ -59,44 +63,28 @@ class sppasSyll(sppasBaseAnnotation):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      SPPAS automatic syllabification annotation.
-
-    The syllabification of phonemes is performed with a rule-based system from
-    aligned phonemes. This RBS phoneme-to-syllable segmentation system is based
-    on 2 main principles:
-
-        - a syllable contains a vowel, and only one;
-        - a pause is a syllable boundary.
-
-    These two principles focus the problem of the task of finding a syllabic
-    boundary between two vowels. As in state-of-the-art systems, phonemes were
-    grouped into classes and rules established to deal with these classes.
-
-    The rules we propose follow usual phonological statements for most of the
-    corpus. A configuration file indicates phonemes, classes and rules.
-    This file can be edited and modified to adapt the syllabification.
-
-    The syllable configuration file is a simple ASCII text file that the user
-    can change as needed.
 
     """
     def __init__(self, config_filename, logfile=None):
         """ Create a new sppasSyll instance.
 
-        :param config_filename: Name of the configuration (rules) file name,
+        :param config_filename: Name of the configuration file with the rules
         :param logfile: (sppasLog)
 
         """
         sppasBaseAnnotation.__init__(self, logfile, "Syllabification")
 
-        self.syllabifier = Syllabification(config_filename, logfile)
+        self.syllabifier = Syllabifier(config_filename)
 
         # List of options to configure this automatic annotation
         self._options = dict()
         self._options['usesintervals'] = False
         self._options['usesphons'] = True
         self._options['tiername'] = "TokensAlign"
+        self._options['createclasses'] = True
+        self._options['createstructures'] = True
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -108,6 +96,8 @@ class sppasSyll(sppasBaseAnnotation):
             - usesintervals
             - usesphons
             - tiername
+            - createclasses
+            - createstructures
 
         :param options: (sppasOption)
 
@@ -123,6 +113,12 @@ class sppasSyll(sppasBaseAnnotation):
 
             elif "tiername" == key:
                 self.set_tiername(opt.get_value())
+
+            elif "createclasses" == key:
+                self.set_create_tier_classes(opt.get_value())
+
+            elif "createstructures" == key:
+                self.set_create_tier_strctures(opt.get_value())
 
             else:
                 raise AnnotationOptionError(key)
@@ -159,28 +155,42 @@ class sppasSyll(sppasBaseAnnotation):
         """
         self._options['tiername'] = tier_name
 
-    # ------------------------------------------------------------------------
+    # ----------------------------------------------------------------------
+
+    def set_create_tier_classes(self, create=True):
+        """ Fix the createclasses option.
+
+        :param create: (bool)
+
+        """
+        self._options['createclasses'] = create
+
+    # ----------------------------------------------------------------------
+
+    def set_create_tier_strctures(self, create=True):
+        """ Fix the createstructures option.
+
+        :param create: (bool)
+
+        """
+        self._options['createstructures'] = create
+
+    # ----------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def convert(self, phonemes, intervals=None):
         """ Syllabify labels of a time-aligned phones tier.
 
-        :param phonemes: (Tier) time-aligned phones tier
-        :param intervals: (Tier)
-        :returns: Transcription
+        :param phonemes: (sppasTier) time-aligned phonemes tier
+        :param intervals: (sppasTier)
+        :returns: (sppasTier)
 
         """
-        syllables = Transcription("sppasSyll")
-        if self._options['usesphons'] is True:
-            syllables = self.syllabifier.syllabify(phonemes)
+        if intervals is None:
+            intervals = sppasSyll.__phon_to_intervals(phonemes, intervals)
+        return sppasTier("Syllables")
 
-        if intervals is not None:
-            syllables_seg = self.syllabifier.syllabify2(phonemes, intervals)
-            for tier in syllables_seg:
-                syllables.Add(tier)
-
-        return syllables
-
-    # ------------------------------------------------------------------------
+    # ----------------------------------------------------------------------
 
     def run(self, input_filename, output_filename=None):
         """ Perform the Syllabification process.
@@ -194,24 +204,83 @@ class sppasSyll(sppasBaseAnnotation):
         self.print_diagnosis(input_filename)
 
         # Get the tier to syllabify
-        trs_input = sppas.src.annotationdata.aio.read(input_filename)
-        phonemes = sppasSearchTier.aligned_phones(trs_input)
+        parser = sppasRW(input_filename)
+        trs_input = parser.read()
+        tier_input = sppasFindTier.aligned_phones(trs_input)
 
-        intervals = None
+        # Create the transcription result
+        trs_output = sppasTranscription("Syllabification")
+        trs_output.set_meta('syllabification_result_of', input_filename)
+
+        # Syllabify the tier
+        if self._options['usesphons'] is True:
+            tier_syll = self.convert(tier_input)
+            trs_output.append(tier_syll)
+            if self._options['createclasses']:
+                pass
+            if self._options['createstructures']:
+                pass
+
+        # Extra tier: syllabify between given intervals
         if self._options['usesintervals'] is True:
-            intervals = trs_input.Find(self._options['tiername'])
-            if intervals is None and self.logfile:
-                message = "The use of %s is disabled. Tier not found." % (self._options['tiername'])
-                self.logfile.print_message(message, indent=2, status=WARNING_ID)
-
-        trs_output = self.convert(phonemes, intervals)
+            intervals = trs_input.find(self._options['tiername'])
+            if intervals is None:
+                message = "The use of {:s} is disabled. " \
+                          "Tier not found.".format(self._options['tiername'])
+                self.print_message(message, indent=2, status=WARNING_ID)
+            else:
+                tier_syll_int = self.convert(tier_input, intervals)
+                tier_syll_int.set_name("Syllables-Intervals")
+                tier_syll_int.set_meta('syll_used_intervals', intervals.get_name())
+                trs_output.append(tier_syll_int)
+                if self._options['createclasses']:
+                    pass
+                if self._options['createstructures']:
+                    pass
 
         # Save in a file
         if output_filename is not None:
             if len(trs_output) > 0:
-                sppas.src.annotationdata.aio.write(output_filename, trs_output)
+                parser = sppasRW(output_filename)
+                parser.write(trs_output)
                 self.print_filename(output_filename, status=0)
             else:
                 raise EmptyOutputError
 
         return trs_output
+
+    # ----------------------------------------------------------------------
+
+    @staticmethod
+    def _phon_to_intervals(phonemes):
+        """ Create the intervals to be syllabified. """
+
+        intervals = sppasTier("intervals")
+        begin = phonemes.get_first_point()
+        end = begin
+        prev_ann = None
+
+        for ann in phonemes:
+            tag = None
+            if ann.label_is_filled():
+                tag = ann.get_best_tag()
+
+            # if no tag or empty tag or hole between prev_ann and ann
+            if tag is None or \
+               tag.is_speech() is False or \
+               prev_ann.get_highest_localization() < ann.get_lowest_localization():
+                if end > begin:
+                    intervals.create_annotation(sppasLocation(
+                        sppasInterval(begin,
+                                      prev_ann.get_highest_localization())))
+
+                begin = ann.get_higest_localization()
+
+            end = ann.get_higest_localization()
+
+        if end > begin:
+            a = intervals[-1]
+            end = a.get_higest_localization()
+            intervals.create_annotation(sppasLocation(sppasInterval(begin, end)))
+
+        return intervals

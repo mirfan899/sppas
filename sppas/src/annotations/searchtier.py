@@ -100,7 +100,7 @@ class sppasFindTier(object):
         In case of EOT, several tiers with tokens are available.
         Priority is given to faked.
 
-        :param trs: (Transcription)
+        :param trs: (sppasTranscription)
         :param pattern: (str) Priority pattern
         :returns: (sppasTier)
 
@@ -146,7 +146,7 @@ class sppasFindTier(object):
     def phonetization(trs):
         """ Return the tier with phonetization.
 
-        :param trs: (Transcription)
+        :param trs: (sppasTranscription)
         :returns: (sppasTier)
 
         """
@@ -176,10 +176,25 @@ class sppasFindTier(object):
     # ------------------------------------------------------------------------
 
     @staticmethod
+    def aligned_phones(trs):
+        """ Return the tier with time-aligned phonemes.
+
+        :param trs: (sppasTranscription)
+
+        """
+        for tier in trs:
+            if "align" in tier.get_name().lower() and "phon" in tier.get_name().lower():
+                return tier
+
+        raise NoInputError
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
     def pitch_anchors(trs):
         """ Return the tier with pitch anchors, like momel.
 
-        :param trs: (Transcription)
+        :param trs: (sppasTranscription)
         :returns: (sppasTier)
 
         """

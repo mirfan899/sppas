@@ -217,3 +217,9 @@ class TestSyllabifier(unittest.TestCase):
         syllables = self.syll_fra.annotate(phonemes)
         self.assertEqual([(0, 3), (4, 6)], syllables)  # apsk.mwa
 
+    # -----------------------------------------------------------------------
+
+    def test_phonetize_syllables(self):
+        phonemes = ['a', 'p', 's', 'k', 'm', 'w', 'a']
+        syllables = self.syll_fra.annotate(phonemes)
+        self.assertEqual("a-p-s-k.m-w-a", Syllabifier.phonetize_syllables(phonemes, syllables))

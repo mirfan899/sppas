@@ -32,6 +32,13 @@
     src.annotations.rules.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    The rules we propose follow usual phonological statements for most of the
+    corpus. A configuration file indicates phonemes, classes and rules.
+    This file can be edited and modified to adapt the syllabification.
+
+    The syllable configuration file is a simple ASCII text file that the user
+    can change as needed.
+
 """
 from sppas import SYMBOLS
 from sppas import PHONEMES_SEPARATOR

@@ -122,5 +122,6 @@ SYMBOLS.update(PHONE_SYMBOLS)
 # ---------------------------------------------------------------------------
 # Symbols used by SPPAS to serialize the data (labels/tags)
 
-PHONEMES_SEPARATOR = "-"   # X-SAMPA standard
-VARIANTS_SEPARATOR = "|"   # used for all alternative tags
+PHONEMES_SEPARATOR = "-"    # X-SAMPA standard
+SYLLABLES_SEPARATOR = "."   # X-SAMPA standard
+VARIANTS_SEPARATOR = "|"    # used for all alternative tags

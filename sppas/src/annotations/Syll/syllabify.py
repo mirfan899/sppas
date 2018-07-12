@@ -33,6 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+from sppas import PHONEMES_SEPARATOR, SYLLABLES_SEPARATOR
 from .rules import Rules
 
 # ----------------------------------------------------------------------------
@@ -64,6 +65,11 @@ class Syllabifier(object):
     def annotate(self, phonemes):
         """ Return the syllable boundaries of a sequence of phonemes.
 
+        >>> phonemes = ['a', 'p', 's', 'k', 'm', 'w', 'a']
+        >>> Syllabifier("fra-config-file").annotate(phonemes)
+        >>> [(0, 3), (4, 6)]
+
+        self.assertEqual("a-p-s-k.m-w-a", Syllabifier.phonetize_syllables(phonemes, syllables))
         :param phonemes: (list)
         :returns: list of tuples (begin index, end index)
 
@@ -97,6 +103,30 @@ class Syllabifier(object):
 
         return syllables
 
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def phonetize_syllables(phonemes, syllables):
+        """ Return the phonetized sequence of syllables.
+
+        >>> phonemes = ['a', 'p', 's', 'k', 'm', 'w', 'a']
+        >>> syllables = Syllabifier("fra-config-file").annotate(phonemes)
+        >>> Syllabifier.phonetize_syllables(phonemes, syllables)
+        >>> "a-p-s-k.m-w-a"
+
+        :param phonemes: (list) List of phonemes
+        :param syllables: list of tuples (begin index, end index)
+        :returns: (str) String representing the syllables segmentation
+
+        """
+        str_syll = list()
+        for (begin, end) in syllables:
+            str_syll.append(PHONEMES_SEPARATOR.join(phonemes[begin:end+1]))
+
+        return SYLLABLES_SEPARATOR.join(str_syll)
+
+    # ------------------------------------------------------------------
+    # Private
     # ------------------------------------------------------------------
 
     @staticmethod
@@ -137,41 +167,6 @@ class Syllabifier(object):
 
     # ------------------------------------------------------------------
 
-    def _apply_class_rules(self, classes, v1, v2):
-        """ Apply the syllabification rules between v1 and v2. """
-
-        sequence = "".join(classes[v1:v2+1])
-        return v1 + self.rules.get_class_rules_boundary(sequence)
-
-    # ------------------------------------------------------------------
-
-    def _apply_phon_rules(self, phonemes, end_syll, v1, v2):
-        """ Apply the specific phoneme-based syllabification rules between v1 and v2. """
-
-        _str = ""
-        nb = v2-v1
-        if nb > 1:
-            # specific rules are sequences of 5 consonants max
-            if nb == 5:
-                _str = "V "
-            if nb < 5:
-                _str = "ANY "*(5-nb) + "V "
-            for i in range(1, nb):
-                _str = _str + phonemes[v1+i] + " "
-        _str = _str.strip()
-
-        if len(_str) > 0:
-            d = self.rules.get_gap(_str)
-            if d != 0:
-                # check validity before assigning...
-                new_end = end_syll + d
-                if v2 >= new_end >= v1:
-                    end_syll = new_end
-
-        return end_syll
-
-    # ------------------------------------------------------------------
-
     @staticmethod
     def _find_next_vowel(classes, from_index):
         """ Find the index of the next vowel.
@@ -206,3 +201,38 @@ class Syllabifier(object):
             if classes[i] == Rules.BREAK_SYMBOL:
                 return i
         return -1
+
+    # ------------------------------------------------------------------
+
+    def _apply_class_rules(self, classes, v1, v2):
+        """ Apply the syllabification rules between v1 and v2. """
+
+        sequence = "".join(classes[v1:v2+1])
+        return v1 + self.rules.get_class_rules_boundary(sequence)
+
+    # ------------------------------------------------------------------
+
+    def _apply_phon_rules(self, phonemes, end_syll, v1, v2):
+        """ Apply the specific phoneme-based syllabification rules between v1 and v2. """
+
+        _str = ""
+        nb = v2-v1
+        if nb > 1:
+            # specific rules are sequences of 5 consonants max
+            if nb == 5:
+                _str = "V "
+            if nb < 5:
+                _str = "ANY "*(5-nb) + "V "
+            for i in range(1, nb):
+                _str = _str + phonemes[v1+i] + " "
+        _str = _str.strip()
+
+        if len(_str) > 0:
+            d = self.rules.get_gap(_str)
+            if d != 0:
+                # check validity before assigning...
+                new_end = end_syll + d
+                if v2 >= new_end >= v1:
+                    end_syll = new_end
+
+        return end_syll
