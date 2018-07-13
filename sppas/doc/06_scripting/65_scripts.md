@@ -1,4 +1,4 @@
-## Creating scripts with annotationdata API
+## Creating scripts with anndata
 
 
 ### Preparing the data
@@ -16,171 +16,112 @@ Then, open the skeleton script with the python IDLE and execute it.
 It will do... nothing! But now, you are ready to do something with the
 API of SPPAS!
 
+When using the API, if something forbidden is attempted, the object will
+raise an Exception. It means that the program will stop except if the
+script "raises" the exception.
+
 
 ### Read/Write annotated files
 
-We are being to Open/Read a file of any format (XRA, TextGrid, Elan, ...) 
-and store it into a `Transcription` object instance. Then, the latter
-will be saved into another file.
+We are being to Open/Read an annotated file of any format (XRA, TextGrid,
+Elan, ...) and store it into a `sppasTranscription` object instance.
+Then, it will be saved into another file.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines}
-trs = trsio.read(filename_in)
-trsaio.write(filename_out, trs)
+# Create a parser object then parse the input file.
+parser = sppasRW(input_filename)
+trs = parser.read()
+
+# Save the sppasTranscription object into a file.
+parser.set_filename(output_filename)
+parser.write(trs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Only these two lines of code are required to convert a file from one format 
-to another one!
-The appropriate reader/writer for the format is given by the extension of the
-name of the file.
+Only these two lines of code are required to convert a file from a format
+to another one! The appropriate parsing system is extracted from the extension
+of file name.
 
 To get the list of accepted extensions that the API can read, just use 
-`trsaio.extensions_in`. The list of accepted extensions that the API can write 
-is given by `trsaio.extensions_out`.
-
-Currently, accepted input file extensions are:
-
-* xra
-* csv, txt
-* TextGrid, PitchTier, IntensityTier
-* eaf
-* trs
-* mrk
-* sub, srt
-* hz
-* antx
-* tdf
-
-Possible output file extensions are:
-
-* xra
-* csv, txt, lab, ctm, stm
-* TextGrid, PitchTier
-* eaf
-* mrk
-* sub, srt
-* antx
+`aio.extensions_in`. The list of accepted extensions that the API can write
+is given by `aio.extensions_out`.
 
 >*Practice:* Write a script to convert a TextGrid file into CSV
 >(solution: ex10_read_write.py)
 
 
-### Manipulating a Transcription object
+### Manipulating a sppasTranscription object
 
-The most useful functions used to manage a Transcription object are:
+The most useful functions to manage tiers of a sppasTranscription object are:
 
-* `Append(tier)`, `Pop()`
-* `Add(tier, index)`, `Remove(index)`
-* `Find(name, case_sensitive=True)`
-
-`Append()` is used to add a tier at the end of the list of tiers of the 
-Transcription object; and `Pop()` is used to remove the last tier of such list.
-
-`Add()` and `Remove()` do the same, except that it does not put/delete the tier 
-at the end of the list but at the given index.
-
-`Find()` is useful to get a tier from its name.
+* `create_tier()` to create an empty tier and to append it,
+* `append(tier)` to add a tier into the sppasTranscription,
+* `pop(index)` to remove a tier of the sppasTranscription,
+* `find(name, case_sensitive=True)` to find a tier from its name.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="15"}
-trs = trsaio.read('Filename-palign.TextGrid)
 for tier in trs:
     # do something with the tier:
-    print(tier.GetName())
-phonemes_tier = trs.Find("PhonAlign")
+    print(tier.get_name())
+phons_tier = trs.find("PhonAlign")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-
-Transcription object has an iterator to get access to tiers.
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="15"}
-trs = trsaio.read('Filename-palign.TextGrid)
-phonemes_tier = trs[0]
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 >*Practice:*
 >Write a script to select a set of tiers of a file and save them into a new file
 >(solution: ex11_transcription.py).
 
 
-### Manipulating a Tier object
+### Manipulating a sppasTier object
 
-A tier is made of a name, a list of annotations and meta-data.
-To get the name of a tier, or to fix a new name, the easier way is to
-use `tier.GetName()`. 
-
-The following block of code allow to get a tier and change its name. It should be
-tested into a script...
+A tier is made of a name, a list of annotations, and optionally a controlled
+vocabulary and a media. To get the name of a tier, or to fix a new name, the
+easier way is to use `tier.get_name()`.
+The following block of code allows to get a tier and change its name.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="43"}
-trs = trsaio.read(filename)
+# Get the first tier, with index=0
 tier = trs[0]
-print(tier.GetName())
-tier.SetName("toto")
-print(tier.GetName())
-print(trs[0].GetName())
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+print(tier.get_name())
+tier.set_name("NewName")
+print(tier.get_name())
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The most useful functions to manage a Tier object are:
+The most useful functions to manage annotations of a `sppasTier` object are:
 
-* `Append(annotation)`, `Pop()`
-* `Add(annotation)`, `Remove(begin, end, overlaps=False)`
-* `IsDisjoint()`, `IsInterval()`, `IsPoint()`
-* `Find(begin, end, overlaps=True)`
-* `Near(time, direction)`
-* `SetRadius(radius)`
+* `create_annotation(location, labels)` to create and add a new annotation
+* `append(annotation)` to add a new annotation at the end of the list
+* `add(annotation)` to add a new annotation
+* `pop(index)` to delete the annotation of a given index
+* `remove(begin, end)` to remove annotations of a given localization range
+* `is_disjoint()`, `is_interval()`, `is_point()` to know the type of location
+* `is_string()`, `is_int()`, `is_float()`, `is_bool()` to know the type of labels
+* `find(begin, end)` to get annotations in a given localization range
+* `get_first_point()`, `get_last_point()` to get respectively the point with the lowest or highest localization
+* `set_radius(radius)` to fix the same vagueness value to each localization point
 
 >Practice:
 >Write a script to open an annotated file and print information about tiers
 >(solution: ex12_tiers_info.py)
 
 
-**Goodies:**
- 
-The file `ex12_tiers_info_wx.py` proposes a GUI to print information of one 
-file, or all files of a directory, and to ask the file/directory name with a 
-dialogue frame, instead of fixing it in the script. This script can be executed 
-simply by double-clicking on it in the File Explorer of your system.
-Many functions of this script can be cut/pasted in any other script.
+### Manipulating a sppasAnnotation object
+
+An annotation is a container for a location and optionally a list of labels.
+It can be used to manage the labels and tags with the following methods:
+
+* `is_labelled()` returns True if at least a `sppasTag` exists and is not None
+* `append_label(label)` to add a label into the list of labels
+* `get_labels_best_tag()` returns a list with the best tag of each label
+* `add_tag(tag, score, label_index)` to add a tag into a label
+* `remove_tag(tag, label_index)` to remove a tag of a label
+
+An annotation object can also be copied with the method `copy()`. The location,
+the labels and the metadata are all copied; and the 'id' of the returned
+annotation is then the same. It is expected that each annotation of a tier
+as its own 'id', but the API doesn't check this.
 
 
-### Main information on Annotation/Location/Label objects
-
-The most useful methods used to manage an `Annotation` object are:
-
-* `IsSilence()`, `IsLabel()`
-* `IsPoint()`, `IsInterval()`, `IsDisjoint()`
-* `GetBegin()`, `SetBegin(time)`, only if time is a TimeInterval
-* `GetEnd()`, `SetEnd(time)`, only if time is a TimeInterval
-* `GetPoint()`, `SetPoint(time)`, only if time is a TimePoint
-
-The following example shows how to get/set a new label, and to set a new time 
-value to an annotation:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines}
-if ann.GetLabel().IsEmpty():
-    ann.GetLabel().SetValue("dummy")
-if ann.GetLocation().IsPoint():
-    p = ann.GetLocation().GetPoint()
-    p.SetMidPoint(0.234)
-    p.SetRadius(0.02)
-if ann.GetLocation().IsInterval():
-    ann.GetLocation().GetBegin().SetMidPoint(0.123)
-    ann.GetLocation().GetEnd().SetMidPoint(0.234)    
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-
-If something forbidden is attempted, the object will raise an Exception. 
-This means that the program will stop except if the script "raises" the 
-exception.
-
-
-### Exercises
-
-
->Exercise 1:
->Write a script to print information about annotations of a tier
+>*Practice*: Write a script to print information about annotations of a tier
 >(solution: ex13_tiers_info.py)
-
->Exercise 2:
->Write a script to estimates the frequency of a specific annotation label in a file/corpus
->(solution: ex14_freq.py)
 
     
     
@@ -191,8 +132,8 @@ exception.
 This section focuses on the problem of *searching and retrieving* data from 
 annotated corpora. 
 
-The filter implementation can only be used together with the `Tier()` class. 
-The idea is that each `Tier()` can contain a set of filters, that each reduce 
+The filter implementation can only be used together with the `sppasTier()` class.
+The idea is that each `sppasTier()` can contain a set of filters, that each reduce
 the full list of annotations to a subset. 
 
 SPPAS filtering system proposes 2 main axis to filter such data: 
@@ -202,84 +143,120 @@ SPPAS filtering system proposes 2 main axis to filter such data:
 
 A set of filters can be created and combined to get the expected result.
 To be able to apply filters to a tier, some data must be loaded first. 
-First, a new `Transcription()` has to be created when loading a file.
-Then, the tier(s) to apply filters on must be fixed. Finally,
-if the input file was NOT an XRA, it is widely recommended to fix a radius 
-value depending on the annotation type. 
+First, a new `sppasTranscription()` has to be created when loading a file.
+Then, the tier(s) to apply filters on must be fixed. Finally, if the input
+file was NOT an XRA, it is widely recommended to fix a radius value before
+using a relation filter.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+f = sppasFilter(tier)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When a filter is applied, it returns an instance of `sppasAnnSet` which
+is the set of annotations matching with the request. It also contains
+a 'value' which is the list of functions that are truly matching for each
+annotation.
+Finally, `sppasAnnSet` objects can be combined with the operators '|' and '&',
+and expected to a `sppasTier` instance.
 
 
-#### Creating a boolean function
+#### Filter on the tag content
 
-In the following, let `Bool` and `Rel` two predicates, 
-a tier `T`, and a filter `f`.
+The following matching names are proposed to select annotations:
 
-Thus, the following matching predicates are proposed to select annotations
-(intervals or points) depending on their label. Notice that `P` 
-represents the text pattern to find:
+* 'exact': means that a tag is valid if it strictly corresponds to the expected pattern;
+* 'contains' means that a tag is valid if it contains the expected pattern;
+* 'startswith' means that a tag is valid if it starts with the expected pattern;
+* 'endswith' means that a tag is valid if it ends with the expected pattern.
+* 'regexp' to define regular expressions.
 
-* exact match: `pr = Bool(exact=P)`, means that a label is valid if it strictly corresponds to the expected pattern;
-* contains: `pr = Bool(contains=P)`, means that a label is valid if it contains the expected pattern;
-* starts with, `pr = Bool(startswith=P)`, means that a label is valid if it starts with the expected pattern;
-* ends with, `pr = Bool(endswith=P)`, means that a label is valid if it ends with the expected pattern.
+All these matches can be reversed, to represent does not exactly match, does
+not contain, does not start with or does not end with. Moreover, they can be
+case-insensitive by adding 'i' at the beginning like 'iexact', etc.
+The full list of tag matching functions is obtained by invoking
+`sppasTagCompare().get_function_names()`.
 
-These predicates are then used while creating a filter on labels.
-All these matches can be reversed, to represent does not exactly match, 
-does not contain, does not start with or does not end with.
-
-The next examples illustrate how to work with such filters and patterns.
+The next examples illustrate how to work with such pattern matching filter.
 In this example, `f1` is a filter used to get all phonemes with the exact label
 'a'. On the other side, `f2` is a filter that ignores all phonemes matching 
 with 'a' (mentioned by the symbol '~') with a case insensitive comparison
 (iexact means insensitive-exact).
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
-tier = trs.Find("PhonAlign")
-ft = Filter(tier)
-f1 = LabelFilter(Bool(exact='a'), ft)
-f2 = LabelFilter(~Bool(iexact='a'), ft)
+tier = trs.find("PhonAlign")
+f = sppasFilter(tier)
+ann_set_a = f.tag(exact='a')
+ann_set_aA = f.tag(iexact='a')
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For complex search, a selection based on regular expressions is available 
-by using `pr = Bool(regexp=R)`.
+The next example illustrates how to write a complex request. Notice
+that r1 is equal to r2, but getting r1 is faster:
 
-A multiple pattern selection can be expressed with the operators
-`|` to represent the logical "or" and the operator `&` to represent 
-the logical "and".
 
-With this notation in hands, it is possible to formulate queries as, 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+tier = trs.find("TokensAlign")
+f = sppasFilter(tier)
+r1 = f.tag(startswith="pa", not_endswith='a', logic_bool="and")
+r2 = f.tag(startswith="pa") & f.tag(not_endswith='a')
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+
+
+With this notation in hands, it is easy to formulate queries like
 for example: *Extract words starting by "ch" or "sh"*, like:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
-pr = Bool(startswith="ch") | Bool(startswith="sh")
+result = f.tag(startswith="ch") | f.tag(startswith="sh")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Filters on duration can also be created on annotations if Time instance is 
-of type TimeInterval. 
-In the following, `v` represents the value to be compared with:
 
-* lower: `pr = Bool(duration_lt=v)`, means that an annotation of `T` is valid if its duration is lower than `v`;
-* lower or equal: `pr = Bool(duration_le=v)`;
-* greater: `pr = Bool(duration_gt=v)`;
-* greater or equal: `pr = Bool(duration_ge=v)`;
-* equal: `pr = Bool(duration_e=v)`;
+>*Practice:*: Write a script to extract phonemes /a/ then phonemes /a/, /e/, /A/ and /E/.
+>(solution: ex15_annotation_label_filter.py).
 
-Search can also starts and ends at specific time values in a tier by 
-creating filters with `begin_ge` and `end_le`.
 
-Finally, the user must apply the filter to get filtered data from the filter.
+#### Filter on the duration
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines}
-# creating a complex boolean function
-predicate = (Bool(icontains="a") | Bool(icontains="e")) & Bool(duration_ge=0.08)
+The following matching names are proposed to select annotations:
 
-# to create a filter:
-ft = Filter(tier)
-flab = LabelFilter(predicate, ft)
+* 'lt' means that the duration of the annotation is lower than the given one;
+* 'le' means that the duration of the annotation is lower or equal than the given one;
+* 'gt' means that the duration of the annotation is greater than the given one;
+* 'ge' means that the duration of the annotation is greater or equal than the given one;
+* 'eq' means that the duration of the annotation is equal to the given one;
+* 'ne' means that the duration of the annotation is not equal to the given one.
 
-# to get filtered data from the filter:
-tier = flab.Filter()
-tier.SetName('Filtered with a-e-0.8')
+The full list of duration matching functions is obtained by invoking
+`sppasDurationCompare().get_function_names()`.
+
+Next example shows how to get phonemes during between 30 ms and 70 ms. Notice
+that r1 and r2 are equals!
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+tier = trs.find("PhonAlign")
+f = sppasFilter(tier)
+r1 = f.dur(ge=0.03) & f.dur(le=0.07)
+r2 = f.dur(ge=0.03, le=0.07, logic_bool="and")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+>*Practice*: Extract phonemes 'a' or 'e' during more than 100ms
+>(solution: ex16_annotation_dur_filter.py).
+
+
+#### Filter on position in time
+
+The following matching names are proposed to select annotations:
+
+* rangefrom allows to fix the begin time value,
+* rangeto allows to fix the end time value.
+
+Next example allows to extract phonemes 'a' of the 5 first seconds:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+tier = trs.find("PhonAlign")
+f = sppasFilter(tier)
+result = f.tag(exact='a') & f.loc(rangefrom=0., rangeto=5., logic_bool="and")
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 
 #### Creating a relation function
@@ -288,64 +265,83 @@ Relations between annotations is crucial if we want to extract multimodal data.
 The aim here is to select intervals of a tier depending on what is represented
 in another tier.
 
-We implemented the 13 Allen interval relations: before, after, meets, met by, 
-overlaps, overlapped by, starts, started by, finishes, finished by, contains,
-during and equals.
-Actually, we implemented the 25 relations proposed in the INDU model.
-This model is fixing constraints on INtervals (with Allen's relations) and 
-on DUration (duration are equals, one is less/greater than the other).
+James Allen, in 1983, proposed an algebraic framework named Interval
+Algebra (IA), for qualitative reasoning with time intervals where the
+binary relationship between a pair of intervals is represented  by a
+subset of 13 atomic relation, that are:
 
+  - distinct because no pair of definite intervals can be related
+  by more than one of the relationships;
 
-**MISSING:List of Allen interval relations./etc/screenshots/allen.png**
+  - exhaustive because any pair of definite intervals are described
+  by one of the relations;
 
+  - qualitative (rather than quantitative) because no numeric time
+  spans are considered.
 
-Below is an example of implementing the request: 
-*Which syllables stretch across 2 words?*
+These relations and the operations on them form "Allen's Interval Algebra".
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines}
-# Get tiers from a Transcription object
-tiersyll = trs.Find("Syllables")
-tiertoks = trs.Find("TokensAlign")
+Pujari, Kumari and Sattar proposed INDU in 1999: an Interval & Duration
+network. They extended the IA to model qualitative information about
+intervals and durations in a single binary constraint network. Duration
+relations are: greater, lower and equal.
+INDU comprises of 25 basic relations between a pair of two intervals.
 
-# Create filters
-fsyll = Filter(tiersyll)
-ftoks = Filter(tiertoks)
+`anndata` implements the 13 Allen interval relations: before, after, meets,
+met by, overlaps, overlapped by, starts, started by, finishes, finished by,
+contains, during and equals; and it also contains the relations proposed
+in the INDU model. The full list of matching functions is obtained by invoking
+`sppasIntervalCompare().get_function_names()`.
 
-# Create the filter with the relation function (link both filters)
-predicate = Rel("overlaps") | Rel("overlappedby")
-f = RelationFilter(relation, fsyll, ftoks)
+Moreover, in the implementation of `anndata`, some functions accept
+options:
 
-# to get filtered data from the filter:
-tier = f.Filter()
-tier.SetName('Syllables across Tokens')
+* `before` and `after` accept a `max_delay` value,
+* `overlaps` and `overlappedby` accept an `overlap_min` value and a boolean `percent` which defines whether the value is absolute or is a percentage.
+
+The next example returns monosyllabic tokens and tokens that are
+overlapping a syllable (only if the overlap is during more than 40 ms):
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+tier = trs.find("TokensAlign")
+other_tier = trs.find("Syllables")
+f = sppasFilter(tier)
+f.rel(other_tier, "equals", "overlaps", "overlappedby", min_overlap=0.04)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-### Exercises
+Below is another example of implementing a request.
+*Which syllables stretch across 2 words?*
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines}
+# Get tiers from a sppasTranscription object
+tier_syll = trs.find("Syllables")
+tier_toks = trs.find("TokensAlign")
+f = sppasFilter(tier_syll)
+
+# Apply the filter with the relation function
+ann_set = f.rel(tier_toks, "overlaps", "overlappedby")
+
+# To convert filtered data into a tier:
+tier = ann_set.to_tier("SyllStretch")
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
->Exercise 1: Create a script to filter annotated data on their label
->(solution: ex15_annotation_label_filter.py).
 
->Exercise 2: Idem with a filter on duration or time.
->(solution: ex16_annotation_time_filter.py).
-
->Exercise 3: Create a script to get tokens followed by a silence.
+>*Practice 1*: Create a script to get tokens followed by a silence.
 >(solution: ex17_annotations_relation_filter1.py).
  
->Exercise 4: Create a script to get tokens preceded by OR followed by a silence.
+>*Practice 2*: Create a script to get tokens preceded by OR followed by a silence.
 >(solution: ex17_annotations_relation_filter2.py).
     
->Exercise 5: Create a script to get tokens preceded by AND followed by a silence.
+>*Practice 3*: Create a script to get tokens preceded by AND followed by a silence.
 >(solution: ex17_annotations_relation_filter3.py).
 
 
-## More with SPPAS API
+## More with SPPAS...
 
-In addition to *annotationdata*, SPPAS contains several other API that could 
-be relevant for users to simplify their lives!!!
-They are all free and open source Python libraries, with a documentation and a
-set of tests.
+In addition to *anndata*, SPPAS contains several other API. They are all free and
+open source Python libraries, with a documentation and a set of tests.
 
 Among others:
 

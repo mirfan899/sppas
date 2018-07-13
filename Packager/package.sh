@@ -426,7 +426,7 @@ function fct_test_api {
     echo "##########  ${PROGRAM_NAME} API Diagnosis - $TODAY #########" >> $LOG_DIAGNOSIS
     echo >> $LOG_DIAGNOSIS
 
-    fct_perform_unittest "annotationdata"
+    fct_perform_unittest "anndata"
     fct_perform_unittest "annotations"
     fct_perform_unittest "audiodata"
     fct_perform_unittest "calculus"
@@ -490,10 +490,10 @@ function fct_uml_diagrams {
             echo -e "${RED}None of yuml or suml are working! Please, install at least one of them and try again.${NC}"
             return 1
         else
-            suml --png --class -i $ETC_DIR/figures/src/annotationdata.yuml -o $ETC_DIR/figures/annotationdata.png
+            suml --png --class -i $ETC_DIR/figures/src/anndata.yuml -o $ETC_DIR/figures/anndata.png
         fi
     else
-        cat $ETC_DIR/figures/src/annotationdata.yuml | $BIN_DIR/yuml -f png -t class -s plain --scale 42 -o $ETC_DIR/figures/annotationdata.png
+        cat $ETC_DIR/figures/src/anndata.yuml | $BIN_DIR/yuml -f png -t class -s plain --scale 42 -o $ETC_DIR/figures/anndata.png
     fi
 
 }

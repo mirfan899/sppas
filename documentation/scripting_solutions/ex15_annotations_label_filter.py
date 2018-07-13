@@ -81,6 +81,7 @@ def get_tier(filename, tier_name, verbose=True):
 # Main
 # ----------------------------------------------------------------------------
 
+
 if __name__ == '__main__':
 
     # Get data: the tier with phonemes

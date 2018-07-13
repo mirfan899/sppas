@@ -9,6 +9,11 @@ To practice, you have first to create a new folder in your computer
 - on your Desktop for example; with name "pythonscripts" for example,
 and to execute the python IDLE.
 
+For an advanced use of Python, the installation of a dedicated IDE is very
+useful. SPPAS is developed with PyCharm:
+See [the PyCharm Help webpage](https://www.jetbrains.com/help/pycharm/meet-pycharm.html)
+
+
 
 ### Comments and documentation
 
@@ -32,7 +37,7 @@ Documentation is required for sharing the program. See the
 for details.
 Documentation must follow a convention like for example the markup language
 [reST - reStructured Text](https://en.wikipedia.org/wiki/ReStructuredText).
-Both conventions are used into SPPAS programs.
+Both conventions are used into SPPAS API, programs and scripts.
 
 
 ### Getting started with scripting in Python
@@ -67,12 +72,24 @@ script that will be written. Such ready-to-use script is available in the
 SPPAS package with the name `skeleton.py`. 
 
 
+### Blocks
+
+Blocks in Python are created from the indentation. Tab and spaces can be used
+but using spaces is recommended.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+>>>if a == 3:
+...    # this is a block using 4 spaces for indentation
+...    print("a is 3")
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 ### Functions
 
 #### Simple function
 
-A function does something: it stats with its definition then is followed by its
-lines of code in a block.
+A function does something: it stats with its definition then is followed by
+its lines of code in a block.
 
 Here is an example of function:
 
@@ -92,12 +109,12 @@ string representing a vowel in French encoded in X-SAMPA. Of course, this list
 can be overridden with any other set of strings. The next line prints
 a message. Then, a loop prints each item of the list.
 
-At this stage, if a script including this function is executed, it will do... 
+At this stage, if a script with this function is executed, it will do...
 nothing! Actually, the function is created, but it must be invoked in the main 
 function to be interpreted by Python. 
-The new version is as follow:
+The `main` is as follow:
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="40"}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="34"}
 if __name__ == '__main__':
     print_vowels()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -108,7 +125,7 @@ if __name__ == '__main__':
 >(solution: ex01_hello_world.py).
 
 >*Practice*: 
->add a function to print plosives and call it in the main function
+>Create a function to print plosives and call it in the main function
 >(solution: ex02_functions.py).
 
 ![Output of the second script](./etc/screenshots/python_idle_02.png)
@@ -116,13 +133,13 @@ if __name__ == '__main__':
  
 One can also create a function to print glides, another one to print 
 affricates, and so on. Hum... this sounds a little bit fastidious!
-Lets update, or refactor, our printing function to *make it more generic*. 
 
 
 #### Function with parameters
 
 Rather than writing the same lines of code with only a minor difference
-over and over, we can declare *parameters* to the function.
+over and over, we can declare *parameters* to the function to *make it
+more generic*.
 Notice that the number of parameters of a function is not limited!
 
 In the example, we can replace the `print_vowels()` function and the
@@ -133,24 +150,23 @@ must be converted to string to be printed out.
 This can result in the following function:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="27"}
-def print_list(mylist, message=""):
+def print_list(mylist, message="  -"):
     """ Print a list on the screen.
 
-    :param mylist: (list) is the list to print
-    :param message: (string) is an optional message to print before each element 
+    :param mylist: (list) the list to print
+    :param message: (string) an optional message to print before each element
 
     """
     for item in mylist:
-        print("{0} {1}".format(message, item))
+        print("{:s} {:s}".format(message, item))
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 #### Function return values
 
 Functions are used to do a specific job and the result of the function can be
-captured by the program.
-In the following example, the function would return a boolean value, i.e. 
-True if the given string has no character.
+captured by the program. In the following example, the function would return
+a boolean value, i.e. True if the given string has no character.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="27"}
 def is_empty(mystr):
@@ -189,19 +205,19 @@ of a file. The first parameter of the `open` function is the name of the file,
 including the path (relative or absolute); and the second argument is the
 opening mode ('r' is the default value, used for reading).
 
->*Practice:* Add this lines of code in a new script and try it
+>*Practice:* Add these lines of code in a new script and try it
 >(solution: ex04_reading_simple.py)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="21"}
-fp = open("C:\Users\Me\Desktop\pythonscripts\phonemes.csv", 'r')
+fp = open("phonemes.csv", 'r')
 for line in fp:
     # do something with the line stored in variable l
     print(line.strip())
 f.close()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 
-The following is a more generic solution, with the ability to deal with 
-various file encodings, thanks to the `codecs` library:
+The following is a solution with the ability to deal with various file
+encodings, thanks to the `codecs` library:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python .numberLines startFrom="21"}
 def read_file(filename):

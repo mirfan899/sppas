@@ -270,3 +270,23 @@ A few tutorials are available on the web site.
 - debug in the management of the hierarchy in file readers/writers.
 - Resources package: add compatibility with PLS (W3C xml) pronunciation dictionaries
 
+
+### SPPAS 1.9.7
+
+(2018, August)
+
+#### Development
+
+- new filter system in anndata
+- IPUs segmentation: debug in fixing automatically the threshold for the search of silences (can't be negative!)
+- Annotations: improved messages for the procedure outcome report
+- Annotations: Text normalization and Phonetization based on anndata API instead of annotationdata
+
+#### Resources:
+
+- French syllabification rules updated to be compliant with the new phoneset (version 1.9.6)
+
+#### Documentation
+
+- updated chapter 6: scripting with Python and SPPAS. Now based on anndata instead of annotationdata.
+

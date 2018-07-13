@@ -43,7 +43,7 @@ def is_empty(string):
 # ---------------------------------------------------------------------------
 
 
-def print_list(my_list, message=""):
+def print_list(my_list, message="  -"):
     """ Print a list on the screen.
 
     :param my_list: (list) the list to print

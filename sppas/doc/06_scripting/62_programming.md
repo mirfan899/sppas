@@ -6,7 +6,7 @@
 This section includes examples in Python programming language.
 You may want to try out some of the examples that come with the
 description. In order to do this, execute the Python IDLE - 
-available in the Application-Menu of your operating system),
+available in the Application-Menu of your operating system,
 and write the examples after the prompt ">>>".
 
 ![The Python IDLE logo](./etc/logos/python_idle.png)
@@ -45,7 +45,6 @@ The equal sign (=) is used to assign values to variables.
  >>>a = 1    
  >>>b = 1.0
  >>>c = "c"
- >>>cc = u"ç"
  >>>hello = "Hello world!"
  >>>vrai = True
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -71,25 +70,26 @@ following operators:
 
 ### Basic Operators
 
-Basic operators are used to use and/or manipulate variables. The 
-following is the list of operators that can be used with Python, 
-i.e. equal (assignment), plus, minus, multiply, divide:
+Basic operators are used to manipulate variables. The following is the
+list of operators that can be used with Python, i.e. equal (assignment),
+plus, minus, multiply, divide:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
 >>> a = 10
->>> b = 20  # Assignment
->>> a + b   # Addition
->>> a - b   # Subtraction
->>> a * b   # Multiplication
->>> a / b   # Division
+>>> b = 20  # assignment
+>>> a + b   # addition
+>>> a - b   # subtraction
+>>> a * b   # multiplication
+>>> a / b   # division
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 ### Data types
 
-The variables are of a data-type. For example, the declarations `a=1` and `a=1.0`
-are respectively assigning an integer and a real number. In Python, the command 
-`type` allows to get the type of a variable, like in the following:
+The variables are of a data-type. For example, the declarations `a=1` and
+`a=1.0` are respectively assigning an integer and a real number. In Python,
+the command `type` allows to get the type of a variable, like in the
+following:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
 >>> type(a)
@@ -104,17 +104,17 @@ are respectively assigning an integer and a real number. In Python, the command
 <type 'bool'>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following is a list of some fundamental data types, and their characteristics:
+Here is a list of some fundamental data types, and their characteristics:
 
-* *str*   String of characters
+* *str*      String of characters
 * *unicode*  Unicode string of characters
-* *int*   Integer in range from -2147483648 to 2147483647
-* *bool*  Boolean value, can take value `True` (=1) or `False` (=0)
-* *float* Floating point number (max 15 digits)
+* *int*      Integer in range from -2147483648 to 2147483647
+* *bool*     Boolean value, can take value `True` (=1) or `False` (=0)
+* *float*    Floating point number (max 15 digits)
 
-Python is assigning data types dynamically. As a consequence, the result of the sum 
-between an `int` and a `float` is a `float`. The next examples illustrate that 
-the type of the variables have to be carefully managed. 
+Python is assigning data types dynamically. As a consequence, the result of
+the sum between an `int` and a `float` is a `float`. The next examples
+illustrate that the type of the variables have to be carefully managed.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
 >>> a = 10
@@ -134,8 +134,7 @@ TypeError: unsupported operand type(s) for +=: 'float' and 'str'
 'aaaaa'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The type of a variable can be changed. This is called a "cast", like in
-the following:
+The type of a variable can be explicitly changed. This is called a "cast":
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
 >>> a = 10
@@ -157,20 +156,18 @@ list with name `fruits`, then the assignment of a sub-part of the list to
 the `to_buy` list:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
->>> fruits = ['apples', 'tomatoes', 'peers', 'bananas']
->>> to_buy = fruits[1:2]
+>>> fruits = ['apples', 'tomatoes', 'peers', 'bananas', 'lemons']
+>>> to_buy = fruits[1:3]
 >>> to_buy
-['tomatoes']
+['tomatoes', 'peers']
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 ### Conditions
 
-Conditions aim to test whether a statement is True or False.
-The statement of the condition can include a variable, or be a variable.
-If the result of the condition is true and/or false, then a given action 
-occurs. Statements of conditions are written with operators, as equal,
-less than, greater than, etc.
+Conditions aim to test whether a statement is True or False. The statement of
+the condition can include a variable, or be a variable and is written with
+operators.
 The following shows examples of conditions/comparisons in Python. Notice that
 the comparison of variables of a different data-type is possible (but not
 recommended!).
@@ -187,7 +184,7 @@ Value of expression is 100.
 ...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Conditions can expressed in a more complex way like:
+Conditions can be expressed in a more complex way like:
  
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
 >>> if a == b:
@@ -213,9 +210,9 @@ It is also possible to use the following operators:
 
 - `and`: called "Logical AND operator".
 If both the operands are true then the condition becomes true.
-- `or`: called Logical OR Operator.
+- `or`: called "Logical OR operator".
 If any of the two operands are non zero then the condition becomes true.
-- `not` called Logical NOT Operator.
+- `not` called "Logical NOT operator".
 Use to reverses the logical state of its operand.
 If a condition is true then Logical NOT operator will make false.
 - `in`: evaluates to true if it finds a variable in the specified sequence
@@ -229,7 +226,7 @@ and false otherwise.
 ...    print("You already have bought apples.")
 
 >>> if "tomatoas" not in to_buy:
-...    print("You do not have to buy tomatoes.")
+...    print("You don't have to buy tomatoes.")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -257,8 +254,8 @@ result as the previous one:
 >>> to_buy = ['fruits', 'viande', 'poisson', 'oeufs']
 >>> i = 0
 >>> while i < len(to_buy):
-...  print(to_buy[i])
-...  i += 1
+...     print(to_buy[i])
+...     i += 1
 ...
 fruits
 viande
@@ -285,8 +282,9 @@ Alternatively, the `get` function can be used, like `fruits.get("bananas", 0)`
 that returns 0 instead of an error.
 
 The next example is showing how use a simple dictionary:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
->>> for key in ['apples', 'peers', 'tomatoes', 'babanas']:
+>>> for key in fruits:
 ...    value = fruits.get(key, 0)
 ...    if value < 3:
 ...        print("You have to buy new {:s}.".format(key))
