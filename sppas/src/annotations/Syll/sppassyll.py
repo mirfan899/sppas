@@ -87,7 +87,6 @@ class sppasSyll(sppasBaseAnnotation):
         self._options['usesphons'] = True
         self._options['tiername'] = "TokensAlign"
         self._options['createclasses'] = True
-        self._options['createstructures'] = True
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -119,9 +118,6 @@ class sppasSyll(sppasBaseAnnotation):
 
             elif "createclasses" == key:
                 self.set_create_tier_classes(opt.get_value())
-
-            elif "createstructures" == key:
-                self.set_create_tier_strctures(opt.get_value())
 
             else:
                 raise AnnotationOptionError(key)
@@ -169,16 +165,6 @@ class sppasSyll(sppasBaseAnnotation):
         self._options['createclasses'] = create
 
     # ----------------------------------------------------------------------
-
-    def set_create_tier_strctures(self, create=True):
-        """ Fix the createstructures option.
-
-        :param create: (bool)
-
-        """
-        self._options['createstructures'] = create
-
-    # ----------------------------------------------------------------------
     # Syllabification of time-aligned phonemes stored into a tier
     # ----------------------------------------------------------------------
 
@@ -193,7 +179,8 @@ class sppasSyll(sppasBaseAnnotation):
         if intervals is None:
             intervals = sppasSyll._phon_to_intervals(phonemes)
 
-        syllables = sppasTier("Syllables")
+        syllables = sppasTier("SyllAlign")
+        syllables.set_meta('syllabification_of_tier', phonemes.get_name())
 
         for interval in intervals:
 
@@ -218,6 +205,25 @@ class sppasSyll(sppasBaseAnnotation):
                 self.print_message("Invalid interval")
 
         return syllables
+
+    # ----------------------------------------------------------------------
+
+    def make_classes(self, syllables):
+        """ Create the tier with syllable classes.
+
+        :param syllables: (sppasTier)
+
+        """
+        classes = sppasTier("SyllClassAlign")
+        classes.set_meta('syllabification_classes_of_tier', syllables.get_name())
+
+        for syll in syllables:
+            location = syll.get_location().copy()
+            syll_tag = syll.get_best_tag()
+            class_tag = sppasTag(self.syllabifier.classes_phonetized(syll_tag.get_typed_content()))
+            classes.create_annotation(location, sppasLabel(class_tag))
+
+        return classes
 
     # ----------------------------------------------------------------------
 
@@ -282,9 +288,7 @@ class sppasSyll(sppasBaseAnnotation):
             tier_syll = self.convert(tier_input)
             trs_output.append(tier_syll)
             if self._options['createclasses']:
-                pass
-            if self._options['createstructures']:
-                pass
+                trs_output.append(self.make_classes(tier_syll))
 
         # Extra tier: syllabify between given intervals
         if self._options['usesintervals'] is True:
@@ -295,13 +299,13 @@ class sppasSyll(sppasBaseAnnotation):
                 self.print_message(message, indent=2, status=WARNING_ID)
             else:
                 tier_syll_int = self.convert(tier_input, intervals)
-                tier_syll_int.set_name("Syllables-Intervals")
-                tier_syll_int.set_meta('syll_used_intervals', intervals.get_name())
+                tier_syll_int.set_name("SyllAlign-Intervals")
+                tier_syll_int.set_meta('syllabification_used_intervals', intervals.get_name())
                 trs_output.append(tier_syll_int)
                 if self._options['createclasses']:
-                    pass
-                if self._options['createstructures']:
-                    pass
+                    t = self.make_classes(tier_syll_int)
+                    t.set_name("SyllClassAlign-Intervals")
+                    trs_output.append(t)
 
         # Save in a file
         if output_filename is not None:

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
     ..
@@ -37,7 +37,7 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Syllabification automatic annotation.
 
 """
@@ -81,7 +81,12 @@ parser.add_argument("-t",
 
 parser.add_argument("--nophn",
                     action='store_true',
-                    help="Disable the output of the result that does not use the reference tier" )
+                    help="Disable the output of the result that does not use the reference tier")
+
+parser.add_argument("--noclass",
+                    action='store_true',
+                    help="Disable the creation of the tier with syllable classes")
+
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -101,6 +106,9 @@ syll = sppasSyll(args.config)
 if args.t:
     syll.set_usesintervals(True)
     syll.set_tiername(args.t)
-    if args.nophn: syll.set_usesphons(False)
+    if args.noclass:
+        syll.set_create_tier_classes(False)
+    if args.nophn:
+        syll.set_usesphons(False)
 
 syll.run(args.i, args.o)

@@ -134,6 +134,22 @@ class Syllabifier(object):
         return SYLLABLES_SEPARATOR.join(str_syll)
 
     # ------------------------------------------------------------------
+
+    def classes_phonetized(self, phonetized_syllable):
+        """ Return the classes of a phonetized syllable.
+
+        >>> syllable = "a-p-s-k"
+        >>> syllabifier.classes_phonetized(syllable)
+        >>> "V-P-F-P"
+
+        """
+        c = list()
+        for p in phonetized_syllable.split(PHONEMES_SEPARATOR):
+            c.append(self.rules.get_class(p))
+
+        return PHONEMES_SEPARATOR.join(c)
+
+    # ------------------------------------------------------------------
     # Private
     # ------------------------------------------------------------------
 
