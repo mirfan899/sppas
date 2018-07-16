@@ -182,6 +182,12 @@ class TestEvents(unittest.TestCase):
         label = sppasLabel(sppasTag(NOISE_PHON))
         self.assertTrue(label.get_best().is_noise())
 
+    def test_IsSpeech(self):
+        label = sppasLabel(sppasTag("l"))
+        self.assertTrue(label.get_best().is_speech())
+        label = sppasLabel(sppasTag(NOISE_PHON))
+        self.assertFalse(label.get_best().is_speech())
+
 # ---------------------------------------------------------------------------
 
 

@@ -1,10 +1,14 @@
 # ---------------------------------------------------------------------------
 #
-# This is the description file syllConfig-IT.txt, made by Brigitte Bigi.
+# This is the description file syllConfig-ita.txt, made by Brigitte Bigi.
 # It defines the phonemes, their classes, and rules to find automatically
-# syllable boundaries by the Syllabeur-v2.2 java program.
+# syllable boundaries.
 #
-# If you want to change this file, please read documentation before!
+# If you intend to change this file, please read documentation before!
+#
+# Use of this file is governed by the GNU Public License, version 3.
+# This banner notice must not be removed.
+# Copyright (C) 2011-2018  Brigitte Bigi, Laboratoire Parole et Langage
 # ---------------------------------------------------------------------------
 
 
@@ -82,17 +86,20 @@ PHONCLASS ae V
 # list of glides, use G symbol
 PHONCLASS w G
 PHONCLASS j G
+
 # list of liquids, use L symbol
 PHONCLASS L L
 PHONCLASS l L
 PHONCLASS r L
-# list of occlusives, use O symbol
-PHONCLASS p O
-PHONCLASS t O
-PHONCLASS k O
-PHONCLASS b O
-PHONCLASS d O
-PHONCLASS g O
+
+# list of plosives, use P symbol
+PHONCLASS p P
+PHONCLASS t P
+PHONCLASS k P
+PHONCLASS b P
+PHONCLASS d P
+PHONCLASS g P
+
 # list of nasals, use N symbol
 PHONCLASS n N
 PHONCLASS nf N
@@ -100,6 +107,7 @@ PHONCLASS ng N
 ## PHONCLASS nk N
 PHONCLASS m N
 PHONCLASS J N
+
 # list of fricatives, use F symbol
 PHONCLASS s F
 PHONCLASS S F
@@ -110,8 +118,10 @@ PHONCLASS ts F
 PHONCLASS v F
 PHONCLASS dz F
 PHONCLASS dZ F
+
 # unknown phoneme (do not remove this entry)
 PHONCLASS UNK #
+
 # ---------------------------------------------------------------------------
 
 
@@ -146,19 +156,19 @@ GENRULE VXXXXXXV 3
 
 # (Consonant + Glide) can not be segmented
 EXCRULE VLGV 0
-EXCRULE VOGV 0
+EXCRULE VPGV 0
 EXCRULE VNGV 0
 EXCRULE VFGV 0
 EXCRULE VGGV 0
 
 # (Consonant + Liquid) can not be segmented
 # except (Liquid + Liquid)!
-EXCRULE VOLV 0
+EXCRULE VPLV 0
 EXCRULE VFLV 0
 EXCRULE VNLV 0
 EXCRULE VGLV 0
 
-EXCRULE VOLGV 0
+EXCRULE VPLGV 0
 EXCRULE VFLGV 0
 
 

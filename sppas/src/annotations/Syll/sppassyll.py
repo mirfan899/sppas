@@ -35,11 +35,14 @@
     SPPAS integration of Syllabification.
 
 """
+from sppas import PHONE_SYMBOLS
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
 from sppas.src.anndata import sppasTier
 from sppas.src.anndata import sppasInterval
 from sppas.src.anndata import sppasLocation
+from sppas.src.anndata import sppasTag
+from sppas.src.anndata import sppasLabel
 
 from .. import WARNING_ID
 from .. import t
@@ -176,6 +179,7 @@ class sppasSyll(sppasBaseAnnotation):
         self._options['createstructures'] = create
 
     # ----------------------------------------------------------------------
+    # Syllabification of time-aligned phonemes stored into a tier
     # ----------------------------------------------------------------------
 
     def convert(self, phonemes, intervals=None):
@@ -187,8 +191,69 @@ class sppasSyll(sppasBaseAnnotation):
 
         """
         if intervals is None:
-            intervals = sppasSyll.__phon_to_intervals(phonemes, intervals)
-        return sppasTier("Syllables")
+            intervals = sppasSyll._phon_to_intervals(phonemes)
+
+        syllables = sppasTier("Syllables")
+
+        for interval in intervals:
+
+            # get the index of the phonemes containing the begin of the interval
+            start_phon_idx = phonemes.lindex(interval.get_lowest_localization())
+            if start_phon_idx == -1:
+                start_phon_idx = phonemes.mindex(interval.get_lowest_localization(), bound=-1)
+
+            # get the index of the phonemes containing the end of the interval
+            end_phon_idx = phonemes.rindex(interval.get_highest_localization())
+            if end_phon_idx == -1:
+                end_phon_idx = phonemes.mindex(interval.get_highest_localization(),
+                                               bound=1)
+
+            # syllabify within the interval
+            if start_phon_idx != -1 and end_phon_idx != -1:
+                self.syllabify_interval(phonemes,
+                                        start_phon_idx,
+                                        end_phon_idx,
+                                        syllables)
+            else:
+                self.print_message("Invalid interval")
+
+        return syllables
+
+    # ----------------------------------------------------------------------
+
+    def syllabify_interval(self, phonemes, from_p, to_p, syllables):
+        """ Perform the syllabification of one interval.
+
+        :param phonemes: (sppasTier)
+        :param from_p: (int) index of the first phoneme to be syllabified
+        :param to_p: (int) index of the last phoneme to be syllabified
+        :param syllables: (sppasTier)
+
+        """
+        # create the sequence of phonemes to syllabify
+        p = list()
+        for ann in phonemes[from_p:to_p+1]:
+            tag = ann.get_best_tag()
+            p.append(tag.get_typed_content())
+
+        # create the sequence of syllables
+        s = self.syllabifier.annotate(p)
+
+        # add the syllables into the tier
+        for i, syll in enumerate(s):
+            start_idx, end_idx = syll
+
+            # create the location
+            begin = phonemes[start_idx+from_p].get_lowest_localization().copy()
+            end = phonemes[end_idx+from_p].get_highest_localization().copy()
+            location = sppasLocation(sppasInterval(begin, end))
+
+            # create the label
+            syll_string = Syllabifier.phonetize_syllables(p, [syll])
+            label = sppasLabel(sppasTag(syll_string))
+
+            # add the syllable
+            syllables.create_annotation(location, label)
 
     # ----------------------------------------------------------------------
 
@@ -255,6 +320,14 @@ class sppasSyll(sppasBaseAnnotation):
     def _phon_to_intervals(phonemes):
         """ Create the intervals to be syllabified. """
 
+        # for backward compatibility
+        stop = list(PHONE_SYMBOLS.keys())
+        stop.append('#')
+        stop.append('@@')
+        stop.append('+')
+        stop.append('gb')
+        stop.append('lg')
+
         intervals = sppasTier("intervals")
         begin = phonemes.get_first_point()
         end = begin
@@ -265,22 +338,31 @@ class sppasSyll(sppasBaseAnnotation):
             if ann.label_is_filled():
                 tag = ann.get_best_tag()
 
-            # if no tag or empty tag or hole between prev_ann and ann
-            if tag is None or \
-               tag.is_speech() is False or \
-               prev_ann.get_highest_localization() < ann.get_lowest_localization():
-                if end > begin:
-                    intervals.create_annotation(sppasLocation(
-                        sppasInterval(begin,
-                                      prev_ann.get_highest_localization())))
+            if prev_ann is not None:
+                # if no tag or stop tag or hole between prev_ann and ann
+                if tag is None or \
+                   tag.get_typed_content() in stop or \
+                   prev_ann.get_highest_localization() < ann.get_lowest_localization():
+                    if end > begin:
+                        intervals.create_annotation(sppasLocation(
+                              sppasInterval(begin,
+                                            prev_ann.get_highest_localization())))
 
-                begin = ann.get_higest_localization()
+                    if tag is None or tag.get_typed_content() in stop:
+                        begin = ann.get_highest_localization()
+                    else:
+                        begin = ann.get_lowest_localization()
+            else:
+                # phonemes can start with a non-labelled interval!
+                if tag is None or tag.get_typed_content() in stop:
+                    begin = ann.get_highest_localization()
 
-            end = ann.get_higest_localization()
+            end = ann.get_highest_localization()
+            prev_ann = ann
 
         if end > begin:
-            a = intervals[-1]
-            end = a.get_higest_localization()
-            intervals.create_annotation(sppasLocation(sppasInterval(begin, end)))
+            ann = phonemes[-1]
+            end = ann.get_highest_localization()
+            a = intervals.create_annotation(sppasLocation(sppasInterval(begin, end)))
 
         return intervals

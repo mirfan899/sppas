@@ -59,11 +59,11 @@
 
 """
 from .rules import Rules
-from .syllabification import Syllabification
+from .syllabify import Syllabifier
 from .sppassyll import sppasSyll
 
 __all__ = [
     'Rules',
-    'Syllabification',
+    'Syllabifier',
     'sppasSyll'
 ]

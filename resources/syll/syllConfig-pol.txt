@@ -1,10 +1,14 @@
 # ---------------------------------------------------------------------------
 #
-# This is the description file syllConfig.txt, made by Brigitte Bigi.
+# This is the description file syllConfig-pol.txt, made by Brigitte Bigi.
 # It defines the phonemes, their classes, and rules to find automatically
-# syllable boundaries by either the Syllabeur-v2.2 java program or SPPAS.
+# syllable boundaries.
 #
-# If you want to change this file, please read documentation before!
+# If you intend to change this file, please read documentation before!
+#
+# Use of this file is governed by the GNU Public License, version 3.
+# This banner notice must not be removed.
+# Copyright (C) 2011-2018  Brigitte Bigi, Laboratoire Parole et Langage
 # ---------------------------------------------------------------------------
 
 
@@ -44,28 +48,33 @@ PHONCLASS o V
 PHONCLASS o~ V
 PHONCLASS u V
 PHONCLASS y V
+
 # list of glides, use G symbol
 PHONCLASS j G
 PHONCLASS H G
 PHONCLASS w G
+
 # list of liquids, use L symbol
 PHONCLASS l L
 PHONCLASS r L
-# list of occlusives, use O symbol
-PHONCLASS p O
-PHONCLASS t O
-PHONCLASS k O
-PHONCLASS b O
-PHONCLASS d O
-PHONCLASS g O
-PHONCLASS Q O
-PHONCLASS c O
+
+# list of plosives, use P symbol
+PHONCLASS p P
+PHONCLASS t P
+PHONCLASS k P
+PHONCLASS b P
+PHONCLASS d P
+PHONCLASS g P
+PHONCLASS Q P
+PHONCLASS c P
+
 # list of nasals, use N symbol
 PHONCLASS n N
 PHONCLASS n` N
 PHONCLASS m N
 PHONCLASS N N
 PHONCLASS J N
+
 # list of fricatives, use F symbol
 PHONCLASS dz F
 PHONCLASS dZ F
@@ -86,6 +95,7 @@ PHONCLASS S S
 
 # unknown phoneme (do not remove this entry)
 PHONCLASS UNK #
+
 # ---------------------------------------------------------------------------
 
 
@@ -117,22 +127,22 @@ GENRULE VXXXXXXV 2
 # the use of X is forbidden
 # ----------------
 # rule: VXXV -> V.XXV
-EXCRULE VONV 0
-EXCRULE VOLV 0
-EXCRULE VOPV 0
-EXCRULE VOFV 0
-EXCRULE VOSV 0
-EXCRULE VOGV 0
+EXCRULE VPNV 0
+EXCRULE VPLV 0
+EXCRULE VPPV 0
+EXCRULE VPFV 0
+EXCRULE VPSV 0
+EXCRULE VPGV 0
 
 EXCRULE VFGV 0
 EXCRULE VFLV 0
-EXCRULE VFOV 0
+EXCRULE VFPV 0
 EXCRULE VFNV 0
 EXCRULE VFFV 0
 EXCRULE VFPV 0
 
 EXCRULE VSGV 0
-EXCRULE VSOV 0
+EXCRULE VSPV 0
 EXCRULE VSLV 0
 EXCRULE VSNV 0
 EXCRULE VSFV 0
@@ -142,36 +152,36 @@ EXCRULE VNGV 0
 
 EXCRULE VFFGV 0
 
-EXCRULE VOGGV 0
-EXCRULE VOGLV 0
-EXCRULE VOGOV 0
-EXCRULE VOGNV 0
-EXCRULE VOGFV 0
-EXCRULE VOGSV 0
-EXCRULE VOLGV 0
-EXCRULE VOLLV 0
-EXCRULE VOLOV 0
-EXCRULE VOLNV 0
-EXCRULE VOLFV 0
-EXCRULE VOLSV 0
-EXCRULE VONGV 0
-EXCRULE VONLV 0
-EXCRULE VONOV 0
-EXCRULE VONNV 0
-EXCRULE VONFV 0
-EXCRULE VONSV 0
-EXCRULE VOFGV 0
-EXCRULE VOFLV 0
-EXCRULE VOFOV 0
-EXCRULE VOFNV 0
-EXCRULE VOFFV 0
-EXCRULE VOFSV 0
-EXCRULE VOSGV 0
-EXCRULE VOSLV 0
-EXCRULE VOSOV 0
-EXCRULE VOSNV 0
-EXCRULE VOSFV 0
-EXCRULE VOSSV 0
+EXCRULE VPGGV 0
+EXCRULE VPGLV 0
+EXCRULE VPGOV 0
+EXCRULE VPGNV 0
+EXCRULE VPGFV 0
+EXCRULE VPGSV 0
+EXCRULE VPLGV 0
+EXCRULE VPLLV 0
+EXCRULE VPLPV 0
+EXCRULE VPLNV 0
+EXCRULE VPLFV 0
+EXCRULE VPLSV 0
+EXCRULE VPNGV 0
+EXCRULE VPNLV 0
+EXCRULE VPNPV 0
+EXCRULE VPNNV 0
+EXCRULE VPNFV 0
+EXCRULE VPNSV 0
+EXCRULE VPFGV 0
+EXCRULE VPFLV 0
+EXCRULE VPFPV 0
+EXCRULE VPFNV 0
+EXCRULE VPFFV 0
+EXCRULE VPFSV 0
+EXCRULE VPSGV 0
+EXCRULE VPSLV 0
+EXCRULE VPSPV 0
+EXCRULE VPSNV 0
+EXCRULE VPSFV 0
+EXCRULE VPSSV 0
 
 
 #
@@ -471,7 +481,7 @@ OTHRULE ANY V x l x  1
 OTHRULE ANY V x t k  1
 OTHRULE ANY V x t m  1
 
-# VOCCV - false exceptions
+# VPCCV - false exceptions
 OTHRULE ANY V b dz v  1
 OTHRULE ANY V d dz v  1
 OTHRULE ANY V d dz` v  1

@@ -2,9 +2,13 @@
 #
 # This is the description file syllConfig.txt, made by Brigitte Bigi.
 # It defines the phonemes, their classes, and rules to find automatically
-# syllable boundaries by the Syllabeur-v2.2 java program.
+# syllable boundaries.
 #
-# If you want to change this file, please read documentation before!
+# If you intend to change this file, please read SPPAS documentation before!
+#
+# Use of this file is governed by the GNU Public License, version 3.
+# This banner notice must not be removed.
+# Copyright (C) 2011-2018  Brigitte Bigi, Laboratoire Parole et Langage
 # ---------------------------------------------------------------------------
 
 
@@ -114,7 +118,8 @@ GENRULE VXXXXXXV 3
 
 #
 # Exceptions rules contains only class symbols
-# Here, the use of class symbols is required (X is forbidden)
+# Here, the use of class symbols is required
+# (except that X is forbidden)
 # ----------------
 # rule: VCGV -> V.CGV
 EXCRULE VLGV 0
@@ -129,6 +134,8 @@ EXCRULE VFLV 0
 EXCRULE VPLGV 0
 EXCRULE VFLGV 0
 EXCRULE VPLPV 2
+
+EXCRULE VLPPLV 2
 
 #
 # Specific rules are used to define which phoneme sequences must not be cut.

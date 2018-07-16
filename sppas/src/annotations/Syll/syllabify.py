@@ -85,21 +85,29 @@ class Syllabifier(object):
 
         end_syll = -1
         while nucleus != -1:
+
             start_syll = self._fix_start_syll(classes, end_syll, nucleus)
             next_nucleus = Syllabifier._find_next_vowel(classes, nucleus+1)
             next_break = Syllabifier._find_next_break(classes, nucleus)
 
-            # no rule to apply if the next event is a break.
-            if next_break != -1 and next_break < next_nucleus:
+            if next_break != -1 and (next_break < next_nucleus or next_nucleus == -1):
+                # no rule to apply if the next event is a break.
+                # ie next break occurs before next nucleus or no next nucleus
                 syllables.append((start_syll, next_break-1))
-                nucleus = Syllabifier._find_next_vowel(classes, next_break)
+
+            elif next_break == -1 and next_nucleus == -1:
+                # no rule to apply if current nucleus concerns the last syllable
+                end_syll = len(phonemes) - 1
+                syllables.append((start_syll, end_syll))
+
             else:
                 # apply the exception rule or the general one
                 end_syll = self._apply_class_rules(classes, nucleus, next_nucleus)
                 # apply the specific rules on phonemes to shift the end
                 end_syll = self._apply_phon_rules(phonemes, end_syll, nucleus, next_nucleus)
                 syllables.append((start_syll, end_syll))
-                nucleus = next_nucleus
+
+            nucleus = next_nucleus
 
         return syllables
 
