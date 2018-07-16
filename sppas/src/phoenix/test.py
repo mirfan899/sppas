@@ -5,6 +5,8 @@ from datetime import datetime
 
 log_filename = "C:\\Users\\brigi\\Desktop\\sppas_gui.log"
 
+# ---------------------------------------------------------------------------
+
 
 class sppasMainFrame(wx.Frame):
     """
@@ -69,15 +71,15 @@ class sppasMainFrame(wx.Frame):
 
 
 class sppasFilePanel(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+    def __init__(self, *args, **kw):
+        wx.Panel.__init__(self, *args, **kw)
         self.SetBackgroundColour(wx.Colour(245, 245, 245, alpha=wx.ALPHA_OPAQUE))
         self.SetMinSize((-1, 256))
 
 # ---------------------------------------------------------------------------
 
 
-class sppasTopMenuPanel(wx.Panel):
+class sppasMenuPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         self.SetBackgroundColour(wx.Colour(10, 20, 30, alpha=wx.ALPHA_OPAQUE))
@@ -88,14 +90,16 @@ class sppasTopMenuPanel(wx.Panel):
 # ---------------------------------------------------------------------------
 
 
-class sppasBottomMenuPanel(wx.Panel):
+class sppasActionPanel(wx.Panel):
+    """ Create a panel with 3 action buttons: exit, open, save.
 
+    """
     def __init__(self, parent):
+
         wx.Panel.__init__(self, parent)
         self.SetBackgroundColour(wx.Colour(10, 20, 30, alpha=wx.ALPHA_OPAQUE))
         self.SetMinSize((-1, 32))
         self.SetSize((-1, 32))
-        #  parent, id=ID_ANY, pos=DefaultPosition, size=DefaultSize, style=TAB_TRAVERSAL, name=PanelNameStr
 
         exitBtn = wx.Button(self, wx.ID_ANY, "Exit", style=wx.NO_BORDER, name="exit")
         exitBtn.SetForegroundColour(wx.Colour(250, 250, 250))
@@ -117,13 +121,20 @@ class sppasBottomMenuPanel(wx.Panel):
         actionSizer.Add(saveBtn, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(actionSizer)
 
-        self.Bind(wx.EVT_BUTTON, self.OnActionButton)
+        self.Bind(wx.EVT_BUTTON, self.OnAction, exitBtn)
+        self.Bind(wx.EVT_BUTTON, self.OnAction, openBtn)
+        self.Bind(wx.EVT_BUTTON, self.OnAction, saveBtn)
 
     # -----------------------------------------------------------------------
 
-    def OnActionButton(self, event):
+    def OnAction(self, event):
+        """ A button was clicked.
+        Here we just send the event to the parent.
+
+        """
         print("A button was clicked on.")
         wx.PostEvent(self.GetTopLevelParent(), event)
+
 
 # ---------------------------------------------------------------------------
 
@@ -131,14 +142,22 @@ class sppasBottomMenuPanel(wx.Panel):
 class sppasApp(wx.App):
 
     def __init__(self):
+        """ Create a customized application.
 
+        This app is using the following parameters:
+
+            - redirect (False) Should sys.stdout and sys.stderr be redirected?
+            - filename (None) The name of a file to redirect output to.
+            - useBestVisual (True) Should the app try to use the best
+              available visual provided by the system
+            - clearSigInt (True) Should SIGINT be cleared? This allows the app
+              to terminate upon a Ctrl-C in the console like other GUI apps will.
+
+        """
         # Fix look and feels of all objects
         self.load_config()
 
-        # Should sys.stdout and sys.stderr be redirected? Defaults to False.
-        # The name of a file to redirect output to.
-        # Should the app try to use the best available visual provided by the system
-        # Should SIGINT be cleared? This allows the app to terminate upon a Ctrl-C in the console like other GUI apps will.
+        # ensure the parent's __init__ is called
         wx.App.__init__(self,
                         redirect=True,
                         filename=log_filename,
@@ -146,11 +165,11 @@ class sppasApp(wx.App):
                         clearSigInt=True)
         print("Starts at {:s}".format(datetime.now().strftime("%y-%m-%d-%H-%M")))
 
-        frame = sppasMainFrame()
+        # create the frame
+        frm = sppasMainFrame()
+        self.SetTopWindow(frm)
 
-        # Add a panel so it looks correct on all platforms
-        panel = wx.Panel(frame, wx.ID_ANY)
-
+        # create a sizer to add and organize objects
         topSizer = wx.BoxSizer(wx.VERTICAL)
 
         # In normal use the sizers will treat a window's initial size when it
@@ -159,11 +178,9 @@ class sppasApp(wx.App):
         # size so if you don't give them another size that is what the sizer
         # will use for the minimum. If the sizer has no other reason to
         # enlarge the window then you will see nothing of it.
-        topSizer.Add(sppasTopMenuPanel(frame), 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
-        topSizer.Add(sppasFilePanel(frame), 1, wx.ALL | wx.EXPAND, 0)
-        topSizer.Add(sppasBottomMenuPanel(frame), 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
-
-        panel.SetSizer(topSizer)
+        topSizer.Add(sppasMenuPanel(frm), 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
+        topSizer.Add(sppasFilePanel(frm), 1, wx.ALL | wx.EXPAND, 0)
+        topSizer.Add(sppasActionPanel(frm), 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
 
         # Often sizer.Fit(frame) is NOT what you want. It will use the minimum
         # size of all the contained windows and sub-sizers and resize the
@@ -173,6 +190,11 @@ class sppasApp(wx.App):
         # layout to that size instead.
         # topSizer.Fit(frame)
 
+        # Associate a handler function with the EVT_BUTTON event.
+        # That means that when a button is clicked then the process
+        # handler function will be called.
+        self.Bind(wx.EVT_BUTTON, self.process_event)
+
         # Since Layout doesn't happen until there is a size event, you will
         # sometimes have to force the issue by calling Layout yourself. For
         # example, if a frame is given its size when it is created, and then
@@ -180,28 +202,37 @@ class sppasApp(wx.App):
         # then it may not receive another size event (depending on platform)
         # in order to do the initial layout. Simply calling self.Layout from
         # the end of the frame's __init__ method will usually resolve this.
-        frame.SetAutoLayout(True)
-        frame.SetSizer(topSizer)
-        frame.Layout()
-        frame.Show()
-
-        # Set the 'main' top level window, which will be used for the parent
-        # of the on-demand output window as well as for dialogs that do not
-        # have an explicit parent set.
-        self.SetTopWindow(frame)
-
-        self.Bind(wx.EVT_BUTTON, self.ProcessEvent)
+        frm.SetAutoLayout(True)
+        frm.SetSizer(topSizer)
+        frm.Layout()
+        frm.Show()
 
     # -----------------------------------------------------------------------
+    # Callbacks
+    # -----------------------------------------------------------------------
 
-    def ProcessEvent(self, event):
+    def process_event(self, event):
 
         event_name = event.GetEventObject().GetName()
         event_id = event.GetEventObject().GetId()
-        print("Received event: {:s} {:d}".format(event_name, event_id))
+        print("Received event id {:d} of {:s}".format(event_id, event_name))
 
         if event_name == "exit":
-            self.GetTopWindow().Close()
+            self.exit()
+        elif event_name == "save":
+            pass
+        elif event_name == "open":
+            pass
+        else:
+            event.skip()
+
+    # -----------------------------------------------------------------------
+
+    def exit(self):
+        """ Close the frame, terminating the application. """
+
+        print "Bye bye."
+        self.GetTopWindow().Close(True)
 
     # -----------------------------------------------------------------------
 
