@@ -271,9 +271,10 @@ A few tutorials are available on the web site.
 - Resources package: add compatibility with PLS (W3C xml) pronunciation dictionaries
 
 
+
 ### SPPAS 1.9.7
 
-(2018, August)
+(2018, 20th July)
 
 #### Development
 
@@ -281,10 +282,11 @@ A few tutorials are available on the web site.
 - IPUs segmentation: debug in fixing automatically the threshold for the search of silences (can't be negative!)
 - Annotations: improved messages for the procedure outcome report
 - Annotations: Text normalization and Phonetization based on anndata API instead of annotationdata
+- Annotations: Syllabification re-programmed and now based on anndata API
 
 #### Resources:
 
-- French syllabification rules updated to be compliant with the new phoneset (version 1.9.6)
+- French syllabification rules updated to be compliant with the new phoneset (since version 1.9.6)
 
 #### Documentation
 

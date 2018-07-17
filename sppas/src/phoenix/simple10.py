@@ -1,11 +1,10 @@
 import wx
+import wx.adv
 import logging
+
 """
 
-Manage log messages, instead of "print".
-Simple use of the python logging package.
-
-and also, move the "job of a frame" into myFrame class.
+Use global settings to fix the Look&Feel.
 
 """
 # ---------------------------------------------------------------------------
@@ -23,8 +22,8 @@ btn_background_color = wx.Colour(65, 65, 60, alpha=wx.ALPHA_OPAQUE)
 background_color = wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE)
 foreground_color = wx.Colour(250, 250, 250, alpha=wx.ALPHA_OPAQUE)
 
-
 # ---------------------------------------------------------------------------
+
 
 def setup_logging(log_level=15, filename=None):
     """ Setup default logger to log to stderr or and possible also to a file.
@@ -70,15 +69,47 @@ def setup_logging(log_level=15, filename=None):
 # ---------------------------------------------------------------------------
 
 
+class myTitleText(wx.StaticText):
+    """ A class to write a title. """
+
+    def __init__(self, parent, title_text):
+
+        wx.StaticText.__init__(self, parent, label=title_text, style=wx.ALIGN_CENTER)
+
+        # Fix Look&Feel
+        cfg = wx.GetApp().cfg
+
+        if 'TITLE_TEXT_FONT' in cfg:
+            self.SetFont(cfg['TITLE_TEXT_FONT'])
+        if 'TITLE_BG_COLOUR' in cfg:
+            self.SetBackgroundColour(parent.GetBackgroundColour())
+        if 'TITLE_FG_COLOUR' in cfg:
+            self.SetForegroundColour(cfg['TITLE_FG_COLOUR'])
+
+# ---------------------------------------------------------------------------
+
+
 class myButton(wx.Button):
     """ Create my own button. Inherited from the wx.Button.
 
     """
     def __init__(self, parent, label, name):
 
-        wx.Button.__init__(self, parent, wx.ID_ANY, label, style=wx.NO_BORDER, name=name)
-        self.SetForegroundColour(foreground_color)
-        self.SetBackgroundColour(btn_background_color)
+        wx.Button.__init__(self,
+                           parent,
+                           wx.ID_ANY,
+                           label,
+                           style=wx.NO_BORDER,
+                           name=name)
+        # Fix Look&Feel
+        cfg = wx.GetApp().cfg
+
+        if 'BUTTON_FG_COLOUR' in cfg:
+            self.SetForegroundColour(cfg['BUTTON_FG_COLOUR'])
+        if 'BUTTON_BG_COLOUR' in cfg:
+            self.SetBackgroundColour(cfg['BUTTON_FG_COLOUR'])
+        if 'BUTTON_TEXT_FONT' in cfg:
+            self.SetFont(cfg['BUTTON_TEXT_FONT'])
 
 # ---------------------------------------------------------------------------
 
@@ -94,7 +125,11 @@ class myFrame(wx.Frame):
                           title='A simple application...',
                           style=FRAME_STYLE)
         self.SetMinSize((300, 200))
-        self.SetSize((640, 480))
+
+        # Fix Look&Feel
+        cfg = wx.GetApp().cfg
+        if 'FRAME_SIZE' in cfg:
+            self.SetSize(cfg['FRAME_SIZE'])
 
         # Store all panels in a dictionary with key=name, value=object
         self.panels = dict()
@@ -207,16 +242,18 @@ class myMenuPanel(wx.Panel):
     def __init__(self, parent):
 
         wx.Panel.__init__(self, parent)
-        self.SetBackgroundColour(btn_background_color)
-        self.SetMinSize((-1, 64))
-        self.SetSize((-1, 64))
+        self.SetMinSize((-1, 32))
+
+        # Fix Look&Feel
+        cfg = wx.GetApp().cfg
+        if 'TITLE_BG_COLOUR' in cfg:
+            self.SetBackgroundColour(cfg['TITLE_BG_COLOUR'])
+        if 'TITLE_HEIGHT' in cfg:
+            logging.debug('Menu height: {:d}'.format(cfg['TITLE_HEIGHT']))
+            self.SetSize((-1, cfg['TITLE_HEIGHT']))
 
         menuSizer = wx.BoxSizer(wx.HORIZONTAL)
-        st = wx.StaticText(self, wx.ID_ANY, label="My App!", pos=(25, 25))
-        st.SetForegroundColour(foreground_color)
-        font = st.GetFont()
-        font = font.Bold()
-        st.SetFont(font)
+        st = myTitleText(self, "My App!")
         menuSizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL, 0)
 
         menuSizer.AddStretchSpacer(prop=1)
@@ -246,6 +283,7 @@ class myMenuPanel(wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.OnAbout, aboutBtn)
 
         self.SetSizer(menuSizer)
+        self.SetAutoLayout(True)
 
     # -----------------------------------------------------------------------
 
@@ -278,9 +316,11 @@ class myActionPanel(wx.Panel):
     def __init__(self, parent):
 
         wx.Panel.__init__(self, parent)
-        self.SetBackgroundColour(btn_background_color)
         self.SetMinSize((-1, 32))
-        self.SetSize((-1, 32))
+
+        cfg = wx.GetApp().cfg
+        if 'TITLE_BG_COLOUR' in cfg:
+            self.SetBackgroundColour('TITLE_BG_COLOUR')
 
         exitBtn = myButton(self, "Exit", name="exit")
         openBtn = myButton(self, "Open", name="open")
@@ -388,9 +428,52 @@ class myApp(wx.App):
         wx.Log.EnableLogging(True)
         wx.Log.SetLogLevel(20)
 
+        # Display a Splash screen during 10 seconds, or stops when main frame
+        # is ready
+        bitmap = wx.Bitmap('splash.png', wx.BITMAP_TYPE_PNG)
+
+        splash = wx.adv.SplashScreen(bitmap, wx.adv.SPLASH_CENTRE_ON_SCREEN | wx.adv.SPLASH_TIMEOUT,
+                                     10000, None, -1, wx.DefaultPosition, wx.DefaultSize,
+                                     wx.BORDER_SIMPLE | wx.STAY_ON_TOP)
+
+        wx.Yield()
+
+        # Initialize the application
+        #   here we could read some config file, load some resources, etc
+        #   while we show the Splash window
+        self.cfg = dict()
+
+        title_font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        title_font = title_font.Bold()
+        title_font = title_font.Scale(2.)
+
+        button_font = wx.Font(12,  # point size
+                              wx.FONTFAMILY_DEFAULT,  # family,
+                              wx.FONTSTYLE_NORMAL,    # style,
+                              wx.FONTWEIGHT_NORMAL,   # weight,
+                              underline=False,
+                              faceName="Calibri",
+                              encoding=wx.FONTENCODING_SYSTEM)
+
+        # Fix the size of the objects
+        self.cfg['FRAME_SIZE'] = wx.Size(640, 480)
+        self.cfg['TITLE_HEIGHT'] = 64
+
+        # Fix the COLORS
+        self.cfg['TITLE_BG_COLOUR'] = wx.Colour(65, 65, 60, alpha=wx.ALPHA_OPAQUE)
+        self.cfg['TITLE_FG_COLOUR'] = wx.Colour(250, 250, 250, alpha=wx.ALPHA_OPAQUE)
+
+        self.cfg['FG_COLOUR'] = wx.Colour(250, 250, 240, alpha=wx.ALPHA_OPAQUE)
+        self.cfg['BG_COLOUR'] = wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE)
+
+        # Fix the font
+        self.cfg['TITLE_TEXT_FONT'] = title_font
+        self.cfg['BUTTON_TEXT_FONT'] = button_font
+
         # create the frame
         frm = myFrame()
         self.SetTopWindow(frm)
+        splash.Close()
         frm.Show()
 
     # -----------------------------------------------------------------------
@@ -423,9 +506,9 @@ if __name__ == '__main__':
     except:
         setup_logging(log_level, None)
 
-    # Run application
+    # Run the application
     app = myApp()
     app.MainLoop()
 
-    # a last short message...
+    # do some job after (the application is stopped)
     logging.info("Bye bye")
