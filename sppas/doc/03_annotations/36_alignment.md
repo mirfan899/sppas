@@ -79,7 +79,7 @@ This file includes one or two tiers:
 * "PhonAlign" is the segmentation at the phone level;
 * "TokensAlign" is the segmentation at the word level (if a file with tokenization was found).
 
-![Alignment workflow](./etc/figures/alignworkflow.bmp)
+![Alignment workflow](./etc/figures/alignworkflow.png)
 
 The following options are available to configure Alignment:
 

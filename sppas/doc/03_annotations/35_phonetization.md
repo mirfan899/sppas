@@ -94,7 +94,7 @@ i.e. "oriana1-phon.xra" for the previous example.
 This file contains only one tier with the resulting phonetization and with
 name "Phones".
 
-![Phonetization workflow](./etc/figures/phonworkflow.bmp)
+![Phonetization workflow](./etc/figures/phonworkflow.png)
 
 To perform the annotation, click on the Phonetization
 activation button, select the language and click on the "Configure..."
