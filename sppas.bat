@@ -43,5 +43,5 @@ GOTO EndHeader
 :EndHeader
 
 @echo off
-start "" .\sppas\bin\sppasgui.py
+start "" c:\Python27\python.exe .\sppas\bin\sppasgui.py
 exit

@@ -4,25 +4,10 @@ import logging
 
 """
 
-Use global settings to fix the Look&Feel.
+Use global settings to fix the Look&Feel,
+so no longer global variables fixed in hard in the code!
 
 """
-# ---------------------------------------------------------------------------
-# Constants
-# ---------------------------------------------------------------------------
-
-FRAME_STYLE = wx.DEFAULT_FRAME_STYLE | wx.CLOSE_BOX
-
-
-# ---------------------------------------------------------------------------
-# Variables
-# ---------------------------------------------------------------------------
-
-btn_background_color = wx.Colour(65, 65, 60, alpha=wx.ALPHA_OPAQUE)
-background_color = wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE)
-foreground_color = wx.Colour(250, 250, 250, alpha=wx.ALPHA_OPAQUE)
-
-# ---------------------------------------------------------------------------
 
 
 def setup_logging(log_level=15, filename=None):
@@ -120,16 +105,23 @@ class myFrame(wx.Frame):
     """
     def __init__(self):
 
+        cfg = wx.GetApp().cfg
+        FRAME_STYLE = wx.DEFAULT_FRAME_STYLE
+        if FRAME_STYLE in cfg:
+            FRAME_STYLE = cfg['FRAME_STYLE']
         wx.Frame.__init__(self,
                           parent=None,
                           title='A simple application...',
                           style=FRAME_STYLE)
         self.SetMinSize((300, 200))
-
-        # Fix Look&Feel
-        cfg = wx.GetApp().cfg
-        if 'FRAME_SIZE' in cfg:
-            self.SetSize(cfg['FRAME_SIZE'])
+        if 'FRAME_WIDTH' in cfg or 'FRAME_HEIGHT' in cfg:
+            w = -1
+            h = -1
+            if 'FRAME_WIDTH' in cfg:
+                w = cfg['FRAME_WIDTH']
+            if 'FRAME_HEIGHT' in cfg:
+                h = cfg['FRAME_HEIGHT']
+            self.SetSize(wx.Size(w, h))
 
         # Store all panels in a dictionary with key=name, value=object
         self.panels = dict()
@@ -242,7 +234,6 @@ class myMenuPanel(wx.Panel):
     def __init__(self, parent):
 
         wx.Panel.__init__(self, parent)
-        self.SetMinSize((-1, 32))
 
         # Fix Look&Feel
         cfg = wx.GetApp().cfg
@@ -250,7 +241,7 @@ class myMenuPanel(wx.Panel):
             self.SetBackgroundColour(cfg['TITLE_BG_COLOUR'])
         if 'TITLE_HEIGHT' in cfg:
             logging.debug('Menu height: {:d}'.format(cfg['TITLE_HEIGHT']))
-            self.SetSize((-1, cfg['TITLE_HEIGHT']))
+            self.SetMinSize((-1, cfg['TITLE_HEIGHT']))
 
         menuSizer = wx.BoxSizer(wx.HORIZONTAL)
         st = myTitleText(self, "My App!")
@@ -348,21 +339,35 @@ class myActionPanel(wx.Panel):
         logging.debug("A button in the action panel was clicked on.")
         wx.PostEvent(self.GetTopLevelParent(), event)
 
+# ---------------------------------------------------------------------------
+
+
+class myContentPanel(wx.Panel):
+    """ Create my own panel for the content of the frame.
+
+    """
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+
+        cfg = wx.GetApp().cfg
+        if 'BG_COLOUR' in cfg:
+            self.SetBackgroundColour(cfg['BG_COLOUR'])
 
 # ---------------------------------------------------------------------------
 
 
-class myFilePanel(wx.Panel):
+class myFilePanel(myContentPanel):
     """ Create my own panel to work with files.
 
     """
     def __init__(self, parent):
+        myContentPanel.__init__(self, parent)
 
-        wx.Panel.__init__(self, parent)
-        self.SetBackgroundColour(background_color)
+        cfg = wx.GetApp().cfg
 
         st = wx.StaticText(self, wx.ID_ANY, label="Files panel", pos=(25, 25))
-        st.SetForegroundColour(foreground_color)
+        if 'FG_COLOUR' in cfg:
+            st.SetForegroundColour(cfg['FG_COLOUR'])
         font = st.GetFont()
         font.PointSize += 10
         font = font.Bold()
@@ -372,17 +377,19 @@ class myFilePanel(wx.Panel):
 # ---------------------------------------------------------------------------
 
 
-class myAnnotatePanel(wx.Panel):
+class myAnnotatePanel(myContentPanel):
     """ Create my own panel to annotate files.
 
     """
     def __init__(self, parent):
 
-        wx.Panel.__init__(self, parent)
+        myContentPanel.__init__(self, parent)
         self.SetBackgroundColour(wx.Colour(10, 10, 5))
+        cfg = wx.GetApp().cfg
 
         st = wx.StaticText(self, wx.ID_ANY, label="Annotate panel", pos=(25, 25))
-        st.SetForegroundColour(foreground_color)
+        if 'FG_COLOUR' in cfg:
+            st.SetForegroundColour(cfg['FG_COLOUR'])
         font = st.GetFont()
         font.PointSize += 10
         font = font.Bold()
@@ -392,17 +399,19 @@ class myAnnotatePanel(wx.Panel):
 # ---------------------------------------------------------------------------
 
 
-class myAnalyzePanel(wx.Panel):
+class myAnalyzePanel(myContentPanel):
     """ Create my own panel to analyze files.
 
     """
     def __init__(self, parent):
 
-        wx.Panel.__init__(self, parent)
+        myContentPanel.__init__(self, parent)
         self.SetBackgroundColour(wx.Colour(80, 80, 75))
+        cfg = wx.GetApp().cfg
 
         st = wx.StaticText(self, wx.ID_ANY, label="Analyze panel", pos=(25, 25))
-        st.SetForegroundColour(foreground_color)
+        if 'FG_COLOUR' in cfg:
+            st.SetForegroundColour(cfg['FG_COLOUR'])
         font = st.GetFont()
         font.PointSize += 10
         font = font.Bold()
@@ -441,6 +450,11 @@ class myApp(wx.App):
         # Initialize the application
         #   here we could read some config file, load some resources, etc
         #   while we show the Splash window
+        # for this example, we simply create a dictionary with the config
+        # (and sleep some time to simulate we're doing something).
+        a = 1.5
+        for i in range(1000000):
+            a *= float(i)
         self.cfg = dict()
 
         title_font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
@@ -455,8 +469,11 @@ class myApp(wx.App):
                               faceName="Calibri",
                               encoding=wx.FONTENCODING_SYSTEM)
 
+        self.cfg['FRAME_STYLE'] = wx.DEFAULT_FRAME_STYLE | wx.CLOSE_BOX
+
         # Fix the size of the objects
-        self.cfg['FRAME_SIZE'] = wx.Size(640, 480)
+        self.cfg['FRAME_WIDTH'] = 640
+        self.cfg['FRAME_HEIGHT'] = 480
         self.cfg['TITLE_HEIGHT'] = 64
 
         # Fix the COLORS
