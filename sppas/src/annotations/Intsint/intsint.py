@@ -34,6 +34,7 @@
 
 """
 import math
+from ..annotationsexc import SmallSizeInputError
 
 # ----------------------------------------------------------------------------
 
@@ -300,7 +301,7 @@ class Intsint(object):
 
         """
         if len(momel_anchors) < 2:
-            raise IOError("Not enough anchors to estimate INTSINT.")
+            raise SmallSizeInputError(2)
 
         self.init(momel_anchors)
         self.recode()

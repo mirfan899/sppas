@@ -195,6 +195,9 @@ msgstr "Bad input tier type. Expected time-aligned intervals."
 msgid ":ERROR 1050: "
 msgstr "Inconsistency between the number of intervals of the input tiers. Got: {:d} and {:d}"
 
+msgid ":ERROR 1060: "
+msgstr "Not enough annotations in the input tier. At least {:d} are required."
+
 msgid ":ERROR 1110: "
 msgstr "Unable to phonetize the unknown token {:s}."
 
