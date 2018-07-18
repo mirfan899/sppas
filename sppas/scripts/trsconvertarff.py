@@ -65,14 +65,14 @@ parser.add_argument("-c",
                     metavar="class",
                     required=False,
                     type=str,
-                    help='The class tier name.')
+                    help='Name of the tier for the class')
 
 parser.add_argument("-C",
                     metavar="classtags",
                     required=False,
                     type=int,
                     default=10,
-                    help='Extend the maximum number of possible tags of the class (default: 10).')
+                    help='Reduce the maximum number of possible tags of the class (default: 100).')
 
 parser.add_argument("-t",
                     metavar="value",
@@ -95,7 +95,7 @@ instance_group.add_argument("-a",
                             metavar="anchor",
                             required=False,
                             type=str,
-                            help='Anchor tier name to create instances.')
+                            help='Name of the anchor tier to create instances.')
 
 instance_group.add_argument("-s",
                             metavar="step",
@@ -134,7 +134,7 @@ parser.add_argument("--xra",
 
 parser.add_argument("--xrff",
                     action='store_true',
-                    help="Export into the XRFF file format instead of the ARFF one.")
+                    help="Export into the XRFF file format instead of ARFF.")
 
 parser.add_argument("--quiet",
                     action='store_true',

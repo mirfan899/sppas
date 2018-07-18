@@ -102,7 +102,7 @@ class TestWEKA(unittest.TestCase):
         with self.assertRaises(IOError):
             weka.set_max_class_tags(1)
         with self.assertRaises(IOError):
-            weka.check_max_class_tags(110)
+            sppasWEKA.check_max_class_tags(110)
 
         self.assertEqual(weka._max_attributes_tags, 20)
         weka.set_max_attributes_tags(5)
@@ -110,7 +110,7 @@ class TestWEKA(unittest.TestCase):
         with self.assertRaises(ValueError):
             weka.set_max_attributes_tags(0)
         with self.assertRaises(ValueError):
-            weka.check_max_attributes_tags(210)
+            sppasWEKA.check_max_attributes_tags(210)
 
         self.assertEqual(weka._empty_annotation_tag, "none")
         weka.set_empty_annotation_tag("toto")

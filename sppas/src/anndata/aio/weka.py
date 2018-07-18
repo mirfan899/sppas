@@ -149,12 +149,13 @@ class sppasWEKA(sppasBaseIO):
         class tier
 
         """
-        self.check_max_class_tags(nb_tags)
+        sppasWEKA.check_max_class_tags(nb_tags)
         self._max_class_tags = int(nb_tags)
 
     # -----------------------------------------------------------------
 
-    def check_max_class_tags(self, nb_tags):
+    @staticmethod
+    def check_max_class_tags(nb_tags):
         """ Check the maximum number of tags for the class.
 
         :param nb_tags: (int) Size of the controlled vocabulary of the
@@ -178,12 +179,13 @@ class sppasWEKA(sppasBaseIO):
         class tier
 
         """
-        self.check_max_attributes_tags(nb_tags)
+        sppasWEKA.check_max_attributes_tags(nb_tags)
         self._max_attributes_tags = int(nb_tags)
 
     # -----------------------------------------------------------------
 
-    def check_max_attributes_tags(self, nb_tags):
+    @staticmethod
+    def check_max_attributes_tags(nb_tags):
         """ Check the maximum number of tags for an attribute.
 
         :param nb_tags: (int) Size of the controlled vocabulary of the
@@ -200,7 +202,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def set_empty_annotation_tag(self, tag_str):
-        """ Fix the annotation tag that will be used to replace
+        """ Fix the annotation string that will be used to replace
         empty annotations.
 
         :param tag_str: (str)
@@ -215,7 +217,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def set_empty_annotation_class_tag(self, tag_str=None):
-        """ Fix the annotation tag that will be used to replace
+        """ Fix the annotation string that will be used to replace
         empty annotations in the class tier.
 
         :param tag_str: (str or None) None is used to NOT fill
@@ -234,7 +236,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def set_uncertain_annotation_tag(self, tag_str):
-        """ Fix the annotation tag that is used in the annotations to
+        """ Fix the annotation string that is used in the annotations to
         mention an uncertain label.
 
         :param tag_str: (str)
@@ -254,28 +256,33 @@ class sppasWEKA(sppasBaseIO):
         """ Check the metadata and fix the variable members. """
 
         if self.is_meta_key("weka_max_class_tags") is True:
-            self.set_max_class_tags(self.get_meta("weka_max_class_tags"))
+            self.set_max_class_tags(
+                self.get_meta("weka_max_class_tags"))
 
         if self.is_meta_key("weka_max_attributes_tags") is True:
-            self.set_max_attributes_tags(self.get_meta("weka_max_attributes_tags"))
+            self.set_max_attributes_tags(
+                self.get_meta("weka_max_attributes_tags"))
 
         if self.is_meta_key("weka_empty_annotation_tag") is True:
-            self.set_empty_annotation_tag(self.get_meta("weka_empty_annotation_tag"))
+            self.set_empty_annotation_tag(
+                self.get_meta("weka_empty_annotation_tag"))
 
         if self.is_meta_key("weka_empty_annotation_class_tag") is True:
-            self.set_empty_annotation_class_tag(self.get_meta("weka_empty_annotation_class_tag"))
+            self.set_empty_annotation_class_tag(
+                self.get_meta("weka_empty_annotation_class_tag"))
 
         if self.is_meta_key("weka_uncertain_annotation_tag") is True:
-            self.set_uncertain_annotation_tag(self.get_meta("weka_uncertain_annotation_tag"))
+            self.set_uncertain_annotation_tag(
+                self.get_meta("weka_uncertain_annotation_tag"))
 
     # -----------------------------------------------------------------
 
     def validate_annotations(self):
-        """ Prepare data to be compatible.
+        """ Prepare data to be compatible with the expected format.
 
-        Convert tier names.
-        Delete the existing controlled vocabularies and convert tags
-        (fill empty tags, replace whitespace by underscores).
+        - Convert tier names
+        - Delete the existing controlled vocabularies
+        - Convert tags: fill empty tags, replace whitespace by underscores
 
         """
         if self.is_empty():
@@ -284,42 +291,47 @@ class sppasWEKA(sppasBaseIO):
         min_time_point = self.get_min_loc()
         max_time_point = self.get_max_loc()
         if min_time_point is None or max_time_point is None:
-            # only empty tiers in the transcription
+            # it means there are only empty tiers in the transcription
             raise AioNoTiersError("WEKA")
 
         for tier in self:
 
-            # Name of the tier.
+            # only change the tiers to be used (no matter of the other ones!)
+            if tier.is_meta_key("weka_attribute") is False and\
+               tier.is_meta_key("weka_class") is False:
+                continue
+
+            # Name of the tier: no whitespace
             name = tier.get_name()
             tier.set_name(sppasUnicode(name).clear_whitespace())
 
             # Delete current controlled vocabulary.
-            if tier.is_meta_key("weka_attribute") or tier.is_meta_key("weka_class"):
-                if tier.get_ctrl_vocab() is not None:
-                    tier.set_ctrl_vocab(None)
+            #  if tier.is_meta_key("weka_attribute") or tier.is_meta_key("weka_class"):
+            if tier.get_ctrl_vocab() is not None:
+                tier.set_ctrl_vocab(None)
 
             # Convert annotation tags.
             for ann in tier:
                 if ann.is_labelled():
                     for label in ann.get_labels():
-                        if len(label) > 0:
-                            for tag, score in label:
-                                if tag.get_type() == "str":
-                                    # Replace whitespace by underscore and check for an empty tag.
-                                    tag_text = sppasUnicode(tag.get_content()).clear_whitespace()
-                                    if len(tag_text) == 0:
-                                        # The tag is empty. We have to fill it (or not).
-                                        if tier.is_meta_key("weka_class") is False:
-                                            tag_text = self._empty_annotation_tag
-                                        else:
-                                            if self._empty_annotation_class_tag is not None:
-                                                tag_text = self._empty_annotation_class_tag
+                        #if len(label) > 0:
+                        for tag, score in label:
+                            if tag.get_type() == "str":
+                                # Replace whitespace by underscore and check for an empty tag.
+                                tag_text = sppasUnicode(tag.get_content()).clear_whitespace()
+                                if len(tag_text) == 0:
+                                    # The tag is empty. We have to fill it (or not).
+                                    if tier.is_meta_key("weka_class") is False:
+                                        tag_text = self._empty_annotation_tag
+                                    else:
+                                        if self._empty_annotation_class_tag is not None:
+                                            tag_text = self._empty_annotation_class_tag
 
-                                    new_tag = sppasTag(tag_text)
-                                    # Set the new version of the tag to the label
-                                    if new_tag != tag:
-                                        ann.remove_tag(tag)
-                                        label.append(new_tag, score)
+                                new_tag = sppasTag(tag_text)
+                                # Set the new version of the tag to the label
+                                if new_tag != tag:
+                                    ann.remove_tag(tag)
+                                    label.append(new_tag, score)
                         else:
                             if tier.is_meta_key("weka_class") is False:
                                 # The annotation was not labelled. We have to do it.
@@ -341,7 +353,9 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def validate(self):
-        """ Check the tiers to verify if everything is ok:
+        """ Check the tiers.
+
+         Verify if everything is ok:
 
             1. A class is defined: "weka_class" in the metadata of a tier
             2. Attributes are fixed: "weka_attribute" in the metadata of at least one tier
@@ -359,7 +373,7 @@ class sppasWEKA(sppasBaseIO):
             raise IOError("The transcription must contain a class.")
         if class_tier.is_empty():
             raise AioEmptyTierError("WEKA", class_tier.get_name())
-        self.check_max_class_tags(len(class_tier.get_ctrl_vocab()))
+        sppasWEKA.check_max_class_tags(len(class_tier.get_ctrl_vocab()))
 
         has_attribute = list()
         for tier in self:
@@ -461,8 +475,8 @@ class sppasWEKA(sppasBaseIO):
             mindex = tier.index(localization)
         else:
             mindex = tier.mindex(localization, bound=10)
-            # TODO: return all sppasLabel() during the localization (i.e.
-            # during the period including the vagueness) and not only at the
+            # TODO: return all sppasLabel() during the localization
+            # (i.e. during the period including the vagueness) and not only at the
             # midpoint of the localization.
             # And in the same idea, we have to deal with overlapping annotations.
 
@@ -472,12 +486,12 @@ class sppasWEKA(sppasBaseIO):
             ann = tier[mindex]
             if ann.is_labelled():
                 for label in ann.get_labels():
-                    if len(label) > 0:
-                        for tag, score in label:
-                            if tag.get_content() == "":
-                                labels.append(sppasLabel(sppasTag(self._empty_annotation_tag), score))
-                            else:
-                                labels.append(label)
+                    #if len(label) > 0:
+                    for tag, score in label:
+                        if tag.get_content() == "":
+                            labels.append(sppasLabel(sppasTag(self._empty_annotation_tag), score))
+                        else:
+                            labels.append(label)
 
         if len(labels) == 0:
             return [sppasLabel(sppasTag(self._empty_annotation_tag))]
