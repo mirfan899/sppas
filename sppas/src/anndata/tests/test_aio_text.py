@@ -43,7 +43,6 @@
 import unittest
 import os.path
 
-from ..anndataexc import AioMultiTiersError
 from ..aio.text import sppasRawText
 from ..aio.text import sppasCSV
 from ..aio.text import sppasBaseText

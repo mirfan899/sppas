@@ -355,8 +355,8 @@ class sppasMRK(sppasBasePhonedit):
                 # fix information about this tier/level
                 point = tier.is_point()
                 level = "LEVEL_{:s}{:s}".format(
-                            chr(code_a + index_tier / 26),
-                            chr(code_a + index_tier % 26))
+                            chr(code_a + int(index_tier / 26)),
+                            chr(code_a + int(index_tier % 26)))
 
                 # Write information about the tier
                 fp.write("[DSC_{:s}]\n".format(level))

@@ -37,7 +37,9 @@
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Test the sppasXRA instance.
+    :summary:      Test the class sppasXRA().
+
+    To read and write SPPAS XRA files.
 
 """
 import unittest

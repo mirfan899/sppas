@@ -37,7 +37,7 @@
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Test the reader of SPPAS for AnnotationPro files.
+    :summary:      Test the reader/writer for AnnotationPro files.
 
 """
 import unittest

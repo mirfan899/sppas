@@ -39,6 +39,7 @@
     See: http://www.audacityteam.org/
 
 """
+import codecs
 import xml.etree.cElementTree as ET
 
 from .basetrs import sppasBaseIO
@@ -68,17 +69,20 @@ class sppasAudacity(sppasBaseIO):
     @staticmethod
     def detect(filename):
         """ Check whether a file is of AUP format or not.
+        AUP files are encoded in UTF-8 without BOM.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
 
         """
         try:
-            with open(filename, 'r') as fp:
+            with codecs.open(filename, 'r', "UTF-8") as fp:
                 fp.readline()
                 doctype_line = fp.readline().strip()
                 fp.close()
         except IOError:
+            return False
+        except UnicodeDecodeError:
             return False
 
         return 'audacityproject' in doctype_line

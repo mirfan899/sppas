@@ -54,15 +54,15 @@ from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 from ..annlocation import sppasPoint
 
-from sppas.src.utils.makeunicode import sppasUnicode
+from sppas.src.utils.makeunicode import sppasUnicode, b
 
 # ----------------------------------------------------------------------------
 
 # Maximum number of class to predict
-MAX_CLASS_TAGS = 10
+MAX_CLASS_TAGS = 100
 
 # Maximum of attributes to list explicitly. Others are mentioned with "STRING".
-MAX_ATTRIBUTES_TAGS = 20
+MAX_ATTRIBUTES_TAGS = 200
 
 # ----------------------------------------------------------------------------
 
@@ -109,8 +109,8 @@ class sppasWEKA(sppasBaseIO):
             name = self.__class__.__name__
         sppasBaseIO.__init__(self, name)
 
-        self._max_class_tags = MAX_CLASS_TAGS
-        self._max_attributes_tags = MAX_ATTRIBUTES_TAGS
+        self._max_class_tags = int(MAX_CLASS_TAGS/10)
+        self._max_attributes_tags = int(MAX_ATTRIBUTES_TAGS/10)
         self._empty_annotation_tag = "none"
         self._empty_annotation_class_tag = None
         self._uncertain_annotation_tag = "?"
@@ -149,13 +149,8 @@ class sppasWEKA(sppasBaseIO):
         class tier
 
         """
-        old = self._max_class_tags
-        self._max_class_tags = nb_tags
-        try:
-            self.check_max_class_tags(nb_tags)
-        except ValueError:
-            self._max_class_tags = old
-            raise
+        self.check_max_class_tags(nb_tags)
+        self._max_class_tags = int(nb_tags)
 
     # -----------------------------------------------------------------
 
@@ -169,9 +164,9 @@ class sppasWEKA(sppasBaseIO):
         nb_tags = int(nb_tags)
         if nb_tags < 2:
             raise IOError("The class must have at least 2 different tags.")
-        if nb_tags > self._max_class_tags:
+        if nb_tags > MAX_CLASS_TAGS:
             raise IOError("The class must have at max {:d} different tags."
-                             "".format(self._max_class_tags))
+                          "".format(MAX_CLASS_TAGS))
 
     # -----------------------------------------------------------------
 
@@ -183,13 +178,8 @@ class sppasWEKA(sppasBaseIO):
         class tier
 
         """
-        old = self._max_attributes_tags
-        self._max_attributes_tags = nb_tags
-        try:
-            self.check_max_attributes_tags(nb_tags)
-        except ValueError:
-            self._max_attributes_tags = old
-            raise
+        self.check_max_attributes_tags(nb_tags)
+        self._max_attributes_tags = int(nb_tags)
 
     # -----------------------------------------------------------------
 
@@ -203,9 +193,9 @@ class sppasWEKA(sppasBaseIO):
         nb_tags = int(nb_tags)
         if nb_tags < 1:
             raise ValueError("The attributes must have at least one tag.")
-        if nb_tags > self._max_attributes_tags:
+        if nb_tags > MAX_ATTRIBUTES_TAGS:
             raise ValueError("The attributes must have at max {:d} "
-                             "different tags.".format(self._max_attributes_tags))
+                             "different tags.".format(MAX_ATTRIBUTES_TAGS))
 
     # -----------------------------------------------------------------
 
@@ -918,7 +908,7 @@ class sppasARFF(sppasWEKA):
         :param fp: FileDescriptor
 
         """
-        fp.write("@DATA\n")
+        fp.write(b("@DATA\n"))
 
         for point, class_str in self._fix_instance_steps():
             line = ""
@@ -927,7 +917,8 @@ class sppasARFF(sppasWEKA):
                 line += attribute
                 line += ","
             line += str(class_str)
-            fp.write(line+"\n")
+            line += "\n"
+            fp.write(b(line))
 
 # ----------------------------------------------------------------------------
 
@@ -1011,17 +1002,17 @@ class sppasXRFF(sppasWEKA):
             self.validate()
 
             # OK, we are ready to write
-            fp.write('<?xml version="1.0" encoding="utf-8"?>\n')
-            fp.write("\n")
-            fp.write('<dataset name="{:s}" />\n'.format(self.get_name()))
-            fp.write("\n")
-            fp.write('<header>\n')
+            fp.write(b('<?xml version="1.0" encoding="utf-8"?>\n'))
+            fp.write(b("\n"))
+            fp.write(b('<dataset name="{:s}" />\n'.format(self.get_name())))
+            fp.write(b("\n"))
+            fp.write(b('<header>\n'))
             self._write_attributes(fp)
-            fp.write('</header>\n')
-            fp.write('\n')
-            fp.write('<body>\n')
+            fp.write(b('</header>\n'))
+            fp.write(b('\n'))
+            fp.write(b('<body>\n'))
             self._write_instances(fp)
-            fp.write('</body>\n')
+            fp.write(b('</body>\n'))
 
             fp.close()
 
@@ -1038,15 +1029,15 @@ class sppasXRFF(sppasWEKA):
         :param is_class: (boolean)
 
         """
-        fp.write('        <attribute ')
+        fp.write(b('        <attribute '))
         if is_class is True:
-            fp.write('class="yes" ')
-        fp.write('name="{:s}" type="nominal">\n'.format(tier.get_name()))
-        fp.write('            <labels>\n')
+            fp.write(b('class="yes" '))
+        fp.write(b('name="{:s}" type="nominal">\n'.format(tier.get_name())))
+        fp.write(b('            <labels>\n'))
         for tag in tier.get_ctrl_vocab():
-            fp.write("            <label>{:s}</label>\n".format(tag.get_content()))
-        fp.write('            </labels>\n')
-        fp.write('        </attribute>\n')
+            fp.write(b("            <label>{:s}</label>\n".format(tag.get_content())))
+        fp.write(b('            </labels>\n'))
+        fp.write(b('        </attribute>\n'))
 
     # -----------------------------------------------------------------
 
@@ -1059,7 +1050,7 @@ class sppasXRFF(sppasWEKA):
         It is supposed that the transcription has been already validated.
 
         """
-        fp.write('    <attributes>\n')
+        fp.write(b('    <attributes>\n'))
         for tier in self:
 
             is_att, is_numeric = sppasWEKA._tier_is_attribute(tier)
@@ -1072,24 +1063,28 @@ class sppasXRFF(sppasWEKA):
                     # Do not write an uncertain label in that situation.
                     if tag.get_content() != self._uncertain_annotation_tag:
                         attribute_name = tier.get_name() + "-" + tag.get_content()
-                        fp.write('        <attribute name="{:s}" type="numeric" />\n'.format(attribute_name))
+                        fp.write(b('        <attribute name="{:s}" '
+                                   'type="numeric" />\n'.format(attribute_name)))
             else:
                 # Either a generic "string" or we can explicitly fix the list
                 if len(tier.get_ctrl_vocab()) > self._max_attributes_tags:
-                    fp.write('        <attribute name="{:s}" type="nominal" />\n'.format(tier.get_name()))
+                    fp.write(b('        <attribute name="{:s}" '
+                               'type="nominal" />\n'.format(tier.get_name())))
                 else:
                     # The controlled vocabulary
-                    fp.write('        <attribute name="{:s}" type="nominal">'.format(tier.get_name()))
+                    fp.write(b('        <attribute name="{:s}" '
+                               'type="nominal">'.format(tier.get_name())))
                     fp.write('            <labels>\n')
                     for tag in tier.get_ctrl_vocab():
-                        fp.write("            <label>{:s}</label>\n".format(tag.get_content()))
-                    fp.write('            </labels>\n')
-                    fp.write('        </attribute>\n')
+                        fp.write(b("            <label>{:s}"
+                                   "</label>\n".format(tag.get_content())))
+                    fp.write(b('            </labels>\n'))
+                    fp.write(b('        </attribute>\n'))
 
         tier = self._get_class_tier()
         self._write_attribute_ctrl_vocab(tier, fp, is_class=True)
 
-        fp.write('    </attributes>\n')
+        fp.write(b('    </attributes>\n'))
 
     # -----------------------------------------------------------------
 
@@ -1101,12 +1096,12 @@ class sppasXRFF(sppasWEKA):
         :param fp: FileDescriptor
 
         """
-        fp.write("    <instances>\n")
+        fp.write(b("    <instances>\n"))
         for point, class_str in self._fix_instance_steps():
             data_instances = self._fix_data_instance(point)
-            fp.write("        <instance>\n")
+            fp.write(b("        <instance>\n"))
             for attribute in data_instances:
-                fp.write("            <value>{!s:s}</value>\n".format(attribute))
-            fp.write("            <value>{!s:s}</value>\n".format(class_str))
-            fp.write("        </instance>\n")
-        fp.write("    </instances>\n")
+                fp.write(b("            <value>{!s:s}</value>\n".format(attribute)))
+            fp.write(b("            <value>{!s:s}</value>\n".format(class_str)))
+            fp.write(b("        </instance>\n"))
+        fp.write(b("    </instances>\n"))

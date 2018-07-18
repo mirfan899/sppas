@@ -151,10 +151,12 @@ class sppasCtrlVocab(sppasMetaData):
             raise AnnDataTypeError(tag, "sppasTag")
 
         # check if the tag is of the same type than the existing ones.
-        current_type = set([tag.get_type() for tag in self.__entries])
-        if len(current_type) == 1:
-            if tag.get_type() not in current_type:
-                raise AnnDataTypeError(tag, "sppasTag/"+current_type[0])
+        current_type = tag.get_type()
+        for k in self.__entries:
+            current_type = k.get_type()
+            break
+        if tag.get_type() != current_type:
+            raise AnnDataTypeError(tag, "sppasTag:"+current_type)
 
     # -----------------------------------------------------------------------
 

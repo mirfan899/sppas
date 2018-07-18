@@ -37,7 +37,9 @@
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Test the writer of SPPAS for WEKA files.
+    :summary:      Test the class sppasWEKA().
+
+    To write ARFF and XRFF files.
 
 """
 import unittest
@@ -100,7 +102,7 @@ class TestWEKA(unittest.TestCase):
         with self.assertRaises(IOError):
             weka.set_max_class_tags(1)
         with self.assertRaises(IOError):
-            weka.check_max_class_tags(10)
+            weka.check_max_class_tags(110)
 
         self.assertEqual(weka._max_attributes_tags, 20)
         weka.set_max_attributes_tags(5)
@@ -108,7 +110,7 @@ class TestWEKA(unittest.TestCase):
         with self.assertRaises(ValueError):
             weka.set_max_attributes_tags(0)
         with self.assertRaises(ValueError):
-            weka.check_max_attributes_tags(10)
+            weka.check_max_attributes_tags(210)
 
         self.assertEqual(weka._empty_annotation_tag, "none")
         weka.set_empty_annotation_tag("toto")
@@ -130,19 +132,23 @@ class TestWEKA(unittest.TestCase):
         weka = sppasWEKA()
         t = sppasTranscription()
         weka.set(t)
+
         self.assertEqual(weka.get_max_class_tags(), 10)
         self.assertEqual(weka._max_attributes_tags, 20)
         self.assertEqual(weka._empty_annotation_tag, "none")
         self.assertEqual(weka._uncertain_annotation_tag, "?")
+
         weka.set_meta("weka_max_class_tags", "50")
         weka.set_meta("weka_max_attributes_tags", "30")
         weka.set_meta("weka_empty_annotation_tag", "~")
         weka.set_meta("weka_uncertain_annotation_tag", "%")
         weka.check_metadata()
-        self.assertEqual(weka.get_max_class_tags(), "50")
-        self.assertEqual(weka._max_attributes_tags, "30")
+
+        self.assertEqual(weka.get_max_class_tags(), 50)
+        self.assertEqual(weka._max_attributes_tags, 30)
         self.assertEqual(weka._empty_annotation_tag, "~")
         self.assertEqual(weka._uncertain_annotation_tag, "%")
+
         weka.set_meta("weka_max_class_tags", "0")
         with self.assertRaises(IOError):
             weka.check_metadata()

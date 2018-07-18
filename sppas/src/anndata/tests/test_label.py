@@ -99,14 +99,22 @@ class TestTag(unittest.TestCase):
 
         # int value
         text = sppasTag(2, tag_type="int")
-        textstr = sppasTag("2")
-        self.assertEqual(text.get_typed_content(), 2)
-        self.assertEqual(text.get_content(), u("2"))
-        self.assertNotEqual(text.get_typed_content(), textstr.get_typed_content())
-        self.assertEqual(text.get_content(), textstr.get_content())
+        self.assertEqual(text.get_typed_content(), 2)  # typed content is "int"
+        self.assertEqual(text.get_content(), u("2"))   # but content is always a string
+        self.assertEqual(text.get_type(), "int")
 
         with self.assertRaises(TypeError):
             sppasTag("uh uhm", tag_type="int")
+
+        text_str = sppasTag("2")
+        self.assertEqual(text.get_content(), text_str.get_content())
+        self.assertNotEqual(text.get_typed_content(), text_str.get_typed_content())
+
+        # with no type specified, the default is "str"
+        text = sppasTag(2)
+        self.assertEqual(text.get_content(), u("2"))
+        self.assertEqual(text.get_typed_content(), u("2"))
+        self.assertEqual(text.get_type(), "str")
 
     # -----------------------------------------------------------------------
 
@@ -240,7 +248,7 @@ class TestTagCompare(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.tc.exact("abc", u("ABC"))
         with self.assertRaises(TypeError):
-            self.tc.exact(sppasTag("abc"), "ABC")
+            self.tc.exact(sppasTag("abc"), b("ABC"))
 
     # -----------------------------------------------------------------------
 
@@ -253,7 +261,7 @@ class TestTagCompare(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.tc.iexact("abc", u("ABC"))
         with self.assertRaises(TypeError):
-            self.tc.iexact(sppasTag("abc"), "ABC")
+            self.tc.iexact(sppasTag("abc"), b("ABC"))
 
     # -----------------------------------------------------------------------
 
@@ -266,7 +274,7 @@ class TestTagCompare(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.tc.startswith("abc", u("a"))
         with self.assertRaises(TypeError):
-            self.tc.startswith(sppasTag("abc"), "b")
+            self.tc.startswith(sppasTag("abc"), b("b"))
 
     # -----------------------------------------------------------------------
 
@@ -279,7 +287,7 @@ class TestTagCompare(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.tc.istartswith("abc", u("A"))
         with self.assertRaises(TypeError):
-            self.tc.istartswith(sppasTag("abc"), "b")
+            self.tc.istartswith(sppasTag("abc"), b("b"))
 
     # -----------------------------------------------------------------------
 
@@ -292,7 +300,7 @@ class TestTagCompare(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.tc.endswith("abc", u("c"))
         with self.assertRaises(TypeError):
-            self.tc.endswith(sppasTag("abc"), "b")
+            self.tc.endswith(sppasTag("abc"), b("b"))
 
     # -----------------------------------------------------------------------
 
@@ -305,7 +313,7 @@ class TestTagCompare(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.tc.iendswith("abc", u("C"))
         with self.assertRaises(TypeError):
-            self.tc.iendswith(sppasTag("abc"), "b")
+            self.tc.iendswith(sppasTag("abc"), b("b"))
 
     # -----------------------------------------------------------------------
 
@@ -318,7 +326,7 @@ class TestTagCompare(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.tc.contains("abc", u("b"))
         with self.assertRaises(TypeError):
-            self.tc.contains(sppasTag("abc"), "B")
+            self.tc.contains(sppasTag("abc"), b("B"))
 
     # -----------------------------------------------------------------------
 
@@ -331,7 +339,7 @@ class TestTagCompare(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.tc.icontains("abc", u("B"))
         with self.assertRaises(TypeError):
-            self.tc.icontains(sppasTag("abc"), "d")
+            self.tc.icontains(sppasTag("abc"), b("d"))
 
     # -----------------------------------------------------------------------
 
@@ -342,14 +350,19 @@ class TestTagCompare(unittest.TestCase):
         self.assertFalse(self.tc.regexp(sppasTag("abc"), "d"))
 
         with self.assertRaises(TypeError):
-            self.tc.regexp("abc", "B")
+            self.tc.regexp("abc", b("B"))
 
     # -----------------------------------------------------------------------
 
     def test_combine_methods(self):
-        self.assertTrue(self.tc.startswith(sppasTag("abc"), u("a")) and self.tc.endswith(sppasTag("abc"), u("c")))
         self.assertTrue(
-            self.tc.get("startswith")(sppasTag("abc"), u("a")) and self.tc.get("endswith")(sppasTag("abc"), u("c")))
+            self.tc.startswith(sppasTag("abc"),
+                               u("a")) and self.tc.endswith(sppasTag("abc"),
+                                                            u("c")))
+        self.assertTrue(
+            self.tc.get("startswith")(sppasTag("abc"),
+                                      u("a")) and self.tc.get("endswith")(sppasTag("abc"),
+                                                                          u("c")))
 
 
 # ---------------------------------------------------------------------------

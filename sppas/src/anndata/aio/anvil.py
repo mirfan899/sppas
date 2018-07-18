@@ -75,6 +75,9 @@ class sppasAnvil(sppasBaseIO):
             root = tree.getroot()
         except IOError:
             return False
+        except UnicodeDecodeError:
+            return False
+
         return root.find('body') is not None
 
     # -----------------------------------------------------------------------

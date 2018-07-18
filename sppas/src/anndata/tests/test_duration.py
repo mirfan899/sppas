@@ -29,15 +29,15 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.tests.test_label
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.anndata.tests.test_duration
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Test the classes of the annlocation package about duration.
+    :summary:      Test annlocation package related to duration.
 
 """
 import unittest

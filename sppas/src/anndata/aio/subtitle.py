@@ -219,32 +219,26 @@ class sppasSubRip(sppasBaseSubtitles):
 
         """
         with codecs.open(filename, 'r', sppas.encoding) as fp:
-
-            tier = self.create_tier('Trans-SubRip')
-            line = fp.next()
-            lines = list()
-
-            # Ignore an optional header (or blank lines)
-            while sppasBaseIO.is_number(line.strip()[0:1]) is False:
-                line = fp.next()
-
-            # Content of the file
-            try:
-                while True:
-                    lines = list()
-                    while line.strip() != '':
-                        lines.append(line.strip())
-                        line = fp.next()
-                    a = sppasSubRip._parse_subtitle(lines)
-                    if a is not None:
-                        tier.append(a)
-                    line = fp.next()
-            except StopIteration:
-                a = sppasSubRip._parse_subtitle(lines)
-                if a is not None:
-                    tier.append(a)
-
+            lines = fp.readlines()
             fp.close()
+
+        tier = self.create_tier('Trans-SubRip')
+
+        # Ignore an optional header (or blank lines)
+        i = 0
+        while sppasBaseIO.is_number(lines[i].strip()[0:1]) is False:
+            i += 1
+
+        # Content of the file
+        while i < len(lines):
+            ann_lines = list()
+            while i < len(lines) and lines[i].strip() != '':
+                ann_lines.append(lines[i].strip())
+                i += 1
+            a = sppasSubRip._parse_subtitle(ann_lines)
+            if a is not None:
+                tier.append(a)
+            i += 1
 
     # -----------------------------------------------------------------------
 
@@ -390,36 +384,29 @@ class sppasSubViewer(sppasBaseSubtitles):
 
         """
         with codecs.open(filename, 'r', sppas.encoding) as fp:
-
-            tier = self.create_tier('Trans-SubViewer')
-            lines = list()
-            line = fp.next()
-
-            # Header
-            while sppasBaseIO.is_number(line.strip()[0:1]) is False:
-                lines.append(line.strip())
-                line = fp.next()
-            self._parse_header(lines)
-
-            # Content of the file
-            try:
-                while True:
-                    lines = list()
-                    while line.strip() != '':
-                        lines.append(line.strip())
-                        line = fp.next()
-                    a = sppasSubViewer._parse_subtitle(lines)
-                    if a is not None:
-                        tier.append(a)
-                    line = fp.next()
-            except StopIteration:
-                a = sppasSubViewer._parse_subtitle(lines)
-                if a is not None:
-                    try:
-                        tier.append(a)
-                    except:
-                        pass
+            lines = fp.readlines()
             fp.close()
+
+        tier = self.create_tier('Trans-SubViewer')
+
+        # Header
+        i = 0
+        header_lines = list()
+        while sppasBaseIO.is_number(lines[i].strip()[0:1]) is False:
+            header_lines.append(lines[i].strip())
+            i += 1
+        self._parse_header(header_lines)
+
+        # Content of the file
+        while i < len(lines):
+            ann_lines = list()
+            while i < len(lines) and lines[i].strip() != '':
+                ann_lines.append(lines[i].strip())
+                i += 1
+            a = sppasSubViewer._parse_subtitle(ann_lines)
+            if a is not None:
+                tier.append(a)
+            i += 1
 
     # -----------------------------------------------------------------------
 

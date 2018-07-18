@@ -126,6 +126,8 @@ class sppasANTX(sppasBaseIO):
                 fp.close()
         except IOError:
             return False
+        except UnicodeDecodeError:
+            return False
 
         return 'AnnotationSystemDataSet' in doctype_line
 

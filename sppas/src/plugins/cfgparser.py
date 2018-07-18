@@ -132,17 +132,17 @@ class sppasPluginConfigParser(object):
         :returns: dictionary.
 
         """
-        cfgdict = dict()
+        cfg_dict = dict()
 
         for section_name in self._parser.sections():
             if section_name == "Configuration":
                 for name, value in self._parser.items(section_name):
-                    cfgdict[name] = u(value)
+                    cfg_dict[name] = u(value)
 
-        if 'id' not in cfgdict:
+        if 'id' not in cfg_dict:
             raise PluginOptionConfigFileError("[Configuration]", "id")
 
-        return cfgdict
+        return cfg_dict
 
     # ------------------------------------------------------------------------
 

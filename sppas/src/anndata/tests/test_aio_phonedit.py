@@ -124,9 +124,12 @@ class TestMRK(unittest.TestCase):
         self.assertEqual(len(mrk[1]), 11)
         for i, ann in enumerate(mrk[1]):
             if i % 2:
-                self.assertEqual(ann.get_labels()[0].get_best().get_content(), u("ipu_"+str((i/2)+1)))
+                ipu_index = int(i/2) + 1
+                self.assertEqual(ann.get_labels()[0].get_best().get_content(),
+                                 u("ipu_"+str(ipu_index)))
             else:
-                self.assertEqual(ann.get_labels()[0].get_best().get_content(), u("#"))
+                self.assertEqual(ann.get_labels()[0].get_best().get_content(),
+                                 u("#"))
 
 # ---------------------------------------------------------------------------
 

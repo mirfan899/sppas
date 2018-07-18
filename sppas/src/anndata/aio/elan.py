@@ -103,7 +103,7 @@ class sppasEAF(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of XRA format or not.
+        """ Check whether a file is of EAF format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -117,6 +117,8 @@ class sppasEAF(sppasBaseIO):
                         return True
                 fp.close()
         except IOError:
+            return False
+        except UnicodeDecodeError:
             return False
 
         return False
