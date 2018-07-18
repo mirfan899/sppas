@@ -141,6 +141,9 @@ msgstr "Interval number {number}."
 msgid ":INFO 1222: "
 msgstr "Empty interval."
 
+msgid ":INFO 1224: "
+msgstr "Ignored invalid intervall: {:s!s}."
+
 msgid ":INFO 1230: "
 msgstr "The automatic aligner '{name}' failed to perform segmentation."
 
@@ -154,13 +157,16 @@ msgid ":INFO 1252: "
 msgstr "Align each interval: "
 
 msgid ":INFO 1254: "
-msgstr "Merge interval's alignment:"
+msgstr "Merge interval's:"
 
 msgid ":INFO 1260: "
 msgstr "Tokens alignment disabled."
 
 msgid ":INFO 1262: "
 msgstr "No time-aligned tokens found. No extra tier can be generated."
+
+msgid ":INFO 1264: "
+msgstr "Tier {tiername} not found. No extra tier can be generated."
 
 msgid ":INFO 1270: "
 msgstr "{tiername} tier generation: {message}"

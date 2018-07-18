@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T09:37:34+02:00" format="1.4" name="Text Normalization">
+<Document author="SPPAS 1.9.7 (C) Brigitte Bigi" date="2018-07-18T12:20:08+02:00" format="1.4" name="Text Normalization">
 	<Metadata>
-		<Entry key="id">1d255b8b-7b49-9b34-8ec1-4246bf7f617d</Entry>
+		<Entry key="id">5f716d0f-6f88-2b68-5ba6-2574ee3c209a</Entry>
 		<Entry key="software_name">SPPAS</Entry>
-		<Entry key="software_version">1.9.6</Entry>
+		<Entry key="software_version">1.9.7</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
 		<Entry key="software_author">Brigitte Bigi</Entry>
 		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
@@ -14,18 +14,18 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/fra</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_normalization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-fra/IM_track_0767.TextGrid</Entry>
-		<Entry key="text_normalization_vocab">/mnt/e/bigi/Workspace/sppas/resources/vocab/fra.vocab</Entry>
+		<Entry key="text_normalization_result_of">E:\bigi\Workspace\sppas\samples\samples-fra\IM_track_0767.TextGrid</Entry>
+		<Entry key="text_normalization_vocab">E:\bigi\Workspace\sppas\resources\vocab\fra.vocab</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">IM_track_0767-token.xra</Entry>
-		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-fra</Entry>
+		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-37-12 09:37</Entry>
+		<Entry key="file_write_date">2018-20-18 12:20</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-37-12 09:37</Entry>
+		<Entry key="file_created_date">2018-20-18 12:20</Entry>
 	</Metadata>
 
-	<Tier id="4e845d0c-6f58-4e54-9bd4-4076ba2d680d" tiername="Tokens">
+	<Tier id="1b883b0a-8d06-1f89-5cc9-3313cf8a152d" tiername="Tokens">
 		<Metadata>
 			<Entry key="language">0</Entry>
 			<Entry key="text_normalization_enable_action_replace">true</Entry>
@@ -34,7 +34,7 @@
 			<Entry key="text_normalization_enable_action_lower">true</Entry>
 			<Entry key="text_normalization_enable_action_punct">true</Entry>
 		</Metadata>
-		<Annotation id="8f273a4e-6c21-6c29-6cf1-5476ee2f333c">
+		<Annotation id="0c573f6e-3e60-3e49-5fb7-5961ba2e338b">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />
@@ -42,136 +42,136 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">alors</Tag>
+				<Tag>alors</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">euh</Tag>
+				<Tag>euh</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">elle</Tag>
+				<Tag>elle</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">pour</Tag>
+				<Tag>pour</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">la</Tag>
+				<Tag>la</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">photo</Tag>
+				<Tag>photo</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">+</Tag>
+				<Tag>+</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">elle</Tag>
+				<Tag>elle</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">lui</Tag>
+				<Tag>lui</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">avait</Tag>
+				<Tag>avait</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">mis</Tag>
+				<Tag>mis</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">de_force</Tag>
+				<Tag>de_force</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">le</Tag>
+				<Tag>le</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">feutre</Tag>
+				<Tag>feutre</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">dans</Tag>
+				<Tag>dans</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">la</Tag>
+				<Tag>la</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">main</Tag>
+				<Tag>main</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">droite</Tag>
+				<Tag>droite</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">ouvert</Tag>
+				<Tag>ouvert</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">et</Tag>
+				<Tag>et</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">tout</Tag>
+				<Tag>tout</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">comme</Tag>
+				<Tag>comme</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">s'</Tag>
+				<Tag>s'</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">il</Tag>
+				<Tag>il</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">était</Tag>
+				<Tag>était</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">en_train</Tag>
+				<Tag>en_train</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">de</Tag>
+				<Tag>de</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">dessiner</Tag>
+				<Tag>dessiner</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">ce</Tag>
+				<Tag>ce</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">qui</Tag>
+				<Tag>qui</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">était</Tag>
+				<Tag>était</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">impossible</Tag>
+				<Tag>impossible</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">chez</Tag>
+				<Tag>chez</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">lui</Tag>
+				<Tag>lui</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">il</Tag>
+				<Tag>il</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">est</Tag>
+				<Tag>est</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">absolument</Tag>
+				<Tag>absolument</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">incapable</Tag>
+				<Tag>incapable</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">de</Tag>
+				<Tag>de</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">dessiner</Tag>
+				<Tag>dessiner</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">de</Tag>
+				<Tag>de</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">la</Tag>
+				<Tag>la</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">main</Tag>
+				<Tag>main</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">droite</Tag>
+				<Tag>droite</Tag>
 			</Label>
 		</Annotation>
 	</Tier>

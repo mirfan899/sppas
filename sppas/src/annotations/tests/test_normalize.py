@@ -482,11 +482,14 @@ class TestTextNorm(unittest.TestCase):
 
     def compare_tiers(self, expected, result):
         self.assertEqual(len(expected), len(result))
+        # compare annotations
         for a1, a2 in zip(expected, result):
-            self.assertEqual(a1, a2)
+            self.assertEqual(a1.get_location(), a2.get_location())
+            self.assertEqual(a1.get_labels(), a2.get_labels())
+
             for key in a1.get_meta_keys():
                 if key != 'id':
                     self.assertEqual(a1.get_meta(key), a2.get_meta(key))
-        for key in expected.get_meta_keys():
-            if key != 'id':
-                self.assertEqual(expected.get_meta(key), result.get_meta(key))
+        # for key in expected.get_meta_keys():
+        #    if key != 'id':
+        #        self.assertEqual(expected.get_meta(key), result.get_meta(key))

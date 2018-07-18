@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T09:37:34+02:00" format="1.4" name="Text Normalization">
+<Document author="SPPAS 1.9.7 (C) Brigitte Bigi" date="2018-07-18T12:20:08+02:00" format="1.4" name="Text Normalization">
 	<Metadata>
-		<Entry key="id">9c325c9d-8a88-5a24-2fa5-4136fe3f980b</Entry>
+		<Entry key="id">9f021e1a-3b14-9b25-4cf7-4052ac5f024a</Entry>
 		<Entry key="software_name">SPPAS</Entry>
-		<Entry key="software_version">1.9.6</Entry>
+		<Entry key="software_version">1.9.7</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
 		<Entry key="software_author">Brigitte Bigi</Entry>
 		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
@@ -14,18 +14,18 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/fra</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_normalization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-fra/F_F_B003-P8.TextGrid</Entry>
-		<Entry key="text_normalization_vocab">/mnt/e/bigi/Workspace/sppas/resources/vocab/fra.vocab</Entry>
+		<Entry key="text_normalization_result_of">E:\bigi\Workspace\sppas\samples\samples-fra\F_F_B003-P8.TextGrid</Entry>
+		<Entry key="text_normalization_vocab">E:\bigi\Workspace\sppas\resources\vocab\fra.vocab</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">F_F_B003-P8-token.xra</Entry>
-		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-fra</Entry>
+		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-37-12 09:37</Entry>
+		<Entry key="file_write_date">2018-20-18 12:20</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-37-12 09:37</Entry>
+		<Entry key="file_created_date">2018-20-18 12:20</Entry>
 	</Metadata>
 
-	<Tier id="3e841a9d-4d96-7e97-1ff9-3487ed3f133a" tiername="Tokens">
+	<Tier id="7e178b1b-5e46-6a28-0ed7-2471eb7d997a" tiername="Tokens">
 		<Metadata>
 			<Entry key="language">0</Entry>
 			<Entry key="text_normalization_enable_action_replace">true</Entry>
@@ -34,7 +34,7 @@
 			<Entry key="text_normalization_enable_action_lower">true</Entry>
 			<Entry key="text_normalization_enable_action_punct">true</Entry>
 		</Metadata>
-		<Annotation id="5f959c4a-7c53-2a73-5ef9-4968fa9c319a">
+		<Annotation id="6d855d8b-6f50-3c48-3cb8-1040ce8d011b">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />
@@ -42,10 +42,10 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag>#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5f601b8b-0f28-3a45-8de1-7375ad6a407c">
+		<Annotation id="1e404a9e-8b08-3b77-5df8-2775ca8e782e">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.4971007546" radius="0.0005" />
@@ -53,52 +53,52 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">hier</Tag>
+				<Tag>hier</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">soir</Tag>
+				<Tag>soir</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">j'</Tag>
+				<Tag>j'</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">ai</Tag>
+				<Tag>ai</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">ouvert</Tag>
+				<Tag>ouvert</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">la</Tag>
+				<Tag>la</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">porte</Tag>
+				<Tag>porte</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">d'</Tag>
+				<Tag>d'</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">entrée</Tag>
+				<Tag>entrée</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">pour</Tag>
+				<Tag>pour</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">laisser</Tag>
+				<Tag>laisser</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">chort-</Tag>
+				<Tag>chort-</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">sortir</Tag>
+				<Tag>sortir</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">le</Tag>
+				<Tag>le</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">chat</Tag>
+				<Tag>chat</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7c040d3d-0f00-1b83-7dd0-0599fa8a786b">
+		<Annotation id="7a750c6a-4e81-8a36-0eb3-5182af2c315d">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.6838880379" radius="0.0005" />
@@ -106,10 +106,10 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag>#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1f203d7b-2e64-6c20-5db0-5171ad6d938e">
+		<Annotation id="1e666e3f-3d68-1c10-1fa1-6184ac9b205d">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.7436026532" radius="0.0005" />
@@ -117,52 +117,52 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">la</Tag>
+				<Tag>la</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">nuit</Tag>
+				<Tag>nuit</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">était</Tag>
+				<Tag>était</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">si</Tag>
+				<Tag>si</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">belle</Tag>
+				<Tag>belle</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">que</Tag>
+				<Tag>que</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">je</Tag>
+				<Tag>je</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">suis</Tag>
+				<Tag>suis</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">descendu</Tag>
+				<Tag>descendu</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">dans</Tag>
+				<Tag>dans</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">la</Tag>
+				<Tag>la</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">rue</Tag>
+				<Tag>rue</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">prendre</Tag>
+				<Tag>prendre</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">le</Tag>
+				<Tag>le</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">frais</Tag>
+				<Tag>frais</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5c113e1a-2d32-4a57-4ae4-7775ba7c766a">
+		<Annotation id="9a431d4d-7d47-1d00-7ec4-6742dc0d694c">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.4605955438" radius="0.0005" />
@@ -170,10 +170,10 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag>#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7f218f4a-7f48-6f91-8ab1-6158de0c080e">
+		<Annotation id="0f368f3d-3e81-2b86-5ca5-3056dc6a887f">
 			<Location>
 				<Interval>
 					<Begin midpoint="9.1450000312" radius="0.0005" />
@@ -181,55 +181,55 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">j'</Tag>
+				<Tag>j'</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">avais</Tag>
+				<Tag>avais</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">à</Tag>
+				<Tag>à</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">peine</Tag>
+				<Tag>peine</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">fait</Tag>
+				<Tag>fait</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">quelque</Tag>
+				<Tag>quelque</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">pas</Tag>
+				<Tag>pas</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">que</Tag>
+				<Tag>que</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">j'</Tag>
+				<Tag>j'</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">ai</Tag>
+				<Tag>ai</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">entendu</Tag>
+				<Tag>entendu</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">la</Tag>
+				<Tag>la</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">porte</Tag>
+				<Tag>porte</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">claquer</Tag>
+				<Tag>claquer</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">derrière</Tag>
+				<Tag>derrière</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">moi</Tag>
+				<Tag>moi</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2a037a1d-5d19-3f69-7fb3-5110cf7c203c">
+		<Annotation id="6f171b4a-3e57-5d02-7fe8-6834dc1d691a">
 			<Location>
 				<Interval>
 					<Begin midpoint="11.9485310906" radius="0.0005" />
@@ -237,10 +237,10 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag>#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7e986b6e-0e88-8c23-7be5-1919ef9e525b">
+		<Annotation id="3a392e9c-3c20-1a47-4fc5-2983aa7b808c">
 			<Location>
 				<Interval>
 					<Begin midpoint="12.494" radius="0.0005" />
@@ -248,46 +248,46 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">j'</Tag>
+				<Tag>j'</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">ai</Tag>
+				<Tag>ai</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">réalisé</Tag>
+				<Tag>réalisé</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">tout</Tag>
+				<Tag>tout</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">d'</Tag>
+				<Tag>d'</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">un</Tag>
+				<Tag>un</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">coup</Tag>
+				<Tag>coup</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">+</Tag>
+				<Tag>+</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">que</Tag>
+				<Tag>que</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">j'</Tag>
+				<Tag>j'</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">étais</Tag>
+				<Tag>étais</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">enfermé</Tag>
+				<Tag>enfermé</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">dehors</Tag>
+				<Tag>dehors</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3e926e8a-3f83-9b78-8ad8-7137ba9d119b">
+		<Annotation id="2a913d5c-2e79-9b26-0ce1-0681af9e474b">
 			<Location>
 				<Interval>
 					<Begin midpoint="15.036" radius="0.0005" />
@@ -295,10 +295,10 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag>#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1a104f3f-5a15-6f08-4ea9-3068ac1c508c">
+		<Annotation id="7b411d6d-5a61-6c54-6dc2-1082bf6a629f">
 			<Location>
 				<Interval>
 					<Begin midpoint="16.602" radius="0.0005" />
@@ -306,61 +306,61 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">le</Tag>
+				<Tag>le</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">comble</Tag>
+				<Tag>comble</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">c'</Tag>
+				<Tag>c'</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">est</Tag>
+				<Tag>est</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">que</Tag>
+				<Tag>que</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">je</Tag>
+				<Tag>je</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">me</Tag>
+				<Tag>me</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">suis</Tag>
+				<Tag>suis</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">fait</Tag>
+				<Tag>fait</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">arrêter</Tag>
+				<Tag>arrêter</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">alors_que</Tag>
+				<Tag>alors_que</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">j'</Tag>
+				<Tag>j'</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">essayais</Tag>
+				<Tag>essayais</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">de</Tag>
+				<Tag>de</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">forcer</Tag>
+				<Tag>forcer</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">ma</Tag>
+				<Tag>ma</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">propre</Tag>
+				<Tag>propre</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">porte</Tag>
+				<Tag>porte</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4c999e4e-4c84-7d54-3ee9-9431bb8a167a">
+		<Annotation id="0a712b8a-4a00-3c52-0da0-0602ce3c990f">
 			<Location>
 				<Interval>
 					<Begin midpoint="20.01" radius="0.0005" />
@@ -368,7 +368,7 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag>#</Tag>
 			</Label>
 		</Annotation>
 	</Tier>

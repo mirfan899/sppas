@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T09:37:35+02:00" format="1.4" name="Phonetization">
+<Document author="SPPAS 1.9.7 (C) Brigitte Bigi" date="2018-07-18T12:20:10+02:00" format="1.4" name="Phonetization">
 	<Metadata>
-		<Entry key="id">3f751d2f-4c36-5a55-8ca3-5495cd1a040b</Entry>
+		<Entry key="id">5c443a1e-1e18-7c35-7eb6-8503bf9c206f</Entry>
 		<Entry key="software_name">SPPAS</Entry>
-		<Entry key="software_version">1.9.6</Entry>
+		<Entry key="software_version">1.9.7</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
 		<Entry key="software_author">Brigitte Bigi</Entry>
 		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
@@ -14,19 +14,19 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/und</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_phonetization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-fra/AC track_0379-token.xra</Entry>
-		<Entry key="text_phonetization_dict">/mnt/e/bigi/Workspace/sppas/resources/dict/fra.dict</Entry>
+		<Entry key="text_phonetization_result_of">E:\bigi\Workspace\sppas\samples\samples-fra\AC track_0379-token.xra</Entry>
+		<Entry key="text_phonetization_dict">E:\bigi\Workspace\sppas\resources\dict\fra.dict</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">AC track_0379-phon.xra</Entry>
-		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-fra</Entry>
+		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-37-12 09:37</Entry>
+		<Entry key="file_write_date">2018-20-18 12:20</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-37-12 09:37</Entry>
+		<Entry key="file_created_date">2018-20-18 12:20</Entry>
 	</Metadata>
 
-	<Tier id="7f829f1b-6b57-2d94-6da0-3738dd5f436a" tiername="Phones">
-		<Annotation id="8a859b3f-0b36-3b71-6ca1-3903ab4a163b">
+	<Tier id="7c429f9a-3c05-9a73-0cb2-6467bb5a299b" tiername="Phones">
+		<Annotation id="6d101c8a-3e98-5b92-9cf0-4043ec1b557a">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />
@@ -34,40 +34,54 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">y-n-@|y-n</Tag>
+				<Tag score="0.5">y-n-@</Tag>
+				<Tag score="0.5">y-n</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">k-l-A/-s-@|k-l-A/-s</Tag>
+				<Tag score="0.5">k-l-A/-s-@</Tag>
+				<Tag score="0.5">k-l-A/-s</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">a~-t-j-E-R|a~-t-j-E-R-@</Tag>
+				<Tag score="0.5">a~-t-j-E-R</Tag>
+				<Tag score="0.5">a~-t-j-E-R-@</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">k-i|k-j|k</Tag>
+				<Tag score="0.333333333333">k</Tag>
+				<Tag score="0.333333333333">k-j</Tag>
+				<Tag score="0.333333333333">k-i</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">A/</Tag>
+				<Tag score="1.0">A/</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">b-j-U~/-n|b-j-U~/</Tag>
+				<Tag score="0.5">b-j-U~/-n</Tag>
+				<Tag score="0.5">b-j-U~/</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">v-y</Tag>
+				<Tag score="1.0">v-y</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">k-O/-m-a~-t|k-O/-m-a~</Tag>
+				<Tag score="0.5">k-O/-m-a~-t</Tag>
+				<Tag score="0.5">k-O/-m-a~</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">s-A/|s</Tag>
+				<Tag score="0.5">s</Tag>
+				<Tag score="0.5">s-A/</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">s</Tag>
+				<Tag score="1.0">s</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">e|E-t|E|E-s-t|e-t|E-s-t-@|t</Tag>
+				<Tag score="0.142857142857">e</Tag>
+				<Tag score="0.142857142857">E-s-t-@</Tag>
+				<Tag score="0.142857142857">e-t</Tag>
+				<Tag score="0.142857142857">E-s-t</Tag>
+				<Tag score="0.142857142857">E-t</Tag>
+				<Tag score="0.142857142857">t</Tag>
+				<Tag score="0.142857142857">E</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">p-A/-s-e</Tag>
+				<Tag score="1.0">p-A/-s-e</Tag>
 			</Label>
 		</Annotation>
 	</Tier>

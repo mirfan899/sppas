@@ -766,7 +766,8 @@ class sppasXRA(sppasBaseIO):
         :param tag: (sppasTag)
 
         """
-        tag_node.set('type', tag.get_type())
+        if tag.get_type() != "str":
+            tag_node.set('type', tag.get_type())
         tag_node.text = tag.get_content()
 
     # -----------------------------------------------------------------------

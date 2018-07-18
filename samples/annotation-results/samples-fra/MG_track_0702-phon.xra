@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T09:37:35+02:00" format="1.4" name="Phonetization">
+<Document author="SPPAS 1.9.7 (C) Brigitte Bigi" date="2018-07-18T12:20:10+02:00" format="1.4" name="Phonetization">
 	<Metadata>
-		<Entry key="id">6d910c6c-2a03-3d36-0af5-2132bf1b889b</Entry>
+		<Entry key="id">3b202c1b-7d47-1d79-8bb2-2737bc9f530b</Entry>
 		<Entry key="software_name">SPPAS</Entry>
-		<Entry key="software_version">1.9.6</Entry>
+		<Entry key="software_version">1.9.7</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
 		<Entry key="software_author">Brigitte Bigi</Entry>
 		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
@@ -14,19 +14,19 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/und</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_phonetization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-fra/MG_track_0702-token.xra</Entry>
-		<Entry key="text_phonetization_dict">/mnt/e/bigi/Workspace/sppas/resources/dict/fra.dict</Entry>
+		<Entry key="text_phonetization_result_of">E:\bigi\Workspace\sppas\samples\samples-fra\MG_track_0702-token.xra</Entry>
+		<Entry key="text_phonetization_dict">E:\bigi\Workspace\sppas\resources\dict\fra.dict</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">MG_track_0702-phon.xra</Entry>
-		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-fra</Entry>
+		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-37-12 09:37</Entry>
+		<Entry key="file_write_date">2018-20-18 12:20</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-37-12 09:37</Entry>
+		<Entry key="file_created_date">2018-20-18 12:20</Entry>
 	</Metadata>
 
-	<Tier id="0d550e8d-2f87-6a73-3df7-7046ed9c246d" tiername="Phones">
-		<Annotation id="4e651e0c-7b76-1c59-5cb6-6232bb7f458e">
+	<Tier id="4c517b1c-7d93-1f66-3dd8-9772bb6b884d" tiername="Phones">
+		<Annotation id="8a610a7b-2b85-0a68-2ae5-0411df3d506f">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />
@@ -34,109 +34,164 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">E-l-@|E-l|e-l|E</Tag>
+				<Tag score="0.25">E-l</Tag>
+				<Tag score="0.25">E-l-@</Tag>
+				<Tag score="0.25">E</Tag>
+				<Tag score="0.25">e-l</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">A/-b-i-t|A/-b-i-t-@</Tag>
+				<Tag score="0.5">A/-b-i-t</Tag>
+				<Tag score="0.5">A/-b-i-t-@</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">s-y-R</Tag>
+				<Tag score="1.0">s-y-R</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">A/-R-l</Tag>
+				<Tag score="1.0">A/-R-l</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">d-2-p-y-i-z|d-2-p-y-i|t-p-y-i</Tag>
+				<Tag score="0.333333333333">t-p-y-i</Tag>
+				<Tag score="0.333333333333">d-2-p-y-i-z</Tag>
+				<Tag score="0.333333333333">d-2-p-y-i</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">k|k-@</Tag>
+				<Tag score="0.5">k</Tag>
+				<Tag score="0.5">k-@</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">Z|Z-@|S</Tag>
+				<Tag score="0.333333333333">Z-@</Tag>
+				<Tag score="0.333333333333">Z</Tag>
+				<Tag score="0.333333333333">S</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">l-A/</Tag>
+				<Tag score="1.0">l-A/</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">k-O/-n-e|k-O/-n-E|k-O/-n-E-z|k-O/-n-e-z</Tag>
+				<Tag score="0.25">k-O/-n-e</Tag>
+				<Tag score="0.25">k-O/-n-E-z</Tag>
+				<Tag score="0.25">k-O/-n-e-z</Tag>
+				<Tag score="0.25">k-O/-n-E</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">m-E-z|m-e|m-E|m-e-z|m</Tag>
+				<Tag score="0.2">m-e</Tag>
+				<Tag score="0.2">m-E</Tag>
+				<Tag score="0.2">m-e-z</Tag>
+				<Tag score="0.2">m-E-z</Tag>
+				<Tag score="0.2">m</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">Z|Z-@|S</Tag>
+				<Tag score="0.333333333333">Z-@</Tag>
+				<Tag score="0.333333333333">Z</Tag>
+				<Tag score="0.333333333333">S</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">k-R-w-A/-z|k-R-w-A/</Tag>
+				<Tag score="0.5">k-R-w-A/-z</Tag>
+				<Tag score="0.5">k-R-w-A/</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">k|k-y</Tag>
+				<Tag score="0.5">k</Tag>
+				<Tag score="0.5">k-y</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">E-l-@|E-l|e-l|E</Tag>
+				<Tag score="0.25">E-l</Tag>
+				<Tag score="0.25">E-l-@</Tag>
+				<Tag score="0.25">E</Tag>
+				<Tag score="0.25">e-l</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">A/</Tag>
+				<Tag score="1.0">A/</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">p-A/-z|p-A/</Tag>
+				<Tag score="0.5">p-A/</Tag>
+				<Tag score="0.5">p-A/-z</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">t-u-Z-u-R-z|t-u-Z-u-R|t-u-j-u-R</Tag>
+				<Tag score="0.333333333333">t-u-Z-u-R-z</Tag>
+				<Tag score="0.333333333333">t-u-Z-u-R</Tag>
+				<Tag score="0.333333333333">t-u-j-u-R</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">A/-b-i-t-e</Tag>
+				<Tag score="1.0">A/-b-i-t-e</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">l-A/-b-A/</Tag>
+				<Tag score="1.0">l-A/-b-A/</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">a~-f-U~/</Tag>
+				<Tag score="1.0">a~-f-U~/</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">Z|Z-@|S</Tag>
+				<Tag score="0.333333333333">Z-@</Tag>
+				<Tag score="0.333333333333">Z</Tag>
+				<Tag score="0.333333333333">S</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">s-E-z|s-e|s-E|s-e-z|s</Tag>
+				<Tag score="0.2">s</Tag>
+				<Tag score="0.2">s-e</Tag>
+				<Tag score="0.2">s-E</Tag>
+				<Tag score="0.2">s-E-z</Tag>
+				<Tag score="0.2">s-e-z</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">p-l-y-s|p-l-y|p-l-y-z</Tag>
+				<Tag score="0.333333333333">p-l-y</Tag>
+				<Tag score="0.333333333333">p-l-y-s</Tag>
+				<Tag score="0.333333333333">p-l-y-z</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">E-g-z-A/-k-t-2-m-a~|E-g-z-A/-k-t-2-m-a~-t|e-g-z-A/-k-t-2-m-a~</Tag>
+				<Tag score="0.333333333333">E-g-z-A/-k-t-2-m-a~-t</Tag>
+				<Tag score="0.333333333333">e-g-z-A/-k-t-2-m-a~</Tag>
+				<Tag score="0.333333333333">E-g-z-A/-k-t-2-m-a~</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">Z|Z-@|S</Tag>
+				<Tag score="0.333333333333">Z-@</Tag>
+				<Tag score="0.333333333333">Z</Tag>
+				<Tag score="0.333333333333">S</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">k-O/-n-e|k-O/-n-E|k-O/-n-E-z|k-O/-n-e-z</Tag>
+				<Tag score="0.25">k-O/-n-e</Tag>
+				<Tag score="0.25">k-O/-n-E-z</Tag>
+				<Tag score="0.25">k-O/-n-e-z</Tag>
+				<Tag score="0.25">k-O/-n-E</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">p-A/-z|p-A/</Tag>
+				<Tag score="0.5">p-A/</Tag>
+				<Tag score="0.5">p-A/-z</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">t-R-e|t-R-E|t-R-E-z|t-R-e-z</Tag>
+				<Tag score="0.25">t-R-e-z</Tag>
+				<Tag score="0.25">t-R-e</Tag>
+				<Tag score="0.25">t-R-E</Tag>
+				<Tag score="0.25">t-R-E-z</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">t-R-e|t-R-E|t-R-E-z|t-R-e-z</Tag>
+				<Tag score="0.25">t-R-e-z</Tag>
+				<Tag score="0.25">t-R-e</Tag>
+				<Tag score="0.25">t-R-E</Tag>
+				<Tag score="0.25">t-R-E-z</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">b-j-U~/-n|b-j-U~/</Tag>
+				<Tag score="0.5">b-j-U~/-n</Tag>
+				<Tag score="0.5">b-j-U~/</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">s-O~|s-O~-n</Tag>
+				<Tag score="0.5">s-O~-n</Tag>
+				<Tag score="0.5">s-O~</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">p-A/-R-k-u-R|p-A/-R-k-u-R-z</Tag>
+				<Tag score="0.5">p-A/-R-k-u-R-z</Tag>
+				<Tag score="0.5">p-A/-R-k-u-R</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">laugh</Tag>
+				<Tag score="1.0">laugh</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">m-E-z|m-e|m-E|m-e-z|m</Tag>
+				<Tag score="0.2">m-e</Tag>
+				<Tag score="0.2">m-E</Tag>
+				<Tag score="0.2">m-e-z</Tag>
+				<Tag score="0.2">m-E-z</Tag>
+				<Tag score="0.2">m</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">fp</Tag>
+				<Tag score="1.0">fp</Tag>
 			</Label>
 		</Annotation>
 	</Tier>

@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.6 (C) Brigitte Bigi" date="2018-06-12T09:37:34+02:00" format="1.4" name="Text Normalization">
+<Document author="SPPAS 1.9.7 (C) Brigitte Bigi" date="2018-07-18T12:20:08+02:00" format="1.4" name="Text Normalization">
 	<Metadata>
-		<Entry key="id">1e134c7c-0f66-8a21-5af0-7529da0c418d</Entry>
+		<Entry key="id">4a910a5e-3f12-1a81-1db6-8198cb8c121a</Entry>
 		<Entry key="software_name">SPPAS</Entry>
-		<Entry key="software_version">1.9.6</Entry>
+		<Entry key="software_version">1.9.7</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
 		<Entry key="software_author">Brigitte Bigi</Entry>
 		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
@@ -14,18 +14,18 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/fra</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_normalization_result_of">/mnt/e/bigi/Workspace/sppas/samples/samples-fra/F_F_C006-P6.TextGrid</Entry>
-		<Entry key="text_normalization_vocab">/mnt/e/bigi/Workspace/sppas/resources/vocab/fra.vocab</Entry>
+		<Entry key="text_normalization_result_of">E:\bigi\Workspace\sppas\samples\samples-fra\F_F_C006-P6.TextGrid</Entry>
+		<Entry key="text_normalization_vocab">E:\bigi\Workspace\sppas\resources\vocab\fra.vocab</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">F_F_C006-P6-token.xra</Entry>
-		<Entry key="file_path">/mnt/e/bigi/Workspace/sppas/samples/samples-fra</Entry>
+		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-37-12 09:37</Entry>
+		<Entry key="file_write_date">2018-20-18 12:20</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-37-12 09:37</Entry>
+		<Entry key="file_created_date">2018-20-18 12:20</Entry>
 	</Metadata>
 
-	<Tier id="5b325b1a-0d22-2f04-8be1-7297ba5e231f" tiername="Tokens">
+	<Tier id="0f006e8a-2f17-5d07-0fd4-3237fa5c859d" tiername="Tokens">
 		<Metadata>
 			<Entry key="language">0</Entry>
 			<Entry key="text_normalization_enable_action_replace">true</Entry>
@@ -34,7 +34,7 @@
 			<Entry key="text_normalization_enable_action_lower">true</Entry>
 			<Entry key="text_normalization_enable_action_punct">true</Entry>
 		</Metadata>
-		<Annotation id="1c105e7a-2a44-3b17-8fe7-7910eb1a203e">
+		<Annotation id="4d905f4c-1e41-7a86-0bf6-0362ee8f429e">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />
@@ -42,10 +42,10 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag>#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4b602c1a-7b88-7a40-0bf5-2423be5e255f">
+		<Annotation id="2e623c8b-0b64-6b84-6ed6-7336bd2a028a">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.13487640853" radius="0.0005" />
@@ -53,64 +53,64 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">magasins</Tag>
+				<Tag>magasins</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">réunis</Tag>
+				<Tag>réunis</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">inventaire</Tag>
+				<Tag>inventaire</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">du</Tag>
+				<Tag>du</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">six</Tag>
+				<Tag>six</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">mars</Tag>
+				<Tag>mars</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">mille-neuf-cent-quatre-vingt-neuf</Tag>
+				<Tag>mille-neuf-cent-quatre-vingt-neuf</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">+</Tag>
+				<Tag>+</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">étage</Tag>
+				<Tag>étage</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">+</Tag>
+				<Tag>+</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">homme</Tag>
+				<Tag>homme</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">+</Tag>
+				<Tag>+</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">et</Tag>
+				<Tag>et</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">garçonnet</Tag>
+				<Tag>garçonnet</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">+</Tag>
+				<Tag>+</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">rayon</Tag>
+				<Tag>rayon</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">chemises</Tag>
+				<Tag>chemises</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">et</Tag>
+				<Tag>et</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">sous-vêtements</Tag>
+				<Tag>sous-vêtements</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1d773c8b-1d75-0d85-7df4-5828ca0b222a">
+		<Annotation id="1a747f5e-8d28-4f22-6be2-0556ee8d055f">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.73440919423" radius="0.0005" />
@@ -118,10 +118,10 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag>#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2f394c8a-3b16-1a73-0ae7-1458fa6e288e">
+		<Annotation id="0f142d3a-7c54-4d37-9fa3-1007eb1b988f">
 			<Location>
 				<Interval>
 					<Begin midpoint="9.26853675284" radius="0.0005" />
@@ -129,61 +129,61 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">chemises</Tag>
+				<Tag>chemises</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">manches</Tag>
+				<Tag>manches</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">longues</Tag>
+				<Tag>longues</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">+</Tag>
+				<Tag>+</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">s-</Tag>
+				<Tag>s-</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">cintrées</Tag>
+				<Tag>cintrées</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">+</Tag>
+				<Tag>+</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">stature</Tag>
+				<Tag>stature</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">cent-trente-huit</Tag>
+				<Tag>cent-trente-huit</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">+</Tag>
+				<Tag>+</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">dix</Tag>
+				<Tag>dix</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">ans</Tag>
+				<Tag>ans</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">*</Tag>
+				<Tag>*</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">à</Tag>
+				<Tag>à</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">cent-soixante-deux</Tag>
+				<Tag>cent-soixante-deux</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">+</Tag>
+				<Tag>+</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">quatorze</Tag>
+				<Tag>quatorze</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">ans</Tag>
+				<Tag>ans</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6d719b8f-7a75-9f51-3db3-4102ba1d853a">
+		<Annotation id="7a061d7c-3b66-3f92-5fa7-3516fd2d629c">
 			<Location>
 				<Interval>
 					<Begin midpoint="16.8712590912" radius="0.0005" />
@@ -191,10 +191,10 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag>#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4c779c3d-9f53-9a79-4bf6-6653de2b810c">
+		<Annotation id="9d336b1d-7f80-4a12-1bb9-2737cf6d906a">
 			<Location>
 				<Interval>
 					<Begin midpoint="17.8169485442" radius="0.0005" />
@@ -202,43 +202,43 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">trois</Tag>
+				<Tag>trois</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">de</Tag>
+				<Tag>de</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">chaque</Tag>
+				<Tag>chaque</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">taille</Tag>
+				<Tag>taille</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">en</Tag>
+				<Tag>en</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">blanc</Tag>
+				<Tag>blanc</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">+</Tag>
+				<Tag>+</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">bleu</Tag>
+				<Tag>bleu</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">clair</Tag>
+				<Tag>clair</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">+</Tag>
+				<Tag>+</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">et</Tag>
+				<Tag>et</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">beige</Tag>
+				<Tag>beige</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7e099e4c-5b36-6d10-9ee0-7646cb8b860a">
+		<Annotation id="9b355a4d-3b72-3f71-8ec6-9519fb3d655c">
 			<Location>
 				<Interval>
 					<Begin midpoint="21.0525123875" radius="0.0005" />
@@ -246,10 +246,10 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag>#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7f590b4c-0c07-4c00-0be5-8553ca5a330c">
+		<Annotation id="7a710c2c-9c04-1b21-3dc4-9609ad6f142c">
 			<Location>
 				<Interval>
 					<Begin midpoint="21.751841752" radius="0.0005" />
@@ -257,31 +257,31 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">pulls</Tag>
+				<Tag>pulls</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">shetland</Tag>
+				<Tag>shetland</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">tailles</Tag>
+				<Tag>tailles</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">trente</Tag>
+				<Tag>trente</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">six</Tag>
+				<Tag>six</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">à</Tag>
+				<Tag>à</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">quarante</Tag>
+				<Tag>quarante</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">six</Tag>
+				<Tag>six</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5c081f3a-3c12-8c15-6fd2-4588fe6d615d">
+		<Annotation id="8f308f1e-5c75-7e91-8ce4-8994ef5e802a">
 			<Location>
 				<Interval>
 					<Begin midpoint="24.086" radius="0.0005" />
@@ -289,10 +289,10 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag>#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6f795f7d-9b34-2b83-7fc1-1308dc4a330b">
+		<Annotation id="6c738c8e-9f70-6c27-1cc8-1974dd1c768b">
 			<Location>
 				<Interval>
 					<Begin midpoint="24.752" radius="0.0005" />
@@ -300,82 +300,82 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">plus</Tag>
+				<Tag>plus</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">de</Tag>
+				<Tag>de</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">gris</Tag>
+				<Tag>gris</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">foncé</Tag>
+				<Tag>foncé</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">ni</Tag>
+				<Tag>ni</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">de</Tag>
+				<Tag>de</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">beige</Tag>
+				<Tag>beige</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">en</Tag>
+				<Tag>en</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">tre-</Tag>
+				<Tag>tre-</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">+</Tag>
+				<Tag>+</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">en</Tag>
+				<Tag>en</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">trente</Tag>
+				<Tag>trente</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">huit</Tag>
+				<Tag>huit</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">et</Tag>
+				<Tag>et</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">quarante</Tag>
+				<Tag>quarante</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">+</Tag>
+				<Tag>+</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">quatre</Tag>
+				<Tag>quatre</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">de</Tag>
+				<Tag>de</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">chaque</Tag>
+				<Tag>chaque</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">couleur</Tag>
+				<Tag>couleur</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">pour</Tag>
+				<Tag>pour</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">toutes</Tag>
+				<Tag>toutes</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">les</Tag>
+				<Tag>les</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">autres</Tag>
+				<Tag>autres</Tag>
 			</Label>
 			<Label>
-				<Tag type="str">tailles</Tag>
+				<Tag>tailles</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5d062f7c-6c19-9f40-4fd4-5555dd5c681b">
+		<Annotation id="2a895a5c-4b44-6e18-2eb9-0851cd0c897a">
 			<Location>
 				<Interval>
 					<Begin midpoint="31.4725844028" radius="0.0005" />
@@ -383,7 +383,7 @@
 				</Interval>
 			</Location>
 			<Label>
-				<Tag type="str">#</Tag>
+				<Tag>#</Tag>
 			</Label>
 		</Annotation>
 	</Tier>

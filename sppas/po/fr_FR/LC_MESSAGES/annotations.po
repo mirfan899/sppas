@@ -143,6 +143,9 @@ msgstr "Intervalle numéro {number}."
 msgid ":INFO 1222: "
 msgstr "L'intervalle est vide."
 
+msgid ":INFO 1224: "
+msgstr "Intervalle ignoré car non valide: {:s!s}."
+
 msgid ":INFO 1230: "
 msgstr "L'aligneur '{name}' a échoué dans la tâche de segmentation."
 
@@ -166,6 +169,9 @@ msgstr "Alignement des tokens désactivé."
 
 msgid ":INFO 1262: "
 msgstr "Pas de Tokens alignés trouvé. Aucune extra tier ne pourra être créée."
+
+msgid ":INFO 1264: "
+msgstr "La tier {tiername} n'a pas été trouvée. Aucune tier supplémentaire ne pourra être créée."
 
 msgid ":INFO 1270: "
 msgstr "Génération de la tier {tiername} : {message}"

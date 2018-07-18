@@ -32,7 +32,7 @@
     src.annotations.sppassyll.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    SPPAS integration of Syllabification.
+    SPPAS integration of syllabification.
 
 """
 from sppas import PHONE_SYMBOLS
@@ -43,6 +43,7 @@ from sppas.src.anndata import sppasInterval
 from sppas.src.anndata import sppasLocation
 from sppas.src.anndata import sppasTag
 from sppas.src.anndata import sppasLabel
+from sppas.src.utils.makeunicode import sppasUnicode
 
 from .. import WARNING_ID
 from .. import t
@@ -55,7 +56,8 @@ from .syllabify import Syllabifier
 
 # ----------------------------------------------------------------------------
 
-MSG_TRACK = t.gettext(":INFO 1220: ")
+MSG_INVALID = (t.gettext(":INFO 1224: "))
+MSG_NO_TIER = (t.gettext(":INFO 1264: "))
 
 # ----------------------------------------------------------------------------
 
@@ -146,16 +148,6 @@ class sppasSyll(sppasBaseAnnotation):
 
     # ----------------------------------------------------------------------
 
-    def set_tiername(self, tier_name):
-        """ Fix the tiername option.
-
-        :param tier_name: (str)
-
-        """
-        self._options['tiername'] = tier_name
-
-    # ----------------------------------------------------------------------
-
     def set_create_tier_classes(self, create=True):
         """ Fix the createclasses option.
 
@@ -163,6 +155,16 @@ class sppasSyll(sppasBaseAnnotation):
 
         """
         self._options['createclasses'] = create
+
+    # ----------------------------------------------------------------------
+
+    def set_tiername(self, tier_name):
+        """ Fix the tiername option.
+
+        :param tier_name: (str)
+
+        """
+        self._options['tiername'] = sppasUnicode(tier_name).to_strip()
 
     # ----------------------------------------------------------------------
     # Syllabification of time-aligned phonemes stored into a tier
@@ -202,7 +204,8 @@ class sppasSyll(sppasBaseAnnotation):
                                         end_phon_idx,
                                         syllables)
             else:
-                self.print_message("Invalid interval")
+                self.print_message(MSG_INVALID.format(interval),
+                                   indent=2, status=WARNING_ID)
 
         return syllables
 
@@ -220,7 +223,9 @@ class sppasSyll(sppasBaseAnnotation):
         for syll in syllables:
             location = syll.get_location().copy()
             syll_tag = syll.get_best_tag()
-            class_tag = sppasTag(self.syllabifier.classes_phonetized(syll_tag.get_typed_content()))
+            class_tag = sppasTag(
+                self.syllabifier.classes_phonetized(
+                    syll_tag.get_typed_content()))
             classes.create_annotation(location, sppasLabel(class_tag))
 
         return classes
@@ -294,9 +299,8 @@ class sppasSyll(sppasBaseAnnotation):
         if self._options['usesintervals'] is True:
             intervals = trs_input.find(self._options['tiername'])
             if intervals is None:
-                message = "The use of {:s} is disabled. " \
-                          "Tier not found.".format(self._options['tiername'])
-                self.print_message(message, indent=2, status=WARNING_ID)
+                self.print_message(MSG_NO_TIER.format(tiername=self._options['tiername']),
+                                   indent=2, status=WARNING_ID)
             else:
                 tier_syll_int = self.convert(tier_input, intervals)
                 tier_syll_int.set_name("SyllAlign-Intervals")

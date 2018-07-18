@@ -50,7 +50,7 @@ class Syllabifier(object):
 
     """
     def __init__(self, rules_filename):
-        """ Create a new syllabification instance.
+        """ Create a new Syllabifier instance.
 
         Load rules from a text file, depending on the language and phonemes
         encoding. See documentation for details about this file.
@@ -69,7 +69,6 @@ class Syllabifier(object):
         >>> Syllabifier("fra-config-file").annotate(phonemes)
         >>> [(0, 3), (4, 6)]
 
-        self.assertEqual("a-p-s-k.m-w-a", Syllabifier.phonetize_syllables(phonemes, syllables))
         :param phonemes: (list)
         :returns: list of tuples (begin index, end index)
 
