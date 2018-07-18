@@ -79,29 +79,22 @@ class TestDictPhon(unittest.TestCase):
 
     # -----------------------------------------------------------------------
 
-    def test_get_phon_silence(self):
-        """ Test the phonetization of a silence. """
+    def test_get_phon_entry(self):
+        """ ... Phonetization of an entry. """
 
+        # a silence
         self.assertEqual(SIL, self.grph.get_phon_entry("gpf_1"))
         self.assertEqual(SIL, self.grph.get_phon_entry("gpf_1 "))
         self.assertEqual(SIL, self.grph.get_phon_entry(" gpf_13 "))
 
-    # -----------------------------------------------------------------------
-
-    def test_get_phon_unk(self):
-        """ Test the phonetization of an unknown entry. """
-
+        # an unknown entry
         self.assertEqual(self.grph.get_phon_entry("ipu"), unk_stamp)
         self.assertEqual(self.grph.get_phon_entry("gpd"), unk_stamp)
         self.assertEqual(self.grph.get_phon_entry("gpf"), unk_stamp)
         self.assertEqual(self.grph.get_phon_entry("aa"), unk_stamp)
         self.assertEqual(self.grph.get_phon_entry("a-a"), unk_stamp)
 
-    # -----------------------------------------------------------------------
-
-    def test_get_phon_entry(self):
-        """ Test the phonetization of an entry. """
-
+        # a filled entry
         self.assertEqual("a", self.grph.get_phon_entry("a"))
         self.assertEqual("", self.grph.get_phon_entry("<>"))
         self.assertEqual("a", self.grph.get_phon_entry("<a>"))
@@ -111,10 +104,8 @@ class TestDictPhon(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_get_phon_tokens(self):
-        """ Test the phonetization of a list of tokens,
-        with the status returned.
+        """ ... Phonetization of a list of tokens, with the status returned. """
 
-        """
         self.assertEqual([], self.grph.get_phon_tokens([' \n \t']))
 
         self.assertEqual([('a', 'a', OK_ID)],
@@ -155,7 +146,7 @@ class TestDictPhon(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_phonetize(self):
-        """ Test the phonetization of an utterance. """
+        """ ... Phonetization of an utterance. """
 
         with self.assertRaises(TypeError):
             self.grph.phonetize('A', delimiter="_-")
@@ -176,7 +167,7 @@ class TestDictPhon(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_phonetize_with_map_table(self):
-        """ Test the phonetization of an utterance if a sppasMapping() is fixed. """
+        """ ... Phonetization of an utterance if a sppasMapping() is fixed. """
 
         mapt = sppasMapping()
         mapt.add('a', 'A')
@@ -224,7 +215,7 @@ class TestDictPhon(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_phon_from_loaded_data(self):
-        """ Test phonetize with real resource data. """
+        """ ... Phonetization using real resource data. """
 
         dict_file = os.path.join(RESOURCES_PATH, "dict", "eng.dict")
         map_table = os.path.join(RESOURCES_PATH, "dict", "eng-fra.map")
@@ -273,7 +264,8 @@ class TestDAGPhon(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_decompose(self):
-        """ Create a decomposed phonetization from a string as follow:
+        """ ... Create a decomposed phonetization from a string.
+         As follow:
 
             >>> dag_phon.decompose("p1 p2|x2 p3|x3")
             >>> p1-p2-p3|p1-p2-x3|p1-x2-p3|p1-x2-x3
@@ -321,7 +313,7 @@ class TestPhonUnk(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_phon(self):
-        """ Text the phonetization of an unknown entry. """
+        """ ... Phonetization of an unknown entry. """
 
         self.assertEqual(set("abb-a|abb-aa".split('|')),
                          set(self.p.get_phon('abba').split('|')))
@@ -363,7 +355,7 @@ class TestPhonetization(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_phonetize(self):
-        """ Test phonetization of an utterance. """
+        """ ... Phonetization of an utterance. """
 
         self.sp.set_unk(True)
         self.assertEqual(unk_stamp, self.sp.phonetize("é à"))
@@ -379,11 +371,7 @@ class TestPhonetization(unittest.TestCase):
 
         self.sp.set_unk(True)
 
-    # -----------------------------------------------------------------------
-
-    def test_phonetize_silence(self):
-        """ Test phonetization of an utterance made only of a silence. """
-
+        # an utterance made only of a silence.
         self.assertEqual([SIL], self.sp.phonetize("#"))
         self.assertEqual([SIL], self.sp.phonetize("+"))
         self.assertEqual([SIL], self.sp.phonetize("  gpf_12  "))
@@ -392,7 +380,7 @@ class TestPhonetization(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_phonetize_learners(self):
-        """ Test phonetization of an utterance with a map table defined. """
+        """ ... Phonetization of an utterance with a map table defined. """
 
         self.assertEqual(set("D-@|D-V|D-i:|z-@|z-V|z-i:|D-i|z-i|D-9|z-9|z-@".split('|')),
                          set(self.spl.phonetize("THE")[0].split('|')))
@@ -403,7 +391,7 @@ class TestPhonetization(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_samples(self):
-        """ Test if the current result is the same as the existing one. """
+        """ ... Compare the current result is the same as the existing one. """
 
         # the place where are the samples to be tested.
         samples_path = os.path.join(SAMPLES_PATH, "annotation-results")
@@ -435,16 +423,19 @@ class TestPhonetization(unittest.TestCase):
                 # Estimate the result and check if it's like expected.
                 result = tn.run(os.path.join(samples_path, samples_folder, filename))
 
-                # expected_tier_phones = expected_result.find('Phones')
-                # if expected_tier_phones is not None:
-                #     self.compare_tiers(expected_tier_tokens, result.find('Tokens'))
+                expected_tier_phones = expected_result.find('Phones')
+                if expected_tier_phones is not None:
+                    self.compare_tiers(expected_tier_phones, result.find('Phones'))
 
     # -----------------------------------------------------------------------
 
     def compare_tiers(self, expected, result):
         self.assertEqual(len(expected), len(result))
         for a1, a2 in zip(expected, result):
-            self.assertEqual(a1, a2)
+            self.assertEqual(a1.get_location(), a2.get_location())
+            self.assertEqual(len(a1.get_labels()), len(a2.get_labels()))
+            for l1, l2 in zip(a1.get_labels(), a2.get_labels()):
+                self.assertEqual(l1, l2)
             for key in a1.get_meta_keys():
                 if key != 'id':
                     self.assertEqual(a1.get_meta(key), a2.get_meta(key))

@@ -363,7 +363,7 @@ class TextNormalizer(object):
 
     @staticmethod
     def variants(utt):
-        """ Convert strings that are varaints in the utterance.
+        """ Convert strings that are variants in the utterance.
 
         :param utt: (list)
 

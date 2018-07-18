@@ -4,13 +4,14 @@
 import unittest
 import os.path
 
-from sppas import RESOURCES_PATH
+from sppas import RESOURCES_PATH, SAMPLES_PATH
 from sppas.src.anndata import sppasTier
 from sppas.src.anndata import sppasLocation
 from sppas.src.anndata import sppasInterval
 from sppas.src.anndata import sppasPoint
 from sppas.src.anndata import sppasLabel
 from sppas.src.anndata import sppasTag
+from sppas.src.anndata import sppasRW
 
 from ..Syll.syllabify import Syllabifier
 from ..Syll.sppassyll import sppasSyll
@@ -34,7 +35,7 @@ class TestSyllabifier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_find_next_vowel(self):
-        """ Test the search of the next vowel in classes. """
+        """ ... Search of the next vowel in classes. """
 
         c = ['L', 'V', 'P', 'P', 'V', 'F', 'V', 'L']
         self.assertEqual(1, Syllabifier._find_next_vowel(c, 0))
@@ -50,7 +51,7 @@ class TestSyllabifier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_find_next_break(self):
-        """ Test the search of the next break in classes. """
+        """ ... Search of the next break in classes. """
 
         c = ['L', 'V', 'P', 'P', 'V', 'F', 'V', 'L']
         self.assertEqual(-1, Syllabifier._find_next_break(c, 0))
@@ -62,7 +63,7 @@ class TestSyllabifier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_fix_nucleus(self):
-        """ Search for the next nucleus of a syllable. """
+        """ ... Search for the next nucleus of a syllable. """
 
         self.assertEqual(-1, Syllabifier._fix_nucleus([], 0))
         self.assertEqual(-1, Syllabifier._fix_nucleus(['#'], 0))
@@ -87,7 +88,7 @@ class TestSyllabifier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_fix_start_syll(self):
-        """ Search for the index of the first phoneme of the syllable. """
+        """ ... Search for the index of the first phoneme of the syllable. """
 
         c = ['L', 'V', 'P', '#', 'V', '#', 'P', 'V', '#', '#', 'F', 'V', 'V', 'L']
 
@@ -103,17 +104,14 @@ class TestSyllabifier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_apply_class_rules(self):
-        """ Apply the syllabification rules between v1 and v2. """
+        """ ... Apply the syllabification rules between v1 and v2. """
 
+        # from classes
         c = ['L', 'V', 'P', 'P', 'V', 'F', 'V', 'L']
         self.assertEqual(2, self.syll_fra._apply_class_rules(c, 1, 4))
         self.assertEqual(4, self.syll_fra._apply_class_rules(c, 4, 6))
 
-    # -----------------------------------------------------------------------
-
-    def test_apply_phon_rules(self):
-        """ Apply the syllabification rules between v1 and v2. """
-
+        # from phonemes
         p = ['l', '@', 'p', 't', 'i', 'S', 'A/', 'l']
         self.assertEqual(1, self.syll_fra._apply_phon_rules(p, 2, 1, 4))
         self.assertEqual(4, self.syll_fra._apply_phon_rules(p, 4, 4, 6))
@@ -121,17 +119,9 @@ class TestSyllabifier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_annotate(self):
-        """ Test the limits of annotate method. """
+        """ ... Test creation of the syllable boundaries from a sequence of phonemes """
 
-        self.assertEqual([(0, 3)], self.syll_fra.annotate(['g', 'j', 'i', 't']))
-        self.assertEqual([(0, 4)], self.syll_fra.annotate(['g', 'j', 'i', 't', 'p']))
-        self.assertEqual([(0, 4)], self.syll_fra.annotate(['g', 'j', 'i', 't', 'p', '#']))
-
-    # -----------------------------------------------------------------------
-
-
-    def test_no_syll(self):
-        """ Test situations when no syllables are returned. """
+        # no syllable
 
         self.assertEqual([], self.syll_pol.annotate([]))
         self.assertEqual([], self.syll_pol.annotate(['#']))
@@ -141,10 +131,7 @@ class TestSyllabifier(unittest.TestCase):
         self.assertEqual([], self.syll_pol.annotate(["#", 'm', 'm']))
         self.assertEqual([], self.syll_pol.annotate(["#", 'm', 'm', '#']))
 
-    # -----------------------------------------------------------------------
-
-    def test_V(self):
-        """ Test situations when 1 syllable is returned. """
+        # Test situations when 1 syllable is returned.
 
         self.assertEqual([(0, 0)], self.syll_fra.annotate(['a']))
         self.assertEqual([(0, 0)], self.syll_fra.annotate(['a', '#']))
@@ -152,9 +139,8 @@ class TestSyllabifier(unittest.TestCase):
         self.assertEqual([(1, 1)], self.syll_fra.annotate(['UNK', 'a']))
         self.assertEqual([(1, 1)], self.syll_fra.annotate(['UNK', 'a', '#']))
 
-    # -----------------------------------------------------------------------
+        # test VV rule
 
-    def test_VV(self):
         phonemes = (['a', 'a'])
         syllables = self.syll_pol.annotate(phonemes)
         self.assertEqual([(0, 0), (1, 1)], syllables)
@@ -163,45 +149,42 @@ class TestSyllabifier(unittest.TestCase):
         syllables = self.syll_pol.annotate(phonemes)
         self.assertEqual([(0, 0), (2, 2)], syllables)
 
-    # -----------------------------------------------------------------------
+        # test VCV rule
 
-    def test_VCV(self):
         phonemes = (['a', 'b', 'a'])
         syllables = self.syll_pol.annotate(phonemes)
         self.assertEqual([(0, 0), (1, 2)], syllables)  # a.ba
 
-    # -----------------------------------------------------------------------
+        # test VCCV rules
 
-    def test_VCCV(self):
-        # general rule
+        # VCCV general rule
         phonemes = ['a', 'n', 'c', 'a']
         syllables = self.syll_pol.annotate(phonemes)
         self.assertEqual([(0, 1), (2, 3)], syllables)  # an.ca
 
-        # exception rule
+        # VCCV exception rule
         phonemes = ['a', 'g', 'j', 'a']
         syllables = self.syll_pol.annotate(phonemes)
         self.assertEqual([(0, 0), (1, 3)], syllables)  # a.gja
 
-        # specific (shift to left)
+        # VCCV specific (shift to left)
         phonemes = ['a', 'd', 'g', 'a']
         syllables = self.syll_pol.annotate(phonemes)
         self.assertEqual([(0, 0), (1, 3)], syllables)  # a.dga
 
-        # do not apply the previous specific rule if not VdgV
+        # VCCV do not apply the previous specific rule if not VdgV
         phonemes = ['a', 'x', 'd', 'g', 'a']
         syllables = self.syll_pol.annotate(phonemes)
         self.assertEqual([(0, 1), (2, 4)], syllables)  # ax.dga
 
-        # specific (shift to right)
+        # VCCV specific (shift to right)
         phonemes = ['a', 'z', 'Z', 'a']
         syllables = self.syll_pol.annotate(phonemes)
         self.assertEqual([(0, 1), (2, 3)], syllables)  # az.Za
 
-    # -----------------------------------------------------------------------
+        # test VCCCV rule s
 
-    def test_VCCCV(self):
-        # general rule
+        # VCCCV general rule
         phonemes = ['a', 'm', 'm', 'n', 'a']
         syllables = self.syll_pol.annotate(phonemes)
         self.assertEqual([(0, 1), (2, 4)], syllables)  # am.mna
@@ -214,35 +197,39 @@ class TestSyllabifier(unittest.TestCase):
         syllables = self.syll_fra.annotate(phonemes)
         self.assertEqual([(0, 3)], syllables)  # gjit
 
-        # exception rule
+        # VCCCV exception rule
         phonemes = ['a', 'dz', 'v', 'j', 'a']
         syllables = self.syll_pol.annotate(phonemes)
         self.assertEqual([(0, 0), (1, 4)], syllables)  # a.dzvja
 
-        # specific (shift to left)
+        # VCCCV specific (shift to left)
         phonemes = ['a', 'b', 'z', 'n', 'a']
         syllables = self.syll_pol.annotate(phonemes)
         self.assertEqual([(0, 0), (1, 4)], syllables)  # a.bzna
 
-        # specific (shift to right)
+        # VCCCV specific (shift to right)
         phonemes = ['a', 'r', 'w', 'S', 'a']
         syllables = self.syll_pol.annotate(phonemes)
         self.assertEqual([(0, 2), (3, 4)], syllables)  # arw.Sa
 
-    # -----------------------------------------------------------------------
+        # test VCCCCV rule
 
-    def test_VCCCCV(self):
         phonemes = ['a', 'b', 'r', 'v', 'j', 'a']
         syllables = self.syll_pol.annotate(phonemes)
         self.assertEqual([(0, 0), (1, 5)], syllables)  # a.brvja
 
-    # -----------------------------------------------------------------------
+        # test VCCCCCV rule
 
-    def test_VCCCCCV(self):
-        """ French sentence: à parce que moi. """
+        # ... French sentence: à parce que moi.
         phonemes = ['a', 'p', 's', 'k', 'm', 'w', 'a']
         syllables = self.syll_fra.annotate(phonemes)
         self.assertEqual([(0, 3), (4, 6)], syllables)  # apsk.mwa
+
+        # Test the limits (do not forget 't', 't-p', etc).
+
+        self.assertEqual([(0, 3)], self.syll_fra.annotate(['g', 'j', 'i', 't']))
+        self.assertEqual([(0, 4)], self.syll_fra.annotate(['g', 'j', 'i', 't', 'p']))
+        self.assertEqual([(0, 4)], self.syll_fra.annotate(['g', 'j', 'i', 't', 'p', '#']))
 
     # -----------------------------------------------------------------------
 
@@ -309,7 +296,7 @@ class TestsppasSyll(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_phon_to_intervals(self):
-        """ Create the intervals to be syllabified. """
+        """ ... Create the intervals to be syllabified. """
 
         test_tier = self.tier.copy()
 
@@ -358,7 +345,7 @@ class TestsppasSyll(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_syllabify_interval(self):
-        """ Perform the syllabification of one interval. """
+        """ ... Perform the syllabification of one interval. """
 
         expected = sppasTier('Expected')
         expected.create_annotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3))),
@@ -382,13 +369,68 @@ class TestsppasSyll(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_convert(self):
-        """ Syllabify labels of a time-aligned phones tier. """
+        """ ... [TO DO] Syllabify labels of a time-aligned phones tier. """
 
         s = self.syll.convert(self.tier)
 
     # -----------------------------------------------------------------------
 
     def test_run(self):
-        """ Test on real-life data. """
+        """ ... [TO DO] Test on real-life data. """
 
         pass
+
+    # -----------------------------------------------------------------------
+
+    def test_samples(self):
+        """ ... Compare the current result is the same as the existing one. """
+
+        # the place where are the samples to be tested.
+        samples_path = os.path.join(SAMPLES_PATH, "annotation-results")
+
+        # each samples folder is tested
+        for samples_folder in os.listdir(samples_path):
+            if samples_folder.startswith("samples-") is False:
+                continue
+
+            # Create a Syllabifier for the given set of samples of the given language
+            lang = samples_folder[-3:]
+            rules_file = os.path.join(RESOURCES_PATH, "syll", "syllConfig-"+lang+".txt")
+            if os.path.exists(rules_file) is False:
+                continue
+
+            tn = sppasSyll(rules_file)
+
+            # Apply Syllabification on each sample
+            for filename in os.listdir(os.path.join(samples_path, samples_folder)):
+                if filename.endswith("-palign.xra") is False:
+                    continue
+
+                # Get the expected result
+                expected_result_filename = os.path.join(samples_path, samples_folder,
+                                                        filename[:-11] + "-salign.xra")
+                if os.path.exists(expected_result_filename) is False:
+                    print("no match palign/salign for: {:s}".format(filename))
+                    continue
+                parser = sppasRW(expected_result_filename)
+                expected_result = parser.read()
+
+                # Estimate the result and check if it's like expected.
+                result = tn.run(os.path.join(samples_path, samples_folder, filename))
+
+                expected_tier_syll = expected_result.find('SyllAlign')
+                if expected_tier_syll is not None:
+                    self.compare_tiers(expected_tier_syll, result.find('SyllAlign'))
+
+    # -----------------------------------------------------------------------
+
+    def compare_tiers(self, expected, result):
+        self.assertEqual(len(expected), len(result))
+        for a1, a2 in zip(expected, result):
+            self.assertEqual(a1, a2)
+            for key in a1.get_meta_keys():
+                if key != 'id':
+                    self.assertEqual(a1.get_meta(key), a2.get_meta(key))
+        for key in expected.get_meta_keys():
+            if key != 'id':
+                self.assertEqual(expected.get_meta(key), result.get_meta(key))
