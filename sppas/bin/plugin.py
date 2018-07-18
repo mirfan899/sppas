@@ -64,7 +64,7 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 import sppas
-from sppas.src.term.terminalcontroller import TerminalController
+from sppas.src.ui.term.terminalcontroller import TerminalController
 
 from sppas.src.plugins import sppasPluginsManager
 

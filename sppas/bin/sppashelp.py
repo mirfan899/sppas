@@ -63,11 +63,11 @@ sys.path.append(SPPAS)
 
 try:
     from sppas import SETTINGS_FILE
-    from sppas.src.wxgui.frames.helpbrowser import HelpBrowser
+    from sppas.src.ui.wxgui.frames.helpbrowser import HelpBrowser
     from sppas.src.utils.fileutils import setup_logging
-    from sppas.src.wxgui.dialogs.msgdialogs import ShowInformation
-    from sppas.src.wxgui.structs.prefs import Preferences_IO
-    from sppas.src.wxgui.structs.theme import sppasTheme
+    from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
+    from sppas.src.ui.wxgui.structs.prefs import Preferences_IO
+    from sppas.src.ui.wxgui.structs.theme import sppasTheme
     from sppas.src.utils.fileutils import setup_logging
 except ImportError:
     exit_error("An error occurred.\n"

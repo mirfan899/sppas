@@ -51,7 +51,7 @@ from sppas.src.audiodata.audio import sppasAudioPCM
 from sppas.src.audiodata.audioframes import sppasAudioFrames
 from sppas.src.audiodata.audioconvert import sppasAudioConverter
 from sppas.src.audiodata.channelsmixer import sppasChannelMixer
-from sppas.src.term.textprogress import ProcessProgressTerminal
+from sppas.src.ui.term.textprogress import ProcessProgressTerminal
 
 # ----------------------------------------------------------------------------
 # Functions
