@@ -1,6 +1,14 @@
 import wx
-import wx.adv
 import logging
+import os.path
+from argparse import ArgumentParser
+
+try:
+    import wx.adv
+    adv_import = True
+except ImportError:
+    adv_import = False
+
 
 """
 
@@ -109,9 +117,11 @@ class myFrame(wx.Frame):
         FRAME_STYLE = wx.DEFAULT_FRAME_STYLE
         if FRAME_STYLE in cfg:
             FRAME_STYLE = cfg['FRAME_STYLE']
+
+        title = wx.GetApp().GetAppDisplayName()
         wx.Frame.__init__(self,
-                          parent=None,
-                          title='A simple application...',
+                          None,
+                          title=title,
                           style=FRAME_STYLE)
         self.SetMinSize((300, 200))
         if 'FRAME_WIDTH' in cfg or 'FRAME_HEIGHT' in cfg:
@@ -422,30 +432,81 @@ class myAnalyzePanel(myContentPanel):
 
 
 class myApp(wx.App):
-    """ Create my own Application. Inherited from the wx.App.
+    """ Create my own wx application. """
 
-    """
+
     def __init__(self):
 
+        # Create members
+        self.app_dir = os.path.dirname(os.path.realpath(__file__))
+        self.splash = None
+        self.cfg = dict()
+        self.log_file = None  # os.path.join(os.path.dirname(os.path.abspath(__file__)), "simple.log")
+        self.log_level = 10
+        self.init_members()
+
+        # Initialize the wx application
         wx.App.__init__(self,
                         redirect=False,
-                        filename=None,
+                        filename=self.log_file,
                         useBestVisual=True,
                         clearSigInt=True)
 
-        self.SetAppName("wxPySimple")
+        self.SetAppName("simple10")
+        self.SetAppDisplayName("Displayed application name")
+
         wx.Log.EnableLogging(True)
         wx.Log.SetLogLevel(20)
+        
+        lang = wx.LANGUAGE_DEFAULT
+        self.locale = wx.Locale(lang)
 
-        # Display a Splash screen during 10 seconds, or stops when main frame
-        # is ready
-        bitmap = wx.Bitmap('splash.png', wx.BITMAP_TYPE_PNG)
+    # -----------------------------------------------------------------------
 
-        splash = wx.adv.SplashScreen(bitmap, wx.adv.SPLASH_CENTRE_ON_SCREEN | wx.adv.SPLASH_TIMEOUT,
-                                     10000, None, -1, wx.DefaultPosition, wx.DefaultSize,
-                                     wx.BORDER_SIMPLE | wx.STAY_ON_TOP)
+    def init_members(self):
 
-        wx.Yield()
+        self.process_command_line_args()
+
+        self.cfg['splash_delay'] = 10
+
+        # Fix the level of messages and where to redirect them (file or std)
+        try:
+            setup_logging(self.log_level, self.log_file)
+        except:
+            setup_logging(self.log_level, None)
+
+
+    # -----------------------------------------------------------------------
+
+    def run(self):
+        
+        # here we could fix things like:
+        #  - is first launch? No? so create config! and/or display a welcome msg!
+        #  - fix config dir,
+        #  - etc
+
+        if adv_import and self.cfg['splash_delay'] > 0:
+            self.show_splash_screen(self.cfg['splash_delay'])
+        self.background_initialization()
+        self.create_application()   
+        self.MainLoop()
+
+    # -----------------------------------------------------------------------
+
+    def process_command_line_args(self):
+        """ This is an opportunity for users to fix some args. """
+
+        parser = ArgumentParser(usage="%s" % os.path.basename(__file__), 
+                        description="... a program to do something.")
+        # add arguments here
+        # then parse
+        args = parser.parse_args()
+
+        # and do things with arguments
+
+    # -----------------------------------------------------------------------
+
+    def background_initialization(self):
 
         # Initialize the application
         #   here we could read some config file, load some resources, etc
@@ -455,7 +516,6 @@ class myApp(wx.App):
         a = 1.5
         for i in range(1000000):
             a *= float(i)
-        self.cfg = dict()
 
         title_font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
         title_font = title_font.Bold()
@@ -486,12 +546,34 @@ class myApp(wx.App):
         # Fix the font
         self.cfg['TITLE_TEXT_FONT'] = title_font
         self.cfg['BUTTON_TEXT_FONT'] = button_font
+    
+    # -----------------------------------------------------------------------
 
-        # create the frame
+    def create_application(self):
+        """ Create the main frame of the application and show it. """
+
         frm = myFrame()
         self.SetTopWindow(frm)
-        splash.Close()
+        if self.splash:
+            self.splash.Close()
         frm.Show()
+
+    # -----------------------------------------------------------------------
+
+    def show_splash_screen(self, delay=10):
+        """ Create and show the splash image during 10 seconds. """
+        
+        bitmap = wx.Bitmap('splash.png', wx.BITMAP_TYPE_PNG)
+
+        self.splash = wx.adv.SplashScreen(bitmap,
+                                          wx.adv.SPLASH_CENTRE_ON_SCREEN | wx.adv.SPLASH_TIMEOUT,
+                                          delay*100,
+                                          None,
+                                          -1,
+                                          wx.DefaultPosition,
+                                          wx.DefaultSize,
+                                          wx.BORDER_SIMPLE | wx.STAY_ON_TOP)
+        self.Yield()
 
     # -----------------------------------------------------------------------
 
@@ -514,18 +596,9 @@ class myApp(wx.App):
 
 if __name__ == '__main__':
 
-    # Fix the level of messages and where to redirect them (file or std)
-    log_level = 10
-    log_file = None  # os.path.join(os.path.dirname(os.path.abspath(__file__)), "simple.log")
-    print(log_file)
-    try:
-        setup_logging(log_level, log_file)
-    except:
-        setup_logging(log_level, None)
-
-    # Run the application
+    # Create and run the application
     app = myApp()
-    app.MainLoop()
+    app.run()
 
     # do some job after (the application is stopped)
     logging.info("Bye bye")
