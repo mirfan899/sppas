@@ -38,16 +38,14 @@
     See: <http://wwwhomes.uni-bielefeld.de/gibbon/TGA/>
 
 """
-from .stats.linregress import tga_linear_regression
-from .stats.variability import rPVI
-from .stats.variability import nPVI
-
-from .descriptivesstats import sppasDescriptiveStatistics
+import sppas.src.calculus.stats.variability as variability
+from sppas.src.calculus.stats.linregress import tga_linear_regression
+from sppas.src.calculus.descriptivesstats import sppasDescriptiveStatistics
 
 # ----------------------------------------------------------------------------
 
 
-class sppasTimeGroupAnalysis(sppasDescriptiveStatistics):
+class TimeGroupAnalysis(sppasDescriptiveStatistics):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -61,10 +59,10 @@ class sppasTimeGroupAnalysis(sppasDescriptiveStatistics):
         - key is the name of the time group;
         - value is the list of durations of each segments in the time group.
 
-    >>> d = { 'tg1':[1.0, 1.2, 3.2, 4.1] , 'tg2':[2.9, 3.3, 3.6, 5.8] }
-    >>> tga = sppasTimeGroupAnalysis(d)
+    >>> d = {'tg1':[1.0, 1.2, 3.2, 4.1] , 'tg2':[2.9, 3.3, 3.6, 5.8]}
+    >>> tga = TimeGroupAnalysis(d)
     >>> total = tga.total()
-    >>> slope = tga.slope()
+    >>> intercept, slope = tga.intercept_slope()
     >>> print(slope['tg_1'])
     >>> print(slope['tg_2'])
 
@@ -87,7 +85,7 @@ class sppasTimeGroupAnalysis(sppasDescriptiveStatistics):
         :returns: (dict) a dictionary of (key, nPVI) of float values
 
         """
-        return dict((key, rPVI(values)) for key, values in self._items.items())
+        return dict((key, variability.rPVI(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -97,44 +95,46 @@ class sppasTimeGroupAnalysis(sppasDescriptiveStatistics):
         :returns: (dict) a dictionary of (key, nPVI) of float values
 
         """
-        return dict((key, nPVI(values)) for key, values in self._items.items())
+        return dict((key, variability.nPVI(values)) for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
     def intercept_slope_original(self):
         """ Estimates the intercept like the original TGA of data values.
 
+        Create the list of points (x,y) of each TG where:
+            - x is the position
+            - y is the duration
+
         :returns: (dict) a dictionary of (key, (intercept,slope)) of float values
 
         """
-        # Create the list of points (x,y) of each TG where:
-        #  x is the position
-        #  y is the duration
-        linreg = []
+        lin_reg = list()
         for key, values in self._items.items():
             points = [(position, duration) for position, duration in enumerate(values)]
-            linreg.append((key, (tga_linear_regression(points))))
+            lin_reg.append((key, (tga_linear_regression(points))))
 
-        return dict(linreg)
+        return dict(lin_reg)
 
     # -----------------------------------------------------------------------
 
     def intercept_slope(self):
         """ Estimates the intercept like AnnotationPro of data values.
 
+        Create the list of points (x,y) of each TG where:
+            - x is the timestamps
+            - y is the duration
+
         :returns: (dict) a dictionary of (key, (intercept,slope)) of float values
 
         """
-        # Create the list of points (x,y) of each TG where:
-        # x is the timestamps
-        # y is the duration
-        linreg = []
+        lin_reg = list()
         for key, values in self._items.items():
-            points = []
+            points = list()
             timestamp = 0.
             for duration in values:
                 points.append((timestamp, duration))
                 timestamp += duration
-            linreg.append((key, (tga_linear_regression(points))))
+            lin_reg.append((key, (tga_linear_regression(points))))
 
-        return dict(linreg)
+        return dict(lin_reg)

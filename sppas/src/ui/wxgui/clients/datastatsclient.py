@@ -59,7 +59,6 @@ from sppas.src.ui.wxgui.panels.trslist import TrsList
 from sppas.src.ui.wxgui.panels.mainbuttons import MainToolbarPanel
 from sppas.src.ui.wxgui.views.descriptivestats import DescriptivesStatsDialog
 from sppas.src.ui.wxgui.views.useragreement import UserAgreementDialog
-from sppas.src.ui.wxgui.views.tga import TGADialog
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -69,7 +68,6 @@ FILTER_CHECK_ID = wx.NewId()
 FILTER_UNCHECK_ID = wx.NewId()
 DESCRIPTIVES_ID = wx.NewId()
 USERCHECK_ID = wx.NewId()
-TIMEANALYSIS_ID = wx.NewId()
 PREVIEW_ID = wx.NewId()
 
 # ----------------------------------------------------------------------------
@@ -162,7 +160,6 @@ class DataStats(wx.Panel):
         toolbar.AddButton(PREVIEW_ID, TIER_PREVIEW, 'View', tooltip="Preview one checked tier of the selected file.")
         toolbar.AddSpacer()
         toolbar.AddButton(DESCRIPTIVES_ID, SPREADSHEETS, 'Statistics', tooltip="Estimates descriptive statistics of checked tier(s).")
-        toolbar.AddButton(TIMEANALYSIS_ID, TIMEANALYSIS, 'TGA', tooltip="Estimates TGA - Time GroupAnalyses of checked tier(s).")
         toolbar.AddButton(USERCHECK_ID, USERCHECK, 'User\nAgreement', tooltip="Estimates Kappa of checked tier(s).")
         toolbar.AddSpacer()
 
@@ -203,9 +200,6 @@ class DataStats(wx.Panel):
             self.Preview()
             return True
 
-        elif id == TIMEANALYSIS_ID:
-            self.TimeGroupAnalysis()
-            return True
         elif id == USERCHECK_ID:
             self.UserAgreement()
             return True
@@ -337,19 +331,6 @@ class DataStats(wx.Panel):
             dlg.Destroy()
         else:
             ShowInformation(self, self._prefsIO, "Two tiers must be checked!", wx.ICON_WARNING)
-
-    # ----------------------------------------------------------------------
-
-    def TimeGroupAnalysis(self):
-        """ Time Group Analysis ."""
-        
-        nb = self._get_nbselectedtiers(inselection=False)
-        if nb > 0:
-            dlg = TGADialog(self, self._prefsIO, self._get_selectedtiers())
-            dlg.ShowModal()
-            dlg.Destroy()
-        else:
-            ShowInformation(self, self._prefsIO, "At least one tier must be checked!", wx.ICON_INFORMATION)
 
     # ----------------------------------------------------------------------
     # GUI

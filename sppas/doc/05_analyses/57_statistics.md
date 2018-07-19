@@ -44,59 +44,6 @@ i.e. the best label and all its alternatives (if any).
 ![Descriptive statistics](./etc/screenshots/Statistics-descriptives.png)
 
 
-### TGA - Time Group Analyzer
-
-TGA is originally available at 
-<http://wwwhomes.uni-bielefeld.de/gibbon/TGA/>. It's a tool developed
-by Dafydd Gibbon, emeritus professor of English and General Linguistics at
-Bielefeld University. 
-
-The  TGA   is   an   online   batch   processing   tool  which
-provides  a  parametrised  mapping  from  time-stamps  in
-speech annotation files in various formats to a detailed
-analysis   report   with   statistics   and   visualisations. 
-TGA software calculates, inter alia, mean, median, rPVI, nPVI, slope and 
-intercept functions within inter-pausal groups, provides visualisations of
-timing patterns, as well as correlations between these, and parses inter-pausal 
-groups into hierarchies based on duration relations.
-Linear regression is selected mainly for the slope function, as a first 
-approximation to examining acceleration and deceleration over large data sets.
-
-The   TGA   online   tool   was   designed   to   support
-phoneticians   in   basic   statistical   analysis   of   annotated
-speech data. In practice, the tool provides not only rapid
-analyses but also the ability to handle larger data sets than
-can be handled manually.
-
-
->*Katarzyna Klessa, Dafydd Gibbon* (2014).
->**Annotation Pro + TGA: automation of speech timing analysis**,
->9th International conference on Language Resources and Evaluation (LREC), Reykjavik (Iceland). pp. 1499-1505, ISBN: 978-2-9517408-8-4.
-
-The integrated  Annotation Pro + TGA tool incorporates some TGA features  and
-is   intended   to   support   the development of more robust and versatile 
-timing models for a greater variety of data.
-
-The   integration   of  TGA  statistical   and   visualisation functions into 
-Annotation Pro+TGA results in a powerful computational   enhancement   of  the  
-existing  AnnotationPro  phonetic workbench,   for   supporting   experimental
-analysis   and   modelling   of   speech   timing.
-
-
-So, what's the novelty...
-
-TGA is partly implemented in SPPAS.
-The Statistics analyses tool of SPPAS allows to estimates TGA within the 
-SPPAS framework. It results in the following advantages:
-
-- it can read either TextGrid, csv, Elan, HTK, or Sclite, or any file format supported by SPPAS,
-- it can save TGA results either as a table in a CSV file or as an annotation file (of any of the format supported by SPPAS),
-- it estimates 2 linear regressions (the y-axis is the duration in both cases):
-
-    1. with x-axis based on positions, like in the inline TGA
-    2. with x-axis based on time-stamps, like in the AnnotationPro+TGA
-    
-
 ### User agreement
 
 SPPAS implements the estimation of the Cohen's Kappa.

@@ -29,15 +29,15 @@
 
         ---------------------------------------------------------------------
 
-    bin.alignment.py
+    bin.annotation.py
     ~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Run the any or all automatic annotations.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Run any or all automatic annotations.
 
 """
 import sys
@@ -80,16 +80,17 @@ parser.add_argument("-e",
                     metavar="extension",
                     help='Output extension. One of: %s' % " ".join(extensions_out))
 
-parser.add_argument("--momel",   action='store_true', help="Activate Momel")
+parser.add_argument("--momel", action='store_true', help="Activate Momel")
 parser.add_argument("--intsint", action='store_true', help="Activate INTSINT")
-parser.add_argument("--ipus",    action='store_true', help="Activate IPUs Segmentation")
-parser.add_argument("--tok",     action='store_true', help="Activate Tokenization")
-parser.add_argument("--phon",    action='store_true', help="Activate Phonetization")
-parser.add_argument("--chunks",  action='store_true', help="Activate Chunks alignment")
-parser.add_argument("--align",   action='store_true', help="Activate Phones alignment")
-parser.add_argument("--syll",    action='store_true', help="Activate Syllabification")
-parser.add_argument("--repet",   action='store_true', help="Activate Self-Repetitions")
-parser.add_argument("--all",     action='store_true', help="Activate ALL automatic annotations")
+parser.add_argument("--ipus", action='store_true', help="Activate IPUs Segmentation")
+parser.add_argument("--tok", action='store_true', help="Activate Tokenization")
+parser.add_argument("--phon", action='store_true', help="Activate Phonetization")
+parser.add_argument("--chunks", action='store_true', help="Activate Chunks alignment")
+parser.add_argument("--align", action='store_true', help="Activate Phones alignment")
+parser.add_argument("--syll", action='store_true', help="Activate Syllabification")
+parser.add_argument("--tga", action='store_true', help="Activate TimeGroupAnalyzer")
+parser.add_argument("--repet", action='store_true', help="Activate Self-Repetitions")
+parser.add_argument("--all", action='store_true', help="Activate ALL automatic annotations")
 
 parser.add_argument("--merge",
                     action='store_true',
@@ -140,6 +141,8 @@ if args.align:
     parameters.activate_annotation("align")
 if args.syll:
     parameters.activate_annotation("syll")
+if args.tga:
+    parameters.activate_annotation("tga")
 if args.repet:
     parameters.activate_annotation("repet")
 if args.all:

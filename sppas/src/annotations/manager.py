@@ -52,6 +52,7 @@ from sppas.src.annotations.Phon.sppasphon import sppasPhon
 from sppas.src.annotations.Chunks.sppaschunks import sppasChunks
 from sppas.src.annotations.Align.sppasalign import sppasAlign
 from sppas.src.annotations.Syll.sppassyll import sppasSyll
+from sppas.src.annotations.TGA.sppastga import sppasTGA
 from sppas.src.annotations.Repet.sppasrepet import sppasRepet
 
 from .annotationsexc import AnnotationOptionError
@@ -826,7 +827,73 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_newline()
 
         # Indicate completed!
-        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success,total))
+        self._progress.update(1, "Completed (%d files successfully over %d files)."
+                                 "\n" % (files_processed_success,total))
+        self._progress.set_header("")
+
+        return files_processed_success
+
+    # ------------------------------------------------------------------------
+
+    def run_tga(self, stepidx):
+        """ Execute the SPPAS TGA. """
+
+        # Initializations
+        step = self.parameters.get_step(stepidx)
+        step_name = self.parameters.get_step_name(stepidx)
+        files_processed_success = 0
+        self._progress.set_header(step_name)
+        self._progress.update(0, "")
+
+        # Get the list of input file names, with the ".wav" (or ".wave") extension
+        filelist = self.set_filelist(".wav", not_start=["track_"])
+        if len(filelist) == 0:
+            return 0
+        total = len(filelist)
+
+        # Create annotation instance
+        s = sppasTGA(self._logfile)
+
+        for i, f in enumerate(filelist):
+
+            # fix the default values
+            s.fix_options(step.get_options())
+
+            # Indicate the file to be processed
+            self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
+
+            # Get the input file
+            ext = ['-salign'+self.parameters.get_output_format()]
+            for e in sppas.src.annotationdata.aio.extensions_out_multitiers:
+                ext.append('-salign'+e)
+
+            inname = self._get_filename(f, ext)
+            if inname is not None:
+
+                # Fix output file name
+                outname = os.path.splitext(f)[0] + '-tga' + self.parameters.get_output_format()
+
+                # Execute annotation
+                try:
+                    s.run(inname, outname)
+                    files_processed_success += 1
+                except Exception as e:
+                    if self._logfile is not None:
+                        self._logfile.print_message("%s for file %s\n" % (str(e), outname), indent=2, status=-1)
+
+            else:
+                if self._logfile is not None:
+                    self._logfile.print_message("Failed to find a file with time-aligned syllables. "
+                                                "Read the documentation for details.", indent=2, status=2)
+
+            # Indicate progress
+            self._progress.set_fraction(float((i+1))/float(total))
+            if self._logfile is not None:
+                self._logfile.print_newline()
+
+        # Indicate completed!
+        self._progress.update(1, "Completed (%d files successfully over %d files)."
+                                 "\n" % (files_processed_success,total))
         self._progress.set_header("")
 
         return files_processed_success
@@ -900,7 +967,8 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_newline()
 
         # Indicate completed!
-        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success, total))
+        self._progress.update(1, "Completed (%d files successfully over %d files)."
+                                 "\n" % (files_processed_success, total))
         self._progress.set_header("")
 
         return files_processed_success
@@ -954,51 +1022,55 @@ class sppasAnnotationsManager(Thread):
 
             trs = Transcription()
             try:
-                self.__add_trs(trs, basef + output_format) # Transcription
+                self.__add_trs(trs, basef + output_format)  # Transcription
                 nbfiles = nbfiles + 1
             except Exception:
                 pass
             try:
-                self.__add_trs(trs, basef + "-token" + output_format) # Tokenization
+                self.__add_trs(trs, basef + "-token" + output_format)  # Tokenization
                 nbfiles = nbfiles + 1
             except Exception:
                 pass
             try:
-                self.__add_trs(trs, basef + "-phon" + output_format) # Phonetization
+                self.__add_trs(trs, basef + "-phon" + output_format)  # Phonetization
                 nbfiles = nbfiles + 1
             except Exception:
                 pass
             try:
-                self.__add_trs(trs, basef + "-chunks" + output_format) # PhonAlign, TokensAlign
+                self.__add_trs(trs, basef + "-chunks" + output_format)  # ChunckAlign
                 nbfiles = nbfiles + 1
             except Exception:
                 pass
             try:
-                self.__add_trs(trs, basef + "-palign" + output_format) # PhonAlign, TokensAlign
+                self.__add_trs(trs, basef + "-palign" + output_format)  # PhonAlign, TokensAlign
                 nbfiles = nbfiles + 1
             except Exception:
                 pass
             try:
-                self.__add_trs(trs, basef + "-salign" + output_format) # Syllables
+                self.__add_trs(trs, basef + "-salign" + output_format)  # SyllAlign
                 nbfiles = nbfiles + 1
             except Exception:
                 pass
             try:
-                self.__add_trs(trs, basef + "-ralign" + output_format) # Repetitions
+                self.__add_trs(trs, basef + "-ralign" + output_format)  # Repetitions
                 nbfiles = nbfiles + 1
             except Exception:
                 pass
             try:
-                self.__add_trs(trs, basef + "-momel" + output_format) # Momel
+                self.__add_trs(trs, basef + "-momel" + output_format)  # Momel
                 nbfiles = nbfiles + 1
             except Exception:
                 pass
             try:
-                self.__add_trs(trs, basef + "-intsint" + output_format) # INTSINT
+                self.__add_trs(trs, basef + "-intsint" + output_format)  # INTSINT
                 nbfiles = nbfiles + 1
             except Exception:
                 pass
-
+            try:
+                self.__add_trs(trs, basef + "-tga" + output_format)  # TGA
+                nbfiles = nbfiles + 1
+            except Exception:
+                pass
             try:
                 if nbfiles > 1:
                     infotier = sppasMetaInfoTier()
@@ -1077,17 +1149,21 @@ class sppasAnnotationsManager(Thread):
                     nbruns[i] = self.run_alignment(i)
                 elif self.parameters.get_step_key(i) == "syll":
                     nbruns[i] = self.run_syllabification(i)
+                elif self.parameters.get_step_key(i) == "tga":
+                    nbruns[i] = self.run_tga(i)
                 elif self.parameters.get_step_key(i) == "repet":
                     nbruns[i] = self.run_repetition(i)
                 elif self._logfile is not None:
-                    self._logfile.print_message('Unrecognized annotation step:%s' % self.parameters.get_step_name(i))
+                    self._logfile.print_message('Unrecognized annotation step:'
+                                                '%s' % self.parameters.get_step_name(i))
 
         if self._logfile is not None:
             self._logfile.print_separator()
             self._logfile.print_newline()
             self._logfile.print_separator()
 
-        if self.__do_merge: self.merge()
+        if self.__do_merge:
+            self.merge()
 
         # ##################################################################### #
         # Log file: Final information
@@ -1100,5 +1176,3 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_stat(i, str(nbruns[i]))
             self._logfile.print_separator()
             self._logfile.close()
-
-    # ------------------------------------------------------------------------

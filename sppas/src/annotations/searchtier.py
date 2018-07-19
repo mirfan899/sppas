@@ -191,6 +191,26 @@ class sppasFindTier(object):
     # ------------------------------------------------------------------------
 
     @staticmethod
+    def aligned_syllables(trs):
+        """ Return the tier with time-aligned syllables.
+
+        :param trs: (sppasTranscription)
+
+        """
+        for tier in trs:
+            if "align" in tier.get_name().lower() and "syll" in tier.get_name().lower():
+                return tier
+
+        # for backward compatibility:
+        for tier in trs:
+            if tier.get_name() == "Syllables":
+                return tier
+
+        raise NoInputError
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
     def pitch_anchors(trs):
         """ Return the tier with pitch anchors, like momel.
 

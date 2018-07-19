@@ -48,7 +48,6 @@ t = translate("calculus")
 
 from .descriptivesstats import sppasDescriptiveStatistics
 from .kappa import sppasKappa
-from .timegroupanalysis import sppasTimeGroupAnalysis
 from .geometry.distances import squared_euclidian, euclidian, manathan, minkowski, chi_squared
 from .stats.central import fsum, fmult, fmin, fmax, fmean, fgeometricmean, fharmonicmean
 from .stats.frequency import freq, percent, percentile, quantile
@@ -63,7 +62,6 @@ from .scoring.ubpa import ubpa
 __all__ = [
     "sppasDescriptiveStatistics",
     "sppasKappa",
-    "sppasTimeGroupAnalysis",
     "squared_euclidian", "euclidian", "manathan", "minkowski", "chi_squared",
     "fsum", "fmult", "fmin", "fmax", "fmean", "fgeometricmean", "fharmonicmean",
     "freq", "percent", "percentile", "quantile",

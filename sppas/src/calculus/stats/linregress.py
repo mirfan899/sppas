@@ -114,6 +114,9 @@ def gradient_descent(points, starting_b, starting_m, learning_rate, num_iteratio
     is achieved using calculus, taking steps in the negative direction of
     the function gradient.
 
+    :param points: a list of tuples (x,y) of float values.
+    :returns: intercept, slope
+
     """
     if len(points) == 0:
         return 0.
@@ -133,7 +136,8 @@ def gradient_descent_linear_regression(points, num_iterations=50000):
     adapted from:
     http://spin.atomicobject.com/2014/06/24/gradient-descent-linear-regression/
 
-    :param points: is a list of tuples (x,y) of float values.
+    :param points: a list of tuples (x,y) of float values.
+    :param num_iterations: (int)
     :returns: intercept, slope
 
     """

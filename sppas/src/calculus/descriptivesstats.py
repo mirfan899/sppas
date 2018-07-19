@@ -142,8 +142,7 @@ class sppasDescriptiveStatistics(object):
     # -----------------------------------------------------------------------
 
     def variance(self):
-        """
-        Estimates the unbiased sample variance of data values.
+        """ Estimates the unbiased sample variance of data values.
 
         :returns: (dict) a dictionary of (key, variance) of float values
 
@@ -153,8 +152,7 @@ class sppasDescriptiveStatistics(object):
     # -----------------------------------------------------------------------
 
     def stdev(self):
-        """
-        Estimates the standard deviation of data values.
+        """ Estimates the standard deviation of data values.
 
         :returns: (dict) a dictionary of (key, stddev) of float values
 
@@ -164,8 +162,7 @@ class sppasDescriptiveStatistics(object):
     # -----------------------------------------------------------------------
 
     def coefvariation(self):
-        """
-        Estimates the coefficient of variation of data values (given as a percentage).
+        """ Estimates the coefficient of variation of data values (given as a percentage).
 
         :returns: (dict) a dictionary of (key, coefvariation) of float values
 

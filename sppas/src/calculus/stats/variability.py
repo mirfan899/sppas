@@ -48,6 +48,7 @@
         - lsterr
         - lz
         - lzs
+        - rPVI, nPVI
 
 """
 import math
@@ -59,8 +60,9 @@ from .central import fsum
 
 
 def lunbiasedvariance(items):
-    """ Calculates the unbiased sample variance of the data values,
-    using N-1 for the denominator.
+    """ Calculates the unbiased sample variance of the data values, for a sample.
+    It means that the estimation is using N-1 for the denominator.
+
 
     The variance is a measure of dispersion near the mean.
 
@@ -78,8 +80,8 @@ def lunbiasedvariance(items):
 
 
 def lvariance(items):
-    """ Calculates the variance of the data values,
-    using N for the denominator.
+    """ Calculates the variance of the data values, for a population.
+    It means that the estimation is using N for the denominator.
 
     The variance is a measure of dispersion near the mean.
 
@@ -97,8 +99,7 @@ def lvariance(items):
 
 
 def lunbiasedstdev(items):
-    """ Calculates the standard deviation of the data values,
-    using N-1 for the denominator.
+    """ Calculates the standard deviation of the data values, for a sample.
 
     The standard deviation is the positive square root of the variance.
 
@@ -115,8 +116,7 @@ def lunbiasedstdev(items):
 
 
 def lstdev(items):
-    """ Calculates the standard deviation of the data values,
-    using N for the denominator.
+    """ Calculates the standard deviation of the data values, for a population.
 
     The standard deviation is the positive square root of the variance.
 

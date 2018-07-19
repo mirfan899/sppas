@@ -328,7 +328,8 @@ class sppasSyll(sppasBaseAnnotation):
     def _phon_to_intervals(phonemes):
         """ Create the intervals to be syllabified. """
 
-        # for backward compatibility
+        # we could use PHONE_SYMBOLS, but for backward compatibility
+        # we hardly add the symbols previously used into SPPAS.
         stop = list(PHONE_SYMBOLS.keys())
         stop.append('#')
         stop.append('@@')
@@ -336,41 +337,4 @@ class sppasSyll(sppasBaseAnnotation):
         stop.append('gb')
         stop.append('lg')
 
-        intervals = sppasTier("intervals")
-        begin = phonemes.get_first_point()
-        end = begin
-        prev_ann = None
-
-        for ann in phonemes:
-            tag = None
-            if ann.label_is_filled():
-                tag = ann.get_best_tag()
-
-            if prev_ann is not None:
-                # if no tag or stop tag or hole between prev_ann and ann
-                if tag is None or \
-                   tag.get_typed_content() in stop or \
-                   prev_ann.get_highest_localization() < ann.get_lowest_localization():
-                    if end > begin:
-                        intervals.create_annotation(sppasLocation(
-                              sppasInterval(begin,
-                                            prev_ann.get_highest_localization())))
-
-                    if tag is None or tag.get_typed_content() in stop:
-                        begin = ann.get_highest_localization()
-                    else:
-                        begin = ann.get_lowest_localization()
-            else:
-                # phonemes can start with a non-labelled interval!
-                if tag is None or tag.get_typed_content() in stop:
-                    begin = ann.get_highest_localization()
-
-            end = ann.get_highest_localization()
-            prev_ann = ann
-
-        if end > begin:
-            ann = phonemes[-1]
-            end = ann.get_highest_localization()
-            a = intervals.create_annotation(sppasLocation(sppasInterval(begin, end)))
-
-        return intervals
+        return phonemes.export_to_intervals(stop)

@@ -150,7 +150,7 @@ def fmedian(items):
     if len(items) == 0:
         return 0.
 
-    middle = len(items) / 2
+    middle = int(len(items) / 2)
     if len(items) % 2:
         return items[middle]
 
