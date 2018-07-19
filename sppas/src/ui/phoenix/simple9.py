@@ -212,7 +212,7 @@ class myMenuPanel(wx.Panel):
         self.SetSize((-1, 64))
 
         menuSizer = wx.BoxSizer(wx.HORIZONTAL)
-        st = wx.StaticText(self, wx.ID_ANY, label="My App!", pos=(25, 25))
+        st = wx.StaticText(self, wx.ID_ANY, label="My App!")
         st.SetForegroundColour(foreground_color)
         font = st.GetFont()
         font = font.Bold()

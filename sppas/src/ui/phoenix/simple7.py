@@ -50,10 +50,9 @@ class myMenuPanel(wx.Panel):
         wx.Panel.__init__(self, parent)
         self.SetBackgroundColour(btn_background_color)
         self.SetMinSize((-1, 64))
-        self.SetSize((-1, 64))
 
         menuSizer = wx.BoxSizer(wx.HORIZONTAL)
-        st = wx.StaticText(self, wx.ID_ANY, label="My App!", pos=(25, 25))
+        st = wx.StaticText(self, wx.ID_ANY, label="My App!")
         st.SetForegroundColour(foreground_color)
         font = st.GetFont()
         font = font.Bold()
@@ -66,19 +65,19 @@ class myMenuPanel(wx.Panel):
         fileBtn = wx.Button(self, wx.ID_EXIT, "Files", style=wx.NO_BORDER, name="files")
         fileBtn.SetForegroundColour(foreground_color)
         fileBtn.SetBackgroundColour(btn_background_color)
-        menuSizer.Add(fileBtn, 1, wx.EXPAND, 0)
+        menuSizer.Add(fileBtn, 1, wx.ALL | wx.EXPAND, 1)
 
         # Will switch to the "Annotate" main panel
         annotBtn = wx.Button(self, wx.ID_ANY, "Annotate", style=wx.NO_BORDER, name="annot")
         annotBtn.SetForegroundColour(foreground_color)
         annotBtn.SetBackgroundColour(btn_background_color)
-        menuSizer.Add(annotBtn, 1, wx.EXPAND, 0)
+        menuSizer.Add(annotBtn, 1, wx.ALL | wx.EXPAND, 1)
 
         # Will switch to the "Analyze" main panel
         analyseBtn = wx.Button(self, wx.ID_ANY, "Analyze", style=wx.NO_BORDER, name="analyse")
         analyseBtn.SetForegroundColour(foreground_color)
         analyseBtn.SetBackgroundColour(btn_background_color)
-        menuSizer.Add(analyseBtn, 1, wx.EXPAND, 0)
+        menuSizer.Add(analyseBtn, 1, wx.ALL | wx.EXPAND, 1)
 
         menuSizer.AddStretchSpacer(prop=5)
 
@@ -86,7 +85,7 @@ class myMenuPanel(wx.Panel):
         aboutBtn = wx.Button(self, wx.ID_ABOUT, "About", style=wx.NO_BORDER, name="about")
         aboutBtn.SetForegroundColour(foreground_color)
         aboutBtn.SetBackgroundColour(btn_background_color)
-        menuSizer.Add(aboutBtn, 0, wx.ALIGN_RIGHT | wx.EXPAND, 0)
+        menuSizer.Add(aboutBtn, 1, wx.ALIGN_RIGHT | wx.EXPAND, 0)
 
         # Bind all buttons of this menu
         self.Bind(wx.EVT_BUTTON, self.OnAction, fileBtn)
@@ -95,6 +94,7 @@ class myMenuPanel(wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.OnAbout, aboutBtn)
 
         self.SetSizer(menuSizer)
+        self.SetAutoLayout(True)
 
     # -----------------------------------------------------------------------
 
@@ -188,7 +188,7 @@ class myApp(wx.App):
 
         # add a customized menu (instead of a traditional menu+toolbar)
         menus = myMenuPanel(frm)
-        topSizer.Add(menus, 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
+        topSizer.Add(menus, 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT, 0)
 
         # separate menu and text with a line
         line_top = wx.StaticLine(frm, style=wx.LI_HORIZONTAL)
