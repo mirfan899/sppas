@@ -77,7 +77,7 @@ class sppasAnnotation(sppasMetaData):
 
         self.__parent = None
         self.__location = location
-        self.__labels = []
+        self.__labels = list()
         self.__score = None
         self.set_labels(labels)
 
@@ -449,6 +449,29 @@ class sppasAnnotation(sppasMetaData):
                 return label.is_bool()
 
         return False
+
+    # -----------------------------------------------------------------------
+
+    def serialize_labels(self, separator="\n", empty="", alt=True):
+        """ Convert labels into a string.
+
+        :param separator: (str) String to separate labels.
+        :param empty: (str) The text to return if a tag is empty or not set.
+        :param alt: (bool) Include alternative tags
+        :returns: (str)
+
+        """
+        if len(self.__labels) == 0:
+            return empty
+
+        if len(self.__labels) == 1:
+            return self.__labels[0].serialize(empty, alt)
+
+        c = list()
+        for label in self.__labels:
+            c.append(label.serialize(empty, alt))
+
+        return separator.join(c)
 
     # -----------------------------------------------------------------------
     # Localization

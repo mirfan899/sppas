@@ -147,7 +147,7 @@ class Transcription(MetaObject):
                     localization = TimeInterval(new_begin, new_end)
                 else:
                     localization = new_begin
-                label_text = anndata.aioutils.serialize_labels(ann.get_labels(), separator="\n", empty="", alt=True)
+                label_text = ann.serialize_labels(separator="\n", empty="", alt=True)
                 new_tier.Add(Annotation(localization, Label(label_text)))
             for meta_key in tier.get_meta_keys():
                 new_tier.metadata[meta_key] = tier.get_meta(meta_key)

@@ -68,7 +68,6 @@ from ..annotation import sppasAnnotation
 from .aioutils import fill_gaps
 from .aioutils import merge_overlapping_annotations
 from .aioutils import load
-from .aioutils import serialize_labels
 from .aioutils import format_labels
 from .basetrs import sppasBaseIO
 
@@ -220,13 +219,10 @@ class sppasBasePraat(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def _serialize_labels_text(labels):
-        """ Convert a label into a string. """
+    def _serialize_labels_text(annotation):
+        """ Convert the annotation labels into a string. """
 
-        text = serialize_labels(labels,
-                                separator="\n",
-                                empty="",
-                                alt=True)
+        text = annotation.serialize_labels(separator="\n", empty="", alt=True)
 
         if '"' in text:
             text = re.sub('([^"])["]([^"])', '\\1""\\2', text)
@@ -599,7 +595,7 @@ class sppasTextGrid(sppasBasePraat):
         content = '\t\tintervals [{:d}]:\n'.format(number)
         content += '\t\t\txmin = {}\n'.format(annotation.get_lowest_localization().get_midpoint())
         content += '\t\t\txmax = {}\n'.format(annotation.get_highest_localization().get_midpoint())
-        content += sppasBasePraat._serialize_labels_text(annotation.get_labels())
+        content += sppasBasePraat._serialize_labels_text(annotation)
         return u(content)
 
     # -----------------------------------------------------------------------
@@ -613,7 +609,7 @@ class sppasTextGrid(sppasBasePraat):
         :returns: (unicode)
 
         """
-        text = sppasBasePraat._serialize_labels_text(annotation.get_labels())
+        text = sppasBasePraat._serialize_labels_text(annotation)
         text = text.replace("text =", "mark =")
 
         content = '\t\t\tpoints [{:d}]:\n'.format(number)

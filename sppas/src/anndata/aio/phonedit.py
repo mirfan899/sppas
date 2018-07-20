@@ -63,7 +63,6 @@ from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
 from .basetrs import sppasBaseIO
-from .aioutils import serialize_labels
 from .aioutils import format_labels
 from .aioutils import load
 
@@ -368,10 +367,7 @@ class sppasMRK(sppasBasePhonedit):
                 fp.write("[LBL_{:s}]\n".format(level))
                 for index_ann, ann in enumerate(tier):
 
-                    text = serialize_labels(ann.get_labels(),
-                                            separator=" ",
-                                            empty="",
-                                            alt=True)
+                    text = ann.serialize_labels(separator=" ", empty="", alt=True)
                     fp.write("LBL_{:s}_{:06d}=\"{:s}\"".format(level, index_ann, text))
 
                     if point:

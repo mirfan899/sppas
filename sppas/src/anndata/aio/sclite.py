@@ -66,7 +66,6 @@ from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
 
 from .text import sppasBaseText
-from .aioutils import serialize_labels
 from .aioutils import format_labels
 from .aioutils import load
 
@@ -777,10 +776,9 @@ class sppasSTM(sppasBaseSclite):
         end = ann.get_location().get_best().get_end().get_midpoint()
 
         # fix label information
-        content = serialize_labels(ann.get_labels(),
-                                   separator=" ",
-                                   empty="IGNORE_TIME_SEGMENT_IN_SCORING",
-                                   alt=True)
+        content = ann.serialize_labels(separator=" ",
+                                       empty="IGNORE_TIME_SEGMENT_IN_SCORING",
+                                       alt=True)
 
         return "{wav} {cha} {spk} {beg} {end} {lab}\n".format(
             wav=waveform,

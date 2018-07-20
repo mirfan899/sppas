@@ -141,31 +141,6 @@ def format_label(text, empty=""):
 # ---------------------------------------------------------------------------
 
 
-def serialize_labels(labels, separator="\n", empty="", alt=True):
-    """ Convert labels into a string.
-
-    :param labels: (list of sppasLabel)
-    :param separator: (str) String to separate labels.
-    :param empty: (str) The text to return if a tag is empty or not set.
-    :param alt: (bool) Include alternative tags
-    :returns: (str)
-
-    """
-    if len(labels) == 0:
-        return empty
-
-    if len(labels) == 1:
-        return labels[0].serialize(empty, alt)
-
-    c = list()
-    for label in labels:
-        c.append(label.serialize(empty, alt))
-
-    return separator.join(c)
-
-# -----------------------------------------------------------------------
-
-
 def check_gaps(tier, min_loc=None, max_loc=None):
     """ Check if there are holes between annotations.
 
@@ -282,7 +257,7 @@ def unfill_gaps(tier):
 
     for i, ann in enumerate(tier):
         if ann.label_is_filled() is True:
-            content = serialize_labels(ann.get_labels())
+            content = ann.serialize_labels()
             if len(content) > 0:
                 new_tier.append(ann.copy())
 

@@ -45,7 +45,6 @@ from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
 
-from .aioutils import serialize_labels
 from .aioutils import format_labels
 
 # ---------------------------------------------------------------------------
@@ -300,10 +299,7 @@ class sppasSubRip(sppasBaseSubtitles):
                 last = len(self[0])
                 for ann in self[0]:
 
-                    text = serialize_labels(ann.get_labels(),
-                                            separator="\n",
-                                            empty="",
-                                            alt=True)
+                    text = ann.serialize_labels(separator="\n", empty="", alt=True)
 
                     # no label defined, or empty label -> no subtitle!
                     if len(text) == 0:
@@ -483,10 +479,9 @@ class sppasSubViewer(sppasBaseSubtitles):
             if self.is_empty() is False:
                 for ann in self[0]:
 
-                    text = serialize_labels(ann.get_labels(),
-                                            separator="[br]",
-                                            empty="",
-                                            alt=True)
+                    text = ann.serialize_labels(separator="[br]",
+                                                empty="",
+                                                alt=True)
 
                     # no label defined, or empty label -> no subtitle!
                     if len(text) == 0:

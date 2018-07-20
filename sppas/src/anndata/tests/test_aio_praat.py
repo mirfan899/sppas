@@ -219,20 +219,25 @@ class TestBasePraat(unittest.TestCase):
     def test_serialize_label_text(self):
         """ Convert a label into a text string. """
 
-        line = sppasBasePraat._serialize_labels_text([sppasLabel(sppasTag(""))])
+        a = sppasAnnotation(sppasLocation(sppasPoint(1)), sppasLabel(sppasTag("")))
+        line = sppasBasePraat._serialize_labels_text(a)
         self.assertEqual(line, '\t\t\ttext = ""\n')
 
-        line = sppasBasePraat._serialize_labels_text([sppasLabel(sppasTag("toto"))])
+        a = sppasAnnotation(sppasLocation(sppasPoint(1)), sppasLabel(sppasTag("toto")))
+        line = sppasBasePraat._serialize_labels_text(a)
         self.assertEqual(line, '\t\t\ttext = "toto"\n')
 
-        line = sppasBasePraat._serialize_labels_text([sppasLabel(sppasTag('"toto"'))])
+        a = sppasAnnotation(sppasLocation(sppasPoint(1)), sppasLabel(sppasTag('"toto"')))
+        line = sppasBasePraat._serialize_labels_text(a)
         self.assertEqual(line, '\t\t\ttext = """toto"""\n')
 
-        line = sppasBasePraat._serialize_labels_text([sppasLabel(sppasTag('This is "toto" and "titi"'))])
+        a = sppasAnnotation(sppasLocation(sppasPoint(1)), sppasLabel(sppasTag('This is "toto" and "titi"')))
+        line = sppasBasePraat._serialize_labels_text(a)
         self.assertEqual(line, '\t\t\ttext = "This is ""toto"" and ""titi"""\n')
 
-        line = sppasBasePraat._serialize_labels_text([sppasLabel(sppasTag('"toto"')),
-                                                      sppasLabel(sppasTag('titi'))])
+        a = sppasAnnotation(sppasLocation(sppasPoint(1)), [sppasLabel(sppasTag('"toto"')),
+                                                           sppasLabel(sppasTag('titi'))])
+        line = sppasBasePraat._serialize_labels_text(a)
         self.assertEqual(line, '\t\t\ttext = """toto""\ntiti"\n')
 
     # -----------------------------------------------------------------

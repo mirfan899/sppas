@@ -80,14 +80,7 @@ class TestUtils(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_format_labels(self):
-        """ Convert a string into labels. """
-
-        pass
-
-    # -----------------------------------------------------------------------
-
-    def test_serialize_labels(self):
-        """ Convert a list of labels into a string. """
+        """ Convert a string into a list of labels. """
 
         self.assertEqual([], format_labels(""))
 
