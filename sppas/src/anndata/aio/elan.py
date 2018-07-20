@@ -61,7 +61,6 @@ from ..ctrlvocab import sppasCtrlVocab
 
 from .basetrs import sppasBaseIO
 from .aioutils import format_labels
-from .aioutils import serialize_label
 from .aioutils import serialize_labels
 from .aioutils import point2interval
 from .aioutils import merge_overlapping_annotations
@@ -1332,7 +1331,7 @@ class sppasEAF(sppasBaseIO):
 
             # Assign the label
             label_ann_root = ET.SubElement(align_ann_root, 'ANNOTATION_VALUE')
-            label_ann_root.text = serialize_label(label, empty="", alt=True)  # get_best().get_content()
+            label_ann_root.text = label.serialize(empty="", alt=True)  # get_best().get_content()
 
             created_anns.append(align_ann_root)
 

@@ -54,7 +54,6 @@ from ..annlabel.tag import sppasTag
 from ..aio.aioutils import fill_gaps, check_gaps, unfill_gaps
 from ..aio.aioutils import merge_overlapping_annotations
 from ..aio.aioutils import load
-from ..aio.aioutils import serialize_label
 from ..aio.aioutils import format_labels
 
 # ---------------------------------------------------------------------------
@@ -84,32 +83,6 @@ class TestUtils(unittest.TestCase):
         """ Convert a string into labels. """
 
         pass
-
-    # -----------------------------------------------------------------------
-
-    def test_serialize_label(self):
-        """ Convert a label into a string. """
-
-        tag = sppasTag("")
-        label = sppasLabel(tag)
-        s = serialize_label(label)
-        self.assertEqual("", s)
-
-        tag = sppasTag("")
-        label = sppasLabel(tag)
-        s = serialize_label(label, "IGNORE_TIME_SEGMENT_IN_SCORING")
-        self.assertEqual("IGNORE_TIME_SEGMENT_IN_SCORING", s)
-
-        tag = sppasTag("toto")
-        label = sppasLabel(tag)
-        s = serialize_label(label)
-        self.assertEqual("toto", s)
-
-        tag1 = sppasTag("uh")
-        tag2 = sppasTag("um")
-        label = sppasLabel([tag1, tag2])
-        s = serialize_label(label)
-        self.assertEqual("{uh|um}", s)
 
     # -----------------------------------------------------------------------
 

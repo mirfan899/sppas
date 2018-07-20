@@ -383,6 +383,48 @@ class sppasLabel(object):
         return False
 
     # -----------------------------------------------------------------------
+
+    def serialize(self, empty="", alt=True):
+        """ Convert the label into a string, including or not alternative tags.
+
+        Use the "{ | }" system to serialize the alternative tags.
+        Scores of the tags are not returned.
+
+        :param empty: (str) The text to return if a tag is empty or not set.
+        :param alt: (bool) Include alternative tags
+        :returns: (str)
+
+        """
+        if self.__tags is None:
+            return empty
+        if len(self.__tags) == 0:
+            return empty
+        if self.get_best() is None:
+            return empty
+
+        if alt is False or len(self.__tags) == 1:
+            best = self.get_best()
+            if best.is_empty():
+                return empty
+            return best.get_content()
+
+        # we store the alternative tags into a list.
+        # empty tags are replaced by the empty item.
+        tag_contents = list()
+        for tag, score in self.__tags:
+            content = tag.get_content()
+            if len(content) > 0:
+                tag_contents.append(content)
+            else:
+                tag_contents.append(empty)
+
+        # if len(tag_contents) == 1:
+        #     return tag_contents[0]
+
+        # we return the alternative tags
+        return "{" + "|".join(tag_contents) + "}"
+
+    # -----------------------------------------------------------------------
     # Overloads
     # -----------------------------------------------------------------------
 

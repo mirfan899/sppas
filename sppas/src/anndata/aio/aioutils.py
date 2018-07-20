@@ -155,58 +155,13 @@ def serialize_labels(labels, separator="\n", empty="", alt=True):
         return empty
 
     if len(labels) == 1:
-        return serialize_label(labels[0], empty, alt)
+        return labels[0].serialize(empty, alt)
 
     c = list()
     for label in labels:
-        c.append(serialize_label(label, empty, alt))
+        c.append(label.serialize(empty, alt))
 
     return separator.join(c)
-
-# -----------------------------------------------------------------------
-
-
-def serialize_label(label, empty="", alt=True):
-    """ Convert a label into a string, including or not alternative tags.
-
-    Use the "{ | }" system to serialize the alternative tags.
-    Scores of the tags are not returned.
-
-    :param label: (sppasLabel)
-    :param empty: (str) The text to return if a tag is empty or not set.
-    :param alt: (bool) Include alternative tags
-    :returns: (str)
-
-    """
-    if isinstance(label, sppasLabel) is False:
-        raise AnnDataTypeError(label, "sppasLabel")
-
-    if label is None:
-        return empty
-
-    if label.get_best() is None:
-        return empty
-
-    if alt is False:
-        if label.get_best().is_empty():
-            return empty
-        return label.get_best().get_content()
-
-    # we store the alternative tags into a list.
-    # empty tags are replaced by the empty item.
-    tag_contents = list()
-    for tag, score in label:
-        content = tag.get_content()
-        if len(content) > 0:
-            tag_contents.append(content)
-        else:
-            tag_contents.append(empty)
-
-    if len(tag_contents) == 1:
-        return tag_contents[0]
-
-    # we return the alternative tags
-    return "{" + "|".join(tag_contents) + "}"
 
 # -----------------------------------------------------------------------
 
