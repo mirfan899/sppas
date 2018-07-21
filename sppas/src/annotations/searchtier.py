@@ -75,7 +75,7 @@ class sppasFindTier(object):
                 return tier
 
         # Search for a tier containing either
-        # "trans", "trs", "toe", "ortho" or "ipu" in its name
+        # "trans", "trs", "toe" or "ortho" in its name
         for tier in trs:
             tier_name = tier.get_name().lower()
             if "trans" in tier_name:
@@ -86,7 +86,11 @@ class sppasFindTier(object):
                 return tier
             elif "ortho" in tier_name:
                 return tier
-            elif "ipu" in tier_name:
+
+        # Search for a tier containing "ipu" in its name
+        for tier in trs:
+            tier_name = tier.get_name().lower()
+            if "ipu" in tier_name:
                 return tier
 
         raise NoInputError
