@@ -44,12 +44,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas.src.annotationdata.aio
-from sppas.src.annotationdata import Tier
-from sppas.src.annotationdata import Annotation
-from sppas.src.annotationdata import Label
-from sppas.src.annotationdata import TimePoint
-from sppas.src.annotationdata import TimeInterval
+import sppas.src.anndata as anndata
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -91,41 +86,44 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 # Read
 
-trsinput = sppas.src.annotationdata.aio.read( args.i )
+parser = anndata.sppasRW(args.i)
+trs_input = parser.read()
 
 # Take all tiers or specified tiers
-tiersnumbs = []
+tiers_numbers = list()
 if not args.t:
-    tiersnumbs = range(1, (trsinput.GetSize() + 1))
+    tiers_numbers = range(1, (len(trs_input) + 1))
 elif args.t:
-    tiersnumbs = args.t
+    tiers_numbers = args.t
 
 # ----------------------------------------------------------------------------
 
 delta = args.d
-start = int(trsinput.GetMinTime() / delta)
-finish = int(trsinput.GetMaxTime() / delta)
+start = int(trs_input.get_min_loc().get_midpoint() / delta)
+finish = int(trs_input.get_max_loc().get_midpoint() / delta)
 
-btier = Tier("Behavior")
+behavior_tier = trs_input.create_tier("Behavior")
 
 for i in range(start, finish):
-    texts = []
+    texts = list()
     b = (i+start)*delta
     e = b+delta
 
-    for t in tiersnumbs:
-        tier = trsinput[t-1]
+    for t in tiers_numbers:
+        tier = trs_input[t-1]
         # get only ONE annotation in our range
-        anns = tier.Find(b, e, overlaps=True)
+        anns = tier.find(b, e, overlaps=True)
         if len(anns) > 1:
-            anni = tier.Near(b+int(delta/2.), direction=0)
+            anni = tier.near(b+int(delta/2.), direction=0)
             ann = tier[anni]
         else:
             ann = anns[0]
-        texts.append(ann.GetLabel().GetValue())
+        texts.append(ann.serialize_labels())
 
     # Append in new tier
-    ti = TimeInterval(TimePoint(b, 0.0001), TimePoint(e, 0.0001))
+    ti = anndata.sppasInterval(
+        anndata.sppasPoint(b, 0.0001), 
+        anndata.sppasPoint(e, 0.0001))
     if len(texts) > 1:
         missing = False
         for t in texts:
@@ -138,35 +136,34 @@ for i in range(start, finish):
             text = ";".join(texts)
     else:
         text = str(texts[0])
-    ann = Annotation(ti, Label(text))
-    btier.Append(ann)
-
+    behavior_tier.create_annotation(anndata.sppasLocation(ti), 
+                                    anndata.sppasLabel(anndata.sppasTag(text)))
+        
 # ----------------------------------------------------------------------------
 
-stier = Tier("Synchronicity")
-for ann in btier:
-    sann = ann.Copy()
-    if sann.GetLabel().IsEmpty() is False:
-        text = sann.GetLabel().GetValue()
+synchro_tier = trs_input.create_tier("Synchronicity")
+for ann in behavior_tier:
+    text = ann.serialize_labels()
+    if len(text) > 0:
         values = text.split(';')
         v1 = values[0].strip()
         v2 = values[1].strip()
         if v1 == "0" or v2 == "0":
             if v1 == "0" and v2 == "0":
-                sann.GetLabel().SetValue("-1")
+                v = -1
             else:
-                sann.GetLabel().SetValue("0")
+                v = 0
         else:
             if v1 != v2:
-                sann.GetLabel().SetValue("1")
+                v = 1
             else:
-                sann.GetLabel().SetValue("2")
-    stier.Append(sann)
+                v = 2
+        synchro_tier.create_annotation(
+            ann.get_location().copy(),
+            anndata.sppasLabel(anndata.sppasTag(v, "int")))
 
 # ----------------------------------------------------------------------------
 # Write
 
-trsinput.Append(btier)
-trsinput.Append(stier)
-
-sppas.src.annotationdata.aio.write(args.o, trsinput)
+parser.set_filename(args.o)
+parser.write(trs_input)

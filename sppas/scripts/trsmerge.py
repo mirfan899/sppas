@@ -44,8 +44,8 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.annotationdata.transcription import Transcription
-import sppas.src.annotationdata.aio
+from sppas.src.anndata import sppasTranscription
+from sppas.src.anndata import sppasRW
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -76,24 +76,27 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-trs_output = Transcription("SPPAS Merge")
+trs_output = sppasTranscription("SPPAS Merge")
 
 for trs_input_file in args.i:
 
     if not args.quiet:
         print("Read input annotated file:")
-    trs_input = sppas.src.annotationdata.aio.read(trs_input_file)
+    parser = sppasRW(trs_input_file)
+    trs_input = parser.read()
 
     # Take all tiers
-    for i in range(trs_input.GetSize()):
+    for i in range(len(trs_input)):
         if not args.quiet:
-            sys.stdout.write(" -> Tier "+str(i+1)+": ")
-        trs_output.Append(trs_input[i])
+            sys.stdout.write(" -> Tier {:d}: ".format(i+1))
+        trs_output.append(trs_input[i])
         if not args.quiet:
             print(" [  OK  ]")
 
 if not args.quiet:
     sys.stdout.write("Write output file: ")
-sppas.src.annotationdata.aio.write(args.o, trs_output)
+
+parser = sppasRW(args.o)
+parser.write(trs_output)
 if not args.quiet:
     print(" [  OK  ]")
