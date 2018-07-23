@@ -109,10 +109,11 @@ An annotation is a container for a location and optionally a list of labels.
 It can be used to manage the labels and tags with the following methods:
 
 * `is_labelled()` returns True if at least a `sppasTag` exists and is not None
-* `append_label(label)` to add a label into the list of labels
+* `append_label(label)` to add a label at the end of the list of labels
 * `get_labels_best_tag()` returns a list with the best tag of each label
 * `add_tag(tag, score, label_index)` to add a tag into a label
 * `remove_tag(tag, label_index)` to remove a tag of a label
+* `serialize_labels()` to get a string representing the sequence of labels
 
 An annotation object can also be copied with the method `copy()`. The location,
 the labels and the metadata are all copied; and the 'id' of the returned
@@ -198,11 +199,11 @@ tier = trs.find("TokensAlign")
 f = sppasFilter(tier)
 r1 = f.tag(startswith="pa", not_endswith='a', logic_bool="and")
 r2 = f.tag(startswith="pa") & f.tag(not_endswith='a')
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 With this notation in hands, it is easy to formulate queries like
-for example: *Extract words starting by "ch" or "sh"*, like:
+for example: *Extract words starting by "ch" or "sh"*:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
 result = f.tag(startswith="ch") | f.tag(startswith="sh")

@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+  <meta name="author" content="(C) Brigitte Bigi - Laboratoire Parole et Langage - France" />
+  <title>SPPAS Tutorial</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="etc/styles/tuto.css" />
+      <link rel="icon" href="./etc/icons/sppas.png" />
+  
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-38055333-4']);
+        _gaq.push(['_trackPageview']);
+      
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
+</head>
+<body>
+<section class="title">
+  <h1 class="title">SPPAS Tutorial</h1>
+  <h2 class="author">(C) Brigitte Bigi - Laboratoire Parole et Langage - France</h2>
+  <h3 class="date">
+</h3>
+</section>
+<section id="phonemes-and-words-segmentation" class="titleslide slide level1">
+<h1>Phonemes and words segmentation</h1>
+</section>
+<section id="definition" class="slide level2">
+<h1>Definition</h1>
+<ul>
+<li>
+<p>the process of taking the orthographic transcription text of an audio speech segment, like <em>IPUs</em>, and determining where particular phonemes/words occur in this speech segment.</p>
+</li>
+<li>Definition:
+<ul>
+<li>
+<em>IPUs</em> = Inter-Pausal Units</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="data-preparation" class="slide level2">
+<h1>Data preparation</h1>
+<ul>
+<li>Audio file with the following recommended conditions:
+<ul>
+<li>one file = one speaker</li>
+<li>good recording quality (anechoic chamber)</li>
+<li>16000Hz, 16bits</li>
+</ul>
+</li>
+<li>Orthographic transcription:
+<ul>
+<li>follow the convention of the software</li>
+<li>enriched with: filled pauses; short pauses; truncated words; repeats; noises and laugh items.</li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="data-preparation-example">Data preparation: example</h3>
+<figure>
+<img src="./etc/screenshots/CM-extract-toe.png" alt="An IPU of &quot;Corpus of Interactional Data&quot;" />
+<figcaption>An IPU of &quot;Corpus of Interactional Data&quot;</figcaption>
+</figure>
+<figure>
+<audio src="./etc/media/CM-extract-toe.wav"  controls> </audio>
+</figure>
+</section>
+<section id="expected-result" class="slide level2">
+<h1>Expected result</h1>
+<ul>
+<li>Time-aligned phonemes and tokens, including events like noises or laughter</li>
+</ul>
+<figure>
+<img src="./etc/screenshots/CM-extract-palign.png" />
+</figure>
+</section>
+<section id="phonemes-and-words-segmentation-my-approach" class="slide level2">
+<h1>Phonemes and words segmentation: my approach</h1>
+<ol type="1">
+<li>text normalization</li>
+<li>phonetization (grapheme to phoneme conversion)</li>
+<li>alignment (speech segmentation)</li>
+</ol>
+<blockquote>
+<p>All three tasks are fully-automatic, but each annotation output can be manually checked if desired.</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<h3 id="text-normalization">Text Normalization</h3>
+<ul>
+<li>Any system that deals with unrestricted text need the text to be normalized.</li>
+<li>It's the process of segmenting a text into tokens.</li>
+<li>Automatic text normalization is mostly dedicated to written text, in the NLP community
+<ul>
+<li>Text normalization development is commonly carried out specifically for each language and/or task even if this work is laborious and time consuming. Actually, for many languages there has not been any concerted effort directed towards text normalization.</li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="text-normalization-my-approach">Text Normalization: my approach</h3>
+<ul>
+<li>I proposed a generic approach:
+<ul>
+<li>a method as language-and-task independent as possible.</li>
+<li>This enables adding new languages quickly when compared to the development of such tools from scratch.</li>
+</ul>
+</li>
+<li>This method is implemented as a set of modules that are applied sequentially to the text corpora.</li>
+<li>The portability to a new language consists of:
+<ul>
+<li>inheriting all language independent modules;</li>
+<li>(rapid) adaptation of other language dependent modules.</li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="text-normalization-main-steps">Text Normalization main steps</h3>
+<ol type="1">
+<li>Split:
+<ul>
+<li>use whitespace or characters to split the utterance into separated strings</li>
+</ul>
+</li>
+<li>Replace symbols by their written form:
+<ul>
+<li>based on a lexicon
+<ul>
+<li>° is replaced by degrees (English), degrés (French), grados (Spanish), gradi (Italian), mức độ (Vietnamese), 度 (Chinese), du (Chinese pinyin and Taiwanese)</li>
+<li>² is replaced by square (English), carré (French), quadrados (Spanish), quadrato (Italian), bình phương (Vietnamese), 平方 (Chinese), ping fang (Chinese pinyin)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="text-normalization-main-steps-continued">Text Normalization main steps (continued)</h3>
+<ol start="3" type="1">
+<li>Segment into words:
+<ul>
+<li>fixes a set of rules to segment strings including punctuation marks</li>
+<li>based on a lexicon and rules
+<ul>
+<li>aujourd'hui, c'est-à-dire</li>
+<li>porte-monnaie, cet homme-là, voulez-vous</li>
+<li>poudre d'escampette, trompe-l'oeil, rock'n roll</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="text-normalization-main-steps-1">Text Normalization main steps</h3>
+<ol start="4" type="1">
+<li>Stick, i.e. concatenate strings into words
+<ul>
+<li>based on a dictionary with an optimization criteria: a longest matching
+<ul>
+<li>English: once_upon_a_time, game_over</li>
+<li>French: pomme_de_terre, au_fur_et_à_mesure, tel_que</li>
+<li>Chinese: 登记簿</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Convert numbers to their written form
+<ul>
+<li>123
+<ul>
+<li>cent-vingt-trois (French), one-hundred-twenty-three (English), ciento-veintitres (Spanish)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Lower the text</li>
+<li>Remove punctuation</li>
+</ol>
+</section>
+<section class="slide level2">
+
+<h3 id="text-normalization-of-speech-transcription">Text Normalization of speech transcription</h3>
+<ul>
+<li>Speech transcription includes speech phenomena like:
+<ul>
+<li>specific pronunciations: [example,eczap]</li>
+<li>elisions: examp(le)</li>
+</ul>
+</li>
+<li>Then two types of transcriptions can be automatically derived by the automatic tokenizer:
+<ol type="1">
+<li>the “standard transcription” (a list of orthographic tokens/words);</li>
+<li>the “faked transcription” that is a specific transcription from which the obtained phonetic tokens are used by the phonetization system.</li>
+</ol>
+</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="text-normalization-of-speech-transcription-example">Text Normalization of speech transcription: example</h3>
+<figure>
+<audio src="./etc/media/CM-extract-toe.wav"  controls> </audio>
+</figure>
+<ul>
+<li>Transcription:
+<ul>
+<li>mais attendez et je mes fixations s(ont) pas bien réglées [c',z] est en fait c'est m- + ma chaussure qu(i) était partie</li>
+</ul>
+</li>
+<li>Tokens standards:
+<ul>
+<li>mais attendez et je mes fixations sont pas bien réglées c' est en_fait c'est ma chaussure qui était partie</li>
+</ul>
+</li>
+<li>Tokens:
+<ul>
+<li>mais attendez et je mes fixations s pas bien réglées z est en_fait c'est m- + ma chaussure qu était partie</li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="text-normalization-current-languages">Text Normalization: current languages</h3>
+<ul>
+<li>French: 347k words</li>
+<li>Italian: 389k words</li>
+<li>German: 383k words</li>
+<li>Polish: 576k words</li>
+<li>English: 121k words</li>
+<li>Catalan: 93k words</li>
+<li>Portuguese: 41k words</li>
+<li>Spanish: 22k words</li>
+<li>Japanese: 18k words</li>
+<li>Mandarin Chinese: 110k words</li>
+<li>Cantonese: 46k words</li>
+<li>Korean: 33k words</li>
+<li>Min nan: 1k syllables in pinyin</li>
+<li>Naija: 5k words + English</li>
+</ul>
+<blockquote>
+<p>The better lexicon, the better automatic text normalization.</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<h3 id="text-normalization-adding-a-new-language">Text Normalization: Adding a new language</h3>
+<ol type="1">
+<li>add lexicons</li>
+<li>add the num2letter module</li>
+</ol>
+<p>Example:</p>
+<pre>
+<code>Roxana Fung, Brigitte Bigi (2015).
+Automatic word segmentation for spoken Cantonese.
+In Oriental COCOSDA and Conference on Asian Spoken Language Research and Evaluation,
+pp. 196–201.</code>
+</pre>
+</section>
+<section class="slide level2">
+
+<h3 id="text-normalization-reference">Text Normalization: reference</h3>
+<pre>
+<code>Brigitte Bigi (2014). 
+A Multilingual Text Normalization Approach. 
+Human Language Technologies Challenges for Computer Science and Linguistics. 
+LNAI 8387, Springer, Heidelberg. ISBN: 978-3-319-14120-6. Pages 515-526.</code>
+</pre>
+<figure>
+<img src="./etc/screenshots/tokenization_paper.png" />
+</figure>
+</section>
+<section id="phonetization" class="slide level2">
+<h1>Phonetization</h1>
+<ul>
+<li>Phonetization is also known as grapheme-phoneme conversion</li>
+<li>Phonetization is the process of representing sounds with phonetic signs.</li>
+<li>Phonetic transcription of text is an indispensable component of text-to-speech (TTS) systems and is used in acoustic modeling for automatic speech recognition (ASR) and other natural language processing applications.</li>
+</ul>
+<blockquote>
+<p>Converting from written text into actual sounds, for any language, cause several problems that have their origins in the relative lack of correspondence between the spelling of the lexical items and their sound contents.</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<h3 id="phonetization-my-approach">Phonetization: my approach</h3>
+<ul>
+<li>I proposed a generic approach:
+<ul>
+<li>consists in storing a maximum of phonological knowledge in a lexicon.</li>
+<li>In this sense, this approach is language-independent.</li>
+</ul>
+</li>
+<li>The phonetization process is the equivalent of a sequence of dictionary look-ups.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="phonetization-dictionary">Phonetization: dictionary</h3>
+<ul>
+<li>An important step is to build the pronunciation dictionary, where each word in the vocabulary is expanded into its constituent phones, including pronunciation variants.</li>
+</ul>
+<figure>
+<img src="./etc/screenshots/dict-eng-extract.png" />
+</figure>
+</section>
+<section class="slide level2">
+
+<h3 id="phonetization-of-normalized-speech-transcription">Phonetization of normalized speech transcription</h3>
+<ul>
+<li>I proposed a language-independent algorithm to phonetize unknown words
+<ul>
+<li>given enough examples (in the dictionary) it should be possible to predict the pronunciation of unseen words purely by analogy.</li>
+</ul>
+</li>
+<li>Example with the unknown word &quot;pac-aix&quot;:
+<ul>
+<li>English: p-{-k-aI-k-s|p-{-k-eI-aI-k-s|p-{-k-aI-E-k-s|p-{-k-eI-aI-E-k-s</li>
+<li>French: p-a-k-E-k-s</li>
+<li>Mandarin Chinese: p_h-a-a-i</li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="phonetization-example">Phonetization: example</h3>
+<ul>
+<li>Tokens:
+<ul>
+<li>mais attendez je</li>
+</ul>
+</li>
+<li>Phonetization:
+<ul>
+<li>m-E-z|m-e|m-E|m-e-z|m A/-t-a~-d-e|A/-t-a~-d-e-z e|E Z|Z-eu|S</li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="phonetization-current-languages">Phonetization: current languages</h3>
+<ul>
+<li>French: 652k entries</li>
+<li>English: 121k entries</li>
+<li>Italian: 590k entries</li>
+<li>German: 438k entries</li>
+<li>Spanish: 24k entries</li>
+<li>Catalan: 94k entries</li>
+<li>Portuguese: 43k entries</li>
+<li>Polish: 300k entries</li>
+<li>Japanese: 20k entries</li>
+<li>Mandarin Chinese: 114k entries</li>
+<li>Cantonese: 59k entries</li>
+<li>Korean: 128 entries (!) is under construction</li>
+<li>Min nan: 1k entries</li>
+<li>Naija: 4k entries</li>
+</ul>
+<blockquote>
+<p>The better dictionary, the better automatic phonetization.</p>
+</blockquote>
+</section>
+<section class="slide level2">
+
+<h3 id="phonetization-reference">Phonetization: reference</h3>
+<pre>
+<code>Brigitte Bigi (2016).
+A phonetization approach for the forced-alignment task in SPPAS.
+Human Language Technologies Challenges for Computer Science and Linguistics. 
+LNAI 9561, Springer, Heidelberg. </code>
+</pre>
+<figure>
+<img src="./etc/screenshots/phonetization_paper.png" />
+</figure>
+</section>
+<section id="alignment" class="slide level2">
+<h1>Alignment</h1>
+<ul>
+<li>Alignment is also called phonetic segmentation</li>
+<li>The alignment problem consists in a time-matching between a given speech unit along with a phonetic representation of the unit.</li>
+<li>Many freely available tool boxes, i.e. Speech Recognition Engines that can perform Speech Segmentation
+<ul>
+<li>HTK - Hidden Markov Model Toolkit</li>
+<li>CMU Sphinx</li>
+<li>Open Source Large Vocabulary CSR Engine Julius</li>
+<li>...</li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="alignment-1">Alignment</h3>
+<ul>
+<li>Algorithms are language independent</li>
+<li>An acoustic model must be created
+<ul>
+<li>training procedure</li>
+<li>based on examples</li>
+</ul>
+</li>
+<li>&quot;more data is good data&quot;...</li>
+<li>Training a model:
+<ul>
+<li>requires audio files</li>
+<li>requires orthographic transcription</li>
+<li>requires IPUs/utterrances segmentation</li>
+</ul>
+</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="alignment-current-languages">Alignment: current languages</h3>
+<ul>
+<li>French</li>
+<li>English (from voxforge.org)</li>
+<li>Italian</li>
+<li>Spanish</li>
+<li>German</li>
+<li>Catalan</li>
+<li>Polish</li>
+<li>Mandarin Chinese</li>
+<li>Min nan</li>
+<li>Naija</li>
+<li>Japanese (from Julius software)</li>
+<li>Cantonese (from University of Hong Kong)</li>
+<li>Portuguese (under construction)</li>
+<li>Korean (under construction)</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<h3 id="alignment-results-of-french">Alignment: results of French</h3>
+<ul>
+<li>Unit Boundary Position Accuracy (UBPA): what percentage of the automatic-alignment boundaries are within a given time threshold of the manually aligned boundaries.</li>
+</ul>
+<figure>
+<img src="./etc/screenshots/ubpa-fra.png" alt="UBPA of French on read and spontaneous speech" />
+<figcaption>UBPA of French on read and spontaneous speech</figcaption>
+</figure>
+<figure>
+<img src="./etc/screenshots/vowels-duration-spont.png" alt="Manual vs automatic durations of vowels on conversational speech" />
+<figcaption>Manual vs automatic durations of vowels on conversational speech</figcaption>
+</figure>
+</section>
+<section class="slide level2">
+
+<h3 id="alignment-references">Alignment: references</h3>
+<pre>
+<code>Brigitte Bigi (2012). 
+The SPPAS participation to the Forced-Alignment task of Evalita 2011. 
+B. Magnini et al. (Eds.): EVALITA 2012, LNAI 7689, pp. 312-321. Springer, Heidelberg.
+
+Brigitte Bigi (2014).
+The SPPAS participation to Evalita 2014.
+In Proceedings of the First Italian Conference on Computational Linguistics CLiC-it 2014 
+and the Fourth International Workshop EVALITA 2014, Pisa, Italy.
+
+Brigitte Bigi (2014).
+Automatic Speech Segmentation of French: Corpus Adaptation.
+In 2nd Asian Pacific Corpus Linguistics Conference, pp. 32, Hong Kong.</code>
+</pre>
+</section>
+<section id="speech-segmentation-main-reference" class="slide level2">
+<h1>Speech segmentation: main reference</h1>
+<pre>
+<code>Brigitte Bigi, Christine Meunier (2018). 
+Automatic speech segmentation of spontaneous speech. 
+Revista de Estudos da Linguagem. 
+International Thematic Issue: Speech Segmentation. 
+Editors: Tommaso Raso, Heliana Mello, Plinio Barbosa, 
+e - ISSN 2237-2083</code>
+</pre>
+<ul>
+<li>Click here to access the paper: <a href="http://www.periodicos.letras.ufmg.br/index.php/relin/article/view/13026">http://www.periodicos.letras.ufmg.br/index.php/relin/article/view/13026</a>
+</li>
+</ul>
+<h3 id="section">
+</h3>
+<p>
+<a href="tutorial.html">Back to tutorials</a>
+</p>
+</section>
+<!-- {{{{ dzslides core
+#
+#
+#     __  __  __       .  __   ___  __
+#    |  \  / /__` |    | |  \ |__  /__`
+#    |__/ /_ .__/ |___ | |__/ |___ .__/ core :€
+#
+#
+# The following block of code is not supposed to be edited.
+# But if you want to change the behavior of these slides,
+# feel free to hack it!
+#
+-->
+
+<div id="progress-bar">
+</div>
+
+<!-- Default Style -->
+<style>
+  * { margin: 0; padding: 0; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+  details { display: none; }
+  body {
+    width: 800px; height: 600px;
+    margin-left: -400px; margin-top: -300px;
+    position: absolute; top: 50%; left: 50%;
+    overflow: hidden;
+  }
+  section {
+    position: absolute;
+    pointer-events: none;
+    width: 100%; height: 100%;
+  }
+  section[aria-selected] { pointer-events: auto; }
+  html { overflow: hidden; }
+  body { display: none; }
+  body.loaded { display: block; }
+  .incremental {visibility: hidden; }
+  .incremental[active] {visibility: visible; }
+  #progress-bar{
+    bottom: 0;
+    position: absolute;
+    -moz-transition: width 400ms linear 0s;
+    -webkit-transition: width 400ms linear 0s;
+    -ms-transition: width 400ms linear 0s;
+    transition: width 400ms linear 0s;
+  }
+</style>
+
+<script>
+  var Dz = {
+    remoteWindows: [],
+    idx: -1,
+    step: 0,
+    slides: null,
+    progressBar : null,
+    params: {
+      autoplay: "0"
+    }
+  };
+
+  Dz.init = function() {
+    document.body.className = "loaded";
+    this.slides = $$("body > section");
+    this.progressBar = $("#progress-bar");
+    this.setupParams();
+    this.onhashchange();
+    this.setupTouchEvents();
+    this.onresize();
+  }
+  
+  Dz.setupParams = function() {
+    var p = window.location.search.substr(1).split('&');
+    p.forEach(function(e, i, a) {
+      var keyVal = e.split('=');
+      Dz.params[keyVal[0]] = decodeURIComponent(keyVal[1]);
+    });
+  // Specific params handling
+    if (!+this.params.autoplay)
+      $$.forEach($$("video"), function(v){ v.controls = true });
+  }
+
+  Dz.onkeydown = function(aEvent) {
+    // Don't intercept keyboard shortcuts
+    if (aEvent.altKey
+      || aEvent.ctrlKey
+      || aEvent.metaKey
+      || aEvent.shiftKey) {
+      return;
+    }
+    if ( aEvent.keyCode == 37 // left arrow
+      || aEvent.keyCode == 38 // up arrow
+      || aEvent.keyCode == 33 // page up
+    ) {
+      aEvent.preventDefault();
+      this.back();
+    }
+    if ( aEvent.keyCode == 39 // right arrow
+      || aEvent.keyCode == 40 // down arrow
+      || aEvent.keyCode == 34 // page down
+    ) {
+      aEvent.preventDefault();
+      this.forward();
+    }
+    if (aEvent.keyCode == 35) { // end
+      aEvent.preventDefault();
+      this.goEnd();
+    }
+    if (aEvent.keyCode == 36) { // home
+      aEvent.preventDefault();
+      this.goStart();
+    }
+    if (aEvent.keyCode == 32) { // space
+      aEvent.preventDefault();
+      this.toggleContent();
+    }
+    if (aEvent.keyCode == 70) { // f
+      aEvent.preventDefault();
+      this.goFullscreen();
+    }
+  }
+
+  /* Touch Events */
+
+  Dz.setupTouchEvents = function() {
+    var orgX, newX;
+    var tracking = false;
+
+    var db = document.body;
+    db.addEventListener("touchstart", start.bind(this), false);
+    db.addEventListener("touchmove", move.bind(this), false);
+
+    function start(aEvent) {
+      aEvent.preventDefault();
+      tracking = true;
+      orgX = aEvent.changedTouches[0].pageX;
+    }
+
+    function move(aEvent) {
+      if (!tracking) return;
+      newX = aEvent.changedTouches[0].pageX;
+      if (orgX - newX > 100) {
+        tracking = false;
+        this.forward();
+      } else {
+        if (orgX - newX < -100) {
+          tracking = false;
+          this.back();
+        }
+      }
+    }
+  }
+
+  /* Adapt the size of the slides to the window */
+
+  Dz.onresize = function() {
+    var db = document.body;
+    var sx = db.clientWidth / window.innerWidth;
+    var sy = db.clientHeight / window.innerHeight;
+    var transform = "scale(" + (1/Math.max(sx, sy)) + ")";
+
+    db.style.MozTransform = transform;
+    db.style.WebkitTransform = transform;
+    db.style.OTransform = transform;
+    db.style.msTransform = transform;
+    db.style.transform = transform;
+  }
+
+
+  Dz.getDetails = function(aIdx) {
+    var s = $("section:nth-of-type(" + aIdx + ")");
+    var d = s.$("details");
+    return d ? d.innerHTML : "";
+  }
+
+  Dz.onmessage = function(aEvent) {
+    var argv = aEvent.data.split(" "), argc = argv.length;
+    argv.forEach(function(e, i, a) { a[i] = decodeURIComponent(e) });
+    var win = aEvent.source;
+    if (argv[0] === "REGISTER" && argc === 1) {
+      this.remoteWindows.push(win);
+      this.postMsg(win, "REGISTERED", document.title, this.slides.length);
+      this.postMsg(win, "CURSOR", this.idx + "." + this.step);
+      return;
+    }
+    if (argv[0] === "BACK" && argc === 1)
+      this.back();
+    if (argv[0] === "FORWARD" && argc === 1)
+      this.forward();
+    if (argv[0] === "START" && argc === 1)
+      this.goStart();
+    if (argv[0] === "END" && argc === 1)
+      this.goEnd();
+    if (argv[0] === "TOGGLE_CONTENT" && argc === 1)
+      this.toggleContent();
+    if (argv[0] === "SET_CURSOR" && argc === 2)
+      window.location.hash = "#" + argv[1];
+    if (argv[0] === "GET_CURSOR" && argc === 1)
+      this.postMsg(win, "CURSOR", this.idx + "." + this.step);
+    if (argv[0] === "GET_NOTES" && argc === 1)
+      this.postMsg(win, "NOTES", this.getDetails(this.idx));
+  }
+
+  Dz.toggleContent = function() {
+    // If a Video is present in this new slide, play it.
+    // If a Video is present in the previous slide, stop it.
+    var s = $("section[aria-selected]");
+    if (s) {
+      var video = s.$("video");
+      if (video) {
+        if (video.ended || video.paused) {
+          video.play();
+        } else {
+          video.pause();
+        }
+      }
+    }
+  }
+
+  Dz.setCursor = function(aIdx, aStep) {
+    // If the user change the slide number in the URL bar, jump
+    // to this slide.
+    aStep = (aStep != 0 && typeof aStep !== "undefined") ? "." + aStep : ".0";
+    window.location.hash = "#" + aIdx + aStep;
+  }
+
+  Dz.onhashchange = function() {
+    var cursor = window.location.hash.split("#"),
+        newidx = 1,
+        newstep = 0;
+    if (cursor.length == 2) {
+      newidx = ~~cursor[1].split(".")[0];
+      newstep = ~~cursor[1].split(".")[1];
+      if (newstep > Dz.slides[newidx - 1].$$('.incremental > *').length) {
+        newstep = 0;
+        newidx++;
+      }
+    }
+    this.setProgress(newidx, newstep);
+    if (newidx != this.idx) {
+      this.setSlide(newidx);
+    }
+    if (newstep != this.step) {
+      this.setIncremental(newstep);
+    }
+    for (var i = 0; i < this.remoteWindows.length; i++) {
+      this.postMsg(this.remoteWindows[i], "CURSOR", this.idx + "." + this.step);
+    }
+  }
+
+  Dz.back = function() {
+    if (this.idx == 1 && this.step == 0) {
+      return;
+    }
+    if (this.step == 0) {
+      this.setCursor(this.idx - 1,
+                     this.slides[this.idx - 2].$$('.incremental > *').length);
+    } else {
+      this.setCursor(this.idx, this.step - 1);
+    }
+  }
+
+  Dz.forward = function() {
+    if (this.idx >= this.slides.length &&
+        this.step >= this.slides[this.idx - 1].$$('.incremental > *').length) {
+        return;
+    }
+    if (this.step >= this.slides[this.idx - 1].$$('.incremental > *').length) {
+      this.setCursor(this.idx + 1, 0);
+    } else {
+      this.setCursor(this.idx, this.step + 1);
+    }
+  }
+
+  Dz.goStart = function() {
+    this.setCursor(1, 0);
+  }
+
+  Dz.goEnd = function() {
+    var lastIdx = this.slides.length;
+    var lastStep = this.slides[lastIdx - 1].$$('.incremental > *').length;
+    this.setCursor(lastIdx, lastStep);
+  }
+
+  Dz.setSlide = function(aIdx) {
+    this.idx = aIdx;
+    var old = $("section[aria-selected]");
+    var next = $("section:nth-of-type("+ this.idx +")");
+    if (old) {
+      old.removeAttribute("aria-selected");
+      var video = old.$("video");
+      if (video) {
+        video.pause();
+      }
+    }
+    if (next) {
+      next.setAttribute("aria-selected", "true");
+      var video = next.$("video");
+      if (video && !!+this.params.autoplay) {
+        video.play();
+      }
+    } else {
+      // That should not happen
+      this.idx = -1;
+      // console.warn("Slide doesn't exist.");
+    }
+  }
+
+  Dz.setIncremental = function(aStep) {
+    this.step = aStep;
+    var old = this.slides[this.idx - 1].$('.incremental > *[aria-selected]');
+    if (old) {
+      old.removeAttribute('aria-selected');
+    }
+    var incrementals = $$('.incremental');
+    if (this.step <= 0) {
+      $$.forEach(incrementals, function(aNode) {
+        aNode.removeAttribute('active');
+      });
+      return;
+    }
+    var next = this.slides[this.idx - 1].$$('.incremental > *')[this.step - 1];
+    if (next) {
+      next.setAttribute('aria-selected', true);
+      next.parentNode.setAttribute('active', true);
+      var found = false;
+      $$.forEach(incrementals, function(aNode) {
+        if (aNode != next.parentNode)
+          if (found)
+            aNode.removeAttribute('active');
+          else
+            aNode.setAttribute('active', true);
+        else
+          found = true;
+      });
+    } else {
+      setCursor(this.idx, 0);
+    }
+    return next;
+  }
+
+  Dz.goFullscreen = function() {
+    var html = $('html'),
+        requestFullscreen = html.requestFullscreen || html.requestFullScreen || html.mozRequestFullScreen || html.webkitRequestFullScreen;
+    if (requestFullscreen) {
+      requestFullscreen.apply(html);
+    }
+  }
+  
+  Dz.setProgress = function(aIdx, aStep) {
+    var slide = $("section:nth-of-type("+ aIdx +")");
+    if (!slide)
+      return;
+    var steps = slide.$$('.incremental > *').length + 1,
+        slideSize = 100 / (this.slides.length - 1),
+        stepSize = slideSize / steps;
+    this.progressBar.style.width = ((aIdx - 1) * slideSize + aStep * stepSize) + '%';
+  }
+  
+  Dz.postMsg = function(aWin, aMsg) { // [arg0, [arg1...]]
+    aMsg = [aMsg];
+    for (var i = 2; i < arguments.length; i++)
+      aMsg.push(encodeURIComponent(arguments[i]));
+    aWin.postMessage(aMsg.join(" "), "*");
+  }
+  
+  function init() {
+    Dz.init();
+    window.onkeydown = Dz.onkeydown.bind(Dz);
+    window.onresize = Dz.onresize.bind(Dz);
+    window.onhashchange = Dz.onhashchange.bind(Dz);
+    window.onmessage = Dz.onmessage.bind(Dz);
+  }
+
+  window.onload = init;
+</script>
+
+
+<script> // Helpers
+  if (!Function.prototype.bind) {
+    Function.prototype.bind = function (oThis) {
+
+      // closest thing possible to the ECMAScript 5 internal IsCallable
+      // function 
+      if (typeof this !== "function")
+      throw new TypeError(
+        "Function.prototype.bind - what is trying to be fBound is not callable"
+      );
+
+      var aArgs = Array.prototype.slice.call(arguments, 1),
+          fToBind = this,
+          fNOP = function () {},
+          fBound = function () {
+            return fToBind.apply( this instanceof fNOP ? this : oThis || window,
+                   aArgs.concat(Array.prototype.slice.call(arguments)));
+          };
+
+      fNOP.prototype = this.prototype;
+      fBound.prototype = new fNOP();
+
+      return fBound;
+    };
+  }
+
+  var $ = (HTMLElement.prototype.$ = function(aQuery) {
+    return this.querySelector(aQuery);
+  }).bind(document);
+
+  var $$ = (HTMLElement.prototype.$$ = function(aQuery) {
+    return this.querySelectorAll(aQuery);
+  }).bind(document);
+
+  $$.forEach = function(nodeList, fun) {
+    Array.prototype.forEach.call(nodeList, fun);
+  }
+
+</script>
+<!-- vim: set fdm=marker: }}} -->
+</body>
+</html>

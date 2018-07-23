@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+ 
+    <title>SPPAS Tutorials</title>
+
+    <meta charset='utf-8' />
+    <meta name="keywords" content="research, speech, phonetization, alignment, syllabification, brigitte, bigi, parole, langage, lpl, corpus, julius, htk, segmentation, forced-alignment, resource, sldr, ortolang" />
+
+    <link rel="stylesheet" type="text/css" href="./etc/styles/sppas.css" media="screen" />
+    <link rel="icon" href="./etc/icons/sppas.png" />
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-38055333-4']);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+
+</head>
+
+<body>
+
+    <!----------------------------------------------------------------->
+
+    <div class="header"></div>
+
+    <!----------------------------------------------------------------->
+
+    <nav>
+    <label for="menu-mobile" class="menu-mobile">Menu</label>
+    <input type="checkbox" id="menu-mobile" role="button">
+
+        <ul>
+            <li class="menu-home current nav"><a class="nav" href="index.html">Home</a></li>
+            <li class="menu-get nav"><a class="nav">Get it!</a>
+                <ul class="submenu">
+                    <li class="nav"><a class="nav" href="download.html">Download</a></li>
+                    <li class="nav"><a class="nav" href="installation.html">Install</a></li>
+                </ul>
+            <li class="menu-tuto nav"><a class="nav">Discover</a>
+                <ul class="submenu">
+                    <li class="nav"><a class="nav" href="features.html">Main features of SPPAS</a></li>
+                    <li class="nav"><a class="nav" href="tutorial.html">Tutorials</a></li>
+                </ul>
+            </li>
+            <li class="menu-doc nav"><a class="nav">Documentation</a>
+                <ul class="submenu">
+                    <li class="nav"><a class="nav" href="documentation_01_introduction.html">Introduction</a></li>
+                    <li class="nav"><a class="nav" href="documentation_02_interface.html">Interface</a></li>
+                    <li class="nav"><a class="nav" href="documentation_03_annotations.html">Annotations</a></li>
+                    <li class="nav"><a class="nav" href="documentation_04_resources.html">Resources</a></li>
+                    <li class="nav"><a class="nav" href="documentation_05_analyses.html">Analyses</a></li>
+                    <li class="nav"><a class="nav" href="documentation_06_scripting.html">Scripting</a></li>
+                    <li class="nav"><a class="nav" href="documentation_07_references.html">Publications</a></li>
+                    <li class="nav"><a class="nav" href="documentation_08_changes.html">History</a></li>
+                    <li class="nav"><a class="nav" href="documentation_09_annexes.html">Annexes</a></li>
+                </ul>
+            </li>
+            <li class="menu-faq nav"><a class="nav">Help</a>
+                <ul class="submenu">
+                    <li class="nav"><a class="nav" href="faq.html">Frequently Asked Questions</a></li>
+                    <li class="nav"><a class="nav" href="mailto:brigitte.bigi@gmail.com?Subject=[SPPAS] Question..." target="_top">Contact the author</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!----------------------------------------------------------------->
+
+
+    <div class="cols1 bg-lightgrey">
+        <div class="cols12"></div>
+        <div class="cols2">
+
+<h1>In-line tutorials</h1>
+<h3>Tutorial 1: Automatic annotations methodology</h3>
+<p><a href="tutorial_001_introduction.html"> Introduction</a></p>
+<p><a href="tutorial_002_speech_segmentation.html"> Phonemes and words segmentation</a></p>
+<p><a href="tutorial_003_syllabification.html"> Syllables segmentation</a></p>
+<p><a href="tutorial_004_repetitions.html"> Repetitions detection</a></p>
+<p><a href="tutorial_005_summary.html"> Summary</a></p>
+<p><br></p>
+<h3>Tutorial 2: Corpus design</h3>
+<p><a href="tutorial_011_corpus_methodo.html"> Corpus creation methodology</a></p>
+<p><a href="tutorial_012_data_preparation.html"> Data preparation for automatic annotations</a></p>
+<p><br></p>
+<h3>Tutorial 3: Full demonstration: explore step-by-step SPPAS features</h3>
+<p><a href="tutorial_101_install.html"> Step 1: Install SPPAS</a></p>
+<p><a href="tutorial_102_launch.html"> Step 2: Launch SPPAS</a></p>
+<p><a href="tutorial_103_install_plugin.html"> Step 3: Install a plugin</a></p>
+<p><a href="tutorial_104_check_audio.html"> Step 4: Check audio files</a></p>
+<p><a href="tutorial_105_visualize.html"> Step 5: Visualize files</a></p>
+<p><a href="tutorial_106_remove_files.html"> Step 6: Remove files</a></p>
+<p><a href="tutorial_107_ipus_segmentation.html"> Step 7: IPUs segmentation</a></p>
+<p><a href="tutorial_108_orthographic_transcription.html"> Step 8: Orthographic transcription (IPUscriber)</a></p>
+<p><a href="tutorial_109_xra_to_textgrid.html"> Step 9: Convert XRA to TextGrid</a></p>
+<p><a href="tutorial_110_pitchtier.html"> Step 10: Generates a PitchTier file</a></p>
+<p><a href="tutorial_111_manage_files.html"> Step 11: Manage files</a></p>
+<p><a href="tutorial_112_text_normalize.html"> Step 12: Text normalization</a></p>
+<p><a href="tutorial_113_phonetize.html"> Step 13: Phonetization</a></p>
+<p><a href="tutorial_114_align.html"> Step 14: Alignment</a></p>
+<p><a href="tutorial_115_syllabify.html"> Step 15: Syllabification & TGA</a></p>
+<p><a href="tutorial_116_momel_intsint.html"> Step 16: Momel and INTSINT</a></p>
+<p><a href="tutorial_117_view_merge.html"> Step 17: Visualize the merged file</a></p>
+<p><a href="tutorial_118_apply_plugin.html"> Step 18: Apply plugins</a></p>
+<p><a href="tutorial_119_dataroamer.html"> Step 19: DataRoamer: annotated files manager</a></p>
+<p><a href="tutorial_120_compatibility.html"> Step 20: Interoperability and compatibility</a></p>
+<p><a href="tutorial_122_stats.html"> Step 22: Statistical distributions</a></p>
+<p><a href="tutorial_123_filter.html"> Step 23: Data Filter</a></p>
+<p><a href="tutorial_124_settings.html"> Step 24: Fix settings</a></p>
+<p><a href="tutorial_125_help.html"> Step 25: Getting help</a></p>
+<p><br></p>
+<p><br><br></p>
+    </div>
+    </div>
+
+    <!----------------------------------------------------------------->
+
+    <div class="footer">
+        <a href="index.html"><img src="./etc/logos/sppas-logo.png" alt="SPPAS"></a>
+        <p class="copyright">
+            <a href="mailto:brigitte.bigi@gmail.com">Brigitte Bigi</a> &copy; 2011-2018
+        </p>
+    </div>
+
+    <!----------------------------------------------------------------->
+
+    <span class="scrollT"></span>
+    <script type="text/javascript" src="./etc/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="./etc/scripts/scrollT.js"></script>
+    <script type="text/javascript">
+        // On active la fonction permettant de faire apparaitre l'indicateur 
+        // de scroll pour remonter en haut de page.
+        $(document).ready(function() 
+        {
+            $(this).scrollT();
+        });
+    </script>
+
+    <!----------------------------------------------------------------->
+
+</body>
+</html>

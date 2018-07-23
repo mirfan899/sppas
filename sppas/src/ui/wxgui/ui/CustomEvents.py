@@ -76,12 +76,20 @@ FileWanderEvent, spEVT_FILE_WANDER = newevent.NewEvent()
 FileWanderCommandEvent, spEVT_FILE_WANDER_COMMAND = newevent.NewCommandEvent()
 
 
-# A files has to be checked/unchecked in the file manager
+# A file has to be checked/unchecked in the file manager
 # Expected parameters are:
 # - "filename" String
 # - "status"   True/False
 FileCheckEvent, spEVT_FILE_CHECK = newevent.NewEvent()
 FileCheckCommandEvent, spEVT_FILE_CHECK_COMMAND = newevent.NewCommandEvent()
+
+
+# A file has been modified
+# Expected parameters are:
+# - "filename" String
+# - "status"   True/False
+FileDirtyEvent, spEVT_FILE_DIRTY = newevent.NewEvent()
+FileDirtyCommandEvent, spEVT_FILE_DIRTY_COMMAND = newevent.NewCommandEvent()
 
 
 # ----------------------------------------------------------------------------

@@ -271,24 +271,40 @@ A few tutorials are available on the web site.
 - Resources package: add compatibility with PLS (W3C xml) pronunciation dictionaries
 
 
+#### Known bugs:
+- Syllabification of French: the configuration file is not correct.
+
 
 ### SPPAS 1.9.7
 
-(2018, 20th July)
+(2018, 23th July)
 
 #### Development
 
 - new filter system in anndata
 - IPUs segmentation: debug in fixing automatically the threshold for the search of silences (can't be negative!)
 - Annotations: improved messages for the procedure outcome report
-- Annotations: Text normalization and Phonetization based on anndata API instead of annotationdata
-- Annotations: Syllabification re-programmed and now based on anndata API
+- Annotations: Text normalization is based on `anndata` API instead of `annotationdata`
+    * the result is now a sequence of individual tokens 
+    (each token is a sppasLabel()), instead of a single string separating tokens 
+    with space.
+- Annotations: Phonetization is based on `anndata` API instead of `annotationdata`
+    * the result is now a sequence of sppasLabel() with alternative tags: 
+    each tag corresponds to a pronunciation variant
+- Annotations: Syllabification re-programmed and now based on `anndata` API
+    * only sequences of phonemes are syllabified (i.e. no silence, no laugh nor noise in the result)
+    * `O` class name changed into `P` class name
+    * do not generate the tier "structures" tier anymore
+    * generating the "classes" tier is optional
+- Annotations: INTSINT is based on `anndata` API instead of `annotationdata`
+- IPUScriber is based on `anndata` API instead of `annotationdata`
 
 #### Resources:
 
-- French syllabification rules updated to be compliant with the new phoneset (since version 1.9.6)
+- French syllabification rules updated to be compliant with the new phoneset (used since version 1.9.6)
 
 #### Documentation
 
-- updated chapter 6: scripting with Python and SPPAS. Now based on anndata instead of annotationdata.
+- updated chapter 6: scripting with Python and SPPAS. 
+  It is now based on `anndata` API instead of `annotationdata`.
 

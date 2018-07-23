@@ -59,6 +59,7 @@ from .baseclient import BaseClient
 import sppas.src.ui.wxgui.cutils.colorutils as co
 from sppas.src.ui.wxgui.panels.sndplayer import SndPlayer
 from sppas.src.ui.wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
+from sppas.src.ui.wxgui.ui.CustomEvents import FileDirtyEvent, spEVT_FILE_DIRTY
 from sppas.src.ui.wxgui.structs.theme import sppasTheme
 from sppas.src.ui.wxgui.structs.prefs import Preferences
 
@@ -158,6 +159,7 @@ class IPUscribe(wx.Panel):
 
         # Bind events
         self.Bind(spEVT_FILE_WANDER, self.OnFileWander)
+        self.Bind(spEVT_FILE_DIRTY, self.OnFileDirty)
         self.Bind(wx.EVT_SET_FOCUS,  self.OnFocus)
         self.GetTopLevelParent().Bind(wx.EVT_CHAR_HOOK, self.OnKeyPress)
 
@@ -440,7 +442,8 @@ class IPUscribe(wx.Panel):
         self._textpage.SetForegroundColour(color)
         self._spinpage.SetForegroundColour(color)
         self._footer.SetForegroundColour(color)
-        self._txtinfo.SetForegroundColour(color)
+        if self._trsPanel.dirty is False:
+            self._txtinfo.SetForegroundColour(color)
 
     # ----------------------------------------------------------------------
     # Callbacks
@@ -455,6 +458,16 @@ class IPUscribe(wx.Panel):
             self.FileSelected(f)
         else:
             self.FileDeSelected()
+    # ----------------------------------------------------------------------
+
+    def OnFileDirty(self, event):
+        """ The content of the file was modified.  """
+
+        if event.dirty is True:
+            self._txtinfo.SetForegroundColour(wx.Colour(20, 20, 230))
+        else:
+            self._txtinfo.SetForegroundColour(self.GetForegroundColour())
+        self.Refresh()
 
     # ----------------------------------------------------------------------
     # Data Management
@@ -670,6 +683,9 @@ class IPUscribeData(scrolled.ScrolledPanel):
         """
         if dirty is not None:
             self.dirty = dirty
+            evt = FileDirtyEvent(dirty=dirty)
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)
 
         if ipumin is not None:
             self._ipumin = ipumin
@@ -705,7 +721,8 @@ class IPUscribeData(scrolled.ScrolledPanel):
             if self.dirty is True:
                 pass
                 # TODO: a dialog box asking to save, or not!
-                # userChoice = ShowYesNoQuestion(None, self._prefsIO, "Do you want to save changes on the transcription of\n%s?"%f)
+                # userChoice = ShowYesNoQuestion(None, self._prefsIO,
+                # "Do you want to save changes on the transcription of\n%s?"%f)
                 # if userChoice == wx.ID_YES:
                 #    fix o object!!!
                 #    o.Save()
@@ -721,7 +738,9 @@ class IPUscribeData(scrolled.ScrolledPanel):
 
         # Gauge... to be patient!
         #progressMax = trs[tieridx].GetSize()
-        #gauge = wx.ProgressDialog("IPUScribe", "Loading data...", progressMax, style=wx.STAY_ON_TOP|wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_APP_MODAL)
+        #gauge = wx.ProgressDialog("IPUScribe",
+        # "Loading data...", progressMax,
+        # style=wx.STAY_ON_TOP|wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_APP_MODAL)
         wx.BeginBusyCursor()
         b = wx.BusyInfo("Please wait while loading data...")
 
@@ -835,6 +854,9 @@ class IPUscribeData(scrolled.ScrolledPanel):
                 parser = anndata.sppasRW(self._trsname)
                 parser.write(self._trsinput)
                 self.dirty = False
+                evt = FileDirtyEvent(dirty=False)
+                evt.SetEventObject(self)
+                wx.PostEvent(self.GetParent(), evt)
             except Exception as e:
                 ShowInformation(self, self._prefsIO,
                                 "Transcription {:s} not saved: {:s}"
