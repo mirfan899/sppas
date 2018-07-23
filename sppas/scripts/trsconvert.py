@@ -31,9 +31,14 @@
         ---------------------------------------------------------------------
 
     scripts.trsconvert.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~
 
-    ... a script to export annotations files.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      a script to export annotations files based on anndata API.
 
 """
 import sys
@@ -46,8 +51,8 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.annotationdata.transcription import Transcription
-import sppas.src.annotationdata.aio
+from sppas.src.anndata import sppasRW
+from sppas.src.anndata import sppasTranscription
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -93,11 +98,13 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 # Read
 
+parser = sppasRW(args.i)
+
 if args.quiet is False:
-    print("Read input file:")
+    print("Read input:")
 
 start_time = time.time()
-trs_input = sppas.src.annotationdata.aio.read(args.i)
+trs_input = parser.read()
 end_time = time.time()
 
 if args.quiet is False:
@@ -114,12 +121,12 @@ if args.quiet is False:
 # Take all tiers or specified tiers
 tier_numbers = []
 if not args.t and not args.n:
-    tier_numbers = range(1, (trs_input.GetSize() + 1))
+    tier_numbers = range(1, (len(trs_input) + 1))
 elif args.t:
     tier_numbers = args.t
 
 # Select tiers to create output
-trs_output = Transcription(name=trs_input.GetName())
+trs_output = sppasTranscription(name=trs_input.get_name())
 
 # Add selected tiers into output
 for i in tier_numbers:
@@ -130,36 +137,52 @@ for i in tier_numbers:
     elif i < 0:
         idx = i
     else:
-        idx = trs_input.GetSize()
-    if idx < trs_input.GetSize():
-        trs_output.Append(trs_input[idx])
+        idx = len(trs_input)
+    if idx < len(trs_input):
+        trs_output.append(trs_input[idx])
         if args.quiet is False:
-            print("{:s}.".format(trs_input[idx].GetName()))
+            print("{:s}.".format(trs_input[idx].get_name()))
     else:
         if not args.quiet:
             print("Ignored. Wrong tier number {:d}.".format(i))
 
 if args.n:
     for n in args.n:
-        t = trs_input.Find(n, case_sensitive=False)
+        t = trs_input.find(n, case_sensitive=False)
         if t is not None:
-            trs_output.Append(t)
+            trs_output.append(t)
         else:
             if not args.quiet:
                 print("Ignored. Wrong tier name {:s}.".format(n))
 
 # Set the other members
-trs_output.metadata = trs_input.metadata
-# TODO: copy relevant hierarchy links
+for key in trs_input.get_meta_keys():
+    trs_output.set_meta(key, trs_input.get_meta(key))
+
+# copy relevant hierarchy links
+for child_tier in trs_input:
+    parent_tier = trs_input.get_hierarchy().get_parent(child_tier)
+    if parent_tier is not None:
+        output_child_tier = trs_output.find(child_tier.get_name())
+        output_parent_tier = trs_output.find(parent_tier.get_name())
+        if output_child_tier is not None and output_parent_tier is not None:
+            link_type = trs_input.get_hierarchy().get_hierarchy_type(child_tier)
+            trs_output.add_hierarchy_link(link_type,
+                                          output_parent_tier,
+                                          output_child_tier)
+
+# copy all media
+trs_output.set_media_list(trs_input.get_media_list())
 
 # ----------------------------------------------------------------------------
 # Write
 
+parser = sppasRW(args.o)
 if args.quiet is False:
     print("Write output file:")
 
 start_time = time.time()
-sppas.src.annotationdata.aio.write(args.o, trs_output)
+parser.write(trs_output)
 end_time = time.time()
 
 if args.quiet is False:
