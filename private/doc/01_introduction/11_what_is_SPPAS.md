@@ -100,8 +100,7 @@ All references are listed in Chapter 7 of this documentation.
 
 2. When looking for more detail about some subject, one can search this
 documentation. This documentation is available in-line - see the SPPAS website,
-it is also included in the package in PDF format, and it can also be explored
-with the Graphical User Interface by clicking on the `Help` button.
+it is also included in the package in PDF format.
 
 3. There is a F.A.Q. in the SPPAS web site. Topics can range from elementary 
 "how do I" queries to advanced issues in scriptwriting. There's (or there will 

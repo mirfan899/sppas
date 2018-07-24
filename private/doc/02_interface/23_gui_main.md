@@ -184,10 +184,7 @@ author, license, a link to the web site, etc.
 
 ### Help
 
-The `Help` action button opens the documentation and allows to browse in the 
-chapters and sections.
-
-![The Help browser window](./etc/screenshots/help.png)
+No longer available. Use this documentation instead.
 
 
 ### Plugins 

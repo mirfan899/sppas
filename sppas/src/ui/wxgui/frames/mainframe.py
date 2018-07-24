@@ -78,8 +78,8 @@ from sppas.src.ui.wxgui.frames.ipuscribeframe import IPUscribeFrame
 from sppas.src.ui.wxgui.frames.sppaseditframe import SppasEditFrame
 from sppas.src.ui.wxgui.frames.datafilterframe import DataFilterFrame
 from sppas.src.ui.wxgui.frames.datastatsframe import DataStatsFrame
-from sppas.src.ui.wxgui.frames.helpbrowser import HelpBrowser
 from sppas.src.ui.wxgui.views.settings import SettingsDialog
+from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
 
 # -----------------------------------------------------------------------
 # S P P A S  Graphical User Interface... is here!
@@ -358,12 +358,9 @@ class FrameSPPAS(wx.Frame):
     def OnHelp(self, evt):
         """ Open the help frame. """
 
-        for c in self.GetChildren():
-            if isinstance(c,HelpBrowser):
-                c.SetFocus()
-                c.Raise()
-                return True
-        HelpBrowser(self, self.preferences)
+        ShowInformation(self, self.preferences,
+                        "The documentation is available online and "
+                        "the SPPAS package contains a printable version.")
 
     # -----------------------------------------------------------------------
 

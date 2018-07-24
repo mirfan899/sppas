@@ -64,7 +64,7 @@ class spBaseMessageDialog(spBaseDialog):
 
         """
         spBaseDialog.__init__(self, parent, preferences, title=" - Message")
-        wx.GetApp().SetAppName( "question" )
+        wx.GetApp().SetAppName("question")
 
         if style == wx.ICON_ERROR:
             titlebox = self.CreateTitle(DLG_ERR_ICON, "Error")
@@ -81,9 +81,9 @@ class spBaseMessageDialog(spBaseDialog):
         contentbox = self._create_content(contentmsg)
         buttonbox = self._create_buttons()
 
-        self.LayoutComponents( titlebox,
+        self.LayoutComponents(titlebox,
                                contentbox,
-                               buttonbox )
+                               buttonbox)
 
     def _create_content(self, message):
         txt = self.CreateTextCtrl(message)
@@ -111,7 +111,7 @@ class YesNoQuestion(spBaseMessageDialog):
     def _on_no(self, evt):
         #self.Destroy() # does not work on MacOS
         self.Close()
-        self.SetReturnCode( wx.ID_NO )
+        self.SetReturnCode(wx.ID_NO)
 
 # ---------------------------------------------------------------------------
 
@@ -123,8 +123,8 @@ class Information(spBaseMessageDialog):
 
     def _create_buttons(self):
         okay = self.CreateOkayButton()
-        self.SetAffirmativeId( wx.ID_OK )
-        return self.CreateButtonBox( [],[okay] )
+        self.SetAffirmativeId(wx.ID_OK)
+        return self.CreateButtonBox([],[okay])
 
 # ---------------------------------------------------------------------------
 
@@ -142,30 +142,30 @@ class Choice(spBaseDialog):
 
         """
         spBaseDialog.__init__(self, parent, preferences, title=" - Choice")
-        wx.GetApp().SetAppName( "question" )
+        wx.GetApp().SetAppName("question")
 
         titlebox   = self.CreateTitle(DLG_QUEST_ICON, "Question")
         contentbox = self._create_content(contentmsg,choices)
         buttonbox  = self._create_buttons()
 
-        self.LayoutComponents( titlebox,
+        self.LayoutComponents(titlebox,
                                contentbox,
-                               buttonbox )
+                               buttonbox)
 
     def _create_content(self,message,choices):
-        sizer = wx.BoxSizer( wx.VERTICAL )
+        sizer = wx.BoxSizer(wx.VERTICAL)
         txt = wx.TextCtrl(self, wx.ID_ANY, value=message, style=wx.TE_READONLY|wx.NO_BORDER)
         font = self.preferences.GetValue('M_FONT')
         txt.SetFont(font)
-        txt.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        txt.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
+        txt.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
+        txt.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
         txt.SetMinSize((300,-1))
 
-        self.choicectrl = wx.ListBox( self, -1, choices=choices )
+        self.choicectrl = wx.ListBox(self, -1, choices=choices)
         self.choicectrl.SetSelection(0)
-        self.choicectrl.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
-        self.choicectrl.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        self.choicectrl.SetFont( font )
+        self.choicectrl.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
+        self.choicectrl.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
+        self.choicectrl.SetFont(font)
 
         sizer.Add(txt, 0, wx.ALL | wx.EXPAND, 10)
         sizer.Add(self.choicectrl, 1, wx.ALL | wx.EXPAND, 10)
@@ -175,14 +175,14 @@ class Choice(spBaseDialog):
     def _create_buttons(self):
         okay = self.CreateOkayButton()
         cancel = self.CreateCancelButton()
-        cancel.Bind( wx.EVT_BUTTON, self._on_cancel, cancel )
-        self.SetAffirmativeId( wx.ID_OK )
-        return self.CreateButtonBox( [cancel],[okay] )
+        cancel.Bind(wx.EVT_BUTTON, self._on_cancel, cancel)
+        self.SetAffirmativeId(wx.ID_OK)
+        return self.CreateButtonBox([cancel],[okay])
 
     def _on_cancel(self, evt):
         #self.Destroy() # does not work on MacOS
         self.Close()
-        self.SetReturnCode( wx.ID_CANCEL )
+        self.SetReturnCode(wx.ID_CANCEL)
 
     def SetSelection(self, idx):
         self.choicectrl.SetSelection(idx)
@@ -195,14 +195,14 @@ class Choice(spBaseDialog):
 
 
 def ShowYesNoQuestion(parent, preferences, contentmsg):
-    dlg = YesNoQuestion( parent, preferences, contentmsg)
+    dlg = YesNoQuestion(parent, preferences, contentmsg)
     return dlg.ShowModal()
 
 # ---------------------------------------------------------------------------
 
 
 def ShowInformation(parent, preferences, contentmsg, style=wx.ICON_INFORMATION):
-    dlg = Information( parent, preferences, contentmsg, style )
+    dlg = Information(parent, preferences, contentmsg, style)
     return dlg.ShowModal()
 
 # ---------------------------------------------------------------------------
@@ -213,34 +213,34 @@ def DemoBaseDialog(parent, preferences=None):
     """ A simple demonstration of SPPAS message dialogs."""
 
     def _on_yesno(evt):
-        dlg = YesNoQuestion( frame, preferences, "This is the message to show.")
-        #res = ShowYesNoQuestion( frame, preferences,)
+        dlg = YesNoQuestion(frame, preferences, "This is the message to show.")
+        #res = ShowYesNoQuestion(frame, preferences,)
         res = dlg.ShowModal()
         if res == wx.ID_YES:
-            ShowInformation( frame, preferences, "You clicked the ""Yes"" button")
+            ShowInformation(frame, preferences, "You clicked the ""Yes"" button")
         elif res == wx.ID_NO:
-            ShowInformation( frame, preferences, "You clicked the ""No"" button")
+            ShowInformation(frame, preferences, "You clicked the ""No"" button")
         else:
             print("there's a bug! return value is " + res)
         dlg.Destroy()
 
     def _on_choice(evt):
-        dlg = Choice( frame, preferences,"This is the message to describe choices:", ['choice 0','choice 1','choice 2'])
+        dlg = Choice(frame, preferences,"This is the message to describe choices:", ['choice 0','choice 1','choice 2'])
         if dlg.ShowModal() == wx.ID_OK:
             c = dlg.GetSelection()
-            ShowInformation( frame, preferences, "Your choice is: %d" % c)
+            ShowInformation(frame, preferences, "Your choice is: %d" % c)
         else:
-            ShowInformation( frame, preferences, "You clicked the ""Cancel"" button")
+            ShowInformation(frame, preferences, "You clicked the ""Cancel"" button")
         dlg.Destroy()
 
     def _on_info(evt):
-        ShowInformation( frame, preferences, "This is an information message with non-UTF8 characters: éàçù.", style=wx.ICON_INFORMATION)
+        ShowInformation(frame, preferences, "This is an information message with non-UTF8 characters: éàçù.", style=wx.ICON_INFORMATION)
 
     def _on_error(evt):
-        ShowInformation( frame, preferences, "This is an error message.", style=wx.ICON_ERROR)
+        ShowInformation(frame, preferences, "This is an error message.", style=wx.ICON_ERROR)
 
     def _on_warning(evt):
-        ShowInformation( frame, preferences, "This is a warning message.", style=wx.ICON_WARNING)
+        ShowInformation(frame, preferences, "This is a warning message.", style=wx.ICON_WARNING)
 
     frame = spBaseDialog(parent, preferences)
     title = frame.CreateTitle(MESSAGE_ICON, "Message dialogs demonstration")
@@ -251,15 +251,15 @@ def DemoBaseDialog(parent, preferences=None):
     btnchoice = frame.CreateButton(DLG_QUEST_ICON,"Test choice", "This is a tooltip!", btnid=wx.NewId())
 
     btnclose  = frame.CreateCloseButton()
-    btnbox    = frame.CreateButtonBox( [btnyesno,btninfo,btnwarn,btnerror,btnchoice], [btnclose] )
+    btnbox    = frame.CreateButtonBox([btnyesno,btninfo,btnwarn,btnerror,btnchoice], [btnclose])
 
-    frame.LayoutComponents( title, wx.Panel(frame, -1, size=(320,200)), btnbox )
+    frame.LayoutComponents(title, wx.Panel(frame, -1, size=(320,200)), btnbox)
 
-    btninfo.Bind( wx.EVT_BUTTON, _on_info )
-    btnyesno.Bind( wx.EVT_BUTTON, _on_yesno )
-    btnerror.Bind( wx.EVT_BUTTON, _on_error )
-    btnwarn.Bind( wx.EVT_BUTTON, _on_warning )
-    btnchoice.Bind( wx.EVT_BUTTON, _on_choice )
+    btninfo.Bind(wx.EVT_BUTTON, _on_info)
+    btnyesno.Bind(wx.EVT_BUTTON, _on_yesno)
+    btnerror.Bind(wx.EVT_BUTTON, _on_error)
+    btnwarn.Bind(wx.EVT_BUTTON, _on_warning)
+    btnchoice.Bind(wx.EVT_BUTTON, _on_choice)
 
     frame.ShowModal()
     frame.Destroy()

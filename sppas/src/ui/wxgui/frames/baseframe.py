@@ -65,7 +65,6 @@ from sppas.src.ui.wxgui.ui.splitterpanel import SplitterPanel
 from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowYesNoQuestion, ShowInformation
 from sppas.src.ui.wxgui.views.about import ShowAboutDialog
 from sppas.src.ui.wxgui.views.settings import SettingsDialog
-from sppas.src.ui.wxgui.frames.helpbrowser import HelpBrowser
 
 from sppas.src.ui.wxgui.structs.prefs import Preferences_IO
 
@@ -79,7 +78,7 @@ from sppas.src.ui.wxgui.panels.mainbuttons import MainMenuPanel,MainToolbarPanel
 # Constants
 # ----------------------------------------------------------------------------
 
-ID_TB_NEWTAB   = wx.NewId()
+ID_TB_NEWTAB = wx.NewId()
 ID_TB_CLOSETAB = wx.NewId()
 
 # ----------------------------------------------------------------------------
@@ -434,12 +433,9 @@ class ComponentFrame(wx.Frame):
     def OnHelp(self, evt):
         """ Open the help frame. """
 
-        for c in self.GetChildren():
-            if isinstance(c,HelpBrowser):
-                c.SetFocus()
-                c.Raise()
-                return True
-        HelpBrowser(self, self._prefsIO)
+        ShowInformation(self, self._prefsIO,
+                        "The documentation is available online and "
+                        "the SPPAS package contains a printable version.")
 
     # ------------------------------------------------------------------------
 
