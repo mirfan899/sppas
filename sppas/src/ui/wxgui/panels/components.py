@@ -2,10 +2,10 @@
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
+#           /      |   \   |   \   |   \  /              Automatic
+#           \__    | __/   | __/   | ___ |  \__             Annotation
+#              \   |       |       |     |     \             of
+#           ___/   |       |       |     |  ___/              Speech
 #
 #
 #                           http://www.sppas.org/
@@ -62,13 +62,13 @@ class AnalyzePanel(wx.Panel):
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
-    @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    @copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     @summary:      Tools for analyzing annotated data.
 
     """
     def __init__(self, parent, preferences):
         wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
-        self.SetBackgroundColour( preferences.GetValue('M_BG_COLOUR') )
+        self.SetBackgroundColour(preferences.GetValue('M_BG_COLOUR'))
         self._prefs = preferences
 
         content = self.__create_buttons()
@@ -78,24 +78,25 @@ class AnalyzePanel(wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.OnButtonClick)
         self.SetSizerAndFit(sizer)
 
+    # -----------------------------------------------------------------------
 
     def __create_buttons(self):
         """ Create buttons to call tools. """
 
-        annotateButton = ButtonPanel(self, ID_FRAME_DATAROAMER, self._prefs, DATAROAMER_APP_ICON,  "DataRoamer")
-        analyzeButton  = ButtonPanel(self, ID_FRAME_SNDROAMER,  self._prefs, AUDIOROAMER_APP_ICON, "AudioRoamer")
-        pluginsButton  = ButtonPanel(self, ID_FRAME_IPUSCRIBE,  self._prefs, IPUSCRIBE_APP_ICON,   "IPUscriber")
-        settingsButton = ButtonPanel(self, ID_FRAME_SPPASEDIT,  self._prefs, SPPASEDIT_APP_ICON,   "Visualizer")
-        helpButton     = ButtonPanel(self, ID_FRAME_DATAFILTER, self._prefs, DATAFILTER_APP_ICON,  "DataFilter")
-        aboutButton    = ButtonPanel(self, ID_FRAME_STATISTICS, self._prefs, STATISTICS_APP_ICON,  "DataStats")
+        annotateButton = ButtonPanel(self, ID_FRAME_DATAROAMER, self._prefs, DATAROAMER_APP_ICON, "DataRoamer")
+        analyzeButton = ButtonPanel(self, ID_FRAME_SNDROAMER, self._prefs, AUDIOROAMER_APP_ICON, "AudioRoamer")
+        pluginsButton = ButtonPanel(self, ID_FRAME_IPUSCRIBE, self._prefs, IPUSCRIBE_APP_ICON, "IPUscriber")
+        settingsButton = ButtonPanel(self, ID_FRAME_SPPASEDIT, self._prefs, SPPASEDIT_APP_ICON, "Visualizer")
+        helpButton = ButtonPanel(self, ID_FRAME_DATAFILTER, self._prefs, DATAFILTER_APP_ICON, "DataFilter")
+        aboutButton = ButtonPanel(self, ID_FRAME_STATISTICS, self._prefs, STATISTICS_APP_ICON, "DataStats")
 
         _box = wx.GridBagSizer()
-        _box.Add( annotateButton, pos=(0, 0), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
-        _box.Add( pluginsButton,  pos=(1, 1), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
-        _box.Add( analyzeButton,  pos=(0, 1), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
-        _box.Add( settingsButton, pos=(1, 0), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
-        _box.Add( aboutButton,    pos=(2, 0), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
-        _box.Add( helpButton,     pos=(2, 1), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add(annotateButton, pos=(0, 0), flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add(pluginsButton,  pos=(1, 1), flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add(analyzeButton,  pos=(0, 1), flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add(settingsButton, pos=(1, 0), flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add(aboutButton,    pos=(2, 0), flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL, border=2)
+        _box.Add(helpButton,     pos=(2, 1), flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL | wx.ALIGN_CENTER_VERTICAL, border=2)
 
         _box.AddGrowableCol(0)
         _box.AddGrowableCol(1)

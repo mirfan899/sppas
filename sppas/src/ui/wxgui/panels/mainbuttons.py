@@ -245,12 +245,12 @@ class MainActionsPanel(wx.Panel):
     def __create_buttons(self):
         """ Create buttons to call tools. """
 
-        annotateButton = ButtonPanel(self, ID_ANNOTATIONS,   self._prefs, ANNOTATIONS_ICON,"Annotate", "Segment speech, normalize text, ...")
-        analyzeButton  = ButtonPanel(self, ID_COMPONENTS,    self._prefs, COMPONENTS_ICON, "Analyze",  "Statistics, data managers, ...")
-        pluginsButton  = ButtonPanel(self, ID_PLUGINS,       self._prefs, PLUGINS_ICON,    "Plugins",  "Extend SPPAS", activated=True)
-        settingsButton = ButtonPanel(self, wx.ID_PREFERENCES,self._prefs, SETTINGS_ICON,   "Settings", "Configuration, preferences")
-        helpButton     = ButtonPanel(self, wx.ID_HELP,       self._prefs, HELP_ICON,       "Help",     "Documentation")
-        aboutButton    = ButtonPanel(self, wx.ID_ABOUT,      self._prefs, ABOUT_ICON,      "About",    "Know more")
+        annotateButton = ButtonPanel(self, ID_ANNOTATIONS, self._prefs, ANNOTATIONS_ICON, "Annotate", "Segment speech, normalize text, ...")
+        analyzeButton = ButtonPanel(self, ID_COMPONENTS, self._prefs, COMPONENTS_ICON, "Analyze", "Statistics, data managers, ...")
+        pluginsButton = ButtonPanel(self, ID_PLUGINS, self._prefs, PLUGINS_ICON, "Plugins", "Extend SPPAS", activated=True)
+        settingsButton = ButtonPanel(self, wx.ID_PREFERENCES,self._prefs, SETTINGS_ICON, "Settings", "Configuration, preferences")
+        helpButton = ButtonPanel(self, wx.ID_HELP, self._prefs, HELP_ICON, "Help", "Documentation")
+        aboutButton = ButtonPanel(self, wx.ID_ABOUT, self._prefs, ABOUT_ICON, "About", "Know more")
 
         _box = wx.GridBagSizer()
         _box.Add(annotateButton, pos=(0, 0), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
@@ -311,8 +311,8 @@ class MainActionsMenuPanel(wx.Panel):
         paneltext.SetSizer(sizertext)
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(self.backButton, proportion=0, flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=2)
-        sizer.Add(paneltext, proportion=1, flag=wx.EXPAND|wx.ALL, border=2)
+        sizer.Add(self.backButton, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL, border=2)
+        sizer.Add(paneltext, proportion=1, flag=wx.EXPAND | wx.ALL, border=2)
         self.SetSizer(sizer)
         self.SetMinSize((-1, preferences.GetValue('M_MENU_ICONSIZE')+4))
 

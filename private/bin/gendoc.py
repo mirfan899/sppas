@@ -600,7 +600,7 @@ if __name__ == "__main__":
 
     if args.doc or args.web:
         # test if documentation directory for markdown files is ok.
-        doc_dir = os.path.join(SPPAS, "sppas", "doc")
+        doc_dir = os.path.join(SPPAS, "private", "doc")
         if os.path.exists(doc_dir) is False:
             raise IOError("Directory {:s} of the documentation is missing. Program halted.".format(doc_dir))
 
