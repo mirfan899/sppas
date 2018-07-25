@@ -589,7 +589,7 @@ class sppasXRA(sppasBaseIO):
 
         sppasXRA.indent(root)
         tree = ET.ElementTree(root)
-        tree.write(filename, encoding=sppas.encoding, method="xml", xml_declaration=True)
+        tree.write(filename, encoding=sppas.__encoding__, method="xml", xml_declaration=True)
 
     # -----------------------------------------------------------------------
 

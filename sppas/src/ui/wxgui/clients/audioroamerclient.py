@@ -75,8 +75,6 @@ from sppas.src.audiodata.audioframes import sppasAudioFrames
 from sppas.src.audiodata.audio import sppasAudioPCM
 from sppas.src.audiodata.audioconvert import sppasAudioConverter
 
-from sppas import encoding
-
 from .baseclient import BaseClient
 
 # ----------------------------------------------------------------------------
@@ -964,7 +962,7 @@ class AudioRoamerPanel(wx.Panel):
         # If it is the OK response, process the data.
         if new_filename is not None:
             content = self._infos_content(parent_filename)
-            with codecs.open(new_filename, "w", encoding) as fp:
+            with codecs.open(new_filename, "w", sppas.__encoding__) as fp:
                 fp.write(content)
 
     # -----------------------------------------------------------------------

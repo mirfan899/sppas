@@ -37,7 +37,7 @@
 import codecs
 import logging
 
-from sppas import encoding
+import sppas
 from sppas.src.utils.makeunicode import sppasUnicode, u
 from .dumpfile import sppasDumpFile
 from .resourcesexc import FileUnicodeError
@@ -292,7 +292,7 @@ class sppasDictRepl(object):
         :param filename: (str) Replacement dictionary file name
 
         """
-        with codecs.open(filename, 'r', encoding) as fd:
+        with codecs.open(filename, 'r', sppas.__encoding__) as fd:
             try:
                 lines = fd.readlines()
             except UnicodeDecodeError:
@@ -325,7 +325,7 @@ class sppasDictRepl(object):
 
         """
         try:
-            with codecs.open(filename, 'w', encoding=encoding) as output:
+            with codecs.open(filename, 'w', encoding=sppas.__encoding__) as output:
                 for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
                     values = value.split(sppasDictRepl.REPLACE_SEPARATOR)
                     for v in values:

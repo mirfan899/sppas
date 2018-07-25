@@ -64,8 +64,8 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 try:
-    from sppas import encoding
     from sppas import SETTINGS_FILE
+
     from sppas.src.ui.wxgui.frames.mainframe import FrameSPPAS
     from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
     from sppas.src.ui.wxgui.structs.prefs import Preferences_IO
@@ -91,10 +91,10 @@ args = parser.parse_args()
 # force to add path
 filenames = []
 for f in args.files:
-    p,b = os.path.split(f)
+    p, b = os.path.split(f)
     if not p:
         p = os.getcwd()
-    filenames.append(os.path.abspath(os.path.join(p,b)))
+    filenames.append(os.path.abspath(os.path.join(p, b)))
 
 # Logging
 # ----------------------------------------------------------------------------

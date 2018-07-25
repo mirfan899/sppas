@@ -39,8 +39,7 @@ import shutil
 import codecs
 import wx
 
-from sppas import encoding
-
+import sppas
 from sppas.src.ui.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
 from sppas.src.ui.wxgui.sp_icons import REPORT_ICON
@@ -91,14 +90,14 @@ class LogDialog(spBaseDialog):
     # ------------------------------------------------------------------------
 
     def _create_buttons(self):
-        btn_save = self.CreateSaveButton("Save the procedure outcome report.")
+        self.btn_save = self.CreateSaveButton("Save the procedure outcome report.")
         btn_close = self.CreateCloseButton()
-        self.Bind(wx.EVT_BUTTON, self._on_save, btn_save)
-        return self.CreateButtonBox([btn_save], [btn_close])
+        self.Bind(wx.EVT_BUTTON, self._on_save, self.btn_save)
+        return self.CreateButtonBox([self.btn_save], [btn_close])
 
     def _create_content(self):
         try:
-            with codecs.open(self.filename, 'r', encoding) as fp:
+            with codecs.open(self.filename, 'r', sppas.__encoding__) as fp:
                 logcontent = fp.read()
         except Exception as e:
             logcontent = "No report is available...\n" \

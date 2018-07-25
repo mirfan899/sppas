@@ -832,7 +832,7 @@ class sppasEAF(sppasBaseIO):
 
         sppasEAF.indent(root)
         tree = ET.ElementTree(root)
-        tree.write(filename, sppas.encoding, method="xml")
+        tree.write(filename, sppas.__encoding__, method="xml")
 
     # -----------------------------------------------------------------------
 

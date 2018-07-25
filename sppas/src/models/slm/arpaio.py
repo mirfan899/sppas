@@ -34,7 +34,7 @@
 """
 import codecs
 
-from sppas import encoding
+import sppas
 
 from ..modelsexc import ModelsDataTypeError
 from ..modelsexc import ArpaFileError
@@ -82,7 +82,7 @@ class sppasArpaIO(object):
 
         """
         # we expect small models, so we can read the whole file in one!
-        with codecs.open(filename, 'r', encoding) as f:
+        with codecs.open(filename, 'r', sppas.__encoding__) as f:
             lines = f.readlines()
 
         self.__slm = []
@@ -150,7 +150,7 @@ class sppasArpaIO(object):
 
         """
         if self.__slm is not None:
-            with codecs.open(filename, 'w', encoding) as f:
+            with codecs.open(filename, 'w', sppas.__encoding__) as f:
                 f.write(self._serialize_slm())
 
     # -----------------------------------------------------------------------

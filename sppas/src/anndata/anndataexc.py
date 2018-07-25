@@ -35,6 +35,7 @@
     Exceptions for anndata package.
 
 """
+import sppas
 from . import t
 
 ANN_DATA_ERROR = ":ERROR 1000: "
@@ -454,7 +455,7 @@ class AioEncodingError(UnicodeDecodeError):
     The file {filename} contains non {encoding} characters: {error}.
 
     """
-    def __init__(self, filename, error, encoding="UTF-8"):
+    def __init__(self, filename, error, encoding=sppas.__encoding__):
         self.parameter = AIO_ENCODING_ERROR + \
                          (t.gettext(AIO_ENCODING_ERROR)).format(filename=filename,
                                                                 error=error,

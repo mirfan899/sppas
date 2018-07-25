@@ -39,7 +39,7 @@ import codecs
 import logging
 import xml.etree.cElementTree as ET
 
-from sppas import encoding
+import sppas
 from sppas import unk_stamp
 from sppas import RESOURCES_PATH
 from sppas import PHONEMES_SEPARATOR
@@ -274,7 +274,7 @@ class sppasDictPron(object):
 
         """
         try:
-            with codecs.open(filename, 'r', encoding) as fd:
+            with codecs.open(filename, 'r', sppas.__encoding__) as fd:
                 self._filename = filename
                 first_line = fd.readline()
                 fd.close()
@@ -297,7 +297,7 @@ class sppasDictPron(object):
 
         """
         try:
-            with codecs.open(filename, 'r', encoding) as fd:
+            with codecs.open(filename, 'r', sppas.__encoding__) as fd:
                 lines = fd.readlines()
                 fd.close()
         except Exception:
@@ -343,7 +343,7 @@ class sppasDictPron(object):
 
         """
         try:
-            with codecs.open(filename, 'w', encoding=encoding) as output:
+            with codecs.open(filename, 'w', encoding=sppas.__encoding__) as output:
 
                 for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
                     variants = value.split(VARIANTS_SEPARATOR)

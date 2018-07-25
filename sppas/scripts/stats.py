@@ -45,6 +45,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
+import sppas
 import sppas.src.annotationdata.aio
 from sppas.src.presenters.tierstats import TierStats
 
@@ -195,7 +196,7 @@ if args.o:
     fileoutput = args.o
 else:
     fileoutput = filename + "-" + tiername + "-stats-" + str(ngram) + ".csv"
-with codecs.open(fileoutput, 'w', encoding="utf-8") as fp:
+with codecs.open(fileoutput, 'w', sppas.__encoding__) as fp:
     for row in rowdata:
         s = ','.join(row)
         fp.write(s)

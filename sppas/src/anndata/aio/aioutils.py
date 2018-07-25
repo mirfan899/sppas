@@ -69,7 +69,7 @@ def format_point_to_float(p):
 # ---------------------------------------------------------------------------
 
 
-def load(filename, file_encoding=sppas.encoding):
+def load(filename, file_encoding=sppas.__encoding__):
     """ Load a file into lines.
 
     :param filename: (str)

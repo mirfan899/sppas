@@ -46,7 +46,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import re
 import codecs
 
-from sppas import encoding
+import sppas
 from sppas import unk_stamp
 
 # ----------------------------------------------------------------------------
@@ -72,7 +72,7 @@ class LemmaDict(object):
         :param dictfilename: the dictionary file name.
 
         """
-        with codecs.open(dictfilename, 'r', encoding) as fd:
+        with codecs.open(dictfilename, 'r', sppas.__encoding__) as fd:
 
             dictfreq = {}
             for line in fd:
@@ -81,7 +81,7 @@ class LemmaDict(object):
                     break
                 # The token is the first column
                 __entry = self.__lower(tabline[0])
-                __freq  = int(tabline[1])
+                __freq = int(tabline[1])
                 # The lemma is at the last column
                 __lemma = tabline[len(tabline)-1]
                 # Remove the CR/LF, tabs, multiple spaces and others...

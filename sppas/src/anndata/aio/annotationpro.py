@@ -390,7 +390,7 @@ class sppasANTX(sppasBaseIO):
 
         sppasANTX.indent(root)
         tree = ET.ElementTree(root)
-        tree.write(filename, encoding=sppas.encoding, xml_declaration=True, method="xml")
+        tree.write(filename, encoding=sppas.__encoding__, xml_declaration=True, method="xml")
         # we should add 'standalone="yes"' in the declaration
         # (but not available with ElementTree)
 

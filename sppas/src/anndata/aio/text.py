@@ -381,7 +381,7 @@ class sppasRawText(sppasBaseText):
     def detect(filename):
         # Open and load the content.
         try:
-            with codecs.open(filename, 'r', sppas.encoding) as fp:
+            with codecs.open(filename, 'r', sppas.__encoding__) as fp:
                 fp.readline()
                 fp.close()
         except IOError:
@@ -422,7 +422,7 @@ class sppasRawText(sppasBaseText):
         :param filename: (str)
 
         """
-        lines = load(filename, sppas.encoding)
+        lines = load(filename, sppas.__encoding__)
         self._parse_lines(lines)
 
     # -----------------------------------------------------------------------
@@ -543,7 +543,7 @@ class sppasRawText(sppasBaseText):
         if len(self._tiers) > 1:
             raise AioMultiTiersError(self.__class__.__name__)
 
-        with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sppas.__encoding__, buffering=8096) as fp:
 
             # no tier in the file.
             if self.is_empty() is True:
@@ -636,7 +636,7 @@ class sppasCSV(sppasBaseText):
         If False, the default encoding is used.
 
         """
-        enc = sppas.encoding
+        enc = sppas.__encoding__
         if signed is True:
             enc = 'utf-8-sig'
 
@@ -711,7 +711,7 @@ class sppasCSV(sppasBaseText):
         If False, the default encoding is used.
 
         """
-        enc = sppas.encoding
+        enc = sppas.__encoding__
         if signed is True:
             enc = 'utf-8-sig'
 

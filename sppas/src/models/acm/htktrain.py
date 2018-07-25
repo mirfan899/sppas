@@ -41,7 +41,8 @@ import copy
 import collections
 import codecs
 
-from sppas import unk_stamp, encoding
+import sppas
+from sppas import unk_stamp
 from sppas import PHONE_SYMBOLS, ORTHO_SYMBOLS
 
 from sppas.src.utils.fileutils import sppasFileUtils
@@ -897,14 +898,14 @@ class sppasTrainingCorpus(object):
         lab_filename = os.path.join(self.datatrainer.get_storetrs(), outfile+".lab")
 
         try:
-            with codecs.open(lab_filename, "r", encoding) as fp:
+            with codecs.open(lab_filename, "r", sppas.__encoding__) as fp:
                 lab = "".join(fp.readlines()).strip()
             if len(lab) == 0:
                 return False
         except Exception:
             return False
 
-        with codecs.open(filename, "a+", encoding) as fp:
+        with codecs.open(filename, "a+", sppas.__encoding__) as fp:
             fp.write('"*/%s/%s.lab"\n' % (os.path.basename(self.datatrainer.get_storetrs()),
                                           os.path.basename(outfile)))
             fp.write('%s\n' % lab)

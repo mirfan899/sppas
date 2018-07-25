@@ -36,7 +36,7 @@
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS global variables.
+    :summary:      SPPAS global configuration.
 
 """
 import sys
@@ -49,16 +49,35 @@ except NameError:
     except ImportError:
         from imp import reload  # Python 3.0 - 3.3
 
-from .meta import __version__
-from .meta import __author__
-from .meta import __contact__
-from .meta import __copyright__
-from .meta import __license__
-from .meta import __docformat__
-from .meta import __name__
-from .meta import __url__
-from .meta import __summary__
-from .meta import __title__
+from sppas.src.config import sppasGlobals
+
+# ---------------------------------------------------------------------------
+# Fix the global settings variables
+# ---------------------------------------------------------------------------
+
+with sppasGlobals() as sg:
+    __version__ = sg.__version__
+    __author__ = sg.__author__
+    __contact__ = sg.__contact__
+    __copyright__ = sg.__copyright__
+    __license__ = sg.__license__
+    __docformat__ = sg.__docformat__
+    __name__ = sg.__name__
+    __url__ = sg.__url__
+    __summary__ = sg.__summary__
+    __title__ = sg.__title__
+    __encoding__ = sg.__encoding__
+
+# ---------------------------------------------------------------------------
+
+# Default input/output encoding
+encoding = __encoding__  # will be removed in a future version
+reload(sys)
+try:
+    sys.setdefaultencoding(__encoding__)
+except AttributeError:  # Python 2.7
+    pass
+
 
 # ---------------------------------------------------------------------------
 # Define paths
@@ -80,22 +99,10 @@ TIPS_FILE = os.path.join(BASE_PATH, "etc", "tips.txt")
 SETTINGS_FILE = os.path.join(BASE_PATH, "etc", "settings.dump")
 
 # ---------------------------------------------------------------------------
-# Global variables
-# ---------------------------------------------------------------------------
-
-# Default input/output encoding
-encoding = 'utf-8'
-reload(sys)
-try:
-    sys.setdefaultencoding(encoding)
-except AttributeError:  # Python 2.7
-    pass
+# Symbols used by SPPAS to represent an event:
 
 # Default symbols used by annotations and resources
 unk_stamp = "<UNK>"
-
-# ---------------------------------------------------------------------------
-# Symbols used by SPPAS to represent an event:
 
 # Symbols in an orthographic transcription, or after a text normalization:
 ORTHO_SYMBOLS = {

@@ -36,7 +36,7 @@
 import codecs
 import os
 
-from sppas import encoding
+import sppas
 from sppas.src.audiodata.autils import frames2times
 import sppas.src.audiodata.aio
 import sppas.src.annotationdata.aio
@@ -215,7 +215,7 @@ class IPUsOut(object):
         # Convert the tracks: from frames to times
         tracks_times = frames2times(self.tracks, ipusaudio.get_channel().get_framerate())
 
-        with codecs.open(filename, 'w', encoding) as fp:
+        with codecs.open(filename, 'w', sppas.__encoding__) as fp:
             idx = 0
 
             for (from_time, to_time) in tracks_times:
@@ -346,7 +346,7 @@ class IPUsOut(object):
 
     @staticmethod
     def __write_txt_track(track_filename, track_content):
-        with codecs.open(track_filename,"w", encoding) as fp:
+        with codecs.open(track_filename,"w", sppas.__encoding__) as fp:
             fp.write(track_content)
 
     # ------------------------------------------------------------------

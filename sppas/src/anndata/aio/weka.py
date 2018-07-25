@@ -745,7 +745,7 @@ class sppasARFF(sppasWEKA):
     @staticmethod
     def detect(filename):
         try:
-            with codecs.open(filename, 'r', sppas.encoding) as fp:
+            with codecs.open(filename, 'r', sppas.__encoding__) as fp:
                 for i in range(200):
                     line = fp.readline()
                     if "@relation" in line.lower():
@@ -782,7 +782,7 @@ class sppasARFF(sppasWEKA):
         if self.is_empty() is True:
             raise AioNoTiersError(self.default_extension)
 
-        with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sppas.__encoding__, buffering=8096) as fp:
 
             # Check metadata
             self.check_metadata()
@@ -1004,7 +1004,7 @@ class sppasXRFF(sppasWEKA):
         if self.is_empty() is True:
             raise AioNoTiersError(self.default_extension)
 
-        with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sppas.__encoding__, buffering=8096) as fp:
 
             # Check metadata
             self.check_metadata()

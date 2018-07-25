@@ -40,7 +40,7 @@ import codecs
 import random
 import logging
 
-from sppas import encoding
+import sppas
 from sppas import TIPS_FILE
 from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.utils.makeunicode import b
@@ -84,7 +84,7 @@ class sppasTips(object):
 
         """
         try:
-            with codecs.open(filename, 'r', encoding) as f:
+            with codecs.open(filename, 'r', sppas.__encoding__) as f:
                 for line in f.readlines():
                     self.add_message(line)
         except Exception as e:
@@ -101,7 +101,7 @@ class sppasTips(object):
         :param filename: (str) Name of the file to store message tips.
 
         """
-        with codecs.open(filename, 'w', encoding) as f:
+        with codecs.open(filename, 'w', sppas.__encoding__) as f:
             for message in self._tips:
                 f.write("{:s}\n".format(b(message)))
 

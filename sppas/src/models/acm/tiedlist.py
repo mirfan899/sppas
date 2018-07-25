@@ -33,7 +33,7 @@
 
 """
 import codecs
-from sppas import encoding
+import sppas
 
 # ---------------------------------------------------------------------------
 
@@ -66,7 +66,7 @@ class sppasTiedList(object):
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'r', encoding) as fd:
+        with codecs.open(filename, 'r', sppas.__encoding__) as fd:
             for nbl, line in enumerate(fd, 1):
                 line = line.strip()
                 try:
@@ -88,7 +88,7 @@ class sppasTiedList(object):
         :param filename: Name of the file of the tiedlist
 
         """
-        with codecs.open(filename, 'w', encoding) as fp:
+        with codecs.open(filename, 'w', sppas.__encoding__) as fp:
 
             for triphone in self.observed:
                 fp.write(triphone + "\n")

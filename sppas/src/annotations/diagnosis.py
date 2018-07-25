@@ -35,7 +35,7 @@
 import codecs
 import os
 
-from sppas import encoding
+import sppas
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
 from . import ERROR_ID, WARNING_ID, OK_ID
@@ -138,7 +138,7 @@ class sppasDiagnosis(object):
             nc = audio.get_nchannels()
             audio.close()
         except UnicodeDecodeError:
-            message = MSG_INVALID + MSG_FILE_ENCODING.format(encoding=encoding)
+            message = MSG_INVALID + MSG_FILE_ENCODING.format(encoding=sppas.__encoding__)
             return ERROR_ID, message
         except Exception as e:
             message = MSG_INVALID + str(e)
@@ -205,10 +205,10 @@ class sppasDiagnosis(object):
 
         # test encoding
         try:
-            f = codecs.open(filename, "r", encoding)
+            f = codecs.open(filename, "r", sppas.__encoding__)
             f.close()
         except UnicodeDecodeError:
-            message = MSG_INVALID + MSG_FILE_ENCODING.format(encoding=encoding)
+            message = MSG_INVALID + MSG_FILE_ENCODING.format(encoding=sppas.__encoding__)
             return ERROR_ID, message
         except Exception as e:
             message = MSG_INVALID + str(e)

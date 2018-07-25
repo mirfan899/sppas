@@ -116,7 +116,7 @@ class BaseStatPanel( wx.Panel ):
                            "Save as",
                            "Save as",
                            outfilename,
-                           "Excel UTF-16 (*.csv)|*.csv |Excel UTF-8 (*.csv)|*.csv",
+                           "UTF-16 (*.csv)|*.csv |UTF-8 (*.csv)|*.csv",
                            wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
         if dlg.ShowModal() != wx.ID_OK:
             dlg.Destroy()

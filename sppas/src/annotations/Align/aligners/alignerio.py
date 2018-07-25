@@ -35,7 +35,7 @@
 import os
 import codecs
 
-from sppas import encoding
+import sppas
 from sppas.src.utils.makeunicode import sppasUnicode
 
 # ----------------------------------------------------------------------------
@@ -111,7 +111,7 @@ class AlignerIO(object):
         tokens = [""]
         wordlist = []
 
-        with codecs.open(filename, 'r', encoding) as fp:
+        with codecs.open(filename, 'r', sppas.__encoding__) as fp:
             lines = fp.readlines()
 
         for line in lines:
@@ -224,7 +224,7 @@ class AlignerIO(object):
         scores = [0]
         _wordalign = []
         wordidx = -1
-        with codecs.open(filename, 'r', encoding) as fp:
+        with codecs.open(filename, 'r', sppas.__encoding__) as fp:
             lines = fp.readlines()
 
         for line in lines:
@@ -297,7 +297,7 @@ class AlignerIO(object):
         word = []
         samplerate = 10e6
 
-        with codecs.open(filename, 'r', encoding) as source:
+        with codecs.open(filename, 'r', sppas.__encoding__) as source:
 
             line = source.readline()  # header
             while True:  # loop over text
@@ -369,7 +369,7 @@ class AlignerIO(object):
         :param outputfilename: (str) The output file name (a Julius-like output).
 
         """
-        with codecs.open(outputfilename, 'w', encoding) as fp:
+        with codecs.open(outputfilename, 'w', sppas.__encoding__) as fp:
 
             fp.write("----------------------- System Information begin ---------------------\n")
             fp.write("\n")

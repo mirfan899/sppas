@@ -195,7 +195,7 @@ class sppasLab(sppasBaseHTK):
 
         """
         try:
-            with codecs.open(filename, 'r', sppas.encoding) as fp:
+            with codecs.open(filename, 'r', sppas.__encoding__) as fp:
                 line = fp.readline()
                 fp.close()
         except IOError:
@@ -287,7 +287,7 @@ class sppasLab(sppasBaseHTK):
         if len(self) != 1:
             raise AioMultiTiersError("HTK Label")
 
-        with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sppas.__encoding__, buffering=8096) as fp:
 
             if self.is_empty() is False:
                 for ann in self[0]:

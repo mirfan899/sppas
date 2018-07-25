@@ -305,7 +305,7 @@ class sppasTextGrid(sppasBasePraat):
         """
         detected = False
         try:
-            with codecs.open(filename, 'r', sppas.encoding) as fp:
+            with codecs.open(filename, 'r', sppas.__encoding__) as fp:
                 detected = sppasTextGrid._detect(fp)
                 fp.close()
         except UnicodeError:
@@ -347,12 +347,12 @@ class sppasTextGrid(sppasBasePraat):
         # get the content of the file
 
         try:
-            lines = load(filename, sppas.encoding)
+            lines = load(filename, sppas.__encoding__)
         except AioEncodingError:
             try:
                 lines = load(filename, "UTF-16")
             except AioEncodingError:
-                raise AioEncodingError(filename, "", sppas.encoding+"/UTF-16")
+                raise AioEncodingError(filename, "", sppas.__encoding__+"/UTF-16")
 
         # parse the header of the file
 
@@ -512,7 +512,7 @@ class sppasTextGrid(sppasBasePraat):
         for tier in self:
             self.get_hierarchy().remove_tier(tier)
 
-        with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sppas.__encoding__, buffering=8096) as fp:
 
             # Write the header
             fp.write(sppasTextGrid._serialize_textgrid_header(min_time_point.get_midpoint(),
@@ -666,7 +666,7 @@ class sppasBaseNumericalTier(sppasBasePraat):
 
         """
         # get the content of the file
-        lines = load(filename, sppas.encoding)
+        lines = load(filename, sppas.__encoding__)
         if len(lines) < 7:
             raise AioLineFormatError(len(lines), lines[-1])
 
@@ -734,7 +734,7 @@ class sppasBaseNumericalTier(sppasBasePraat):
         min_time_point = tier.get_first_point()
         max_time_point = tier.get_last_point()
 
-        with codecs.open(filename, 'w', sppas.encoding, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sppas.__encoding__, buffering=8096) as fp:
 
             # Write the header
             fp.write(sppasBasePraat._serialize_header(file_type,
@@ -774,7 +774,7 @@ class sppasPitchTier(sppasBaseNumericalTier):
 
         """
         try:
-            with codecs.open(filename, 'r', sppas.encoding) as fp:
+            with codecs.open(filename, 'r', sppas.__encoding__) as fp:
                 file_type = sppasBasePraat._parse_string(fp.readline())
                 object_class = sppasBasePraat._parse_string(fp.readline())
                 fp.close()
@@ -840,7 +840,7 @@ class sppasIntensityTier(sppasPitchTier):
 
         """
         try:
-            with codecs.open(filename, 'r', sppas.encoding) as fp:
+            with codecs.open(filename, 'r', sppas.__encoding__) as fp:
                 file_type = sppasBasePraat._parse_string(fp.readline())
                 object_class = sppasBasePraat._parse_string(fp.readline())
                 fp.close()
