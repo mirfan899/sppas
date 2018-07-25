@@ -516,7 +516,7 @@ def generate_web(doc_dir, doc_temp):
     """ Generate the SPPAS documentation in a directory with HTML files. """
 
     # doc template files
-    css_file = os.path.join(".", "etc", "styles", "sppas.css")
+    css_file = os.path.join(".", "web", "etc", "styles", "sppas.css")
 
     # web directory to store resulting HTML files
     result_dirname = os.path.join(SPPAS, "private", "web")
@@ -540,7 +540,7 @@ def generate_web(doc_dir, doc_temp):
 def generate_tuto(tuto_dir, doc_temp):
 
     # tuto template files
-    css_file = os.path.join(".", "etc", "styles", "tuto.css")
+    css_file = os.path.join(".", "web", "etc", "styles", "tuto.css")
 
     # web directory to store resulting TUTORIAL files
     result_dirname = os.path.join(SPPAS, "private", "web")
