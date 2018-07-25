@@ -482,7 +482,7 @@ function fct_sppas_tuto {
         do 
             echo " ... ... $file"
             outfile=`basename $file .md`
-            pandoc -s --mathjax -t dzslides --css etc/styles/tuto.css --slide-level=2 -H tuto/include-scripts.txt tuto/header.md $file -o toto.html
+            pandoc -s --mathjax -t dzslides --css web/etc/styles/tuto.css --slide-level=2 -H tuto/include-scripts.txt tuto/header.md $file -o toto.html
 
             cat toto.html | sed -e 's/>[ ]*</>\n</g' |\
                 sed -e 's/<section>/<section class="title">/' |\
@@ -514,10 +514,6 @@ function fct_sppas_tuto {
     done
     echo '<p><br><br></p>' >> web/tutorial.html
     cat tuto/tutorial_footer.html >> web/tutorial.html
-
-    # Package: erase old then copy new
-    rm -rf web/etc
-    cp -r etc web/
 
 }
 
@@ -573,10 +569,10 @@ function fct_uml_diagrams {
             echo -e "${RED}None of yuml or suml are working! Please, install at least one of them and try again.${NC}"
             return 1
         else
-            suml --png --class -i etc/figures/src/anndata.yuml -o etc/figures/anndata.png
+            suml --png --class -i web/etc/figures/src/anndata.yuml -o web/etc/figures/anndata.png
         fi
     else
-        cat etc/figures/src/anndata.yuml | $BIN_DIR/yuml -f png -t class -s plain --scale 42 -o etc/figures/anndata.png
+        cat etc/figures/src/anndata.yuml | $BIN_DIR/yuml -f png -t class -s plain --scale 42 -o web/etc/figures/anndata.png
     fi
 
 }
