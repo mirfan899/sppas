@@ -1,22 +1,33 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>structs.baseoption &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>structs.baseoption &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../index.html" />
+    <link rel="up" title="structs" href="../structs.html" /> 
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -25,18 +36,19 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../structs.html" accesskey="U">structs</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <h1>Source code for structs.baseoption</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -75,9 +87,9 @@
 <span class="sd">    Such data is called &quot;option&quot;.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="k">import</span> <span class="n">u</span><span class="p">,</span> <span class="n">text_type</span><span class="p">,</span> <span class="n">binary_type</span>
+<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="kn">import</span> <span class="n">u</span><span class="p">,</span> <span class="n">text_type</span><span class="p">,</span> <span class="n">binary_type</span>
 
-<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c"># ----------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasBaseOption"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption">[docs]</a><span class="k">class</span> <span class="nc">sppasBaseOption</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -103,7 +115,7 @@
 <span class="sd">    &gt;&gt;&gt; &lt;type &#39;str&#39;&gt;</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasBaseOption.__init__"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_type</span><span class="p">,</span> <span class="n">option_value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasBaseOption.__init__"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_type</span><span class="p">,</span> <span class="n">option_value</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Creates a sppasBaseOption instance.</span>
 
 <span class="sd">        :param option_type: (str) Type of the option (i.e. &#39;int&#39;, &#39;bool&#39;,</span>
@@ -112,86 +124,86 @@
 <span class="sd">        :param option_value: (str) The value of the option.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_type</span><span class="p">(</span><span class="n">option_type</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">option_value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-    <span class="c1"># Getters</span>
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+    <span class="c"># Getters</span>
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasBaseOption.get_type"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.get_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the type of the option.</span>
 
 <span class="sd">        :returns: normalized value of the type</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasBaseOption.get_untypedvalue"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.get_untypedvalue">[docs]</a>    <span class="k">def</span> <span class="nf">get_untypedvalue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the value as it was given,</span>
 <span class="sd">        i.e. without taking the given type into account.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasBaseOption.get_value"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the typed-value or None if the type is unknown. &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="s2">&quot;bool&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="s">&quot;bool&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">True</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;true&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="s2">&quot;int&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="s">&quot;int&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">)</span>
 
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="s">&quot;float&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">)</span>
 
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="s2">&quot;str&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">,</span> <span class="p">(</span><span class="n">text_type</span><span class="p">,</span> <span class="n">binary_type</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="s">&quot;str&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;file&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">,</span> <span class="p">(</span><span class="n">text_type</span><span class="p">,</span> <span class="n">binary_type</span><span class="p">))</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
             <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="bp">None</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasBaseOption.get_name"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the name of to this option. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasBaseOption.get_text"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.get_text">[docs]</a>    <span class="k">def</span> <span class="nf">get_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the brief text which describes the option. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasBaseOption.get_description"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.get_description">[docs]</a>    <span class="k">def</span> <span class="nf">get_description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the long text which describes the option. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-    <span class="c1"># Setters</span>
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+    <span class="c"># Setters</span>
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasBaseOption.set"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set self from another instance.</span>
 
@@ -202,10 +214,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_untypedvalue</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_description</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_description</span><span class="p">()</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasBaseOption.set_type"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.set_type">[docs]</a>    <span class="k">def</span> <span class="nf">set_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set a new type.</span>
 
@@ -216,73 +228,73 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">option_type</span> <span class="o">=</span> <span class="n">option_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">option_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;bool&#39;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s2">&quot;bool&quot;</span>
-            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">option_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;bool&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s">&quot;bool&quot;</span>
+            <span class="k">return</span> <span class="bp">True</span>
 
-        <span class="k">elif</span> <span class="n">option_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">option_type</span> <span class="o">==</span> <span class="s1">&#39;long&#39;</span> <span class="ow">or</span> <span class="n">option_type</span> <span class="o">==</span> <span class="s1">&#39;short&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s2">&quot;int&quot;</span>
-            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">option_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;int&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">option_type</span> <span class="o">==</span> <span class="s">&#39;long&#39;</span> <span class="ow">or</span> <span class="n">option_type</span> <span class="o">==</span> <span class="s">&#39;short&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s">&quot;int&quot;</span>
+            <span class="k">return</span> <span class="bp">True</span>
 
-        <span class="k">elif</span> <span class="n">option_type</span> <span class="o">==</span> <span class="s1">&#39;float&#39;</span> <span class="ow">or</span> <span class="n">option_type</span> <span class="o">==</span> <span class="s1">&#39;double&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s2">&quot;float&quot;</span>
-            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">option_type</span> <span class="o">==</span> <span class="s">&#39;float&#39;</span> <span class="ow">or</span> <span class="n">option_type</span> <span class="o">==</span> <span class="s">&#39;double&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s">&quot;float&quot;</span>
+            <span class="k">return</span> <span class="bp">True</span>
 
-        <span class="k">elif</span> <span class="s2">&quot;file&quot;</span> <span class="ow">in</span> <span class="n">option_type</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">in</span> <span class="n">option_type</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s2">&quot;filename&quot;</span>
-                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="s">&quot;file&quot;</span> <span class="ow">in</span> <span class="n">option_type</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s">&quot;name&quot;</span> <span class="ow">in</span> <span class="n">option_type</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s">&quot;filename&quot;</span>
+                <span class="k">return</span> <span class="bp">True</span>
 
-            <span class="k">elif</span> <span class="s2">&quot;path&quot;</span> <span class="ow">in</span> <span class="n">option_type</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s2">&quot;filepath&quot;</span>
-                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="s">&quot;path&quot;</span> <span class="ow">in</span> <span class="n">option_type</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s">&quot;filepath&quot;</span>
+                <span class="k">return</span> <span class="bp">True</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s2">&quot;str&quot;</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s">&quot;str&quot;</span>
+        <span class="k">return</span> <span class="bp">False</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasBaseOption.set_value"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set a new value.</span>
 
 <span class="sd">        :param value: (any type) Un-typed value of the option.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasBaseOption.set_name"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.set_name">[docs]</a>    <span class="k">def</span> <span class="nf">set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set a name to describe the option.</span>
 
 <span class="sd">        :param name: (str) Option description.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasBaseOption.set_text"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.set_text">[docs]</a>    <span class="k">def</span> <span class="nf">set_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set a brief text to describe the option.</span>
 
 <span class="sd">        :param text: (str) Option description.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="n">text</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="n">text</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasBaseOption.set_description"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.set_description">[docs]</a>    <span class="k">def</span> <span class="nf">set_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set a long text to describe the option.</span>
 
 <span class="sd">        :param description: (str) Option description.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span>
 
-<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c"># ----------------------------------------------------------------------------</span>
 
-
+</div></div>
 <div class="viewcode-block" id="sppasOption"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasOption">[docs]</a><span class="k">class</span> <span class="nc">sppasOption</span><span class="p">(</span><span class="n">sppasBaseOption</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
@@ -293,7 +305,7 @@
 <span class="sd">    :summary:      Adds a key to a sppasBaseOption.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasOption.__init__"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasOption.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_key</span><span class="p">,</span> <span class="n">option_type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span> <span class="n">option_value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasOption.__init__"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasOption.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_key</span><span class="p">,</span> <span class="n">option_type</span><span class="o">=</span><span class="s">&quot;str&quot;</span><span class="p">,</span> <span class="n">option_value</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a sppasOption instance.</span>
 
 <span class="sd">        :param option_key: (any type) An identifier for that option.</span>
@@ -303,11 +315,11 @@
 <span class="sd">        :param option_value: (str) The value of the option.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">sppasBaseOption</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_type</span><span class="p">,</span> <span class="n">option_value</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">option_key</span></div>
+        <span class="n">sppasBaseOption</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_type</span><span class="p">,</span> <span class="n">option_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">option_key</span>
 
-    <span class="c1"># ----------------------------------------------------------------------------</span>
-
+    <span class="c"># ----------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasOption.get_key"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasOption.get_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the key of that option. &quot;&quot;&quot;</span>
 
@@ -317,25 +329,26 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -344,13 +357,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../structs.html" >structs</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

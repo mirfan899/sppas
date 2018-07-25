@@ -1,24 +1,34 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>plugins package &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>plugins package &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../index.html" />
     <link rel="next" title="resources package" href="resources.html" />
     <link rel="prev" title="calculus.stats package" href="calculus.stats.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -33,14 +43,14 @@
         <li class="right" >
           <a href="calculus.stats.html" title="calculus.stats package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">SPPAS 1.9.8 documentation</a> &#187;</li> 
+        <li><a href="../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <div class="section" id="plugins-package">
 <h1>plugins package<a class="headerlink" href="#plugins-package" title="Permalink to this headline">¶</a></h1>
@@ -66,23 +76,23 @@
 </table>
 <p>plugins is a free and open source Python library to access and manage
 external programs to plug into SPPAS.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a plugin manager (it will explore the installed plugins).</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># Create a plugin manager (it will explore the installed plugins).</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span> <span class="o">=</span> <span class="n">sppasPluginsManager</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Install a plugin</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Install a plugin</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plugin_id</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="n">plugin_zip_filename</span><span class="p">,</span> <span class="n">plugin_destination_folder_name</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get a plugin</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Get a plugin</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">get_plugin</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply a plugin on a list of files</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Apply a plugin on a list of files</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">message</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">run_plugin</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">,</span> <span class="p">[</span><span class="n">some_filename1</span><span class="p">,</span> <span class="n">some_filename2</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Delete an installed plugin</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Delete an installed plugin</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="class">
 <dt id="plugins.sppasPluginsManager">
-<em class="property">class </em><code class="descclassname">plugins.</code><code class="descname">sppasPluginsManager</code><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threading.Thread</span></code></p>
+<em class="property">class </em><tt class="descclassname">plugins.</tt><tt class="descname">sppasPluginsManager</tt><a class="headerlink" href="#plugins.sppasPluginsManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -103,13 +113,13 @@ external programs to plug into SPPAS.</p>
 </table>
 <dl class="method">
 <dt id="plugins.sppasPluginsManager.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginsManager.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Instantiate the sppasPluginsManager and load the current plugins.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginsManager.append">
-<code class="descname">append</code><span class="sig-paren">(</span><em>plugin_folder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.append" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">append</tt><big>(</big><em>plugin_folder</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginsManager.append" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append a plugin in the list of plugins.
 It is supposed that the given plugin folder name is a folder of the
 plugin directory.</p>
@@ -117,7 +127,7 @@ plugin directory.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_folder</strong> – (str) The folder name of the plugin.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_folder</strong> &#8211; (str) The folder name of the plugin.</td>
 </tr>
 </tbody>
 </table>
@@ -125,13 +135,13 @@ plugin directory.</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginsManager.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>plugin_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.delete" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">delete</tt><big>(</big><em>plugin_id</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginsManager.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete a plugin of the plugins directory.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_id</strong> – (str) Identifier of the plugin to delete.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_id</strong> &#8211; (str) Identifier of the plugin to delete.</td>
 </tr>
 </tbody>
 </table>
@@ -139,7 +149,7 @@ plugin directory.</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginsManager.get_plugin">
-<code class="descname">get_plugin</code><span class="sig-paren">(</span><em>plugin_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.get_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.get_plugin" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_plugin</tt><big>(</big><em>plugin_id</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginsManager.get_plugin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the sppasPluginParam from a plugin identifier.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -153,7 +163,7 @@ plugin directory.</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginsManager.get_plugin_ids">
-<code class="descname">get_plugin_ids</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.get_plugin_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.get_plugin_ids" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_plugin_ids</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginsManager.get_plugin_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the list of plugin identifiers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -167,15 +177,15 @@ plugin directory.</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginsManager.install">
-<code class="descname">install</code><span class="sig-paren">(</span><em>plugin_archive</em>, <em>plugin_folder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.install"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.install" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">install</tt><big>(</big><em>plugin_archive</em>, <em>plugin_folder</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginsManager.install" title="Permalink to this definition">¶</a></dt>
 <dd><p>Install a plugin into the plugin directory.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>plugin_archive</strong> – (str) File name of the plugin to be installed (ZIP).</li>
-<li><strong>plugin_folder</strong> – (str) Destination folder name of the plugin to be installed.</li>
+<li><strong>plugin_archive</strong> &#8211; (str) File name of the plugin to be installed (ZIP).</li>
+<li><strong>plugin_folder</strong> &#8211; (str) Destination folder name of the plugin to be installed.</li>
 </ul>
 </td>
 </tr>
@@ -185,7 +195,7 @@ plugin directory.</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginsManager.load">
-<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.load" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">load</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginsManager.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load all installed plugins in the SPPAS directory.</p>
 <p>A plugin is not loaded if:</p>
 <blockquote>
@@ -198,15 +208,15 @@ plugin directory.</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginsManager.run_plugin">
-<code class="descname">run_plugin</code><span class="sig-paren">(</span><em>plugin_id</em>, <em>file_names</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.run_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.run_plugin" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">run_plugin</tt><big>(</big><em>plugin_id</em>, <em>file_names</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginsManager.run_plugin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a given plugin on a list of files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>plugin_id</strong> – (str) Identifier of the plugin to apply.</li>
-<li><strong>file_names</strong> – (list) List of files on which the plugin has to be applied.</li>
+<li><strong>plugin_id</strong> &#8211; (str) Identifier of the plugin to apply.</li>
+<li><strong>file_names</strong> &#8211; (list) List of files on which the plugin has to be applied.</li>
 </ul>
 </td>
 </tr>
@@ -216,13 +226,13 @@ plugin directory.</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginsManager.set_progress">
-<code class="descname">set_progress</code><span class="sig-paren">(</span><em>progress</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.set_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginsManager.set_progress" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_progress</tt><big>(</big><em>progress</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginsManager.set_progress" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fix the progress system to be used while executing a plugin.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>progress</strong> – (TextProgress or ProcessProgressDialog)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>progress</strong> &#8211; (TextProgress or ProcessProgressDialog)</td>
 </tr>
 </tbody>
 </table>
@@ -232,8 +242,8 @@ plugin directory.</p>
 
 <dl class="class">
 <dt id="plugins.sppasPluginConfigParser">
-<em class="property">class </em><code class="descclassname">plugins.</code><code class="descname">sppasPluginConfigParser</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">plugins.</tt><tt class="descname">sppasPluginConfigParser</tt><big>(</big><em>filename=None</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginConfigParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -252,7 +262,7 @@ plugin directory.</p>
 </tr>
 </tbody>
 </table>
-<p>The required section “Configuration” includes an id, a name and a
+<p>The required section &#8220;Configuration&#8221; includes an id, a name and a
 description, as for example:</p>
 <blockquote>
 <div><div class="line-block">
@@ -263,7 +273,7 @@ description, as for example:</p>
 <div class="line">icon:  path (optional)</div>
 </div>
 </div></blockquote>
-<p>Then, a required section with the name “Command”:</p>
+<p>Then, a required section with the name &#8220;Command&#8221;:</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">[Command]</div>
@@ -272,7 +282,7 @@ description, as for example:</p>
 <div class="line">linux:   toto.bash</div>
 </div>
 </div></blockquote>
-<p>Finally, a set of sections with name starting by “Option” can be appended,
+<p>Finally, a set of sections with name starting by &#8220;Option&#8221; can be appended,
 as follow:</p>
 <blockquote>
 <div><div class="line-block">
@@ -283,7 +293,7 @@ as follow:</p>
 <div class="line">text:  Verbose mode</div>
 </div>
 </div></blockquote>
-<p>Some specific ‘id’ or ‘value’ of Option sections can be defined and will be
+<p>Some specific &#8216;id&#8217; or &#8216;value&#8217; of Option sections can be defined and will be
 interpreted differently:</p>
 <blockquote>
 <div><ul class="simple">
@@ -293,13 +303,13 @@ interpreted differently:</p>
 </div></blockquote>
 <dl class="method">
 <dt id="plugins.sppasPluginConfigParser.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>filename=None</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginConfigParser.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a parser.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (string) the file name of the plugin configuration.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (string) the file name of the plugin configuration.</td>
 </tr>
 </tbody>
 </table>
@@ -307,8 +317,8 @@ interpreted differently:</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginConfigParser.get_command">
-<code class="descname">get_command</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser.get_command" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the ‘Command’ section content.</p>
+<tt class="descname">get_command</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginConfigParser.get_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the &#8216;Command&#8217; section content.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -321,8 +331,8 @@ interpreted differently:</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginConfigParser.get_config">
-<code class="descname">get_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser.get_config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the ‘Configuration’ section content.</p>
+<tt class="descname">get_config</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginConfigParser.get_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the &#8216;Configuration&#8217; section content.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -335,9 +345,9 @@ interpreted differently:</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginConfigParser.get_options">
-<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser.get_options" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return all the ‘Option’ section contents.
-The section name is used as key. Values are of type “Option”.</p>
+<tt class="descname">get_options</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginConfigParser.get_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the &#8216;Option&#8217; section contents.
+The section name is used as key. Values are of type &#8220;Option&#8221;.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -350,14 +360,14 @@ The section name is used as key. Values are of type “Option”.</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginConfigParser.parse">
-<code class="descname">parse</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser.parse" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">parse</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginConfigParser.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse a configuration file.
 This will forget all previous configurations (if any).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (string) Configuration file name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (string) Configuration file name.</td>
 </tr>
 </tbody>
 </table>
@@ -365,20 +375,20 @@ This will forget all previous configurations (if any).</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginConfigParser.save">
-<code class="descname">save</code><span class="sig-paren">(</span><em>backup=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser.save" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save</tt><big>(</big><em>backup=True</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginConfigParser.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the configuration file.
 Copy the old one into a backup file.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginConfigParser.set_options">
-<code class="descname">set_options</code><span class="sig-paren">(</span><em>options</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.set_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginConfigParser.set_options" title="Permalink to this definition">¶</a></dt>
-<dd><p>Re-set all the ‘Option’ section.</p>
+<tt class="descname">set_options</tt><big>(</big><em>options</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginConfigParser.set_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-set all the &#8216;Option&#8217; section.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>options</strong> – (ordered dictionary) with key=section name, and         value is of type “Option” (with at least a “key”).</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>options</strong> &#8211; (ordered dictionary) with key=section name, and         value is of type &#8220;Option&#8221; (with at least a &#8220;key&#8221;).</td>
 </tr>
 </tbody>
 </table>
@@ -388,8 +398,8 @@ Copy the old one into a backup file.</p>
 
 <dl class="class">
 <dt id="plugins.sppasPluginParam">
-<em class="property">class </em><code class="descclassname">plugins.</code><code class="descname">sppasPluginParam</code><span class="sig-paren">(</span><em>directory</em>, <em>config_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">plugins.</tt><tt class="descname">sppasPluginParam</tt><big>(</big><em>directory</em>, <em>config_file</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -410,15 +420,15 @@ Copy the old one into a backup file.</p>
 </table>
 <dl class="method">
 <dt id="plugins.sppasPluginParam.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>directory</em>, <em>config_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>directory</em>, <em>config_file</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginParam.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a new sppasPluginParam instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>directory</strong> – (str) the directory where to find the plugin</li>
-<li><strong>config_file</strong> – (str) the file name of the plugin configuration</li>
+<li><strong>directory</strong> &#8211; (str) the directory where to find the plugin</li>
+<li><strong>config_file</strong> &#8211; (str) the file name of the plugin configuration</li>
 </ul>
 </td>
 </tr>
@@ -428,74 +438,74 @@ Copy the old one into a backup file.</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginParam.get_command">
-<code class="descname">get_command</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_command" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_command</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginParam.get_command" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the appropriate command to execute the plugin.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginParam.get_descr">
-<code class="descname">get_descr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_descr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_descr" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_descr</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginParam.get_descr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the short description of the plugin.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginParam.get_directory">
-<code class="descname">get_directory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_directory" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_directory</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginParam.get_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the directory name of the plugin.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginParam.get_icon">
-<code class="descname">get_icon</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_icon" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_icon</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginParam.get_icon" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the icon file name of the plugin.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginParam.get_key">
-<code class="descname">get_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_key" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_key</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginParam.get_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the identifier of the plugin.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginParam.get_name">
-<code class="descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_name" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_name</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginParam.get_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the name of the plugin.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginParam.get_option_from_key">
-<code class="descname">get_option_from_key</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_option_from_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_option_from_key" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_option_from_key</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginParam.get_option_from_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get an option from its key.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginParam.get_options">
-<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.get_options" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_options</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginParam.get_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all the options.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginParam.parse">
-<code class="descname">parse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.parse" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">parse</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginParam.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the configuration file of the plugin.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginParam.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.reset" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginParam.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset all members to their default value.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginParam.save">
-<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.save" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginParam.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the configuration file.
 Copy the old one into a backup file.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginParam.set_options">
-<code class="descname">set_options</code><span class="sig-paren">(</span><em>options_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.set_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginParam.set_options" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_options</tt><big>(</big><em>options_dict</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginParam.set_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fix the options.</p>
 </dd></dl>
 
@@ -503,8 +513,8 @@ Copy the old one into a backup file.</p>
 
 <dl class="class">
 <dt id="plugins.sppasPluginProcess">
-<em class="property">class </em><code class="descclassname">plugins.</code><code class="descname">sppasPluginProcess</code><span class="sig-paren">(</span><em>plugin_param</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginProcess" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">plugins.</tt><tt class="descname">sppasPluginProcess</tt><big>(</big><em>plugin_param</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -525,13 +535,13 @@ Copy the old one into a backup file.</p>
 </table>
 <dl class="method">
 <dt id="plugins.sppasPluginProcess.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>plugin_param</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginProcess.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>plugin_param</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginProcess.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a new sppasPluginProcess instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_param</strong> – (sppasPluginParam)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_param</strong> &#8211; (sppasPluginParam)</td>
 </tr>
 </tbody>
 </table>
@@ -539,25 +549,25 @@ Copy the old one into a backup file.</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginProcess.communicate">
-<code class="descname">communicate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.communicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginProcess.communicate" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">communicate</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginProcess.communicate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait for the process and get output messages (if any) then return it.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginProcess.is_running">
-<code class="descname">is_running</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.is_running"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginProcess.is_running" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">is_running</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginProcess.is_running" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if the process is running.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.sppasPluginProcess.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginProcess.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute the plugin in batch mode (ie don’t wait it to be finished).</p>
+<tt class="descname">run</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#plugins.sppasPluginProcess.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the plugin in batch mode (ie don&#8217;t wait it to be finished).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (str) The file name of the file on which to apply the plugin</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (str) The file name of the file on which to apply the plugin</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Process output message</td>
 </tr>
@@ -567,7 +577,7 @@ Copy the old one into a backup file.</p>
 
 <dl class="method">
 <dt id="plugins.sppasPluginProcess.stop">
-<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.sppasPluginProcess.stop" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">stop</tt><big>(</big><big>)</big><a class="headerlink" href="#plugins.sppasPluginProcess.stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Terminate the process if it is running.</p>
 </dd></dl>
 
@@ -604,8 +614,8 @@ Whitespace around the separator is ignored when the file is parsed.</p>
 </div></blockquote>
 <dl class="class">
 <dt id="plugins.cfgparser.sppasPluginConfigParser">
-<em class="property">class </em><code class="descclassname">plugins.cfgparser.</code><code class="descname">sppasPluginConfigParser</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">plugins.cfgparser.</tt><tt class="descname">sppasPluginConfigParser</tt><big>(</big><em>filename=None</em><big>)</big><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -624,7 +634,7 @@ Whitespace around the separator is ignored when the file is parsed.</p>
 </tr>
 </tbody>
 </table>
-<p>The required section “Configuration” includes an id, a name and a
+<p>The required section &#8220;Configuration&#8221; includes an id, a name and a
 description, as for example:</p>
 <blockquote>
 <div><div class="line-block">
@@ -635,7 +645,7 @@ description, as for example:</p>
 <div class="line">icon:  path (optional)</div>
 </div>
 </div></blockquote>
-<p>Then, a required section with the name “Command”:</p>
+<p>Then, a required section with the name &#8220;Command&#8221;:</p>
 <blockquote>
 <div><div class="line-block">
 <div class="line">[Command]</div>
@@ -644,7 +654,7 @@ description, as for example:</p>
 <div class="line">linux:   toto.bash</div>
 </div>
 </div></blockquote>
-<p>Finally, a set of sections with name starting by “Option” can be appended,
+<p>Finally, a set of sections with name starting by &#8220;Option&#8221; can be appended,
 as follow:</p>
 <blockquote>
 <div><div class="line-block">
@@ -655,7 +665,7 @@ as follow:</p>
 <div class="line">text:  Verbose mode</div>
 </div>
 </div></blockquote>
-<p>Some specific ‘id’ or ‘value’ of Option sections can be defined and will be
+<p>Some specific &#8216;id&#8217; or &#8216;value&#8217; of Option sections can be defined and will be
 interpreted differently:</p>
 <blockquote>
 <div><ul class="simple">
@@ -665,13 +675,13 @@ interpreted differently:</p>
 </div></blockquote>
 <dl class="method">
 <dt id="plugins.cfgparser.sppasPluginConfigParser.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>filename=None</em><big>)</big><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a parser.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (string) the file name of the plugin configuration.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (string) the file name of the plugin configuration.</td>
 </tr>
 </tbody>
 </table>
@@ -679,8 +689,8 @@ interpreted differently:</p>
 
 <dl class="method">
 <dt id="plugins.cfgparser.sppasPluginConfigParser.get_command">
-<code class="descname">get_command</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.get_command" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the ‘Command’ section content.</p>
+<tt class="descname">get_command</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.get_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the &#8216;Command&#8217; section content.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -693,8 +703,8 @@ interpreted differently:</p>
 
 <dl class="method">
 <dt id="plugins.cfgparser.sppasPluginConfigParser.get_config">
-<code class="descname">get_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.get_config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the ‘Configuration’ section content.</p>
+<tt class="descname">get_config</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.get_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the &#8216;Configuration&#8217; section content.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -707,9 +717,9 @@ interpreted differently:</p>
 
 <dl class="method">
 <dt id="plugins.cfgparser.sppasPluginConfigParser.get_options">
-<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.get_options" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return all the ‘Option’ section contents.
-The section name is used as key. Values are of type “Option”.</p>
+<tt class="descname">get_options</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.get_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.get_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all the &#8216;Option&#8217; section contents.
+The section name is used as key. Values are of type &#8220;Option&#8221;.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -722,14 +732,14 @@ The section name is used as key. Values are of type “Option”.</p>
 
 <dl class="method">
 <dt id="plugins.cfgparser.sppasPluginConfigParser.parse">
-<code class="descname">parse</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.parse" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">parse</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse a configuration file.
 This will forget all previous configurations (if any).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (string) Configuration file name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (string) Configuration file name.</td>
 </tr>
 </tbody>
 </table>
@@ -737,20 +747,20 @@ This will forget all previous configurations (if any).</p>
 
 <dl class="method">
 <dt id="plugins.cfgparser.sppasPluginConfigParser.save">
-<code class="descname">save</code><span class="sig-paren">(</span><em>backup=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.save" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save</tt><big>(</big><em>backup=True</em><big>)</big><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the configuration file.
 Copy the old one into a backup file.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.cfgparser.sppasPluginConfigParser.set_options">
-<code class="descname">set_options</code><span class="sig-paren">(</span><em>options</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.set_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.set_options" title="Permalink to this definition">¶</a></dt>
-<dd><p>Re-set all the ‘Option’ section.</p>
+<tt class="descname">set_options</tt><big>(</big><em>options</em><big>)</big><a class="reference internal" href="../_modules/plugins/cfgparser.html#sppasPluginConfigParser.set_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.cfgparser.sppasPluginConfigParser.set_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-set all the &#8216;Option&#8217; section.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>options</strong> – (ordered dictionary) with key=section name, and         value is of type “Option” (with at least a “key”).</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>options</strong> &#8211; (ordered dictionary) with key=section name, and         value is of type &#8220;Option&#8221; (with at least a &#8220;key&#8221;).</td>
 </tr>
 </tbody>
 </table>
@@ -768,8 +778,8 @@ Copy the old one into a backup file.</p>
 delete, etc.</p>
 <dl class="class">
 <dt id="plugins.manager.sppasPluginsManager">
-<em class="property">class </em><code class="descclassname">plugins.manager.</code><code class="descname">sppasPluginsManager</code><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threading.Thread</span></code></p>
+<em class="property">class </em><tt class="descclassname">plugins.manager.</tt><tt class="descname">sppasPluginsManager</tt><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -790,13 +800,13 @@ delete, etc.</p>
 </table>
 <dl class="method">
 <dt id="plugins.manager.sppasPluginsManager.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Instantiate the sppasPluginsManager and load the current plugins.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.manager.sppasPluginsManager.append">
-<code class="descname">append</code><span class="sig-paren">(</span><em>plugin_folder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.append" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">append</tt><big>(</big><em>plugin_folder</em><big>)</big><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.append" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append a plugin in the list of plugins.
 It is supposed that the given plugin folder name is a folder of the
 plugin directory.</p>
@@ -804,7 +814,7 @@ plugin directory.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_folder</strong> – (str) The folder name of the plugin.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_folder</strong> &#8211; (str) The folder name of the plugin.</td>
 </tr>
 </tbody>
 </table>
@@ -812,13 +822,13 @@ plugin directory.</p>
 
 <dl class="method">
 <dt id="plugins.manager.sppasPluginsManager.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>plugin_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.delete" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">delete</tt><big>(</big><em>plugin_id</em><big>)</big><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete a plugin of the plugins directory.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_id</strong> – (str) Identifier of the plugin to delete.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_id</strong> &#8211; (str) Identifier of the plugin to delete.</td>
 </tr>
 </tbody>
 </table>
@@ -826,7 +836,7 @@ plugin directory.</p>
 
 <dl class="method">
 <dt id="plugins.manager.sppasPluginsManager.get_plugin">
-<code class="descname">get_plugin</code><span class="sig-paren">(</span><em>plugin_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.get_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.get_plugin" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_plugin</tt><big>(</big><em>plugin_id</em><big>)</big><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.get_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.get_plugin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the sppasPluginParam from a plugin identifier.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -840,7 +850,7 @@ plugin directory.</p>
 
 <dl class="method">
 <dt id="plugins.manager.sppasPluginsManager.get_plugin_ids">
-<code class="descname">get_plugin_ids</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.get_plugin_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.get_plugin_ids" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_plugin_ids</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.get_plugin_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.get_plugin_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the list of plugin identifiers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -854,15 +864,15 @@ plugin directory.</p>
 
 <dl class="method">
 <dt id="plugins.manager.sppasPluginsManager.install">
-<code class="descname">install</code><span class="sig-paren">(</span><em>plugin_archive</em>, <em>plugin_folder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.install"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.install" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">install</tt><big>(</big><em>plugin_archive</em>, <em>plugin_folder</em><big>)</big><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.install"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.install" title="Permalink to this definition">¶</a></dt>
 <dd><p>Install a plugin into the plugin directory.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>plugin_archive</strong> – (str) File name of the plugin to be installed (ZIP).</li>
-<li><strong>plugin_folder</strong> – (str) Destination folder name of the plugin to be installed.</li>
+<li><strong>plugin_archive</strong> &#8211; (str) File name of the plugin to be installed (ZIP).</li>
+<li><strong>plugin_folder</strong> &#8211; (str) Destination folder name of the plugin to be installed.</li>
 </ul>
 </td>
 </tr>
@@ -872,7 +882,7 @@ plugin directory.</p>
 
 <dl class="method">
 <dt id="plugins.manager.sppasPluginsManager.load">
-<code class="descname">load</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.load" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">load</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load all installed plugins in the SPPAS directory.</p>
 <p>A plugin is not loaded if:</p>
 <blockquote>
@@ -885,15 +895,15 @@ plugin directory.</p>
 
 <dl class="method">
 <dt id="plugins.manager.sppasPluginsManager.run_plugin">
-<code class="descname">run_plugin</code><span class="sig-paren">(</span><em>plugin_id</em>, <em>file_names</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.run_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.run_plugin" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">run_plugin</tt><big>(</big><em>plugin_id</em>, <em>file_names</em><big>)</big><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.run_plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.run_plugin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a given plugin on a list of files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>plugin_id</strong> – (str) Identifier of the plugin to apply.</li>
-<li><strong>file_names</strong> – (list) List of files on which the plugin has to be applied.</li>
+<li><strong>plugin_id</strong> &#8211; (str) Identifier of the plugin to apply.</li>
+<li><strong>file_names</strong> &#8211; (list) List of files on which the plugin has to be applied.</li>
 </ul>
 </td>
 </tr>
@@ -903,13 +913,13 @@ plugin directory.</p>
 
 <dl class="method">
 <dt id="plugins.manager.sppasPluginsManager.set_progress">
-<code class="descname">set_progress</code><span class="sig-paren">(</span><em>progress</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.set_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.set_progress" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_progress</tt><big>(</big><em>progress</em><big>)</big><a class="reference internal" href="../_modules/plugins/manager.html#sppasPluginsManager.set_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.manager.sppasPluginsManager.set_progress" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fix the progress system to be used while executing a plugin.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>progress</strong> – (TextProgress or ProcessProgressDialog)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>progress</strong> &#8211; (TextProgress or ProcessProgressDialog)</td>
 </tr>
 </tbody>
 </table>
@@ -936,8 +946,8 @@ name:</p>
 </div></blockquote>
 <dl class="class">
 <dt id="plugins.param.sppasPluginParam">
-<em class="property">class </em><code class="descclassname">plugins.param.</code><code class="descname">sppasPluginParam</code><span class="sig-paren">(</span><em>directory</em>, <em>config_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">plugins.param.</tt><tt class="descname">sppasPluginParam</tt><big>(</big><em>directory</em>, <em>config_file</em><big>)</big><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -958,15 +968,15 @@ name:</p>
 </table>
 <dl class="method">
 <dt id="plugins.param.sppasPluginParam.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>directory</em>, <em>config_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>directory</em>, <em>config_file</em><big>)</big><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a new sppasPluginParam instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>directory</strong> – (str) the directory where to find the plugin</li>
-<li><strong>config_file</strong> – (str) the file name of the plugin configuration</li>
+<li><strong>directory</strong> &#8211; (str) the directory where to find the plugin</li>
+<li><strong>config_file</strong> &#8211; (str) the file name of the plugin configuration</li>
 </ul>
 </td>
 </tr>
@@ -976,74 +986,74 @@ name:</p>
 
 <dl class="method">
 <dt id="plugins.param.sppasPluginParam.get_command">
-<code class="descname">get_command</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_command" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_command</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_command" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the appropriate command to execute the plugin.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.param.sppasPluginParam.get_descr">
-<code class="descname">get_descr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_descr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_descr" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_descr</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_descr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_descr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the short description of the plugin.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.param.sppasPluginParam.get_directory">
-<code class="descname">get_directory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_directory" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_directory</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the directory name of the plugin.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.param.sppasPluginParam.get_icon">
-<code class="descname">get_icon</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_icon" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_icon</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_icon" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the icon file name of the plugin.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.param.sppasPluginParam.get_key">
-<code class="descname">get_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_key" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_key</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the identifier of the plugin.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.param.sppasPluginParam.get_name">
-<code class="descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_name" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_name</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the name of the plugin.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.param.sppasPluginParam.get_option_from_key">
-<code class="descname">get_option_from_key</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_option_from_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_option_from_key" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_option_from_key</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_option_from_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_option_from_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get an option from its key.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.param.sppasPluginParam.get_options">
-<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_options" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_options</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.get_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.get_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all the options.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.param.sppasPluginParam.parse">
-<code class="descname">parse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.parse" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">parse</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse the configuration file of the plugin.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.param.sppasPluginParam.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.reset" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset all members to their default value.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.param.sppasPluginParam.save">
-<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.save" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the configuration file.
 Copy the old one into a backup file.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.param.sppasPluginParam.set_options">
-<code class="descname">set_options</code><span class="sig-paren">(</span><em>options_dict</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.set_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.set_options" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_options</tt><big>(</big><em>options_dict</em><big>)</big><a class="reference internal" href="../_modules/plugins/param.html#sppasPluginParam.set_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.param.sppasPluginParam.set_options" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fix the options.</p>
 </dd></dl>
 
@@ -1058,8 +1068,8 @@ Copy the old one into a backup file.</p>
 <p>Exceptions for plugins package.</p>
 <dl class="exception">
 <dt id="plugins.pluginsexc.CommandExecError">
-<em class="property">exception </em><code class="descclassname">plugins.pluginsexc.</code><code class="descname">CommandExecError</code><span class="sig-paren">(</span><em>command_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#CommandExecError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.CommandExecError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.OSError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">plugins.pluginsexc.</tt><tt class="descname">CommandExecError</tt><big>(</big><em>command_name</em><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#CommandExecError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.CommandExecError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.OSError</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1070,16 +1080,15 @@ Copy the old one into a backup file.</p>
 </table>
 <dl class="method">
 <dt id="plugins.pluginsexc.CommandExecError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>command_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#CommandExecError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.CommandExecError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><em>command_name</em><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#CommandExecError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.CommandExecError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="plugins.pluginsexc.CommandSystemError">
-<em class="property">exception </em><code class="descclassname">plugins.pluginsexc.</code><code class="descname">CommandSystemError</code><span class="sig-paren">(</span><em>current_system</em>, <em>supported_systems=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#CommandSystemError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.CommandSystemError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.OSError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">plugins.pluginsexc.</tt><tt class="descname">CommandSystemError</tt><big>(</big><em>current_system</em>, <em>supported_systems=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#CommandSystemError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.CommandSystemError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.OSError</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1090,16 +1099,15 @@ Copy the old one into a backup file.</p>
 </table>
 <dl class="method">
 <dt id="plugins.pluginsexc.CommandSystemError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>current_system</em>, <em>supported_systems=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#CommandSystemError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.CommandSystemError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><em>current_system</em>, <em>supported_systems=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#CommandSystemError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.CommandSystemError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="plugins.pluginsexc.OptionKeyError">
-<em class="property">exception </em><code class="descclassname">plugins.pluginsexc.</code><code class="descname">OptionKeyError</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#OptionKeyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.OptionKeyError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.KeyError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">plugins.pluginsexc.</tt><tt class="descname">OptionKeyError</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#OptionKeyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.OptionKeyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.KeyError</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1110,16 +1118,15 @@ Copy the old one into a backup file.</p>
 </table>
 <dl class="method">
 <dt id="plugins.pluginsexc.OptionKeyError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#OptionKeyError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.OptionKeyError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#OptionKeyError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.OptionKeyError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="plugins.pluginsexc.PluginArchiveFileError">
-<em class="property">exception </em><code class="descclassname">plugins.pluginsexc.</code><code class="descname">PluginArchiveFileError</code><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginArchiveFileError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginArchiveFileError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></p>
+<em class="property">exception </em><tt class="descclassname">plugins.pluginsexc.</tt><tt class="descname">PluginArchiveFileError</tt><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginArchiveFileError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginArchiveFileError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1130,16 +1137,15 @@ Copy the old one into a backup file.</p>
 </table>
 <dl class="method">
 <dt id="plugins.pluginsexc.PluginArchiveFileError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginArchiveFileError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginArchiveFileError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginArchiveFileError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginArchiveFileError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="plugins.pluginsexc.PluginArchiveIOError">
-<em class="property">exception </em><code class="descclassname">plugins.pluginsexc.</code><code class="descname">PluginArchiveIOError</code><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginArchiveIOError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginArchiveIOError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.IOError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">plugins.pluginsexc.</tt><tt class="descname">PluginArchiveIOError</tt><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginArchiveIOError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginArchiveIOError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.IOError</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1150,16 +1156,15 @@ Copy the old one into a backup file.</p>
 </table>
 <dl class="method">
 <dt id="plugins.pluginsexc.PluginArchiveIOError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginArchiveIOError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginArchiveIOError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginArchiveIOError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginArchiveIOError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="plugins.pluginsexc.PluginConfigFileError">
-<em class="property">exception </em><code class="descclassname">plugins.pluginsexc.</code><code class="descname">PluginConfigFileError</code><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginConfigFileError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginConfigFileError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.IOError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">plugins.pluginsexc.</tt><tt class="descname">PluginConfigFileError</tt><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginConfigFileError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginConfigFileError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.IOError</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1170,16 +1175,15 @@ Copy the old one into a backup file.</p>
 </table>
 <dl class="method">
 <dt id="plugins.pluginsexc.PluginConfigFileError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginConfigFileError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginConfigFileError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginConfigFileError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginConfigFileError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="plugins.pluginsexc.PluginDuplicateError">
-<em class="property">exception </em><code class="descclassname">plugins.pluginsexc.</code><code class="descname">PluginDuplicateError</code><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginDuplicateError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginDuplicateError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.IOError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">plugins.pluginsexc.</tt><tt class="descname">PluginDuplicateError</tt><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginDuplicateError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginDuplicateError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.IOError</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1190,16 +1194,15 @@ Copy the old one into a backup file.</p>
 </table>
 <dl class="method">
 <dt id="plugins.pluginsexc.PluginDuplicateError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginDuplicateError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginDuplicateError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginDuplicateError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginDuplicateError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="plugins.pluginsexc.PluginFolderError">
-<em class="property">exception </em><code class="descclassname">plugins.pluginsexc.</code><code class="descname">PluginFolderError</code><span class="sig-paren">(</span><em>plugin_folder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginFolderError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginFolderError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.IOError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">plugins.pluginsexc.</tt><tt class="descname">PluginFolderError</tt><big>(</big><em>plugin_folder</em><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginFolderError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginFolderError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.IOError</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1210,16 +1213,15 @@ Copy the old one into a backup file.</p>
 </table>
 <dl class="method">
 <dt id="plugins.pluginsexc.PluginFolderError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>plugin_folder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginFolderError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginFolderError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><em>plugin_folder</em><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginFolderError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginFolderError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="plugins.pluginsexc.PluginIdError">
-<em class="property">exception </em><code class="descclassname">plugins.pluginsexc.</code><code class="descname">PluginIdError</code><span class="sig-paren">(</span><em>plugin_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginIdError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginIdError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.ValueError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">plugins.pluginsexc.</tt><tt class="descname">PluginIdError</tt><big>(</big><em>plugin_id</em><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginIdError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginIdError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.ValueError</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1230,16 +1232,15 @@ Copy the old one into a backup file.</p>
 </table>
 <dl class="method">
 <dt id="plugins.pluginsexc.PluginIdError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>plugin_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginIdError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginIdError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><em>plugin_id</em><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginIdError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginIdError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="plugins.pluginsexc.PluginKeyError">
-<em class="property">exception </em><code class="descclassname">plugins.pluginsexc.</code><code class="descname">PluginKeyError</code><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginKeyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginKeyError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.KeyError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">plugins.pluginsexc.</tt><tt class="descname">PluginKeyError</tt><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginKeyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginKeyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.KeyError</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1250,16 +1251,15 @@ Copy the old one into a backup file.</p>
 </table>
 <dl class="method">
 <dt id="plugins.pluginsexc.PluginKeyError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginKeyError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginKeyError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginKeyError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginKeyError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="plugins.pluginsexc.PluginOptionConfigFileError">
-<em class="property">exception </em><code class="descclassname">plugins.pluginsexc.</code><code class="descname">PluginOptionConfigFileError</code><span class="sig-paren">(</span><em>section_name</em>, <em>option_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginOptionConfigFileError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginOptionConfigFileError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.ValueError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">plugins.pluginsexc.</tt><tt class="descname">PluginOptionConfigFileError</tt><big>(</big><em>section_name</em>, <em>option_name</em><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginOptionConfigFileError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginOptionConfigFileError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.ValueError</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1270,16 +1270,15 @@ Copy the old one into a backup file.</p>
 </table>
 <dl class="method">
 <dt id="plugins.pluginsexc.PluginOptionConfigFileError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>section_name</em>, <em>option_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginOptionConfigFileError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginOptionConfigFileError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><em>section_name</em>, <em>option_name</em><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginOptionConfigFileError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginOptionConfigFileError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="plugins.pluginsexc.PluginSectionConfigFileError">
-<em class="property">exception </em><code class="descclassname">plugins.pluginsexc.</code><code class="descname">PluginSectionConfigFileError</code><span class="sig-paren">(</span><em>section_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginSectionConfigFileError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginSectionConfigFileError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.ValueError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">plugins.pluginsexc.</tt><tt class="descname">PluginSectionConfigFileError</tt><big>(</big><em>section_name</em><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginSectionConfigFileError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginSectionConfigFileError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.ValueError</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1290,9 +1289,8 @@ Copy the old one into a backup file.</p>
 </table>
 <dl class="method">
 <dt id="plugins.pluginsexc.PluginSectionConfigFileError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>section_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginSectionConfigFileError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginSectionConfigFileError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><em>section_name</em><big>)</big><a class="reference internal" href="../_modules/plugins/pluginsexc.html#PluginSectionConfigFileError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.pluginsexc.PluginSectionConfigFileError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1306,8 +1304,8 @@ Copy the old one into a backup file.</p>
 This is currently restricted to one file only.</p>
 <dl class="class">
 <dt id="plugins.process.sppasPluginProcess">
-<em class="property">class </em><code class="descclassname">plugins.process.</code><code class="descname">sppasPluginProcess</code><span class="sig-paren">(</span><em>plugin_param</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">plugins.process.</tt><tt class="descname">sppasPluginProcess</tt><big>(</big><em>plugin_param</em><big>)</big><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1328,13 +1326,13 @@ This is currently restricted to one file only.</p>
 </table>
 <dl class="method">
 <dt id="plugins.process.sppasPluginProcess.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>plugin_param</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>plugin_param</em><big>)</big><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a new sppasPluginProcess instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_param</strong> – (sppasPluginParam)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_param</strong> &#8211; (sppasPluginParam)</td>
 </tr>
 </tbody>
 </table>
@@ -1342,25 +1340,25 @@ This is currently restricted to one file only.</p>
 
 <dl class="method">
 <dt id="plugins.process.sppasPluginProcess.communicate">
-<code class="descname">communicate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.communicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.communicate" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">communicate</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.communicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.communicate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wait for the process and get output messages (if any) then return it.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.process.sppasPluginProcess.is_running">
-<code class="descname">is_running</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.is_running"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.is_running" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">is_running</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.is_running"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.is_running" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if the process is running.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="plugins.process.sppasPluginProcess.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute the plugin in batch mode (ie don’t wait it to be finished).</p>
+<tt class="descname">run</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the plugin in batch mode (ie don&#8217;t wait it to be finished).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (str) The file name of the file on which to apply the plugin</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (str) The file name of the file on which to apply the plugin</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Process output message</td>
 </tr>
@@ -1370,7 +1368,7 @@ This is currently restricted to one file only.</p>
 
 <dl class="method">
 <dt id="plugins.process.sppasPluginProcess.stop">
-<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.stop" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">stop</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/plugins/process.html#sppasPluginProcess.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plugins.process.sppasPluginProcess.stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Terminate the process if it is running.</p>
 </dd></dl>
 
@@ -1384,7 +1382,7 @@ This is currently restricted to one file only.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
@@ -1424,30 +1422,29 @@ This is currently restricted to one file only.</p>
   <h4>Next topic</h4>
   <p class="topless"><a href="resources.html"
                         title="next chapter">resources package</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/rst/plugins.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/rst/plugins.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -1462,12 +1459,12 @@ This is currently restricted to one file only.</p>
         <li class="right" >
           <a href="calculus.stats.html" title="calculus.stats package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">SPPAS 1.9.8 documentation</a> &#187;</li> 
+        <li><a href="../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

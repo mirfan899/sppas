@@ -1,22 +1,33 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>anndata.metadata &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>anndata.metadata &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -25,18 +36,18 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <h1>Source code for anndata.metadata</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -71,13 +82,13 @@
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 
 <span class="kn">import</span> <span class="nn">sppas</span>
-<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="k">import</span> <span class="n">sppasUnicode</span>
-<span class="kn">from</span> <span class="nn">sppas.src.utils.fileutils</span> <span class="k">import</span> <span class="n">sppasGUID</span>
+<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="kn">import</span> <span class="n">sppasUnicode</span>
+<span class="kn">from</span> <span class="nn">sppas.src.utils.fileutils</span> <span class="kn">import</span> <span class="n">sppasGUID</span>
 
-<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c"># ---------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasMetaData"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData">[docs]</a><span class="k">class</span> <span class="nc">sppasMetaData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -97,12 +108,12 @@
 <span class="sd">        Add a GUID in the dictionary of metadata, with key &quot;id&quot;.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Dictionary with key and value</span>
+        <span class="c"># Dictionary with key and value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sppasGUID</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sppasGUID</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasMetaData.is_meta_key"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.is_meta_key">[docs]</a>    <span class="k">def</span> <span class="nf">is_meta_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check if an entry is a key in the list of metadata.</span>
 
@@ -110,11 +121,11 @@
 <span class="sd">        :returns: (Boolean)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span></div>
+        <span class="k">return</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasMetaData.get_meta"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.get_meta">[docs]</a>    <span class="k">def</span> <span class="nf">get_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasMetaData.get_meta"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.get_meta">[docs]</a>    <span class="k">def</span> <span class="nf">get_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the value of the given key.</span>
 <span class="sd">        Return an empty string if the given entry if not a key of metadata.</span>
 
@@ -123,17 +134,17 @@
 <span class="sd">        :returns: (str)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasMetaData.get_meta_keys"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.get_meta_keys">[docs]</a>    <span class="k">def</span> <span class="nf">get_meta_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the list of metadata keys. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasMetaData.set_meta"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.set_meta">[docs]</a>    <span class="k">def</span> <span class="nf">set_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set or update a metadata.</span>
 
@@ -149,10 +160,10 @@
         <span class="n">su</span> <span class="o">=</span> <span class="n">sppasUnicode</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">to_strip</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasMetaData.pop_meta"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.pop_meta">[docs]</a>    <span class="k">def</span> <span class="nf">pop_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Remove a metadata from its key.</span>
 
@@ -160,75 +171,75 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="p">:</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Add default metadata</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Add default metadata</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasMetaData.add_license_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.add_license_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_license_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add metadata about the license applied to the object (GPLv3). &quot;&quot;&quot;</span>
 
-        <span class="c1"># Elan</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;file_license_text_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;GNU GPL V3&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;file_license_url_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;https://www.gnu.org/licenses/gpl-3.0.en.html&#39;</span><span class="p">)</span></div>
+        <span class="c"># Elan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&#39;file_license_text_</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">idx</span><span class="p">,</span> <span class="s">&#39;GNU GPL V3&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&#39;file_license_url_</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">idx</span><span class="p">,</span> <span class="s">&#39;https://www.gnu.org/licenses/gpl-3.0.en.html&#39;</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasMetaData.add_software_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.add_software_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_software_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add metadata about SPPAS software. &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;software_name&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;software_version&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;software_url&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">__url__</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;software_author&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">__author__</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;software_contact&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">__contact__</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;software_copyright&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">__copyright__</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&#39;software_name&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&#39;software_version&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&#39;software_url&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">__url__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&#39;software_author&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">__author__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&#39;software_contact&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">__contact__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&#39;software_copyright&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">__copyright__</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasMetaData.add_language_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.add_language_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_language_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add metadata about the language (und). &quot;&quot;&quot;</span>
 
-        <span class="c1"># Elan</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;language_iso&#39;</span><span class="p">,</span> <span class="s2">&quot;iso639-3&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;language_code_0&#39;</span><span class="p">,</span> <span class="s2">&quot;und&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;language_name_0&#39;</span><span class="p">,</span> <span class="s2">&quot;Undetermined&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;language_url_0&#39;</span><span class="p">,</span> <span class="s2">&quot;https://iso639-3.sil.org/code/und&quot;</span><span class="p">)</span></div>
+        <span class="c"># Elan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&#39;language_iso&#39;</span><span class="p">,</span> <span class="s">&quot;iso639-3&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&#39;language_code_0&#39;</span><span class="p">,</span> <span class="s">&quot;und&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&#39;language_name_0&#39;</span><span class="p">,</span> <span class="s">&quot;Undetermined&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&#39;language_url_0&#39;</span><span class="p">,</span> <span class="s">&quot;https://iso639-3.sil.org/code/und&quot;</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasMetaData.add_project_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.add_project_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_project_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add metadata about the project this object is included-in. &quot;&quot;&quot;</span>
 
-        <span class="c1"># annotation pro</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;project_description&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;project_corpus_owner&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;project_corpus_type&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;project_license&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;project_environment&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;project_collection&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;project_title&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;project_noises&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+        <span class="c"># annotation pro</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;project_description&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;project_corpus_owner&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;project_corpus_type&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;project_license&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;project_environment&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;project_collection&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;project_title&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;project_noises&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasMetaData.add_annotator_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.add_annotator_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_annotator_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">version_date</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasMetaData.add_annotator_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.add_annotator_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_annotator_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">version_date</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add metadata about an annotator. &quot;&quot;&quot;</span>
 
-        <span class="c1"># subtitle, transcriber, elan</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;annotator_name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="c"># subtitle, transcriber, elan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;annotator_name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-        <span class="c1"># transcriber</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;annotator_version&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+        <span class="c"># transcriber</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;annotator_version&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
 
-        <span class="c1"># transcriber</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;annotator_version_date&quot;</span><span class="p">,</span> <span class="n">version_date</span><span class="p">)</span></div></div>
-
-
-<span class="c1"># ---------------------------------------------------------------------------</span>
+        <span class="c"># transcriber</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;annotator_version_date&quot;</span><span class="p">,</span> <span class="n">version_date</span><span class="p">)</span>
 
 
+<span class="c"># ---------------------------------------------------------------------------</span>
+
+</div></div>
 <div class="viewcode-block" id="sppasDefaultMeta"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasDefaultMeta">[docs]</a><span class="k">class</span> <span class="nc">sppasDefaultMeta</span><span class="p">(</span><span class="n">sppasMetaData</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
@@ -248,100 +259,101 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasDefaultMeta.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasDefaultMeta.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Instantiate a default set of meta data. &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">sppasDefaultMeta</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasDefaultMeta</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDefaultMeta.speaker"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasDefaultMeta.speaker">[docs]</a>    <span class="k">def</span> <span class="nf">speaker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add metadata related to a speaker. &quot;&quot;&quot;</span>
 
-        <span class="c1"># sclite, transcriber</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c"># sclite, transcriber</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_id&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="c1"># sclite, xtrans, transcriber, elan</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c"># sclite, xtrans, transcriber, elan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_name&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="c1"># xtrans, transcriber</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_type&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c"># xtrans, transcriber</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_type&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="c1"># xtrans, transcriber</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_dialect&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c"># xtrans, transcriber</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_dialect&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="c1"># transcriber</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_accent&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c"># transcriber</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_accent&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="c1"># transcriber</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_scope&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># (local|global)</span>
+        <span class="c"># transcriber</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_scope&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>  <span class="c"># (local|global)</span>
 
-        <span class="c1"># other</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_current_occupation&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_current_city&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_current_country&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c"># other</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_current_occupation&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_current_city&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_current_country&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_past_occupation&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_education&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_past_occupation&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_education&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_birth_date&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_birth_city&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_birth_country&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_birth_date&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_birth_city&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_birth_country&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_language&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_language&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDefaultMeta.tier"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasDefaultMeta.tier">[docs]</a>    <span class="k">def</span> <span class="nf">tier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add metadata related to a tier. &quot;&quot;&quot;</span>
 
-        <span class="c1"># audacity, annotation pro</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;tier_is_closed&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c"># audacity, annotation pro</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;tier_is_closed&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="c1"># audacity, annotation pro</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;tier_height&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c"># audacity, annotation pro</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;tier_height&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="c1"># audacity, annotation pro</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;tier_is_selected&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+        <span class="c"># audacity, annotation pro</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;tier_is_selected&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDefaultMeta.media"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasDefaultMeta.media">[docs]</a>    <span class="k">def</span> <span class="nf">media</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add metadata related to a media. &quot;&quot;&quot;</span>
 
-        <span class="c1"># sclite, xtrans</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;media_channel&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c"># sclite, xtrans</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;media_channel&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="c1"># subtitle</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;media_shift_delay&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c"># subtitle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;media_shift_delay&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="c1"># elan, annotation pro</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;media_file&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;media_path&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c"># elan, annotation pro</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;media_file&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;media_path&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="c1"># annotation pro</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;media_sample_rate&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div></div>
+        <span class="c"># annotation pro</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;media_sample_rate&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -350,13 +362,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

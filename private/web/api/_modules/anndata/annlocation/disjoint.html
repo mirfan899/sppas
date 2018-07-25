@@ -1,22 +1,33 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>anndata.annlocation.disjoint &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>anndata.annlocation.disjoint &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../../index.html" />
+    <link rel="up" title="anndata.annlocation" href="../annlocation.html" /> 
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -25,18 +36,19 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../annlocation.html" accesskey="U">anndata.annlocation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <h1>Source code for anndata.annlocation.disjoint</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -73,14 +85,14 @@
 <span class="sd">    Localization of a serie of intervals in time.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AnnDataTypeError</span>
 
-<span class="kn">from</span> <span class="nn">.localization</span> <span class="k">import</span> <span class="n">sppasBaseLocalization</span>
-<span class="kn">from</span> <span class="nn">.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
-<span class="kn">from</span> <span class="nn">.duration</span> <span class="k">import</span> <span class="n">sppasDuration</span>
+<span class="kn">from</span> <span class="nn">.localization</span> <span class="kn">import</span> <span class="n">sppasBaseLocalization</span>
+<span class="kn">from</span> <span class="nn">.point</span> <span class="kn">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">.interval</span> <span class="kn">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">.duration</span> <span class="kn">import</span> <span class="n">sppasDuration</span>
 
-<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c"># ---------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasDisjoint"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint">[docs]</a><span class="k">class</span> <span class="nc">sppasDisjoint</span><span class="p">(</span><span class="n">sppasBaseLocalization</span><span class="p">):</span>
@@ -93,42 +105,42 @@
 <span class="sd">    :summary:      Representation of a serie of intervals in time.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasDisjoint.__init__"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intervals</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasDisjoint.__init__"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intervals</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Creates a new sppasDisjoint instance.</span>
 
 <span class="sd">        :param intervals: (list of sppasInterval)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">sppasBaseLocalization</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">sppasBaseLocalization</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">intervals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_intervals</span><span class="p">(</span><span class="n">intervals</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">intervals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_intervals</span><span class="p">(</span><span class="n">intervals</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDisjoint.set"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set self members from another sppasDisjoint instance.</span>
 
 <span class="sd">        :param other: (sppasDisjoint)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasDisjoint</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasDisjoint</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_intervals</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">get_intervals</span><span class="p">())</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasInterval</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasInterval</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_intervals</span><span class="p">([</span><span class="n">other</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;sppasDisjoint or sppasInterval&quot;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;sppasDisjoint or sppasInterval&quot;</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDisjoint.is_disjoint"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.is_disjoint">[docs]</a>    <span class="k">def</span> <span class="nf">is_disjoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True because self is representing a disjoint intervals. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="kc">True</span></div>
+        <span class="k">return</span> <span class="bp">True</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDisjoint.copy"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a deep copy of self. &quot;&quot;&quot;</span>
 
@@ -136,17 +148,17 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_intervals</span><span class="p">():</span>
             <span class="n">intervals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
 
-        <span class="k">return</span> <span class="n">sppasDisjoint</span><span class="p">(</span><span class="n">intervals</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">sppasDisjoint</span><span class="p">(</span><span class="n">intervals</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDisjoint.get_begin"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.get_begin">[docs]</a>    <span class="k">def</span> <span class="nf">get_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the first sppasPoint instance. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">interval</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span> <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">interval</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span> <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDisjoint.set_begin"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.set_begin">[docs]</a>    <span class="k">def</span> <span class="nf">set_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tp</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set the begin sppasPoint instance to new sppasPoint.</span>
 
@@ -156,17 +168,17 @@
         <span class="n">_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">interval</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span> <span class="o">==</span> <span class="n">_min</span><span class="p">:</span>
-                <span class="n">interval</span><span class="o">.</span><span class="n">set_begin</span><span class="p">(</span><span class="n">tp</span><span class="p">)</span></div>
+                <span class="n">interval</span><span class="o">.</span><span class="n">set_begin</span><span class="p">(</span><span class="n">tp</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDisjoint.get_end"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.get_end">[docs]</a>    <span class="k">def</span> <span class="nf">get_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the last sppasPoint instance. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">interval</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span> <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">interval</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span> <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDisjoint.set_end"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.set_end">[docs]</a>    <span class="k">def</span> <span class="nf">set_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tp</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set the end sppasPoint instance to new sppasPoint.</span>
 
@@ -176,39 +188,39 @@
         <span class="n">_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">interval</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span> <span class="o">==</span> <span class="n">_max</span><span class="p">:</span>
-                <span class="n">interval</span><span class="o">.</span><span class="n">set_end</span><span class="p">(</span><span class="n">tp</span><span class="p">)</span></div>
+                <span class="n">interval</span><span class="o">.</span><span class="n">set_end</span><span class="p">(</span><span class="n">tp</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDisjoint.append_interval"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.append_interval">[docs]</a>    <span class="k">def</span> <span class="nf">append_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the sppasInterval at the given index.</span>
 
 <span class="sd">        :param interval: (sppasInterval)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">interval</span><span class="p">,</span> <span class="n">sppasInterval</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">interval</span><span class="p">,</span> <span class="s2">&quot;sppasInterval&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">interval</span><span class="p">,</span> <span class="n">sppasInterval</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">interval</span><span class="p">,</span> <span class="s">&quot;sppasInterval&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDisjoint.get_interval"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.get_interval">[docs]</a>    <span class="k">def</span> <span class="nf">get_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the sppasInterval at the given index.</span>
 
 <span class="sd">        :param index: (int)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDisjoint.get_intervals"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.get_intervals">[docs]</a>    <span class="k">def</span> <span class="nf">get_intervals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the list of intervals. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDisjoint.set_intervals"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.set_intervals">[docs]</a>    <span class="k">def</span> <span class="nf">set_intervals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intervals</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set a new list of intervals.</span>
 
@@ -216,13 +228,13 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">intervals</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">intervals</span><span class="p">,</span> <span class="s2">&quot;list&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">intervals</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">intervals</span><span class="p">,</span> <span class="s">&quot;list&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="n">intervals</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">append_interval</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">append_interval</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDisjoint.duration"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.duration">[docs]</a>    <span class="k">def</span> <span class="nf">duration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the sppasDuration.</span>
 <span class="sd">         Make the sum of all interval&#39; durations. &quot;&quot;&quot;</span>
@@ -230,31 +242,31 @@
         <span class="n">value</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">interval</span><span class="o">.</span><span class="n">duration</span><span class="p">()</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span> <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_intervals</span><span class="p">())</span>
         <span class="n">vagueness</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">interval</span><span class="o">.</span><span class="n">duration</span><span class="p">()</span><span class="o">.</span><span class="n">get_margin</span><span class="p">()</span> <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_intervals</span><span class="p">())</span>
 
-        <span class="k">return</span> <span class="n">sppasDuration</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">vagueness</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">sppasDuration</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">vagueness</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDisjoint.is_bound"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.is_bound">[docs]</a>    <span class="k">def</span> <span class="nf">is_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if point is a bound of an interval. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="nb">any</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">is_bound</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">is_bound</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="p">])</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasDisjoint.set_radius"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.disjoint.sppasDisjoint.set_radius">[docs]</a>    <span class="k">def</span> <span class="nf">set_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set radius value to all points. &quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_intervals</span><span class="p">():</span>
-            <span class="n">i</span><span class="o">.</span><span class="n">set_radius</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span></div>
+            <span class="n">i</span><span class="o">.</span><span class="n">set_radius</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Overloads</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Overloads</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;sppasDisjoint: </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_intervals</span><span class="p">()]))</span>
+        <span class="k">return</span> <span class="s">&quot;sppasDisjoint: {:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_intervals</span><span class="p">()]))</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Equal is required to use &#39;==&#39; between 2 sppasDisjoint instances.</span>
@@ -264,15 +276,15 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasDisjoint</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_interval</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">get_interval</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; LowerThan is required to use &#39;&lt;&#39; between 2 sppasDisjoint instances.</span>
@@ -283,12 +295,12 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="n">sppasPoint</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">other</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="n">sppasInterval</span><span class="p">,</span> <span class="n">sppasDisjoint</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="n">sppasInterval</span><span class="p">,</span> <span class="n">sppasDisjoint</span><span class="p">))</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -300,51 +312,51 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">sppasPoint</span><span class="p">)):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">other</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="n">sppasInterval</span><span class="p">,</span> <span class="n">sppasDisjoint</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="n">sppasInterval</span><span class="p">,</span> <span class="n">sppasDisjoint</span><span class="p">))</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">other</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">a</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="p">)</span></div>
-
-</pre></div>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__intervals</span><span class="p">)</span>
+</pre></div></div>
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -353,13 +365,14 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../annlocation.html" >anndata.annlocation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

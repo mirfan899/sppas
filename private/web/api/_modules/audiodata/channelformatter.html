@@ -1,22 +1,33 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>audiodata.channelformatter &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>audiodata.channelformatter &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../index.html" />
+    <link rel="up" title="audiodata" href="../audiodata.html" /> 
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -25,18 +36,19 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../audiodata.html" accesskey="U">audiodata</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <h1>Source code for audiodata.channelformatter</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
 <span class="sd">         ___   __    __    __    ___</span>
@@ -70,11 +82,11 @@
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">.channelframes</span> <span class="k">import</span> <span class="n">sppasChannelFrames</span>
-<span class="kn">from</span> <span class="nn">.channel</span> <span class="k">import</span> <span class="n">sppasChannel</span>
-<span class="kn">from</span> <span class="nn">.audioframes</span> <span class="k">import</span> <span class="n">sppasAudioFrames</span>
+<span class="kn">from</span> <span class="nn">.channelframes</span> <span class="kn">import</span> <span class="n">sppasChannelFrames</span>
+<span class="kn">from</span> <span class="nn">.channel</span> <span class="kn">import</span> <span class="n">sppasChannel</span>
+<span class="kn">from</span> <span class="nn">.audioframes</span> <span class="kn">import</span> <span class="n">sppasAudioFrames</span>
 
-<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c"># ---------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasChannelFormatter"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter">[docs]</a><span class="k">class</span> <span class="nc">sppasChannelFormatter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -95,19 +107,19 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">channel</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_framerate</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">get_sampwidth</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">get_sampwidth</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Getters</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Getters</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasChannelFormatter.get_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.get_channel">[docs]</a>    <span class="k">def</span> <span class="nf">get_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the sppasChannel. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasChannelFormatter.get_framerate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.get_framerate">[docs]</a>    <span class="k">def</span> <span class="nf">get_framerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the expected frame rate for the channel.</span>
 <span class="sd">        Notice that while convert is not applied, it can be different of the</span>
@@ -116,10 +128,10 @@
 <span class="sd">        :returns: the frame rate that will be used by the converter</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_framerate</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_framerate</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasChannelFormatter.get_sampwidth"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.get_sampwidth">[docs]</a>    <span class="k">def</span> <span class="nf">get_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the expected sample width for the channel.</span>
 <span class="sd">        Notice that while convert is not applied, it can be different of the</span>
@@ -128,12 +140,12 @@
 <span class="sd">        :returns: the sample width that will be used by the converter</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Setters</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Setters</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasChannelFormatter.set_framerate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.set_framerate">[docs]</a>    <span class="k">def</span> <span class="nf">set_framerate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framerate</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fix the expected frame rate for the channel.</span>
 <span class="sd">        Notice that while convert is not applied, it can be different of the</span>
@@ -142,10 +154,10 @@
 <span class="sd">        :param framerate:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_framerate</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">framerate</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_framerate</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">framerate</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasChannelFormatter.set_sampwidth"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.set_sampwidth">[docs]</a>    <span class="k">def</span> <span class="nf">set_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampwidth</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fix the expected sample width for the channel.</span>
 <span class="sd">        Notice that while convert is not applied, it can be different of the</span>
@@ -154,10 +166,10 @@
 <span class="sd">        :param sampwidth:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sampwidth</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sampwidth</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasChannelFormatter.convert"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.convert">[docs]</a>    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert the channel.</span>
 <span class="sd">        Convert to the expected (already) given sample width and frame rate.</span>
@@ -168,12 +180,12 @@
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span>
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_framerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_framerate</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">new_channel</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">new_channel</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Workers</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Workers</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasChannelFormatter.bias"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.bias">[docs]</a>    <span class="k">def</span> <span class="nf">bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bias_value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert the channel with a bias added to each frame.</span>
 <span class="sd">        Samples wrap around in case of overflow.</span>
@@ -189,10 +201,10 @@
         <span class="n">a</span> <span class="o">=</span> <span class="n">sppasAudioFrames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_frames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_nframes</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_sampwidth</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_frames</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">bias</span><span class="p">(</span><span class="n">bias_value</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">new_channel</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">new_channel</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasChannelFormatter.mul"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.mul">[docs]</a>    <span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert the channel.</span>
 <span class="sd">        All frames in the original channel are multiplied by the floating-</span>
@@ -210,10 +222,10 @@
         <span class="n">a</span> <span class="o">=</span> <span class="n">sppasAudioFrames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_frames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_nframes</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_sampwidth</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_frames</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">factor</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">new_channel</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">new_channel</span>
 
-    <span class="c1"># ----------------------------------------------------------------------</span>
-
+    <span class="c"># ----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasChannelFormatter.remove_offset"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.remove_offset">[docs]</a>    <span class="k">def</span> <span class="nf">remove_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert the channel by removing the offset in the channel. &quot;&quot;&quot;</span>
 
@@ -224,25 +236,25 @@
         <span class="n">avg</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">avg</span><span class="p">()</span>
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_frames</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">bias</span><span class="p">(</span><span class="o">-</span> <span class="n">avg</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">new_channel</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">new_channel</span>
 
-    <span class="c1"># ----------------------------------------------------------------------</span>
-
+    <span class="c"># ----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasChannelFormatter.sync"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.sync">[docs]</a>    <span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert the channel with the parameters from the channel put in input.</span>
 
 <span class="sd">        :param channel: (sppasChannel) the channel used as a model</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">sppasChannel</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Expected a channel, got </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">sppasChannel</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Expected a channel, got </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">get_sampwidth</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_framerate</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">convert</span><span class="p">()</span>
 
-    <span class="c1"># ----------------------------------------------------------------------</span>
-
+    <span class="c"># ----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasChannelFormatter.remove_frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.remove_frames">[docs]</a>    <span class="k">def</span> <span class="nf">remove_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert the channel by removing frames.</span>
 
@@ -259,10 +271,10 @@
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_frames</span><span class="p">(</span><span class="n">f</span><span class="p">[:</span><span class="n">begin</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">]</span> <span class="o">+</span> <span class="n">f</span><span class="p">[</span><span class="n">end</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">:])</span>
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span>
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_framerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_framerate</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">new_channel</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">new_channel</span>
 
-    <span class="c1"># ----------------------------------------------------------------------</span>
-
+    <span class="c"># ----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasChannelFormatter.add_frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.add_frames">[docs]</a>    <span class="k">def</span> <span class="nf">add_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert the channel by adding frames.</span>
 
@@ -277,10 +289,10 @@
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_frames</span><span class="p">(</span><span class="n">f</span><span class="p">[:</span><span class="n">position</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">]</span> <span class="o">+</span> <span class="n">frames</span> <span class="o">+</span> <span class="n">f</span><span class="p">[</span><span class="n">position</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">:])</span>
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span>
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_framerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_framerate</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">new_channel</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">new_channel</span>
 
-    <span class="c1"># ----------------------------------------------------------------------</span>
-
+    <span class="c"># ----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasChannelFormatter.append_frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.append_frames">[docs]</a>    <span class="k">def</span> <span class="nf">append_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert the channel by appending frames.</span>
 
@@ -293,12 +305,12 @@
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_frames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_frames</span><span class="p">()</span> <span class="o">+</span> <span class="n">frames</span><span class="p">)</span>
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span>
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_framerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_framerate</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">new_channel</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">new_channel</span>
 
-    <span class="c1"># ----------------------------------------------------------------------</span>
-    <span class="c1"># Private</span>
-    <span class="c1"># ----------------------------------------------------------------------</span>
-
+    <span class="c"># ----------------------------------------------------------------------</span>
+    <span class="c"># Private</span>
+    <span class="c"># ----------------------------------------------------------------------</span>
+</div>
     <span class="k">def</span> <span class="nf">__convert_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert frames to the expected sample width and frame rate.</span>
 
@@ -308,11 +320,11 @@
         <span class="n">f</span> <span class="o">=</span> <span class="n">frames</span>
         <span class="n">fragment</span> <span class="o">=</span> <span class="n">sppasChannelFrames</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
-        <span class="c1"># Convert the sample width if it needs to</span>
+        <span class="c"># Convert the sample width if it needs to</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_sampwidth</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">:</span>
             <span class="n">fragment</span><span class="o">.</span><span class="n">change_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_sampwidth</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span>
 
-        <span class="c1"># Convert the self._framerate if it needs to</span>
+        <span class="c"># Convert the self._framerate if it needs to</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_framerate</span><span class="p">:</span>
             <span class="n">fragment</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_framerate</span><span class="p">)</span>
 
@@ -322,25 +334,26 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -349,13 +362,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../audiodata.html" >audiodata</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

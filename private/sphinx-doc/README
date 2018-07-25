@@ -14,7 +14,7 @@ sphinx-apidoc -f -o ../../private/sphinx-doc/rst ./anndata/ ./anndata/tests
 
 
 # generer les pages html:
-sphinx-build -b html -d _build/doctrees . _build/html
+sphinx-build -b html -d _build/doctrees . ../web/api
 # explication:
 # sphinx-build [options] <sourcedir> <outputdir> [filenames . . . ]
 # options possibles:

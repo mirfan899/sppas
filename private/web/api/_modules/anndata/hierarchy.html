@@ -1,22 +1,33 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>anndata.hierarchy &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>anndata.hierarchy &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -25,18 +36,18 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <h1>Source code for anndata.hierarchy</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -71,16 +82,16 @@
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">HierarchyAlignmentError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">HierarchyAssociationError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">HierarchyParentTierError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">HierarchyChildTierError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">HierarchyAncestorTierError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">AnnDataTypeError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">HierarchyAlignmentError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">HierarchyAssociationError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">HierarchyParentTierError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">HierarchyChildTierError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">HierarchyAncestorTierError</span>
 
-<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c"># ----------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasHierarchy"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy">[docs]</a><span class="k">class</span> <span class="nc">sppasHierarchy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -128,20 +139,20 @@
 <span class="sd">            | child:   Lemmas     | le |  âne  |           | être |  là  |</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">types</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;TimeAssociation&quot;</span><span class="p">,</span> <span class="s2">&quot;TimeAlignment&quot;</span><span class="p">}</span>
+    <span class="n">types</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;TimeAssociation&quot;</span><span class="p">,</span> <span class="s">&quot;TimeAlignment&quot;</span><span class="p">}</span>
 
 <div class="viewcode-block" id="sppasHierarchy.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Creates a new sppasHierarchy instance. &quot;&quot;&quot;</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">sppasHierarchy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasHierarchy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
-        <span class="c1"># key = child tier ; value = tuple(parent, link_type)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span></div>
+        <span class="c"># key = child tier ; value = tuple(parent, link_type)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Getters</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Getters</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasHierarchy.get_parent"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.get_parent">[docs]</a>    <span class="k">def</span> <span class="nf">get_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the parent tier for a given child tier.</span>
 
@@ -149,13 +160,13 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">child_tier</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="bp">None</span>
 
         <span class="n">parent</span><span class="p">,</span> <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="p">[</span><span class="n">child_tier</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">parent</span></div>
+        <span class="k">return</span> <span class="n">parent</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasHierarchy.get_hierarchy_type"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.get_hierarchy_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_hierarchy_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the hierarchy type between a child tier and its parent.</span>
 
@@ -163,14 +174,14 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">child_tier</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
 
         <span class="n">parent</span><span class="p">,</span> <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="p">[</span><span class="n">child_tier</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">link</span></div>
+        <span class="k">return</span> <span class="n">link</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasHierarchy.get_children"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.get_children">[docs]</a>    <span class="k">def</span> <span class="nf">get_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">link_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasHierarchy.get_children"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.get_children">[docs]</a>    <span class="k">def</span> <span class="nf">get_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">link_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the list of children of a tier, for a given type.</span>
 
 <span class="sd">        :param parent_tier: (Tier) The child tier to found</span>
@@ -178,21 +189,21 @@
 <span class="sd">        :returns: List of tiers</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">link_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">link_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">link_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sppasHierarchy</span><span class="o">.</span><span class="n">types</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">link_type</span><span class="p">,</span> <span class="s2">&quot;TimeAssociation, TimeAlignment&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">link_type</span><span class="p">,</span> <span class="s">&quot;TimeAssociation, TimeAlignment&quot;</span><span class="p">)</span>
 
         <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">child_tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">parent</span><span class="p">,</span> <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="p">[</span><span class="n">child_tier</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="n">parent_tier</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">link_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">link_type</span> <span class="o">==</span> <span class="n">link</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">link_type</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">link_type</span> <span class="o">==</span> <span class="n">link</span><span class="p">:</span>
                     <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child_tier</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">children</span></div>
+        <span class="k">return</span> <span class="n">children</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasHierarchy.get_ancestors"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.get_ancestors">[docs]</a>    <span class="k">def</span> <span class="nf">get_ancestors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return all the direct ancestors of a tier.</span>
 <span class="sd">         Returns a list with parent, grand-parent, grand-grand-parent...</span>
@@ -206,18 +217,18 @@
 
         <span class="n">ancestors</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parent</span><span class="p">(</span><span class="n">child_tier</span><span class="p">)</span>
-        <span class="k">while</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">ancestors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
             <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parent</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">ancestors</span></div>
+        <span class="k">return</span> <span class="n">ancestors</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Validators</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasHierarchy.validate_time_alignment"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.validate_time_alignment">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">validate_time_alignment</span><span class="p">(</span><span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Validators</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="sppasHierarchy.validate_time_alignment"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.validate_time_alignment">[docs]</a>    <span class="k">def</span> <span class="nf">validate_time_alignment</span><span class="p">(</span><span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Validate a time alignment hierarchy link between 2 tiers.</span>
 
 <span class="sd">        :param parent_tier: (Tier) The parent tier</span>
@@ -225,13 +236,13 @@
 <span class="sd">        :raises: HierarchyAlignmentError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">parent_tier</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">child_tier</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">HierarchyAlignmentError</span><span class="p">(</span><span class="n">parent_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">child_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span></div>
+        <span class="k">if</span> <span class="n">parent_tier</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">child_tier</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HierarchyAlignmentError</span><span class="p">(</span><span class="n">parent_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">child_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasHierarchy.validate_time_association"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.validate_time_association">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">validate_time_association</span><span class="p">(</span><span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="sppasHierarchy.validate_time_association"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.validate_time_association">[docs]</a>    <span class="k">def</span> <span class="nf">validate_time_association</span><span class="p">(</span><span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Validate a time association hierarchy link between 2 tiers.</span>
 
 <span class="sd">        :param parent_tier: (Tier) The parent tier</span>
@@ -239,11 +250,11 @@
 <span class="sd">        :raises: HierarchyAssociationError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">parent_tier</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">child_tier</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="n">child_tier</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">parent_tier</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">HierarchyAssociationError</span><span class="p">(</span><span class="n">parent_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">child_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span></div>
+        <span class="k">if</span> <span class="n">parent_tier</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">child_tier</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span> <span class="ow">and</span> <span class="n">child_tier</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">parent_tier</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HierarchyAssociationError</span><span class="p">(</span><span class="n">parent_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">child_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasHierarchy.validate_link"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.validate_link">[docs]</a>    <span class="k">def</span> <span class="nf">validate_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link_type</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Validate a hierarchy link between 2 tiers.</span>
 
@@ -256,30 +267,30 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">link_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sppasHierarchy</span><span class="o">.</span><span class="n">types</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">link_type</span><span class="p">,</span> <span class="s2">&quot;TimeAssociation, TimeAlignment&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">link_type</span><span class="p">,</span> <span class="s">&quot;TimeAssociation, TimeAlignment&quot;</span><span class="p">)</span>
 
-        <span class="c1"># A child has only one parent</span>
+        <span class="c"># A child has only one parent</span>
         <span class="k">if</span> <span class="n">child_tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">parent</span><span class="p">,</span> <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="p">[</span><span class="n">child_tier</span><span class="p">]</span>
             <span class="k">raise</span> <span class="n">HierarchyParentTierError</span><span class="p">(</span><span class="n">child_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span>
                                            <span class="n">link</span><span class="p">,</span>
                                            <span class="n">parent</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
 
-        <span class="c1"># A tier can&#39;t be its own child/parent</span>
+        <span class="c"># A tier can&#39;t be its own child/parent</span>
         <span class="k">if</span> <span class="n">parent_tier</span> <span class="o">==</span> <span class="n">child_tier</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">HierarchyChildTierError</span><span class="p">(</span><span class="n">child_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
 
-        <span class="c1"># Check for TimeAlignment</span>
-        <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;TimeAlignment&quot;</span><span class="p">:</span>
+        <span class="c"># Check for TimeAlignment</span>
+        <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s">&quot;TimeAlignment&quot;</span><span class="p">:</span>
             <span class="n">sppasHierarchy</span><span class="o">.</span><span class="n">validate_time_alignment</span><span class="p">(</span><span class="n">parent_tier</span><span class="p">,</span>
                                                    <span class="n">child_tier</span><span class="p">)</span>
 
-        <span class="c1"># Check for TimeAssociation</span>
-        <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;TimeAssociation&quot;</span><span class="p">:</span>
+        <span class="c"># Check for TimeAssociation</span>
+        <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s">&quot;TimeAssociation&quot;</span><span class="p">:</span>
             <span class="n">sppasHierarchy</span><span class="o">.</span><span class="n">validate_time_association</span><span class="p">(</span><span class="n">parent_tier</span><span class="p">,</span>
                                                      <span class="n">child_tier</span><span class="p">)</span>
 
-        <span class="c1"># No circular hierarchy allowed.</span>
+        <span class="c"># No circular hierarchy allowed.</span>
         <span class="n">ancestors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ancestors</span><span class="p">(</span><span class="n">parent_tier</span><span class="p">)</span>
         <span class="n">family</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">ancestor</span> <span class="ow">in</span> <span class="n">ancestors</span><span class="p">:</span>
@@ -288,12 +299,12 @@
         <span class="n">family</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ancestors</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">child_tier</span> <span class="ow">in</span> <span class="n">family</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">HierarchyAncestorTierError</span><span class="p">(</span><span class="n">child_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span>
-                                             <span class="n">parent_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span></div>
+                                             <span class="n">parent_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Setters</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Setters</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasHierarchy.add_link"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.add_link">[docs]</a>    <span class="k">def</span> <span class="nf">add_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link_type</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Validate and add a hierarchy link between 2 tiers.</span>
 
@@ -303,10 +314,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">validate_link</span><span class="p">(</span><span class="n">link_type</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="p">[</span><span class="n">child_tier</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">parent_tier</span><span class="p">,</span> <span class="n">link_type</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="p">[</span><span class="n">child_tier</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">parent_tier</span><span class="p">,</span> <span class="n">link_type</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasHierarchy.remove_child"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.remove_child">[docs]</a>    <span class="k">def</span> <span class="nf">remove_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Remove a hierarchy link between a parent and a child.</span>
 
@@ -314,10 +325,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">child_tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="p">[</span><span class="n">child_tier</span><span class="p">]</span></div>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="p">[</span><span class="n">child_tier</span><span class="p">]</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasHierarchy.remove_parent"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.remove_parent">[docs]</a>    <span class="k">def</span> <span class="nf">remove_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Remove all hierarchy links between a parent and its children.</span>
 
@@ -331,10 +342,10 @@
                 <span class="n">to_remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child_tier</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">child_tier</span> <span class="ow">in</span> <span class="n">to_remove</span><span class="p">:</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="p">[</span><span class="n">child_tier</span><span class="p">]</span></div>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="p">[</span><span class="n">child_tier</span><span class="p">]</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasHierarchy.remove_tier"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.remove_tier">[docs]</a>    <span class="k">def</span> <span class="nf">remove_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Remove all occurrences of a tier inside the hierarchy.</span>
 
@@ -348,10 +359,10 @@
                 <span class="n">to_remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">child_tier</span> <span class="ow">in</span> <span class="n">to_remove</span><span class="p">:</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="p">[</span><span class="n">child_tier</span><span class="p">]</span></div>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="p">[</span><span class="n">child_tier</span><span class="p">]</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasHierarchy.copy"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns a deep copy of the hierarchy. &quot;&quot;&quot;</span>
 
@@ -362,31 +373,31 @@
             <span class="n">link_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="p">[</span><span class="n">child_tier</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">h</span><span class="o">.</span><span class="n">add_link</span><span class="p">(</span><span class="n">link_type</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">h</span></div>
+        <span class="k">return</span> <span class="n">h</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Automatic hierarchy</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasHierarchy.infer_hierarchy_type"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.infer_hierarchy_type">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">infer_hierarchy_type</span><span class="p">(</span><span class="n">tier1</span><span class="p">,</span> <span class="n">tier2</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Automatic hierarchy</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="sppasHierarchy.infer_hierarchy_type"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.infer_hierarchy_type">[docs]</a>    <span class="k">def</span> <span class="nf">infer_hierarchy_type</span><span class="p">(</span><span class="n">tier1</span><span class="p">,</span> <span class="n">tier2</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Test if tier1 can be a parent tier for tier2.</span>
 
 <span class="sd">        :returns: One of hierarchy types or an empty string</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">tier1</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">tier2</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">tier1</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">tier2</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">tier2</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">tier1</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;TimeAssociation&quot;</span>
+        <span class="k">if</span> <span class="n">tier2</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">tier1</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;TimeAssociation&quot;</span>
 
-        <span class="k">return</span> <span class="s2">&quot;TimeAlignment&quot;</span></div>
+        <span class="k">return</span> <span class="s">&quot;TimeAlignment&quot;</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-    <span class="c1"># Overloads</span>
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+    <span class="c"># Overloads</span>
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="p">)</span>
 
@@ -398,25 +409,26 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -425,13 +437,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

@@ -1,5 +1,0 @@
-ERROR: m_chkparam: cannot access /data/toolkits/ESPPAS/sppas-1.4-stable-2012-06-01/samples/samples-FR/F_F_C006.dfa
-ERROR: gramlist: cannot read dfa file "/data/toolkits/ESPPAS/sppas-1.4-stable-2012-06-01/samples/samples-FR/F_F_C006.dfa"
-ERROR: m_chkparam: cannot access /data/toolkits/ESPPAS/sppas-1.4-stable-2012-06-01/samples/samples-FR/F_F_C006.dict
-ERROR: gramlist: cannot read dict file "/data/toolkits/ESPPAS/sppas-1.4-stable-2012-06-01/samples/samples-FR/F_F_C006.dict"
-ERROR: m_options: failed to read some grammars

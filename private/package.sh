@@ -16,8 +16,8 @@
 #
 #  2. Manual and documentation
 #
-#    a/ Use epydoc to generate the API reference manual.
-#       It results a "manual" folder in the web directory.
+#    a/ Use sphinx to generate the API reference manual.
+#       It results a "api" folder in the web directory.
 #    b/ Use pandoc to generate the User documentation (html and PDF),
 #       from markdown files.
 #
@@ -52,22 +52,14 @@ PROGRAM_VERSION=$(grep -e "__version__=" $PROGRAM_DIR/sppas/meta.py | awk -F'=' 
 
 # Files and directories to be used
 BIN_DIR="bin"
-TESTS_DIR="tests"
-TUTO_DIR="tuto"
-ETC_DIR="etc"
-SAMPLES_DIR="samples"
-WEB_DIR="web"
 TEMP="/tmp/sppas_package.txt"
 
 # Actions to perform in this script
 DO_DIAGNOSIS="False"
 DO_MANUAL="False"
 DO_PACKAGE="False"
+DO_TUTO="False"
 DO_CLEAN="False"
-
-LOG_DIAGNOSIS="diagnosis.log"
-LOG_MANUAL="manual.log"
-LOG_PACKAGE="package.log"
 
 # User-Interface
 MSG_HEADER="SPPAS $PROGRAM_VERSION, a program written by Brigitte Bigi."
@@ -147,9 +139,6 @@ function fct_test_running {
 
 # Clean the current directory: remove temporary files
 function fct_clean_temp {
-    if [ -e $LOG_DIAGNOSIS ]; then rm $LOG_DIAGNOSIS; fi
-    if [ -e $LOG_MANUAL ]; then rm $LOG_MANUAL; fi
-    if [ -e $LOG_PACKAGE ]; then rm $LOG_PACKAGE; fi
     if [ -e $TEMP ];  then rm $TEMP;  fi
 
     rm bin/*/*.pyc &> /dev/null
@@ -160,14 +149,6 @@ function fct_clean_temp {
 
 # Remove SPPAS annotations of the test directory
 function fct_clean_test {
-    rm  -r $SAMPLES_DIR/hypothesis/samples*/*-token.*   &> /dev/null
-    rm  -r $SAMPLES_DIR/hypothesis/samples*/*-phon.*    &> /dev/null
-    rm  -r $SAMPLES_DIR/hypothesis/samples*/*-palign.*  &> /dev/null
-    rm  -r $SAMPLES_DIR/hypothesis/samples*/*-salign.*  &> /dev/null
-    rm  -r $SAMPLES_DIR/hypothesis/samples*/*-ralign.*  &> /dev/null
-    rm  -r $SAMPLES_DIR/hypothesis/samples*/*-momel.*   &> /dev/null
-    rm  -r $SAMPLES_DIR/hypothesis/samples*/*-merge.*   &> /dev/null
-    rm  -r $SAMPLES_DIR/hypothesis/samples*/*.xra       &> /dev/null
     rm $SAMPLES_DIR/sample2.*     &> /dev/null
     rm $SAMPLES_DIR/*.log         &> /dev/null
     rm $SAMPLES_DIR/test_xra.xra       &> /dev/null
@@ -219,9 +200,10 @@ function fct_echo_usage {
     echo -e "where options are:${LIGHT_CYAN}"
     echo -e "    -p|--package     package"
     echo -e "    -d|--diagnosis   diagnosis"
-    echo -e "    -m|--manual      tutorials"
+    echo -e "    -t|--tutorials   tutorials for the web"
+    echo -e "    -m|--manual      API manual with sphinx"
     echo -e "    -c|--clean       clean (remove all un-necessary files)"
-    echo -e "    -a|--all         (package+diagnosis+manual+clean)"
+    echo -e "    -a|--all         (package+diagnosis+tutorials+clean)"
     echo -e "    -h|--help        print this help${NC}"
     echo
 }
@@ -230,7 +212,7 @@ function fct_echo_usage {
 # Parameters:
 #   $1: nb args
 function fct_test_nb_args {
-    local maxargs=6
+    local maxargs=7
     local minargs=1
     # The command is given without args: print usage
     if [ "$1" -eq 0 ]
@@ -274,6 +256,7 @@ function fct_get_args {
                 DO_PACKAGE="True";
                 DO_DIAGNOSIS="True";
                 DO_MANUAL="True";
+                DO_TUTO="True";
                 DO_CLEAN="True";
                 ;;
             -p|--package)
@@ -284,6 +267,9 @@ function fct_get_args {
                 ;;
             -m|--manual)
                 DO_MANUAL="True";
+                ;;
+            -t|--tutorials)
+                DO_TUTO="True";
                 ;;
             *)
                 #unknown option
@@ -301,79 +287,14 @@ function fct_get_args {
 # ===========================================================================
 
 
-# Execute SPPAS on the test corpus
-function fct_exec_samples_sppas {
-    for language in 'cat' 'cmn' 'deu' 'eng' 'fra' 'ita' 'jpn' 'kor' 'nan' 'pcm' 'pol' 'por' 'spa' 'yue'; do echo $language;
-        echo "Annotations on samples of $language" >> $LOG_DIAGNOSIS
-        python $PROGRAM_DIR/sppas/bin/annotation.py \
-            -w $PROGRAM_DIR/samples/samples-$language \
-            -l $language \
-            --ipu --tok --phon --align;
-        echo "List of errors: " >> $LOG_DIAGNOSIS
-        grep "ERROR" $PROGRAM_DIR/samples/samples-$language.log >> $LOG_DIAGNOSIS
-        echo "List of warnings: " >> $LOG_DIAGNOSIS
-        grep "WARNING" $PROGRAM_DIR/samples/samples-$language.log >> $LOG_DIAGNOSIS
-        echo " ----------------------------------------- " >> $LOG_DIAGNOSIS
-        fct_clean_sppas
-    done
-}
-
-
-# Execute SPPAS on the test corpus
-function fct_exec_sppas {
-
-    echo " ... Test automatic annotation of French"
-    python $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-FR -l fra -e .TextGrid --tok --phon --align --syll >> $LOG_DIAGNOSIS
-
-    echo " ... Test automatic annotation of Italian"
-    python $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-IT -l ita -e .TextGrid --tok --phon --align  >> $LOG_DIAGNOSIS
-
-    echo " ... Test automatic annotation of English"
-    python $PROGRAM_DIR/sppas/bin/annotation.py -w $SAMPLES_DIR/hypothesis/samples-EN -l eng -e .TextGrid --ipu --tok --phon --align --momel --intsint  >> $LOG_DIAGNOSIS
-}
-
-
-# Compare SPPAS output to the reference (expected result).
-function fct_compare_sppas_results {
-    echo -e "${BROWN} - Compare ${PROGRAM_NAME} results to a reference.${NC}"
-
-    fct_exec_sppas
-    echo >> $LOG_DIAGNOSIS
-    echo "##########  ${PROGRAM_NAME} Annotation Diagnosis - $TODAY #########" >> $LOG_DIAGNOSIS
-    echo >> $LOG_DIAGNOSIS
-
-    $BIN_DIR/compare.py -r $SAMPLES_DIR/reference -t $SAMPLES_DIR/hypothesis -v 2 -d 0.11 --persist >> $LOG_DIAGNOSIS
-
-    local error="$?"
-    if [ $error -eq 0 ]; then
-         echo " ... Compare: Success"
-    else
-         echo " ... Compare: $error error(s)."
-    fi
-
-    # clean
-    rm -rf $SAMPLES_DIR/hypothesis/*/*-merge.*
-    rm -rf $SAMPLES_DIR/hypothesis/*/*-token.*
-    rm -rf $SAMPLES_DIR/hypothesis/*/*-phon.*
-    rm -rf $SAMPLES_DIR/hypothesis/*/*-palign.*
-    rm -rf $SAMPLES_DIR/hypothesis/*/*-salign.*
-    rm -rf $SAMPLES_DIR/hypothesis/*/*-momel.*
-    rm -rf $SAMPLES_DIR/hypothesis/*/*-intsint.*
-    rm -rf $SAMPLES_DIR/hypothesis/*.log
-
-    echo " ######### ############################ ######### " >> $LOG_DIAGNOSIS
-    echo >> $LOG_DIAGNOSIS
-}
-
-
 # Test automatic annotations in the "bin" directory of SPPAS
-function fct_test_bin {
-    echo -e "${BROWN} - Test of the bin directory.${NC}"
-    echo >> $LOG_DIAGNOSIS
-    echo "##########  ${PROGRAM_NAME} Bin Diagnosis - $TODAY #########" >> $LOG_DIAGNOSIS
-    echo >> $LOG_DIAGNOSIS
+function fct_test_annotations {
+    echo -e "${BROWN} - Test of the annotation scripts.${NC}"
+    echo >> $_annotations
+    echo "##########  ${PROGRAM_NAME} Annotations diagnosis - $TODAY #########" >> diagnosis.log
+    echo >> diagnosis.log
 
-    $BIN_DIR/test_bin.sh -a > $TEMP
+    $BIN_DIR/test_annotations.sh -a > $TEMP
 
     local error=`grep -c 'error' $TEMP`
     if [ $error -eq 0 ]; then
@@ -382,10 +303,10 @@ function fct_test_bin {
          echo " ... Test: $error error(s)."
     fi
 
-    cat $TEMP >> $LOG_DIAGNOSIS
-    echo >> $LOG_DIAGNOSIS
-    echo " ######### ############################ ######### " >> $LOG_DIAGNOSIS
-    echo >> $LOG_DIAGNOSIS
+    cat $TEMP >> diagnosis.log
+    echo >> diagnosis.log
+    echo " ######### ############################ ######### " >> diagnosis.log
+    echo >> diagnosis.log
 
     rm $TEMP
 }
@@ -412,8 +333,8 @@ function fct_perform_unittest {
     local fail=`grep -c '... FAIL' $TEMP`
     echo " ... ... $error error(s) and $fail test(s) failed."
 
-    cat $TEMP >> $LOG_DIAGNOSIS
-    echo >> $LOG_DIAGNOSIS
+    cat $TEMP >> diagnosis.log
+    echo >> diagnosis.log
     rm $TEMP
 }
 
@@ -422,9 +343,9 @@ function fct_perform_unittest {
 function fct_test_api {
     echo -e "${BROWN} - Unittest of the API.${NC}"
 
-    echo >> $LOG_DIAGNOSIS
-    echo "##########  ${PROGRAM_NAME} API Diagnosis - $TODAY #########" >> $LOG_DIAGNOSIS
-    echo >> $LOG_DIAGNOSIS
+    echo >> diagnosis.log
+    echo "##########  ${PROGRAM_NAME} API Diagnosis - $TODAY #########" >> diagnosis.log
+    echo >> diagnosis.log
 
     fct_perform_unittest "anndata"
     fct_perform_unittest "annotations"
@@ -436,8 +357,8 @@ function fct_test_api {
     fct_perform_unittest "structs"
     fct_perform_unittest "utils"
 
-    echo " ######### ############################ ######### " >> $LOG_DIAGNOSIS
-    echo >> $LOG_DIAGNOSIS
+    echo " ######### ############################ ######### " >> diagnosis.log
+    echo >> diagnosis.log
 }
 
 
@@ -445,10 +366,8 @@ function fct_test_api {
 function fct_diagnosis {
     fct_echo_title "${PROGRAM_NAME} - Diagnosis"
     fct_test_api
-    fct_test_bin
-    fct_exec_samples_sppas
-    fct_compare_sppas_results
-    echo "Check out the $LOG_DIAGNOSIS file for details."
+    fct_test_annotations
+    echo "Check out the diagnosis.log file for details."
 }
 
 
@@ -459,47 +378,34 @@ function fct_diagnosis {
 
 # Generate a new version of the API manual
 function fct_api_manual {
-    echo -e "${BROWN} - API Manual${NC}"
+    fct_echo_title "${PROGRAM_NAME} - API Manual"
 
-    if [ -e $WEB_DIR/manual ] ; then
-        rm -rf $WEB_DIR/manual;
+    if [ -e web/api ] ; then
+        rm -rf web/api;
     fi
 
-    # test if epydoc is ok.
-    type epydoc >& /dev/null
+    # test if sphinx is ok.
+    type sphinx-build >& /dev/null
     if [ $? -eq 1 ] ; then
-        echo -e "${RED}epydoc is missing. Please, install it and try again.${NC}"
+        echo -e "${RED}sphinx-build is missing. Please, install it and try again.${NC}"
         return 1
     fi
 
     # OK... generate the API manual
-    epydoc --config $BIN_DIR/epydoc.conf --css $ETC_DIR/styles/epydoc.css --output $WEB_DIR/manual $PROGRAM_DIR/sppas/src >& $LOG_MANUAL
-    echo " The reference manual of the web directory was updated."
-    echo " ... Check out the $LOG_MANUAL file for details."
+    sphinx-build -w sphinx-doc/sphinx.log -b html -d sphinx-doc/_build/doctrees sphinx-doc web/api
+    echo " The API reference manual of the web directory was updated."
+    echo " ... Check out the sphinx-doc/sphinx.log file for details."
+
+    rm -rf sphinx-doc/_build/*
 }
 
 
-function fct_uml_diagrams {
-    echo -e "${BROWN} - $PROGRAM_NAME UML diagrams${NC}"
-    # test if yuml is ok. https://github.com/wandernauta/yuml/
-    type $BIN_DIR/yuml >& /dev/null
-    if [ $? -eq 1 ] ; then
-        # test if suml is ok. https://pypi.python.org/pypi/scruffy
-        type suml >& /dev/null
-        if [ $? -eq 1 ] ; then
-            echo -e "${RED}None of yuml or suml are working! Please, install at least one of them and try again.${NC}"
-            return 1
-        else
-            suml --png --class -i $ETC_DIR/figures/src/anndata.yuml -o $ETC_DIR/figures/anndata.png
-        fi
-    else
-        cat $ETC_DIR/figures/src/anndata.yuml | $BIN_DIR/yuml -f png -t class -s plain --scale 42 -o $ETC_DIR/figures/anndata.png
-    fi
 
-}
+# ===========================================================================
+# TUTORIALS
+# ===========================================================================
 
-
-# Return a string indicating the list of files for a sub-folder of the
+# Return a string indicating the list of files for a folder of the
 # documentation
 # Parameters:
 #  $1: directory of the documentation
@@ -532,6 +438,7 @@ function fct_get_docfolders {
 # - $1: directory with the documentation
 function fct_get_all_md {
 
+    local files=""
     # take a look if an header is existing (the title/author/date of the doc)
     if [ -e "$1/header.md" ] ; then
         local files="$1/header.md";
@@ -550,32 +457,32 @@ function fct_get_all_md {
     echo $files
 }
 
-
 # Generate a new version of the tutorials
 function fct_sppas_tuto {
 
-    echo ' Tutorials for the web';
-    cat $TUTO_DIR/tutorial_header.html > $WEB_DIR/tutorial.html
-    echo "<h1>In-line tutorials</h1>" >> $WEB_DIR/tutorial.html
+    fct_echo_title "${PROGRAM_NAME} - Tutorials"
+
+    cat tuto/tutorial_header.html > web/tutorial.html
+    echo "<h1>In-line tutorials</h1>" >> web/tutorial.html
 
     # An HTML file is generated for each md file of each folder of the tutorial
     i=1
-    local folders=$(fct_get_docfolders $TUTO_DIR)
+    local folders=$(fct_get_docfolders tuto)
     for folder in $folders;
     do
         foldername=`echo $folder | cut -f1 -d';'`
         foldertitle=`echo $folder | cut -f2 -d';' | sed -e 's/_/ /g'`
         
-        echo "<h3>Tutorial $i: $foldertitle</h3>" >> $WEB_DIR/tutorial.html
+        echo "<h3>Tutorial $i: $foldertitle</h3>" >> web/tutorial.html
         
         echo " ... $folder"
-        local files=$(fct_get_md_idx $TUTO_DIR $foldername)
+        local files=$(fct_get_md_idx tuto $foldername)
         
         for file in $files;
         do 
             echo " ... ... $file"
             outfile=`basename $file .md`
-            pandoc -s --mathjax -t dzslides --css $ETC_DIR/styles/tuto.css --slide-level=2 -H $TUTO_DIR/include-scripts.txt $TUTO_DIR/header.md $file -o toto.html
+            pandoc -s --mathjax -t dzslides --css etc/styles/tuto.css --slide-level=2 -H tuto/include-scripts.txt tuto/header.md $file -o toto.html
 
             cat toto.html | sed -e 's/>[ ]*</>\n</g' |\
                 sed -e 's/<section>/<section class="title">/' |\
@@ -596,31 +503,22 @@ function fct_sppas_tuto {
                 /<\/figure>/{infigure=0}\
                 /<embed /{if (infigure==1) {if (match($0,".wav")){gsub("<embed ", "<audio ", $0); gsub("/>", " controls> </audio>",$0);} \
                                             else {gsub("<embed ", "", $0);gsub("/>","",$0); lab=$0; vid=$0; sub(".mp4",".vtt",lab); $0="<video width=480 controls " vid "><track label=\"English\" kind=\"subtitles\" srclang=\"en\" " lab " default></video>";}}}\
-                {print}'  > $WEB_DIR/tutorial_${outfile}.html
+                {print}'  > web/tutorial_${outfile}.html
 
             rm toto.html
-            echo '<p><a href="tutorial_'${outfile}'.html">'`head -n1 $file | sed -e "s/[#]*//"`'</a></p>' >> $WEB_DIR/tutorial.html
+            echo '<p><a href="tutorial_'${outfile}'.html">'`head -n1 $file | sed -e "s/[#]*//"`'</a></p>' >> web/tutorial.html
         done
         i=$((i+1))
-        echo '<p><br></p>' >> $WEB_DIR/tutorial.html
+        echo '<p><br></p>' >> web/tutorial.html
 
     done
-    echo '<p><br><br></p>' >> $WEB_DIR/tutorial.html
-    cat $TUTO_DIR/tutorial_footer.html >> $WEB_DIR/tutorial.html
+    echo '<p><br><br></p>' >> web/tutorial.html
+    cat tuto/tutorial_footer.html >> web/tutorial.html
 
     # Package: erase old then copy new
-    rm -rf $WEB_DIR/$ETC_DIR
-    cp -r $ETC_DIR $WEB_DIR
+    rm -rf web/etc
+    cp -r etc web/
 
-}
-
-
-# Main function for the documentation
-function fct_documentation {
-    fct_echo_title "${PROGRAM_NAME} - Tutorials"
-    # fct_api_manual
-    # fct_uml_diagrams
-    fct_sppas_tuto
 }
 
 
@@ -660,6 +558,28 @@ function fct_clean_all {
 
  }
 
+# ===========================================================================
+# unused
+# ===========================================================================
+
+function fct_uml_diagrams {
+    echo -e "${BROWN} - $PROGRAM_NAME UML diagrams${NC}"
+    # test if yuml is ok. https://github.com/wandernauta/yuml/
+    type $BIN_DIR/yuml >& /dev/null
+    if [ $? -eq 1 ] ; then
+        # test if suml is ok. https://pypi.python.org/pypi/scruffy
+        type suml >& /dev/null
+        if [ $? -eq 1 ] ; then
+            echo -e "${RED}None of yuml or suml are working! Please, install at least one of them and try again.${NC}"
+            return 1
+        else
+            suml --png --class -i etc/figures/src/anndata.yuml -o etc/figures/anndata.png
+        fi
+    else
+        cat etc/figures/src/anndata.yuml | $BIN_DIR/yuml -f png -t class -s plain --scale 42 -o etc/figures/anndata.png
+    fi
+
+}
 
 # ===========================================================================
 # MAIN
@@ -673,9 +593,10 @@ fct_get_args "$@"         # Fix options from arguments
 fct_echo_header           # Print the header message on stdout
 
 if [ $DO_DIAGNOSIS == "True" ]; then fct_diagnosis; fi
-if [ $DO_MANUAL == "True" ];    then fct_documentation; fi
-if [ $DO_PACKAGE == "True" ];   then fct_clean_sppas; fct_package; fi
-if [ $DO_CLEAN == "True" ];   then fct_clean_all; fi
+if [ $DO_MANUAL == "True" ]; then fct_api_manual; fi
+if [ $DO_TUTO == "True" ]; then fct_sppas_tuto; fi
+if [ $DO_PACKAGE == "True" ]; then fct_clean_sppas; fct_package; fi
+if [ $DO_CLEAN == "True" ]; then fct_clean_all; fi
 
 fct_clean_test
 fct_echo_title "Terminated."

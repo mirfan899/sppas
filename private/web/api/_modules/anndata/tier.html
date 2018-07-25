@@ -1,22 +1,33 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>anndata.tier &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>anndata.tier &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -25,18 +36,18 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <h1>Source code for anndata.tier</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -75,26 +86,26 @@
 <span class="sd">    location (from lowest to highest).</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">sppas.src.utils.fileutils</span> <span class="k">import</span> <span class="n">sppasGUID</span>
-<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="k">import</span> <span class="n">sppasUnicode</span>
+<span class="kn">from</span> <span class="nn">sppas.src.utils.fileutils</span> <span class="kn">import</span> <span class="n">sppasGUID</span>
+<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="kn">import</span> <span class="n">sppasUnicode</span>
 
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">AnnDataIndexError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">IntervalBoundsError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">CtrlVocabContainsError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">TierAppendError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">TierAddError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">TrsAddError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">AnnDataTypeError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">AnnDataIndexError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">IntervalBoundsError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">CtrlVocabContainsError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">TierAppendError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">TierAddError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">TrsAddError</span>
 
-<span class="kn">from</span> <span class="nn">.annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">.annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
-<span class="kn">from</span> <span class="nn">.annlocation</span> <span class="k">import</span> <span class="n">sppasInterval</span>
-<span class="kn">from</span> <span class="nn">.annlocation</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">.metadata</span> <span class="k">import</span> <span class="n">sppasMetaData</span>
-<span class="kn">from</span> <span class="nn">.ctrlvocab</span> <span class="k">import</span> <span class="n">sppasCtrlVocab</span>
-<span class="kn">from</span> <span class="nn">.media</span> <span class="k">import</span> <span class="n">sppasMedia</span>
+<span class="kn">from</span> <span class="nn">.annlocation.point</span> <span class="kn">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">.annotation</span> <span class="kn">import</span> <span class="n">sppasAnnotation</span>
+<span class="kn">from</span> <span class="nn">.annlocation</span> <span class="kn">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">.annlocation</span> <span class="kn">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">.metadata</span> <span class="kn">import</span> <span class="n">sppasMetaData</span>
+<span class="kn">from</span> <span class="nn">.ctrlvocab</span> <span class="kn">import</span> <span class="n">sppasCtrlVocab</span>
+<span class="kn">from</span> <span class="nn">.media</span> <span class="kn">import</span> <span class="n">sppasMedia</span>
 
-<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c"># ----------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasTier"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier">[docs]</a><span class="k">class</span> <span class="nc">sppasTier</span><span class="p">(</span><span class="n">sppasMetaData</span><span class="p">):</span>
@@ -116,7 +127,7 @@
 <span class="sd">        - a parent (optional).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasTier.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ctrl_vocab</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">media</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasTier.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ctrl_vocab</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">media</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Creates a new sppasTier instance.</span>
 
 <span class="sd">        :param name: (str) Name of the tier. It is used as identifier.</span>
@@ -125,53 +136,53 @@
 <span class="sd">        :param parent: (sppasTranscription)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">sppasTier</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasTier</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__media</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__media</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="o">=</span> <span class="bp">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_ctrl_vocab</span><span class="p">(</span><span class="n">ctrl_vocab</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_media</span><span class="p">(</span><span class="n">media</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_parent</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_parent</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Getters</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Getters</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.get_name"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the identifier name of the tier. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.get_ctrl_vocab"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.get_ctrl_vocab">[docs]</a>    <span class="k">def</span> <span class="nf">get_ctrl_vocab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the controlled vocabulary of the tier. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.get_media"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.get_media">[docs]</a>    <span class="k">def</span> <span class="nf">get_media</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the media of the tier. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__media</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__media</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.get_parent"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.get_parent">[docs]</a>    <span class="k">def</span> <span class="nf">get_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the parent of the tier. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Setters</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Setters</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.create_meta_id"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.create_meta_id">[docs]</a>    <span class="k">def</span> <span class="nf">create_meta_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a metadata with &#39;id&#39; as key and a GUID as value.</span>
 
@@ -179,12 +190,12 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">guid</span> <span class="o">=</span> <span class="n">sppasGUID</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">guid</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">guid</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span> <span class="n">guid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">guid</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasTier.set_name"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.set_name">[docs]</a>    <span class="k">def</span> <span class="nf">set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasTier.set_name"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.set_name">[docs]</a>    <span class="k">def</span> <span class="nf">set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set the name of the tier.</span>
 <span class="sd">        If no name is given, an GUID is randomly assigned.</span>
 
@@ -192,43 +203,43 @@
 <span class="sd">        :returns: the formatted name</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">create_meta_id</span><span class="p">()</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">)</span>
         <span class="n">su</span> <span class="o">=</span> <span class="n">sppasUnicode</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__name</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">to_strip</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasTier.set_ctrl_vocab"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.set_ctrl_vocab">[docs]</a>    <span class="k">def</span> <span class="nf">set_ctrl_vocab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctrl_vocab</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasTier.set_ctrl_vocab"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.set_ctrl_vocab">[docs]</a>    <span class="k">def</span> <span class="nf">set_ctrl_vocab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctrl_vocab</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set a controlled vocabulary to this tier.</span>
 
 <span class="sd">        :param ctrl_vocab: (sppasCtrlVocab or None)</span>
 <span class="sd">        :raises: AnnDataTypeError, CtrlVocabContainsError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">ctrl_vocab</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ctrl_vocab</span><span class="p">,</span> <span class="n">sppasCtrlVocab</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">ctrl_vocab</span><span class="p">,</span> <span class="s2">&quot;sppasCtrlVocab&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ctrl_vocab</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ctrl_vocab</span><span class="p">,</span> <span class="n">sppasCtrlVocab</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">ctrl_vocab</span><span class="p">,</span> <span class="s">&quot;sppasCtrlVocab&quot;</span><span class="p">)</span>
 
-            <span class="c1"># Check all annotation tags to validate the ctrl_vocab before assignment</span>
+            <span class="c"># Check all annotation tags to validate the ctrl_vocab before assignment</span>
             <span class="k">for</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">annotation</span><span class="o">.</span><span class="n">get_labels</span><span class="p">():</span>
                     <span class="n">annotation</span><span class="o">.</span><span class="n">validate_label</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span><span class="o">.</span><span class="n">add_ctrl_vocab</span><span class="p">(</span><span class="n">ctrl_vocab</span><span class="p">)</span>
                 <span class="k">except</span> <span class="n">TrsAddError</span><span class="p">:</span>
                     <span class="k">pass</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span> <span class="o">=</span> <span class="n">ctrl_vocab</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span> <span class="o">=</span> <span class="n">ctrl_vocab</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.set_media"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.set_media">[docs]</a>    <span class="k">def</span> <span class="nf">set_media</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set a media to the tier.</span>
 
@@ -236,19 +247,19 @@
 <span class="sd">        :raises: AnnDataTypeError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">media</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">media</span><span class="p">,</span> <span class="n">sppasMedia</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">media</span><span class="p">,</span> <span class="s2">&quot;sppasMedia&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">media</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">media</span><span class="p">,</span> <span class="n">sppasMedia</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">media</span><span class="p">,</span> <span class="s">&quot;sppasMedia&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span><span class="o">.</span><span class="n">add_media</span><span class="p">(</span><span class="n">media</span><span class="p">)</span>
                 <span class="k">except</span> <span class="n">TrsAddError</span><span class="p">:</span>
                     <span class="k">pass</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__media</span> <span class="o">=</span> <span class="n">media</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__media</span> <span class="o">=</span> <span class="n">media</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.set_parent"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.set_parent">[docs]</a>    <span class="k">def</span> <span class="nf">set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set the parent of the tier.</span>
 
@@ -257,23 +268,23 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="o">=</span> <span class="n">parent</span>
 
-        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># add the media to the parent</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__media</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># add the media to the parent</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__media</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span><span class="o">.</span><span class="n">add_media</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__media</span><span class="p">)</span>
                 <span class="k">except</span> <span class="n">TrsAddError</span><span class="p">:</span>
                     <span class="k">pass</span>
 
-            <span class="c1"># add the controlled vocabulary to the parent</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c"># add the controlled vocabulary to the parent</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span><span class="o">.</span><span class="n">add_ctrl_vocab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span><span class="p">)</span>
                 <span class="k">except</span> <span class="n">TrsAddError</span><span class="p">:</span>
-                    <span class="k">pass</span></div>
+                    <span class="k">pass</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.copy"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a deep copy of the tier. &quot;&quot;&quot;</span>
         
@@ -283,13 +294,13 @@
         <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">:</span>
             <span class="n">new_tier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
 
-        <span class="k">return</span> <span class="n">new_tier</span></div>
+        <span class="k">return</span> <span class="n">new_tier</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Annotations</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasTier.create_annotation"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.create_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">create_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Annotations</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasTier.create_annotation"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.create_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">create_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create and add a new annotation into the tier.</span>
 
 <span class="sd">        :param location: (sppasLocation) the location(s) where the annotation happens</span>
@@ -299,17 +310,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ann</span> <span class="o">=</span> <span class="n">sppasAnnotation</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ann</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ann</span></div>
+        <span class="k">return</span> <span class="n">ann</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.is_empty"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.is_empty">[docs]</a>    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the tier does not contain annotations. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></div>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.append"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Append the given annotation at the end of the tier.</span>
 <span class="sd">        Assign this tier as parent to the annotation.</span>
@@ -328,10 +339,10 @@
             <span class="k">if</span> <span class="n">end</span> <span class="o">&gt;</span> <span class="n">new</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">TierAppendError</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.add"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add an annotation to the tier in sorted order.</span>
 <span class="sd">        Assign this tier as parent to the annotation.</span>
@@ -358,11 +369,11 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mindex</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">(),</span> <span class="n">bound</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-                <span class="c1"># We go further to look at the next localizations until the begin is smaller.</span>
+                <span class="c"># We go further to look at the next localizations until the begin is smaller.</span>
                 <span class="k">while</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="ow">and</span> \
                         <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">annotation</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">():</span>
                     <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="c1"># We go further to look at the next localizations until the end is smaller.</span>
+                <span class="c"># We go further to look at the next localizations until the end is smaller.</span>
                 <span class="k">while</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="ow">and</span> \
                         <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span> <span class="o">==</span> <span class="n">annotation</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span> <span class="ow">and</span> \
                         <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">annotation</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">():</span>
@@ -378,11 +389,11 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">annotation</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
 
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span></div>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasTier.remove"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">overlaps</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasTier.remove"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">overlaps</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Remove intervals between begin and end.</span>
 
 <span class="sd">        :param begin: (sppasPoint)</span>
@@ -398,10 +409,10 @@
         <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">annotations</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">annotations</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">annotations</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.pop"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.pop">[docs]</a>    <span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Remove the annotation at the given position in the tier,</span>
 <span class="sd">        and return it. If no index is specified, pop() removes</span>
@@ -413,12 +424,12 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataIndexError</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="n">AnnDataIndexError</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Localizations</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Localizations</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.get_all_points"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.get_all_points">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the list of all points of the tier. &quot;&quot;&quot;</span>
 
@@ -429,30 +440,30 @@
         <span class="k">for</span> <span class="n">ann</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">:</span>
             <span class="n">points</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ann</span><span class="o">.</span><span class="n">get_all_points</span><span class="p">())</span>
 
-        <span class="k">return</span> <span class="n">points</span></div>
+        <span class="k">return</span> <span class="n">points</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.get_first_point"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.get_first_point">[docs]</a>    <span class="k">def</span> <span class="nf">get_first_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the first point of the first annotation. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="bp">None</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.get_last_point"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.get_last_point">[docs]</a>    <span class="k">def</span> <span class="nf">get_last_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the last point of the last location. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="bp">None</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.has_point"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.has_point">[docs]</a>    <span class="k">def</span> <span class="nf">has_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the tier contains a given point.</span>
 
@@ -460,44 +471,44 @@
 <span class="sd">        :returns: Boolean</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">sppasPoint</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="s2">&quot;sppasPoint&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">sppasPoint</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="s">&quot;sppasPoint&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">point</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_points</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="n">point</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_points</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.is_disjoint"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.is_disjoint">[docs]</a>    <span class="k">def</span> <span class="nf">is_disjoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the tier is made of disjoint localizations. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">is_disjoint</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">is_disjoint</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.is_interval"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.is_interval">[docs]</a>    <span class="k">def</span> <span class="nf">is_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the tier is made of interval localizations. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">is_interval</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">is_interval</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.is_point"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.is_point">[docs]</a>    <span class="k">def</span> <span class="nf">is_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the tier is made of point localizations. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasTier.find"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">overlaps</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasTier.find"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">overlaps</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a list of annotations between begin and end.</span>
 
 <span class="sd">        :param begin: sppasPoint or None to start from the beginning of the tier</span>
@@ -509,19 +520,19 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-        <span class="k">if</span> <span class="n">begin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">begin</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">begin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_first_point</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">end</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_last_point</span><span class="p">()</span>
 
-        <span class="c1"># Out of interval!</span>
+        <span class="c"># Out of interval!</span>
         <span class="k">if</span> <span class="n">begin</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_last_point</span><span class="p">()</span> <span class="ow">or</span> <span class="n">end</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_first_point</span><span class="p">():</span>
             <span class="k">return</span> <span class="p">[]</span>
 
         <span class="n">annotations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
 
             <span class="n">lo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">lo</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
@@ -537,7 +548,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">lo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__find</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">overlaps</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">overlaps</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
 
                 <span class="k">if</span> <span class="n">lo</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">tmp_annotations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -569,10 +580,10 @@
                     <span class="k">if</span> <span class="n">b</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="p">:</span>
                         <span class="k">break</span>
 
-        <span class="k">return</span> <span class="n">annotations</span></div>
+        <span class="k">return</span> <span class="n">annotations</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.index"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.index">[docs]</a>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moment</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the index of the moment (int), or -1.</span>
 <span class="sd">        Only for tier with points.</span>
@@ -580,13 +591,13 @@
 <span class="sd">        :param moment: (sppasPoint)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 
         <span class="n">lo</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">hi</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span>
         <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="k">while</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
             <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
             <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span>
@@ -595,16 +606,16 @@
             <span class="k">elif</span> <span class="n">moment</span> <span class="o">&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">():</span>
                 <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
                 <span class="k">break</span>
 
-        <span class="k">if</span> <span class="n">found</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">found</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 
-        <span class="k">return</span> <span class="n">mid</span></div>
+        <span class="k">return</span> <span class="n">mid</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.lindex"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.lindex">[docs]</a>    <span class="k">def</span> <span class="nf">lindex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moment</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the index of the interval starting at a given moment, or -1.</span>
 <span class="sd">        If the tier contains more than one annotation starting at the same moment,</span>
@@ -614,13 +625,13 @@
 <span class="sd">        :param moment: (sppasPoint)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 
         <span class="n">lo</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">hi</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span>
         <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="k">while</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
             <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
             <span class="n">begin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span>
@@ -629,21 +640,21 @@
             <span class="k">elif</span> <span class="n">moment</span> <span class="o">&gt;</span> <span class="n">begin</span><span class="p">:</span>
                 <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
                 <span class="k">break</span>
-        <span class="k">if</span> <span class="n">found</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">found</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
         <span class="k">if</span> <span class="n">mid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
 
-        <span class="c1"># We go back to look at the previous localizations until they are different.</span>
+        <span class="c"># We go back to look at the previous localizations until they are different.</span>
         <span class="k">while</span> <span class="n">mid</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span> <span class="o">==</span> <span class="n">moment</span><span class="p">:</span>
             <span class="n">mid</span> <span class="o">-=</span> <span class="mi">1</span>
 
-        <span class="k">return</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span></div>
+        <span class="k">return</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.mindex"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.mindex">[docs]</a>    <span class="k">def</span> <span class="nf">mindex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moment</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the index of the interval containing the given moment, or -1.</span>
 <span class="sd">        If the tier contains more than one annotation at the same moment,</span>
@@ -659,7 +670,7 @@
 <span class="sd">        :returns: (int) Index of the annotation containing a moment</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">):</span>
@@ -678,10 +689,10 @@
                 <span class="k">if</span> <span class="n">b</span> <span class="o">&lt;</span> <span class="n">moment</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">e</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">i</span>
 
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></div>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.rindex"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.rindex">[docs]</a>    <span class="k">def</span> <span class="nf">rindex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moment</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the index of the interval ending at the given moment.</span>
 <span class="sd">        If the tier contains more than one annotation ending at the same moment,</span>
@@ -691,13 +702,13 @@
 <span class="sd">        :param moment: (sppasPoint)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 
         <span class="n">lo</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">hi</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span>
         <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="k">while</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
             <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
             <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span>
@@ -706,22 +717,22 @@
             <span class="k">elif</span> <span class="n">moment</span> <span class="o">&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">():</span>
                 <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
                 <span class="k">break</span>
 
-        <span class="k">if</span> <span class="n">found</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">found</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
         <span class="k">if</span> <span class="n">mid</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">mid</span>
 
-        <span class="c1"># We go further to look at the next localizations until they are different.</span>
+        <span class="c"># We go further to look at the next localizations until they are different.</span>
         <span class="k">while</span> <span class="n">mid</span><span class="o">+</span><span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">()</span> <span class="o">==</span> <span class="n">moment</span><span class="p">:</span>
             <span class="n">mid</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="k">return</span> <span class="n">mid</span></div>
+        <span class="k">return</span> <span class="n">mid</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.is_superset"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.is_superset">[docs]</a>    <span class="k">def</span> <span class="nf">is_superset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if this tier contains all points of the other tier.</span>
 
@@ -730,19 +741,19 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="bp">True</span>
 
         <span class="n">tier_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_points</span><span class="p">()</span>
         <span class="n">other_points</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_all_points</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">other_points</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">op</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tier_points</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span>
+                <span class="k">return</span> <span class="bp">False</span>
 
-        <span class="k">return</span> <span class="kc">True</span></div>
+        <span class="k">return</span> <span class="bp">True</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.near"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.near">[docs]</a>    <span class="k">def</span> <span class="nf">near</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moment</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the index of the annotation whose localization is closest</span>
 <span class="sd">        to the given moment for a given direction.</span>
@@ -765,7 +776,7 @@
 
         <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
-        <span class="c1"># forward</span>
+        <span class="c"># forward</span>
         <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">moment</span> <span class="o">&lt;</span> <span class="n">a</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">():</span>
                 <span class="k">return</span> <span class="n">index</span>
@@ -773,7 +784,7 @@
                 <span class="k">return</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 
-        <span class="c1"># backward</span>
+        <span class="c"># backward</span>
         <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">moment</span> <span class="o">&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">():</span>
                 <span class="k">return</span> <span class="n">index</span>
@@ -781,17 +792,17 @@
                 <span class="k">return</span> <span class="n">index</span><span class="o">-</span><span class="mi">1</span>
             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 
-        <span class="c1"># direction == 0 (select the nearest)</span>
+        <span class="c"># direction == 0 (select the nearest)</span>
 
-        <span class="c1"># if time is during an annotation</span>
+        <span class="c"># if time is during an annotation</span>
         <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">moment</span> <span class="o">&lt;=</span> <span class="n">a</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">index</span>
 
-        <span class="c1"># then, the nearest is either the current or the next annotation</span>
+        <span class="c"># then, the nearest is either the current or the next annotation</span>
         <span class="n">_next</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">_next</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">):</span>
-            <span class="c1"># no next</span>
+            <span class="c"># no next</span>
             <span class="k">return</span> <span class="n">index</span>
 
         <span class="n">time</span> <span class="o">=</span> <span class="n">moment</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span>
@@ -800,69 +811,69 @@
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">time</span> <span class="o">-</span> <span class="n">prev_time</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">next_time</span> <span class="o">-</span> <span class="n">time</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">_next</span>
 
-        <span class="k">return</span> <span class="n">index</span></div>
+        <span class="k">return</span> <span class="n">index</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Labels</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Labels</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.is_string"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.is_string">[docs]</a>    <span class="k">def</span> <span class="nf">is_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; All label tags are string or unicode or None. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">for</span> <span class="n">ann</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">is_labelled</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">is_labelled</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">ann</span><span class="o">.</span><span class="n">label_is_string</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="bp">False</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.is_float"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.is_float">[docs]</a>    <span class="k">def</span> <span class="nf">is_float</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; All label tags are float values or None. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">for</span> <span class="n">ann</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">is_labelled</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">is_labelled</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">ann</span><span class="o">.</span><span class="n">label_is_float</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="bp">False</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.is_int"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.is_int">[docs]</a>    <span class="k">def</span> <span class="nf">is_int</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; All label tags are integer values or None. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">for</span> <span class="n">ann</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">is_labelled</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">is_labelled</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">ann</span><span class="o">.</span><span class="n">label_is_int</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="bp">False</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.is_bool"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.is_bool">[docs]</a>    <span class="k">def</span> <span class="nf">is_bool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; All label tags are boolean values or None. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">for</span> <span class="n">ann</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">is_labelled</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">is_labelled</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">ann</span><span class="o">.</span><span class="n">label_is_bool</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="bp">False</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasTier.search"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tags</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">forward</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">any_tag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">function</span><span class="o">=</span><span class="s1">&#39;exact&#39;</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasTier.search"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tags</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">forward</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">any_tag</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">function</span><span class="o">=</span><span class="s">&#39;exact&#39;</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the index in the tier of the first annotation whose a tag matches.</span>
 
 <span class="sd">        :param tags: (list) the list of sppasTag to search</span>
@@ -889,11 +900,11 @@
 
         <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">pos</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">contains</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span><span class="o">.</span><span class="n">contains_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">reverse</span><span class="p">)</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">any_tag</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">any_tag</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
                 <span class="n">found</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">contains</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">found</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">contains</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">found</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">found</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">pos</span>
 
             <span class="k">if</span> <span class="n">forward</span><span class="p">:</span>
@@ -901,12 +912,12 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">pos</span> <span class="o">-=</span> <span class="mi">1</span>
 
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></div>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Annotation validation</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Annotation validation</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.validate_annotation"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.validate_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">validate_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Validate the annotation and set its parent to this tier.</span>
 
@@ -914,28 +925,28 @@
 <span class="sd">        :raises: AnnDataTypeError, CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Check instance:</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">sppasAnnotation</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="s2">&quot;sppasAnnotation&quot;</span><span class="p">)</span>
+        <span class="c"># Check instance:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">sppasAnnotation</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="s">&quot;sppasAnnotation&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Check if annotation is relevant for this tier</span>
-        <span class="c1">#  - same localization type?</span>
-        <span class="c1">#  - same label type?</span>
-        <span class="c1">#  - label consistency</span>
-        <span class="c1">#  - location consistency</span>
+        <span class="c"># Check if annotation is relevant for this tier</span>
+        <span class="c">#  - same localization type?</span>
+        <span class="c">#  - same label type?</span>
+        <span class="c">#  - label consistency</span>
+        <span class="c">#  - location consistency</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">annotation</span><span class="o">.</span><span class="n">location_is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; (sppasPoint)&quot;</span><span class="p">,</span> <span class="s2">&quot;sppasInterval&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">annotation</span><span class="o">.</span><span class="n">location_is_interval</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_interval</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; (sppasInterval)&quot;</span><span class="p">,</span> <span class="s2">&quot;sppasPoint&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">annotation</span><span class="o">.</span><span class="n">location_is_disjoint</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_disjoint</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="s2">&quot;sppasDisjoint&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">annotation</span><span class="o">.</span><span class="n">location_is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span><span class="o">+</span><span class="s">&quot; (sppasPoint)&quot;</span><span class="p">,</span> <span class="s">&quot;sppasInterval&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">annotation</span><span class="o">.</span><span class="n">location_is_interval</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_interval</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span><span class="o">+</span><span class="s">&quot; (sppasInterval)&quot;</span><span class="p">,</span> <span class="s">&quot;sppasPoint&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">annotation</span><span class="o">.</span><span class="n">location_is_disjoint</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_disjoint</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="s">&quot;sppasDisjoint&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Assigning a parent will validate the label and the location</span>
-        <span class="n">annotation</span><span class="o">.</span><span class="n">set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="c"># Assigning a parent will validate the label and the location</span>
+        <span class="n">annotation</span><span class="o">.</span><span class="n">set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.validate_annotation_label"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.validate_annotation_label">[docs]</a>    <span class="k">def</span> <span class="nf">validate_annotation_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Validate a label.</span>
 
@@ -943,34 +954,34 @@
 <span class="sd">        :raises: CtrlVocabContainsError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Check if controlled vocabulary</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c"># Check if controlled vocabulary</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">label</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">is_empty</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">is_empty</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">False</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">CtrlVocabContainsError</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
 
-        <span class="c1"># in this tier, no typed tag is already assigned.</span>
-        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_bool</span><span class="p">()</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_float</span><span class="p">()</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_int</span><span class="p">()</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_string</span><span class="p">())</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="c"># in this tier, no typed tag is already assigned.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_bool</span><span class="p">()</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_float</span><span class="p">()</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_int</span><span class="p">()</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_string</span><span class="p">())</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="c1"># check if the current label has the same tag type than</span>
-        <span class="c1"># the already defined ones.</span>
+        <span class="c"># check if the current label has the same tag type than</span>
+        <span class="c"># the already defined ones.</span>
         <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">():</span>
 
-            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_string</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_string</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="s2">&quot;str&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_string</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_string</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="s">&quot;str&quot;</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_float</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_float</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_float</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_float</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="s">&quot;float&quot;</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_int</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_int</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_int</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_int</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="s">&quot;int&quot;</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_bool</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_bool</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="s2">&quot;bool&quot;</span><span class="p">)</span></div>
+            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_bool</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_bool</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="s">&quot;bool&quot;</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.validate_annotation_location"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.validate_annotation_location">[docs]</a>    <span class="k">def</span> <span class="nf">validate_annotation_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Ask the parent to validate a location.</span>
 
@@ -978,11 +989,11 @@
 <span class="sd">        :raises: AnnDataTypeError, HierarchyContainsError, HierarchyTypeError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span><span class="o">.</span><span class="n">validate_annotation_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span><span class="o">.</span><span class="n">validate_annotation_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.get_annotation"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.get_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">get_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Find an annotation from its metadata &#39;id&#39;.</span>
 
@@ -991,15 +1002,15 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">identifier</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">identifier</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">a</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="bp">None</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Utils</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasTier.create_ctrl_vocab"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.create_ctrl_vocab">[docs]</a>    <span class="k">def</span> <span class="nf">create_ctrl_vocab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Utils</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasTier.create_ctrl_vocab"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.create_ctrl_vocab">[docs]</a>    <span class="k">def</span> <span class="nf">create_ctrl_vocab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create (or re-create) the controlled vocabulary from the list of</span>
 <span class="sd">        already existing annotation labels.</span>
 
@@ -1009,7 +1020,7 @@
 <span class="sd">        the tier is used by default.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span> <span class="o">=</span> <span class="n">sppasCtrlVocab</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
@@ -1017,10 +1028,10 @@
             <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_labels</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">():</span>
                     <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">label</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span></div>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__ctrl_vocab</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.set_radius"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.set_radius">[docs]</a>    <span class="k">def</span> <span class="nf">set_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fix a radius value to all points of the tier.</span>
 
@@ -1028,10 +1039,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">ann</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">:</span>
-            <span class="n">ann</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">set_radius</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span></div>
+            <span class="n">ann</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">set_radius</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTier.export_to_intervals"><a class="viewcode-back" href="../../rst/anndata.html#anndata.tier.sppasTier.export_to_intervals">[docs]</a>    <span class="k">def</span> <span class="nf">export_to_intervals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">separators</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a tier with the consecutive filled intervals.</span>
 <span class="sd">        The created intervals are not filled.</span>
@@ -1040,19 +1051,19 @@
 <span class="sd">        :returns: (sppasTier)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">intervals</span> <span class="o">=</span> <span class="n">sppasTier</span><span class="p">(</span><span class="s2">&quot;intervals&quot;</span><span class="p">)</span>
+        <span class="n">intervals</span> <span class="o">=</span> <span class="n">sppasTier</span><span class="p">(</span><span class="s">&quot;intervals&quot;</span><span class="p">)</span>
         <span class="n">begin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_first_point</span><span class="p">()</span>
         <span class="n">end</span> <span class="o">=</span> <span class="n">begin</span>
-        <span class="n">prev_ann</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">prev_ann</span> <span class="o">=</span> <span class="bp">None</span>
 
         <span class="k">for</span> <span class="n">ann</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">:</span>
-            <span class="n">tag</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="bp">None</span>
             <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">label_is_filled</span><span class="p">():</span>
                 <span class="n">tag</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_best_tag</span><span class="p">()</span>
 
-            <span class="k">if</span> <span class="n">prev_ann</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="c1"># if no tag or stop tag or hole between prev_ann and ann</span>
-                <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> \
+            <span class="k">if</span> <span class="n">prev_ann</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="c"># if no tag or stop tag or hole between prev_ann and ann</span>
+                <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> \
                    <span class="n">tag</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">()</span> <span class="ow">in</span> <span class="n">separators</span> <span class="ow">or</span> \
                    <span class="n">prev_ann</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">():</span>
                     <span class="k">if</span> <span class="n">end</span> <span class="o">&gt;</span> <span class="n">begin</span><span class="p">:</span>
@@ -1060,13 +1071,13 @@
                               <span class="n">sppasInterval</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span>
                                             <span class="n">prev_ann</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">())))</span>
 
-                    <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">()</span> <span class="ow">in</span> <span class="n">separators</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">()</span> <span class="ow">in</span> <span class="n">separators</span><span class="p">:</span>
                         <span class="n">begin</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">()</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">begin</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># phonemes can start with a non-labelled interval!</span>
-                <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">()</span> <span class="ow">in</span> <span class="n">separators</span><span class="p">:</span>
+                <span class="c"># phonemes can start with a non-labelled interval!</span>
+                <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">()</span> <span class="ow">in</span> <span class="n">separators</span><span class="p">:</span>
                     <span class="n">begin</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">()</span>
 
             <span class="n">end</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">()</span>
@@ -1077,12 +1088,12 @@
             <span class="n">end</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">()</span>
             <span class="n">intervals</span><span class="o">.</span><span class="n">create_annotation</span><span class="p">(</span><span class="n">sppasLocation</span><span class="p">(</span><span class="n">sppasInterval</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">)))</span>
 
-        <span class="k">return</span> <span class="n">intervals</span></div>
+        <span class="k">return</span> <span class="n">intervals</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Private</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Private</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
     <span class="k">def</span> <span class="nf">__find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the index of the annotation whose moment value contains x.</span>
 
@@ -1091,12 +1102,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">is_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span>
         <span class="n">lo</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">hi</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span>  <span class="c1"># - 1</span>
+        <span class="n">hi</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span>  <span class="c"># - 1</span>
         <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
         <span class="k">while</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
             <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
             <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">is_point</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_point</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
                 <span class="n">p</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="n">x</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">mid</span>
@@ -1104,37 +1115,37 @@
                     <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="k">else</span><span class="p">:</span>  <span class="c1"># Interval or Disjoint</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c"># Interval or Disjoint</span>
                 <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span>
                 <span class="n">e</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="n">x</span> <span class="ow">or</span> <span class="n">b</span> <span class="o">&lt;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="c1"># print(&quot;FOUND: mid=&quot;+str(mid))</span>
-                    <span class="c1"># if direction != 1:</span>
-                    <span class="c1">#     # We go back to look at the previous localizations until they are greater.</span>
-                    <span class="c1">#     while mid &gt;= 0 and self.__ann[mid].get_lowest_localization() &gt;= x:</span>
-                    <span class="c1">#         mid -= 1</span>
-                    <span class="c1">#</span>
-                    <span class="c1"># else:</span>
-                    <span class="c1">#     # We go further to look at the next localizations until they are lowest.</span>
-                    <span class="c1">#     while mid + 1 &lt; len(self.__ann) and self.__ann[mid + 1].get_highest_localization() &lt;= x:</span>
-                    <span class="c1">#         mid += 1</span>
-                    <span class="c1">#</span>
+                    <span class="c"># print(&quot;FOUND: mid=&quot;+str(mid))</span>
+                    <span class="c"># if direction != 1:</span>
+                    <span class="c">#     # We go back to look at the previous localizations until they are greater.</span>
+                    <span class="c">#     while mid &gt;= 0 and self.__ann[mid].get_lowest_localization() &gt;= x:</span>
+                    <span class="c">#         mid -= 1</span>
+                    <span class="c">#</span>
+                    <span class="c"># else:</span>
+                    <span class="c">#     # We go further to look at the next localizations until they are lowest.</span>
+                    <span class="c">#     while mid + 1 &lt; len(self.__ann) and self.__ann[mid + 1].get_highest_localization() &lt;= x:</span>
+                    <span class="c">#         mid += 1</span>
+                    <span class="c">#</span>
                     <span class="k">return</span> <span class="n">mid</span>
                 <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">e</span><span class="p">:</span>
                     <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
 
-        <span class="c1"># We failed to find an annotation at time=x. return the closest...</span>
+        <span class="c"># We failed to find an annotation at time=x. return the closest...</span>
         <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">hi</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">lo</span>
         <span class="k">return</span> <span class="n">mid</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Overloads</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Overloads</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ann</span><span class="p">:</span>
@@ -1150,25 +1161,26 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -1177,13 +1189,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

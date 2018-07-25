@@ -1,22 +1,33 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>audiodata.aio.aiffio &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>audiodata.aio.aiffio &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../../index.html" />
+    <link rel="up" title="audiodata.aio" href="../aio.html" /> 
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -25,19 +36,20 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../aio.html" accesskey="U">audiodata.aio</a> &#187;</li> 
+        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../audiodata.html" >audiodata</a> &raquo;</li>
+          <li><a href="../aio.html" accesskey="U">audiodata.aio</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <h1>Source code for audiodata.aio.aiffio</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
 <span class="sd">         ___   __    __    __    ___</span>
@@ -77,12 +89,12 @@
 <span class="kn">import</span> <span class="nn">struct</span>
 <span class="kn">import</span> <span class="nn">aifc</span>
 
-<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="k">import</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="kn">import</span> <span class="n">u</span>
 
-<span class="kn">from</span> <span class="nn">..audio</span> <span class="k">import</span> <span class="n">sppasAudioPCM</span>
-<span class="kn">from</span> <span class="nn">..audiodataexc</span> <span class="k">import</span> <span class="n">AudioDataError</span>
+<span class="kn">from</span> <span class="nn">..audio</span> <span class="kn">import</span> <span class="n">sppasAudioPCM</span>
+<span class="kn">from</span> <span class="nn">..audiodataexc</span> <span class="kn">import</span> <span class="n">AudioDataError</span>
 
-<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c"># ---------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="AiffIO"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.aiffio.AiffIO">[docs]</a><span class="k">class</span> <span class="nc">AiffIO</span><span class="p">(</span><span class="n">sppasAudioPCM</span><span class="p">):</span>
@@ -98,28 +110,28 @@
 <div class="viewcode-block" id="AiffIO.__init__"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.aiffio.AiffIO.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Constructor. &quot;&quot;&quot;</span>
 
-        <span class="n">sppasAudioPCM</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">sppasAudioPCM</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="AiffIO.open"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.aiffio.AiffIO.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get an audio from an Audio Interchange File Format file.</span>
 
 <span class="sd">        :param filename: (str) input file name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Passing a unicode filename to aifc.open() results in the argument</span>
-        <span class="c1"># being treated like a filepointer instead of opening the file.</span>
-        <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">u</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+        <span class="c"># Passing a unicode filename to aifc.open() results in the argument</span>
+        <span class="c"># being treated like a filepointer instead of opening the file.</span>
+        <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">u</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="s">&quot;r&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Use the standard aifc library to load the audio file</span>
-        <span class="c1"># open method return an Aifc_read object</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_audio_fp</span> <span class="o">=</span> <span class="n">aifc</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span></div>
+        <span class="c"># Use the standard aifc library to load the audio file</span>
+        <span class="c"># open method return an Aifc_read object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_audio_fp</span> <span class="o">=</span> <span class="n">aifc</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
 
-    <span class="c1"># ----------------------------------------------------------------------</span>
-    <span class="c1"># Read content, for audiofp</span>
-    <span class="c1"># ----------------------------------------------------------------------</span>
-
+    <span class="c"># ----------------------------------------------------------------------</span>
+    <span class="c"># Read content, for audiofp</span>
+    <span class="c"># ----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="AiffIO.read_frames"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.aiffio.AiffIO.read_frames">[docs]</a>    <span class="k">def</span> <span class="nf">read_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nframes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Specific frame reader for aiff files.</span>
 
@@ -135,17 +147,17 @@
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_audio_fp</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="n">nframes</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sampwidth</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;</span><span class="si">%u</span><span class="s2">l&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%u</span><span class="s2">l&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">&quot;&gt;</span><span class="si">%u</span><span class="s">l&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s">&quot;&lt;</span><span class="si">%u</span><span class="s">l&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sampwidth</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;</span><span class="si">%u</span><span class="s2">h&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%u</span><span class="s2">h&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">&quot;&gt;</span><span class="si">%u</span><span class="s">h&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s">&quot;&lt;</span><span class="si">%u</span><span class="s">h&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">data</span></div>
+        <span class="k">return</span> <span class="n">data</span>
 
-    <span class="c1"># ----------------------------------------------------------------------</span>
-
+    <span class="c"># ----------------------------------------------------------------------</span>
+</div>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_write_frames</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Specific writer for aiff files.</span>
@@ -157,17 +169,17 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">fp</span><span class="o">.</span><span class="n">getsampwidth</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%u</span><span class="s2">l&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&gt;</span><span class="si">%u</span><span class="s2">l&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span> <span class="o">*</span><span class="n">data</span><span class="p">))</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">&quot;&lt;</span><span class="si">%u</span><span class="s">l&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s">&quot;&gt;</span><span class="si">%u</span><span class="s">l&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span> <span class="o">*</span><span class="n">data</span><span class="p">))</span>
 
         <span class="k">elif</span> <span class="n">fp</span><span class="o">.</span><span class="n">getsampwidth</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%u</span><span class="s2">h&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&gt;</span><span class="si">%u</span><span class="s2">h&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span> <span class="o">*</span><span class="n">data</span><span class="p">))</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">&quot;&lt;</span><span class="si">%u</span><span class="s">h&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">data</span><span class="p">)</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s">&quot;&gt;</span><span class="si">%u</span><span class="s">h&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span> <span class="o">*</span><span class="n">data</span><span class="p">))</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">fp</span><span class="o">.</span><span class="n">writeframes</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
-    <span class="c1"># ----------------------------------------------------------------------</span>
+    <span class="c"># ----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="AiffIO.save"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.aiffio.AiffIO.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write an audio content as a Audio Interchange File Format file.</span>
@@ -175,14 +187,14 @@
 <span class="sd">        :param filename: (str) output filename.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_audio_fp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_audio_fp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rewind</span><span class="p">()</span>
             <span class="n">frames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_audio_fp</span><span class="o">.</span><span class="n">readframes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_audio_fp</span><span class="o">.</span><span class="n">getnframes</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save_fragment</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">frames</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+            <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">aifc</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
             <span class="n">f</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">f</span><span class="o">.</span><span class="n">setsampwidth</span><span class="p">(</span><span class="n">channel</span><span class="o">.</span><span class="n">get_sampwidth</span><span class="p">())</span>
@@ -196,14 +208,14 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">verify_channels</span><span class="p">()</span>
 
-            <span class="n">frames</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">frames</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
             <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_sampwidth</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_nframes</span><span class="p">()</span><span class="o">*</span><span class="n">sp</span><span class="p">,</span> <span class="n">sp</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="p">)):</span>
                     <span class="n">fc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">get_frames</span><span class="p">()</span>
                     <span class="n">frames</span> <span class="o">+=</span> <span class="n">fc</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">sp</span><span class="p">]</span>
 
-            <span class="n">f</span> <span class="o">=</span> <span class="n">aifc</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">aifc</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
             <span class="n">f</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="p">))</span>
             <span class="n">f</span><span class="o">.</span><span class="n">setsampwidth</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
             <span class="n">f</span><span class="o">.</span><span class="n">setframerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">())</span>
@@ -211,10 +223,10 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">AiffIO</span><span class="o">.</span><span class="n">_write_frames</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">frames</span><span class="p">)</span>
             <span class="k">finally</span><span class="p">:</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+                <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="AiffIO.save_fragment"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.aiffio.AiffIO.save_fragment">[docs]</a>    <span class="k">def</span> <span class="nf">save_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">frames</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write an audio content as a Audio Interchange File Format file.</span>
 
@@ -222,7 +234,7 @@
 <span class="sd">        :param frames (str) the frames to write</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">u</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">u</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
         <span class="n">f</span> <span class="o">=</span> <span class="n">aifc</span><span class="o">.</span><span class="n">Aifc_write</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
         <span class="n">f</span><span class="o">.</span><span class="n">setnchannels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_nchannels</span><span class="p">())</span>
         <span class="n">f</span><span class="o">.</span><span class="n">setsampwidth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_sampwidth</span><span class="p">())</span>
@@ -239,25 +251,26 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -266,14 +279,15 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../aio.html" >audiodata.aio</a> &#187;</li> 
+        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../audiodata.html" >audiodata</a> &raquo;</li>
+          <li><a href="../aio.html" >audiodata.aio</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

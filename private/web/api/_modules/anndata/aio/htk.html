@@ -1,22 +1,33 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>anndata.aio.htk &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>anndata.aio.htk &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -25,18 +36,18 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <h1>Source code for anndata.aio.htk</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -76,23 +87,23 @@
 
 <span class="kn">import</span> <span class="nn">sppas</span>
 
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioMultiTiersError</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioLocationTypeError</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
-<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="k">import</span> <span class="n">sppasLabel</span>
-<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AioMultiTiersError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AioLocationTypeError</span>
+<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="kn">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="kn">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="kn">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="kn">import</span> <span class="n">sppasLabel</span>
+<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="kn">import</span> <span class="n">sppasTag</span>
 
-<span class="kn">from</span> <span class="nn">.basetrs</span> <span class="k">import</span> <span class="n">sppasBaseIO</span>
-<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">load</span>
+<span class="kn">from</span> <span class="nn">.basetrs</span> <span class="kn">import</span> <span class="n">sppasBaseIO</span>
+<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="kn">import</span> <span class="n">load</span>
 
-<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c"># ---------------------------------------------------------------------------</span>
 
-<span class="c1"># time values are in multiples of 100ns</span>
+<span class="c"># time values are in multiples of 100ns</span>
 <span class="n">TIME_UNIT</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">7</span><span class="p">)</span>
 
-<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c"># ---------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasBaseHTK"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasBaseHTK">[docs]</a><span class="k">class</span> <span class="nc">sppasBaseHTK</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">):</span>
@@ -105,36 +116,36 @@
 <span class="sd">    :summary:      SPPAS HTK files reader and writer.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasBaseHTK.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasBaseHTK.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasBaseHTK.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasBaseHTK.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new sppasMLF instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
 
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_metadata</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_ctrl_vocab</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_media</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_hierarchy</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_point</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_interval</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_disjoint</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_localization</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_tag</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_radius</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># to be verified</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_metadata</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_ctrl_vocab</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_media</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_hierarchy</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_point</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_interval</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_disjoint</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_localization</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_tag</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_radius</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="bp">False</span>  <span class="c"># to be verified</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasBaseHTK.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasBaseHTK.make_point">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">time_string</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="sppasBaseHTK.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasBaseHTK.make_point">[docs]</a>    <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">time_string</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert data into the appropriate sppasPoint().</span>
 <span class="sd">        No radius if data is an integer. A default radius of 0.001 if data is a</span>
 <span class="sd">        float.</span>
@@ -144,17 +155,17 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">TIME_UNIT</span><span class="p">)</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">time_string</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">sppasPoint</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">sppasPoint</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_time</span><span class="p">(</span><span class="n">second_count</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert a time in seconds into HTK format. &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="n">TIME_UNIT</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">second_count</span><span class="p">))</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_annotation</span><span class="p">(</span><span class="n">ann</span><span class="p">):</span>
@@ -164,29 +175,29 @@
 <span class="sd">        :returns: (str)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">serialize_labels</span><span class="p">(</span><span class="n">separator</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">alt</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">serialize_labels</span><span class="p">(</span><span class="n">separator</span><span class="o">=</span><span class="s">&quot; &quot;</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">alt</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
-        <span class="c1"># no label defined, or empty label</span>
+        <span class="c"># no label defined, or empty label</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
         <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">is_point</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="n">AioLocationTypeError</span><span class="p">(</span><span class="s1">&#39;HTK Label&#39;</span><span class="p">,</span> <span class="s1">&#39;points&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">AioLocationTypeError</span><span class="p">(</span><span class="s">&#39;HTK Label&#39;</span><span class="p">,</span> <span class="s">&#39;points&#39;</span><span class="p">)</span>
 
         <span class="n">begin</span> <span class="o">=</span> <span class="n">sppasBaseHTK</span><span class="o">.</span><span class="n">_format_time</span><span class="p">(</span><span class="n">ann</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">())</span>
         <span class="n">end</span> <span class="o">=</span> <span class="n">sppasBaseHTK</span><span class="o">.</span><span class="n">_format_time</span><span class="p">(</span><span class="n">ann</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">())</span>
 
-        <span class="k">if</span> <span class="s1">&#39; &#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
-            <span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:d}</span><span class="s2"> </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s">&#39; &#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="s">&quot;{:d} {:d}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># one &quot;token&quot; at a line, and only begin at first</span>
-            <span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="c"># one &quot;token&quot; at a line, and only begin at first</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="s">&quot;{:d}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2"> </span><span class="si">{:s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s">&quot;{:s} {:s}</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
 
-<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c"># ---------------------------------------------------------------------------</span>
 
-
+</div>
 <div class="viewcode-block" id="sppasLab"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasLab">[docs]</a><span class="k">class</span> <span class="nc">sppasLab</span><span class="p">(</span><span class="n">sppasBaseHTK</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
@@ -224,8 +235,8 @@
 <span class="sd">    *************  Only simple transcription is implemented yet.  ***********</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasLab.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasLab.detect">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="sppasLab.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasLab.detect">[docs]</a>    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check whether a file is of HTK-Lab format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
@@ -233,42 +244,42 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
                 <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
         <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
-        <span class="c1"># the first line contains at least 2 columns</span>
+        <span class="c"># the first line contains at least 2 columns</span>
         <span class="n">tab</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="c1"># First column is the start time: an integer</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="c"># First column is the start time: an integer</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
-        <span class="k">return</span> <span class="n">sppasBaseIO</span><span class="o">.</span><span class="n">is_number</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="n">sppasBaseIO</span><span class="o">.</span><span class="n">is_number</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasLab.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasLab.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasLab.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasLab.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new sppasLab instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
 
-        <span class="n">sppasBaseHTK</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;lab&quot;</span></div>
+        <span class="n">sppasBaseHTK</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s">&quot;lab&quot;</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasLab.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasLab.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Read a transcription from a file.</span>
 
@@ -276,8 +287,8 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s1">&#39;Trans-MLF&#39;</span><span class="p">)</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s">&#39;Trans-MLF&#39;</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
         <span class="n">prev_end</span> <span class="o">=</span> <span class="n">sppasBaseHTK</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
@@ -295,27 +306,27 @@
                                      <span class="n">sppasBaseHTK</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
 
                 <span class="n">text</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-                <span class="n">score</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">score</span> <span class="o">=</span> <span class="bp">None</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">score</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
                     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                        <span class="c1"># todo: auxiliary labels or comment</span>
+                        <span class="c"># todo: auxiliary labels or comment</span>
                         <span class="k">pass</span>
 
                 <span class="n">tier</span><span class="o">.</span><span class="n">create_annotation</span><span class="p">(</span><span class="n">sppasLocation</span><span class="p">(</span><span class="n">time</span><span class="p">),</span> <span class="n">sppasLabel</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="n">score</span><span class="p">))</span>
-                <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
                 <span class="n">prev_end</span> <span class="o">=</span> <span class="n">sppasBaseHTK</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
             <span class="k">elif</span> <span class="n">has_begin</span><span class="p">:</span>
-                <span class="n">text</span> <span class="o">=</span> <span class="n">text</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-                <span class="c1"># todo: auxiliary labels or comment</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">text</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="c"># todo: auxiliary labels or comment</span>
 
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">text</span> <span class="o">=</span> <span class="n">text</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">)</span></div>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">text</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasLab.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasLab.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write a transcription into a file.</span>
 
@@ -323,11 +334,11 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AioMultiTiersError</span><span class="p">(</span><span class="s2">&quot;HTK Label&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">AioMultiTiersError</span><span class="p">(</span><span class="s">&quot;HTK Label&quot;</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8096</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8096</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">ann</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
                     <span class="n">content</span> <span class="o">=</span> <span class="n">sppasBaseHTK</span><span class="o">.</span><span class="n">_serialize_annotation</span><span class="p">(</span><span class="n">ann</span><span class="p">)</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -339,25 +350,26 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -366,13 +378,13 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

@@ -1,22 +1,33 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>calculus.scoring.ubpa &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>calculus.scoring.ubpa &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../../index.html" />
+    <link rel="up" title="calculus" href="../../calculus.html" /> 
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -25,18 +36,19 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../calculus.html" accesskey="U">calculus</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <h1>Source code for calculus.scoring.ubpa</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -83,9 +95,9 @@
 
 
 <span class="k">def</span> <span class="nf">_eval_index</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span> <span class="o">%</span> <span class="n">step</span><span class="p">)</span>  <span class="c1"># Estimate the rest</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="o">-</span><span class="n">m</span><span class="p">)</span>       <span class="c1"># Make &quot;d&quot; an entire value</span>
-    <span class="n">index</span> <span class="o">=</span> <span class="n">d</span><span class="o">/</span><span class="n">step</span>      <span class="c1"># evaluate the index depending on step</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span> <span class="o">%</span> <span class="n">step</span><span class="p">)</span>  <span class="c"># Estimate the rest</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="o">-</span><span class="n">m</span><span class="p">)</span>       <span class="c"># Make &quot;d&quot; an entire value</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">d</span><span class="o">/</span><span class="n">step</span>      <span class="c"># evaluate the index depending on step</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
 
 
@@ -96,7 +108,7 @@
     <span class="n">vector</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 
 
-<div class="viewcode-block" id="ubpa"><a class="viewcode-back" href="../../../rst/calculus.html#calculus.ubpa">[docs]</a><span class="k">def</span> <span class="nf">ubpa</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">delta_max</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+<div class="viewcode-block" id="ubpa"><a class="viewcode-back" href="../../../rst/calculus.scoring.html#calculus.scoring.ubpa.ubpa">[docs]</a><span class="k">def</span> <span class="nf">ubpa</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">delta_max</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Estimates the Unit Boundary Positioning Accuracy.</span>
 
 <span class="sd">    :param vector: contains the list of the delta values.</span>
@@ -108,7 +120,7 @@
 <span class="sd">    :returns: (tab_neg, tab_pos) with number of occurrences of each position</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Estimates the UBPA</span>
+    <span class="c"># Estimates the UBPA</span>
     <span class="n">tab_neg</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">tab_pos</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -120,58 +132,58 @@
             <span class="n">idx</span> <span class="o">=</span> <span class="n">_eval_index</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">delta</span><span class="o">*-</span><span class="mf">1.</span><span class="p">)</span>
             <span class="n">_inc</span><span class="p">(</span><span class="n">tab_neg</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
 
-    <span class="c1"># Print the result</span>
+    <span class="c"># Print the result</span>
     <span class="n">nb_values</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
     <span class="n">verif_values</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;|--------------------------------------------| </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;|      Unit Boundary Positioning Accuracy    | </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;|            Delta=T(hyp)-T(ref)             | </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;|--------------------------------------------| </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;|--------------------------------------------| </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;|      Unit Boundary Positioning Accuracy    | </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;|            Delta=T(hyp)-T(ref)             | </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;|--------------------------------------------| </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
     <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tab_neg</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
     <span class="n">percentsum</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">tab_neg</span><span class="p">):</span>
         <span class="n">verif_values</span> <span class="o">+=</span> <span class="n">value</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">step</span> <span class="o">&lt;=</span> <span class="n">delta_max</span><span class="p">:</span>
             <span class="n">percent</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span><span class="o">*</span><span class="mf">100.</span><span class="p">)</span> <span class="o">/</span> <span class="n">nb_values</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;|  Delta-</span><span class="si">%s</span><span class="s2"> &lt; -</span><span class="si">%.3f</span><span class="s2">: </span><span class="si">%d</span><span class="s2"> (</span><span class="si">%.2f%%</span><span class="s2">) </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">step</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">percent</span><span class="p">))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;|  Delta-</span><span class="si">%s</span><span class="s"> &lt; -</span><span class="si">%.3f</span><span class="s">: </span><span class="si">%d</span><span class="s"> (</span><span class="si">%.2f%%</span><span class="s">) </span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">step</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">percent</span><span class="p">))</span>
             <span class="n">percentsum</span> <span class="o">+=</span> <span class="n">percent</span>
         <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
-    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;|--------------------------------------------| </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;|--------------------------------------------| </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tab_pos</span><span class="p">):</span>
         <span class="n">verif_values</span> <span class="o">+=</span> <span class="n">value</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">step</span> <span class="o">&lt;=</span> <span class="n">delta_max</span><span class="p">:</span>
             <span class="n">percent</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(((</span><span class="n">value</span><span class="o">*</span><span class="mf">100.</span><span class="p">)</span><span class="o">/</span><span class="n">nb_values</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;|  Delta-</span><span class="si">%s</span><span class="s2"> &lt; +</span><span class="si">%.3f</span><span class="s2">: &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="p">((</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">step</span><span class="p">)))</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> (</span><span class="si">%.2f%%</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">percent</span><span class="p">))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;|  Delta-</span><span class="si">%s</span><span class="s"> &lt; +</span><span class="si">%.3f</span><span class="s">: &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="p">((</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">step</span><span class="p">)))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%d</span><span class="s"> (</span><span class="si">%.2f%%</span><span class="s">)</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">percent</span><span class="p">))</span>
             <span class="n">percentsum</span> <span class="o">+=</span> <span class="n">percent</span>
-    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;|--------------------------------------------| </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;| Total: </span><span class="si">{0:.2f}</span><span class="s2"> %                           | </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">percentsum</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
-    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;|--------------------------------------------| </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
-
-</pre></div>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;|--------------------------------------------| </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;| Total: {0:.2f} %                           | </span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">percentsum</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;|--------------------------------------------| </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+</pre></div></div>
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -180,13 +192,14 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../calculus.html" >calculus</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

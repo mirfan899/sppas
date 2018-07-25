@@ -1,22 +1,33 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>utils.maketext &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>utils.maketext &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../index.html" />
+    <link rel="up" title="utils" href="../utils.html" /> 
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -25,18 +36,19 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../utils.html" accesskey="U">utils</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <h1>Source code for utils.maketext</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -89,10 +101,10 @@
 <span class="kn">import</span> <span class="nn">gettext</span>
 <span class="kn">import</span> <span class="nn">locale</span>
 
-<span class="kn">from</span> <span class="nn">sppas</span> <span class="k">import</span> <span class="n">BASE_PATH</span>
-<span class="kn">from</span> <span class="nn">.makeunicode</span> <span class="k">import</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">sppas</span> <span class="kn">import</span> <span class="n">BASE_PATH</span>
+<span class="kn">from</span> <span class="nn">.makeunicode</span> <span class="kn">import</span> <span class="n">u</span>
 
-<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c"># ---------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="T"><a class="viewcode-back" href="../../rst/utils.html#utils.maketext.T">[docs]</a><span class="k">class</span> <span class="nc">T</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -105,17 +117,17 @@
 <span class="sd">    :summary:      Utility class to simulate the GNUTranslations class.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="T.gettext"><a class="viewcode-back" href="../../rst/utils.html#utils.maketext.T.gettext">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">gettext</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="T.gettext"><a class="viewcode-back" href="../../rst/utils.html#utils.maketext.T.gettext">[docs]</a>    <span class="k">def</span> <span class="nf">gettext</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="T.ugettext"><a class="viewcode-back" href="../../rst/utils.html#utils.maketext.T.ugettext">[docs]</a>    <span class="k">def</span> <span class="nf">ugettext</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-<div class="viewcode-block" id="T.ugettext"><a class="viewcode-back" href="../../rst/utils.html#utils.maketext.T.ugettext">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">ugettext</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div></div>
+<span class="c"># ---------------------------------------------------------------------------</span>
 
-<span class="c1"># ---------------------------------------------------------------------------</span>
-
-
+</div></div>
 <div class="viewcode-block" id="get_lang_list"><a class="viewcode-back" href="../../rst/utils.html#utils.maketext.get_lang_list">[docs]</a><span class="k">def</span> <span class="nf">get_lang_list</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; Return the list of languages depending on the default locale.</span>
 
@@ -125,17 +137,17 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">lc</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">getdefaultlocale</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">lc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">lc</span><span class="p">,</span> <span class="s2">&quot;en_US&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">lc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">lc</span><span class="p">,</span> <span class="s">&quot;en_US&quot;</span><span class="p">]</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="k">pass</span>
 
-    <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;en_US&quot;</span><span class="p">]</span></div>
+    <span class="k">return</span> <span class="p">[</span><span class="s">&quot;en_US&quot;</span><span class="p">]</span>
 
-<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c"># ---------------------------------------------------------------------------</span>
 
-
-<div class="viewcode-block" id="translate"><a class="viewcode-back" href="../../rst/utils.html#utils.maketext.translate">[docs]</a><span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="translate"><a class="viewcode-back" href="../../rst/utils.html#utils.maketext.translate">[docs]</a><span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Fix the domain to translate messages and to activate the gettext method.</span>
 
 <span class="sd">    :param domain: (str) Name of the domain.</span>
@@ -145,57 +157,58 @@
 <span class="sd">    :returns: (GNUTranslations)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">language</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># Get the list of languages to be installed.</span>
+    <span class="k">if</span> <span class="n">language</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="c"># Get the list of languages to be installed.</span>
         <span class="n">lang</span> <span class="o">=</span> <span class="n">get_lang_list</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">lang</span> <span class="o">=</span> <span class="p">[</span><span class="n">language</span><span class="p">]</span>
-        <span class="k">if</span> <span class="s2">&quot;en_US&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lang</span><span class="p">:</span>
-            <span class="n">lang</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;en_US&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s">&quot;en_US&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lang</span><span class="p">:</span>
+            <span class="n">lang</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;en_US&#39;</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="c1"># Install translation for the local language and English</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">gettext</span><span class="o">.</span><span class="n">translation</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="s2">&quot;po&quot;</span><span class="p">),</span> <span class="n">lang</span><span class="p">)</span>
+        <span class="c"># Install translation for the local language and English</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">gettext</span><span class="o">.</span><span class="n">translation</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="s">&quot;po&quot;</span><span class="p">),</span> <span class="n">lang</span><span class="p">)</span>
         <span class="n">t</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">t</span>
 
     <span class="k">except</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># Install translation for English only</span>
-            <span class="n">t</span> <span class="o">=</span> <span class="n">gettext</span><span class="o">.</span><span class="n">translation</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="s2">&quot;po&quot;</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;en_US&quot;</span><span class="p">])</span>
+            <span class="c"># Install translation for English only</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">gettext</span><span class="o">.</span><span class="n">translation</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="s">&quot;po&quot;</span><span class="p">),</span> <span class="p">[</span><span class="s">&quot;en_US&quot;</span><span class="p">])</span>
             <span class="n">t</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">t</span>
 
         <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
             <span class="k">pass</span>
 
-    <span class="c1"># No language installed. The messages won&#39;t be translated;</span>
-    <span class="c1"># at least they are converted to unicode.</span>
+    <span class="c"># No language installed. The messages won&#39;t be translated;</span>
+    <span class="c"># at least they are converted to unicode.</span>
     <span class="k">return</span> <span class="n">T</span><span class="p">()</span></div>
 </pre></div>
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -204,13 +217,14 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../utils.html" >utils</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

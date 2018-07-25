@@ -1,22 +1,33 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>anndata.transcription &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>anndata.transcription &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -25,18 +36,18 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <h1>Source code for anndata.transcription</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -73,25 +84,25 @@
 <span class="sd">    A transcription is a set of tiers.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">sppas.src.utils.fileutils</span> <span class="k">import</span> <span class="n">sppasGUID</span>
-<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="k">import</span> <span class="n">sppasUnicode</span>
+<span class="kn">from</span> <span class="nn">sppas.src.utils.fileutils</span> <span class="kn">import</span> <span class="n">sppasGUID</span>
+<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="kn">import</span> <span class="n">sppasUnicode</span>
 
 <span class="kn">import</span> <span class="nn">sppas</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">TrsAddError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">TrsRemoveError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">AnnDataIndexError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">TierHierarchyError</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">TrsInvalidTierError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">AnnDataTypeError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">TrsAddError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">TrsRemoveError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">AnnDataIndexError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">TierHierarchyError</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">TrsInvalidTierError</span>
 
-<span class="kn">from</span> <span class="nn">.metadata</span> <span class="k">import</span> <span class="n">sppasMetaData</span>
-<span class="kn">from</span> <span class="nn">.ctrlvocab</span> <span class="k">import</span> <span class="n">sppasCtrlVocab</span>
-<span class="kn">from</span> <span class="nn">.media</span> <span class="k">import</span> <span class="n">sppasMedia</span>
-<span class="kn">from</span> <span class="nn">.tier</span> <span class="k">import</span> <span class="n">sppasTier</span>
-<span class="kn">from</span> <span class="nn">.hierarchy</span> <span class="k">import</span> <span class="n">sppasHierarchy</span>
-<span class="kn">from</span> <span class="nn">.annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
+<span class="kn">from</span> <span class="nn">.metadata</span> <span class="kn">import</span> <span class="n">sppasMetaData</span>
+<span class="kn">from</span> <span class="nn">.ctrlvocab</span> <span class="kn">import</span> <span class="n">sppasCtrlVocab</span>
+<span class="kn">from</span> <span class="nn">.media</span> <span class="kn">import</span> <span class="n">sppasMedia</span>
+<span class="kn">from</span> <span class="nn">.tier</span> <span class="kn">import</span> <span class="n">sppasTier</span>
+<span class="kn">from</span> <span class="nn">.hierarchy</span> <span class="kn">import</span> <span class="n">sppasHierarchy</span>
+<span class="kn">from</span> <span class="nn">.annotation</span> <span class="kn">import</span> <span class="n">sppasAnnotation</span>
 
-<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c"># ----------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasTranscription"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription">[docs]</a><span class="k">class</span> <span class="nc">sppasTranscription</span><span class="p">(</span><span class="n">sppasMetaData</span><span class="p">):</span>
@@ -123,63 +134,63 @@
 <span class="sd">    &gt;&gt;&gt; tier = trs[0]</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasTranscription.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasTranscription.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Creates a new sppasTranscription instance.</span>
 
 <span class="sd">        :param name: (str) Name of the transcription. It is used as identifier.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">sppasTranscription</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasTranscription</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_media</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>      <span class="c1"># a list of sppasMedia() instances</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ctrlvocab</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># a list of sppasCtrlVocab() instances</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>      <span class="c1"># a list of sppasTier() instances</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_media</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>      <span class="c"># a list of sppasMedia() instances</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ctrlvocab</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c"># a list of sppasCtrlVocab() instances</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>      <span class="c"># a list of sppasTier() instances</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_hierarchy</span> <span class="o">=</span> <span class="n">sppasHierarchy</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="c1"># Add metadata about SPPAS, the language and the license.</span>
+        <span class="c"># Add metadata about SPPAS, the language and the license.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_software_metadata</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_language_metadata</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_license_metadata</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_license_metadata</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Name</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Name</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.get_name"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the identifier name of the transcription. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasTranscription.set_name"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.set_name">[docs]</a>    <span class="k">def</span> <span class="nf">set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasTranscription.set_name"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.set_name">[docs]</a>    <span class="k">def</span> <span class="nf">set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set the name of the transcription.</span>
 
 <span class="sd">        :param name: (str or None) The identifier name or None.</span>
 <span class="sd">        :returns: the name</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">sppasGUID</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="n">su</span> <span class="o">=</span> <span class="n">sppasUnicode</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">to_strip</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-    <span class="c1"># Media</span>
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+    <span class="c"># Media</span>
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.get_media_list"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.get_media_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_media_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the list of sppasMedia. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.get_media_from_id"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.get_media_from_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_media_from_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a sppasMedia from its name or None.</span>
 
@@ -188,12 +199,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">idt</span> <span class="o">=</span> <span class="n">media_id</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">idt</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">idt</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">m</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="bp">None</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.add_media"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.add_media">[docs]</a>    <span class="k">def</span> <span class="nf">add_media</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_media</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add a new media in the list of media.</span>
 <span class="sd">         Do not add the media if a media with the same id is already in self.</span>
@@ -202,17 +213,17 @@
 <span class="sd">        :raises: AnnDataTypeError, TrsAddError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_media</span><span class="p">,</span> <span class="n">sppasMedia</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">new_media</span><span class="p">,</span> <span class="s2">&quot;sppasMedia&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_media</span><span class="p">,</span> <span class="n">sppasMedia</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">new_media</span><span class="p">,</span> <span class="s">&quot;sppasMedia&quot;</span><span class="p">)</span>
 
-        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">new_media</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">new_media</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">TrsAddError</span><span class="p">(</span><span class="n">new_media</span><span class="o">.</span><span class="n">get_filename</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_media</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_media</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_media</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_media</span><span class="p">)</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.remove_media"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.remove_media">[docs]</a>    <span class="k">def</span> <span class="nf">remove_media</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old_media</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Remove a media of the list of media.</span>
 
@@ -221,7 +232,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">old_media</span><span class="p">,</span> <span class="n">sppasMedia</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">old_media</span><span class="p">,</span> <span class="s2">&quot;sppasMedia&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">old_media</span><span class="p">,</span> <span class="s">&quot;sppasMedia&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">old_media</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">TrsRemoveError</span><span class="p">(</span><span class="n">old_media</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
@@ -229,10 +240,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_media</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">old_media</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_media</span><span class="p">()</span> <span class="o">==</span> <span class="n">old_media</span><span class="p">:</span>
-                <span class="n">tier</span><span class="o">.</span><span class="n">set_media</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span></div>
+                <span class="n">tier</span><span class="o">.</span><span class="n">set_media</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.set_media_list"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.set_media_list">[docs]</a>    <span class="k">def</span> <span class="nf">set_media_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_list</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set the list of media.</span>
 
@@ -248,19 +259,19 @@
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">rejected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">rejected</span></div>
+        <span class="k">return</span> <span class="n">rejected</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-    <span class="c1"># Controlled vocabularies</span>
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+    <span class="c"># Controlled vocabularies</span>
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.get_ctrl_vocab_list"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.get_ctrl_vocab_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_ctrl_vocab_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the list of controlled vocabularies. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ctrlvocab</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ctrlvocab</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.get_ctrl_vocab_from_name"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.get_ctrl_vocab_from_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_ctrl_vocab_from_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctrl_vocab_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a sppasCtrlVocab from its name or None.</span>
 
@@ -272,10 +283,10 @@
             <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="n">idt</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">c</span>
 
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="bp">None</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.add_ctrl_vocab"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.add_ctrl_vocab">[docs]</a>    <span class="k">def</span> <span class="nf">add_ctrl_vocab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_ctrl_vocab</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add a new controlled vocabulary in the list of ctrl vocab.</span>
 
@@ -284,16 +295,16 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_ctrl_vocab</span><span class="p">,</span> <span class="n">sppasCtrlVocab</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">new_ctrl_vocab</span><span class="p">,</span> <span class="s2">&quot;sppasCtrlVocab&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">new_ctrl_vocab</span><span class="p">,</span> <span class="s">&quot;sppasCtrlVocab&quot;</span><span class="p">)</span>
 
         <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ctrlvocab</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">new_ctrl_vocab</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">TrsAddError</span><span class="p">(</span><span class="n">new_ctrl_vocab</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ctrlvocab</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_ctrl_vocab</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ctrlvocab</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_ctrl_vocab</span><span class="p">)</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.remove_ctrl_vocab"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.remove_ctrl_vocab">[docs]</a>    <span class="k">def</span> <span class="nf">remove_ctrl_vocab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old_ctrl_vocab</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Remove a controlled vocabulary of the list of ctrl vocab.</span>
 
@@ -302,7 +313,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">old_ctrl_vocab</span><span class="p">,</span> <span class="n">sppasCtrlVocab</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">old_ctrl_vocab</span><span class="p">,</span> <span class="s2">&quot;sppasCtrlVocab&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">old_ctrl_vocab</span><span class="p">,</span> <span class="s">&quot;sppasCtrlVocab&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">old_ctrl_vocab</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ctrlvocab</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">TrsRemoveError</span><span class="p">(</span><span class="n">old_ctrl_vocab</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
@@ -310,10 +321,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_ctrlvocab</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">old_ctrl_vocab</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">()</span> <span class="o">==</span> <span class="n">old_ctrl_vocab</span><span class="p">:</span>
-                <span class="n">tier</span><span class="o">.</span><span class="n">set_ctrl_vocab</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span></div>
+                <span class="n">tier</span><span class="o">.</span><span class="n">set_ctrl_vocab</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.set_ctrl_vocab_list"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.set_ctrl_vocab_list">[docs]</a>    <span class="k">def</span> <span class="nf">set_ctrl_vocab_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctrl_vocab_list</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set the list of controlled vocabularies.</span>
 
@@ -329,12 +340,12 @@
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">rejected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">rejected</span></div>
+        <span class="k">return</span> <span class="n">rejected</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-    <span class="c1"># Hierarchy</span>
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+    <span class="c"># Hierarchy</span>
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.add_hierarchy_link"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.add_hierarchy_link">[docs]</a>    <span class="k">def</span> <span class="nf">add_hierarchy_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link_type</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Validate and add a hierarchy link between 2 tiers.</span>
 
@@ -349,10 +360,10 @@
         <span class="k">if</span> <span class="n">child_tier</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">TrsInvalidTierError</span><span class="p">(</span><span class="n">parent_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_hierarchy</span><span class="o">.</span><span class="n">add_link</span><span class="p">(</span><span class="n">link_type</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hierarchy</span><span class="o">.</span><span class="n">add_link</span><span class="p">(</span><span class="n">link_type</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.validate_annotation_location"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.validate_annotation_location">[docs]</a>    <span class="k">def</span> <span class="nf">validate_annotation_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tier</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Validate a location.</span>
 
@@ -361,17 +372,17 @@
 <span class="sd">        :raises: AnnDataTypeError, HierarchyContainsError, HierarchyTypeError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># if tier is a child</span>
+        <span class="c"># if tier is a child</span>
         <span class="n">parent_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hierarchy</span><span class="o">.</span><span class="n">get_parent</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">parent_tier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">parent_tier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">link_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hierarchy</span><span class="o">.</span><span class="n">get_hierarchy_type</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;TimeAssociation&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s">&quot;TimeAssociation&quot;</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">TierHierarchyError</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
 
-            <span class="c1"># The parent must have such location...</span>
-            <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;TimeAlignment&quot;</span><span class="p">:</span>
-                <span class="c1"># Find annotations in the parent, matching with our location</span>
+            <span class="c"># The parent must have such location...</span>
+            <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s">&quot;TimeAlignment&quot;</span><span class="p">:</span>
+                <span class="c"># Find annotations in the parent, matching with our location</span>
                 <span class="k">if</span> <span class="n">location</span><span class="o">.</span><span class="n">is_point</span><span class="p">():</span>
                     <span class="n">lowest</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">location</span><span class="p">])</span>
                     <span class="n">highest</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">location</span><span class="p">])</span>
@@ -380,7 +391,7 @@
                     <span class="n">highest</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">location</span><span class="p">])</span>
                 <span class="n">anns</span> <span class="o">=</span> <span class="n">parent_tier</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">lowest</span><span class="p">,</span> <span class="n">highest</span><span class="p">)</span>
 
-                <span class="c1"># Check if all localization are matching, so without checking the scores.</span>
+                <span class="c"># Check if all localization are matching, so without checking the scores.</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">anns</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">TierHierarchyError</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
 
@@ -391,46 +402,46 @@
                 <span class="n">find_points</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get_all_points</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">find_points</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">point</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
-                        <span class="c1"># print(&quot;{} not in {}. {}.&quot;.format(point, points, type(point)))</span>
+                        <span class="c"># print(&quot;{} not in {}. {}.&quot;.format(point, points, type(point)))</span>
                         <span class="k">raise</span> <span class="n">TierHierarchyError</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># if current tier is a parent</span>
+            <span class="c"># if current tier is a parent</span>
             <span class="k">for</span> <span class="n">child_tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hierarchy</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="n">tier</span><span class="p">):</span>
                 <span class="n">link_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hierarchy</span><span class="o">.</span><span class="n">get_hierarchy_type</span><span class="p">(</span><span class="n">child_tier</span><span class="p">)</span>
 
-                <span class="c1"># Ensure the hierarchy is still valid with children</span>
-                <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;TimeAssociation&quot;</span><span class="p">:</span>
+                <span class="c"># Ensure the hierarchy is still valid with children</span>
+                <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s">&quot;TimeAssociation&quot;</span><span class="p">:</span>
                     <span class="n">sppasHierarchy</span><span class="o">.</span><span class="n">validate_time_association</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;TimeAlignment&quot;</span><span class="p">:</span>
-                    <span class="n">sppasHierarchy</span><span class="o">.</span><span class="n">validate_time_alignment</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">)</span></div>
+                <span class="k">elif</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s">&quot;TimeAlignment&quot;</span><span class="p">:</span>
+                    <span class="n">sppasHierarchy</span><span class="o">.</span><span class="n">validate_time_alignment</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.get_hierarchy"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.get_hierarchy">[docs]</a>    <span class="k">def</span> <span class="nf">get_hierarchy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the hierarchy. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hierarchy</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hierarchy</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Tiers</span>
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Tiers</span>
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.get_tier_list"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.get_tier_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_tier_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the list of tiers. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.is_empty"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.is_empty">[docs]</a>    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the transcription does not contains tiers. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></div>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasTranscription.find"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasTranscription.find"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Find a tier from its name.</span>
 
 <span class="sd">        :param name: (str) EXACT name of the tier</span>
@@ -446,10 +457,10 @@
                 <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
                     <span class="k">return</span> <span class="n">tier</span>
 
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="bp">None</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.find_id"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.find_id">[docs]</a>    <span class="k">def</span> <span class="nf">find_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tier_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Find a tier from its identifier.</span>
 
@@ -459,14 +470,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tier_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tier_id</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">tier_id</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">tier_id</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">tier</span>
 
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="bp">None</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasTranscription.get_tier_index"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.get_tier_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_tier_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasTranscription.get_tier_index"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.get_tier_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_tier_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get the index of a tier from its name.</span>
 
 <span class="sd">        :param name: (str) EXACT name of the tier</span>
@@ -476,13 +487,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">sppasUnicode</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">to_strip</span><span class="p">()</span>
         <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasTranscription.set_tier_index"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.set_tier_index">[docs]</a>    <span class="k">def</span> <span class="nf">set_tier_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">new_index</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasTranscription.set_tier_index"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.set_tier_index">[docs]</a>    <span class="k">def</span> <span class="nf">set_tier_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">new_index</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get the index of a tier from its name.</span>
 
 <span class="sd">        :param name: (str) EXACT name of the tier</span>
@@ -498,10 +509,10 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">new_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">old_index</span><span class="p">))</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IndexError</span></div>
+            <span class="k">raise</span> <span class="ne">IndexError</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.rename_tier"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.rename_tier">[docs]</a>    <span class="k">def</span> <span class="nf">rename_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Rename a tier by appending a digit.</span>
 
@@ -509,18 +520,18 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">sppasTier</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="s2">&quot;sppasTier&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="s">&quot;sppasTier&quot;</span><span class="p">)</span>
 
         <span class="n">name</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
         <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
-        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">i</span><span class="p">)</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s">u&quot;</span><span class="si">%s</span><span class="s">(</span><span class="si">%d</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">i</span><span class="p">)</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">tier</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+        <span class="n">tier</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasTranscription.create_tier"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.create_tier">[docs]</a>    <span class="k">def</span> <span class="nf">create_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ctrl_vocab</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">media</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasTranscription.create_tier"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.create_tier">[docs]</a>    <span class="k">def</span> <span class="nf">create_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ctrl_vocab</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">media</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create and append a new empty tier.</span>
 
 <span class="sd">        :param name: (str) the name of the tier to create</span>
@@ -532,10 +543,10 @@
         <span class="n">tier</span> <span class="o">=</span> <span class="n">sppasTier</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ctrl_vocab</span><span class="p">,</span> <span class="n">media</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">tier</span></div>
+        <span class="k">return</span> <span class="n">tier</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.append"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Append a new tier.</span>
 
@@ -546,22 +557,22 @@
             <span class="k">raise</span> <span class="n">TrsAddError</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">rename_tier</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_ctrl_vocab</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">())</span>
             <span class="k">except</span> <span class="n">TrsAddError</span><span class="p">:</span>
                 <span class="k">pass</span>
-        <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_media</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_media</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_media</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_media</span><span class="p">())</span>
             <span class="k">except</span> <span class="n">TrsAddError</span><span class="p">:</span>
                 <span class="k">pass</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span>
-        <span class="n">tier</span><span class="o">.</span><span class="n">set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">tier</span><span class="o">.</span><span class="n">set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.pop"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.pop">[docs]</a>    <span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Remove the tier at the given position in the transcription,</span>
 <span class="sd">        and return it. If no index is specified, pop() removes</span>
@@ -574,20 +585,20 @@
             <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_hierarchy</span><span class="o">.</span><span class="n">remove_tier</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
-            <span class="n">tier</span><span class="o">.</span><span class="n">set_parent</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">tier</span><span class="o">.</span><span class="n">set_parent</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">tier</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataIndexError</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="n">AnnDataIndexError</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.get_min_loc"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.get_min_loc">[docs]</a>    <span class="k">def</span> <span class="nf">get_min_loc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the sppasPoint with the lowest value through all tiers. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
-            <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="bp">None</span>
 
-        <span class="n">min_point</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">min_point</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
                 <span class="k">continue</span>
@@ -596,20 +607,20 @@
                 <span class="n">first_point</span> <span class="o">=</span> <span class="n">first_loc</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">first_point</span> <span class="o">=</span> <span class="n">first_loc</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">min_point</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">first_point</span> <span class="o">&lt;</span> <span class="n">min_point</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">min_point</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">first_point</span> <span class="o">&lt;</span> <span class="n">min_point</span><span class="p">:</span>
                 <span class="n">min_point</span> <span class="o">=</span> <span class="n">first_point</span>
 
-        <span class="k">return</span> <span class="n">min_point</span></div>
+        <span class="k">return</span> <span class="n">min_point</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTranscription.get_max_loc"><a class="viewcode-back" href="../../rst/anndata.html#anndata.transcription.sppasTranscription.get_max_loc">[docs]</a>    <span class="k">def</span> <span class="nf">get_max_loc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the sppasPoint with the highest value through all tiers. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
-            <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="bp">None</span>
 
-        <span class="n">max_point</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">max_point</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
                 <span class="k">continue</span>
@@ -618,25 +629,25 @@
                 <span class="n">last_point</span> <span class="o">=</span> <span class="n">last_loc</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">last_point</span> <span class="o">=</span> <span class="n">last_loc</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">max_point</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">last_point</span> <span class="o">&gt;</span> <span class="n">max_point</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">max_point</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">last_point</span> <span class="o">&gt;</span> <span class="n">max_point</span><span class="p">:</span>
                 <span class="n">max_point</span> <span class="o">=</span> <span class="n">last_point</span>
 
-        <span class="k">return</span> <span class="n">max_point</span></div>
+        <span class="k">return</span> <span class="n">max_point</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
-    <span class="c1"># Overloads</span>
-    <span class="c1"># ------------------------------------------------------------------------</span>
-
+    <span class="c"># ------------------------------------------------------------------------</span>
+    <span class="c"># Overloads</span>
+    <span class="c"># ------------------------------------------------------------------------</span>
+</div>
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="p">)</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
+    <span class="c"># ------------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">x</span>
 
-    <span class="c1"># ------------------------------------------------------------------------</span>
+    <span class="c"># ------------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tiers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></div>
@@ -645,25 +656,26 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -672,13 +684,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

@@ -1,22 +1,33 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>anndata.aio.transcriber &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>anndata.aio.transcriber &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -25,18 +36,18 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <h1>Source code for anndata.aio.transcriber</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -72,56 +83,56 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">codecs</span>
-<span class="kn">import</span> <span class="nn">xml.etree.cElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+<span class="kn">import</span> <span class="nn">xml.etree.cElementTree</span> <span class="kn">as</span> <span class="nn">ET</span>
 
-<span class="kn">from</span> <span class="nn">.basetrs</span> <span class="k">import</span> <span class="n">sppasBaseIO</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
-<span class="kn">from</span> <span class="nn">..media</span> <span class="k">import</span> <span class="n">sppasMedia</span>
-<span class="kn">from</span> <span class="nn">..ctrlvocab</span> <span class="k">import</span> <span class="n">sppasCtrlVocab</span>
-<span class="kn">from</span> <span class="nn">..annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
-<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="k">import</span> <span class="n">sppasLabel</span>
-<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
-<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">format_labels</span>
+<span class="kn">from</span> <span class="nn">.basetrs</span> <span class="kn">import</span> <span class="n">sppasBaseIO</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AnnDataTypeError</span>
+<span class="kn">from</span> <span class="nn">..media</span> <span class="kn">import</span> <span class="n">sppasMedia</span>
+<span class="kn">from</span> <span class="nn">..ctrlvocab</span> <span class="kn">import</span> <span class="n">sppasCtrlVocab</span>
+<span class="kn">from</span> <span class="nn">..annotation</span> <span class="kn">import</span> <span class="n">sppasAnnotation</span>
+<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="kn">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="kn">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="kn">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="kn">import</span> <span class="n">sppasLabel</span>
+<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="kn">import</span> <span class="n">sppasTag</span>
+<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="kn">import</span> <span class="n">format_labels</span>
 
-<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c"># ---------------------------------------------------------------------------</span>
 
-<span class="n">NO_SPK_TIER</span> <span class="o">=</span> <span class="s2">&quot;Trans-NoSpeaker&quot;</span>
+<span class="n">NO_SPK_TIER</span> <span class="o">=</span> <span class="s">&quot;Trans-NoSpeaker&quot;</span>
 
-<span class="c1"># list of Transcriber noise events with their conversion into SPPAS convention.</span>
+<span class="c"># list of Transcriber noise events with their conversion into SPPAS convention.</span>
 <span class="n">NOISE_EVENTS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;r&quot;</span><span class="p">:</span> <span class="s2">&quot;* </span><span class="si">{respiration}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="s2">&quot;* </span><span class="si">{inspiration}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="s2">&quot;* </span><span class="si">{exhalation}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="s2">&quot;* </span><span class="si">{sniffing}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;pf&quot;</span><span class="p">:</span> <span class="s2">&quot;* </span><span class="si">{breath}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;bb&quot;</span><span class="p">:</span> <span class="s2">&quot;* {mouth noise}&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;bg&quot;</span><span class="p">:</span> <span class="s2">&quot;* {throaty noise}&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;tx&quot;</span><span class="p">:</span> <span class="s2">&quot;* {coughing, sneeze}&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;sif&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{whistling}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="s2">&quot;* </span><span class="si">{undetermined}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;conv&quot;</span><span class="p">:</span> <span class="s2">&quot;* {background conversations}&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;pap&quot;</span><span class="p">:</span> <span class="s2">&quot;* {wrinkling of papers}&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;shh&quot;</span><span class="p">:</span> <span class="s2">&quot;* {electric blast}&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mic&quot;</span><span class="p">:</span> <span class="s2">&quot;* </span><span class="si">{micro}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;toux en fond&quot;</span><span class="p">:</span> <span class="s2">&quot;* {background cough}&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;indicatif&quot;</span><span class="p">:</span> <span class="s2">&quot;* {indicative signal}&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;jingle&quot;</span><span class="p">:</span> <span class="s2">&quot;* </span><span class="si">{jingle}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;top&quot;</span><span class="p">:</span> <span class="s2">&quot;* </span><span class="si">{top}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;musique&quot;</span><span class="p">:</span> <span class="s2">&quot;* </span><span class="si">{music}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;applaude&quot;</span><span class="p">:</span> <span class="s2">&quot;* </span><span class="si">{applaude}</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;rire&quot;</span><span class="p">:</span> <span class="s2">&quot;@&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;rire-&quot;</span><span class="p">:</span> <span class="s2">&quot;@@&quot;</span><span class="p">,</span>       <span class="c1"># begin/end of a laughing sequence</span>
-    <span class="s2">&quot;rire_begin&quot;</span><span class="p">:</span> <span class="s2">&quot;@@&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;rire_end&quot;</span><span class="p">:</span> <span class="s2">&quot;@@&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;-rire&quot;</span><span class="p">:</span> <span class="s2">&quot;@@&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;rire en fond&quot;</span><span class="p">:</span> <span class="s2">&quot;@ {background laughter}&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;nontrans&quot;</span><span class="p">:</span> <span class="s2">&quot;dummy&quot;</span>
+    <span class="s">&quot;r&quot;</span><span class="p">:</span> <span class="s">&quot;* {respiration}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;i&quot;</span><span class="p">:</span> <span class="s">&quot;* {inspiration}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;e&quot;</span><span class="p">:</span> <span class="s">&quot;* {exhalation}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;n&quot;</span><span class="p">:</span> <span class="s">&quot;* {sniffing}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;pf&quot;</span><span class="p">:</span> <span class="s">&quot;* {breath}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;bb&quot;</span><span class="p">:</span> <span class="s">&quot;* {mouth noise}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;bg&quot;</span><span class="p">:</span> <span class="s">&quot;* {throaty noise}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;tx&quot;</span><span class="p">:</span> <span class="s">&quot;* {coughing, sneeze}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;sif&quot;</span><span class="p">:</span> <span class="s">&quot;{whistling}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;b&quot;</span><span class="p">:</span> <span class="s">&quot;* {undetermined}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;conv&quot;</span><span class="p">:</span> <span class="s">&quot;* {background conversations}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;pap&quot;</span><span class="p">:</span> <span class="s">&quot;* {wrinkling of papers}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;shh&quot;</span><span class="p">:</span> <span class="s">&quot;* {electric blast}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;mic&quot;</span><span class="p">:</span> <span class="s">&quot;* {micro}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;toux en fond&quot;</span><span class="p">:</span> <span class="s">&quot;* {background cough}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;indicatif&quot;</span><span class="p">:</span> <span class="s">&quot;* {indicative signal}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;jingle&quot;</span><span class="p">:</span> <span class="s">&quot;* {jingle}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;top&quot;</span><span class="p">:</span> <span class="s">&quot;* {top}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;musique&quot;</span><span class="p">:</span> <span class="s">&quot;* {music}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;applaude&quot;</span><span class="p">:</span> <span class="s">&quot;* {applaude}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;rire&quot;</span><span class="p">:</span> <span class="s">&quot;@&quot;</span><span class="p">,</span>
+    <span class="s">&quot;rire-&quot;</span><span class="p">:</span> <span class="s">&quot;@@&quot;</span><span class="p">,</span>       <span class="c"># begin/end of a laughing sequence</span>
+    <span class="s">&quot;rire_begin&quot;</span><span class="p">:</span> <span class="s">&quot;@@&quot;</span><span class="p">,</span>
+    <span class="s">&quot;rire_end&quot;</span><span class="p">:</span> <span class="s">&quot;@@&quot;</span><span class="p">,</span>
+    <span class="s">&quot;-rire&quot;</span><span class="p">:</span> <span class="s">&quot;@@&quot;</span><span class="p">,</span>
+    <span class="s">&quot;rire en fond&quot;</span><span class="p">:</span> <span class="s">&quot;@ {background laughter}&quot;</span><span class="p">,</span>
+    <span class="s">&quot;nontrans&quot;</span><span class="p">:</span> <span class="s">&quot;dummy&quot;</span>
 <span class="p">}</span>
 
-<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c"># ---------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasTRS"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.transcriber.sppasTRS">[docs]</a><span class="k">class</span> <span class="nc">sppasTRS</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">):</span>
@@ -134,8 +145,8 @@
 <span class="sd">    :summary:      SPPAS reader for TRS format.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasTRS.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.transcriber.sppasTRS.detect">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="sppasTRS.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.transcriber.sppasTRS.detect">[docs]</a>    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check whether a file is of TRS format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
@@ -143,60 +154,60 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s2">&quot;ISO-8859-1&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">it</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="s">&quot;ISO-8859-1&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">it</span><span class="p">:</span>
                 <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
                 <span class="n">doctype_line</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="n">it</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
         <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
-        <span class="k">return</span> <span class="s1">&#39;&lt;!DOCTYPE Trans SYSTEM &quot;trans&#39;</span> <span class="ow">in</span> <span class="n">doctype_line</span></div>
+        <span class="k">return</span> <span class="s">&#39;&lt;!DOCTYPE Trans SYSTEM &quot;trans&#39;</span> <span class="ow">in</span> <span class="n">doctype_line</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasTRS.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.transcriber.sppasTRS.make_point">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="sppasTRS.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.transcriber.sppasTRS.make_point">[docs]</a>    <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; The localization is a time value, so a float. &quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">midpoint</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">midpoint</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">sppasPoint</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="s">&quot;float&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sppasPoint</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasTRS.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.transcriber.sppasTRS.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasTRS.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.transcriber.sppasTRS.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new sppasTRS instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
 
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;trs&quot;</span>
+        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s">&quot;trs&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_metadata</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_ctrl_vocab</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_media</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_hierarchy</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_point</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_interval</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_disjoint</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_localization</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_tag</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_radius</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="kc">False</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_metadata</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_ctrl_vocab</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_media</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_hierarchy</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_point</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_interval</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_disjoint</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_localization</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_tag</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_radius</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="bp">False</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasTRS.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.transcriber.sppasTRS.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Read a TRS file and fill the Transcription.</span>
 
@@ -208,39 +219,39 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">ET</span><span class="o">.</span><span class="n">ParseError</span><span class="p">:</span>
-            <span class="n">xmlp</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ISO-8859-1&quot;</span><span class="p">)</span>
+            <span class="n">xmlp</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s">&quot;ISO-8859-1&quot;</span><span class="p">)</span>
             <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">xmlp</span><span class="p">)</span>
         <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
 
-        <span class="c1"># Get metadata for self</span>
+        <span class="c"># Get metadata for self</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parse_metadata</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
 
-        <span class="c1"># Speakers. One tier by speaker is created.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_speakers</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Speakers&#39;</span><span class="p">))</span>
+        <span class="c"># Speakers. One tier by speaker is created.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_speakers</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;Speakers&#39;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="n">NO_SPK_TIER</span><span class="p">)</span>
 
-        <span class="c1"># Topics. Set the controlled vocabulary.</span>
-        <span class="n">topics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s2">&quot;Topics&quot;</span><span class="p">)</span>
-        <span class="n">sppasTRS</span><span class="o">.</span><span class="n">_parse_topics</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Topics&#39;</span><span class="p">),</span> <span class="n">topics</span><span class="p">)</span>
+        <span class="c"># Topics. Set the controlled vocabulary.</span>
+        <span class="n">topics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s">&quot;Topics&quot;</span><span class="p">)</span>
+        <span class="n">sppasTRS</span><span class="o">.</span><span class="n">_parse_topics</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;Topics&#39;</span><span class="p">),</span> <span class="n">topics</span><span class="p">)</span>
 
-        <span class="c1"># Episodes. Fill the tier.</span>
-        <span class="n">episodes_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s2">&quot;Episodes&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">episode_root</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s1">&#39;Episode&#39;</span><span class="p">):</span>
+        <span class="c"># Episodes. Fill the tier.</span>
+        <span class="n">episodes_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s">&quot;Episodes&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">episode_root</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s">&#39;Episode&#39;</span><span class="p">):</span>
             <span class="n">sppasTRS</span><span class="o">.</span><span class="n">_parse_episode_attributes</span><span class="p">(</span><span class="n">episode_root</span><span class="p">,</span> <span class="n">episodes_tier</span><span class="p">)</span>
 
-        <span class="c1"># Episodes. Examine sections.</span>
-        <span class="n">section_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s2">&quot;Sections&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">section_root</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s1">&#39;Section&#39;</span><span class="p">):</span>
+        <span class="c"># Episodes. Examine sections.</span>
+        <span class="n">section_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s">&quot;Sections&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">section_root</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s">&#39;Section&#39;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_parse_section_attributes</span><span class="p">(</span><span class="n">section_root</span><span class="p">,</span> <span class="n">section_tier</span><span class="p">)</span>
 
-        <span class="c1"># Episodes. Examine each &quot;Turn&quot; (content of tiers)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s2">&quot;Turns&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">turn_root</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s1">&#39;Turn&#39;</span><span class="p">):</span>
+        <span class="c"># Episodes. Examine each &quot;Turn&quot; (content of tiers)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s">&quot;Turns&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">turn_root</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s">&#39;Turn&#39;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_parse_turn</span><span class="p">(</span><span class="n">turn_root</span><span class="p">)</span>
 
-        <span class="c1"># Reformat the tags (problems of the transcription convention).</span>
+        <span class="c"># Reformat the tags (problems of the transcription convention).</span>
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;Trans&quot;</span> <span class="ow">in</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s">&quot;Trans&quot;</span> <span class="ow">in</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">ann</span> <span class="ow">in</span> <span class="n">tier</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">is_labelled</span><span class="p">():</span>
                         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_labels</span><span class="p">():</span>
@@ -248,20 +259,20 @@
                             <span class="n">new_content</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__format_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
                             <span class="n">label</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span><span class="o">.</span><span class="n">set_content</span><span class="p">(</span><span class="n">new_content</span><span class="p">)</span>
 
-        <span class="c1"># Create the hierarchy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_hierarchy_link</span><span class="p">(</span><span class="s2">&quot;TimeAlignment&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Turns&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Sections&#39;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_hierarchy_link</span><span class="p">(</span><span class="s2">&quot;TimeAlignment&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Sections&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Episodes&#39;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_hierarchy_link</span><span class="p">(</span><span class="s2">&quot;TimeAlignment&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Sections&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Topics&#39;</span><span class="p">))</span>
-        <span class="c1"># TurnRecordingQuality, TurnElocutionMode and TurnChannel should be</span>
-        <span class="c1"># &quot;TimeAssociation&quot; of Turns but... sparse data (?) !</span>
+        <span class="c"># Create the hierarchy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_hierarchy_link</span><span class="p">(</span><span class="s">&quot;TimeAlignment&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;Turns&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;Sections&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_hierarchy_link</span><span class="p">(</span><span class="s">&quot;TimeAlignment&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;Sections&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;Episodes&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_hierarchy_link</span><span class="p">(</span><span class="s">&quot;TimeAlignment&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;Sections&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;Topics&#39;</span><span class="p">))</span>
+        <span class="c"># TurnRecordingQuality, TurnElocutionMode and TurnChannel should be</span>
+        <span class="c"># &quot;TimeAssociation&quot; of Turns but... sparse data (?) !</span>
 
-        <span class="c1"># Remove empty tiers.</span>
+        <span class="c"># Remove empty tiers.</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))):</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__format_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reformat tokens in tags.</span>
@@ -270,21 +281,21 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span>
-        <span class="n">tokens</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">)</span>
         <span class="n">new_tokens</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;^^&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;^^&quot;</span><span class="p">):</span>
                 <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">token</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;*&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">token</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;?&#39;</span><span class="p">)):</span>
                 <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-            <span class="k">if</span> <span class="s2">&quot;()&quot;</span> <span class="ow">in</span> <span class="n">token</span><span class="p">:</span>
-                <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;()&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s">&quot;()&quot;</span> <span class="ow">in</span> <span class="n">token</span><span class="p">:</span>
+                <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;()&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">new_tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_tokens</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_tokens</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get metadata from attributes of the main root.</span>
@@ -301,35 +312,35 @@
 <span class="sd">        :param root: (ET) Main XML Element tree root of a TRS file.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># The media linked to this file.</span>
-        <span class="k">if</span> <span class="s2">&quot;audio_filename&quot;</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-            <span class="n">media_url</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;audio_filename&#39;</span><span class="p">]</span>
+        <span class="c"># The media linked to this file.</span>
+        <span class="k">if</span> <span class="s">&quot;audio_filename&quot;</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+            <span class="n">media_url</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;audio_filename&#39;</span><span class="p">]</span>
             <span class="n">media</span> <span class="o">=</span> <span class="n">sppasMedia</span><span class="p">(</span><span class="n">media_url</span><span class="p">)</span>
-            <span class="n">media</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;media_source&#39;</span><span class="p">,</span> <span class="s1">&#39;primary&#39;</span><span class="p">)</span>
+            <span class="n">media</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&#39;media_source&#39;</span><span class="p">,</span> <span class="s">&#39;primary&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_media_list</span><span class="p">([</span><span class="n">media</span><span class="p">])</span>
 
-        <span class="c1"># Name of the annotator.</span>
-        <span class="k">if</span> <span class="s2">&quot;scribe&quot;</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-            <span class="n">scribe</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;scribe&#39;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;annotator_name&quot;</span><span class="p">,</span> <span class="n">scribe</span><span class="p">)</span>
+        <span class="c"># Name of the annotator.</span>
+        <span class="k">if</span> <span class="s">&quot;scribe&quot;</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+            <span class="n">scribe</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;scribe&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;annotator_name&quot;</span><span class="p">,</span> <span class="n">scribe</span><span class="p">)</span>
 
-        <span class="c1"># Version of the annotation.</span>
-        <span class="k">if</span> <span class="s2">&quot;version&quot;</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-            <span class="n">version</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;annotator_version&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+        <span class="c"># Version of the annotation.</span>
+        <span class="k">if</span> <span class="s">&quot;version&quot;</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;version&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;annotator_version&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
 
-        <span class="c1"># Date of the annotation.</span>
-        <span class="k">if</span> <span class="s2">&quot;version_date&quot;</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-            <span class="n">version_date</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;version_date&#39;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;annotator_version_date&quot;</span><span class="p">,</span> <span class="n">version_date</span><span class="p">)</span>
+        <span class="c"># Date of the annotation.</span>
+        <span class="k">if</span> <span class="s">&quot;version_date&quot;</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+            <span class="n">version_date</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;version_date&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;annotator_version_date&quot;</span><span class="p">,</span> <span class="n">version_date</span><span class="p">)</span>
 
-        <span class="c1"># Language of the annotation. saved as a language name because</span>
-        <span class="c1"># it&#39;s iso639-1 and SPPAS is expecting iso639-3.</span>
-        <span class="k">if</span> <span class="s2">&quot;xml:lang&quot;</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-            <span class="n">lang</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;xml:lang&#39;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;language_name_0&quot;</span><span class="p">,</span> <span class="n">lang</span><span class="p">)</span>
+        <span class="c"># Language of the annotation. saved as a language name because</span>
+        <span class="c"># it&#39;s iso639-1 and SPPAS is expecting iso639-3.</span>
+        <span class="k">if</span> <span class="s">&quot;xml:lang&quot;</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+            <span class="n">lang</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;xml:lang&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;language_name_0&quot;</span><span class="p">,</span> <span class="n">lang</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_speakers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spk_root</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Read the &lt;Speakers&gt; element and create tiers.</span>
@@ -351,39 +362,39 @@
 <span class="sd">        :param spk_root: (ET) XML Element tree root.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">spk_root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">spk_node</span> <span class="ow">in</span> <span class="n">spk_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;Speaker&#39;</span><span class="p">):</span>
-                <span class="c1"># Speaker identifier -&gt; new tier</span>
-                <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
-                    <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s2">&quot;Trans-&quot;</span> <span class="o">+</span> <span class="n">value</span><span class="p">)</span>
-                    <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_id&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">spk_root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">spk_node</span> <span class="ow">in</span> <span class="n">spk_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">&#39;Speaker&#39;</span><span class="p">):</span>
+                <span class="c"># Speaker identifier -&gt; new tier</span>
+                <span class="k">if</span> <span class="s">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
+                    <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s">&quot;Trans-&quot;</span> <span class="o">+</span> <span class="n">value</span><span class="p">)</span>
+                    <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_id&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
-                <span class="c1"># Speaker name: CDATA</span>
-                <span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">in</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-                    <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_name&quot;</span><span class="p">,</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+                <span class="c"># Speaker name: CDATA</span>
+                <span class="k">if</span> <span class="s">&quot;name&quot;</span> <span class="ow">in</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+                    <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_name&quot;</span><span class="p">,</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">])</span>
 
-                <span class="c1"># Speaker type: male/female/child/unknown</span>
-                <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-                    <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_type&quot;</span><span class="p">,</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">])</span>
+                <span class="c"># Speaker type: male/female/child/unknown</span>
+                <span class="k">if</span> <span class="s">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+                    <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_type&quot;</span><span class="p">,</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">])</span>
 
-                <span class="c1"># &quot;spelling checked&quot; for speakers whose name has been checked: yes/no</span>
-                <span class="k">if</span> <span class="s2">&quot;check&quot;</span> <span class="ow">in</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-                    <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_check&quot;</span><span class="p">,</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;check&#39;</span><span class="p">])</span>
+                <span class="c"># &quot;spelling checked&quot; for speakers whose name has been checked: yes/no</span>
+                <span class="k">if</span> <span class="s">&quot;check&quot;</span> <span class="ow">in</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+                    <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_check&quot;</span><span class="p">,</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;check&#39;</span><span class="p">])</span>
 
-                <span class="c1"># Speaker dialect: native/nonnative</span>
-                <span class="k">if</span> <span class="s2">&quot;dialect&quot;</span> <span class="ow">in</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-                    <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_dialect&quot;</span><span class="p">,</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;dialect&#39;</span><span class="p">])</span>
+                <span class="c"># Speaker dialect: native/nonnative</span>
+                <span class="k">if</span> <span class="s">&quot;dialect&quot;</span> <span class="ow">in</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+                    <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_dialect&quot;</span><span class="p">,</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;dialect&#39;</span><span class="p">])</span>
 
-                <span class="c1"># Speaker accent: CDATA</span>
-                <span class="k">if</span> <span class="s2">&quot;accent&quot;</span> <span class="ow">in</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-                    <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_accent&quot;</span><span class="p">,</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;accent&#39;</span><span class="p">])</span>
+                <span class="c"># Speaker accent: CDATA</span>
+                <span class="k">if</span> <span class="s">&quot;accent&quot;</span> <span class="ow">in</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+                    <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_accent&quot;</span><span class="p">,</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;accent&#39;</span><span class="p">])</span>
 
-                <span class="c1"># Speaker scope: local/global</span>
-                <span class="k">if</span> <span class="s2">&quot;scope&quot;</span> <span class="ow">in</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-                    <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_scope&quot;</span><span class="p">,</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;scope&#39;</span><span class="p">])</span>
+                <span class="c"># Speaker scope: local/global</span>
+                <span class="k">if</span> <span class="s">&quot;scope&quot;</span> <span class="ow">in</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+                    <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_scope&quot;</span><span class="p">,</span> <span class="n">spk_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;scope&#39;</span><span class="p">])</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_topics</span><span class="p">(</span><span class="n">topic_root</span><span class="p">,</span> <span class="n">topic_tier</span><span class="p">):</span>
@@ -404,28 +415,28 @@
 <span class="sd">        :param topic_tier: (sppasTier) Tier to store topic segmentation</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">topic_root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">topic_root</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="c1"># assign the vocabulary.</span>
-        <span class="n">ctrl_vocab</span> <span class="o">=</span> <span class="n">sppasCtrlVocab</span><span class="p">(</span><span class="s1">&#39;topics&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">topic_node</span> <span class="ow">in</span> <span class="n">topic_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;Topic&#39;</span><span class="p">):</span>
-            <span class="c1"># Topic identifier</span>
+        <span class="c"># assign the vocabulary.</span>
+        <span class="n">ctrl_vocab</span> <span class="o">=</span> <span class="n">sppasCtrlVocab</span><span class="p">(</span><span class="s">&#39;topics&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">topic_node</span> <span class="ow">in</span> <span class="n">topic_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">&#39;Topic&#39;</span><span class="p">):</span>
+            <span class="c"># Topic identifier</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">topic_id</span> <span class="o">=</span> <span class="n">topic_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+                <span class="n">topic_id</span> <span class="o">=</span> <span class="n">topic_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="c1"># Topic description: CDATA</span>
+            <span class="c"># Topic description: CDATA</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">topic_desc</span> <span class="o">=</span> <span class="n">topic_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;desc&#39;</span><span class="p">]</span>
+                <span class="n">topic_desc</span> <span class="o">=</span> <span class="n">topic_node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;desc&#39;</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                <span class="n">topic_desc</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-            <span class="c1"># Add an entry in the controlled vocabulary</span>
+                <span class="n">topic_desc</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+            <span class="c"># Add an entry in the controlled vocabulary</span>
             <span class="n">ctrl_vocab</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="n">topic_id</span><span class="p">),</span> <span class="n">topic_desc</span><span class="p">)</span>
 
         <span class="n">topic_tier</span><span class="o">.</span><span class="n">set_ctrl_vocab</span><span class="p">(</span><span class="n">ctrl_vocab</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_episode_attributes</span><span class="p">(</span><span class="n">episode_root</span><span class="p">,</span> <span class="n">episodes_tier</span><span class="p">):</span>
@@ -441,21 +452,21 @@
 <span class="sd">        :param episodes_tier: (sppasTier) The tier to store the episodes.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">episode_root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">episode_root</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">episode_root</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="c1"># no sections in this episode.</span>
+            <span class="c"># no sections in this episode.</span>
             <span class="k">return</span>
 
-        <span class="c1"># Get this episode information</span>
-        <span class="n">begin</span> <span class="o">=</span> <span class="n">episode_root</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;startTime&#39;</span><span class="p">]</span>
-        <span class="n">end</span> <span class="o">=</span> <span class="n">episode_root</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;endTime&#39;</span><span class="p">]</span>
+        <span class="c"># Get this episode information</span>
+        <span class="n">begin</span> <span class="o">=</span> <span class="n">episode_root</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;startTime&#39;</span><span class="p">]</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">episode_root</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;endTime&#39;</span><span class="p">]</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">program</span> <span class="o">=</span> <span class="n">episode_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;program&#39;</span><span class="p">]</span>
+            <span class="n">program</span> <span class="o">=</span> <span class="n">episode_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;program&#39;</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="n">program</span> <span class="o">=</span> <span class="s2">&quot;episode&quot;</span>
+            <span class="n">program</span> <span class="o">=</span> <span class="s">&quot;episode&quot;</span>
 
-        <span class="c1"># Add the episode in the tier</span>
+        <span class="c"># Add the episode in the tier</span>
         <span class="n">episodes_tier</span><span class="o">.</span><span class="n">create_annotation</span><span class="p">(</span>
             <span class="n">sppasLocation</span><span class="p">(</span>
                 <span class="n">sppasInterval</span><span class="p">(</span>
@@ -463,7 +474,7 @@
                     <span class="n">sppasTRS</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="n">end</span><span class="p">))),</span>
             <span class="n">sppasLabel</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="n">program</span><span class="p">)))</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_section_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_root</span><span class="p">,</span> <span class="n">section_tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Read the section attributes.</span>
@@ -483,25 +494,25 @@
 <span class="sd">        :param section_tier: (sppasTier) The tier to store the sections.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">section_root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">section_root</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="c1"># Get the location of the section</span>
-        <span class="n">begin</span> <span class="o">=</span> <span class="n">section_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;startTime&#39;</span><span class="p">]</span>
-        <span class="n">end</span> <span class="o">=</span> <span class="n">section_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;endTime&#39;</span><span class="p">]</span>
+        <span class="c"># Get the location of the section</span>
+        <span class="n">begin</span> <span class="o">=</span> <span class="n">section_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;startTime&#39;</span><span class="p">]</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">section_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;endTime&#39;</span><span class="p">]</span>
         <span class="n">location</span> <span class="o">=</span> <span class="n">sppasLocation</span><span class="p">(</span><span class="n">sppasInterval</span><span class="p">(</span><span class="n">sppasTRS</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="n">begin</span><span class="p">),</span>
                                                <span class="n">sppasTRS</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="n">end</span><span class="p">)))</span>
 
-        <span class="c1"># Check if it&#39;s a non-transcribed section</span>
+        <span class="c"># Check if it&#39;s a non-transcribed section</span>
         <span class="n">section_type</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__parse_type_in_section</span><span class="p">(</span><span class="n">section_root</span><span class="p">)</span>
 
-        <span class="c1"># Check the topic</span>
+        <span class="c"># Check the topic</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__parse_topic_in_section</span><span class="p">(</span><span class="n">section_root</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
 
-        <span class="c1"># Add the section in the tier</span>
+        <span class="c"># Add the section in the tier</span>
         <span class="n">section_tier</span><span class="o">.</span><span class="n">create_annotation</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">sppasLabel</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="n">section_type</span><span class="p">)))</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_turn_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">turn_root</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Read the turn attributes and fill the tiers.</span>
@@ -519,12 +530,12 @@
 <span class="sd">        :returns: (list) the tiers of the turn (i.e. speakers...)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">turn_root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">turn_root</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="c1"># Get the location of the turn</span>
-        <span class="n">begin</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;startTime&#39;</span><span class="p">])</span>
-        <span class="n">end</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;endTime&#39;</span><span class="p">])</span>
+        <span class="c"># Get the location of the turn</span>
+        <span class="n">begin</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;startTime&#39;</span><span class="p">])</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;endTime&#39;</span><span class="p">])</span>
         <span class="n">location</span> <span class="o">=</span> <span class="n">sppasLocation</span><span class="p">(</span><span class="n">sppasInterval</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__parse_mode_in_turn</span><span class="p">(</span><span class="n">turn_root</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
@@ -532,25 +543,25 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__parse_channel_in_turn</span><span class="p">(</span><span class="n">turn_root</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
 
         <span class="n">tiers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="n">speakers</span> <span class="o">=</span> <span class="s2">&quot;dummy&quot;</span>
-        <span class="k">if</span> <span class="s2">&quot;speaker&quot;</span> <span class="ow">in</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-            <span class="n">speakers</span> <span class="o">=</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;speaker&#39;</span><span class="p">]</span>
+        <span class="n">speakers</span> <span class="o">=</span> <span class="s">&quot;dummy&quot;</span>
+        <span class="k">if</span> <span class="s">&quot;speaker&quot;</span> <span class="ow">in</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+            <span class="n">speakers</span> <span class="o">=</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;speaker&#39;</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">speaker</span> <span class="ow">in</span> <span class="n">speakers</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
-                <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Trans-&quot;</span> <span class="o">+</span> <span class="n">speaker</span><span class="p">)</span>
+                <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;Trans-&quot;</span> <span class="o">+</span> <span class="n">speaker</span><span class="p">)</span>
                 <span class="n">tiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tiers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">NO_SPK_TIER</span><span class="p">)</span>
             <span class="n">tiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span>
 
-        <span class="n">turn_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;Turns&quot;</span><span class="p">)</span>
+        <span class="n">turn_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;Turns&quot;</span><span class="p">)</span>
         <span class="n">turn_tier</span><span class="o">.</span><span class="n">create_annotation</span><span class="p">(</span>
             <span class="n">sppasLocation</span><span class="p">(</span><span class="n">sppasInterval</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">)),</span>
             <span class="n">sppasLabel</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="n">speakers</span><span class="p">)))</span>
 
         <span class="k">return</span> <span class="n">tiers</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">turn_root</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fill a tier with the content of a turn.</span>
@@ -560,78 +571,78 @@
 <span class="sd">        :param turn_root: (ET) XML Element tree root.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># the turn attributes</span>
-        <span class="c1"># -------------------</span>
+        <span class="c"># the turn attributes</span>
+        <span class="c"># -------------------</span>
         <span class="n">tiers</span><span class="p">,</span> <span class="n">turn_begin</span><span class="p">,</span> <span class="n">turn_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_turn_attributes</span><span class="p">(</span><span class="n">turn_root</span><span class="p">)</span>
-        <span class="n">tier</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">tier</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tiers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">tier</span> <span class="o">=</span> <span class="n">tiers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="c1"># the content of the turn</span>
-        <span class="c1"># -----------------------</span>
-        <span class="c1"># PCDATA: handle text directly inside the Turn</span>
-        <span class="k">if</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="c"># the content of the turn</span>
+        <span class="c"># -----------------------</span>
+        <span class="c"># PCDATA: handle text directly inside the Turn</span>
+        <span class="k">if</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
             <span class="n">text</span> <span class="o">=</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">text</span>
-            <span class="c1"># create new annotation covering the whole turn.</span>
-            <span class="c1"># will eventually be reduced by the rest of the turn content.</span>
+            <span class="c"># create new annotation covering the whole turn.</span>
+            <span class="c"># will eventually be reduced by the rest of the turn content.</span>
             <span class="n">prev_ann</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__create_annotation</span><span class="p">(</span><span class="n">turn_begin</span><span class="p">,</span> <span class="n">turn_end</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">tier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="n">tier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prev_ann</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">prev_ann</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">prev_ann</span> <span class="o">=</span> <span class="bp">None</span>
 
         <span class="n">begin</span> <span class="o">=</span> <span class="n">turn_begin</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">turn_root</span><span class="p">:</span>
-            <span class="c1"># A node contains a tag and/or a text content</span>
+            <span class="c"># A node contains a tag and/or a text content</span>
 
-            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;Sync&#39;</span><span class="p">:</span>
-                <span class="c1"># Update the begin value</span>
-                <span class="n">begin</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">&#39;Sync&#39;</span><span class="p">:</span>
+                <span class="c"># Update the begin value</span>
+                <span class="n">begin</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">])</span>
 
-                <span class="c1"># Update the end of the previous annotation to the current value</span>
-                <span class="k">if</span> <span class="n">prev_ann</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c"># Update the end of the previous annotation to the current value</span>
+                <span class="k">if</span> <span class="n">prev_ann</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                     <span class="n">prev_ann</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span><span class="o">.</span><span class="n">set_end</span><span class="p">(</span><span class="n">begin</span><span class="p">)</span>
 
-                <span class="c1"># create new annotation covering the rest of the turn.</span>
-                <span class="c1"># will eventually be reduced by the rest of the turn content.</span>
+                <span class="c"># create new annotation covering the rest of the turn.</span>
+                <span class="c"># will eventually be reduced by the rest of the turn content.</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tiers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="n">prev_ann</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__create_annotation</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">turn_end</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">prev_ann</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__create_annotation</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">turn_end</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
                     <span class="n">tier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prev_ann</span><span class="p">)</span>
 
-            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;Background&#39;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">prev_ann</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">&#39;Background&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">prev_ann</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                     <span class="n">prev_ann</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__create_annotation</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">turn_end</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">tail</span><span class="p">)</span>
                     <span class="n">tier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prev_ann</span><span class="p">)</span>
                 <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__append_background_in_label</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">prev_ann</span><span class="p">)</span>
 
-            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;Comment&#39;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">prev_ann</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">&#39;Comment&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">prev_ann</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                     <span class="n">prev_ann</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__create_annotation</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">turn_end</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">tail</span><span class="p">)</span>
                     <span class="n">tier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prev_ann</span><span class="p">)</span>
                 <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__append_comment_in_label</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">prev_ann</span><span class="p">)</span>
 
-            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;Who&#39;</span><span class="p">:</span>
-                <span class="c1"># Update the tier to be annotated</span>
-                <span class="n">tier_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;nb&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">&#39;Who&#39;</span><span class="p">:</span>
+                <span class="c"># Update the tier to be annotated</span>
+                <span class="n">tier_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;nb&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
                 <span class="n">tier</span> <span class="o">=</span> <span class="n">tiers</span><span class="p">[</span><span class="n">tier_index</span><span class="p">]</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tiers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="n">prev_ann</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__create_annotation</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">turn_end</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">prev_ann</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__create_annotation</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">turn_end</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
                     <span class="n">tier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prev_ann</span><span class="p">)</span>
 
-            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;Vocal&#39;</span><span class="p">:</span>
-                <span class="c1"># never found it in a large amount of transcribed files.</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">&#39;Vocal&#39;</span><span class="p">:</span>
+                <span class="c"># never found it in a large amount of transcribed files.</span>
                 <span class="k">pass</span>
 
-            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;Event&#39;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">prev_ann</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s">&#39;Event&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">prev_ann</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                     <span class="n">prev_ann</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__create_annotation</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">turn_end</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">tail</span><span class="p">)</span>
                     <span class="n">tier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prev_ann</span><span class="p">)</span>
                 <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__append_event_in_label</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">prev_ann</span><span class="p">)</span>
 
-            <span class="c1"># ----------</span>
-            <span class="c1"># PCDATA: handle text directly inside the Turn</span>
-            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">prev_ann</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c"># ----------</span>
+            <span class="c"># PCDATA: handle text directly inside the Turn</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tail</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">prev_ann</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                     <span class="n">prev_ann</span> <span class="o">=</span> <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__create_annotation</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">turn_end</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">tail</span><span class="p">)</span>
                     <span class="n">tier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prev_ann</span><span class="p">)</span>
 
@@ -639,9 +650,9 @@
 
         <span class="k">return</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Private - parse attributes</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Private - parse attributes</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__append_background_in_label</span><span class="p">(</span><span class="n">node_event</span><span class="p">,</span> <span class="n">annotation</span><span class="p">):</span>
@@ -655,15 +666,15 @@
 <span class="sd">        &gt;</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># convert the Background node into a comment of SPPAS.</span>
-        <span class="n">txt</span> <span class="o">=</span> <span class="s2">&quot;{background_type=&quot;</span> <span class="o">+</span> <span class="n">node_event</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="s2">&quot;level&quot;</span> <span class="ow">in</span> <span class="n">node_event</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-            <span class="n">txt</span> <span class="o">+=</span> <span class="s2">&quot; ; background_level=&quot;</span> <span class="o">+</span> <span class="n">node_event</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
-        <span class="n">txt</span> <span class="o">+=</span> <span class="s1">&#39;}&#39;</span>
-        <span class="c1"># append to the label of the transcription.</span>
+        <span class="c"># convert the Background node into a comment of SPPAS.</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="s">&quot;{background_type=&quot;</span> <span class="o">+</span> <span class="n">node_event</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s">&quot;level&quot;</span> <span class="ow">in</span> <span class="n">node_event</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+            <span class="n">txt</span> <span class="o">+=</span> <span class="s">&quot; ; background_level=&quot;</span> <span class="o">+</span> <span class="n">node_event</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;level&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">)</span>
+        <span class="n">txt</span> <span class="o">+=</span> <span class="s">&#39;}&#39;</span>
+        <span class="c"># append to the label of the transcription.</span>
         <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__append_text_in_label</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">txt</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__append_comment_in_label</span><span class="p">(</span><span class="n">node_event</span><span class="p">,</span> <span class="n">annotation</span><span class="p">):</span>
@@ -675,12 +686,12 @@
 <span class="sd">        &gt;</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Convert the Comment node into a comment of SPPAS</span>
-        <span class="n">txt</span> <span class="o">=</span> <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="n">node_event</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;desc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span>
-        <span class="c1"># append to the label of the transcription.</span>
+        <span class="c"># Convert the Comment node into a comment of SPPAS</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="s">&#39;{&#39;</span> <span class="o">+</span> <span class="n">node_event</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;desc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;}&#39;</span>
+        <span class="c"># append to the label of the transcription.</span>
         <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__append_text_in_label</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">txt</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__append_event_in_label</span><span class="p">(</span><span class="n">node_event</span><span class="p">,</span> <span class="n">annotation</span><span class="p">):</span>
@@ -693,14 +704,14 @@
 <span class="sd">        &gt;</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">description</span> <span class="o">=</span> <span class="n">node_event</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;desc&#39;</span><span class="p">]</span>
-        <span class="n">extent</span> <span class="o">=</span> <span class="p">(</span><span class="n">node_event</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;extent&#39;</span><span class="p">]</span>
-                  <span class="k">if</span> <span class="s1">&#39;extent&#39;</span> <span class="ow">in</span> <span class="n">node_event</span><span class="o">.</span><span class="n">attrib</span>
-                  <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">node_event</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;desc&#39;</span><span class="p">]</span>
+        <span class="n">extent</span> <span class="o">=</span> <span class="p">(</span><span class="n">node_event</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;extent&#39;</span><span class="p">]</span>
+                  <span class="k">if</span> <span class="s">&#39;extent&#39;</span> <span class="ow">in</span> <span class="n">node_event</span><span class="o">.</span><span class="n">attrib</span>
+                  <span class="k">else</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">description</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">extent</span> <span class="ow">in</span> <span class="n">NOISE_EVENTS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">description</span><span class="o">+</span><span class="s">&quot;_&quot;</span><span class="o">+</span><span class="n">extent</span> <span class="ow">in</span> <span class="n">NOISE_EVENTS</span><span class="p">:</span>
             <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__append_text_in_label</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span>
-                                            <span class="n">NOISE_EVENTS</span><span class="p">[</span><span class="n">description</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">extent</span><span class="p">])</span>
+                                            <span class="n">NOISE_EVENTS</span><span class="p">[</span><span class="n">description</span><span class="o">+</span><span class="s">&quot;_&quot;</span><span class="o">+</span><span class="n">extent</span><span class="p">])</span>
 
         <span class="k">elif</span> <span class="n">description</span> <span class="ow">in</span> <span class="n">NOISE_EVENTS</span><span class="p">:</span>
             <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__append_text_in_label</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span>
@@ -708,9 +719,9 @@
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">sppasTRS</span><span class="o">.</span><span class="n">__append_text_in_label</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span>
-                                            <span class="s1">&#39;{</span><span class="si">%s</span><span class="s1">}&#39;</span> <span class="o">%</span> <span class="n">description</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">))</span>
+                                            <span class="s">&#39;{</span><span class="si">%s</span><span class="s">}&#39;</span> <span class="o">%</span> <span class="n">description</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">))</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__append_text_in_label</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
@@ -720,9 +731,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">old_tag</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span>
             <span class="n">old_text</span> <span class="o">=</span> <span class="n">old_tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span>
-            <span class="n">old_tag</span><span class="o">.</span><span class="n">set_content</span><span class="p">(</span><span class="n">old_text</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">text</span><span class="p">)</span>
+            <span class="n">old_tag</span><span class="o">.</span><span class="n">set_content</span><span class="p">(</span><span class="n">old_text</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="n">text</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__create_annotation</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
@@ -730,87 +741,87 @@
         <span class="n">lab</span> <span class="o">=</span> <span class="n">format_labels</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">sppasAnnotation</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">lab</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__parse_type_in_section</span><span class="p">(</span><span class="n">section_root</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Extract the type of a section. &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">section_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">section_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="s2">&quot;undefined&quot;</span>
+        <span class="k">if</span> <span class="s">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">section_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">section_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="s">&quot;undefined&quot;</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__parse_topic_in_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_root</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Extract the topic of a section. &quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">section_topic</span> <span class="o">=</span> <span class="n">section_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;topic&#39;</span><span class="p">]</span>
+            <span class="n">section_topic</span> <span class="o">=</span> <span class="n">section_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;topic&#39;</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="c1"># Append this section in the Topics tier</span>
-        <span class="n">topics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Topics&#39;</span><span class="p">)</span>
+        <span class="c"># Append this section in the Topics tier</span>
+        <span class="n">topics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;Topics&#39;</span><span class="p">)</span>
         <span class="n">topics</span><span class="o">.</span><span class="n">create_annotation</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">sppasLabel</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="n">section_topic</span><span class="p">)))</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__parse_mode_in_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">turn_root</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Extract the mode of a turn. &quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">mode</span> <span class="o">=</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;mode&#39;</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="n">mode_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;TurnElocutionMode&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">mode_tier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">mode_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s1">&#39;TurnElocutionMode&#39;</span><span class="p">)</span>
-            <span class="n">ctrl</span> <span class="o">=</span> <span class="n">sppasCtrlVocab</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Elocution mode&quot;</span><span class="p">)</span>
-            <span class="n">ctrl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s1">&#39;spontaneous&#39;</span><span class="p">))</span>
-            <span class="n">ctrl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s1">&#39;planned&#39;</span><span class="p">))</span>
+        <span class="n">mode_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;TurnElocutionMode&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mode_tier</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">mode_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s">&#39;TurnElocutionMode&#39;</span><span class="p">)</span>
+            <span class="n">ctrl</span> <span class="o">=</span> <span class="n">sppasCtrlVocab</span><span class="p">(</span><span class="s">&#39;mode&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s">&quot;Elocution mode&quot;</span><span class="p">)</span>
+            <span class="n">ctrl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s">&#39;spontaneous&#39;</span><span class="p">))</span>
+            <span class="n">ctrl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s">&#39;planned&#39;</span><span class="p">))</span>
             <span class="n">mode_tier</span><span class="o">.</span><span class="n">set_ctrl_vocab</span><span class="p">(</span><span class="n">ctrl</span><span class="p">)</span>
 
         <span class="n">mode_tier</span><span class="o">.</span><span class="n">create_annotation</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">sppasLabel</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="n">mode</span><span class="p">)))</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__parse_fidelity_in_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">turn_root</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Extract the fidelity of a turn. &quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">fidelity</span> <span class="o">=</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;fidelity&#39;</span><span class="p">]</span>
+            <span class="n">fidelity</span> <span class="o">=</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;fidelity&#39;</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="n">fidelity_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;TurnRecordingQuality&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">fidelity_tier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">fidelity_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s1">&#39;TurnRecordingQuality&#39;</span><span class="p">)</span>
-            <span class="n">ctrl</span> <span class="o">=</span> <span class="n">sppasCtrlVocab</span><span class="p">(</span><span class="s1">&#39;fidelity&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Recording quality&quot;</span><span class="p">)</span>
-            <span class="n">ctrl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s1">&#39;high&#39;</span><span class="p">))</span>
-            <span class="n">ctrl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s1">&#39;medium&#39;</span><span class="p">))</span>
-            <span class="n">ctrl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s1">&#39;low&#39;</span><span class="p">))</span>
+        <span class="n">fidelity_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;TurnRecordingQuality&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fidelity_tier</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">fidelity_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s">&#39;TurnRecordingQuality&#39;</span><span class="p">)</span>
+            <span class="n">ctrl</span> <span class="o">=</span> <span class="n">sppasCtrlVocab</span><span class="p">(</span><span class="s">&#39;fidelity&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s">&quot;Recording quality&quot;</span><span class="p">)</span>
+            <span class="n">ctrl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s">&#39;high&#39;</span><span class="p">))</span>
+            <span class="n">ctrl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s">&#39;medium&#39;</span><span class="p">))</span>
+            <span class="n">ctrl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s">&#39;low&#39;</span><span class="p">))</span>
             <span class="n">fidelity_tier</span><span class="o">.</span><span class="n">set_ctrl_vocab</span><span class="p">(</span><span class="n">ctrl</span><span class="p">)</span>
 
         <span class="n">fidelity_tier</span><span class="o">.</span><span class="n">create_annotation</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">sppasLabel</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="n">fidelity</span><span class="p">)))</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__parse_channel_in_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">turn_root</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Extract the channel of a turn. &quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">channel</span> <span class="o">=</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">]</span>
+            <span class="n">channel</span> <span class="o">=</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s">&#39;channel&#39;</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="n">channel_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;TurnChannel&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">channel_tier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">channel_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s1">&#39;TurnChannel&#39;</span><span class="p">)</span>
-            <span class="n">ctrl</span> <span class="o">=</span> <span class="n">sppasCtrlVocab</span><span class="p">(</span><span class="s1">&#39;channel&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Recording quality&quot;</span><span class="p">)</span>
-            <span class="n">ctrl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s1">&#39;studio&#39;</span><span class="p">))</span>
-            <span class="n">ctrl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s1">&#39;telephone&#39;</span><span class="p">))</span>
+        <span class="n">channel_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;TurnChannel&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">channel_tier</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">channel_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="s">&#39;TurnChannel&#39;</span><span class="p">)</span>
+            <span class="n">ctrl</span> <span class="o">=</span> <span class="n">sppasCtrlVocab</span><span class="p">(</span><span class="s">&#39;channel&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s">&quot;Recording quality&quot;</span><span class="p">)</span>
+            <span class="n">ctrl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s">&#39;studio&#39;</span><span class="p">))</span>
+            <span class="n">ctrl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s">&#39;telephone&#39;</span><span class="p">))</span>
             <span class="n">channel_tier</span><span class="o">.</span><span class="n">set_ctrl_vocab</span><span class="p">(</span><span class="n">ctrl</span><span class="p">)</span>
 
         <span class="n">channel_tier</span><span class="o">.</span><span class="n">create_annotation</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">sppasLabel</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="n">channel</span><span class="p">)))</span></div>
@@ -819,25 +830,26 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -846,13 +858,13 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

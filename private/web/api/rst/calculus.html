@@ -1,24 +1,34 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>calculus package &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>calculus package &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../index.html" />
     <link rel="next" title="calculus.geometry package" href="calculus.geometry.html" />
     <link rel="prev" title="audiodata.aio package" href="audiodata.aio.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -33,14 +43,14 @@
         <li class="right" >
           <a href="audiodata.aio.html" title="audiodata.aio package"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">SPPAS 1.9.8 documentation</a> &#187;</li> 
+        <li><a href="../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <div class="section" id="calculus-package">
 <h1>calculus package<a class="headerlink" href="#calculus-package" title="Permalink to this headline">¶</a></h1>
@@ -69,8 +79,8 @@ on data. Basically, calculus package was created to estimates descriptive
 statistics on annotated data.</p>
 <dl class="class">
 <dt id="calculus.sppasDescriptiveStatistics">
-<em class="property">class </em><code class="descclassname">calculus.</code><code class="descname">sppasDescriptiveStatistics</code><span class="sig-paren">(</span><em>dict_items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasDescriptiveStatistics" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">calculus.</tt><tt class="descname">sppasDescriptiveStatistics</tt><big>(</big><em>dict_items</em><big>)</big><a class="headerlink" href="#calculus.sppasDescriptiveStatistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -97,22 +107,22 @@ stored in a dictionary:</p>
 <li>the value is the list of data values for this data set.</li>
 </ul>
 </div></blockquote>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;apples&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;peers&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;apples&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s">&#39;peers&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">sppasDescriptiveStatistics</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">total</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">total</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">((</span><span class="s1">&#39;peers&#39;</span><span class="p">,</span> <span class="mf">13.0</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;apples&#39;</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">((</span><span class="s">&#39;peers&#39;</span><span class="p">,</span> <span class="mf">13.0</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;apples&#39;</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">))</span>
 </pre></div>
 </div>
 <dl class="method">
 <dt id="calculus.sppasDescriptiveStatistics.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>dict_items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>dict_items</em><big>)</big><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Descriptive statistics.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dict_items</strong> – a dict of tuples (key, [values])</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dict_items</strong> &#8211; a dict of tuples (key, [values])</td>
 </tr>
 </tbody>
 </table>
@@ -120,7 +130,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.sppasDescriptiveStatistics.coefvariation">
-<code class="descname">coefvariation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.coefvariation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.coefvariation" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">coefvariation</tt><big>(</big><big>)</big><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.coefvariation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the coefficient of variation of data values (given as a percentage).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -134,7 +144,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.sppasDescriptiveStatistics.len">
-<code class="descname">len</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.len"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.len" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">len</tt><big>(</big><big>)</big><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.len" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the number of occurrences of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -148,7 +158,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.sppasDescriptiveStatistics.max">
-<code class="descname">max</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.max" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">max</tt><big>(</big><big>)</big><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.max" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the maximum of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -162,7 +172,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.sppasDescriptiveStatistics.mean">
-<code class="descname">mean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.mean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.mean" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">mean</tt><big>(</big><big>)</big><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.mean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the arithmetic mean of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -176,8 +186,8 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.sppasDescriptiveStatistics.median">
-<code class="descname">median</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.median"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.median" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the ‘middle’ score of the data values.</p>
+<tt class="descname">median</tt><big>(</big><big>)</big><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.median" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates the &#8216;middle&#8217; score of the data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -190,7 +200,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.sppasDescriptiveStatistics.min">
-<code class="descname">min</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.min"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.min" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">min</tt><big>(</big><big>)</big><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.min" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the minimum of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -204,7 +214,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.sppasDescriptiveStatistics.stdev">
-<code class="descname">stdev</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.stdev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.stdev" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">stdev</tt><big>(</big><big>)</big><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.stdev" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the standard deviation of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -218,7 +228,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.sppasDescriptiveStatistics.total">
-<code class="descname">total</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.total"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.total" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">total</tt><big>(</big><big>)</big><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.total" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the sum of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -232,7 +242,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.sppasDescriptiveStatistics.variance">
-<code class="descname">variance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.variance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.variance" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">variance</tt><big>(</big><big>)</big><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.variance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the unbiased sample variance of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -246,7 +256,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.sppasDescriptiveStatistics.zscore">
-<code class="descname">zscore</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.zscore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.zscore" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">zscore</tt><big>(</big><big>)</big><a class="headerlink" href="#calculus.sppasDescriptiveStatistics.zscore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the z-scores of data values.
 The z-score determines the relative location of a data value.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -263,8 +273,8 @@ The z-score determines the relative location of a data value.</p>
 
 <dl class="class">
 <dt id="calculus.sppasKappa">
-<em class="property">class </em><code class="descclassname">calculus.</code><code class="descname">sppasKappa</code><span class="sig-paren">(</span><em>p=[]</em>, <em>q=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasKappa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">calculus.</tt><tt class="descname">sppasKappa</tt><big>(</big><em>p=</em>, <span class="optional">[</span><span class="optional">]</span><em>q=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#calculus.sppasKappa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -290,20 +300,20 @@ would be expected to be present by chance alone (“expected” agreement).</p>
 5 questions.</p>
 <blockquote>
 <div><ul class="simple">
-<li>Person “P” answered: Yes, No, No, Yes, Yes</li>
-<li>Person “Q” answered: Yes, No, Yes, Yes, Yes</li>
+<li>Person &#8220;P&#8221; answered: Yes, No, No, Yes, Yes</li>
+<li>Person &#8220;Q&#8221; answered: Yes, No, Yes, Yes, Yes</li>
 </ul>
 </div></blockquote>
 <p>This results in the following vectors of probabilities:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)]</span>
 </pre></div>
 </div>
-<p>The Cohen’s Kappa is then evaluated as follow:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sppasKappa</span><span class="o">.</span><span class="n">check_vector</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kc">True</span>
+<p>The Cohen&#8217;s Kappa is then evaluated as follow:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sppasKappa</span><span class="o">.</span><span class="n">check_vector</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="bp">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sppasKappa</span><span class="o">.</span><span class="n">check_vector</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kc">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="bp">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">kappa</span> <span class="o">=</span> <span class="n">sppasKappa</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">kappa</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="mf">0.54545</span>
@@ -311,9 +321,9 @@ would be expected to be present by chance alone (“expected” agreement).</p>
 </div>
 <dl class="method">
 <dt id="calculus.sppasKappa.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>p=[]</em>, <em>q=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasKappa.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>p=</em>, <span class="optional">[</span><span class="optional">]</span><em>q=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#calculus.sppasKappa.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a sppasKappa instance with two lists of tuples p and q.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">=</span><span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">=</span><span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)]</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -321,8 +331,8 @@ would be expected to be present by chance alone (“expected” agreement).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>p</strong> – a vector of tuples of float values</li>
-<li><strong>q</strong> – a vector of tuples of float values</li>
+<li><strong>p</strong> &#8211; a vector of tuples of float values</li>
+<li><strong>q</strong> &#8211; a vector of tuples of float values</li>
 </ul>
 </td>
 </tr>
@@ -332,7 +342,7 @@ would be expected to be present by chance alone (“expected” agreement).</p>
 
 <dl class="method">
 <dt id="calculus.sppasKappa.check">
-<code class="descname">check</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasKappa.check" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">check</tt><big>(</big><big>)</big><a class="headerlink" href="#calculus.sppasKappa.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the given p and q vectors are correct to be used.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -346,13 +356,13 @@ would be expected to be present by chance alone (“expected” agreement).</p>
 
 <dl class="staticmethod">
 <dt id="calculus.sppasKappa.check_vector">
-<em class="property">static </em><code class="descname">check_vector</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.check_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasKappa.check_vector" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><tt class="descname">check_vector</tt><big>(</big><em>v</em><big>)</big><a class="headerlink" href="#calculus.sppasKappa.check_vector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the vector is correct to be used.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> – a vector of tuples of probabilities.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> &#8211; a vector of tuples of probabilities.</td>
 </tr>
 </tbody>
 </table>
@@ -360,8 +370,8 @@ would be expected to be present by chance alone (“expected” agreement).</p>
 
 <dl class="method">
 <dt id="calculus.sppasKappa.evaluate">
-<code class="descname">evaluate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasKappa.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the Cohen’s Kappa between two lists of tuples p and q.</p>
+<tt class="descname">evaluate</tt><big>(</big><big>)</big><a class="headerlink" href="#calculus.sppasKappa.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates the Cohen&#8217;s Kappa between two lists of tuples p and q.</p>
 <p>The tuple size corresponds to the number of categories, each value is
 the score assigned to each category for a given sample.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -376,15 +386,15 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="method">
 <dt id="calculus.sppasKappa.set_vectors">
-<code class="descname">set_vectors</code><span class="sig-paren">(</span><em>p</em>, <em>q</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.set_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasKappa.set_vectors" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_vectors</tt><big>(</big><em>p</em>, <em>q</em><big>)</big><a class="headerlink" href="#calculus.sppasKappa.set_vectors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the vectors of probabilities to estimate the sppasKappa value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>p</strong> – a vector of tuples of float values</li>
-<li><strong>q</strong> – a vector of tuples of float values</li>
+<li><strong>p</strong> &#8211; a vector of tuples of float values</li>
+<li><strong>q</strong> &#8211; a vector of tuples of float values</li>
 </ul>
 </td>
 </tr>
@@ -394,7 +404,7 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="method">
 <dt id="calculus.sppasKappa.sqm">
-<code class="descname">sqm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.sqm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasKappa.sqm" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sqm</tt><big>(</big><big>)</big><a class="headerlink" href="#calculus.sppasKappa.sqm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the Euclidian distance between two vectors.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -408,7 +418,7 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="method">
 <dt id="calculus.sppasKappa.sqv">
-<code class="descname">sqv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.sqv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.sppasKappa.sqv" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sqv</tt><big>(</big><big>)</big><a class="headerlink" href="#calculus.sppasKappa.sqv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the Euclidian distance between two vectors.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -424,15 +434,15 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="function">
 <dt id="calculus.squared_euclidian">
-<code class="descclassname">calculus.</code><code class="descname">squared_euclidian</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/geometry/distances.html#squared_euclidian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.squared_euclidian" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">squared_euclidian</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#calculus.squared_euclidian" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the Squared Euclidian distance between two tuples.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> – a tuple of float values</li>
-<li><strong>y</strong> – a tuple of float values</li>
+<li><strong>x</strong> &#8211; a tuple of float values</li>
+<li><strong>y</strong> &#8211; a tuple of float values</li>
 </ul>
 </td>
 </tr>
@@ -442,7 +452,7 @@ the score assigned to each category for a given sample.</p>
 </tbody>
 </table>
 <p>x and y must have the same length.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">squared_euclidian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="mf">2.0</span>
@@ -452,15 +462,15 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="function">
 <dt id="calculus.euclidian">
-<code class="descclassname">calculus.</code><code class="descname">euclidian</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/geometry/distances.html#euclidian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.euclidian" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">euclidian</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#calculus.euclidian" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the Euclidian distance between two tuples.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> – a tuple of float values</li>
-<li><strong>y</strong> – a tuple of float values</li>
+<li><strong>x</strong> &#8211; a tuple of float values</li>
+<li><strong>y</strong> &#8211; a tuple of float values</li>
 </ul>
 </td>
 </tr>
@@ -470,7 +480,7 @@ the score assigned to each category for a given sample.</p>
 </tbody>
 </table>
 <p>x and y must have the same length.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">euclidian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="mf">1.414</span>
@@ -480,15 +490,15 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="function">
 <dt id="calculus.manathan">
-<code class="descclassname">calculus.</code><code class="descname">manathan</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/geometry/distances.html#manathan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.manathan" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">manathan</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#calculus.manathan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the Manathan distance between two tuples.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> – a tuple of float values</li>
-<li><strong>y</strong> – a tuple of float values</li>
+<li><strong>x</strong> &#8211; a tuple of float values</li>
+<li><strong>y</strong> &#8211; a tuple of float values</li>
 </ul>
 </td>
 </tr>
@@ -498,7 +508,7 @@ the score assigned to each category for a given sample.</p>
 </tbody>
 </table>
 <p>x and y must have the same length.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">manathan</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="mf">2.0</span>
@@ -508,16 +518,16 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="function">
 <dt id="calculus.minkowski">
-<code class="descclassname">calculus.</code><code class="descname">minkowski</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>p=2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/geometry/distances.html#minkowski"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.minkowski" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">minkowski</tt><big>(</big><em>x</em>, <em>y</em>, <em>p=2</em><big>)</big><a class="headerlink" href="#calculus.minkowski" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the Minkowski distance between two tuples.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> – a tuple of float values</li>
-<li><strong>y</strong> – a tuple of float values</li>
-<li><strong>p</strong> – power value (p=2 corresponds to the euclidian distance)</li>
+<li><strong>x</strong> &#8211; a tuple of float values</li>
+<li><strong>y</strong> &#8211; a tuple of float values</li>
+<li><strong>p</strong> &#8211; power value (p=2 corresponds to the euclidian distance)</li>
 </ul>
 </td>
 </tr>
@@ -527,7 +537,7 @@ the score assigned to each category for a given sample.</p>
 </tbody>
 </table>
 <p>x and y must have the same length.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">minkowski</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="mf">1.414</span>
@@ -537,15 +547,15 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="function">
 <dt id="calculus.chi_squared">
-<code class="descclassname">calculus.</code><code class="descname">chi_squared</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/geometry/distances.html#chi_squared"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.chi_squared" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">chi_squared</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#calculus.chi_squared" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the Chi-squared distance between two tuples.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> – a tuple of float values</li>
-<li><strong>y</strong> – a tuple of float values</li>
+<li><strong>x</strong> &#8211; a tuple of float values</li>
+<li><strong>y</strong> &#8211; a tuple of float values</li>
 </ul>
 </td>
 </tr>
@@ -555,7 +565,7 @@ the score assigned to each category for a given sample.</p>
 </tbody>
 </table>
 <p>x and y must have the same length.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">chi_squared</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="mf">1.414</span>
@@ -565,13 +575,13 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="function">
 <dt id="calculus.fsum">
-<code class="descclassname">calculus.</code><code class="descname">fsum</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/central.html#fsum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.fsum" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">fsum</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#calculus.fsum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the sum of a list of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – (list) list of data values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> &#8211; (list) list of data values</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float)</td>
 </tr>
@@ -581,13 +591,13 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="function">
 <dt id="calculus.fmult">
-<code class="descclassname">calculus.</code><code class="descname">fmult</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/central.html#fmult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.fmult" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">fmult</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#calculus.fmult" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the product of a list of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – (list) list of data values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> &#8211; (list) list of data values</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float)</td>
 </tr>
@@ -597,13 +607,13 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="function">
 <dt id="calculus.fmin">
-<code class="descclassname">calculus.</code><code class="descname">fmin</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/central.html#fmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.fmin" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">fmin</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#calculus.fmin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the minimum of the data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – (list) list of data values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> &#8211; (list) list of data values</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float)</td>
 </tr>
@@ -613,13 +623,13 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="function">
 <dt id="calculus.fmax">
-<code class="descclassname">calculus.</code><code class="descname">fmax</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/central.html#fmax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.fmax" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">fmax</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#calculus.fmax" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the maximum of the data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – (list) list of data values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> &#8211; (list) list of data values</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float)</td>
 </tr>
@@ -629,14 +639,14 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="function">
 <dt id="calculus.fmean">
-<code class="descclassname">calculus.</code><code class="descname">fmean</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/central.html#fmean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.fmean" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">fmean</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#calculus.fmean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the arithmetic mean of the data values:
 sum(items)/len(items)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – (list) list of data values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> &#8211; (list) list of data values</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float)</td>
 </tr>
@@ -646,14 +656,14 @@ sum(items)/len(items)</p>
 
 <dl class="function">
 <dt id="calculus.fgeometricmean">
-<code class="descclassname">calculus.</code><code class="descname">fgeometricmean</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/central.html#fgeometricmean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.fgeometricmean" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">fgeometricmean</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#calculus.fgeometricmean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the geometric mean of the data values:
-n-th root of (x1 * x2 * … * xn).</p>
+n-th root of (x1 * x2 * ... * xn).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – (list) list of data values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> &#8211; (list) list of data values</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float)</td>
 </tr>
@@ -663,14 +673,14 @@ n-th root of (x1 * x2 * … * xn).</p>
 
 <dl class="function">
 <dt id="calculus.fharmonicmean">
-<code class="descclassname">calculus.</code><code class="descname">fharmonicmean</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/central.html#fharmonicmean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.fharmonicmean" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">fharmonicmean</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#calculus.fharmonicmean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the harmonic mean of the data values:
-C{n / (1/x1 + 1/x2 + … + 1/xn)}.</p>
+C{n / (1/x1 + 1/x2 + ... + 1/xn)}.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – (list) list of data values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> &#8211; (list) list of data values</td>
 </tr>
 </tbody>
 </table>
@@ -679,15 +689,15 @@ C{n / (1/x1 + 1/x2 + … + 1/xn)}.</p>
 
 <dl class="function">
 <dt id="calculus.freq">
-<code class="descclassname">calculus.</code><code class="descname">freq</code><span class="sig-paren">(</span><em>mylist</em>, <em>item</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/frequency.html#freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.freq" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">freq</tt><big>(</big><em>mylist</em>, <em>item</em><big>)</big><a class="headerlink" href="#calculus.freq" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the relative frequency of an item of a list.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>mylist</strong> – (list) list of elements</li>
-<li><strong>item</strong> – (any) an element of the list (or not!)</li>
+<li><strong>mylist</strong> &#8211; (list) list of elements</li>
+<li><strong>item</strong> &#8211; (any) an element of the list (or not!)</li>
 </ul>
 </td>
 </tr>
@@ -700,15 +710,15 @@ C{n / (1/x1 + 1/x2 + … + 1/xn)}.</p>
 
 <dl class="function">
 <dt id="calculus.percent">
-<code class="descclassname">calculus.</code><code class="descname">percent</code><span class="sig-paren">(</span><em>mylist</em>, <em>item</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/frequency.html#percent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.percent" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">percent</tt><big>(</big><em>mylist</em>, <em>item</em><big>)</big><a class="headerlink" href="#calculus.percent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the percentage of an item of a list.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>mylist</strong> – (list) list of elements</li>
-<li><strong>item</strong> – (any) an element of the list (or not!)</li>
+<li><strong>mylist</strong> &#8211; (list) list of elements</li>
+<li><strong>item</strong> &#8211; (any) an element of the list (or not!)</li>
 </ul>
 </td>
 </tr>
@@ -721,13 +731,13 @@ C{n / (1/x1 + 1/x2 + … + 1/xn)}.</p>
 
 <dl class="function">
 <dt id="calculus.percentile">
-<code class="descclassname">calculus.</code><code class="descname">percentile</code><span class="sig-paren">(</span><em>mylist</em>, <em>p=(25</em>, <em>50</em>, <em>75)</em>, <em>sort=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/frequency.html#percentile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.percentile" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">percentile</tt><big>(</big><em>mylist</em>, <em>p=(25</em>, <em>50</em>, <em>75)</em>, <em>sort=True</em><big>)</big><a class="headerlink" href="#calculus.percentile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the pth percentile of an unsorted or sorted numeric list.</p>
 <p>This is equivalent to calling quantile(mylist, p/100.0).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">percentile</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="mi">40</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">percentile</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="mi">40</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
 <span class="go">26.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">perc</span> <span class="ow">in</span> <span class="n">percentile</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">100</span><span class="p">)):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">perc</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s">&quot;{:.2f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">perc</span><span class="p">))</span>
 <span class="gp">...</span>
 <span class="go">15.00</span>
 <span class="go">17.50</span>
@@ -741,9 +751,9 @@ C{n / (1/x1 + 1/x2 + … + 1/xn)}.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>mylist</strong> – (list) list of elements.</li>
-<li><strong>p</strong> – (tuple) the percentile we are looking for.</li>
-<li><strong>sort</strong> – whether to sort the vector.</li>
+<li><strong>mylist</strong> &#8211; (list) list of elements.</li>
+<li><strong>p</strong> &#8211; (tuple) the percentile we are looking for.</li>
+<li><strong>sort</strong> &#8211; whether to sort the vector.</li>
 </ul>
 </td>
 </tr>
@@ -756,7 +766,7 @@ C{n / (1/x1 + 1/x2 + … + 1/xn)}.</p>
 
 <dl class="function">
 <dt id="calculus.quantile">
-<code class="descclassname">calculus.</code><code class="descname">quantile</code><span class="sig-paren">(</span><em>mylist</em>, <em>q=(0.25</em>, <em>0.5</em>, <em>0.75)</em>, <em>sort=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/frequency.html#quantile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.quantile" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">quantile</tt><big>(</big><em>mylist</em>, <em>q=(0.25</em>, <em>0.5</em>, <em>0.75)</em>, <em>sort=True</em><big>)</big><a class="headerlink" href="#calculus.quantile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the qth quantile of an unsorted or sorted numeric list.</p>
 <blockquote>
 <div><p>Calculates a rank n as q(N+1), where N is the number of items in mylist,
@@ -765,7 +775,7 @@ If k &lt;= 1, returns the first element;
 if k &gt;= N, returns the last element;
 otherwise returns the linear interpolation between
 mylist[k-1] and mylist[k] using a factor d.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">quantile</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="mf">0.4</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">quantile</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="mf">0.4</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
 <span class="go">26.0</span>
 </pre></div>
 </div>
@@ -775,9 +785,9 @@ mylist[k-1] and mylist[k] using a factor d.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>mylist</strong> – (list) list of elements.</li>
-<li><strong>q</strong> – (tuple) the quantile we are looking for.</li>
-<li><strong>sort</strong> – whether to sort the vector.</li>
+<li><strong>mylist</strong> &#8211; (list) list of elements.</li>
+<li><strong>q</strong> &#8211; (tuple) the quantile we are looking for.</li>
+<li><strong>sort</strong> &#8211; whether to sort the vector.</li>
 </ul>
 </td>
 </tr>
@@ -790,14 +800,14 @@ mylist[k-1] and mylist[k] using a factor d.</p>
 
 <dl class="function">
 <dt id="calculus.tga_linear_regression">
-<code class="descclassname">calculus.</code><code class="descname">tga_linear_regression</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/linregress.html#tga_linear_regression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.tga_linear_regression" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">tga_linear_regression</tt><big>(</big><em>points</em><big>)</big><a class="headerlink" href="#calculus.tga_linear_regression" title="Permalink to this definition">¶</a></dt>
 <dd><p>Linear regression as proposed in TGA, by Dafydd Gibbon.
 <a class="reference external" href="http://wwwhomes.uni-bielefeld.de/gibbon/TGA/">http://wwwhomes.uni-bielefeld.de/gibbon/TGA/</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> – a list of tuples (x,y) of float values.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> &#8211; a list of tuples (x,y) of float values.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">intercept, slope</td>
 </tr>
@@ -807,7 +817,7 @@ mylist[k-1] and mylist[k] using a factor d.</p>
 
 <dl class="function">
 <dt id="calculus.tansey_linear_regression">
-<code class="descclassname">calculus.</code><code class="descname">tansey_linear_regression</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/linregress.html#tansey_linear_regression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.tansey_linear_regression" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">tansey_linear_regression</tt><big>(</big><em>points</em><big>)</big><a class="headerlink" href="#calculus.tansey_linear_regression" title="Permalink to this definition">¶</a></dt>
 <dd><p>Linear regression, as proposed in AnnotationPro.
 <a class="reference external" href="http://annotationpro.org/">http://annotationpro.org/</a></p>
 <p>Translated from C# code from here:
@@ -816,7 +826,7 @@ mylist[k-1] and mylist[k] using a factor d.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> – a list of tuples (x,y) of float values.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> &#8211; a list of tuples (x,y) of float values.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">intercept, slope</td>
 </tr>
@@ -826,7 +836,7 @@ mylist[k-1] and mylist[k] using a factor d.</p>
 
 <dl class="function">
 <dt id="calculus.gradient_descent">
-<code class="descclassname">calculus.</code><code class="descname">gradient_descent</code><span class="sig-paren">(</span><em>points</em>, <em>starting_b</em>, <em>starting_m</em>, <em>learning_rate</em>, <em>num_iterations</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/linregress.html#gradient_descent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.gradient_descent" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">gradient_descent</tt><big>(</big><em>points</em>, <em>starting_b</em>, <em>starting_m</em>, <em>learning_rate</em>, <em>num_iterations</em><big>)</big><a class="headerlink" href="#calculus.gradient_descent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gradient descent is an algorithm that minimizes functions.
 Given a function defined by a set of parameters, gradient descent starts
 with an initial set of parameter values and iteratively moves toward a set
@@ -837,7 +847,7 @@ the function gradient.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> – a list of tuples (x,y) of float values.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> &#8211; a list of tuples (x,y) of float values.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">intercept, slope</td>
 </tr>
@@ -847,7 +857,7 @@ the function gradient.</p>
 
 <dl class="function">
 <dt id="calculus.gradient_descent_linear_regression">
-<code class="descclassname">calculus.</code><code class="descname">gradient_descent_linear_regression</code><span class="sig-paren">(</span><em>points</em>, <em>num_iterations=50000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/linregress.html#gradient_descent_linear_regression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.gradient_descent_linear_regression" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">gradient_descent_linear_regression</tt><big>(</big><em>points</em>, <em>num_iterations=50000</em><big>)</big><a class="headerlink" href="#calculus.gradient_descent_linear_regression" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gradient descent method for linear regression.</p>
 <p>adapted from:
 <a class="reference external" href="http://spin.atomicobject.com/2014/06/24/gradient-descent-linear-regression/">http://spin.atomicobject.com/2014/06/24/gradient-descent-linear-regression/</a></p>
@@ -856,8 +866,8 @@ the function gradient.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>points</strong> – a list of tuples (x,y) of float values.</li>
-<li><strong>num_iterations</strong> – (int)</li>
+<li><strong>points</strong> &#8211; a list of tuples (x,y) of float values.</li>
+<li><strong>num_iterations</strong> &#8211; (int)</li>
 </ul>
 </td>
 </tr>
@@ -870,20 +880,20 @@ the function gradient.</p>
 
 <dl class="function">
 <dt id="calculus.compute_error_for_line_given_points">
-<code class="descclassname">calculus.</code><code class="descname">compute_error_for_line_given_points</code><span class="sig-paren">(</span><em>b</em>, <em>m</em>, <em>points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/linregress.html#compute_error_for_line_given_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.compute_error_for_line_given_points" title="Permalink to this definition">¶</a></dt>
-<dd><p>Error function (also called a cost function) measures how “good” a
+<tt class="descclassname">calculus.</tt><tt class="descname">compute_error_for_line_given_points</tt><big>(</big><em>b</em>, <em>m</em>, <em>points</em><big>)</big><a class="headerlink" href="#calculus.compute_error_for_line_given_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Error function (also called a cost function) measures how &#8220;good&#8221; a
 given line is. This function will take in a (m,b) pair and return an
 error value based on how well the line fits our data.
-To compute this error for a given line, we’ll iterate through each (x,y)
-point in our data set and sum the square distances between each point’s y
-value and the candidate line’s y value (computed at mx + b).</p>
+To compute this error for a given line, we&#8217;ll iterate through each (x,y)
+point in our data set and sum the square distances between each point&#8217;s y
+value and the candidate line&#8217;s y value (computed at mx + b).</p>
 <p>Lines that fit our data better (where better is defined by our error
 function) will result in lower error values.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="calculus.lmoment">
-<code class="descclassname">calculus.</code><code class="descname">lmoment</code><span class="sig-paren">(</span><em>items</em>, <em>moment=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/moment.html#lmoment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.lmoment" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">lmoment</tt><big>(</big><em>items</em>, <em>moment=1</em><big>)</big><a class="headerlink" href="#calculus.lmoment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the r-th moment about the mean for a sample.</p>
 <p>1/n * SUM((items(i)-mean)**r)</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -891,8 +901,8 @@ function) will result in lower error values.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>items</strong> – (list) list of data values</li>
-<li><strong>moment</strong> – </li>
+<li><strong>items</strong> &#8211; (list) list of data values</li>
+<li><strong>moment</strong> &#8211; </li>
 </ul>
 </td>
 </tr>
@@ -905,16 +915,16 @@ function) will result in lower error values.</p>
 
 <dl class="function">
 <dt id="calculus.lvariation">
-<code class="descclassname">calculus.</code><code class="descname">lvariation</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/moment.html#lvariation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.lvariation" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">lvariation</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#calculus.lvariation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the coefficient of variation of data values.</p>
-<p>It shows the extent of variability in relation to the mean. It’s a
+<p>It shows the extent of variability in relation to the mean. It&#8217;s a
 standardized measure of dispersion: stdev / mean and returned as a
 percentage.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – (list) list of data values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> &#8211; (list) list of data values</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float)</td>
 </tr>
@@ -924,7 +934,7 @@ percentage.</p>
 
 <dl class="function">
 <dt id="calculus.lskew">
-<code class="descclassname">calculus.</code><code class="descname">lskew</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/moment.html#lskew"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.lskew" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">lskew</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#calculus.lskew" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the skewness of a distribution.</p>
 <p>The skewness represents a measure of the asymmetry: an understanding
 of the skewness of the dataset indicates whether deviations from the
@@ -933,7 +943,7 @@ mean are going to be positive or negative.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – (list) list of data values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> &#8211; (list) list of data values</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float)</td>
 </tr>
@@ -943,16 +953,16 @@ mean are going to be positive or negative.</p>
 
 <dl class="function">
 <dt id="calculus.lkurtosis">
-<code class="descclassname">calculus.</code><code class="descname">lkurtosis</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/moment.html#lkurtosis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.lkurtosis" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">lkurtosis</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#calculus.lkurtosis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the kurtosis of a distribution.</p>
-<p>The kurtosis represents a measure of the “peakedness”: a high kurtosis
+<p>The kurtosis represents a measure of the &#8220;peakedness&#8221;: a high kurtosis
 distribution has a sharper peak and fatter tails, while a low kurtosis
 distribution has a more rounded peak and thinner tails.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – (list) list of data values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> &#8211; (list) list of data values</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float)</td>
 </tr>
@@ -962,7 +972,7 @@ distribution has a more rounded peak and thinner tails.</p>
 
 <dl class="function">
 <dt id="calculus.lvariance">
-<code class="descclassname">calculus.</code><code class="descname">lvariance</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/variability.html#lvariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.lvariance" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">lvariance</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#calculus.lvariance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the variance of the data values, for a population.
 It means that the estimation is using N for the denominator.</p>
 <p>The variance is a measure of dispersion near the mean.</p>
@@ -970,7 +980,7 @@ It means that the estimation is using N for the denominator.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – (list) list of data values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> &#8211; (list) list of data values</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float)</td>
 </tr>
@@ -980,14 +990,14 @@ It means that the estimation is using N for the denominator.</p>
 
 <dl class="function">
 <dt id="calculus.lstdev">
-<code class="descclassname">calculus.</code><code class="descname">lstdev</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/variability.html#lstdev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.lstdev" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">lstdev</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#calculus.lstdev" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the standard deviation of the data values, for a population.</p>
 <p>The standard deviation is the positive square root of the variance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – (list) list of data values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> &#8211; (list) list of data values</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float)</td>
 </tr>
@@ -997,7 +1007,7 @@ It means that the estimation is using N for the denominator.</p>
 
 <dl class="function">
 <dt id="calculus.lz">
-<code class="descclassname">calculus.</code><code class="descname">lz</code><span class="sig-paren">(</span><em>items</em>, <em>score</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/variability.html#lz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.lz" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">lz</tt><big>(</big><em>items</em>, <em>score</em><big>)</big><a class="headerlink" href="#calculus.lz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the z-score for a given input score,
 given that score and the data values from which that score came.</p>
 <p>The z-score determines the relative location of a data value.</p>
@@ -1006,8 +1016,8 @@ given that score and the data values from which that score came.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>items</strong> – (list) list of data values</li>
-<li><strong>score</strong> – (float) a score of any items</li>
+<li><strong>items</strong> &#8211; (list) list of data values</li>
+<li><strong>score</strong> &#8211; (float) a score of any items</li>
 </ul>
 </td>
 </tr>
@@ -1020,13 +1030,13 @@ given that score and the data values from which that score came.</p>
 
 <dl class="function">
 <dt id="calculus.rPVI">
-<code class="descclassname">calculus.</code><code class="descname">rPVI</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/variability.html#rPVI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.rPVI" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">rPVI</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#calculus.rPVI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Raw Pairwise Variability Index.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – (list) list of data values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> &#8211; (list) list of data values</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float)</td>
 </tr>
@@ -1036,13 +1046,13 @@ given that score and the data values from which that score came.</p>
 
 <dl class="function">
 <dt id="calculus.nPVI">
-<code class="descclassname">calculus.</code><code class="descname">nPVI</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/variability.html#nPVI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.nPVI" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">nPVI</tt><big>(</big><em>items</em><big>)</big><a class="headerlink" href="#calculus.nPVI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the Normalized Pairwise Variability Index.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> – (list) list of data values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>items</strong> &#8211; (list) list of data values</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float)</td>
 </tr>
@@ -1052,18 +1062,18 @@ given that score and the data values from which that score came.</p>
 
 <dl class="function">
 <dt id="calculus.ubpa">
-<code class="descclassname">calculus.</code><code class="descname">ubpa</code><span class="sig-paren">(</span><em>vector</em>, <em>text</em>, <em>fp=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>delta_max=0.04</em>, <em>step=0.01</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/scoring/ubpa.html#ubpa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.ubpa" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">calculus.</tt><tt class="descname">ubpa</tt><big>(</big><em>vector</em>, <em>text</em>, <em>fp=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w' at 0x7fe5415c2150&gt;</em>, <em>delta_max=0.04</em>, <em>step=0.01</em><big>)</big><a class="headerlink" href="#calculus.ubpa" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the Unit Boundary Positioning Accuracy.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>vector</strong> – contains the list of the delta values.</li>
-<li><strong>text</strong> – one of “Duration”, “Position Start”, …</li>
-<li><strong>fp</strong> – a file pointer</li>
-<li><strong>delta_max</strong> – Maximum delta duration to print result (default: 40ms)</li>
-<li><strong>step</strong> – Delta time (default: 10ms)</li>
+<li><strong>vector</strong> &#8211; contains the list of the delta values.</li>
+<li><strong>text</strong> &#8211; one of &#8220;Duration&#8221;, &#8220;Position Start&#8221;, ...</li>
+<li><strong>fp</strong> &#8211; a file pointer</li>
+<li><strong>delta_max</strong> &#8211; Maximum delta duration to print result (default: 40ms)</li>
+<li><strong>step</strong> &#8211; Delta time (default: 10ms)</li>
 </ul>
 </td>
 </tr>
@@ -1188,8 +1198,8 @@ given that score and the data values from which that score came.</p>
 <p>Exceptions for calculus package.</p>
 <dl class="exception">
 <dt id="calculus.calculusexc.EmptyError">
-<em class="property">exception </em><code class="descclassname">calculus.calculusexc.</code><code class="descname">EmptyError</code><a class="reference internal" href="../_modules/calculus/calculusexc.html#EmptyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.EmptyError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></p>
+<em class="property">exception </em><tt class="descclassname">calculus.calculusexc.</tt><tt class="descname">EmptyError</tt><a class="reference internal" href="../_modules/calculus/calculusexc.html#EmptyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.EmptyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1200,16 +1210,15 @@ given that score and the data values from which that score came.</p>
 </table>
 <dl class="method">
 <dt id="calculus.calculusexc.EmptyError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/calculusexc.html#EmptyError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.EmptyError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/calculusexc.html#EmptyError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.EmptyError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="calculus.calculusexc.EuclidianDistanceError">
-<em class="property">exception </em><code class="descclassname">calculus.calculusexc.</code><code class="descname">EuclidianDistanceError</code><a class="reference internal" href="../_modules/calculus/calculusexc.html#EuclidianDistanceError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.EuclidianDistanceError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.ValueError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">calculus.calculusexc.</tt><tt class="descname">EuclidianDistanceError</tt><a class="reference internal" href="../_modules/calculus/calculusexc.html#EuclidianDistanceError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.EuclidianDistanceError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.ValueError</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1220,16 +1229,15 @@ given that score and the data values from which that score came.</p>
 </table>
 <dl class="method">
 <dt id="calculus.calculusexc.EuclidianDistanceError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/calculusexc.html#EuclidianDistanceError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.EuclidianDistanceError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/calculusexc.html#EuclidianDistanceError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.EuclidianDistanceError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="calculus.calculusexc.InsideIntervalError">
-<em class="property">exception </em><code class="descclassname">calculus.calculusexc.</code><code class="descname">InsideIntervalError</code><span class="sig-paren">(</span><em>value</em>, <em>min_value</em>, <em>max_value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/calculusexc.html#InsideIntervalError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.InsideIntervalError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.ValueError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">calculus.calculusexc.</tt><tt class="descname">InsideIntervalError</tt><big>(</big><em>value</em>, <em>min_value</em>, <em>max_value</em><big>)</big><a class="reference internal" href="../_modules/calculus/calculusexc.html#InsideIntervalError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.InsideIntervalError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.ValueError</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1240,16 +1248,15 @@ given that score and the data values from which that score came.</p>
 </table>
 <dl class="method">
 <dt id="calculus.calculusexc.InsideIntervalError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>value</em>, <em>min_value</em>, <em>max_value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/calculusexc.html#InsideIntervalError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.InsideIntervalError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><em>value</em>, <em>min_value</em>, <em>max_value</em><big>)</big><a class="reference internal" href="../_modules/calculus/calculusexc.html#InsideIntervalError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.InsideIntervalError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="calculus.calculusexc.ProbabilityError">
-<em class="property">exception </em><code class="descclassname">calculus.calculusexc.</code><code class="descname">ProbabilityError</code><span class="sig-paren">(</span><em>value=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/calculusexc.html#ProbabilityError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.ProbabilityError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></p>
+<em class="property">exception </em><tt class="descclassname">calculus.calculusexc.</tt><tt class="descname">ProbabilityError</tt><big>(</big><em>value=None</em><big>)</big><a class="reference internal" href="../_modules/calculus/calculusexc.html#ProbabilityError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.ProbabilityError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1260,16 +1267,15 @@ given that score and the data values from which that score came.</p>
 </table>
 <dl class="method">
 <dt id="calculus.calculusexc.ProbabilityError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>value=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/calculusexc.html#ProbabilityError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.ProbabilityError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><em>value=None</em><big>)</big><a class="reference internal" href="../_modules/calculus/calculusexc.html#ProbabilityError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.ProbabilityError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="calculus.calculusexc.SumProbabilityError">
-<em class="property">exception </em><code class="descclassname">calculus.calculusexc.</code><code class="descname">SumProbabilityError</code><span class="sig-paren">(</span><em>value=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/calculusexc.html#SumProbabilityError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.SumProbabilityError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></p>
+<em class="property">exception </em><tt class="descclassname">calculus.calculusexc.</tt><tt class="descname">SumProbabilityError</tt><big>(</big><em>value=None</em><big>)</big><a class="reference internal" href="../_modules/calculus/calculusexc.html#SumProbabilityError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.SumProbabilityError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1280,16 +1286,15 @@ given that score and the data values from which that score came.</p>
 </table>
 <dl class="method">
 <dt id="calculus.calculusexc.SumProbabilityError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>value=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/calculusexc.html#SumProbabilityError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.SumProbabilityError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><em>value=None</em><big>)</big><a class="reference internal" href="../_modules/calculus/calculusexc.html#SumProbabilityError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.SumProbabilityError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="calculus.calculusexc.VectorsError">
-<em class="property">exception </em><code class="descclassname">calculus.calculusexc.</code><code class="descname">VectorsError</code><a class="reference internal" href="../_modules/calculus/calculusexc.html#VectorsError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.VectorsError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></p>
+<em class="property">exception </em><tt class="descclassname">calculus.calculusexc.</tt><tt class="descname">VectorsError</tt><a class="reference internal" href="../_modules/calculus/calculusexc.html#VectorsError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.VectorsError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1300,9 +1305,8 @@ given that score and the data values from which that score came.</p>
 </table>
 <dl class="method">
 <dt id="calculus.calculusexc.VectorsError.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/calculusexc.html#VectorsError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.VectorsError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
-</dd></dl>
+<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/calculusexc.html#VectorsError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.calculusexc.VectorsError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1314,8 +1318,8 @@ given that score and the data values from which that score came.</p>
 <h3>src.calculus.descriptivestats.py<a class="headerlink" href="#src-calculus-descriptivestats-py" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="calculus.descriptivesstats.sppasDescriptiveStatistics">
-<em class="property">class </em><code class="descclassname">calculus.descriptivesstats.</code><code class="descname">sppasDescriptiveStatistics</code><span class="sig-paren">(</span><em>dict_items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">calculus.descriptivesstats.</tt><tt class="descname">sppasDescriptiveStatistics</tt><big>(</big><em>dict_items</em><big>)</big><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1342,22 +1346,22 @@ stored in a dictionary:</p>
 <li>the value is the list of data values for this data set.</li>
 </ul>
 </div></blockquote>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;apples&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;peers&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;apples&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s">&#39;peers&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">sppasDescriptiveStatistics</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">total</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">total</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">((</span><span class="s1">&#39;peers&#39;</span><span class="p">,</span> <span class="mf">13.0</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;apples&#39;</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">((</span><span class="s">&#39;peers&#39;</span><span class="p">,</span> <span class="mf">13.0</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;apples&#39;</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">))</span>
 </pre></div>
 </div>
 <dl class="method">
 <dt id="calculus.descriptivesstats.sppasDescriptiveStatistics.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>dict_items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>dict_items</em><big>)</big><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Descriptive statistics.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dict_items</strong> – a dict of tuples (key, [values])</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dict_items</strong> &#8211; a dict of tuples (key, [values])</td>
 </tr>
 </tbody>
 </table>
@@ -1365,7 +1369,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.descriptivesstats.sppasDescriptiveStatistics.coefvariation">
-<code class="descname">coefvariation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.coefvariation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.coefvariation" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">coefvariation</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.coefvariation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.coefvariation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the coefficient of variation of data values (given as a percentage).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1379,7 +1383,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.descriptivesstats.sppasDescriptiveStatistics.len">
-<code class="descname">len</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.len"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.len" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">len</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.len"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.len" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the number of occurrences of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1393,7 +1397,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.descriptivesstats.sppasDescriptiveStatistics.max">
-<code class="descname">max</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.max" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">max</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.max" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the maximum of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1407,7 +1411,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.descriptivesstats.sppasDescriptiveStatistics.mean">
-<code class="descname">mean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.mean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.mean" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">mean</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.mean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.mean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the arithmetic mean of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1421,8 +1425,8 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.descriptivesstats.sppasDescriptiveStatistics.median">
-<code class="descname">median</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.median"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.median" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the ‘middle’ score of the data values.</p>
+<tt class="descname">median</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.median"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.median" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates the &#8216;middle&#8217; score of the data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1435,7 +1439,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.descriptivesstats.sppasDescriptiveStatistics.min">
-<code class="descname">min</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.min"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.min" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">min</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.min"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.min" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the minimum of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1449,7 +1453,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.descriptivesstats.sppasDescriptiveStatistics.stdev">
-<code class="descname">stdev</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.stdev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.stdev" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">stdev</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.stdev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.stdev" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the standard deviation of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1463,7 +1467,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.descriptivesstats.sppasDescriptiveStatistics.total">
-<code class="descname">total</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.total"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.total" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">total</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.total"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.total" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the sum of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1477,7 +1481,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.descriptivesstats.sppasDescriptiveStatistics.variance">
-<code class="descname">variance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.variance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.variance" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">variance</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.variance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.variance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the unbiased sample variance of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1491,7 +1495,7 @@ stored in a dictionary:</p>
 
 <dl class="method">
 <dt id="calculus.descriptivesstats.sppasDescriptiveStatistics.zscore">
-<code class="descname">zscore</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.zscore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.zscore" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">zscore</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/descriptivesstats.html#sppasDescriptiveStatistics.zscore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.descriptivesstats.sppasDescriptiveStatistics.zscore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the z-scores of data values.
 The z-score determines the relative location of a data value.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1520,8 +1524,8 @@ in Computational Linguistics.</p>
 magnitude of agreement between observers.</p>
 <dl class="class">
 <dt id="calculus.kappa.sppasKappa">
-<em class="property">class </em><code class="descclassname">calculus.kappa.</code><code class="descname">sppasKappa</code><span class="sig-paren">(</span><em>p=[]</em>, <em>q=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">calculus.kappa.</tt><tt class="descname">sppasKappa</tt><big>(</big><em>p=</em>, <span class="optional">[</span><span class="optional">]</span><em>q=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1547,20 +1551,20 @@ would be expected to be present by chance alone (“expected” agreement).</p>
 5 questions.</p>
 <blockquote>
 <div><ul class="simple">
-<li>Person “P” answered: Yes, No, No, Yes, Yes</li>
-<li>Person “Q” answered: Yes, No, Yes, Yes, Yes</li>
+<li>Person &#8220;P&#8221; answered: Yes, No, No, Yes, Yes</li>
+<li>Person &#8220;Q&#8221; answered: Yes, No, Yes, Yes, Yes</li>
 </ul>
 </div></blockquote>
 <p>This results in the following vectors of probabilities:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)]</span>
 </pre></div>
 </div>
-<p>The Cohen’s Kappa is then evaluated as follow:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sppasKappa</span><span class="o">.</span><span class="n">check_vector</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kc">True</span>
+<p>The Cohen&#8217;s Kappa is then evaluated as follow:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sppasKappa</span><span class="o">.</span><span class="n">check_vector</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="bp">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sppasKappa</span><span class="o">.</span><span class="n">check_vector</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kc">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="bp">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">kappa</span> <span class="o">=</span> <span class="n">sppasKappa</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">kappa</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="mf">0.54545</span>
@@ -1568,9 +1572,9 @@ would be expected to be present by chance alone (“expected” agreement).</p>
 </div>
 <dl class="method">
 <dt id="calculus.kappa.sppasKappa.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>p=[]</em>, <em>q=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>p=</em>, <span class="optional">[</span><span class="optional">]</span><em>q=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a sppasKappa instance with two lists of tuples p and q.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">=</span><span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">=</span><span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)]</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1578,8 +1582,8 @@ would be expected to be present by chance alone (“expected” agreement).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>p</strong> – a vector of tuples of float values</li>
-<li><strong>q</strong> – a vector of tuples of float values</li>
+<li><strong>p</strong> &#8211; a vector of tuples of float values</li>
+<li><strong>q</strong> &#8211; a vector of tuples of float values</li>
 </ul>
 </td>
 </tr>
@@ -1589,7 +1593,7 @@ would be expected to be present by chance alone (“expected” agreement).</p>
 
 <dl class="method">
 <dt id="calculus.kappa.sppasKappa.check">
-<code class="descname">check</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa.check" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">check</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the given p and q vectors are correct to be used.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1603,13 +1607,13 @@ would be expected to be present by chance alone (“expected” agreement).</p>
 
 <dl class="staticmethod">
 <dt id="calculus.kappa.sppasKappa.check_vector">
-<em class="property">static </em><code class="descname">check_vector</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.check_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa.check_vector" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><tt class="descname">check_vector</tt><big>(</big><em>v</em><big>)</big><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.check_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa.check_vector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the vector is correct to be used.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> – a vector of tuples of probabilities.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> &#8211; a vector of tuples of probabilities.</td>
 </tr>
 </tbody>
 </table>
@@ -1617,8 +1621,8 @@ would be expected to be present by chance alone (“expected” agreement).</p>
 
 <dl class="method">
 <dt id="calculus.kappa.sppasKappa.evaluate">
-<code class="descname">evaluate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the Cohen’s Kappa between two lists of tuples p and q.</p>
+<tt class="descname">evaluate</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates the Cohen&#8217;s Kappa between two lists of tuples p and q.</p>
 <p>The tuple size corresponds to the number of categories, each value is
 the score assigned to each category for a given sample.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1633,15 +1637,15 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="method">
 <dt id="calculus.kappa.sppasKappa.set_vectors">
-<code class="descname">set_vectors</code><span class="sig-paren">(</span><em>p</em>, <em>q</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.set_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa.set_vectors" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_vectors</tt><big>(</big><em>p</em>, <em>q</em><big>)</big><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.set_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa.set_vectors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the vectors of probabilities to estimate the sppasKappa value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>p</strong> – a vector of tuples of float values</li>
-<li><strong>q</strong> – a vector of tuples of float values</li>
+<li><strong>p</strong> &#8211; a vector of tuples of float values</li>
+<li><strong>q</strong> &#8211; a vector of tuples of float values</li>
 </ul>
 </td>
 </tr>
@@ -1651,7 +1655,7 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="method">
 <dt id="calculus.kappa.sppasKappa.sqm">
-<code class="descname">sqm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.sqm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa.sqm" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sqm</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.sqm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa.sqm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the Euclidian distance between two vectors.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1665,7 +1669,7 @@ the score assigned to each category for a given sample.</p>
 
 <dl class="method">
 <dt id="calculus.kappa.sppasKappa.sqv">
-<code class="descname">sqv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.sqv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa.sqv" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sqv</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/calculus/kappa.html#sppasKappa.sqv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.kappa.sppasKappa.sqv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimates the Euclidian distance between two vectors.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1687,7 +1691,7 @@ the score assigned to each category for a given sample.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
@@ -1720,30 +1724,29 @@ the score assigned to each category for a given sample.</p>
   <h4>Next topic</h4>
   <p class="topless"><a href="calculus.geometry.html"
                         title="next chapter">calculus.geometry package</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/rst/calculus.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/rst/calculus.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -1758,12 +1761,12 @@ the score assigned to each category for a given sample.</p>
         <li class="right" >
           <a href="audiodata.aio.html" title="audiodata.aio package"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">SPPAS 1.9.8 documentation</a> &#187;</li> 
+        <li><a href="../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

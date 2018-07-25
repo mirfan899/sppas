@@ -1,22 +1,33 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>anndata.annotation &#8212; SPPAS 1.9.8 documentation</title>
+    
+    <title>anndata.annotation &mdash; SPPAS 1.9.8 documentation</title>
+    
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.9.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -25,18 +36,18 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body" role="main">
+          <div class="body">
             
   <h1>Source code for anndata.annotation</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="c"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -71,13 +82,13 @@
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
-<span class="kn">from</span> <span class="nn">.annlabel.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
-<span class="kn">from</span> <span class="nn">.annlabel.label</span> <span class="k">import</span> <span class="n">sppasLabel</span>
-<span class="kn">from</span> <span class="nn">.annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">.metadata</span> <span class="k">import</span> <span class="n">sppasMetaData</span>
+<span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="kn">import</span> <span class="n">AnnDataTypeError</span>
+<span class="kn">from</span> <span class="nn">.annlabel.tag</span> <span class="kn">import</span> <span class="n">sppasTag</span>
+<span class="kn">from</span> <span class="nn">.annlabel.label</span> <span class="kn">import</span> <span class="n">sppasLabel</span>
+<span class="kn">from</span> <span class="nn">.annlocation.location</span> <span class="kn">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">.metadata</span> <span class="kn">import</span> <span class="n">sppasMetaData</span>
 
-<span class="c1"># ----------------------------------------------------------------------------</span>
+<span class="c"># ----------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasAnnotation"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation">[docs]</a><span class="k">class</span> <span class="nc">sppasAnnotation</span><span class="p">(</span><span class="n">sppasMetaData</span><span class="p">):</span>
@@ -107,46 +118,46 @@
 <span class="sd">        annotation, or a list of them.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">sppasAnnotation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasAnnotation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
-        <span class="c1"># Check location instance.</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">sppasLocation</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="s2">&quot;sppasLocation&quot;</span><span class="p">)</span>
+        <span class="c"># Check location instance.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">sppasLocation</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="s">&quot;sppasLocation&quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__location</span> <span class="o">=</span> <span class="n">location</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__score</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__score</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Member getters</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Member getters</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.get_score"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.get_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the score of this annotation or None if no score is set.</span>
 
 <span class="sd">        :returns: score: (float)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__score</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__score</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.get_location"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.get_location">[docs]</a>    <span class="k">def</span> <span class="nf">get_location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the sppasLocation() of this annotation. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.get_labels"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.get_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the list of sppasLabel() of this annotation. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.copy"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a full copy of the annotation.</span>
 
@@ -156,59 +167,59 @@
 <span class="sd">        :returns: sppasAnnotation()</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Create a copy of the location/labels</span>
+        <span class="c"># Create a copy of the location/labels</span>
         <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">:</span>
             <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
 
-        <span class="c1"># Create the new Annotation</span>
+        <span class="c"># Create the new Annotation</span>
         <span class="n">other</span> <span class="o">=</span> <span class="n">sppasAnnotation</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
         <span class="n">other</span><span class="o">.</span><span class="n">set_parent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__parent</span><span class="p">)</span>
         <span class="n">other</span><span class="o">.</span><span class="n">set_score</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__score</span><span class="p">)</span>
 
-        <span class="c1"># Copy all metadata, including the &#39;id&#39;.</span>
+        <span class="c"># Copy all metadata, including the &#39;id&#39;.</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_meta_keys</span><span class="p">():</span>
             <span class="n">other</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">other</span></div>
+        <span class="k">return</span> <span class="n">other</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Setters</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasAnnotation.set_parent"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.set_parent">[docs]</a>    <span class="k">def</span> <span class="nf">set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Setters</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasAnnotation.set_parent"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.set_parent">[docs]</a>    <span class="k">def</span> <span class="nf">set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set a parent tier.</span>
 
 <span class="sd">        :param parent: (sppasTier) The parent tier of this annotation.</span>
 <span class="sd">        :raises: CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">parent</span><span class="o">.</span><span class="n">validate_annotation_location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">:</span>
                 <span class="n">parent</span><span class="o">.</span><span class="n">validate_annotation_label</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="o">=</span> <span class="n">parent</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="o">=</span> <span class="n">parent</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasAnnotation.set_score"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.set_score">[docs]</a>    <span class="k">def</span> <span class="nf">set_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasAnnotation.set_score"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.set_score">[docs]</a>    <span class="k">def</span> <span class="nf">set_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set or reset the score to this annotation.</span>
 
 <span class="sd">        :param score: (float)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">score</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">score</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__score</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="s">&quot;float&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__score</span> <span class="o">=</span> <span class="kc">None</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__score</span> <span class="o">=</span> <span class="bp">None</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.set_labels"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.set_labels">[docs]</a>    <span class="k">def</span> <span class="nf">set_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[]):</span>
         <span class="sd">&quot;&quot;&quot; Fix/reset the list of labels of this annotation.</span>
 
@@ -219,23 +230,23 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">sppasLabel</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">sppasLabel</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">validate_label</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
 
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">validate_label</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="s2">&quot;sppasLabel/list&quot;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="s">&quot;sppasLabel/list&quot;</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.validate"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Validate the annotation.</span>
 
@@ -246,11 +257,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">validate_label</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span><span class="o">.</span><span class="n">validate_annotation_location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span><span class="o">.</span><span class="n">validate_annotation_location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.validate_label"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.validate_label">[docs]</a>    <span class="k">def</span> <span class="nf">validate_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Validate the label.</span>
 
@@ -259,39 +270,39 @@
 <span class="sd">        :raises: CtrlVocabContainsError, TypeError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">sppasLabel</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="s2">&quot;sppasLabel&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">sppasLabel</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="s">&quot;sppasLabel&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">current_type</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span> <span class="k">if</span> <span class="n">l</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">current_type</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span> <span class="k">if</span> <span class="n">l</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_type</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">label</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current_type</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span><span class="o">.</span><span class="n">validate_annotation_label</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span><span class="o">.</span><span class="n">validate_annotation_label</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Labels</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Labels</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.is_labelled"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.is_labelled">[docs]</a>    <span class="k">def</span> <span class="nf">is_labelled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if at least a sppasTag exists and is not None. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">True</span>
 
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="bp">False</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.append_label"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.append_label">[docs]</a>    <span class="k">def</span> <span class="nf">append_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Append a label into the list of labels.</span>
 
@@ -299,51 +310,51 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">validate_label</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.get_labels_best_tag"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.get_labels_best_tag">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels_best_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a list with the best tag of each label. &quot;&quot;&quot;</span>
 
         <span class="n">tags</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">:</span>
             <span class="n">best</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">best</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">best</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">best</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+                <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">tags</span></div>
+        <span class="k">return</span> <span class="n">tags</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.get_best_tag"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.get_best_tag">[docs]</a>    <span class="k">def</span> <span class="nf">get_best_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the tag with the highest score of a label or an empty string.</span>
 
 <span class="sd">        :param label_idx: (int)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># No label defined</span>
+        <span class="c"># No label defined</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">sppasTag</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sppasTag</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">[</span><span class="n">label_idx</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Invalid label index&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s">&#39;Invalid label index&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">sppasTag</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">sppasTag</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
 
         <span class="n">best</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">best</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">best</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">best</span>
-        <span class="k">return</span> <span class="n">sppasTag</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">sppasTag</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasAnnotation.add_tag"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.add_tag">[docs]</a>    <span class="k">def</span> <span class="nf">add_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasAnnotation.add_tag"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.add_tag">[docs]</a>    <span class="k">def</span> <span class="nf">add_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">label_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Append an alternative tag in a label.</span>
 
 <span class="sd">        :param tag: (sppasTag)</span>
@@ -352,30 +363,30 @@
 <span class="sd">        :raises: AnnDataTypeError, IndexError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># No label previously defined</span>
+        <span class="c"># No label previously defined</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">label</span> <span class="o">=</span> <span class="n">sppasLabel</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">[</span><span class="n">label_idx</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                     <span class="n">label</span> <span class="o">=</span> <span class="n">sppasLabel</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Invalid label index&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s">&#39;Invalid label index&#39;</span><span class="p">)</span>
 
-        <span class="c1"># tag, score were added. Now, validate.</span>
+        <span class="c"># tag, score were added. Now, validate.</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">validate_label</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="c1"># restore</span>
+            <span class="c"># restore</span>
             <span class="n">label</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
-            <span class="k">raise</span></div>
+            <span class="k">raise</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.remove_tag"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.remove_tag">[docs]</a>    <span class="k">def</span> <span class="nf">remove_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">label_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Remove an alternative tag of the label.</span>
 
@@ -386,13 +397,13 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">[</span><span class="n">label_idx</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Invalid label index&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s">&#39;Invalid label index&#39;</span><span class="p">)</span>
 
-        <span class="n">label</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span></div>
+        <span class="n">label</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasAnnotation.contains_tag"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.contains_tag">[docs]</a>    <span class="k">def</span> <span class="nf">contains_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">function</span><span class="o">=</span><span class="s1">&#39;exact&#39;</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasAnnotation.contains_tag"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.contains_tag">[docs]</a>    <span class="k">def</span> <span class="nf">contains_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">function</span><span class="o">=</span><span class="s">&#39;exact&#39;</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">label_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the given tag is in the label.</span>
 
 <span class="sd">        :param tag: (sppasTag)</span>
@@ -401,96 +412,96 @@
 <span class="sd">        :param label_idx: (int)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># No label defined</span>
+        <span class="c"># No label defined</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">[</span><span class="n">label_idx</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Invalid label index&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s">&#39;Invalid label index&#39;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="n">r</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">function</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">reverse</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">reverse</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">r</span>
 
-        <span class="k">return</span> <span class="ow">not</span> <span class="n">r</span></div>
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">r</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.label_is_filled"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.label_is_filled">[docs]</a>    <span class="k">def</span> <span class="nf">label_is_filled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if at least one BEST tag is filled. &quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+            <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">False</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.label_is_string"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.label_is_string">[docs]</a>    <span class="k">def</span> <span class="nf">label_is_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the type of the labels is &#39;str&#39;. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">label</span><span class="o">.</span><span class="n">is_string</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="bp">False</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.label_is_float"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.label_is_float">[docs]</a>    <span class="k">def</span> <span class="nf">label_is_float</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the type of the labels is &#39;float&#39;. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">label</span><span class="o">.</span><span class="n">is_float</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="kc">False</span></div>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.label_is_int"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.label_is_int">[docs]</a>    <span class="k">def</span> <span class="nf">label_is_int</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the type of the labels is &#39;int&#39;. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">label</span><span class="o">.</span><span class="n">is_int</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="bp">False</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.label_is_bool"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.label_is_bool">[docs]</a>    <span class="k">def</span> <span class="nf">label_is_bool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the type of the labels is &#39;bool&#39;. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">label</span><span class="o">.</span><span class="n">is_bool</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="bp">False</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasAnnotation.serialize_labels"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.serialize_labels">[docs]</a>    <span class="k">def</span> <span class="nf">serialize_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">alt</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
+<div class="viewcode-block" id="sppasAnnotation.serialize_labels"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.serialize_labels">[docs]</a>    <span class="k">def</span> <span class="nf">serialize_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">alt</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert labels into a string.</span>
 
 <span class="sd">        :param separator: (str) String to separate labels.</span>
@@ -509,12 +520,12 @@
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">:</span>
             <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="n">empty</span><span class="p">,</span> <span class="n">alt</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">separator</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">separator</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Localization</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Localization</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.set_best_localization"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.set_best_localization">[docs]</a>    <span class="k">def</span> <span class="nf">set_best_localization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">localization</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set the best localization of the location.</span>
 
@@ -523,36 +534,36 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">old_loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">localization</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span><span class="o">.</span><span class="n">validate_annotation_location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">old_loc</span><span class="p">)</span>
-                <span class="k">raise</span></div>
+                <span class="k">raise</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.location_is_point"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.location_is_point">[docs]</a>    <span class="k">def</span> <span class="nf">location_is_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the location is made of sppasPoint localizations. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.location_is_interval"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.location_is_interval">[docs]</a>    <span class="k">def</span> <span class="nf">location_is_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the location is made of sppasInterval localizations. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="o">.</span><span class="n">is_interval</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="o">.</span><span class="n">is_interval</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.location_is_disjoint"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.location_is_disjoint">[docs]</a>    <span class="k">def</span> <span class="nf">location_is_disjoint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the location is made of sppasDisjoint localizations. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="o">.</span><span class="n">is_disjoint</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="o">.</span><span class="n">is_disjoint</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.get_highest_localization"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.get_highest_localization">[docs]</a>    <span class="k">def</span> <span class="nf">get_highest_localization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a copy of the sppasPoint with the highest localization. &quot;&quot;&quot;</span>
 
@@ -561,11 +572,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">max_localization</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="p">])</span>
 
-        <span class="c1"># We return a copy to be sure the original localization won&#39;t be modified</span>
-        <span class="k">return</span> <span class="n">max_localization</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+        <span class="c"># We return a copy to be sure the original localization won&#39;t be modified</span>
+        <span class="k">return</span> <span class="n">max_localization</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.get_lowest_localization"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.get_lowest_localization">[docs]</a>    <span class="k">def</span> <span class="nf">get_lowest_localization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a copy of the sppasPoint with the lowest localization. &quot;&quot;&quot;</span>
 
@@ -574,11 +585,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">min_localization</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="p">])</span>
 
-        <span class="c1"># We return a copy to be sure the original localization won&#39;t be modified</span>
-        <span class="k">return</span> <span class="n">min_localization</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+        <span class="c"># We return a copy to be sure the original localization won&#39;t be modified</span>
+        <span class="k">return</span> <span class="n">min_localization</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.get_all_points"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.get_all_points">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the list of a copy of all points of this annotation. &quot;&quot;&quot;</span>
 
@@ -598,61 +609,61 @@
                     <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interval</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
                     <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interval</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
 
-        <span class="k">return</span> <span class="n">points</span></div>
+        <span class="k">return</span> <span class="n">points</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.contains_localization"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.contains_localization">[docs]</a>    <span class="k">def</span> <span class="nf">contains_localization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">localization</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the given localization is in the location. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">localization</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">localization</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
 <div class="viewcode-block" id="sppasAnnotation.validate_location"><a class="viewcode-back" href="../../rst/anndata.html#anndata.annotation.sppasAnnotation.validate_location">[docs]</a>    <span class="k">def</span> <span class="nf">validate_location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Validate the location of the annotation.</span>
 
 <span class="sd">        :raises: </span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span><span class="o">.</span><span class="n">validate_annotation_location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__parent</span><span class="o">.</span><span class="n">validate_annotation_location</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="p">)</span>
 
-    <span class="c1"># -----------------------------------------------------------------------</span>
-    <span class="c1"># Overloads</span>
-    <span class="c1"># -----------------------------------------------------------------------</span>
-
+    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c"># Overloads</span>
+    <span class="c"># -----------------------------------------------------------------------</span>
+</div>
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Annotation </span><span class="si">{:s}</span><span class="s2">: </span><span class="si">{:s}</span><span class="s2"> </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
+        <span class="k">return</span> <span class="s">&quot;Annotation {:s}: {:s} {:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">),</span>
                                                    <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="p">),</span>
                                                    <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2"> </span><span class="si">{:s}</span><span class="s2"> </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
+        <span class="k">return</span> <span class="s">&quot;{:s} {:s} {:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">),</span>
                                        <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__location</span><span class="p">),</span>
                                        <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># use the hashcode of self identifier since that is used</span>
-        <span class="c1"># for equality checks as well, like &quot;ann in my_dict&quot;.</span>
-        <span class="c1"># not required by Python 2.7 but necessary for Python 3.4+</span>
-        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">))</span>
+        <span class="c"># use the hashcode of self identifier since that is used</span>
+        <span class="c"># for equality checks as well, like &quot;ann in my_dict&quot;.</span>
+        <span class="c"># not required by Python 2.7 but necessary for Python 3.4+</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__score</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_score</span><span class="p">():</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__location</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_location</span><span class="p">():</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">get_labels</span><span class="p">()):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">for</span> <span class="n">label1</span><span class="p">,</span> <span class="n">label2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__labels</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">get_labels</span><span class="p">()):</span>
             <span class="k">if</span> <span class="n">label1</span> <span class="o">!=</span> <span class="n">label2</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span>
+                <span class="k">return</span> <span class="bp">False</span>
 
-        <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="bp">True</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span></div>
@@ -661,25 +672,26 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
+<div id="searchbox" style="display: none">
   <h3>Quick search</h3>
-    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    </div>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -688,13 +700,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    <div class="footer">
+        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
