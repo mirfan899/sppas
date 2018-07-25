@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Intsint.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations.Intsint
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France

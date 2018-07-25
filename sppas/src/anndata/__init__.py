@@ -36,32 +36,15 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    Management of transcribed data.
-
-    anndata is a free and open source Python library to access and search
-    data from annotated data. It can convert file formats like Elan’s EAF,
-    Praat's TextGrid and others into a Transcription() object and convert into
-    any of these formats. Those objects allow unified access to linguistic
-    data from a wide range sources.
-    This API then supports to merge data and annotation from a wide range of
-    heterogeneous data sources for further analysis. To get the list of
-    file extensions currently supported for reading and writing:
-
-        >>> ext = anndata.aio.extensions
-
-    Some details can be found in the following publication:
-
-        | Brigitte Bigi, Tatsuya Watanabe, Laurent Prévot (2014).
-        | Representing Multimodal Linguistics Annotated data,
-        | Proceedings of the 9th edition of the Language Resources and
-        | Evaluation Conference, 26-31 May 2014, Reykjavik, Iceland.
+    Management of transcribed data. old version.
 
 """
 from sppas.src.utils.maketext import translate
 t = translate("anndata")
 
+from .aio import aioutils
 from .metadata import sppasMetaData
 from .aio.readwrite import sppasRW
 from .transcription import sppasTranscription
@@ -77,27 +60,26 @@ from .annlocation import sppasDuration
 from .annlocation import sppasInterval
 from .annlocation import sppasPoint
 from .annlocation import sppasDisjoint
-from .aio import aioutils
 from .filters import sppasFilters
 from .filters import sppasAnnSet
 
 __all__ = [
-    sppasMetaData,
-    sppasRW,
-    sppasTranscription,
-    sppasTier,
-    sppasAnnotation,
-    sppasCtrlVocab,
-    sppasMedia,
-    sppasHierarchy,
-    sppasLabel,
-    sppasTag,
-    sppasLocation,
-    sppasDuration,
-    sppasDisjoint,
-    sppasInterval,
-    sppasPoint,
-    sppasFilters,
-    sppasAnnSet,
-    aioutils
+    'sppasMetaData',
+    'sppasRW',
+    'sppasTranscription',
+    'sppasTier',
+    'sppasAnnotation',
+    'sppasCtrlVocab',
+    'sppasMedia',
+    'sppasHierarchy',
+    'sppasLabel',
+    'sppasTag',
+    'sppasLocation',
+    'sppasDuration',
+    'sppasDisjoint',
+    'sppasInterval',
+    'sppasPoint',
+    'sppasFilters',
+    'sppasAnnSet',
+    'aioutils'
 ]

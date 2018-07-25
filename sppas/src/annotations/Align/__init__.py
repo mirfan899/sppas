@@ -28,8 +28,8 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Align.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations.Align
+    ~~~~~~~~~~~~~~~~~~~~~
 
     This package includes the SPPAS implementation of the Alignment annotation.
 

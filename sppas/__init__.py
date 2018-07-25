@@ -28,7 +28,7 @@
 
         ---------------------------------------------------------------------
 
-    __init__.py
+    sppas
     ~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
@@ -50,6 +50,7 @@ except NameError:
         from imp import reload  # Python 3.0 - 3.3
 
 from sppas.src.config import sppasGlobals
+
 
 # ---------------------------------------------------------------------------
 # Fix the global settings variables

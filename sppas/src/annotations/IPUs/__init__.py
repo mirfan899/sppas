@@ -28,8 +28,8 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.IPUs.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations.IPUs
+    ~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -49,3 +49,4 @@
        indicated in a time-aligned file.
 
 """
+

@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.aio.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.anndata.aio
+    ~~~~~~~~~~~~~~~~
 
     Readers and writers of annotated data.
 

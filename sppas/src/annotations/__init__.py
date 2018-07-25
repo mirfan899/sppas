@@ -29,19 +29,35 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations
+    ~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      SPPAS Automatic annotations global variables.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      SPPAS Automatic annotations.
 
 """
 from sppas.src.utils.maketext import translate
 t = translate("annotations")
+
+from .Align import sppasAlign
+from .Intsint import sppasIntsint
+from .Phon import sppasPhon
+from .Syll import sppasSyll
+from .TGA import sppasTGA
+from .TextNorm import sppasTextNorm
+
+__all__ = [
+    'sppasAlign',
+    'sppasIntsint',
+    'sppasPhon',
+    'sppasSyll',
+    'sppasTGA',
+    'sppasTextNorm'
+]
 
 # ---------------------------------------------------------------------------
 # Default output extension:

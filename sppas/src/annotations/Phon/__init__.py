@@ -29,14 +29,14 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Phon.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations.Phon
+    ~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     Phonetization is the process of representing sounds with phonetic
     signs. There are two general ways to construct a phonetization process:

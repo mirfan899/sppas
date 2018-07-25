@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Syll.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations.Syll
+    ~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
