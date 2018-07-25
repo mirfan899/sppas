@@ -38,8 +38,7 @@
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Documentation generator.
-
+    :summary:      Documentation generator for SPPAS.
 
 """
 import os
