@@ -25,7 +25,7 @@ Notice that SPPAS allows to time-align automatically laugh, noises, or
 filled pauses (depending on the language): No other system is able to 
 achieves this task!
 
-![SPPAS alignment output example](./etc/screenshots/alignment.png)
+![SPPAS alignment output example](etc/screenshots/alignment.png)
 
 
 ### Adapt Alignment
@@ -79,7 +79,7 @@ This file includes one or two tiers:
 * "PhonAlign" is the segmentation at the phone level;
 * "TokensAlign" is the segmentation at the word level (if a file with tokenization was found).
 
-![Alignment workflow](./etc/figures/alignworkflow.png)
+![Alignment workflow](etc/figures/alignworkflow.png)
 
 The following options are available to configure Alignment:
 

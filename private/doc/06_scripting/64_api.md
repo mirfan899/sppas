@@ -69,7 +69,7 @@ associated with a score. A localization is one of:
 * a `sppasInterval` object, which is made of 2 `sppasPoint` objects; or
 * a `sppasDisjoint` object which is a list of `sppasInterval`.
 
-![API class diagram](./etc/figures/anndata.png)
+![API class diagram](etc/figures/anndata.png)
 
 
 #### Label representation
@@ -88,7 +88,7 @@ its vagueness by using:
 * a midpoint value (center) of the point;
 * a radius value.
 
-![Representation of a sppasPoint](./etc/figures/timepoint-represent.png)
+![Representation of a sppasPoint](etc/figures/timepoint-represent.png)
 
 
 #### Example
@@ -104,5 +104,5 @@ In the screenshot the following radius values were assigned:
 - 5ms for phonetics, discourse and syntax 
 - 40ms for gestures. 
 
-![Example of multimodal data](./etc/screenshots/Grenelle.png)
+![Example of multimodal data](etc/screenshots/Grenelle.png)
 

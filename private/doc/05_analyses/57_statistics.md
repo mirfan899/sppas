@@ -1,6 +1,6 @@
 ## Statistics
 
-![Statistics: descriptive statistics and TGA](./etc/screenshots/Statistics.png)
+![Statistics: descriptive statistics and TGA](etc/screenshots/Statistics.png)
 
 
 ### Descriptive statistics
@@ -41,7 +41,7 @@ For those who are estimating statistics on XRA files, you can either estimate
 stats only on the best label (the label with the higher score) or on all labels,
 i.e. the best label and all its alternatives (if any).
 
-![Descriptive statistics](./etc/screenshots/Statistics-descriptives.png)
+![Descriptive statistics](etc/screenshots/Statistics-descriptives.png)
 
 
 ### User agreement

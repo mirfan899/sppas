@@ -540,7 +540,7 @@ th {
 
 div > ul,
 div > ol {
-    margin-left:    40px;
+    margin-left:    30px;
     margin-right:   20px;
     margin-top:     12px;
     margin-bottom:  12px;
@@ -552,7 +552,9 @@ div > ul ul,
 ul ol,
 ol ol,
 ol ul{
-margin-bottom:5px;
+    margin-bottom:5px;
+    margin-left: 30px;
+    font-size: 90%;
 }
 
 li{

@@ -11,7 +11,7 @@ These later are applied on tiers of many kind of input files (TextGrid, eaf,
 trs, csv...). The filtering process results in a new tier, that can re-filtered
 and so on.
 
-![DataFilter: select annotations](./etc/screenshots/DataFilter.png)
+![DataFilter: select annotations](etc/screenshots/DataFilter.png)
 
 
 ### Filtering annotations of a tier: SingleFilter
@@ -38,17 +38,17 @@ A multiple pattern selection can be expressed in both ways:
 to mention the system to retrieve either one pattern or the other, etc.
 - enter one pattern at a time and choose the appropriate button: "Apply All" or "Apply any".
 
-![Frame to create a filter on annotation labels. In that case, filtering annotations that exactly match either a, @ or E](./etc/screenshots/DataFilter-label.png)
+![Frame to create a filter on annotation labels. In that case, filtering annotations that exactly match either a, @ or E](etc/screenshots/DataFilter-label.png)
 
 Another important feature for a filtering system is the possibility to retrieve 
 annotated data of a certain duration, and in a certain range of time in the
 timeline.
 
-![Frame to create a filter on annotation durations. In that case, filtering annotations that are during more that 80 ms](./etc/screenshots/DataFilter-duration.png)
+![Frame to create a filter on annotation durations. In that case, filtering annotations that are during more that 80 ms](etc/screenshots/DataFilter-duration.png)
 
 Search can also starts and/or ends at specific time values in a tier.
 
-![Frame to create a filter on annotation time values. In that case, filtering annotations that are starting after the 5th minute.](./etc/screenshots/DataFilter-time.png)
+![Frame to create a filter on annotation time values. In that case, filtering annotations that are starting after the 5th minute.](etc/screenshots/DataFilter-time.png)
 
 
 All the given filters are then summarized in the "SingleFilter" frame.
@@ -61,7 +61,7 @@ In the given example:
 - click on "Apply Any" to get a, @ or E vowels, and all annotations during more than 80 ms, and all annotations after the 5th minute.
 
 
-![DataFilter: SingleFilter frame](./etc/screenshots/DataFilter-single.png)
+![DataFilter: SingleFilter frame](etc/screenshots/DataFilter-single.png)
 
 
 
@@ -100,7 +100,7 @@ At a first stage, the user must select the tiers to be filtered and click
 on "RelationFilter". The second stage is to select the tier that will be
 used for time-relations.
 
-![Fix time-relation tier name](./etc/screenshots/DataFilter-relationY.png)
+![Fix time-relation tier name](etc/screenshots/DataFilter-relationY.png)
 
 The next step consists in checking the Allen's relations that will be applied.
 The last stage is to fix the name of the resulting tier.
@@ -108,7 +108,7 @@ The above screenshots illustrates how to select the first phoneme of each token,
 except for tokens that are containing only one phoneme (in this later case, the
 "equal" relation should be checked).
 
-![DataFilter: RelationFilter frame](./etc/screenshots/DataFilter-relation.png)
+![DataFilter: RelationFilter frame](etc/screenshots/DataFilter-relation.png)
 
 To complete the filtering process, it must be clicked on the "Apply" button
 and the new resulting tiers are added in the annotation file(s). 

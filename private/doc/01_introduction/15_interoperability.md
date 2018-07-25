@@ -44,7 +44,7 @@ representing the following actions:
 * partially import from, represented by a dash line with an arrow from the file format to the SPPAS framework;
 * export to, represented by an arrow from the SPPAS framework to the file format.
 
-![SPPAS conversion method and formats](./etc/figures/sppas-formats.png)
+![SPPAS conversion method and formats](etc/figures/sppas-formats.png)
 
 To summarize, SPPAS supports the following software with their file extensions:
 

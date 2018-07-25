@@ -359,7 +359,7 @@ def gen_pdf_file(doc, files, result_filename):
 
     # The expected files to generate the PDF:
     latex_template = doc.get_latex_template()
-    front_page = doc.get_latex_front_page()
+    front_page = "doc/frontpage.pdf"  # doc.get_latex_front_page()
 
     # Remove the existing file
     if os.path.exists(result_filename):
@@ -381,11 +381,13 @@ def gen_pdf_file(doc, files, result_filename):
     command += ' --variable fontsize=11pt'
     command += ' --variable version="' + sppas.__version__ + '"'
     command += ' --variable frontpage="' + front_page + '"'
+    command += ' --resource-path=web'  # only if pandoc > 2.0
 
     # the files and LaTeX options
     command += " "
     command += " ".join(files)
-    command += ' --latex-engine=xelatex'
+    #command += ' --latex-engine=xelatex'  # for old versions of pandoc
+    command += ' --pdf-engine=xelatex'
     command += ' --toc'
     command += ' -o ' + result_filename
 
@@ -502,7 +504,7 @@ def generate_pdf(doc_dir, doc_temp):
     doc = sppasDocFiles(doc_dir, doc_temp)
 
     # name of the resulting file
-    result_filename = os.path.join(SPPAS, "documentation", "Documentation.pdf")
+    result_filename = "SPPAS-Documentation.pdf"  # os.path.join(SPPAS, "documentation", "SPPAS-Documentation.pdf")
 
     # A unique PDF documentation file is generated from all markdown files
     md_files = doc.get_all_md(header=False, footer=False)
@@ -595,13 +597,15 @@ if __name__ == "__main__":
     # fix directory for external files is ok.
     doc_temp = os.path.join(SPPAS, "private", "doc")
     if os.path.exists(doc_temp) is False:
-        raise IOError("Directory {:s} of the documentation is missing. Program halted.".format(doc_temp))
+        raise IOError("Directory {:s} of the documentation is missing. "
+                      "Program halted.".format(doc_temp))
 
     if args.doc or args.web:
         # test if documentation directory for markdown files is ok.
         doc_dir = os.path.join(SPPAS, "private", "doc")
         if os.path.exists(doc_dir) is False:
-            raise IOError("Directory {:s} of the documentation is missing. Program halted.".format(doc_dir))
+            raise IOError("Directory {:s} of the documentation is missing. "
+                          "Program halted.".format(doc_dir))
 
         if args.doc:
             generate_pdf(doc_dir, doc_temp)
@@ -612,7 +616,8 @@ if __name__ == "__main__":
         # test if tutorial directory for markdown files is ok.
         tuto_dir = os.path.join(SPPAS, "private", "tuto")
         if os.path.exists(tuto_dir) is False:
-            raise IOError("Directory {:s} of the tutorials is missing. Program halted.".format(tuto_dir))
+            raise IOError("Directory {:s} of the tutorials is missing. "
+                          "Program halted.".format(tuto_dir))
 
         # generate_tuto(tuto_dir, doc_temp)
         print("NOT IMPLEMENTED")

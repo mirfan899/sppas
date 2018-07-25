@@ -4,7 +4,7 @@
 to manage the tiers: cut/copy/paste/rename/duplicate tiers, move a tier from 
 one file to another one, etc.
 
-![DataRoamer: explore annotated files](./etc/screenshots/DataRoamer.png)
+![DataRoamer: explore annotated files](etc/screenshots/DataRoamer.png)
 
 
 When an annotated file is checked in the list of files, the file is opened

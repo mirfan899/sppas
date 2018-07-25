@@ -47,7 +47,7 @@ There is a unique version of SPPAS which does not depend on the operating
 system. The only obvious difference depending on the system is how it looks
 on the computer screen.
 
-![Operating systems](./etc/logos/systemes.jpg)
+![Operating systems](etc/logos/systemes.jpg)
 
 SPPAS is ready to run, so it does not need elaborate installation, except for
 the other software required for SPPAS to work properly.
@@ -67,7 +67,7 @@ It is particularly suitable for automatic annotations: it allows any user
 to adapt automatic annotations to its own needs.
 The package of SPPAS is then a directory with content as files and folders.
 
-![SPPAS Package content](./etc/screenshots/explorer-sppas-folder.png)
+![SPPAS Package content](etc/screenshots/explorer-sppas-folder.png)
 
 The SPPAS package contains:
 

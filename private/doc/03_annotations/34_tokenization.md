@@ -75,7 +75,7 @@ the expected tiers.
 Read the "Introduction" of this chapter for a better understanding of the
 difference between "standard" and "faked" results.
 
-![Text normalization workflow](./etc/figures/tokworkflow.png)
+![Text normalization workflow](etc/figures/tokworkflow.png)
 
 To perform the text normalization process, click on the Text Normalization
 activation button, select the language and click on the "Configure..." blue 

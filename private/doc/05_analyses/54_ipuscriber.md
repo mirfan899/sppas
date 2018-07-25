@@ -7,7 +7,7 @@ with a known extension like .xra, .TextGrid, etc. If this file is not found,
 an error message is displayed. Otherwise, the audio file is opened and the
 annotated file is loaded in a new page of the notebook.
 
-![IPUscriber: for manual orthographic transcription](./etc/screenshots/IPUscriber.png)
+![IPUscriber: for manual orthographic transcription](etc/screenshots/IPUscriber.png)
 
 Silences are hidden and the IPUs are displayed in a list of boxes with:
 

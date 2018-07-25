@@ -33,7 +33,7 @@ tier containing the time-aligned tokens of the main speaker, and another
 file/tier for other-repetitions.
 The annotation provides one annotated file with 2 tiers: Sources and Repetitions.
 
-![Repetition detection workflow](./etc/figures/repetworkflow.bmp)
+![Repetition detection workflow](etc/figures/repetworkflow.bmp)
 
 Click on the Self-Repetitions activation button, select the language and 
 click on the "Configure..." blue text to fix options.

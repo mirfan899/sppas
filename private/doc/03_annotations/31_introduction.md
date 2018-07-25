@@ -31,7 +31,7 @@ Figure must be read from top to bottom and from left to right, starting by
 the recordings and ending to the analysis of annotated files.
 Yellow boxes represent manual annotations, blue boxes represent automatic ones.
 
-![Annotation methodology](./etc/figures/methodo.png)
+![Annotation methodology](etc/figures/methodo.png)
 
 After the recording, the first annotation to perform is IPUs segmentation. 
 Indeed, at a first stage, the audio signal must be automatically segmented 
@@ -92,7 +92,7 @@ annotations: It does not make sense to hope for miracles but you can expect
 good enough results that will allow you to save your precious time!
 And it begins by taking care of the recordings...
 
-![Example of expected recorded speech](./etc/screenshots/signal.png)
+![Example of expected recorded speech](etc/screenshots/signal.png)
 
 
 ### Automatic Annotations with GUI
@@ -101,7 +101,7 @@ To perform automatic annotations with SPPAS Graphical User Interface, select
 first the list of audio files and/or a directory, then click on the 
 "Annotate" button.
 
-![The annotate panel](./etc/screenshots/AAP.png)
+![The annotate panel](etc/screenshots/AAP.png)
 
 1. Enable each annotation to perform by clicking on the button in red. 
 It will be turned green.
@@ -172,7 +172,7 @@ a message indicates the name of the procedure outcome report file, which
 is `./samples/samples-eng.log` in our example. This file can be opened with
 any text editor (as Notepad++, vim, TextEdit, ...).
 
-![CLI: annotation.py output example](./etc/screenshots/CLI-example.png)
+![CLI: annotation.py output example](etc/screenshots/CLI-example.png)
 
 
 ### The procedure outcome report
@@ -311,7 +311,7 @@ At the end of the report, the "Result statistics" section mentions the
 number of files that was annotated for each step, or -1 if the annotation 
 was disabled. 
 
-![Procedure outcome report](./etc/screenshots/log.png)
+![Procedure outcome report](etc/screenshots/log.png)
 
 
 ## New language support

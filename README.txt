@@ -44,6 +44,15 @@
         the Phonetician - International Society of Phonetic Sciences,
         ISSN 0741-6164, Number 111-112 / 2015-I-II, pages 54-69.
 
+    To be published:
+
+        Brigitte Bigi and Christine Meunier (2018).
+        Automatic speech segmentation of spontaneous speech.
+        In Revista de Estudos da Linguagem.
+        International Thematic Issue: Speech Segmentation.
+        Editors: Tommaso Raso, Heliana Mello, Plinio Barbosa,
+        e - ISSN 2237-2083.
+
     Other references are available in the documentation.
 
     -------------------------------------------------------------------------

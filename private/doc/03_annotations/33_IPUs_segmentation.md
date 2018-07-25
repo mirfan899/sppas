@@ -16,7 +16,7 @@ The "IPUs segmentation" automatic annotation can perform 3 actions:
 3. split/save a recorded file into multiple files, depending on segments
    indicated in a time-aligned file.
 
-![IPU Segmentation workflow](./etc/figures/segmworkflow.bmp)
+![IPU Segmentation workflow](etc/figures/segmworkflow.bmp)
 
 >Notice that all time values are indicated in seconds.
 
@@ -82,11 +82,11 @@ It can be viewed with the SPPAS Visualizer tool, or it can be viewed/revised wit
 If the option values were not relevant enough: delete the annotated file that was
 previously created, change such values and re-annotate.
 
-![Result of IPUs Segmentation: silence detection](./etc/screenshots/ipu-seg-result1.png)
+![Result of IPUs Segmentation: silence detection](etc/screenshots/ipu-seg-result1.png)
 
 Notice that the speech segments can be transcribed using the SPPAS "IPUScriber" tool.
 
-![Orthographic transcription based on IPUs Segmentation](./etc/screenshots/IPUscribe-2.png)
+![Orthographic transcription based on IPUs Segmentation](etc/screenshots/IPUscribe-2.png)
 
 
 ### Silence/Speech segmentation time-aligned with a transcription
@@ -117,7 +117,7 @@ The same parameters than those indicated in the previous section must be fixed.
 > This segmentation was tested on documents no longer than one paragraph
 > (about 1 minute speech).
 
-![Silence/Speech segmentation with orthographic transcription](./etc/screenshots/ipu-seg-result2.png)
+![Silence/Speech segmentation with orthographic transcription](etc/screenshots/ipu-seg-result2.png)
 
 
 ### Split into multiple files
@@ -128,7 +128,7 @@ files are "track_0001", "track_0002", etc.
 Optionally, if the input annotated file contains a tier with name exactly "Name",
 then the content of this tier will be used to fix output file names.
 
-![Data to split](./etc/screenshots/ipu-seg-result3.png)
+![Data to split](etc/screenshots/ipu-seg-result3.png)
 
 In the example above, the automatic process will create 6 files:
 FLIGTH.wav, FLIGHT.txt, MOVIES.wav, MOVIES.txt, SLEEP.wav and SLEEP.txt.
@@ -136,7 +136,7 @@ It is up to the user to perform another IPUs segmentation of these files
 to get another file format than txt (xra, TextGrid, ...). Refer to the
 previous section "Silence/Speech segmentation time-aligned with a transcription".
 
-![Data split](./etc/screenshots/ipu-seg-result3-files.png)
+![Data split](etc/screenshots/ipu-seg-result3-files.png)
 
 
 ### Perform IPUs Segmentation with the GUI

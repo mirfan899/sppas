@@ -51,7 +51,7 @@ Copy the following line of code in this newly created file:
 print("Hello world!")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-![Hello world! in a Python script](./etc/screenshots/python_idle_00.png)
+![Hello world! in a Python script](etc/screenshots/python_idle_00.png)
 
 Then, save the file in the "pythonscripts" folder. 
 By convention, Python source files end with a *.py* extension, 
@@ -64,7 +64,7 @@ To execute the program, you can do one of:
 
 The expected output is as follow:
 
-![Output of the first script](./etc/screenshots/python_idle_01.png)
+![Output of the first script](etc/screenshots/python_idle_01.png)
 
 A better practice while writing scripts is to describe by who, what and why 
 this script was done. A nifty trick is to create a skeleton for any future 
@@ -128,7 +128,7 @@ if __name__ == '__main__':
 >Create a function to print plosives and call it in the main function
 >(solution: ex02_functions.py).
 
-![Output of the second script](./etc/screenshots/python_idle_02.png)
+![Output of the second script](etc/screenshots/python_idle_02.png)
 
  
 One can also create a function to print glides, another one to print 
@@ -178,7 +178,7 @@ def is_empty(mystr):
 >*Practice:* Add this function in a new script and try to print various lists
 >(solution: ex03_functions.py)
 
-![Expected output of the 3rd script](./etc/screenshots/python_idle_03.png)
+![Expected output of the 3rd script](etc/screenshots/python_idle_03.png)
 
 
 ### Reading/Writing files

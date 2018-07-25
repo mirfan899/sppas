@@ -39,12 +39,12 @@ the tips (middle),
 the list of files (left-middle),
 and the action buttons (right).
 
-![Main Frame of version 1.9.0](./etc/screenshots/sppas-1-8-0.png)
+![Main Frame of version 1.9.0](etc/screenshots/sppas-1-8-0.png)
 
 
 ### The tips
 
-![The tips included in the main frame](./etc/screenshots/tips.png)
+![The tips included in the main frame](etc/screenshots/tips.png)
 
 The frame includes message tips that are picked up randomly and printed to 
 help users. Click on the button `Next Tip` to read another message, or click 
@@ -74,12 +74,12 @@ with your own default mailer, with gmail opened in your web browser,
 or by another e-mail client. Then, close the frame by clicking on the "Close"
 button.
 
-![The Feedback Frame](./etc/screenshots/feedback.png)
+![The Feedback Frame](etc/screenshots/feedback.png)
 
 
 ### The file explorer
 
-![File explorer](./etc/screenshots/FLP.png)
+![File explorer](etc/screenshots/FLP.png)
 
 The list contains directories and files the user added. However, only files 
 that SPPAS can deal with, e.g. depending on the file extension, can be appended 
@@ -111,7 +111,7 @@ and then other files can be selected.
 In both cases, only files with an appropriate extension will be added in the 
 file explorer.
 
-![Adding specific files](./etc/screenshots/FLP-Add.png)
+![Adding specific files](etc/screenshots/FLP-Add.png)
 
 
 #### Add a directory
@@ -149,7 +149,7 @@ change the file format by assigning the appropriate file extension.
 
 Export annotated files in an other format (csv, txt, ...):
 
-![Export: Check the expected format in the list](./etc/screenshots/FLP-Export.png)
+![Export: Check the expected format in the list](etc/screenshots/FLP-Export.png)
 
 After the export, a new window opens to report whether the file(s) were 
 exported successfully or not. Actually, an export fails if:
@@ -167,7 +167,7 @@ preferred options in the tabs:
 - Theme: fix how the icons of the GUI will look like. 
 - Annotations: fix automatic annotations parameters.
 
-![Settings is used to manage user preferences](./etc/screenshots/settings.png)
+![Settings is used to manage user preferences](etc/screenshots/settings.png)
 
 These preferences can be saved in a file to be used each time SPPAS is executed. 
 Finally, to close the settings window, click on:
@@ -209,7 +209,7 @@ To install a plugin, simply follow this workflow:
 4. Browse to indicate the plugin package.
 5. See the new plugin icon in the plugins list.
 
-![Installing a new Plugin](./etc/figures/plugin-workflow.png)
+![Installing a new Plugin](etc/figures/plugin-workflow.png)
 
 
 #### Deleting a plugin

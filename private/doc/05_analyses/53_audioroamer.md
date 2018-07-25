@@ -20,7 +20,7 @@ sample: it allows values to range from -32768 to 32767.
 Support for multichannel audio depends on file format and relies on 
 interweaving or synchronization of streams.
 
-![AudioRoamer: play and manage audio files](./etc/screenshots/AudioRoamer.png)
+![AudioRoamer: play and manage audio files](etc/screenshots/AudioRoamer.png)
 
 
 When an audio file is checked in the list of files, a new page is opened in
@@ -77,7 +77,7 @@ For a long audio file, it can take a while to estimate such information...
 For example, a mono-audio file of 243 seconds (21.5Mb) is loaded in 20 seconds.
 **So be patient! It's worth it!**
 
-![AudioRoamer if you want more](./etc/screenshots/AudioRoamer-more.png)
+![AudioRoamer if you want more](etc/screenshots/AudioRoamer-more.png)
 
 There are 3 main columns of information, related to amplitude, clipping and 
 volume.

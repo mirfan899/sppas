@@ -13,7 +13,7 @@ These two principles focus the problem of the task of finding a syllabic
 boundary between two vowels. Phonemes were grouped into classes and rules 
 are established to deal with these classes.
 
-![Syllabification example](./etc/screenshots/syll-example.png)
+![Syllabification example](etc/screenshots/syll-example.png)
 
 
 For each language, the automatic syllabification requires a configuration 
@@ -96,7 +96,7 @@ The annotation provides an annotated file with "-salign" appended to its name,
 i.e. "oriana1-salign.xra" for the previous example.
 This file is including 2 tiers: SyllAlign, SyllClassAlign.
 
-![Syllabification workflow](./etc/figures/syllworkflow.png)
+![Syllabification workflow](etc/figures/syllworkflow.png)
 
 To perform the annotation, click on the Syllabification activation button, 
 select the language and click on the "Configure..." blue text to fix options.

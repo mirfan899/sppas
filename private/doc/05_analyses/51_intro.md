@@ -9,7 +9,7 @@ To execute a specific analysis tool, select file(s) in the file explorer of
 the main frame, then click on the button of the tool. It will open the 
 window of the tool, and add the file(s) in its file manager. 
 
-![The analysis tools](./etc/screenshots/CCP.png)
+![The analysis tools](etc/screenshots/CCP.png)
 
 Six tools are available:
 

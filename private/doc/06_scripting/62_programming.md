@@ -9,7 +9,7 @@ description. In order to do this, execute the Python IDLE -
 available in the Application-Menu of your operating system,
 and write the examples after the prompt ">>>".
 
-![The Python IDLE logo](./etc/logos/python_idle.png)
+![The Python IDLE logo](etc/logos/python_idle.png)
 
 To get information about the IDLE, get access to 
 [the IDLE documentation](https://docs.python.org/2/library/idle.html)
@@ -52,7 +52,7 @@ The equal sign (=) is used to assign values to variables.
 In the previous example, `a`, `b`, `c`, `hello` and `vrai` are variables,
 `a = 1` is a declaration.
 
-![Variable declarations and print in the Python IDLE](./etc/screenshots/python_idle_example.png)
+![Variable declarations and print in the Python IDLE](etc/screenshots/python_idle_example.png)
 
 Assignments to variables with Python language can be performed with the 
 following operators:
