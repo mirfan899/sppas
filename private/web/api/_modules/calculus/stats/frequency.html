@@ -1,0 +1,363 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>calculus.stats.frequency &#8212; SPPAS 1.9.8 documentation</title>
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for calculus.stats.frequency</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ..</span>
+<span class="sd">        ---------------------------------------------------------------------</span>
+<span class="sd">         ___   __    __    __    ___</span>
+<span class="sd">        /     |  \  |  \  |  \  /              the automatic</span>
+<span class="sd">        \__   |__/  |__/  |___| \__             annotation and</span>
+<span class="sd">           \  |     |     |   |    \             analysis</span>
+<span class="sd">        ___/  |     |     |   | ___/              of speech</span>
+
+<span class="sd">        http://www.sppas.org/</span>
+
+<span class="sd">        Use of this software is governed by the GNU Public License, version 3.</span>
+
+<span class="sd">        SPPAS is free software: you can redistribute it and/or modify</span>
+<span class="sd">        it under the terms of the GNU General Public License as published by</span>
+<span class="sd">        the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">        (at your option) any later version.</span>
+
+<span class="sd">        SPPAS is distributed in the hope that it will be useful,</span>
+<span class="sd">        but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">        GNU General Public License for more details.</span>
+
+<span class="sd">        You should have received a copy of the GNU General Public License</span>
+<span class="sd">        along with SPPAS. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">        This banner notice must not be removed.</span>
+
+<span class="sd">        ---------------------------------------------------------------------</span>
+
+<span class="sd">    src.calculus.stats.frequency.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">    :author:       Brigitte Bigi</span>
+<span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
+<span class="sd">    :contact:      brigitte.bigi@gmail.com</span>
+<span class="sd">    :license:      GPL, v3</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
+
+<span class="sd">    A collection of basic frequency functions for python.</span>
+
+<span class="sd">    Function list</span>
+<span class="sd">    =============</span>
+
+<span class="sd">        - frequency</span>
+<span class="sd">        - percentage</span>
+<span class="sd">        - hapax</span>
+<span class="sd">        - occranks</span>
+<span class="sd">        - ranks</span>
+<span class="sd">        - zipf</span>
+<span class="sd">        - tfidf</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">..calculusexc</span> <span class="k">import</span> <span class="n">EmptyError</span><span class="p">,</span> <span class="n">ProbabilityError</span>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="freq"><a class="viewcode-back" href="../../../rst/calculus.html#calculus.freq">[docs]</a><span class="k">def</span> <span class="nf">freq</span><span class="p">(</span><span class="n">mylist</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Return the relative frequency of an item of a list.</span>
+
+<span class="sd">    :param mylist: (list) list of elements</span>
+<span class="sd">    :param item: (any) an element of the list (or not!)</span>
+<span class="sd">    :returns: frequency (float) of item in mylist</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">mylist</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">item</span><span class="p">))</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mylist</span><span class="p">))</span></div>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="percent"><a class="viewcode-back" href="../../../rst/calculus.html#calculus.percent">[docs]</a><span class="k">def</span> <span class="nf">percent</span><span class="p">(</span><span class="n">mylist</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Return the percentage of an item of a list.</span>
+
+<span class="sd">    :param mylist: (list) list of elements</span>
+<span class="sd">    :param item: (any) an element of the list (or not!)</span>
+<span class="sd">    :returns: percentage (float) of item in mylist</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">freq</span><span class="p">(</span><span class="n">mylist</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span></div>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="percentile"><a class="viewcode-back" href="../../../rst/calculus.html#calculus.percentile">[docs]</a><span class="k">def</span> <span class="nf">percentile</span><span class="p">(</span><span class="n">mylist</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">75</span><span class="p">),</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns the pth percentile of an unsorted or sorted numeric list.</span>
+
+<span class="sd">    This is equivalent to calling quantile(mylist, p/100.0).</span>
+
+<span class="sd">    &gt;&gt;&gt; round(percentile([15, 20, 40, 35, 50], 40), 2)</span>
+<span class="sd">    26.0</span>
+<span class="sd">    &gt;&gt;&gt; for perc in percentile([15, 20, 40, 35, 50], (0, 25, 50, 75, 100)):</span>
+<span class="sd">    ...     print(&quot;{:.2f}&quot;.format(perc))</span>
+<span class="sd">    ...</span>
+<span class="sd">    15.00</span>
+<span class="sd">    17.50</span>
+<span class="sd">    35.00</span>
+<span class="sd">    45.00</span>
+<span class="sd">    50.00</span>
+
+<span class="sd">    :param mylist: (list) list of elements.</span>
+<span class="sd">    :param p: (tuple) the percentile we are looking for.</span>
+<span class="sd">    :param sort: whether to sort the vector.</span>
+<span class="sd">    :returns: percentile as a float</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">quantile</span><span class="p">(</span><span class="n">mylist</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="mf">100.0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">p</span><span class="p">),</span> <span class="n">sort</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">quantile</span><span class="p">(</span><span class="n">mylist</span><span class="p">,</span> <span class="n">p</span><span class="o">/</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">sort</span><span class="p">)</span></div>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="quantile"><a class="viewcode-back" href="../../../rst/calculus.html#calculus.quantile">[docs]</a><span class="k">def</span> <span class="nf">quantile</span><span class="p">(</span><span class="n">mylist</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns the qth quantile of an unsorted or sorted numeric list.</span>
+
+<span class="sd">     Calculates a rank n as q(N+1), where N is the number of items in mylist,</span>
+<span class="sd">     then splits n into its integer component k and decimal component d.</span>
+<span class="sd">     If k &lt;= 1, returns the first element;</span>
+<span class="sd">     if k &gt;= N, returns the last element;</span>
+<span class="sd">     otherwise returns the linear interpolation between</span>
+<span class="sd">     mylist[k-1] and mylist[k] using a factor d.</span>
+
+<span class="sd">     &gt;&gt;&gt; round(quantile([15, 20, 40, 35, 50], 0.4), 2)</span>
+<span class="sd">     26.0</span>
+
+<span class="sd">    :param mylist: (list) list of elements.</span>
+<span class="sd">    :param q: (tuple) the quantile we are looking for.</span>
+<span class="sd">    :param sort: whether to sort the vector.</span>
+<span class="sd">    :returns: quantile as a float</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mylist</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">EmptyError</span>
+
+    <span class="k">if</span> <span class="n">sort</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">mylist</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">mylist</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
+        <span class="n">qs</span> <span class="o">=</span> <span class="n">q</span>
+        <span class="n">return_single</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">qs</span> <span class="o">=</span> <span class="p">[</span><span class="n">q</span><span class="p">]</span>
+        <span class="n">return_single</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="mf">0.</span> <span class="ow">or</span> <span class="n">p</span> <span class="o">&gt;</span> <span class="mf">1.</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ProbabilityError</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">qs</span><span class="p">:</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mylist</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">k</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">n</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mylist</span><span class="p">):</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mylist</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mylist</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="n">mylist</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">d</span> <span class="o">*</span> <span class="n">mylist</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">return_single</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># NLP functions related to frequency</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="hapax"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.hapax">[docs]</a><span class="k">def</span> <span class="nf">hapax</span><span class="p">(</span><span class="n">mydict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Return a list of hapax.</span>
+
+<span class="sd">    :param mydict: (dict)</span>
+<span class="sd">    :returns: list of keys for which value = 1</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mydict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">mydict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span></div>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="occranks"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.occranks">[docs]</a><span class="k">def</span> <span class="nf">occranks</span><span class="p">(</span><span class="n">mydict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Return a dictionary with key=occurrence, value=rank.</span>
+
+<span class="sd">    :param mydict: (dict)</span>
+<span class="sd">    :returns: dict</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># how many occurrences of each value of mydict?</span>
+    <span class="n">occ</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mydict</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">mydict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">occ</span><span class="p">:</span>
+            <span class="n">occ</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">occ</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># ranking with the occurrence as key</span>
+    <span class="n">occ_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">occ</span><span class="o">.</span><span class="n">keys</span><span class="p">()))):</span>
+        <span class="n">occ_dict</span><span class="p">[</span><span class="n">o</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">occ_dict</span></div>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="ranks"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.ranks">[docs]</a><span class="k">def</span> <span class="nf">ranks</span><span class="p">(</span><span class="n">counter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Return a dictionary with key=token, value=rank.</span>
+
+<span class="sd">    :param counter: (collections.Counter)</span>
+<span class="sd">    :returns: dict</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">oclist</span> <span class="o">=</span> <span class="n">occranks</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">counter</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">occ</span> <span class="o">=</span> <span class="n">counter</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">r</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">oclist</span><span class="p">[</span><span class="n">occ</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">r</span></div>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="zipf"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.zipf">[docs]</a><span class="k">def</span> <span class="nf">zipf</span><span class="p">(</span><span class="n">dict_ranks</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Return the Zipf Law value of an item.</span>
+<span class="sd">    Zipf&#39;s law states that given some corpus of natural language utterances,</span>
+<span class="sd">    the frequency of any word is inversely proportional to its rank in the</span>
+<span class="sd">    frequency table. Thus the most frequent word will occur approximately</span>
+<span class="sd">    twice as often as the second most frequent word, three times as often</span>
+<span class="sd">    as the third most frequent word, etc.</span>
+
+<span class="sd">    :param dict_ranks: (dict) is a dictionary with key=entry, value=rank.</span>
+<span class="sd">    :param item: (any) is an entry of the ranks dictionary</span>
+<span class="sd">    :returns: Zipf value or -1 if the entry is missing</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">dict_ranks</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.1</span> <span class="o">/</span> <span class="n">dict_ranks</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></div>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="tfidf"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.tfidf">[docs]</a><span class="k">def</span> <span class="nf">tfidf</span><span class="p">(</span><span class="n">documents</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Return the tf.idf of an item.</span>
+<span class="sd">    Term frequency–inverse document frequency, is a numerical statistic</span>
+<span class="sd">    that is intended to reflect how important a word is to a document in a</span>
+<span class="sd">    collection or corpus. The tf.idf value increases proportionally to the</span>
+<span class="sd">    number of times a word appears in the document, but is offset by the</span>
+<span class="sd">    frequency of the word in the corpus, which helps to control for the fact</span>
+<span class="sd">    that some words are generally more common than others.</span>
+
+<span class="sd">    :param documents: a list of list of entries.</span>
+<span class="sd">    :param item:</span>
+<span class="sd">    :returns: float</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Estimate tf of item in the corpus</span>
+    <span class="n">alltokens</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">:</span>
+        <span class="n">alltokens</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="n">freq</span><span class="p">(</span><span class="n">alltokens</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+
+    <span class="c1"># number of documents in the corpus</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span>
+
+    <span class="c1"># number of documents with at least one occurrence of item</span>
+    <span class="n">dw</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+            <span class="n">dw</span> <span class="o">+=</span> <span class="mf">1.</span>
+    <span class="k">if</span> <span class="n">dw</span> <span class="o">==</span> <span class="mf">0.</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.</span>
+
+    <span class="k">return</span> <span class="n">tf</span> <span class="o">*</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">D</span> <span class="o">/</span> <span class="n">dw</span><span class="p">))</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

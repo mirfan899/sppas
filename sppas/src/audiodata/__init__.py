@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.utils.audiodata
-    ~~~~~~~~~~~~~~~~~~~~~
+    audiodata
+    ~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -49,5 +49,5 @@ from .channel import sppasChannel
 
 __all__ = [
     'sppasAudioPCM',
-    'Channel'
+    'sppasChannel'
 ]

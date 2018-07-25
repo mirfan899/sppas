@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.resources.__init__py
-    ~~~~~~~~~~~~~~~~~~~~~~~~
+    resources
+    ~~~~~~~~~
 
     resources is a free and open source Python library to access and manage
     linguistic resources like lexicons, dictionaries, etc.

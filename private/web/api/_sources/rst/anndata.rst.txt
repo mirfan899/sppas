@@ -1,0 +1,103 @@
+anndata package
+===============
+
+
+Module contents
+---------------
+
+.. automodule:: anndata
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+
+    anndata.aio
+    anndata.annlabel
+    anndata.annlocation
+
+Submodules
+----------
+
+anndata.anndataexc module
+-------------------------
+
+.. automodule:: anndata.anndataexc
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anndata.annotation module
+-------------------------
+
+.. automodule:: anndata.annotation
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anndata.basecompare module
+--------------------------
+
+.. automodule:: anndata.basecompare
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anndata.ctrlvocab module
+------------------------
+
+.. automodule:: anndata.ctrlvocab
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anndata.filters module
+----------------------
+
+.. automodule:: anndata.filters
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anndata.hierarchy module
+------------------------
+
+.. automodule:: anndata.hierarchy
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anndata.media module
+--------------------
+
+.. automodule:: anndata.media
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anndata.metadata module
+-----------------------
+
+.. automodule:: anndata.metadata
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anndata.tier module
+-------------------
+
+.. automodule:: anndata.tier
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anndata.transcription module
+----------------------------
+
+.. automodule:: anndata.transcription
+    :members:
+    :undoc-members:
+    :show-inheritance:

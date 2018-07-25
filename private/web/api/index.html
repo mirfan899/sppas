@@ -1,0 +1,309 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Welcome to SPPAS’s API documentation &#8212; SPPAS 1.9.8 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="anndata package" href="rst/anndata.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="rst/anndata.html" title="anndata package"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">SPPAS 1.9.8 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference internal image-reference" href="_images/background-header.jpg"><img alt="" class="align-center" src="_images/background-header.jpg" style="width: 800px;" /></a>
+<div class="section" id="welcome-to-sppas-s-api-documentation">
+<h1>Welcome to SPPAS’s API documentation<a class="headerlink" href="#welcome-to-sppas-s-api-documentation" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://www.sppas.org">http://www.sppas.org</a></p>
+<p>SPPAS - the automatic annotation and analyses of speech, is a scientific
+computer software package written and maintained by Brigitte Bigi of
+the Laboratoire Parole et Langage, in Aix-en-Provence, France.</p>
+<div class="section" id="access-the-modules">
+<h2>Access the modules<a class="headerlink" href="#access-the-modules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rst/anndata.html"> anndata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst/audiodata.html"> audiodata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst/calculus.html"> calculus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst/plugins.html"> plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst/resources.html"> resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst/structs.html"> structs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst/utils.html"> utils</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-anndata">
+<span id="quick-overview-on-the-modules"></span><h2>Quick overview on the modules<a class="headerlink" href="#module-anndata" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="anndata">
+<h3>anndata<a class="headerlink" href="#anndata" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
+<p>Management of transcribed data.</p>
+<p>anndata is a free and open source Python library to access and search
+data from annotated data. It can convert file formats like Elan’s EAF,
+Praat’s TextGrid and others into a Transcription() object and convert into
+any of these formats. Those objects allow unified access to linguistic
+data from a wide range sources.
+This API then supports to merge data and annotation from a wide range of
+heterogeneous data sources for further analysis. To get the list of
+file extensions currently supported for reading and writing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ext</span> <span class="o">=</span> <span class="n">anndata</span><span class="o">.</span><span class="n">aio</span><span class="o">.</span><span class="n">extensions</span>
+</pre></div>
+</div>
+<p>Some details can be found in the following publication:</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line">Brigitte Bigi, Tatsuya Watanabe, Laurent Prévot (2014).</div>
+<div class="line">Representing Multimodal Linguistics Annotated data,</div>
+<div class="line">Proceedings of the 9th edition of the Language Resources and</div>
+<div class="line">Evaluation Conference, 26-31 May 2014, Reykjavik, Iceland.</div>
+</div>
+</div></blockquote>
+</div>
+<span class="target" id="module-audiodata"></span><div class="section" id="audiodata">
+<h3>audiodata<a class="headerlink" href="#audiodata" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
+<p>Management of digital audio data.</p>
+</div>
+<span class="target" id="module-calculus"></span><div class="section" id="calculus">
+<h3>calculus<a class="headerlink" href="#calculus" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
+<p>calculus is a free and open source Python library to perform some math
+on data. Basically, calculus package was created to estimates descriptive
+statistics on annotated data.</p>
+</div>
+<span class="target" id="module-plugins"></span><div class="section" id="plugins">
+<h3>plugins<a class="headerlink" href="#plugins" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
+<p>plugins is a free and open source Python library to access and manage
+external programs to plug into SPPAS.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a plugin manager (it will explore the installed plugins).</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span> <span class="o">=</span> <span class="n">sppasPluginsManager</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Install a plugin</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plugin_id</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="n">plugin_zip_filename</span><span class="p">,</span> <span class="n">plugin_destination_folder_name</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get a plugin</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">get_plugin</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply a plugin on a list of files</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">message</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">run_plugin</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">,</span> <span class="p">[</span><span class="n">some_filename1</span><span class="p">,</span> <span class="n">some_filename2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Delete an installed plugin</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<span class="target" id="module-resources"></span><div class="section" id="resources">
+<h3>resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h3>
+<p>resources is a free and open source Python library to access and manage
+linguistic resources like lexicons, dictionaries, etc.</p>
+</div>
+<span class="target" id="module-structs"></span><div class="section" id="structs">
+<h3>structs<a class="headerlink" href="#structs" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
+<p>structs is a free and open source Python library to access and manage
+data structures used into SPPAS.</p>
+</div>
+<span class="target" id="module-utils"></span><div class="section" id="utils">
+<h3>utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
+<p>utils is a free and open source Python library implementing utility
+functions used into SPPAS.</p>
+</div>
+</div>
+</div>
+<div class="section" id="un-documented-modules">
+<h1>Un-documented modules<a class="headerlink" href="#un-documented-modules" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>annotations</li>
+<li>models</li>
+<li>ui</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to SPPAS’s API documentation</a><ul>
+<li><a class="reference internal" href="#access-the-modules">Access the modules</a></li>
+<li><a class="reference internal" href="#module-anndata">Quick overview on the modules</a><ul>
+<li><a class="reference internal" href="#anndata">anndata</a></li>
+<li><a class="reference internal" href="#audiodata">audiodata</a></li>
+<li><a class="reference internal" href="#calculus">calculus</a></li>
+<li><a class="reference internal" href="#plugins">plugins</a></li>
+<li><a class="reference internal" href="#resources">resources</a></li>
+<li><a class="reference internal" href="#structs">structs</a></li>
+<li><a class="reference internal" href="#utils">utils</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#un-documented-modules">Un-documented modules</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="rst/anndata.html"
+                        title="next chapter">anndata package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="rst/anndata.html" title="anndata package"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">SPPAS 1.9.8 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

@@ -1,14 +1,21 @@
-# install a "good" version of sphinx:
-sudo pip install sphinx==1.4.8
+# installer sphinx:
+pip install sphinx
 
-# generation des fichiers rst (mode forcé):
-sphinx-apidoc -o manual $SPPAS/sppas/src/ -f
+# generer les fichiers rst:
+# il est impératif d'exécuter la commande dans le dossier sppas/src
+sphinx-apidoc -f -o ../../private/sphinx-doc/rst ./anndata/ ./anndata/tests
+# (a re-faire pour chaque package qu'il faut documenter)
+# puis supprimer le fichier ../../private/sphinx-doc/rst/modules.rst
+# explication:
+#   sphinx-apidoc [OPTIONS] -o <OUTPUT_PATH> <MODULE_PATH> [EXCLUDE_PATTERN, …]
+#    -e, --separate     Put documentation for each module on its own page.
+#    -M, --module-first Put module documentation before submodule documentation.
+# Absolument mettre un '/' à la fin du chemin de -o
 
-# generer les pages html (make html)
+
+# generer les pages html:
 sphinx-build -b html -d _build/doctrees . _build/html
-
-
-# clean all
-rm manual/*
-rm -rf _build/*
-
+# explication:
+# sphinx-build [options] <sourcedir> <outputdir> [filenames . . . ]
+# options possibles:
+#   -w file Write warnings (and errors) to the given file, in addition to standard error.

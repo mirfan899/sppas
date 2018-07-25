@@ -1,0 +1,514 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>audiodata.aio package &#8212; SPPAS 1.9.8 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="calculus package" href="calculus.html" />
+    <link rel="prev" title="audiodata package" href="audiodata.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="calculus.html" title="calculus package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="audiodata.html" title="audiodata package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="audiodata.html" accesskey="U">audiodata package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="audiodata-aio-package">
+<h1>audiodata.aio package<a class="headerlink" href="#audiodata-aio-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-audiodata.aio.aiffio">
+<span id="audiodata-aio-aiffio-module"></span><h2>audiodata.aio.aiffio module<a class="headerlink" href="#module-audiodata.aio.aiffio" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="src-audiodata-aio-aiffio-py">
+<h3>src.audiodata.aio.aiffio.py<a class="headerlink" href="#src-audiodata-aio-aiffio-py" title="Permalink to this headline">¶</a></h3>
+<p>Audio Interchange File Format (AIFF) is an audio file format developed by
+Apple Inc. in 1988.</p>
+<dl class="class">
+<dt id="audiodata.aio.aiffio.AiffIO">
+<em class="property">class </em><code class="descclassname">audiodata.aio.aiffio.</code><code class="descname">AiffIO</code><a class="reference internal" href="../_modules/audiodata/aio/aiffio.html#AiffIO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.aiffio.AiffIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="audiodata.html#audiodata.audio.sppasAudioPCM" title="audiodata.audio.sppasAudioPCM"><code class="xref py py-class docutils literal notranslate"><span class="pre">audiodata.audio.sppasAudioPCM</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Nicolas Chazeau, Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">An AIFF/AIFC file open/save utility class.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="audiodata.aio.aiffio.AiffIO.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio/aiffio.html#AiffIO.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.aiffio.AiffIO.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.aio.aiffio.AiffIO.open">
+<code class="descname">open</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio/aiffio.html#AiffIO.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.aiffio.AiffIO.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an audio from an Audio Interchange File Format file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (str) input file name.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.aio.aiffio.AiffIO.read_frames">
+<code class="descname">read_frames</code><span class="sig-paren">(</span><em>nframes</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio/aiffio.html#AiffIO.read_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.aiffio.AiffIO.read_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specific frame reader for aiff files.</p>
+<p>AIFF data is in big endian and we need little endian.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nframes</strong> – (int) the the number of frames wanted</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(str) frames</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.aio.aiffio.AiffIO.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio/aiffio.html#AiffIO.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.aiffio.AiffIO.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an audio content as a Audio Interchange File Format file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (str) output filename.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.aio.aiffio.AiffIO.save_fragment">
+<code class="descname">save_fragment</code><span class="sig-paren">(</span><em>filename</em>, <em>frames</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio/aiffio.html#AiffIO.save_fragment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.aiffio.AiffIO.save_fragment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an audio content as a Audio Interchange File Format file.</p>
+<p>:param filename (str) output filename.
+:param frames (str) the frames to write</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-audiodata.aio.audiofactory">
+<span id="audiodata-aio-audiofactory-module"></span><h2>audiodata.aio.audiofactory module<a class="headerlink" href="#module-audiodata.aio.audiofactory" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="src-audiodata-aio-audiofactory-py">
+<h3>src.audiodata.aio.audiofactory.py<a class="headerlink" href="#src-audiodata-aio-audiofactory-py" title="Permalink to this headline">¶</a></h3>
+<p>Factory class for creating an sppasAudioPCM.</p>
+<dl class="class">
+<dt id="audiodata.aio.audiofactory.sppasAudioFactory">
+<em class="property">class </em><code class="descclassname">audiodata.aio.audiofactory.</code><code class="descname">sppasAudioFactory</code><a class="reference internal" href="../_modules/audiodata/aio/audiofactory.html#sppasAudioFactory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.audiofactory.sppasAudioFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Nicolas Chazeau, Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Factory for sppasAudioPCM.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="audiodata.aio.audiofactory.sppasAudioFactory.AUDIO_TYPES">
+<code class="descname">AUDIO_TYPES</code><em class="property"> = {'au': &lt;class 'audiodata.aio.sunauio.SunauIO'&gt;, 'wav': &lt;class 'audiodata.aio.waveio.WaveIO'&gt;, 'wave': &lt;class 'audiodata.aio.waveio.WaveIO'&gt;}</em><a class="headerlink" href="#audiodata.aio.audiofactory.sppasAudioFactory.AUDIO_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="audiodata.aio.audiofactory.sppasAudioFactory.new_audio_pcm">
+<em class="property">static </em><code class="descname">new_audio_pcm</code><span class="sig-paren">(</span><em>audio_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio/audiofactory.html#sppasAudioFactory.new_audio_pcm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.audiofactory.sppasAudioFactory.new_audio_pcm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new sppasAudioPCM according to the format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>audio_type</strong> – (str) a file extension.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">sppasAudioPCM</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-audiodata.aio.sunauio">
+<span id="audiodata-aio-sunauio-module"></span><h2>audiodata.aio.sunauio module<a class="headerlink" href="#module-audiodata.aio.sunauio" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="src-audiodata-aio-sunauio-py">
+<h3>src.audiodata.aio.sunauio.py<a class="headerlink" href="#src-audiodata-aio-sunauio-py" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="audiodata.aio.sunauio.SunauIO">
+<em class="property">class </em><code class="descclassname">audiodata.aio.sunauio.</code><code class="descname">SunauIO</code><a class="reference internal" href="../_modules/audiodata/aio/sunauio.html#SunauIO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.sunauio.SunauIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="audiodata.html#audiodata.audio.sppasAudioPCM" title="audiodata.audio.sppasAudioPCM"><code class="xref py py-class docutils literal notranslate"><span class="pre">audiodata.audio.sppasAudioPCM</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Nicolas Chazeau, Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">A Sun AU file open/save utility class.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="audiodata.aio.sunauio.SunauIO.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio/sunauio.html#SunauIO.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.sunauio.SunauIO.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.aio.sunauio.SunauIO.open">
+<code class="descname">open</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio/sunauio.html#SunauIO.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.sunauio.SunauIO.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an audio from a Audio Interchange File Format file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (str) input file name.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.aio.sunauio.SunauIO.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio/sunauio.html#SunauIO.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.sunauio.SunauIO.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an audio content as a Audio Interchange File Format file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (str) output filename.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.aio.sunauio.SunauIO.save_fragment">
+<code class="descname">save_fragment</code><span class="sig-paren">(</span><em>filename</em>, <em>frames</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio/sunauio.html#SunauIO.save_fragment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.sunauio.SunauIO.save_fragment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an audio content as a Audio Interchange File Format file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filename</strong> – (str) output filename.</li>
+<li><strong>frames</strong> – (str) the frames to write</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-audiodata.aio.waveio">
+<span id="audiodata-aio-waveio-module"></span><h2>audiodata.aio.waveio module<a class="headerlink" href="#module-audiodata.aio.waveio" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="src-audiodata-aio-waveio-py">
+<h3>src.audiodata.aio.waveio.py<a class="headerlink" href="#src-audiodata-aio-waveio-py" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="audiodata.aio.waveio.WaveIO">
+<em class="property">class </em><code class="descclassname">audiodata.aio.waveio.</code><code class="descname">WaveIO</code><a class="reference internal" href="../_modules/audiodata/aio/waveio.html#WaveIO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.waveio.WaveIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="audiodata.html#audiodata.audio.sppasAudioPCM" title="audiodata.audio.sppasAudioPCM"><code class="xref py py-class docutils literal notranslate"><span class="pre">audiodata.audio.sppasAudioPCM</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Nicolas Chazeau, Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">A wave file open/save sppasAudioPCM class.</td>
+</tr>
+</tbody>
+</table>
+<p>Waveform Audio File Format is a Microsoft and IBM audio file format
+standard for storing an audio bitstream on PCs. It is an application of
+the Resource Interchange File Format (RIFF) bitstream format method for
+storing data in “chunks”.</p>
+<dl class="method">
+<dt id="audiodata.aio.waveio.WaveIO.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio/waveio.html#WaveIO.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.waveio.WaveIO.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.aio.waveio.WaveIO.open">
+<code class="descname">open</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio/waveio.html#WaveIO.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.waveio.WaveIO.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an audio from a Waveform Audio File Format file.</p>
+<p>:param filename (str) input file name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.aio.waveio.WaveIO.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio/waveio.html#WaveIO.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.waveio.WaveIO.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an audio content as a Waveform Audio File Format file.</p>
+<p>:param filename (str) output filename.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.aio.waveio.WaveIO.save_fragment">
+<code class="descname">save_fragment</code><span class="sig-paren">(</span><em>filename</em>, <em>frames</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio/waveio.html#WaveIO.save_fragment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.waveio.WaveIO.save_fragment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an audio content as a Waveform Audio File Format file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filename</strong> – (str) output filename.</li>
+<li><strong>frames</strong> – (str) the frames to write</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-audiodata.aio">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-audiodata.aio" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="src-audiodata-aio-init-py">
+<h3>src.audiodata.aio.__init__.py<a class="headerlink" href="#src-audiodata-aio-init-py" title="Permalink to this headline">¶</a></h3>
+<p>Readers and writers of audio data.</p>
+<dl class="function">
+<dt id="audiodata.aio.get_extension">
+<code class="descclassname">audiodata.aio.</code><code class="descname">get_extension</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio.html#get_extension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.get_extension" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="audiodata.aio.open">
+<code class="descclassname">audiodata.aio.</code><code class="descname">open</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio.html#open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open an audio file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (str) the file name (including path)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise:</th><td class="field-body">IOError, UnicodeError, Exception</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">sppasAudioPCM()</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Open</span> <span class="n">an</span> <span class="n">audio</span> <span class="n">file</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">audio</span> <span class="o">=</span> <span class="n">audiodata</span><span class="o">.</span><span class="n">aio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="audiodata.aio.save">
+<code class="descclassname">audiodata.aio.</code><code class="descname">save</code><span class="sig-paren">(</span><em>filename</em>, <em>audio</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an audio file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> – (str) the file name (including path)</li>
+<li><strong>audio</strong> – (sppasAudioPCM) the Audio to write.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">IOError</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="audiodata.aio.save_fragment">
+<code class="descclassname">audiodata.aio.</code><code class="descname">save_fragment</code><span class="sig-paren">(</span><em>filename</em>, <em>audio</em>, <em>frames</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/aio.html#save_fragment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.aio.save_fragment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a fragment of frames of an audio file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> – (str) the file name (including path)</li>
+<li><strong>audio</strong> – (sppasAudioPCM) the Audio to write.</li>
+<li><strong>frames</strong> – (str)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">IOError</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">audiodata.aio package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-audiodata.aio.aiffio">audiodata.aio.aiffio module</a><ul>
+<li><a class="reference internal" href="#src-audiodata-aio-aiffio-py">src.audiodata.aio.aiffio.py</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-audiodata.aio.audiofactory">audiodata.aio.audiofactory module</a><ul>
+<li><a class="reference internal" href="#src-audiodata-aio-audiofactory-py">src.audiodata.aio.audiofactory.py</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-audiodata.aio.sunauio">audiodata.aio.sunauio module</a><ul>
+<li><a class="reference internal" href="#src-audiodata-aio-sunauio-py">src.audiodata.aio.sunauio.py</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-audiodata.aio.waveio">audiodata.aio.waveio module</a><ul>
+<li><a class="reference internal" href="#src-audiodata-aio-waveio-py">src.audiodata.aio.waveio.py</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-audiodata.aio">Module contents</a><ul>
+<li><a class="reference internal" href="#src-audiodata-aio-init-py">src.audiodata.aio.__init__.py</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="audiodata.html"
+                        title="previous chapter">audiodata package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="calculus.html"
+                        title="next chapter">calculus package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/rst/audiodata.aio.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="calculus.html" title="calculus package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="audiodata.html" title="audiodata package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="audiodata.html" >audiodata package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

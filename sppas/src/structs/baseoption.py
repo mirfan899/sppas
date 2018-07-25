@@ -48,7 +48,7 @@ class sppasBaseOption(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Class to deal with one option.
 
     An option is a set of data with a main value and its type, plus 3 other

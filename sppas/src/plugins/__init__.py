@@ -28,8 +28,8 @@
 
         ---------------------------------------------------------------------
 
-    src.plugins.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~
+    plugins
+    ~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France

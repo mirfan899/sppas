@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.calculus.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~
+    calculus
+    ~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France

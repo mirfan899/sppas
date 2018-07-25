@@ -1,0 +1,1427 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>utils package &#8212; SPPAS 1.9.8 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="structs package" href="structs.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="structs.html" title="structs package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SPPAS 1.9.8 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="utils-package">
+<h1>utils package<a class="headerlink" href="#utils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-utils" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="utils">
+<h3>utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
+<p>utils is a free and open source Python library implementing utility
+functions used into SPPAS.</p>
+<dl class="class">
+<dt id="utils.sppasFileUtils">
+<em class="property">class </em><code class="descclassname">utils.</code><code class="descname">sppasFileUtils</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasFileUtils" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Utility file manager for SPPAS.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">sppasFileUtils</span><span class="p">(</span><span class="s2">&quot;path/myfile.txt&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sf</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">sppasFileUtils</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span><span class="o">.</span><span class="n">set_random</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">get_filename</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="utils.sppasFileUtils.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasFileUtils.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sppasFileUtils instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (str) Name of the current file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.sppasFileUtils.clear_whitespace">
+<code class="descname">clear_whitespace</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils.clear_whitespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasFileUtils.clear_whitespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set filename without whitespace.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">new filename with spaces replaced by underscores.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.sppasFileUtils.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><em>directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasFileUtils.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the file exists, or exists in a given directory.
+Case-insensitive test on all platforms.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>directory</strong> – (str) Optional directory to test if a file exists.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the filename (including directory) or None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.sppasFileUtils.format">
+<code class="descname">format</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils.format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasFileUtils.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set filename without whitespace and with only US-ASCII characters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">new filename with non-ASCII characters and spaces replaced by underscores.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.sppasFileUtils.get_filename">
+<code class="descname">get_filename</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils.get_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasFileUtils.get_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current filename.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.sppasFileUtils.set_random">
+<code class="descname">set_random</code><span class="sig-paren">(</span><em>root='sppas_tmp'</em>, <em>add_today=True</em>, <em>add_pid=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils.set_random"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasFileUtils.set_random" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set randomly a basename, i.e. a filename without extension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>root</strong> – (str) String to start the filename</li>
+<li><strong>add_today</strong> – (bool) Add today’s information to the filename</li>
+<li><strong>add_pid</strong> – (bool) Add the process PID to the filename</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a random name of a non-existing file or directory</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.sppasFileUtils.to_ascii">
+<code class="descname">to_ascii</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils.to_ascii"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasFileUtils.to_ascii" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set filename with only US-ASCII characters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">new filename with non-ASCII characters replaced by underscores.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="utils.sppasDirUtils">
+<em class="property">class </em><code class="descclassname">utils.</code><code class="descname">sppasDirUtils</code><span class="sig-paren">(</span><em>dirname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasDirUtils"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasDirUtils" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Utility directory manager for SPPAS.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sd</span> <span class="o">=</span> <span class="n">sppasDirUtils</span><span class="p">(</span><span class="s2">&quot;my-path&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sd</span><span class="o">.</span><span class="n">get_files</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="utils.sppasDirUtils.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>dirname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasDirUtils.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasDirUtils.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sppasDirUtils instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dirname</strong> – (str) Name of the current directory</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="utils.sppasDirUtils.dir_entries">
+<em class="property">static </em><code class="descname">dir_entries</code><span class="sig-paren">(</span><em>dir_name</em>, <em>extension=None</em>, <em>subdir=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasDirUtils.dir_entries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasDirUtils.dir_entries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of file names found in directory ‘dir_name’.</p>
+<p>If ‘subdir’ is True, recursively access subdirectories under
+‘dir_name’. Additional argument, if any, is file extension to
+match filenames.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.sppasDirUtils.get_files">
+<code class="descname">get_files</code><span class="sig-paren">(</span><em>extension</em>, <em>recurs=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasDirUtils.get_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasDirUtils.get_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of files of the directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>extension</strong> – (str) extension of files to filter the directory content</li>
+<li><strong>recurs</strong> – (bool) Find files recursively</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list of files</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">IOError</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="utils.sppasCompare">
+<em class="property">class </em><code class="descclassname">utils.</code><code class="descname">sppasCompare</code><span class="sig-paren">(</span><em>verbose=False</em>, <em>case_sensitive=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasCompare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Utility class to compare data.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="n">sppasCompare</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d1</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;two&quot;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d2</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">:</span><span class="s2">&quot;TWO&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">&quot;ONE&quot;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kc">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span><span class="o">.</span><span class="n">equals_lists</span><span class="p">(</span><span class="n">d1</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">d2</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kc">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span><span class="o">.</span><span class="n">set_case_sensitive</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kc">False</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="utils.sppasCompare.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>verbose=False</em>, <em>case_sensitive=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasCompare.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sppasCompare instance and set options.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>verbose</strong> – (bool) Print comparison results on stdout</li>
+<li><strong>case_sensitive</strong> – (bool) Only to compare strings</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.sppasCompare.equals">
+<code class="descname">equals</code><span class="sig-paren">(</span><em>data1</em>, <em>data2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.equals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasCompare.equals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two data sets of any type.</p>
+<p>:param data1 (any) The data to compare.
+:param data2 (any) The data to be compared with.
+:returns: (bool) whether the 2 data sets are equals or not</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.sppasCompare.equals_dictionaries">
+<code class="descname">equals_dictionaries</code><span class="sig-paren">(</span><em>dict1</em>, <em>dict2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.equals_dictionaries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasCompare.equals_dictionaries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two dictionaries.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dict1</strong> – (dict or collection) The dict to compare.</li>
+<li><strong>dict2</strong> – (dict or collection) The dict to be compared with.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(bool) whether the 2 dictionaries are equals or not</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.sppasCompare.equals_items">
+<code class="descname">equals_items</code><span class="sig-paren">(</span><em>item1</em>, <em>item2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.equals_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasCompare.equals_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare 2 items of type string or numeric.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>item1</strong> – The string or numeric to compare</li>
+<li><strong>item2</strong> – The string or numeric to be compared with</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(bool) whether the 2 items are equals or not</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.sppasCompare.equals_lists">
+<code class="descname">equals_lists</code><span class="sig-paren">(</span><em>list1</em>, <em>list2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.equals_lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasCompare.equals_lists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two lists.</p>
+<p>:param list1 (list) The list to compare.
+:param list2 (list) The list to be compared with.
+:returns: (bool) whether the 2 lists are equals or not</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.sppasCompare.equals_strings">
+<code class="descname">equals_strings</code><span class="sig-paren">(</span><em>item1</em>, <em>item2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.equals_strings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasCompare.equals_strings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare 2 data of type string or unicode.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>item1</strong> – The string to compare</li>
+<li><strong>item2</strong> – The string to be compared with</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(bool) whether the 2 items are equals or not</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.sppasCompare.set_case_sensitive">
+<code class="descname">set_case_sensitive</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.set_case_sensitive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasCompare.set_case_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare strings with lower/upper case.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> – (bool) Enable or disable case sensitive comparison of strings</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.sppasCompare.set_verbose">
+<code class="descname">set_verbose</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.set_verbose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sppasCompare.set_verbose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print comparison results on stdout or not.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> – (bool) Enable or disable verbosity</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.u">
+<code class="descclassname">utils.</code><code class="descname">u</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/makeunicode.html#u"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.u" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="utils.b">
+<code class="descclassname">utils.</code><code class="descname">b</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/makeunicode.html#b"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.b" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="utils.translate">
+<code class="descclassname">utils.</code><code class="descname">translate</code><span class="sig-paren">(</span><em>domain</em>, <em>language=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/maketext.html#translate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fix the domain to translate messages and to activate the gettext method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> – (str) Name of the domain.</td>
+</tr>
+</tbody>
+</table>
+<p>A domain corresponds to a “.po” file of the language in the ‘po’ folder
+of the SPPAS package.
+:param language: (list) Preferred language for the translation system.
+:returns: (GNUTranslations)</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-utils.compare">
+<span id="utils-compare-module"></span><h2>utils.compare module<a class="headerlink" href="#module-utils.compare" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="src-utils-sppascompare-py">
+<h3>src.utils.sppasCompare.py<a class="headerlink" href="#src-utils-sppascompare-py" title="Permalink to this headline">¶</a></h3>
+<p>Utilities to compare data contents.</p>
+<dl class="class">
+<dt id="utils.compare.sppasCompare">
+<em class="property">class </em><code class="descclassname">utils.compare.</code><code class="descname">sppasCompare</code><span class="sig-paren">(</span><em>verbose=False</em>, <em>case_sensitive=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.compare.sppasCompare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Utility class to compare data.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="n">sppasCompare</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d1</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;two&quot;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d2</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">:</span><span class="s2">&quot;TWO&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">&quot;ONE&quot;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kc">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span><span class="o">.</span><span class="n">equals_lists</span><span class="p">(</span><span class="n">d1</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">d2</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kc">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span><span class="o">.</span><span class="n">set_case_sensitive</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kc">False</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="utils.compare.sppasCompare.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>verbose=False</em>, <em>case_sensitive=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.compare.sppasCompare.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sppasCompare instance and set options.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>verbose</strong> – (bool) Print comparison results on stdout</li>
+<li><strong>case_sensitive</strong> – (bool) Only to compare strings</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.compare.sppasCompare.equals">
+<code class="descname">equals</code><span class="sig-paren">(</span><em>data1</em>, <em>data2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.equals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.compare.sppasCompare.equals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two data sets of any type.</p>
+<p>:param data1 (any) The data to compare.
+:param data2 (any) The data to be compared with.
+:returns: (bool) whether the 2 data sets are equals or not</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.compare.sppasCompare.equals_dictionaries">
+<code class="descname">equals_dictionaries</code><span class="sig-paren">(</span><em>dict1</em>, <em>dict2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.equals_dictionaries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.compare.sppasCompare.equals_dictionaries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two dictionaries.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dict1</strong> – (dict or collection) The dict to compare.</li>
+<li><strong>dict2</strong> – (dict or collection) The dict to be compared with.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(bool) whether the 2 dictionaries are equals or not</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.compare.sppasCompare.equals_items">
+<code class="descname">equals_items</code><span class="sig-paren">(</span><em>item1</em>, <em>item2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.equals_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.compare.sppasCompare.equals_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare 2 items of type string or numeric.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>item1</strong> – The string or numeric to compare</li>
+<li><strong>item2</strong> – The string or numeric to be compared with</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(bool) whether the 2 items are equals or not</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.compare.sppasCompare.equals_lists">
+<code class="descname">equals_lists</code><span class="sig-paren">(</span><em>list1</em>, <em>list2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.equals_lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.compare.sppasCompare.equals_lists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two lists.</p>
+<p>:param list1 (list) The list to compare.
+:param list2 (list) The list to be compared with.
+:returns: (bool) whether the 2 lists are equals or not</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.compare.sppasCompare.equals_strings">
+<code class="descname">equals_strings</code><span class="sig-paren">(</span><em>item1</em>, <em>item2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.equals_strings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.compare.sppasCompare.equals_strings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare 2 data of type string or unicode.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>item1</strong> – The string to compare</li>
+<li><strong>item2</strong> – The string to be compared with</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(bool) whether the 2 items are equals or not</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.compare.sppasCompare.set_case_sensitive">
+<code class="descname">set_case_sensitive</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.set_case_sensitive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.compare.sppasCompare.set_case_sensitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare strings with lower/upper case.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> – (bool) Enable or disable case sensitive comparison of strings</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.compare.sppasCompare.set_verbose">
+<code class="descname">set_verbose</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/compare.html#sppasCompare.set_verbose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.compare.sppasCompare.set_verbose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print comparison results on stdout or not.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> – (bool) Enable or disable verbosity</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-utils.datatype">
+<span id="utils-datatype-module"></span><h2>utils.datatype module<a class="headerlink" href="#module-utils.datatype" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="src-utils-sppastype-py">
+<h3>src.utils.sppasType.py<a class="headerlink" href="#src-utils-sppastype-py" title="Permalink to this headline">¶</a></h3>
+<p>Utilities to check data types.</p>
+<dl class="class">
+<dt id="utils.datatype.sppasTime">
+<em class="property">class </em><code class="descclassname">utils.datatype.</code><code class="descname">sppasTime</code><span class="sig-paren">(</span><em>now=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/datatype.html#sppasTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.datatype.sppasTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Utility class to check date time.</td>
+</tr>
+</tbody>
+</table>
+<p>How SPPAS works with the date…</p>
+<dl class="method">
+<dt id="utils.datatype.sppasTime.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>now=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/datatype.html#sppasTime.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.datatype.sppasTime.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sppasTime() instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>now</strong> – (str) String representing the current time, formatted</td>
+</tr>
+</tbody>
+</table>
+<p>like: ‘%Y-%m-%dT%H:%M:%S{:0=+3d}:{:0=2d}’</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">sppasTime</span><span class="p">(</span><span class="s1">&#39;2018-04-09T15:00:37+02:00&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">now</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;2018-04-09T15:00:37+02:00&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">gmt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;+02:00&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="utils.datatype.sppasType">
+<em class="property">class </em><code class="descclassname">utils.datatype.</code><code class="descname">sppasType</code><a class="reference internal" href="../_modules/utils/datatype.html#sppasType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.datatype.sppasType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Utility class to check data type.</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="utils.datatype.sppasType.is_bool">
+<em class="property">static </em><code class="descname">is_bool</code><span class="sig-paren">(</span><em>entry</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/datatype.html#sppasType.is_bool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.datatype.sppasType.is_bool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the entry is boolean.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entry</strong> – (any type)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(bool)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="utils.datatype.sppasType.is_dict">
+<em class="property">static </em><code class="descname">is_dict</code><span class="sig-paren">(</span><em>entry</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/datatype.html#sppasType.is_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.datatype.sppasType.is_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the entry is of any type of dictionary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entry</strong> – (any type)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(bool)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="utils.datatype.sppasType.is_number">
+<em class="property">static </em><code class="descname">is_number</code><span class="sig-paren">(</span><em>entry</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/datatype.html#sppasType.is_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.datatype.sppasType.is_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the entry is numeric.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entry</strong> – (any type)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(bool)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-utils.fileutils">
+<span id="utils-fileutils-module"></span><h2>utils.fileutils module<a class="headerlink" href="#module-utils.fileutils" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="src-utils-fileutils-py">
+<h3>src.utils.fileutils.py<a class="headerlink" href="#src-utils-fileutils-py" title="Permalink to this headline">¶</a></h3>
+<p>Utility classes to manage files and directories.</p>
+<dl class="function">
+<dt id="utils.fileutils.setup_logging">
+<code class="descclassname">utils.fileutils.</code><code class="descname">setup_logging</code><span class="sig-paren">(</span><em>log_level=15</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#setup_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.setup_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup default logger to log to stderr or and possible also to a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>log_level</strong> – Sets the threshold for this logger. Logging messages</td>
+</tr>
+</tbody>
+</table>
+<p>which are less severe than this value will be ignored. When NOTSET is
+assigned, all messages are printed.
+:param filename: Specifies that a FileHandler be created, using the
+specified filename, rather than a StreamHandler.</p>
+<p>The numeric values of logging levels are given in the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li>CRITICAL      50</li>
+<li>ERROR         40</li>
+<li>WARNING       30</li>
+<li>INFO      20</li>
+<li>DEBUG         10</li>
+<li>NOTSET         0</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="utils.fileutils.sppasDirUtils">
+<em class="property">class </em><code class="descclassname">utils.fileutils.</code><code class="descname">sppasDirUtils</code><span class="sig-paren">(</span><em>dirname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasDirUtils"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasDirUtils" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Utility directory manager for SPPAS.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sd</span> <span class="o">=</span> <span class="n">sppasDirUtils</span><span class="p">(</span><span class="s2">&quot;my-path&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sd</span><span class="o">.</span><span class="n">get_files</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="utils.fileutils.sppasDirUtils.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>dirname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasDirUtils.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasDirUtils.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sppasDirUtils instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dirname</strong> – (str) Name of the current directory</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="utils.fileutils.sppasDirUtils.dir_entries">
+<em class="property">static </em><code class="descname">dir_entries</code><span class="sig-paren">(</span><em>dir_name</em>, <em>extension=None</em>, <em>subdir=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasDirUtils.dir_entries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasDirUtils.dir_entries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of file names found in directory ‘dir_name’.</p>
+<p>If ‘subdir’ is True, recursively access subdirectories under
+‘dir_name’. Additional argument, if any, is file extension to
+match filenames.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.fileutils.sppasDirUtils.get_files">
+<code class="descname">get_files</code><span class="sig-paren">(</span><em>extension</em>, <em>recurs=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasDirUtils.get_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasDirUtils.get_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of files of the directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>extension</strong> – (str) extension of files to filter the directory content</li>
+<li><strong>recurs</strong> – (bool) Find files recursively</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list of files</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">IOError</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="utils.fileutils.sppasFileUtils">
+<em class="property">class </em><code class="descclassname">utils.fileutils.</code><code class="descname">sppasFileUtils</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasFileUtils" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Utility file manager for SPPAS.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">sppasFileUtils</span><span class="p">(</span><span class="s2">&quot;path/myfile.txt&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sf</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span> <span class="o">=</span> <span class="n">sppasFileUtils</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sf</span><span class="o">.</span><span class="n">set_random</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">get_filename</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="utils.fileutils.sppasFileUtils.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasFileUtils.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sppasFileUtils instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (str) Name of the current file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.fileutils.sppasFileUtils.clear_whitespace">
+<code class="descname">clear_whitespace</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils.clear_whitespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasFileUtils.clear_whitespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set filename without whitespace.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">new filename with spaces replaced by underscores.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.fileutils.sppasFileUtils.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><em>directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasFileUtils.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the file exists, or exists in a given directory.
+Case-insensitive test on all platforms.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>directory</strong> – (str) Optional directory to test if a file exists.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the filename (including directory) or None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.fileutils.sppasFileUtils.format">
+<code class="descname">format</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils.format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasFileUtils.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set filename without whitespace and with only US-ASCII characters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">new filename with non-ASCII characters and spaces replaced by underscores.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.fileutils.sppasFileUtils.get_filename">
+<code class="descname">get_filename</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils.get_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasFileUtils.get_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current filename.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.fileutils.sppasFileUtils.set_random">
+<code class="descname">set_random</code><span class="sig-paren">(</span><em>root='sppas_tmp'</em>, <em>add_today=True</em>, <em>add_pid=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils.set_random"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasFileUtils.set_random" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set randomly a basename, i.e. a filename without extension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>root</strong> – (str) String to start the filename</li>
+<li><strong>add_today</strong> – (bool) Add today’s information to the filename</li>
+<li><strong>add_pid</strong> – (bool) Add the process PID to the filename</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a random name of a non-existing file or directory</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.fileutils.sppasFileUtils.to_ascii">
+<code class="descname">to_ascii</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasFileUtils.to_ascii"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasFileUtils.to_ascii" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set filename with only US-ASCII characters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">new filename with non-ASCII characters replaced by underscores.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="utils.fileutils.sppasGUID">
+<em class="property">class </em><code class="descclassname">utils.fileutils.</code><code class="descname">sppasGUID</code><a class="reference internal" href="../_modules/utils/fileutils.html#sppasGUID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasGUID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Utility tool to generate an id.</td>
+</tr>
+</tbody>
+</table>
+<p>This class is a manager for GUID - globally unique identifier.</p>
+<p>GUIDs are usually stored as 128-bit values, and are commonly
+displayed as 32 hexadecimal digits with groups separated by hyphens,
+such as {21EC2020-3AEA-4069-A2DD-08002B30309D}.</p>
+<dl class="method">
+<dt id="utils.fileutils.sppasGUID.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasGUID.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasGUID.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="utils.fileutils.sppasGUID.generates">
+<em class="property">static </em><code class="descname">generates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasGUID.generates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasGUID.generates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a GUID - globally unique identifier.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.fileutils.sppasGUID.get">
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasGUID.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasGUID.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="utils.fileutils.sppasGUID.random_hexachar">
+<em class="property">static </em><code class="descname">random_hexachar</code><span class="sig-paren">(</span><em>y</em>, <em>lowercase=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasGUID.random_hexachar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasGUID.random_hexachar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="utils.fileutils.sppasGUID.random_int">
+<em class="property">static </em><code class="descname">random_int</code><span class="sig-paren">(</span><em>y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/fileutils.html#sppasGUID.random_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.fileutils.sppasGUID.random_int" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-utils.maketext">
+<span id="utils-maketext-module"></span><h2>utils.maketext module<a class="headerlink" href="#module-utils.maketext" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="src-utils-maketext">
+<h3>src.utils.maketext<a class="headerlink" href="#src-utils-maketext" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
+<p>maketext is useful for the internationalization of texts for both
+Python 2 and Python 3.
+The locale is used to set the language and English is the default.</p>
+<p>&gt;&gt;&gt;from sppas.src.utils.maketext import translate
+&gt;&gt;&gt;t = translate(“domain”)
+&gt;&gt;&gt;my_string = t.gettext(“Some string in the domain.”)</p>
+<dl class="class">
+<dt id="utils.maketext.T">
+<em class="property">class </em><code class="descclassname">utils.maketext.</code><code class="descname">T</code><a class="reference internal" href="../_modules/utils/maketext.html#T"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.maketext.T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Utility class to simulate the GNUTranslations class.</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="utils.maketext.T.gettext">
+<em class="property">static </em><code class="descname">gettext</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/maketext.html#T.gettext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.maketext.T.gettext" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="utils.maketext.T.ugettext">
+<em class="property">static </em><code class="descname">ugettext</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/maketext.html#T.ugettext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.maketext.T.ugettext" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.maketext.get_lang_list">
+<code class="descclassname">utils.maketext.</code><code class="descname">get_lang_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/maketext.html#get_lang_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.maketext.get_lang_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of languages depending on the default locale.</p>
+<p>At a first stage, the language is fixed with the default locale.
+English is then either appended to the list or used by default.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.maketext.translate">
+<code class="descclassname">utils.maketext.</code><code class="descname">translate</code><span class="sig-paren">(</span><em>domain</em>, <em>language=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/maketext.html#translate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.maketext.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fix the domain to translate messages and to activate the gettext method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> – (str) Name of the domain.</td>
+</tr>
+</tbody>
+</table>
+<p>A domain corresponds to a “.po” file of the language in the ‘po’ folder
+of the SPPAS package.
+:param language: (list) Preferred language for the translation system.
+:returns: (GNUTranslations)</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="utils-makeunicode-module">
+<h2>utils.makeunicode module<a class="headerlink" href="#utils-makeunicode-module" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Ỹ      </dt>
+<dd><dl class="first last docutils">
+<dt>ỏ  “</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sp</span> <span class="o">=</span> <span class="n">sppasUnicode</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">to_strip</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">==</span> <span class="n">u</span><span class="p">(</span><span class="s1">&#39;Ỹ ỏ&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kc">True</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="function">
+<dt id="utils.makeunicode.b">
+<code class="descclassname">utils.makeunicode.</code><code class="descname">b</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/makeunicode.html#b"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.makeunicode.b" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="utils.makeunicode.sppasUnicode">
+<em class="property">class </em><code class="descclassname">utils.makeunicode.</code><code class="descname">sppasUnicode</code><span class="sig-paren">(</span><em>entry</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/makeunicode.html#sppasUnicode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.makeunicode.sppasUnicode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Make a string as unicode and operates on it.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="utils.makeunicode.sppasUnicode.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>entry</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/makeunicode.html#sppasUnicode.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.makeunicode.sppasUnicode.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sppasUnicode instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entry</strong> – (str or unicode or bytes in python 2)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.makeunicode.sppasUnicode.clear_whitespace">
+<code class="descname">clear_whitespace</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/makeunicode.html#sppasUnicode.clear_whitespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.makeunicode.sppasUnicode.clear_whitespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace the whitespace by underscores.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">unicode</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.makeunicode.sppasUnicode.to_ascii">
+<code class="descname">to_ascii</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/makeunicode.html#sppasUnicode.to_ascii"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.makeunicode.sppasUnicode.to_ascii" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace the non-ASCII characters by underscores.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">unicode</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.makeunicode.sppasUnicode.to_lower">
+<code class="descname">to_lower</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/makeunicode.html#sppasUnicode.to_lower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.makeunicode.sppasUnicode.to_lower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the unicode string with lower case.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">unicode</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.makeunicode.sppasUnicode.to_strip">
+<code class="descname">to_strip</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/makeunicode.html#sppasUnicode.to_strip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.makeunicode.sppasUnicode.to_strip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Strip the string.
+Remove also multiple whitespace, tab and CR/LF inside the string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">unicode</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="utils.makeunicode.sppasUnicode.unicode">
+<code class="descname">unicode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/makeunicode.html#sppasUnicode.unicode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.makeunicode.sppasUnicode.unicode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the unicode string of the given entry.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">unicode</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.makeunicode.u">
+<code class="descclassname">utils.makeunicode.</code><code class="descname">u</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/makeunicode.html#u"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.makeunicode.u" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-utils.utilsexc">
+<span id="utils-utilsexc-module"></span><h2>utils.utilsexc module<a class="headerlink" href="#module-utils.utilsexc" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="src-utils-utilsexc-py">
+<h3>src.utils.utilsexc.py<a class="headerlink" href="#src-utils-utilsexc-py" title="Permalink to this headline">¶</a></h3>
+<p>Exceptions for utils package.</p>
+<dl class="exception">
+<dt id="utils.utilsexc.NoDirectoryError">
+<em class="property">exception </em><code class="descclassname">utils.utilsexc.</code><code class="descname">NoDirectoryError</code><span class="sig-paren">(</span><em>dirname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/utilsexc.html#NoDirectoryError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.utilsexc.NoDirectoryError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.IOError</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ERROR 1210:</th><td class="field-body">NO_DIR_ERROR</td>
+</tr>
+</tbody>
+</table>
+<p>The directory {dirname} does not exist.</p>
+<dl class="method">
+<dt id="utils.utilsexc.NoDirectoryError.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>dirname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/utilsexc.html#NoDirectoryError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.utilsexc.NoDirectoryError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="utils.utilsexc.UtilsDataTypeError">
+<em class="property">exception </em><code class="descclassname">utils.utilsexc.</code><code class="descname">UtilsDataTypeError</code><span class="sig-paren">(</span><em>data_name</em>, <em>expected_type</em>, <em>data_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/utilsexc.html#UtilsDataTypeError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.utilsexc.UtilsDataTypeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.TypeError</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ERROR 7010:</th><td class="field-body">DATA_TYPE_ERROR</td>
+</tr>
+</tbody>
+</table>
+<p>Expected a {data_name} of type {expected_type}. Got {data_type} instead.</p>
+<dl class="method">
+<dt id="utils.utilsexc.UtilsDataTypeError.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>data_name</em>, <em>expected_type</em>, <em>data_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/utils/utilsexc.html#UtilsDataTypeError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.utilsexc.UtilsDataTypeError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">utils package</a><ul>
+<li><a class="reference internal" href="#module-utils">Module contents</a><ul>
+<li><a class="reference internal" href="#utils">utils</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-utils.compare">utils.compare module</a><ul>
+<li><a class="reference internal" href="#src-utils-sppascompare-py">src.utils.sppasCompare.py</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-utils.datatype">utils.datatype module</a><ul>
+<li><a class="reference internal" href="#src-utils-sppastype-py">src.utils.sppasType.py</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-utils.fileutils">utils.fileutils module</a><ul>
+<li><a class="reference internal" href="#src-utils-fileutils-py">src.utils.fileutils.py</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-utils.maketext">utils.maketext module</a><ul>
+<li><a class="reference internal" href="#src-utils-maketext">src.utils.maketext</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#utils-makeunicode-module">utils.makeunicode module</a></li>
+<li><a class="reference internal" href="#module-utils.utilsexc">utils.utilsexc module</a><ul>
+<li><a class="reference internal" href="#src-utils-utilsexc-py">src.utils.utilsexc.py</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="structs.html"
+                        title="previous chapter">structs package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/rst/utils.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="structs.html" title="structs package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SPPAS 1.9.8 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,430 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>anndata.annlocation.interval &#8212; SPPAS 1.9.8 documentation</title>
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for anndata.annlocation.interval</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ..</span>
+<span class="sd">        ---------------------------------------------------------------------</span>
+<span class="sd">         ___   __    __    __    ___</span>
+<span class="sd">        /     |  \  |  \  |  \  /              the automatic</span>
+<span class="sd">        \__   |__/  |__/  |___| \__             annotation and</span>
+<span class="sd">           \  |     |     |   |    \             analysis</span>
+<span class="sd">        ___/  |     |     |   | ___/              of speech</span>
+
+<span class="sd">        http://www.sppas.org/</span>
+
+<span class="sd">        Use of this software is governed by the GNU Public License, version 3.</span>
+
+<span class="sd">        SPPAS is free software: you can redistribute it and/or modify</span>
+<span class="sd">        it under the terms of the GNU General Public License as published by</span>
+<span class="sd">        the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">        (at your option) any later version.</span>
+
+<span class="sd">        SPPAS is distributed in the hope that it will be useful,</span>
+<span class="sd">        but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">        GNU General Public License for more details.</span>
+
+<span class="sd">        You should have received a copy of the GNU General Public License</span>
+<span class="sd">        along with SPPAS. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">        This banner notice must not be removed.</span>
+
+<span class="sd">        ---------------------------------------------------------------------</span>
+
+<span class="sd">    src.anndata.annloc.interval.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">    Localization of an interval between two sppasPoint instances.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnDataEqTypeError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">IntervalBoundsError</span>
+
+<span class="kn">from</span> <span class="nn">.localization</span> <span class="k">import</span> <span class="n">sppasBaseLocalization</span>
+<span class="kn">from</span> <span class="nn">.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">.duration</span> <span class="k">import</span> <span class="n">sppasDuration</span>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="sppasInterval"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval">[docs]</a><span class="k">class</span> <span class="nc">sppasInterval</span><span class="p">(</span><span class="n">sppasBaseLocalization</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :author:       Brigitte Bigi</span>
+<span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
+<span class="sd">    :contact:      brigitte.bigi@gmail.com</span>
+<span class="sd">    :license:      GPL, v3</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
+<span class="sd">    :summary:      Representation of a localization as an interval.</span>
+
+<span class="sd">    An interval is identified by two sppasPoint objects:</span>
+
+<span class="sd">        - one is representing the beginning of the interval;</span>
+<span class="sd">        - the other is representing the end of the interval.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasInterval.__init__"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a new sppasInterval instance.</span>
+
+<span class="sd">        :param begin: (sppasPoint)</span>
+<span class="sd">        :param end: (sppasPoint)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sppasBaseLocalization</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">sppasPoint</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="s2">&quot;sppasPoint&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">sppasPoint</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="s2">&quot;sppasPoint&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sppasInterval</span><span class="o">.</span><span class="n">check_types</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataEqTypeError</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sppasInterval</span><span class="o">.</span><span class="n">check_interval_bounds</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">IntervalBoundsError</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">begin</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;[WARNING] begin &gt;= end with (</span><span class="si">{!s:s}</span><span class="s1">, </span><span class="si">{!s:s}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__begin</span> <span class="o">=</span> <span class="n">begin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__end</span> <span class="o">=</span> <span class="n">end</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasInterval.set"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set self members from another sppasInterval instance.</span>
+
+<span class="sd">        :param other: (sppasInterval)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasInterval</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;sppasInterval&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__begin</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__end</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasInterval.is_interval"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.is_interval">[docs]</a>    <span class="k">def</span> <span class="nf">is_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Overrides. Return True, because self is representing an interval. &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasInterval.copy"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return a deep copy of self. &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">sppasInterval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__begin</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasInterval.get_begin"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.get_begin">[docs]</a>    <span class="k">def</span> <span class="nf">get_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the begin sppasPoint instance. &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__begin</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasInterval.set_begin"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.set_begin">[docs]</a>    <span class="k">def</span> <span class="nf">set_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tp</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set the begin of the interval to a new sppasPoint.</span>
+<span class="sd">        Attention: it is a reference assignment.</span>
+
+<span class="sd">        :param tp: (sppasPoint)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">sppasPoint</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="s2">&quot;sppasPoint&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sppasInterval</span><span class="o">.</span><span class="n">check_types</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataEqTypeError</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sppasInterval</span><span class="o">.</span><span class="n">check_interval_bounds</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">IntervalBoundsError</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end</span><span class="p">)</span>
+
+        <span class="c1"># assign the reference</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__begin</span> <span class="o">=</span> <span class="n">tp</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasInterval.get_end"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.get_end">[docs]</a>    <span class="k">def</span> <span class="nf">get_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the end sppasPoint instance. &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasInterval.set_end"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.set_end">[docs]</a>    <span class="k">def</span> <span class="nf">set_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tp</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set the end of the interval to a new sppasPoint.</span>
+<span class="sd">        Attention: it is a reference assignment.</span>
+
+<span class="sd">        :param tp: (sppasPoint)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">sppasPoint</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="s2">&quot;sppasPoint&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sppasInterval</span><span class="o">.</span><span class="n">check_types</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__begin</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataEqTypeError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__begin</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sppasInterval</span><span class="o">.</span><span class="n">check_interval_bounds</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__begin</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">IntervalBoundsError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__begin</span><span class="p">,</span> <span class="n">tp</span><span class="p">)</span>
+
+        <span class="c1"># assign the reference</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__end</span> <span class="o">=</span> <span class="n">tp</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasInterval.is_bound"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.is_bound">[docs]</a>    <span class="k">def</span> <span class="nf">is_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return True if point is the begin or the end of the interval. &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__begin</span> <span class="o">==</span> <span class="n">point</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end</span> <span class="o">==</span> <span class="n">point</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasInterval.combine"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.combine">[docs]</a>    <span class="k">def</span> <span class="nf">combine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return a sppasInterval, the combination of two intervals.</span>
+
+<span class="sd">        :param other: (sppasInterval) the other interval to combine with.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasInterval</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;sppasInterval&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span> <span class="o">&gt;</span> <span class="n">other</span><span class="p">:</span>
+            <span class="n">other</span><span class="p">,</span> <span class="bp">self</span> <span class="o">=</span> <span class="bp">self</span><span class="p">,</span> <span class="n">other</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_begin</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">sppasInterval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__begin</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">get_end</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">sppasInterval</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">get_begin</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end</span><span class="p">)</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasInterval.union"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.union">[docs]</a>    <span class="k">def</span> <span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return a sppasInterval representing the union of two intervals.</span>
+
+<span class="sd">        :param other: (sppasInterval) the other interval to merge with.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasInterval</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;sppasInterval&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span> <span class="o">&gt;</span> <span class="n">other</span><span class="p">:</span>
+            <span class="n">other</span><span class="p">,</span> <span class="bp">self</span> <span class="o">=</span> <span class="bp">self</span><span class="p">,</span> <span class="n">other</span>
+
+        <span class="k">return</span> <span class="n">sppasInterval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__begin</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">get_end</span><span class="p">())</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasInterval.duration"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.duration">[docs]</a>    <span class="k">def</span> <span class="nf">duration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Overrides. Return the duration of the time interval.</span>
+
+<span class="sd">        :returns: (sppasDuration) Duration and its vagueness.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># duration is the difference between the midpoints</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span>
+
+        <span class="c1"># vagueness of the duration is based on begin/end radius values</span>
+        <span class="n">vagueness</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span><span class="o">.</span><span class="n">get_radius</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">vagueness</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span><span class="o">.</span><span class="n">get_radius</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span><span class="o">.</span><span class="n">get_radius</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">vagueness</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span><span class="o">.</span><span class="n">get_radius</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">sppasDuration</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">vagueness</span><span class="p">)</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasInterval.set_radius"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.set_radius">[docs]</a>    <span class="k">def</span> <span class="nf">set_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set a radius value to begin and end points. &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span><span class="o">.</span><span class="n">set_radius</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span><span class="o">.</span><span class="n">set_radius</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasInterval.check_interval_bounds"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.check_interval_bounds">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">check_interval_bounds</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">begin</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">begin</span><span class="o">.</span><span class="n">get_radius</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">end</span><span class="o">.</span><span class="n">get_radius</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">begin</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span><span class="o">.</span><span class="n">get_radius</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">end</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span> <span class="o">-</span> <span class="n">end</span><span class="o">.</span><span class="n">get_radius</span><span class="p">():</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasInterval.check_types"><a class="viewcode-back" href="../../../rst/anndata.annlocation.html#anndata.annlocation.interval.sppasInterval.check_types">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">check_types</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; True only if begin and end are both the same types of sppasPoint().</span>
+
+<span class="sd">        :param begin: any kind of data</span>
+<span class="sd">        :param end: any kind of data</span>
+<span class="sd">        :return: Boolean</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">begin</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span>
+            <span class="n">end</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">begin</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">(),</span> <span class="nb">type</span><span class="p">(</span><span class="n">end</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()))</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c1"># Overloads</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;sppasInterval: [</span><span class="si">{!s:s}</span><span class="s2">,</span><span class="si">{!s:s}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_begin</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_end</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;[</span><span class="si">{!s:s}</span><span class="s2">,</span><span class="si">{!s:s}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_begin</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_end</span><span class="p">())</span>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return True if the given data is contained in the interval.</span>
+
+<span class="sd">        :param other: (sppasInterval, sppasPoint, int, float) the point to verify.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="n">sppasInterval</span><span class="p">,</span> <span class="n">sppasPoint</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,))</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;sppasInterval, sppasPoint, float, int&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasInterval</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__begin</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span> <span class="ow">and</span>
+                    <span class="n">other</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__begin</span> <span class="o">&lt;=</span> <span class="n">other</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end</span>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Equal.</span>
+
+<span class="sd">        :param other: (sppasInterval) the other interval to compare with.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasInterval</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__begin</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span> <span class="ow">and</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__end</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">get_end</span><span class="p">())</span>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; LowerThan.</span>
+
+<span class="sd">        :param other: (sppasInterval, sppasPoint, float, int) the other to compare with.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="n">sppasPoint</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__end</span> <span class="o">&lt;</span> <span class="n">other</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasInterval</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__begin</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; GreaterThan.</span>
+
+<span class="sd">        :param other: (sppasInterval, sppasPoint, float, int) the other to compare with.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">sppasPoint</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__begin</span> <span class="o">&gt;</span> <span class="n">other</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasInterval</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__begin</span> <span class="o">&gt;</span> <span class="n">other</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

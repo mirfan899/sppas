@@ -1,0 +1,383 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>audiodata.channelsilence &#8212; SPPAS 1.9.8 documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for audiodata.channelsilence</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ..</span>
+<span class="sd">        ---------------------------------------------------------------------</span>
+<span class="sd">         ___   __    __    __    ___</span>
+<span class="sd">        /     |  \  |  \  |  \  /              the automatic</span>
+<span class="sd">        \__   |__/  |__/  |___| \__             annotation and</span>
+<span class="sd">           \  |     |     |   |    \             analysis</span>
+<span class="sd">        ___/  |     |     |   | ___/              of speech</span>
+
+<span class="sd">        http://www.sppas.org/</span>
+
+<span class="sd">        Use of this software is governed by the GNU Public License, version 3.</span>
+
+<span class="sd">        SPPAS is free software: you can redistribute it and/or modify</span>
+<span class="sd">        it under the terms of the GNU General Public License as published by</span>
+<span class="sd">        the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">        (at your option) any later version.</span>
+
+<span class="sd">        SPPAS is distributed in the hope that it will be useful,</span>
+<span class="sd">        but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">        GNU General Public License for more details.</span>
+
+<span class="sd">        You should have received a copy of the GNU General Public License</span>
+<span class="sd">        along with SPPAS. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">        This banner notice must not be removed.</span>
+
+<span class="sd">        ---------------------------------------------------------------------</span>
+
+<span class="sd">    src.audiodata.channelsilence.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.channel</span> <span class="k">import</span> <span class="n">sppasChannel</span>
+<span class="kn">from</span> <span class="nn">.channelvolume</span> <span class="k">import</span> <span class="n">sppasChannelVolume</span>
+
+<span class="c1"># ----------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="sppasChannelSilence"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence">[docs]</a><span class="k">class</span> <span class="nc">sppasChannelSilence</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :author:       Brigitte Bigi</span>
+<span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
+<span class="sd">    :contact:      brigitte.bigi@gmail.com</span>
+<span class="sd">    :license:      GPL, v3</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
+<span class="sd">    :summary:      This class implements the silence finding on a channel.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasChannelSilence.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">win_len</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a sppasChannelSilence instance.</span>
+
+<span class="sd">        :param channel (sppasChannel) the input channel object</span>
+<span class="sd">        :param win_len (float) duration of a window for the estimation of the volume</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">channel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_volume_stats</span> <span class="o">=</span> <span class="n">sppasChannelVolume</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">win_len</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__silences</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasChannelSilence.get_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.get_channel">[docs]</a>    <span class="k">def</span> <span class="nf">get_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the sppasChannel. &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasChannelSilence.get_volstats"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.get_volstats">[docs]</a>    <span class="k">def</span> <span class="nf">get_volstats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the sppasChannelVolume of the sppasChannel. &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume_stats</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c1"># Utility method</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasChannelSilence.track_data"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.track_data">[docs]</a>    <span class="k">def</span> <span class="nf">track_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracks</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get the track data: a set of frames for each track.</span>
+
+<span class="sd">        :param tracks: (list of tuples) List of (from_pos,to_pos)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nframes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_nframes</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">from_pos</span><span class="p">,</span> <span class="n">to_pos</span> <span class="ow">in</span> <span class="n">tracks</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">nframes</span> <span class="o">&lt;</span> <span class="n">from_pos</span><span class="p">:</span>
+                <span class="c1"># Accept a &quot;DELTA&quot; of 10 frames, in case of corrupted data.</span>
+                <span class="k">if</span> <span class="n">nframes</span> <span class="o">&lt;</span> <span class="n">from_pos</span><span class="o">-</span><span class="mi">10</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Position </span><span class="si">%d</span><span class="s2"> not in range(</span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">from_pos</span><span class="p">,</span> <span class="n">nframes</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">from_pos</span> <span class="o">=</span> <span class="n">nframes</span>
+            <span class="c1"># Go to the provided position</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">from_pos</span><span class="p">)</span>
+            <span class="c1"># Keep in mind the related frames</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_frames</span><span class="p">(</span><span class="n">to_pos</span> <span class="o">-</span> <span class="n">from_pos</span><span class="p">)</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasChannelSilence.refine"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.refine">[docs]</a>    <span class="k">def</span> <span class="nf">refine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">win_length</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Refine the position of a silence around a given position.</span>
+
+<span class="sd">        :param pos: (int) Initial position of the silence</span>
+<span class="sd">        :param threshold: (int) RMS threshold value for a silence</span>
+<span class="sd">        :param win_length: (float) Windows duration to estimate the RMS</span>
+<span class="sd">        :param direction: (int)</span>
+<span class="sd">        :returns: new position</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_volume_stats</span><span class="o">.</span><span class="n">get_winlen</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">())</span>
+        <span class="n">from_pos</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">pos</span><span class="o">-</span><span class="n">delta</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">from_pos</span><span class="p">)</span>
+        <span class="n">frames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_frames</span><span class="p">(</span><span class="n">delta</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">sppasChannel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_sampwidth</span><span class="p">(),</span> <span class="n">frames</span><span class="p">)</span>
+        <span class="n">vol_stats</span> <span class="o">=</span> <span class="n">sppasChannelVolume</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">win_length</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vol_stats</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">from_pos</span> <span class="o">+</span> <span class="n">i</span><span class="o">*</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">win_length</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">()))</span>
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vol_stats</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">vol_stats</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">from_pos</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">win_length</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">())))</span>
+                <span class="n">i</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">pos</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasChannelSilence.extract_tracks"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.extract_tracks">[docs]</a>    <span class="k">def</span> <span class="nf">extract_tracks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mintrackdur</span><span class="o">=</span><span class="mf">0.300</span><span class="p">,</span> <span class="n">shiftdurstart</span><span class="o">=</span><span class="mf">0.010</span><span class="p">,</span> <span class="n">shiftdurend</span><span class="o">=</span><span class="mf">0.010</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return a list of tuples (from_pos,to_pos) of the tracks.</span>
+
+<span class="sd">        :param mintrackdur: (float) The minimum duration for a track (in seconds)</span>
+<span class="sd">        :param shiftdurstart: (float) The time to remove to the start boundary (in seconds)</span>
+<span class="sd">        :param shiftdurend: (float) The time to add to the end boundary (in seconds)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tracks</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># No silence: Only one track!</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__silences</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">tracks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_nframes</span><span class="p">()))</span>
+            <span class="k">return</span> <span class="n">tracks</span>
+
+        <span class="c1"># Convert values: time into frame</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mintrackdur</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">())</span>
+        <span class="n">shiftstart</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">shiftdurstart</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">())</span>
+        <span class="n">shiftend</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">shiftdurend</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">())</span>
+        <span class="n">from_pos</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">to_pos</span><span class="p">,</span> <span class="n">next_from</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__silences</span><span class="p">:</span>
+
+            <span class="n">shift_from_pos</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">from_pos</span> <span class="o">-</span> <span class="n">shiftstart</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">shift_to_pos</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">to_pos</span> <span class="o">+</span> <span class="n">shiftend</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_nframes</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">shift_to_pos</span><span class="o">-</span><span class="n">shift_from_pos</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">delta</span><span class="p">:</span>
+                <span class="c1"># Track is long enough to be considered a track.</span>
+                <span class="n">tracks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">shift_from_pos</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">shift_to_pos</span><span class="p">)))</span>
+
+            <span class="n">from_pos</span> <span class="o">=</span> <span class="n">next_from</span>
+
+        <span class="c1"># Last track after the last silence</span>
+        <span class="c1"># (if the silence does not end at the end of the channel)</span>
+        <span class="n">to_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_nframes</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">to_pos</span> <span class="o">-</span> <span class="n">from_pos</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">delta</span><span class="p">:</span>
+            <span class="n">tracks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">from_pos</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">to_pos</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">tracks</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c1"># New silence detection</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasChannelSilence.search_threshold_vol"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.search_threshold_vol">[docs]</a>    <span class="k">def</span> <span class="nf">search_threshold_vol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Try to fix optimally the threshold for speech/silence segmentation.</span>
+<span class="sd">        This is a simple observation of the distribution of rms values.</span>
+
+<span class="sd">        :returns: (int) volume value</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vmin</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_volume_stats</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># provide negative values</span>
+        <span class="n">vmean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume_stats</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">vcvar</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume_stats</span><span class="o">.</span><span class="n">coefvariation</span><span class="p">()</span>
+
+        <span class="c1"># alternative, in case the audio is not as good as expected!</span>
+        <span class="c1"># (too low volume, or outliers which make the coeff variation very high)</span>
+        <span class="n">alt</span> <span class="o">=</span> <span class="p">(</span><span class="n">vmean</span><span class="o">-</span><span class="n">vmin</span><span class="p">)</span> <span class="o">/</span> <span class="mf">5.</span>
+        <span class="k">if</span> <span class="n">alt</span> <span class="o">&gt;</span> <span class="n">vcvar</span> <span class="ow">or</span> <span class="n">vcvar</span> <span class="o">&gt;</span> <span class="n">vmean</span><span class="p">:</span>
+            <span class="n">vcvar</span> <span class="o">=</span> <span class="n">alt</span>
+
+        <span class="k">return</span> <span class="n">vmin</span> <span class="o">+</span> <span class="nb">int</span><span class="p">((</span><span class="n">vmean</span> <span class="o">-</span> <span class="n">vcvar</span><span class="p">))</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasChannelSilence.search_silences"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.search_silences">[docs]</a>    <span class="k">def</span> <span class="nf">search_silences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mintrackdur</span><span class="o">=</span><span class="mf">0.08</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Search windows with a volume lesser than a given threshold.</span>
+
+<span class="sd">        :param threshold: (int) Expected minimum volume (rms value)</span>
+<span class="sd">        If threshold is set to 0, search_minvol() will assign a value.</span>
+<span class="sd">        :param mintrackdur: (float) The very very minimum duration for</span>
+<span class="sd">        a track (in seconds).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">threshold</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_threshold_vol</span><span class="p">()</span>
+
+        <span class="c1"># This scans the volumes whether it is lower than threshold,</span>
+        <span class="c1"># if it is it is written to silence.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__silences</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">inside</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">idxbegin</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">ignored</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mintrackdur</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume_stats</span><span class="o">.</span><span class="n">get_winlen</span><span class="p">())</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_volume_stats</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">inside</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="c1"># It&#39;s the beginning of a block of zero volumes</span>
+                    <span class="n">idxbegin</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">inside</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">inside</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="c1"># It&#39;s the end of a block of non-zero volumes...</span>
+                    <span class="c1"># or not if the track is very short!</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="n">idxbegin</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">delta</span><span class="p">:</span>
+                        <span class="n">inside</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="n">idxend</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="n">ignored</span>  <span class="c1"># we not use -1 because we want the end of the frame</span>
+                        <span class="n">from_pos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">idxbegin</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume_stats</span><span class="o">.</span><span class="n">get_winlen</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">())</span>
+                        <span class="n">to_pos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">idxend</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume_stats</span><span class="o">.</span><span class="n">get_winlen</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">())</span>
+
+                        <span class="c1"># Find the boundaries with a better precision</span>
+                        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume_stats</span><span class="o">.</span><span class="n">get_winlen</span><span class="p">()</span> <span class="o">/</span> <span class="mf">4.</span>
+                        <span class="n">from_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">refine</span><span class="p">(</span><span class="n">from_pos</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">direction</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="n">to_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">refine</span><span class="p">(</span><span class="n">to_pos</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__silences</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">from_pos</span><span class="p">,</span> <span class="n">to_pos</span><span class="p">))</span>
+                        <span class="n">ignored</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">ignored</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Last interval</span>
+        <span class="k">if</span> <span class="n">inside</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">start_pos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">idxbegin</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume_stats</span><span class="o">.</span><span class="n">get_winlen</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">())</span>
+            <span class="n">end_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_nframes</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__silences</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start_pos</span><span class="p">,</span> <span class="n">end_pos</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">threshold</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasChannelSilence.filter_silences"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.filter_silences">[docs]</a>    <span class="k">def</span> <span class="nf">filter_silences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minsildur</span><span class="o">=</span><span class="mf">0.200</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Filtered the current silences.</span>
+
+<span class="sd">        :param minsildur: (float) Minimum silence duration in seconds</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__silences</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">filteredsil</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">start_pos</span><span class="p">,</span> <span class="n">end_pos</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__silences</span><span class="p">:</span>
+            <span class="n">sildur</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">end_pos</span><span class="o">-</span><span class="n">start_pos</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">get_framerate</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">sildur</span> <span class="o">&gt;</span> <span class="n">minsildur</span><span class="p">:</span>
+                <span class="n">filteredsil</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start_pos</span><span class="p">,</span> <span class="n">end_pos</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__silences</span> <span class="o">=</span> <span class="n">filteredsil</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__silences</span><span class="p">)</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasChannelSilence.set_silences"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.set_silences">[docs]</a>    <span class="k">def</span> <span class="nf">set_silences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">silences</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Fix manually silences!</span>
+
+<span class="sd">        :param silences: (list of tuples (start_pos,end_pos))</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__silences</span> <span class="o">=</span> <span class="n">silences</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasChannelSilence.reset_silences"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.reset_silences">[docs]</a>    <span class="k">def</span> <span class="nf">reset_silences</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Reset silences. &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__silences</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c1"># overloads</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__silences</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__silences</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">x</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__silences</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>
