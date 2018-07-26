@@ -39,31 +39,3 @@
     :summary:      SPPAS global configuration.
 
 """
-
-# ---------------------------------------------------------------------------
-# Symbols used by SPPAS to represent an event:
-
-# Default symbols used by annotations and resources
-unk_stamp = "<UNK>"
-
-# Symbols in an orthographic transcription, or after a text normalization:
-ORTHO_SYMBOLS = {
-    '#': "silence",
-    '+': "pause",
-    '*': "noise",
-    '@': "laugh",
-    'dummy': 'dummy'
-}
-
-PHONE_SYMBOLS = {
-    'sil': "silence",
-    'sp': "pause",
-    'noise': "noise",
-    'laugh': "laugh",
-    'dummy': 'dummy'
-}
-
-# All possible symbols:
-SYMBOLS = dict()
-SYMBOLS.update(ORTHO_SYMBOLS)
-SYMBOLS.update(PHONE_SYMBOLS)

@@ -44,7 +44,7 @@
 """
 import unittest
 
-from sppas import ORTHO_SYMBOLS, PHONE_SYMBOLS
+from sppas.src.config import ORTHO_SYMBOLS, PHONE_SYMBOLS
 from sppas.src.utils.makeunicode import u, b, text_type
 from ..annlabel.tag import sppasTag
 from ..annlabel.label import sppasLabel

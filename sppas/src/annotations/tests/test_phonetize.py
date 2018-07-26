@@ -44,8 +44,8 @@ import unittest
 import os.path
 
 from sppas.src.config import paths
-from sppas import unk_stamp
-from sppas import PHONE_SYMBOLS, ORTHO_SYMBOLS
+from sppas.src.config import unk_stamp
+from sppas.src.config import PHONE_SYMBOLS, ORTHO_SYMBOLS
 
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.mapping import sppasMapping

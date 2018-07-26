@@ -5,7 +5,7 @@ import os.path
 import shutil
 import glob
 
-from sppas import ORTHO_SYMBOLS, PHONE_SYMBOLS
+from sppas.src.config import ORTHO_SYMBOLS, PHONE_SYMBOLS
 from sppas.src.config import paths
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.compare import sppasCompare

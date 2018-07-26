@@ -35,9 +35,8 @@
     SPPAS integration of Phonetization.
 
 """
-from sppas import unk_stamp
-from sppas import PHONE_SYMBOLS, ORTHO_SYMBOLS
-
+from sppas.src.config import unk_stamp
+from sppas.src.config import PHONE_SYMBOLS, ORTHO_SYMBOLS
 from sppas.src.config import separators
 
 from sppas.src.anndata import sppasRW
@@ -45,6 +44,7 @@ from sppas.src.anndata import sppasTranscription
 from sppas.src.anndata import sppasTier
 from sppas.src.anndata import sppasLabel
 from sppas.src.anndata import sppasTag
+
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.mapping import sppasMapping
 

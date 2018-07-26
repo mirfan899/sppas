@@ -43,7 +43,7 @@
 
 import unittest
 
-from sppas import ORTHO_SYMBOLS, PHONE_SYMBOLS
+from sppas.src.config import ORTHO_SYMBOLS, PHONE_SYMBOLS
 from ..annlocation.location import sppasLocation
 from ..annlocation.interval import sppasInterval
 from ..annlocation.point import sppasPoint

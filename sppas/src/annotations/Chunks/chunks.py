@@ -36,8 +36,8 @@
 import os
 import logging
 
-from sppas import unk_stamp
-from sppas import PHONE_SYMBOLS
+from sppas.src.config import unk_stamp
+from sppas.src.config import PHONE_SYMBOLS
 
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.autils as autils
@@ -53,6 +53,7 @@ from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.makeunicode import sppasUnicode
 
 import sppas.src.annotations.Align.aligners as aligners
+
 from ..Align.aligners.alignerio import AlignerIO
 from .spkrate import SpeakerRate
 from .anchors import AnchorTier

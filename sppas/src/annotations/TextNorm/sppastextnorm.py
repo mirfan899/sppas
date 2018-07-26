@@ -38,7 +38,7 @@
 import os.path
 
 from sppas.src.config import paths
-from sppas import ORTHO_SYMBOLS
+from sppas.src.config import ORTHO_SYMBOLS
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
 

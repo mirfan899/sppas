@@ -39,9 +39,8 @@ import codecs
 import logging
 import xml.etree.cElementTree as ET
 
-from sppas import unk_stamp
-
-import sppas.src.config as sg
+from sppas.src.config import unk_stamp
+from sppas.src.config import sg
 from sppas.src.config import paths
 from sppas.src.config import separators
 from sppas.src.utils.makeunicode import sppasUnicode

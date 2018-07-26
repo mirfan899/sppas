@@ -35,7 +35,7 @@
     SPPAS integration of syllabification.
 
 """
-from sppas import PHONE_SYMBOLS
+from sppas.src.config import PHONE_SYMBOLS
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
 from sppas.src.anndata import sppasTier

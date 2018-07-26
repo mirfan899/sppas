@@ -35,7 +35,7 @@
 import collections
 import math
 
-from sppas import unk_stamp
+from sppas.src.config import unk_stamp
 import sppas.src.annotationdata.aio
 from sppas.src.resources.vocab import sppasVocabulary
 

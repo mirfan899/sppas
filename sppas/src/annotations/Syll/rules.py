@@ -40,8 +40,7 @@
     can change as needed.
 
 """
-from sppas import SYMBOLS
-
+from sppas.src.config import SYMBOLS
 from sppas.src.config import separators
 from sppas.src.utils.makeunicode import sppasUnicode
 

@@ -37,7 +37,7 @@
 import sys
 import re
 
-from sppas import SYMBOLS
+from sppas.src.config import SYMBOLS
 from sppas.src.utils.makeunicode import sppasUnicode
 
 # ----------------------------------------------------------------------------

@@ -35,8 +35,7 @@
     Integration of TGA into SPPAS.
 
 """
-from sppas import PHONE_SYMBOLS
-
+from sppas.src.config import PHONE_SYMBOLS
 from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription

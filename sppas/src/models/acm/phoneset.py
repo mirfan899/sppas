@@ -32,8 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from sppas import PHONE_SYMBOLS
-
+from sppas.src.config import PHONE_SYMBOLS
 from sppas.src.config import separators
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.vocab import sppasVocabulary

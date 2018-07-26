@@ -6,7 +6,7 @@ import os.path
 import math
 import shutil
 
-from sppas import unk_stamp
+from sppas.src.config import unk_stamp
 from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
 from sppas.src.models.slm.ngramsmodel import sppasNgramCounter
 from sppas.src.models.slm.ngramsmodel import sppasNgramsModel

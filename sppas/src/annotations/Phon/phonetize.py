@@ -37,7 +37,7 @@
 """
 import re
 
-from sppas import PHONE_SYMBOLS
+from sppas.src.config import PHONE_SYMBOLS
 from sppas.src.config import separators
 from sppas.src.utils.makeunicode import sppasUnicode, u
 from sppas.src.resources.mapping import sppasMapping

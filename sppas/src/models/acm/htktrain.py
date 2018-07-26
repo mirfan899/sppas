@@ -41,9 +41,9 @@ import copy
 import collections
 import codecs
 
-import sppas.src.config as sg
-from sppas import unk_stamp
-from sppas import PHONE_SYMBOLS, ORTHO_SYMBOLS
+from sppas.src.config import sg
+from sppas.src.config import unk_stamp
+from sppas.src.config import PHONE_SYMBOLS, ORTHO_SYMBOLS
 
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.fileutils import sppasDirUtils

@@ -47,7 +47,7 @@
 
 
 """
-from sppas import SYMBOLS
+from sppas.src.config import SYMBOLS
 from sppas.src.utils.makeunicode import sppasUnicode, b
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AnnUnkTypeError

@@ -36,8 +36,8 @@ import os
 import codecs
 from subprocess import Popen, PIPE, STDOUT
 
-import sppas.src.config as sg
-from sppas import PHONE_SYMBOLS
+from sppas.src.config import sg
+from sppas.src.config import PHONE_SYMBOLS
 from sppas.src.models.slm.ngramsmodel import sppasNgramsModel
 from sppas.src.models.slm.arpaio import sppasArpaIO
 from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL

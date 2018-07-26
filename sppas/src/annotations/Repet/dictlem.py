@@ -46,8 +46,8 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import re
 import codecs
 
-import sppas.src.config as sg
-from sppas import unk_stamp
+from sppas.src.config import sg
+from sppas.src.config import unk_stamp
 
 # ----------------------------------------------------------------------------
 

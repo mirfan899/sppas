@@ -32,8 +32,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from sppas import unk_stamp
-from sppas import SYMBOLS
+from sppas.src.config import unk_stamp
+from sppas.src.config import SYMBOLS
 
 from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.ptime.interval import TimeInterval
