@@ -51,7 +51,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas
+import sppas.src.config as sg
 
 # ---------------------------------------------------------------------------
 
@@ -379,7 +379,7 @@ def gen_pdf_file(doc, files, result_filename):
     command += ' --variable sansfont="FreeSans"'
     command += ' --variable monofont="FreeMono"'
     command += ' --variable fontsize=11pt'
-    command += ' --variable version="' + sppas.__version__ + '"'
+    command += ' --variable version="' + sg.__version__ + '"'
     command += ' --variable frontpage="' + front_page + '"'
     command += ' --resource-path=web'  # only if pandoc > 2.0
 
@@ -504,7 +504,7 @@ def generate_pdf(doc_dir, doc_temp):
     doc = sppasDocFiles(doc_dir, doc_temp)
 
     # name of the resulting file
-    result_filename = "SPPAS-Documentation.pdf"  # os.path.join(SPPAS, "documentation", "SPPAS-Documentation.pdf")
+    result_filename = os.path.join(SPPAS, "documentation", sg.__name__+"-Documentation.pdf")
 
     # A unique PDF documentation file is generated from all markdown files
     md_files = doc.get_all_md(header=False, footer=False)
@@ -573,7 +573,8 @@ if __name__ == "__main__":
     # -----------------------------------------------------------------------
 
     parser = ArgumentParser(usage="%s [options]" % os.path.basename(PROGRAM),
-                            description="... a script to generate the documentation of SPPAS.")
+                            description="... a script to generate the documentation of "
+                                        "{:s}, version {:s}.".format(sg.__name__, sg.__version__))
 
     parser.add_argument("--web",
                         action='store_true',

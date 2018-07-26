@@ -43,7 +43,7 @@
 """
 import codecs
 
-import sppas
+import sppas.src.config as sg
 
 from ..anndataexc import AioLineFormatError
 from ..anndataexc import AnnDataTypeError
@@ -93,7 +93,7 @@ class sppasTDF(sppasBaseText):
         """
         # Open and load the content.
         try:
-            with codecs.open(filename, 'r', sppas.__encoding__) as fp:
+            with codecs.open(filename, 'r', sg.__encoding__) as fp:
                 lines = fp.readlines()
                 fp.close()
         except IOError:

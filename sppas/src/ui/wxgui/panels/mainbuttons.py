@@ -38,7 +38,7 @@
 import wx
 import webbrowser
 
-import sppas
+import sppas.src.config as sg
 from sppas.src.structs.tips import sppasTips
 
 from sppas.src.ui.wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel, ImgPanel, ButtonCreator, ButtonToolbarPanel
@@ -144,7 +144,7 @@ class MainTitlePanel(wx.Panel):
         self.SetBackgroundColour(preferences.GetValue('M_BGD_COLOUR'))
 
         s = wx.BoxSizer()
-        text = wx.StaticText(self, label=sppas.__name__+" - "+sppas.__title__)
+        text = wx.StaticText(self, label=sg.__name__+" - "+sg.__title__)
         text.SetFont(preferences.GetValue('M_HEADER_FONT'))
         text.SetForegroundColour(preferences.GetValue('M_FG_COLOUR'))
         text.Bind(wx.EVT_LEFT_UP, self.OnButtonClick)
@@ -160,7 +160,7 @@ class MainTitlePanel(wx.Panel):
     def OnButtonClick(self, evt):
         wx.BeginBusyCursor()
         try:
-            webbrowser.open(sppas.__url__, 1)
+            webbrowser.open(sg.__url__, 1)
         except:
             pass
         wx.EndBusyCursor()

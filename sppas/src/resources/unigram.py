@@ -41,7 +41,7 @@
 import codecs
 import logging
 
-import sppas
+import sppas.src.config as sg
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .dumpfile import sppasDumpFile
@@ -142,7 +142,7 @@ class sppasUnigram(object):
         :param filename: (str) Name of the unigram ASCII file to read
 
         """
-        with codecs.open(filename, 'r', sppas.__encoding__) as fd:
+        with codecs.open(filename, 'r', sg.__encoding__) as fd:
             lines = fd.readlines()
 
         for line in lines:
@@ -169,7 +169,7 @@ class sppasUnigram(object):
 
         """
         try:
-            with codecs.open(filename, 'w', encoding=sppas.__encoding__) as output:
+            with codecs.open(filename, 'w', encoding=sg.__encoding__) as output:
                 for entry, value in sorted(self.__entries.items(), key=lambda x: x[0]):
                     output.write("{:s} {:d}\n".format(entry, value))
         except Exception as e:

@@ -42,7 +42,7 @@ import random
 from datetime import datetime
 import xml.etree.cElementTree as ET
 
-import sppas
+import sppas.src.config as sg
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.fileutils import sppasFileUtils
 
@@ -390,7 +390,7 @@ class sppasANTX(sppasBaseIO):
 
         sppasANTX.indent(root)
         tree = ET.ElementTree(root)
-        tree.write(filename, encoding=sppas.__encoding__, xml_declaration=True, method="xml")
+        tree.write(filename, encoding=sg.__encoding__, xml_declaration=True, method="xml")
         # we should add 'standalone="yes"' in the declaration
         # (but not available with ElementTree)
 
@@ -437,7 +437,7 @@ class sppasANTX(sppasBaseIO):
         sppasANTX._add_configuration(root, "Version", "5")
 
         # Author
-        author = sppas.__name__ + " " + sppas.__version__ + " (C) " + sppas.__author__
+        author = sg.__name__ + " " + sg.__version__ + " (C) " + sg.__author__
         sppasANTX._add_configuration(root, "Author", author)
 
         # FileVersion

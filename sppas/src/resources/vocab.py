@@ -35,7 +35,7 @@
 import codecs
 import logging
 
-import sppas
+import sppas.src.config as sg
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .resourcesexc import FileIOError, FileUnicodeError, FileFormatError
@@ -167,7 +167,7 @@ class sppasVocabulary(object):
 
         """
         try:
-            with codecs.open(filename, 'r', sppas.__encoding__) as fd:
+            with codecs.open(filename, 'r', sg.__encoding__) as fd:
                 self.__filename = filename
 
                 for nbl, line in enumerate(fd, 1):
@@ -193,7 +193,7 @@ class sppasVocabulary(object):
 
         """
         try:
-            with codecs.open(filename, 'w', sppas.__encoding__) as fd:
+            with codecs.open(filename, 'w', sg.__encoding__) as fd:
                 for word in sorted(self.__entries.keys()):
                     fd.write("{:s}\n".format(word))
 

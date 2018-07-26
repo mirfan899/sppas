@@ -40,7 +40,7 @@ import wx
 import wx.lib.scrolledpanel
 import webbrowser
 
-import sppas
+import sppas.src.config as sg
 from sppas.src.ui.wxgui.cutils.imageutils import spBitmap
 from sppas.src.ui.wxgui.sp_icons import APP_ICON
 
@@ -58,7 +58,9 @@ class sppasBaseAbout(wx.lib.scrolledpanel.ScrolledPanel):
 
     """
     def __init__(self, parent, preferences):
-        wx.lib.scrolledpanel.ScrolledPanel.__init__(self, parent, -1, size=wx.DefaultSize, style=wx.NO_BORDER)
+        wx.lib.scrolledpanel.ScrolledPanel.__init__(self, parent, -1,
+                                                    size=wx.DefaultSize,
+                                                    style=wx.NO_BORDER)
         self.SetBackgroundColour(preferences.GetValue('M_BG_COLOUR'))
         self.SetForegroundColour(preferences.GetValue('M_FG_COLOUR'))
         self.SetFont(preferences.GetValue('M_FONT'))
@@ -87,14 +89,17 @@ class sppasBaseAbout(wx.lib.scrolledpanel.ScrolledPanel):
 
         # Program name
         if len(self.program) > 0:
-            text_program_version = wx.StaticText(self, -1, self.program + " " + sppas.__version__)
+            text_program_version = wx.StaticText(self, -1, self.program + " " + sg.__version__)
             self.__apply_preferences(text_program_version)
             font = self._preferences.GetValue('M_FONT')
             font_size = font.GetPointSize()
             font.SetPointSize(font_size + 4)
             font.SetWeight(wx.BOLD)
             text_program_version.SetFont(font)
-            sizer.Add(text_program_version, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, border=2)
+            sizer.Add(text_program_version,
+                      proportion=0,
+                      flag=wx.ALL | wx.ALIGN_CENTER_HORIZONTAL,
+                      border=2)
 
         # Description
         if len(self.brief) > 0:
@@ -138,7 +143,7 @@ class sppasBaseAbout(wx.lib.scrolledpanel.ScrolledPanel):
 
     def on_link(self, event):
         try:
-            webbrowser.open(sppas.__url__, 1)
+            webbrowser.open(sg.__url__, 1)
         except:
             pass
 
@@ -169,12 +174,12 @@ class AboutSPPASPanel(sppasBaseAbout):
     def __init__(self, parent, preferences):
         sppasBaseAbout.__init__(self, parent, preferences)
 
-        self.program = sppas.__name__
-        self.version = sppas.__version__
-        self.author = sppas.__author__
-        self.copyright = sppas.__copyright__
-        self.brief = sppas.__summary__
-        self.url = sppas.__url__
+        self.program = sg.__name__
+        self.version = sg.__version__
+        self.author = sg.__author__
+        self.copyright = sg.__copyright__
+        self.brief = sg.__summary__
+        self.url = sg.__url__
         self.logo = APP_ICON
         self.license_text = """
 ------------------------------------------------------------

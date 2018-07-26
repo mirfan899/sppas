@@ -44,7 +44,7 @@ import unittest
 import os.path
 import xml.etree.cElementTree as ET
 
-import sppas
+import sppas.src.config as sg
 from sppas.src.utils.datatype import sppasTime
 
 from ..aio.elan import sppasEAF
@@ -135,7 +135,7 @@ class TestEAF(unittest.TestCase):
         eaf._parse_document(root)
 
         # so, test the result!
-        author = sppas.__name__ + " " + sppas.__version__ + " (C) " + sppas.__author__
+        author = sg.__name__ + " " + sg.__version__ + " (C) " + sg.__author__
         self.assertEqual(sppasTime().now, eaf.get_meta("file_created_date"))
         self.assertEqual("3.0", eaf.get_meta("file_created_format_version"))
         self.assertEqual(author, eaf.get_meta("file_created_author"))

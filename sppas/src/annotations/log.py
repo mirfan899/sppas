@@ -37,8 +37,7 @@ import codecs
 import logging
 import os
 
-import sppas
-from sppas import encoding
+import sppas.src.config as sg
 from . import OK_ID, INFO_ID, WARNING_ID, IGNORE_ID, ERROR_ID
 from .import t
 
@@ -91,7 +90,7 @@ class sppasLog(object):
 
         """
         self.parameters = parameters
-        self.logfp = codecs.open(os.devnull, 'w', encoding)
+        self.logfp = codecs.open(os.devnull, 'w', sg.__encoding__)
 
     # ----------------------------------------------------------------------
     # File management
@@ -115,7 +114,7 @@ class sppasLog(object):
         except:
             pass
         
-        self.logfp = codecs.open(filename, 'w', encoding)
+        self.logfp = codecs.open(filename, 'w', sg.__encoding__)
 
     # ----------------------------------------------------------------------
 
@@ -130,7 +129,7 @@ class sppasLog(object):
         except:
             pass
 
-        self.logfp = codecs.open(filename, 'a+', encoding)
+        self.logfp = codecs.open(filename, 'a+', sg.__encoding__)
 
     # ----------------------------------------------------------------------
     # Write data
@@ -251,14 +250,14 @@ class sppasLog(object):
         """ Print the parameters information in the output stream. """
 
         self.logfp.seek(0, 2)  # write at the end of the file
-        self.print_message(sppas.__name__ + ' ' +
+        self.print_message(sg.__name__ + ' ' +
                            MSG_VERSION + ' ' +
-                           sppas.__version__)
-        self.print_message(sppas.__copyright__)
-        self.print_message(MSG_URL + ': ' + sppas.__url__)
+                           sg.__version__)
+        self.print_message(sg.__copyright__)
+        self.print_message(MSG_URL + ': ' + sg.__url__)
         self.print_message(MSG_CONTACT + ': ' +
-                           sppas.__author__ +
-                           " (" + sppas.__contact__ + ")")
+                           sg.__author__ +
+                           " (" + sg.__contact__ + ")")
         self.print_newline()
         self.print_separator()
 

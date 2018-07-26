@@ -48,7 +48,7 @@ PROGRAM_DIR=$(dirname $HERE)
 
 PROGRAM_NAME="SPPAS"
 PROGRAM_AUTHOR="Brigitte Bigi"
-PROGRAM_VERSION=$(grep -e "__version__=" $PROGRAM_DIR/sppas/meta.py | awk -F'=' '{print $2}' | cut -f2 -d'"')
+PROGRAM_VERSION=$(grep -e "__version__=" $PROGRAM_DIR/sppas/src/config/sglobal.py | awk -F'=' '{print $2}' | cut -f2 -d'"')
 
 # Files and directories to be used
 BIN_DIR="bin"

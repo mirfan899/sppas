@@ -52,7 +52,7 @@ from __future__ import unicode_literals
 import sys
 import re
 
-import sppas
+import sppas.src.config as sg
 
 # ---------------------------------------------------------------------------
 
@@ -69,14 +69,14 @@ if sys.version_info < (3,):
         # AttributeError: 'int' object has no attribute 'decode'
         s = str(x)
         try:
-            return s.decode(sppas.__encoding__)
+            return s.decode(sg.__encoding__)
         except UnicodeDecodeError:
             return s
 
     def b(x):
         s = str(x)
         try:
-            return s.encode(sppas.__encoding__)
+            return s.encode(sg.__encoding__)
         except UnicodeDecodeError:
             return s
 
@@ -92,7 +92,7 @@ else:
 
     def b(x):
         s = str(x)
-        return s.encode(sppas.__encoding__)
+        return s.encode(sg.__encoding__)
 
 
 # ---------------------------------------------------------------------------

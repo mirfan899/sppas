@@ -36,7 +36,7 @@
 import codecs
 import datetime
 
-import sppas
+import sppas.src.config as sg
 from .basetrs import sppasBaseIO
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioMultiTiersError
@@ -217,7 +217,7 @@ class sppasSubRip(sppasBaseSubtitles):
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'r', sppas.__encoding__) as fp:
+        with codecs.open(filename, 'r', sg.__encoding__) as fp:
             lines = fp.readlines()
             fp.close()
 
@@ -292,7 +292,7 @@ class sppasSubRip(sppasBaseSubtitles):
         if len(self) != 1:
             raise AioMultiTiersError("SubRip")
 
-        with codecs.open(filename, 'w', sppas.__encoding__, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sg.__encoding__, buffering=8096) as fp:
 
             if self.is_empty() is False:
                 number = 1
@@ -379,7 +379,7 @@ class sppasSubViewer(sppasBaseSubtitles):
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'r', sppas.__encoding__) as fp:
+        with codecs.open(filename, 'r', sg.__encoding__) as fp:
             lines = fp.readlines()
             fp.close()
 
@@ -473,7 +473,7 @@ class sppasSubViewer(sppasBaseSubtitles):
         if len(self) != 1:
             raise AioMultiTiersError("SubViewer")
 
-        with codecs.open(filename, 'w', sppas.__encoding__, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sg.__encoding__, buffering=8096) as fp:
 
             fp.write(self._serialize_header())
             if self.is_empty() is False:

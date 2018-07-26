@@ -52,7 +52,7 @@
 import codecs
 import os.path
 
-import sppas
+import sppas.src.config as sg
 
 from sppas.src.utils.makeunicode import sppasUnicode
 from ..anndataexc import AioLocationTypeError
@@ -417,7 +417,7 @@ class sppasCTM(sppasBaseSclite):
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'w', sppas.__encoding__, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sg.__encoding__, buffering=8096) as fp:
 
             # write an header with the metadata
             fp.write(sppasBaseSclite.serialize_header(filename, self))
@@ -722,7 +722,7 @@ class sppasSTM(sppasBaseSclite):
         :param filename: (str)
 
         """
-        with codecs.open(filename, 'w', sppas.__encoding__, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sg.__encoding__, buffering=8096) as fp:
 
             # write an header with the metadata
             fp.write(sppasBaseSclite.serialize_header(filename, self))

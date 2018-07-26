@@ -39,7 +39,7 @@ from operator import itemgetter
 from collections import OrderedDict
 import logging
 
-import sppas
+import sppas.src.config as sg
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.datatype import sppasTime
 
@@ -832,7 +832,7 @@ class sppasEAF(sppasBaseIO):
 
         sppasEAF.indent(root)
         tree = ET.ElementTree(root)
-        tree.write(filename, sppas.__encoding__, method="xml")
+        tree.write(filename, sg.__encoding__, method="xml")
 
     # -----------------------------------------------------------------------
 
@@ -841,7 +841,7 @@ class sppasEAF(sppasBaseIO):
         """ Create a root element tree for EAF format. """
 
         root = ET.Element('ANNOTATION_DOCUMENT')
-        author = sppas.__name__ + " " + sppas.__version__ + " (C) " + sppas.__author__
+        author = sg.__name__ + " " + sg.__version__ + " (C) " + sg.__author__
 
         root.set('AUTHOR', author)
         root.set('DATE', sppasTime().now)
@@ -1001,7 +1001,10 @@ class sppasEAF(sppasBaseIO):
                 # we can't preserve the 'id' of other objects
             else:
                 # ignore the metadata that are interpreted by other methods.
-                if (key.startswith('language_') or key.startswith('locale_') or key.startswith('file_license_')) and key[-1].isdigit():
+                if (key.startswith('language_') or
+                    key.startswith('locale_') or
+                    key.startswith('file_license_')) \
+                        and key[-1].isdigit():
                     continue
                 sppasEAF.__add_property(header_root, key, meta_object.get_meta(key))
 

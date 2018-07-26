@@ -2,11 +2,6 @@
 #
 # SPPAS documentation build configuration file
 
-def setup(app):
-    app.connect("autodoc-skip-member", skip)
-
-# ------------------------
-
 import os
 import sys
 PROGRAM = os.path.abspath(__file__)
@@ -17,18 +12,25 @@ sys.path.insert(0, os.path.dirname(PROGRAM))
 sys.path.insert(0, os.path.join(os.path.dirname(PROGRAM), 'rst'))
 
 # General information about the project.
-import sppas
+import sppas.src.config as sg
 
 # General information about the project.
-project = sppas.__name__
-copyright = sppas.__copyright__
-author = sppas.__author__
+project = sg.__name__
+copyright = sg.__copyright__
+author = sg.__author__
 
 # The short X.Y version.
 version = u'1'
 # The full version, including alpha/beta/rc tags.
-release = sppas.__version__
+release = sg.__version__
 
+# ------------------------
+
+
+def setup(app):
+    app.connect("autodoc-skip-member", skip)
+
+# ------------------------
 
 # -- General configuration ------------------------------------------------
 
@@ -37,7 +39,7 @@ release = sppas.__version__
 # needs_sphinx = '1.0'
 
 # The encoding of source files.
-source_encoding = 'utf-8'
+source_encoding = sg.__encoding__
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom

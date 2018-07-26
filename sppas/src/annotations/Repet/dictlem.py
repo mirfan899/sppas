@@ -46,7 +46,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import re
 import codecs
 
-import sppas
+import sppas.src.config as sg
 from sppas import unk_stamp
 
 # ----------------------------------------------------------------------------
@@ -72,7 +72,7 @@ class LemmaDict(object):
         :param dictfilename: the dictionary file name.
 
         """
-        with codecs.open(dictfilename, 'r', sppas.__encoding__) as fd:
+        with codecs.open(dictfilename, 'r', sg.__encoding__) as fd:
 
             dictfreq = {}
             for line in fd:

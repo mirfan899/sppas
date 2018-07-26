@@ -40,7 +40,7 @@ import codecs
 import wx
 import wx.lib.scrolledpanel as scrolled
 
-import sppas
+import sppas.src.config as sg
 
 from sppas.src.ui.wxgui.ui.CustomEvents import NotebookClosePageEvent
 from sppas.src.ui.wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER
@@ -962,7 +962,7 @@ class AudioRoamerPanel(wx.Panel):
         # If it is the OK response, process the data.
         if new_filename is not None:
             content = self._infos_content(parent_filename)
-            with codecs.open(new_filename, "w", sppas.__encoding__) as fp:
+            with codecs.open(new_filename, "w", sg.__encoding__) as fp:
                 fp.write(content)
 
     # -----------------------------------------------------------------------
@@ -972,10 +972,10 @@ class AudioRoamerPanel(wx.Panel):
     def _infos_content(self, parent_filename):
         content = ""
         content += self.__separator()
-        content += self.__line(sppas.__name__ + ' - Version ' + sppas.__version__)
-        content += self.__line(sppas.__copyright__)
-        content += self.__line("Web site: " + sppas.__url__)
-        content += self.__line("Contact: " + sppas.__author__ + "(" + sppas.__contact__ + ")")
+        content += self.__line(sg.__name__ + ' - Version ' + sg.__version__)
+        content += self.__line(sg.__copyright__)
+        content += self.__line("Web site: " + sg.__url__)
+        content += self.__line("Contact: " + sg.__author__ + "(" + sg.__contact__ + ")")
         content += self.__separator()
         content += self.__newline()
         content += self.__line("Date: " + str(datetime.datetime.now()))
@@ -1085,7 +1085,10 @@ class AudioRoamerPanel(wx.Panel):
 def ShowAudioRoamerDialog(parent, preferences, filename):
     audio = sppas.src.audiodata.aio.open(filename)
     if audio.get_nframes() > 15000000:
-        userChoice = ShowYesNoQuestion(None, preferences, "Audio file is very large. Showing more will take a while and could generate a memory error. Really want more?")
+        userChoice = ShowYesNoQuestion(None, preferences, "Audio file is very large. "
+                                                          "Showing more will take a while "
+                                                          "and could generate a memory error. "
+                                                          "Really want more?")
         if userChoice == wx.ID_NO:
             return
     audio.close()

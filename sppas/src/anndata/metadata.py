@@ -35,7 +35,7 @@
 """
 from collections import OrderedDict
 
-import sppas
+import sppas.src.config as sg
 from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.utils.fileutils import sppasGUID
 
@@ -140,12 +140,12 @@ class sppasMetaData(object):
     def add_software_metadata(self):
         """ Add metadata about SPPAS software. """
 
-        self.set_meta('software_name', sppas.__name__)
-        self.set_meta('software_version', sppas.__version__)
-        self.set_meta('software_url', sppas.__url__)
-        self.set_meta('software_author', sppas.__author__)
-        self.set_meta('software_contact', sppas.__contact__)
-        self.set_meta('software_copyright', sppas.__copyright__)
+        self.set_meta('software_name', sg.__name__)
+        self.set_meta('software_version', sg.__version__)
+        self.set_meta('software_url', sg.__url__)
+        self.set_meta('software_author', sg.__author__)
+        self.set_meta('software_contact', sg.__contact__)
+        self.set_meta('software_copyright', sg.__copyright__)
 
     # -----------------------------------------------------------------------
 

@@ -36,7 +36,7 @@
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
+__authors__ = """Brigitte Bigi"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 
@@ -49,7 +49,7 @@ import wx.lib
 import logging
 import os.path
 
-import sppas
+import sppas.src.config as sg
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
 
@@ -305,7 +305,7 @@ class DisplayCtrl( wx.Window ):
             except Exception as e:
                 ShowInformation(self, self._prefsIO, "The following error occurred while loading file "+f+".\n"+str(e), style=wx.ICON_INFORMATION)
                 raise Exception('Display. SetData. Error while loading the file: %s.'%str(e))
-            if "devel" in sppas.__version__:
+            if "devel" in sg.__version__:
                 self.__uncertaintyCooking(tf)
             h = self.FixTranscriptionHeight(tf)
             logging.debug(' Transcription height: %d'%h)

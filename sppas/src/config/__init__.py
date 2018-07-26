@@ -40,9 +40,48 @@
 
 """
 from .settings import sppasBaseSettings
-from .settings import sppasGlobals
+from .sglobal import sppasGlobalSettings
+import sys
+
+try:
+    reload  # Python 2.7
+except NameError:
+    try:
+        from importlib import reload  # Python 3.4+
+    except ImportError:
+        from imp import reload  # Python 3.0 - 3.3
+
+# ---------------------------------------------------------------------------
+# Fix the global settings variables
+# ---------------------------------------------------------------------------
+
+
+with sppasGlobalSettings() as sg:
+    __version__ = sg.__version__
+    __author__ = sg.__author__
+    __contact__ = sg.__contact__
+    __copyright__ = sg.__copyright__
+    __license__ = sg.__license__
+    __docformat__ = sg.__docformat__
+    __name__ = sg.__name__
+    __url__ = sg.__url__
+    __summary__ = sg.__summary__
+    __title__ = sg.__title__
+    __encoding__ = sg.__encoding__
+
+# ---------------------------------------------------------------------------
+
+# Default input/output encoding
+reload(sys)
+try:
+    sys.setdefaultencoding(__encoding__)
+except AttributeError:  # Python 2.7
+    pass
+
+# ---------------------------------------------------------------------------
+
 
 __all__ = [
     "sppasBaseSettings",
-    "sppasGlobals"
+    "sppasGlobalSettings"
 ]

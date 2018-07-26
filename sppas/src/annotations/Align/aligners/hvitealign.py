@@ -36,7 +36,7 @@ import os
 import codecs
 from subprocess import Popen, PIPE, STDOUT
 
-import sppas
+import sppas.src.config as sg
 from sppas.src.resources.dictpron import sppasDictPron
 
 from .basealigner import BaseAligner
@@ -103,7 +103,7 @@ class HviteAligner(BaseAligner):
         """
         dictpron = sppasDictPron()
 
-        with codecs.open(grammarname, 'w', sppas.__encoding__) as flab:
+        with codecs.open(grammarname, 'w', sg.__encoding__) as flab:
 
             for token, pron in zip(self._tokens.split(), self._phones.split()):
 
@@ -213,7 +213,7 @@ class HviteAligner(BaseAligner):
         message = self.run_hvite(inputwav, outputalign)
 
         if os.path.isfile(outputalign):
-            with codecs.open(outputalign, 'r', sppas.__encoding__) as f:
+            with codecs.open(outputalign, 'r', sg.__encoding__) as f:
                 lines = f.readlines()
                 if len(lines) == 1:
                     raise Exception(message+"\n"+lines[0])

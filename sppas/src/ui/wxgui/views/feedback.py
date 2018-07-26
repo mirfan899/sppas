@@ -47,7 +47,7 @@ import wx
 import urllib
 import webbrowser
 
-import sppas
+import sppas.src.config as sg
 
 from sppas.src.ui.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
@@ -141,7 +141,7 @@ class FeedbackDialog( spBaseDialog ):
 
     def _create_content(self):
         self.to_text = self.CreateTextCtrl("", style=wx.TE_READONLY)
-        self.subject_text = self.CreateTextCtrl(sppas.__name__ + " " + sppas.__version__ + " - Feedback...", style=wx.TE_READONLY)
+        self.subject_text = self.CreateTextCtrl(sg.__name__ + " " + sg.__version__ + " - Feedback...", style=wx.TE_READONLY)
         self.body_text = self.CreateTextCtrl(DESCRIBE_TEXT, style=wx.TE_MULTILINE)
         self.body_text.SetMinSize((300,200))
         self.body_text.SetForegroundColour(wx.Colour(128, 128, 128))

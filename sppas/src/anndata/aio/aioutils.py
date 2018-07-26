@@ -45,7 +45,7 @@
         TEXT :== tag content | empty
 
 """
-import sppas
+import sppas.src.config as sg
 import codecs
 
 from ..tier import sppasTier
@@ -69,7 +69,7 @@ def format_point_to_float(p):
 # ---------------------------------------------------------------------------
 
 
-def load(filename, file_encoding=sppas.__encoding__):
+def load(filename, file_encoding=sg.__encoding__):
     """ Load a file into lines.
 
     :param filename: (str)

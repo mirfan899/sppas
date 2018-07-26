@@ -8,7 +8,7 @@
            \  |     |     |   |    \             analysis
         ___/  |     |     |   | ___/              of speech
 
-        http://www.sppas.org/
+        http://www.sg.org/
 
         Use of this software is governed by the GNU Public License, version 3.
 
@@ -48,7 +48,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas 
+import sppas.src.config as sg
 from sppas.src.annotations import DEFAULT_OUTPUT_EXTENSION
 from sppas.src.annotations.param import sppasParam
 from sppas.src.annotations.manager import sppasAnnotationsManager
@@ -152,15 +152,15 @@ if args.all:
 try:
     term = TerminalController()
     print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}'))
-    print(term.render('${RED}'+sppas.__name__+' - Version '+sppas.__version__+'${NORMAL}'))
-    print(term.render('${BLUE}'+sppas.__copyrigh__+'${NORMAL}'))
-    print(term.render('${BLUE}'+sppas.__url__+'${NORMAL}'))
+    print(term.render('${RED}'+sg.__name__+' - Version '+sg.__version__+'${NORMAL}'))
+    print(term.render('${BLUE}'+sg.__copyrigh__+'${NORMAL}'))
+    print(term.render('${BLUE}'+sg.__url__+'${NORMAL}'))
     print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}\n'))
 except:
     print('-----------------------------------------------------------------------\n')
-    print(sppas.__name__+'   -  Version '+sppas.__version__)
-    print(sppas.__copyright__)
-    print(sppas.__url__+'\n')
+    print(sg.__name__+'   -  Version '+sg.__version__)
+    print(sg.__copyright__)
+    print(sg.__url__+'\n')
     print('-----------------------------------------------------------------------\n')
 
 
@@ -180,9 +180,9 @@ try:
     term = TerminalController()
     print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}'))
     print(term.render('${RED}See '+parameters.get_logfilename()+' for details.'))
-    print(term.render('${GREEN}Thank you for using '+sppas.__name__+"."))
+    print(term.render('${GREEN}Thank you for using '+sg.__name__+"."))
     print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}\n'))
 except:
     print('-----------------------------------------------------------------------\n')
-    print("See "+parameters.get_logfilename()+" for details.\nThank you for using "+sppas.__name__+".")
+    print("See "+parameters.get_logfilename()+" for details.\nThank you for using "+sg.__name__+".")
     print('-----------------------------------------------------------------------\n')

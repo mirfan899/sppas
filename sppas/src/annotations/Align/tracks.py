@@ -35,7 +35,7 @@
 import os
 import codecs
 
-import sppas
+import sppas.src.config as sg
 
 from sppas.src.annotationdata.transcription import Transcription
 from sppas.src.annotationdata.ptime.interval import TimeInterval
@@ -220,7 +220,7 @@ class TrackSplitter(Transcription):
         """ Write a raw text in a file.
 
         """
-        with codecs.open(trackname, "w", sppas.__encoding__) as fp:
+        with codecs.open(trackname, "w", sg.__encoding__) as fp:
             fp.write(trackcontent)
 
 # ----------------------------------------------------------------------------

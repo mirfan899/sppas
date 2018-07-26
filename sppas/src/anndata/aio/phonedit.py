@@ -48,7 +48,7 @@ except ImportError:  # python 2
     from ConfigParser import SafeConfigParser
 from datetime import datetime
 
-import sppas
+import sppas.src.config as sg
 
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioNoTiersError
@@ -360,7 +360,7 @@ class sppasMRK(sppasBasePhonedit):
                 # Write information about the tier
                 fp.write("[DSC_{:s}]\n".format(level))
                 fp.write("DSC_LEVEL_NAME=\"{:s}\"\n".format(tier.get_name()))
-                fp.write("DSC_LEVEL_SOFTWARE={:s} {:s}\n".format(sppas.__name__, sppas.__version__))
+                fp.write("DSC_LEVEL_SOFTWARE={:s} {:s}\n".format(sg.__name__, sg.__version__))
                 fp.write("DSC_LEVEL_LASTMODIF_DATE={:s}\n".format(last_modified))
 
                 # Write annotations

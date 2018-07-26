@@ -38,7 +38,6 @@
 import os
 import wx
 
-import sppas
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
 

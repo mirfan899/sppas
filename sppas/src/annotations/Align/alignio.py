@@ -35,7 +35,7 @@
 import os
 import codecs
 
-import sppas
+import sppas.src.config as sg
 from sppas import VARIANTS_SEPARATOR, PHONEMES_SEPARATOR
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.makeunicode import sppasUnicode
@@ -73,7 +73,7 @@ class ListIO(object):
 
         """
         filename = os.path.join(dirname, ListIO.DEFAULT_FILENAME)
-        with codecs.open(filename, 'r', sppas.__encoding__) as fp:
+        with codecs.open(filename, 'r', sg.__encoding__) as fp:
             lines = fp.readlines()
 
         _units = []
@@ -99,7 +99,7 @@ class ListIO(object):
 
         """
         filename = os.path.join(dirname, ListIO.DEFAULT_FILENAME)
-        with codecs.open(filename, 'w', sppas.__encoding__) as fp:
+        with codecs.open(filename, 'w', sg.__encoding__) as fp:
             for start, end in units:
                 fp.write("%.6f %.6f " % (start, end))
                 fp.write("\n")

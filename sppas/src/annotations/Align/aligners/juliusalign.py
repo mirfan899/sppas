@@ -36,7 +36,7 @@ import os
 import codecs
 from subprocess import Popen, PIPE, STDOUT
 
-import sppas
+import sppas.src.config as sg
 from sppas import PHONE_SYMBOLS
 from sppas.src.models.slm.ngramsmodel import sppasNgramsModel
 from sppas.src.models.slm.arpaio import sppasArpaIO
@@ -202,8 +202,8 @@ class JuliusAligner(BaseAligner):
         tokenidx = 0
         nbtokens = len(tokenslist)-1
 
-        with codecs.open(grammarname, 'w', sppas.__encoding__) as fdfa,\
-                codecs.open(dictname, 'w', sppas.__encoding__) as fdict:
+        with codecs.open(grammarname, 'w', sg.__encoding__) as fdfa,\
+                codecs.open(dictname, 'w', sg.__encoding__) as fdict:
 
             for token, pron in zip(tokenslist, phoneslist):
 
@@ -330,7 +330,7 @@ class JuliusAligner(BaseAligner):
             self.gen_slm_dependencies(basename)
 
         self.run_julius(inputwav, basename, outputalign)
-        with codecs.open(outputalign, 'r', sppas.__encoding__) as f:
+        with codecs.open(outputalign, 'r', sg.__encoding__) as f:
             lines = f.readlines()
 
         errorlines = ""
@@ -352,7 +352,7 @@ class JuliusAligner(BaseAligner):
                           "The following entries were successfully added into the tiedlist: "
                 message = message + " ".join(added) + "\n"
                 self.run_julius(inputwav, basename, outputalign)
-                with codecs.open(outputalign, 'r', sppas.__encoding__) as f:
+                with codecs.open(outputalign, 'r', sg.__encoding__) as f:
                     lines = f.readlines()
 
         for line in lines:

@@ -40,7 +40,7 @@ import os.path
 import datetime
 import re
 
-import sppas
+import sppas.src.config as sg
 from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.utils.datatype import sppasType
 
@@ -273,11 +273,11 @@ class sppasBaseText(sppasBaseIO):
         """ Serialize the header of a file with SPPAS information. """
 
         comment = ";; \n"
-        comment += ";; software_name={:s}\n".format(sppas.__name__)
-        comment += ";; software_version={:s}\n".format(sppas.__version__)
-        comment += ";; software_url={:s}\n".format(sppas.__url__)
-        comment += ";; software_contact={:s}\n".format(sppas.__contact__)
-        comment += ";; software_copyright={:s}\n".format(sppas.__copyright__)
+        comment += ";; software_name={:s}\n".format(sg.__name__)
+        comment += ";; software_version={:s}\n".format(sg.__version__)
+        comment += ";; software_url={:s}\n".format(sg.__url__)
+        comment += ";; software_contact={:s}\n".format(sg.__contact__)
+        comment += ";; software_copyright={:s}\n".format(sg.__copyright__)
         comment += ";; \n"
         now = datetime.datetime.now()
         comment += ";; file_write_date={:d}-{:d}-{:d}\n" \
@@ -381,7 +381,7 @@ class sppasRawText(sppasBaseText):
     def detect(filename):
         # Open and load the content.
         try:
-            with codecs.open(filename, 'r', sppas.__encoding__) as fp:
+            with codecs.open(filename, 'r', sg.__encoding__) as fp:
                 fp.readline()
                 fp.close()
         except IOError:
@@ -422,7 +422,7 @@ class sppasRawText(sppasBaseText):
         :param filename: (str)
 
         """
-        lines = load(filename, sppas.__encoding__)
+        lines = load(filename, sg.__encoding__)
         self._parse_lines(lines)
 
     # -----------------------------------------------------------------------
@@ -543,7 +543,7 @@ class sppasRawText(sppasBaseText):
         if len(self._tiers) > 1:
             raise AioMultiTiersError(self.__class__.__name__)
 
-        with codecs.open(filename, 'w', sppas.__encoding__, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sg.__encoding__, buffering=8096) as fp:
 
             # no tier in the file.
             if self.is_empty() is True:
@@ -636,7 +636,7 @@ class sppasCSV(sppasBaseText):
         If False, the default encoding is used.
 
         """
-        enc = sppas.__encoding__
+        enc = sg.__encoding__
         if signed is True:
             enc = 'utf-8-sig'
 
@@ -711,7 +711,7 @@ class sppasCSV(sppasBaseText):
         If False, the default encoding is used.
 
         """
-        enc = sppas.__encoding__
+        enc = sg.__encoding__
         if signed is True:
             enc = 'utf-8-sig'
 

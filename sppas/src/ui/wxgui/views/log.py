@@ -39,7 +39,7 @@ import shutil
 import codecs
 import wx
 
-import sppas
+import sppas.src.config as sg
 from sppas.src.ui.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
 from sppas.src.ui.wxgui.sp_icons import REPORT_ICON
@@ -97,7 +97,7 @@ class LogDialog(spBaseDialog):
 
     def _create_content(self):
         try:
-            with codecs.open(self.filename, 'r', sppas.__encoding__) as fp:
+            with codecs.open(self.filename, 'r', sg.__encoding__) as fp:
                 logcontent = fp.read()
         except Exception as e:
             logcontent = "No report is available...\n" \

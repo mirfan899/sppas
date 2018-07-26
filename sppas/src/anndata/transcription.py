@@ -38,7 +38,6 @@
 from sppas.src.utils.fileutils import sppasGUID
 from sppas.src.utils.makeunicode import sppasUnicode
 
-import sppas
 from .anndataexc import AnnDataTypeError
 from .anndataexc import TrsAddError
 from .anndataexc import TrsRemoveError

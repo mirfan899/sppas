@@ -43,21 +43,13 @@
 from sppas.src.utils.maketext import translate
 t = translate("annotations")
 
-from .Align import sppasAlign
-from .Intsint import sppasIntsint
-from .Phon import sppasPhon
-from .Syll import sppasSyll
-from .TGA import sppasTGA
-from .TextNorm import sppasTextNorm
+# from .Align import sppasAlign
+# from .Intsint import sppasIntsint
+# from .Phon import sppasPhon
+# from .Syll import sppasSyll
+# from .TGA import sppasTGA
+# from .TextNorm import sppasTextNorm
 
-__all__ = [
-    'sppasAlign',
-    'sppasIntsint',
-    'sppasPhon',
-    'sppasSyll',
-    'sppasTGA',
-    'sppasTextNorm'
-]
 
 # ---------------------------------------------------------------------------
 # Default output extension:
@@ -72,3 +64,14 @@ INFO_ID = 3
 IGNORE_ID = 2
 WARNING_ID = 1
 OK_ID = 0
+
+# ---------------------------------------------------------------------------
+#
+# __all__ = [
+#     'sppasAlign',
+#     'sppasIntsint',
+#     'sppasPhon',
+#     'sppasSyll',
+#     'sppasTGA',
+#     'sppasTextNorm'
+# ]

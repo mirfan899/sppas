@@ -34,7 +34,7 @@
 """
 import codecs
 
-import sppas
+import sppas.src.config as sg
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .. import t
@@ -227,7 +227,7 @@ class AlignTrack(object):
 
         line = ""
         try:
-            with codecs.open(filename, 'r', sppas.__encoding__) as fp:
+            with codecs.open(filename, 'r', sg.__encoding__) as fp:
                 sp = sppasUnicode(fp.readline())
                 line = sp.to_strip()
         except Exception:

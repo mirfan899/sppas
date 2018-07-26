@@ -28,74 +28,62 @@
 
         ---------------------------------------------------------------------
 
-    config.settings.py
+    config.sglobal.py
     ~~~~~~~~~~~~~~~~~~
 
-    Base classes to manage any kind of settings, represented in a dictionary.
-
-    :Example:
-
-    >>>with sppasBaseSettings() as settings:
-    >>>    settings.newKey = 'myNewValue'
-    >>>    print(settings.newKey)
-    >>>with sppasGlobals() as sg:
-    >>>    print sg.__version__
+    Classes to manage global non-modifiable settings of SPPAS.
 
 """
-import json
+from .settings import sppasBaseSettings
 
 # ---------------------------------------------------------------------------
 
 
-class sppasBaseSettings(object):
+class sppasGlobalSettings(sppasBaseSettings):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Representation of a dictionary of settings.
+    :summary:      Representation of global non-modifiable settings of SPPAS.
 
     """
     def __init__(self):
-        self.__dict__ = dict()  # load(open(self._config_location))
-
-    def __enter__(self):
-        return self
-
-    # def __iter__(self):
-    #     return self.__dict__.__iter__()
-    #
-    # def __getitem__(self, key):
-    #     return self.__dict__[key]
-    #
-    # def __len__(self):
-    #     return len(self)
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        pass
-        # here we could write things on the console, or anything else!
-        # json.dump(self.__dict__, open(self._config_location, 'w'))
+        sppasBaseSettings.__init__(self)
+        self.__dict__ = dict(
+            __version__="1.9.8",
+            __author__="Brigitte Bigi",
+            __contact__="brigite.bigi@gmail.com",
+            __copyright__="Copyright (C) 2011-2018 Brigitte Bigi",
+            __license__="GNU Public License, version 3",
+            __docformat__='reStructedText en',
+            __name__="SPPAS",
+            __url__="http://www.sppas.org/",
+            __summary__="SPPAS produces automatically annotations\n\
+        from a recorded speech sound and its transcription\n\
+        and performs the analysis of any annotated data.",
+            __title__="the automatic annotation and analysis of speech",
+            __encoding__="utf-8",
+        )
 
 # ---------------------------------------------------------------------------
 
 
-class sppasBaseModifiableSettings(sppasBaseSettings):
+class sppasPathsSettings(sppasBaseSettings):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      A dictionary of settings stored in a file.
-
-    The configuration file is loaded when init and saved when exit.
+    :summary:      Representation of global non-modifiable paths of SPPAS.
 
     """
-    def __init__(self, _config_location):
+    def __init__(self):
         sppasBaseSettings.__init__(self)
-        self.__dict__ = json.load(open(_config_location))
-        self._config_location = _config_location
+        self.__dict__ = dict(
 
-    def __exit__(self, exc_type, exc_value, traceback):
-        json.dump(self.__dict__, open(self._config_location, 'w'))
+        )
+
+# ---------------------------------------------------------------------------

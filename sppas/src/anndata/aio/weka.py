@@ -45,7 +45,7 @@
 import codecs
 from datetime import datetime
 
-import sppas
+import sppas.src.config as sg
 from .basetrs import sppasBaseIO
 from ..anndataexc import AioNoTiersError
 from ..anndataexc import TagValueError
@@ -745,7 +745,7 @@ class sppasARFF(sppasWEKA):
     @staticmethod
     def detect(filename):
         try:
-            with codecs.open(filename, 'r', sppas.__encoding__) as fp:
+            with codecs.open(filename, 'r', sg.__encoding__) as fp:
                 for i in range(200):
                     line = fp.readline()
                     if "@relation" in line.lower():
@@ -782,7 +782,7 @@ class sppasARFF(sppasWEKA):
         if self.is_empty() is True:
             raise AioNoTiersError(self.default_extension)
 
-        with codecs.open(filename, 'w', sppas.__encoding__, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sg.__encoding__, buffering=8096) as fp:
 
             # Check metadata
             self.check_metadata()
@@ -810,11 +810,11 @@ class sppasARFF(sppasWEKA):
     def _serialize_header():
         """ Returns a standard header in comments. """
 
-        content = "% creator: {:s}\n".format(sppas.__name__)
-        content += "% version: {:s}\n".format(sppas.__version__)
+        content = "% creator: {:s}\n".format(sg.__name__)
+        content += "% version: {:s}\n".format(sg.__version__)
         content += "% date: {:s}\n".format(datetime.now().strftime("%Y-%m-%d"))
-        content += "% author: {:s}\n".format(sppas.__author__)
-        content += "% license: {:s}\n".format(sppas.__copyright__)
+        content += "% author: {:s}\n".format(sg.__author__)
+        content += "% license: {:s}\n".format(sg.__copyright__)
         content += "% \n"
         return content
 
@@ -1004,7 +1004,7 @@ class sppasXRFF(sppasWEKA):
         if self.is_empty() is True:
             raise AioNoTiersError(self.default_extension)
 
-        with codecs.open(filename, 'w', sppas.__encoding__, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sg.__encoding__, buffering=8096) as fp:
 
             # Check metadata
             self.check_metadata()

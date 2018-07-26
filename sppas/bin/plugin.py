@@ -63,9 +63,8 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas
+import sppas.src.config as sg
 from sppas.src.ui.term.terminalcontroller import TerminalController
-
 from sppas.src.plugins import sppasPluginsManager
 
 # ----------------------------------------------------------------------------
@@ -116,15 +115,15 @@ args = parser.parse_args()
 try:
     term = TerminalController()
     print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}'))
-    print(term.render('${RED}'+sppas.__name__+' - Version '+sppas.__version__+'${NORMAL}'))
-    print(term.render('${BLUE}'+sppas.__copyright__+'${NORMAL}'))
-    print(term.render('${BLUE}'+sppas.__url__+'${NORMAL}'))
+    print(term.render('${RED}'+sg.__name__+' - Version '+sg.__version__+'${NORMAL}'))
+    print(term.render('${BLUE}'+sg.__copyright__+'${NORMAL}'))
+    print(term.render('${BLUE}'+sg.__url__+'${NORMAL}'))
     print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}\n'))
 except Exception:
     print('-----------------------------------------------------------------------\n')
-    print(sppas.__name__+'   -  Version '+sppas.__version__)
-    print(sppas.__copyright__)
-    print(sppas.__url__+'\n')
+    print(sg.__name__+'   -  Version '+sg.__version__)
+    print(sg.__copyright__)
+    print(sg.__url__+'\n')
     print('-----------------------------------------------------------------------\n')
 
 manager = sppasPluginsManager()

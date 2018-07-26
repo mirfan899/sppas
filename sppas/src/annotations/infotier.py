@@ -34,7 +34,7 @@
 """
 import datetime
 
-import sppas
+import sppas.src.config as sg
 
 from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.annotation import Annotation
@@ -66,13 +66,13 @@ class sppasMetaInfoTier(sppasMetaInfo):
         """
         sppasMetaInfo.__init__(self)
 
-        self.add_metainfo('author', sppas.__author__)
-        self.add_metainfo('contact', sppas.__contact__)
-        self.add_metainfo('program', sppas.__name__)
-        self.add_metainfo('version', sppas.__version__)
-        self.add_metainfo('copyright', sppas.__copyright__)
-        self.add_metainfo('url', sppas.__url__)
-        self.add_metainfo('license', sppas.__license__)
+        self.add_metainfo('author', sg.__author__)
+        self.add_metainfo('contact', sg.__contact__)
+        self.add_metainfo('program', sg.__name__)
+        self.add_metainfo('version', sg.__version__)
+        self.add_metainfo('copyright', sg.__copyright__)
+        self.add_metainfo('url', sg.__url__)
+        self.add_metainfo('license', sg.__license__)
         self.add_metainfo('date', str(datetime.date.today()))
 
     # ------------------------------------------------------------------------

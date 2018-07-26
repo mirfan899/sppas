@@ -38,7 +38,7 @@
 import logging
 import xml.etree.cElementTree as ET
 
-import sppas
+import sppas.src.config as sg
 from sppas.src.utils.makeunicode import u
 from sppas.src.utils.datatype import sppasTime
 
@@ -561,7 +561,7 @@ class sppasXRA(sppasBaseIO):
 
         """
         root = ET.Element('Document')
-        author = sppas.__name__ + " " + sppas.__version__ + " (C) " + sppas.__author__
+        author = sg.__name__ + " " + sg.__version__ + " (C) " + sg.__author__
         root.set('author', author)
         root.set('date', sppasTime().now)
         root.set('format', self.__format)
@@ -589,7 +589,7 @@ class sppasXRA(sppasBaseIO):
 
         sppasXRA.indent(root)
         tree = ET.ElementTree(root)
-        tree.write(filename, encoding=sppas.__encoding__, method="xml", xml_declaration=True)
+        tree.write(filename, encoding=sg.__encoding__, method="xml", xml_declaration=True)
 
     # -----------------------------------------------------------------------
 

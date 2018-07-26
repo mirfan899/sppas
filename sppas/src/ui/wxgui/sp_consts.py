@@ -38,6 +38,7 @@ import os.path
 import wx
 
 import sppas
+import sppas.src.config as sg
 
 # ---------------------------------------------------------------------------
 # Define all paths (relatively to SPPAS base path)
@@ -55,10 +56,10 @@ HELP_IDX_EXT = ".idx"
 # Base components:
 
 FRAME_STYLE = wx.DEFAULT_FRAME_STYLE|wx.CLOSE_BOX
-FRAME_TITLE = " " + sppas.__name__ + " " + sppas.__version__ + " "
+FRAME_TITLE = " " + sg.__name__ + " " + sg.__version__ + " "
 DIALOG_STYLE = wx.CAPTION|wx.RESIZE_BORDER
 
-DEFAULT_APP_NAME = sppas.__name__ + "Component"
+DEFAULT_APP_NAME = sg.__name__ + "Component"
 
 
 # ---------------------------------------------------------------------------
