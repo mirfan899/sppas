@@ -52,7 +52,7 @@
 import codecs
 import os.path
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 
 from sppas.src.utils.makeunicode import sppasUnicode
 from ..anndataexc import AioLocationTypeError

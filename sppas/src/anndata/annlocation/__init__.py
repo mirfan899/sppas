@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annloc.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.anndata.annloc
+    ~~~~~~~~~~~~~~~~~~~
 
     Location of the annotations of a tier.
 

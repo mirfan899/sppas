@@ -45,16 +45,16 @@ from sppas.src.utils.maketext import translate
 t = translate("anndata")
 
 from .aio import aioutils
-from .metadata import sppasMetaData
 from .aio.readwrite import sppasRW
+from .metadata import sppasMetaData
 from .transcription import sppasTranscription
 from .tier import sppasTier
 from .annotation import sppasAnnotation
 from .ctrlvocab import sppasCtrlVocab
 from .media import sppasMedia
 from .hierarchy import sppasHierarchy
-from .annlabel.label import sppasLabel
-from .annlabel.tag import sppasTag
+from .annlabel import sppasLabel
+from .annlabel import sppasTag
 from .annlocation import sppasLocation
 from .annlocation import sppasDuration
 from .annlocation import sppasInterval
@@ -62,6 +62,7 @@ from .annlocation import sppasPoint
 from .annlocation import sppasDisjoint
 from .filters import sppasFilters
 from .filters import sppasAnnSet
+
 
 __all__ = [
     'sppasMetaData',

@@ -51,7 +51,7 @@ from sppas.src.annotationdata.annotation import Annotation
 from sppas.src.annotationdata.ptime.interval import TimeInterval
 from sppas.src.annotationdata.label.label import Label
 
-from sppas.src.calculus.infotheory.kullbackleibler import sppasKullbackLeibler
+from sppas import sppasKullbackLeibler
 from sppas.src.calculus.infotheory.utilit import find_ngrams
 
 # ----------------------------------------------------------------------------

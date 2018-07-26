@@ -36,6 +36,21 @@
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS global configuration.
+    :summary:      Global imports and some settings for external use.
 
 """
+from sppas.src.anndata import *
+from sppas.src.audiodata import *
+from sppas.src.calculus import *
+from sppas.src.models import *
+from sppas.src.plugins import *
+from sppas.src.resources import *
+from sppas.src.structs import *
+from sppas.src.utils import *
+
+from sppas.src.config import sg
+
+__version__ = sg.__version__
+__name__ = sg.__name__
+__author__ = sg.__author__
+__docformat__ = sg.__docformat__

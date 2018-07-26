@@ -38,7 +38,7 @@
 import logging
 import xml.etree.cElementTree as ET
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 from sppas.src.utils.makeunicode import u
 from sppas.src.utils.datatype import sppasTime
 

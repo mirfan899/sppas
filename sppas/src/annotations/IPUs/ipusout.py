@@ -36,7 +36,7 @@
 import codecs
 import os
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 from sppas.src.audiodata.autils import frames2times
 import sppas.src.audiodata.aio
 import sppas.src.annotationdata.aio

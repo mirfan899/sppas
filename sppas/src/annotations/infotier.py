@@ -34,7 +34,7 @@
 """
 import datetime
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 
 from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.annotation import Annotation

@@ -52,7 +52,7 @@ from __future__ import unicode_literals
 import sys
 import re
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 
 # ---------------------------------------------------------------------------
 

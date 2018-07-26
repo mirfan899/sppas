@@ -46,7 +46,7 @@ sys.path.append(SPPAS)
 
 import sppas.src.audiodata.aio
 from sppas.src.audiodata.channelsmixer import sppasChannelMixer
-from sppas.src.audiodata.audio import sppasAudioPCM
+from sppas import sppasAudioPCM
 
 # ----------------------------------------------------------------------------
 

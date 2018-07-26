@@ -35,7 +35,7 @@
 """
 from collections import OrderedDict
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.utils.fileutils import sppasGUID
 

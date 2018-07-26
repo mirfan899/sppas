@@ -61,6 +61,7 @@ t = translate("plugins")
 def get_info(msg_id):
     return u(t.gettext(":INFO " + msg_id + ": "))
 
+
 from .manager import sppasPluginsManager
 from .param import sppasPluginParam
 from .process import sppasPluginProcess

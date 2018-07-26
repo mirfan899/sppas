@@ -37,7 +37,7 @@ import codecs
 import logging
 import os
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 from . import OK_ID, INFO_ID, WARNING_ID, IGNORE_ID, ERROR_ID
 from .import t
 

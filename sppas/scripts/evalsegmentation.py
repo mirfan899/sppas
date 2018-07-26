@@ -50,7 +50,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.calculus.scoring.ubpa import ubpa
+from sppas import ubpa
 from sppas.src.annotationdata.transcription import Transcription
 import sppas.src.annotationdata.aio
 

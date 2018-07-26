@@ -35,7 +35,7 @@
     Exceptions for anndata package.
 
 """
-import sppas.src.config as sg
+from sppas.src.config import sg
 from . import t
 
 ANN_DATA_ERROR = ":ERROR 1000: "

@@ -40,7 +40,7 @@ import codecs
 import wx
 import wx.lib.scrolledpanel as scrolled
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 
 from sppas.src.ui.wxgui.ui.CustomEvents import NotebookClosePageEvent
 from sppas.src.ui.wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDER

@@ -40,7 +40,7 @@ import wx
 import wx.lib.scrolledpanel
 import webbrowser
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 from sppas.src.ui.wxgui.cutils.imageutils import spBitmap
 from sppas.src.ui.wxgui.sp_icons import APP_ICON
 

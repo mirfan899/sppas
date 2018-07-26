@@ -47,7 +47,7 @@ sys.path.append(SPPAS)
 
 import sppas.src.audiodata.aio
 from sppas.src.audiodata.aio import extensionsul
-from sppas.src.audiodata.audio import sppasAudioPCM
+from sppas import sppasAudioPCM
 from sppas.src.audiodata.audioframes import sppasAudioFrames
 from sppas.src.audiodata.audioconvert import sppasAudioConverter
 from sppas.src.audiodata.channelsmixer import sppasChannelMixer

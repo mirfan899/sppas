@@ -39,7 +39,7 @@ import shutil
 import codecs
 import wx
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 from sppas.src.ui.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
 from sppas.src.ui.wxgui.sp_icons import REPORT_ICON

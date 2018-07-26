@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.models.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~
+    src.models
+    ~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France

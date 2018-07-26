@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(PROGRAM))
 sys.path.insert(0, os.path.join(os.path.dirname(PROGRAM), 'rst'))
 
 # General information about the project.
-import sppas.src.config as sg
+from sppas.src.config import sg
 
 # General information about the project.
 project = sg.__name__

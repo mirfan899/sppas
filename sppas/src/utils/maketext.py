@@ -42,9 +42,9 @@
     Python 2 and Python 3.
     The locale is used to set the language and English is the default.
 
-    >>>from sppas.src.utils.maketext import translate
-    >>>t = translate("domain")
-    >>>my_string = t.gettext("Some string in the domain.")
+    >>> from sppas.src.utils.maketext import translate
+    >>> t = translate("domain")
+    >>> my_string = t.gettext("Some string in the domain.")
 
 """
 import gettext

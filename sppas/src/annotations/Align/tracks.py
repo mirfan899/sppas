@@ -35,7 +35,7 @@
 import os
 import codecs
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 
 from sppas.src.annotationdata.transcription import Transcription
 from sppas.src.annotationdata.ptime.interval import TimeInterval

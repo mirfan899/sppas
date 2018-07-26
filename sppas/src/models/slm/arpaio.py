@@ -34,7 +34,7 @@
 """
 import codecs
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 
 from ..modelsexc import ModelsDataTypeError
 from ..modelsexc import ArpaFileError

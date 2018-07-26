@@ -38,12 +38,7 @@
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      SPPAS configuration for global things.
 
-    We define a set of global settings which will allow to write:
-
-        >>> import sppas.src.config as sg
-        >>> sg.__encoding__
-
-    And we instantiate setting classes, to be used like:
+    We instantiate setting classes, to be used like:
 
         >>> from sppas.src.config import sg, paths
         >>> sg.__encoding
@@ -69,19 +64,6 @@ from .sglobal import sppasSeparatorSettings
 # Fix the global un-modifiable settings
 # ---------------------------------------------------------------------------
 
-with sppasGlobalSettings() as sg:
-    __version__ = sg.__version__
-    __author__ = sg.__author__
-    __contact__ = sg.__contact__
-    __copyright__ = sg.__copyright__
-    __license__ = sg.__license__
-    __docformat__ = sg.__docformat__
-    __name__ = sg.__name__
-    __url__ = sg.__url__
-    __summary__ = sg.__summary__
-    __title__ = sg.__title__
-    __encoding__ = sg.__encoding__
-
 sg = sppasGlobalSettings()
 paths = sppasPathSettings()
 symbols = sppasSymbolSettings()
@@ -92,7 +74,7 @@ separators = sppasSeparatorSettings()
 # Default input/output encoding
 reload(sys)
 try:
-    sys.setdefaultencoding(__encoding__)
+    sys.setdefaultencoding(sg.__encoding__)
 except AttributeError:  # Python 2.7
     pass
 

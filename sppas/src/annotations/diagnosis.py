@@ -35,7 +35,7 @@
 import codecs
 import os
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
 from . import ERROR_ID, WARNING_ID, OK_ID

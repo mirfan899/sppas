@@ -36,7 +36,7 @@ import os
 import codecs
 from subprocess import Popen, PIPE, STDOUT
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 from sppas.src.resources.dictpron import sppasDictPron
 
 from .basealigner import BaseAligner

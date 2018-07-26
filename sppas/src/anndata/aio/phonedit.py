@@ -48,7 +48,7 @@ except ImportError:  # python 2
     from ConfigParser import SafeConfigParser
 from datetime import datetime
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioNoTiersError

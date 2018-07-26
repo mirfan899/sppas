@@ -56,6 +56,9 @@ from .stats.linregress import gradient_descent, gradient_descent_linear_regressi
 from .stats.moment import lmoment, lvariation, lskew, lkurtosis
 from .stats.variability import lvariance, lstdev, lz, rPVI, nPVI
 from .scoring.ubpa import ubpa
+from .infotheory import sppasKullbackLeibler
+from .infotheory import sppasEntropy
+
 
 # ---------------------------------
 
@@ -69,5 +72,6 @@ __all__ = [
     "gradient_descent", "gradient_descent_linear_regression", "compute_error_for_line_given_points",
     "lmoment", "lvariation", "lskew", "lkurtosis",
     "lvariance", "lstdev", "lz", "rPVI", "nPVI",
-    "ubpa"
+    "ubpa",
+    "sppasKullbackLeibler", "sppasEntropy"
 ]

@@ -44,7 +44,9 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas.src.anndata as anndata
+from sppas import sppasTag, sppasLabel, \
+    sppasLocation, sppasInterval, sppasPoint, \
+    sppasRW
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -86,7 +88,7 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 # Read
 
-parser = anndata.sppasRW(args.i)
+parser = sppasRW(args.i)
 trs_input = parser.read()
 
 # Take all tiers or specified tiers
@@ -121,9 +123,9 @@ for i in range(start, finish):
         texts.append(ann.serialize_labels())
 
     # Append in new tier
-    ti = anndata.sppasInterval(
-        anndata.sppasPoint(b, 0.0001), 
-        anndata.sppasPoint(e, 0.0001))
+    ti = sppasInterval(
+            sppasPoint(b, 0.0001),
+            sppasPoint(e, 0.0001))
     if len(texts) > 1:
         missing = False
         for t in texts:
@@ -136,8 +138,8 @@ for i in range(start, finish):
             text = ";".join(texts)
     else:
         text = str(texts[0])
-    behavior_tier.create_annotation(anndata.sppasLocation(ti), 
-                                    anndata.sppasLabel(anndata.sppasTag(text)))
+    behavior_tier.create_annotation(sppasLocation(ti),
+                                    sppasLabel(sppasTag(text)))
         
 # ----------------------------------------------------------------------------
 
@@ -160,7 +162,7 @@ for ann in behavior_tier:
                 v = 2
         synchro_tier.create_annotation(
             ann.get_location().copy(),
-            anndata.sppasLabel(anndata.sppasTag(v, "int")))
+            sppasLabel(sppasTag(v, "int")))
 
 # ----------------------------------------------------------------------------
 # Write

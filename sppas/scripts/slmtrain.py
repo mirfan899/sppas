@@ -44,8 +44,8 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.models.slm.ngramsmodel import sppasNgramsModel
-from sppas.src.models.slm.arpaio import sppasArpaIO
+from sppas import sppasNgramsModel
+from sppas import sppasArpaIO
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:

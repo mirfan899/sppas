@@ -51,7 +51,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 
 # ---------------------------------------------------------------------------
 

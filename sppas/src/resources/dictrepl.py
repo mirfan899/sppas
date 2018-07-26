@@ -37,7 +37,7 @@
 import codecs
 import logging
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 from sppas.src.utils.makeunicode import sppasUnicode, u
 from .dumpfile import sppasDumpFile
 from .resourcesexc import FileUnicodeError

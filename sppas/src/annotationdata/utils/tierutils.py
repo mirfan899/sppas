@@ -37,7 +37,7 @@
 
 import collections
 
-from sppas import SYMBOLS
+from sppas.src.config import SYMBOLS
 from ..tier import Tier
 from ..annotation import Annotation
 from ..ptime.interval import TimeInterval

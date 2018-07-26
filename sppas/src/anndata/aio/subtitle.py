@@ -36,7 +36,7 @@
 import codecs
 import datetime
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 from .basetrs import sppasBaseIO
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioMultiTiersError

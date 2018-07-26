@@ -45,7 +45,7 @@
         TEXT :== tag content | empty
 
 """
-import sppas.src.config as sg
+from sppas.src.config import sg
 import codecs
 
 from ..tier import sppasTier

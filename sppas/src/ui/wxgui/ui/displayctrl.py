@@ -49,7 +49,7 @@ import wx.lib
 import logging
 import os.path
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
 

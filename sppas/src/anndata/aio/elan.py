@@ -39,7 +39,7 @@ from operator import itemgetter
 from collections import OrderedDict
 import logging
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.datatype import sppasTime
 

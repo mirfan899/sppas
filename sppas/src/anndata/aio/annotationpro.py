@@ -42,7 +42,7 @@ import random
 from datetime import datetime
 import xml.etree.cElementTree as ET
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.fileutils import sppasFileUtils
 

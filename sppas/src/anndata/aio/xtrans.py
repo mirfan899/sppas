@@ -43,7 +43,7 @@
 """
 import codecs
 
-import sppas.src.config as sg
+from sppas.src.config import sg
 
 from ..anndataexc import AioLineFormatError
 from ..anndataexc import AnnDataTypeError
