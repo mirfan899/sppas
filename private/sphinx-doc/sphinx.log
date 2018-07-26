@@ -1,284 +1,89 @@
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.metadata.sppasMetaData'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.aio.readwrite.sppasRW'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.transcription.sppasTranscription'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.tier.sppasTier'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.annotation.sppasAnnotation'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.ctrlvocab.sppasCtrlVocab'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.media.sppasMedia'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.hierarchy.sppasHierarchy'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.annlabel.label.sppasLabel'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.annlabel.tag.sppasTag'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.annlocation.location.sppasLocation'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.annlocation.duration.sppasDuration'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.annlocation.disjoint.sppasDisjoint'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.annlocation.interval.sppasInterval'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.annlocation.point.sppasPoint'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.filters.sppasFilters'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <class 'anndata.filters.sppasAnnSet'>
-/mnt/e/bigi/Projets/sppas/private/sphinx-doc/rst/anndata.rst:8: WARNING: missing attribute mentioned in :members: or __all__: module anndata, attribute <module 'anndata.aio.aioutils' from '/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/aioutils.py'>
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AioEmptyTierError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AioEncodingError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AioError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AioFileExtensionError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AioFormatError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AioLineFormatError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AioLocationTypeError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AioMultiTiersError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AioNoTiersError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AnnDataEqError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AnnDataEqTypeError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AnnDataError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AnnDataIndexError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AnnDataKeyError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AnnDataNegValueError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AnnDataTypeError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AnnDataValueError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.AnnUnkTypeError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.CtrlVocabContainsError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.CtrlVocabSetTierError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.HierarchyAlignmentError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.HierarchyAncestorTierError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.HierarchyAssociationError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.HierarchyChildTierError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.HierarchyParentTierError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.IntervalBoundsError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.TagValueError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.TierAddError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.TierAppendError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.TierHierarchyError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.TrsAddError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.TrsInvalidTierError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/anndataexc.py:docstring of anndata.anndataexc.TrsRemoveError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annotation.py:docstring of anndata.annotation.sppasAnnotation.__init__:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annotation.py:docstring of anndata.annotation.sppasAnnotation.set_labels:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/filters.py:docstring of anndata.filters:42: WARNING: Inline substitution_reference start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/hierarchy.py:docstring of anndata.hierarchy.sppasHierarchy.validate_link:7: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/tier.py:docstring of anndata.tier.sppasTier.create_ctrl_vocab:7: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/transcription.py:docstring of anndata.transcription.sppasTranscription:16: ERROR: Unexpected indentation.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/transcription.py:docstring of anndata.transcription.sppasTranscription:19: WARNING: Bullet list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/filters.py:docstring of anndata.filters.sppasFilters.tag:3: ERROR: Unknown target name: "not".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/aioutils.py:docstring of anndata.aio.aioutils.point2interval:4: WARNING: Bullet list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/annotationpro.py:docstring of anndata.aio.annotationpro:31: WARNING: Title underline too short.
+[31;01mE:\bigi\Projets\sppas\private\sphinx-doc\index.rst:: WARNING: image file not readable: ../etc/images/background-header.jpg[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\readwrite.py:docstring of anndata.sppasRW.read:4: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\transcription.py:docstring of anndata.sppasTranscription:21: WARNING: Bullet list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\annlabel\tag.py:docstring of anndata.sppasTag.__init__:5: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\annlabel\tag.py:docstring of anndata.sppasTag.set_content:5: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\annlocation\point.py:docstring of anndata.sppasPoint.__init__:5: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AioEmptyTierError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AioEncodingError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AioError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AioFileExtensionError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AioFormatError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AioLineFormatError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AioLocationTypeError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AioMultiTiersError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AioNoTiersError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AnnDataEqError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AnnDataEqTypeError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AnnDataError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AnnDataIndexError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AnnDataKeyError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AnnDataNegValueError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AnnDataTypeError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AnnDataValueError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.AnnUnkTypeError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.CtrlVocabContainsError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.CtrlVocabSetTierError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.HierarchyAlignmentError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.HierarchyAncestorTierError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.HierarchyAssociationError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.HierarchyChildTierError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.HierarchyParentTierError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.IntervalBoundsError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.TagValueError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.TierAddError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.TierAppendError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.TierHierarchyError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.TrsAddError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.TrsInvalidTierError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\anndataexc.py:docstring of anndata.anndataexc.TrsRemoveError:2: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\filters.py:docstring of anndata.filters:42: WARNING: Inline substitution_reference start-string without end-string.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\filters.py:docstring of anndata.filters:55: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\transcription.py:docstring of anndata.transcription.sppasTranscription:21: WARNING: Bullet list ends without a blank line; unexpected unindent.[39;49;00m
+[31mE:\bigi\Projets\sppas\sppas\src\anndata\annlocation\point.py:docstring of anndata.sppasPoint:17: WARNING: Undefined substitution referenced: "x - y".[39;49;00m
+[31mE:\bigi\Projets\sppas\sppas\src\anndata\filters.py:docstring of anndata.sppasFilters.tag:3: WARNING: Unknown target name: "not".[39;49;00m
+[31mE:\bigi\Projets\sppas\sppas\src\anndata\filters.py:docstring of anndata.filters.sppasFilters.tag:3: WARNING: Unknown target name: "not".[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\aioutils.py:docstring of anndata.aio.aioutils.point2interval:4: WARNING: Bullet list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\annotationpro.py:docstring of anndata.aio.annotationpro:31: WARNING: Title underline too short.
 
 src.anndata.aio.annotationpro.py
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/anvil.py:docstring of anndata.aio.anvil:31: WARNING: Title underline too short.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\anvil.py:docstring of anndata.aio.anvil:31: WARNING: Title underline too short.
 
 src.anndata.aio.anvil.py
-~~~~~~~~~~~~~~~~~~~~~~~
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/anvil.py:docstring of anndata.aio.anvil:35: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/anvil.py:docstring of anndata.aio.anvil:35: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/anvil.py:docstring of anndata.aio.anvil:35: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/basetrs.py:docstring of anndata.aio.basetrs.sppasBaseIO.__init__:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/elan.py:docstring of anndata.aio.elan.sppasEAF.make_point:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/phonedit.py:docstring of anndata.aio.phonedit.sppasSignaix.read:9: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/praat.py:docstring of anndata.aio.praat:35: WARNING: Inline substitution_reference start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/praat.py:docstring of anndata.aio.praat:35: WARNING: Inline substitution_reference start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/praat.py:docstring of anndata.aio.praat:35: WARNING: Inline substitution_reference start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/praat.py:docstring of anndata.aio.praat:35: WARNING: Inline substitution_reference start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/praat.py:docstring of anndata.aio.praat:35: WARNING: Inline substitution_reference start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/readwrite.py:docstring of anndata.aio.readwrite.sppasRW.read:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/sclite.py:docstring of anndata.aio.sclite.sppasCTM:24: WARNING: Definition list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/sclite.py:docstring of anndata.aio.sclite.sppasCTM:34: WARNING: Bullet list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/sclite.py:docstring of anndata.aio.sclite.sppasCTM:34: SEVERE: Unexpected section title or transition.
+~~~~~~~~~~~~~~~~~~~~~~~[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\basetrs.py:docstring of anndata.aio.basetrs.sppasBaseIO.__init__:5: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\elan.py:docstring of anndata.aio.elan.sppasEAF.make_point:5: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\phonedit.py:docstring of anndata.aio.phonedit.sppasSignaix.read:9: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\praat.py:docstring of anndata.aio.praat:35: WARNING: Inline substitution_reference start-string without end-string.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\praat.py:docstring of anndata.aio.praat:35: WARNING: Inline substitution_reference start-string without end-string.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\praat.py:docstring of anndata.aio.praat:35: WARNING: Inline substitution_reference start-string without end-string.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\praat.py:docstring of anndata.aio.praat:35: WARNING: Inline substitution_reference start-string without end-string.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\praat.py:docstring of anndata.aio.praat:35: WARNING: Inline substitution_reference start-string without end-string.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\readwrite.py:docstring of anndata.aio.readwrite.sppasRW.read:4: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\sclite.py:docstring of anndata.aio.sclite.sppasCTM:24: WARNING: Definition list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\sclite.py:docstring of anndata.aio.sclite.sppasCTM:34: WARNING: Bullet list ends without a blank line; unexpected unindent.[39;49;00m
+E:\bigi\Projets\sppas\sppas\src\anndata\aio\sclite.py:docstring of anndata.aio.sclite.sppasCTM:34: WARNING: Unexpected section title or transition.
 
 ============================
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/sclite.py:docstring of anndata.aio.sclite.sppasSTM:21: WARNING: Definition list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/sclite.py:docstring of anndata.aio.sclite.sppasSTM:23: ERROR: Unexpected indentation.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/sclite.py:docstring of anndata.aio.sclite.sppasSTM:24: WARNING: Block quote ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/sclite.py:docstring of anndata.aio.sclite.sppasSTM:26: ERROR: Unexpected indentation.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/sclite.py:docstring of anndata.aio.sclite.sppasSTM:27: WARNING: Block quote ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/sclite.py:docstring of anndata.aio.sclite.sppasSTM:29: WARNING: Enumerated list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/sclite.py:docstring of anndata.aio.sclite.sppasSTM:32: ERROR: Unexpected indentation.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/text.py:docstring of anndata.aio.text.sppasBaseText.fix_location:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/text.py:docstring of anndata.aio.text.sppasCSV.read:6: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/text.py:docstring of anndata.aio.text.sppasCSV.write:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/weka.py:docstring of anndata.aio.weka.sppasWEKA:11: WARNING: Bullet list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/weka.py:docstring of anndata.aio.weka.sppasWEKA:21: WARNING: Bullet list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/weka.py:docstring of anndata.aio.weka.sppasWEKA:25: ERROR: Unexpected indentation.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/weka.py:docstring of anndata.aio.weka.sppasWEKA:26: WARNING: Block quote ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/weka.py:docstring of anndata.aio.weka.sppasWEKA:27: WARNING: Bullet list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/weka.py:docstring of anndata.aio.weka.sppasWEKA.check_max_attributes_tags:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/weka.py:docstring of anndata.aio.weka.sppasWEKA.check_max_class_tags:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/weka.py:docstring of anndata.aio.weka.sppasWEKA.set_empty_annotation_class_tag:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/weka.py:docstring of anndata.aio.weka.sppasWEKA.set_max_attributes_tags:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/weka.py:docstring of anndata.aio.weka.sppasWEKA.set_max_class_tags:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/weka.py:docstring of anndata.aio.weka.sppasXRFF:16: WARNING: Enumerated list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/aio/weka.py:docstring of anndata.aio.weka.sppasXRFF:18: ERROR: Unexpected indentation.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlabel/tag.py:docstring of anndata.annlabel.tag.sppasTag.__init__:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlabel/tag.py:docstring of anndata.annlabel.tag.sppasTag.set_content:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/durationcompare.py:docstring of anndata.annlocation.durationcompare:31: WARNING: Title underline too short.
-
-src.anndata.annlocation.durationcompare.py
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare:41: WARNING: Bullet list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare:44: WARNING: Bullet list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare:47: WARNING: Bullet list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.after:7: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.before:7: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.contains:5: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.during:5: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.equals:5: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.finishedby:5: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.finishes:5: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.meets:5: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.metby:5: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.overlappedby:9: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.overlaps:9: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.startedby:5: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.starts:5: WARNING: Inline strong start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/point.py:docstring of anndata.annlocation.point.sppasPoint.__init__:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/__init__.py:docstring of anndata.annlocation.sppasPoint.__init__:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.after:3: ERROR: Undefined substitution referenced: "--------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.after:4: ERROR: Undefined substitution referenced: "-------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.before:3: ERROR: Undefined substitution referenced: "-------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.before:4: ERROR: Undefined substitution referenced: "-------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.contains:3: ERROR: Undefined substitution referenced: "------------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.contains:4: ERROR: Undefined substitution referenced: "----".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.during:3: ERROR: Undefined substitution referenced: "----".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.during:4: ERROR: Undefined substitution referenced: "------------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.equals:3: ERROR: Undefined substitution referenced: "-------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.equals:4: ERROR: Undefined substitution referenced: "-------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.finishedby:3: ERROR: Undefined substitution referenced: "---------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.finishedby:4: ERROR: Undefined substitution referenced: "----".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.finishes:3: ERROR: Undefined substitution referenced: "----".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.finishes:4: ERROR: Undefined substitution referenced: "---------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.meets:3: ERROR: Undefined substitution referenced: "-------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.meets:4: ERROR: Undefined substitution referenced: "-------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.metby:3: ERROR: Undefined substitution referenced: "-------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.metby:4: ERROR: Undefined substitution referenced: "-------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.overlappedby:3: ERROR: Undefined substitution referenced: "-------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.overlappedby:4: ERROR: Undefined substitution referenced: "-------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.overlaps:3: ERROR: Undefined substitution referenced: "-------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.overlaps:4: ERROR: Undefined substitution referenced: "------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.startedby:3: ERROR: Undefined substitution referenced: "----------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.startedby:4: ERROR: Undefined substitution referenced: "----".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.starts:3: ERROR: Undefined substitution referenced: "----".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/intervalcompare.py:docstring of anndata.annlocation.intervalcompare.sppasIntervalCompare.starts:4: ERROR: Undefined substitution referenced: "----------".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/point.py:docstring of anndata.annlocation.point.sppasPoint:17: ERROR: Undefined substitution referenced: "x - y".
-/mnt/e/bigi/Projets/sppas/sppas/src/anndata/annlocation/__init__.py:docstring of anndata.annlocation.sppasPoint:17: ERROR: Undefined substitution referenced: "x - y".
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/__init__.py:docstring of audiodata.sppasAudioPCM:18: ERROR: Unexpected indentation.
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/__init__.py:docstring of audiodata.sppasAudioPCM.clipping_rate:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/__init__.py:docstring of audiodata.sppasChannel.clipping_rate:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/__init__.py:docstring of audiodata.sppasChannel.get_frames:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/__init__.py:docstring of audiodata.sppasChannel.set_framerate:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/audio.py:docstring of audiodata.audio.sppasAudioPCM:18: ERROR: Unexpected indentation.
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/audio.py:docstring of audiodata.audio.sppasAudioPCM.clipping_rate:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/audioconvert.py:docstring of audiodata.audioconvert.sppasAudioConverter.samples2frames:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/audioframes.py:docstring of audiodata.audioframes.sppasAudioFrames.clipping_rate:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/channel.py:docstring of audiodata.channel.sppasChannel.clipping_rate:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/channel.py:docstring of audiodata.channel.sppasChannel.get_frames:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/channel.py:docstring of audiodata.channel.sppasChannel.set_framerate:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/channelframes.py:docstring of audiodata.channelframes.sppasChannelFrames.change_sampwidth:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/channelsilence.py:docstring of audiodata.channelsilence:31: WARNING: Title underline too short.
-
-src.audiodata.channelsilence.py
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/mnt/e/bigi/Projets/sppas/sppas/src/audiodata/channelsilence.py:docstring of audiodata.channelsilence.sppasChannelSilence.search_silences:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/calculus/__init__.py:docstring of calculus.fharmonicmean:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/calculus/geometry/distances.py:docstring of calculus.geometry.distances:41: ERROR: Unexpected indentation.
-/mnt/e/bigi/Projets/sppas/sppas/src/calculus/infotheory/kullbackleibler.py:docstring of calculus.infotheory.kullbackleibler:59: WARNING: Line block ends without a blank line.
-/mnt/e/bigi/Projets/sppas/sppas/src/calculus/infotheory/kullbackleibler.py:docstring of calculus.infotheory.kullbackleibler:60: WARNING: Inline substitution_reference start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/calculus/infotheory/kullbackleibler.py:docstring of calculus.infotheory.kullbackleibler:60: WARNING: Inline substitution_reference start-string without end-string.
-/mnt/e/bigi/Projets/sppas/sppas/src/calculus/infotheory/kullbackleibler.py:docstring of calculus.infotheory.kullbackleibler.sppasKullbackLeibler.set_epsilon:8: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/calculus/infotheory/perplexity.py:docstring of calculus.infotheory.perplexity:31: WARNING: Title underline too short.
-
-src.calculus.infotheory.perplexity.py
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/mnt/e/bigi/Projets/sppas/sppas/src/calculus/infotheory/perplexity.py:docstring of calculus.infotheory.perplexity.Perplexity.set_epsilon:7: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/calculus/infotheory/__init__.py:docstring of calculus.infotheory:31: WARNING: Title underline too short.
-
-src.calculus.infotheory.__init__.py
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/mnt/e/bigi/Projets/sppas/sppas/src/calculus/infotheory/__init__.py:docstring of calculus.infotheory.sppasKullbackLeibler.set_epsilon:8: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/calculus/infotheory/__init__.py:docstring of calculus.infotheory.Perplexity.set_epsilon:7: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/calculus/stats/central.py:docstring of calculus.stats.central.fharmonicmean:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/__init__.py:docstring of resources.sppasMapping.set_keep_miss:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/__init__.py:docstring of resources.sppasMapping.set_miss_symbol:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/__init__.py:docstring of resources.sppasMapping.set_reverse:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/__init__.py:docstring of resources.sppasDictRepl.__init__:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/__init__.py:docstring of resources.sppasDictPron:13: ERROR: Unexpected indentation.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/__init__.py:docstring of resources.sppasDictPron:15: WARNING: Block quote ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/__init__.py:docstring of resources.sppasPatterns.ngram_alignments:11: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/__init__.py:docstring of resources.sppasPatterns.ngram_alignments:20: WARNING: Definition list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/__init__.py:docstring of resources.sppasPatterns.ngram_matches:6: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/dictpron.py:docstring of resources.dictpron.sppasDictPron:13: ERROR: Unexpected indentation.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/dictpron.py:docstring of resources.dictpron.sppasDictPron:15: WARNING: Block quote ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/dictrepl.py:docstring of resources.dictrepl.sppasDictRepl.__init__:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/mapping.py:docstring of resources.mapping:31: WARNING: Title underline too short.
-
-src.resources.mapping.py
-~~~~~~~~~~~~~~~~~~~~~~~
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/mapping.py:docstring of resources.mapping.sppasMapping.set_keep_miss:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/mapping.py:docstring of resources.mapping.sppasMapping.set_miss_symbol:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/mapping.py:docstring of resources.mapping.sppasMapping.set_reverse:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/patterns.py:docstring of resources.patterns.sppasPatterns.ngram_alignments:11: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/patterns.py:docstring of resources.patterns.sppasPatterns.ngram_alignments:20: WARNING: Definition list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/patterns.py:docstring of resources.patterns.sppasPatterns.ngram_matches:6: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/resources/resourcesexc.py:docstring of resources.resourcesexc:31: WARNING: Title underline too short.
-
-src.resources.resourcesexc.py
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/mnt/e/bigi/Projets/sppas/sppas/src/structs/__init__.py:docstring of structs.sppasBaseOption.__init__:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/structs/__init__.py:docstring of structs.sppasBaseOption.set_type:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/structs/__init__.py:docstring of structs.sppasOption.__init__:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/structs/baseoption.py:docstring of structs.baseoption.sppasBaseOption.__init__:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/structs/baseoption.py:docstring of structs.baseoption.sppasBaseOption.set_type:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/structs/baseoption.py:docstring of structs.baseoption.sppasOption.__init__:5: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/structs/dag.py:docstring of structs.dag.DAG.__init__:5: ERROR: Unexpected indentation.
-/mnt/e/bigi/Projets/sppas/sppas/src/structs/dag.py:docstring of structs.dag.DAG.__init__:10: WARNING: Block quote ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/utils/__init__.py:docstring of utils.translate:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/utils/datatype.py:docstring of utils.datatype.sppasTime.__init__:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/utils/fileutils.py:docstring of utils.fileutils.setup_logging:4: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/utils/maketext.py:docstring of utils.maketext.translate:4: WARNING: Field list ends without a blank line; unexpected unindent.
-<autodoc>:0: ERROR: Error in "py:module" directive:
-no content permitted.
-
-.. py:module:: utils.makeunicode
-
-   ..
-       ---------------------------------------------------------------------
-        ___   __    __    __    ___
-       /     |  \  |  \  |  \  /              the automatic
-       \__   |__/  |__/  |___| \__             annotation and
-          \  |     |     |   |    \             analysis
-       ___/  |     |     |   | ___/              of speech
-
-       http://www.sppas.org/
-
-       Use of this software is governed by the GNU Public License, version 3.
-
-       SPPAS is free software: you can redistribute it and/or modify
-       it under the terms of the GNU General Public License as published by
-       the Free Software Foundation, either version 3 of the License, or
-       (at your option) any later version.
-
-       SPPAS is distributed in the hope that it will be useful,
-       but WITHOUT ANY WARRANTY; without even the implied warranty of
-       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-       GNU General Public License for more details.
-
-       You should have received a copy of the GNU General Public License
-       along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-
-       This banner notice must not be removed.
-
-       ---------------------------------------------------------------------
-
-   src.utils.makeunicode
-   ~~~~~~~~~~~~~~~~~~~~~
-
-   :author:       Brigitte Bigi
-   :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-   :contact:      brigitte.bigi@gmail.com
-   :license:      GPL, v3
-   :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-
-   makeunicode is useful for the compatibility of strings between
-   Python 2.7 and Python > 3.2.
-
-   >>> token = "
-/mnt/e/bigi/Projets/sppas/sppas/src/utils/makeunicode.py:docstring of utils.makeunicode:43: WARNING: Explicit markup ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/utils/utilsexc.py:docstring of utils.utilsexc.NoDirectoryError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-/mnt/e/bigi/Projets/sppas/sppas/src/utils/utilsexc.py:docstring of utils.utilsexc.UtilsDataTypeError:2: WARNING: Field list ends without a blank line; unexpected unindent.
-WARNING: html_static_path entry u'/mnt/e/bigi/Projets/sppas/private/sphinx-doc/_static' does not exist
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\sclite.py:docstring of anndata.aio.sclite.sppasSTM:21: WARNING: Definition list ends without a blank line; unexpected unindent.[39;49;00m
+[31mE:\bigi\Projets\sppas\sppas\src\anndata\aio\sclite.py:docstring of anndata.aio.sclite.sppasSTM:23: WARNING: Unexpected indentation.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\sclite.py:docstring of anndata.aio.sclite.sppasSTM:24: WARNING: Block quote ends without a blank line; unexpected unindent.[39;49;00m
+[31mE:\bigi\Projets\sppas\sppas\src\anndata\aio\sclite.py:docstring of anndata.aio.sclite.sppasSTM:26: WARNING: Unexpected indentation.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\sclite.py:docstring of anndata.aio.sclite.sppasSTM:27: WARNING: Block quote ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\sclite.py:docstring of anndata.aio.sclite.sppasSTM:29: WARNING: Enumerated list ends without a blank line; unexpected unindent.[39;49;00m
+[31mE:\bigi\Projets\sppas\sppas\src\anndata\aio\sclite.py:docstring of anndata.aio.sclite.sppasSTM:32: WARNING: Unexpected indentation.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\text.py:docstring of anndata.aio.text.sppasBaseText.fix_location:4: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\text.py:docstring of anndata.aio.text.sppasCSV.read:6: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\text.py:docstring of anndata.aio.text.sppasCSV.write:5: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\weka.py:docstring of anndata.aio.weka.sppasWEKA:11: WARNING: Bullet list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\weka.py:docstring of anndata.aio.weka.sppasWEKA:21: WARNING: Bullet list ends without a blank line; unexpected unindent.[39;49;00m
+[31mE:\bigi\Projets\sppas\sppas\src\anndata\aio\weka.py:docstring of anndata.aio.weka.sppasWEKA:25: WARNING: Unexpected indentation.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\weka.py:docstring of anndata.aio.weka.sppasWEKA:26: WARNING: Block quote ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\weka.py:docstring of anndata.aio.weka.sppasWEKA:27: WARNING: Bullet list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\weka.py:docstring of anndata.aio.weka.sppasWEKA.check_max_attributes_tags:4: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\weka.py:docstring of anndata.aio.weka.sppasWEKA.check_max_class_tags:4: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\weka.py:docstring of anndata.aio.weka.sppasWEKA.set_empty_annotation_class_tag:5: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\weka.py:docstring of anndata.aio.weka.sppasWEKA.set_max_attributes_tags:5: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mE:\bigi\Projets\sppas\sppas\src\anndata\aio\weka.py:docstring of anndata.aio.weka.sppasWEKA.set_max_class_tags:4: WARNING: Field list ends without a blank line; unexpected unindent.[39;49;00m
+[31;01mWARNING: html_static_path entry u'E:\\bigi\\Projets\\sppas\\private\\sphinx-doc\\_static' does not exist[39;49;00m

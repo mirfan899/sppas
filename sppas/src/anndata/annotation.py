@@ -32,6 +32,12 @@
     src.anndata.annotation.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    :author:       Brigitte Bigi, Jibril Saffi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
 """
 from .anndataexc import AnnDataTypeError
 from .annlabel.tag import sppasTag
@@ -43,13 +49,7 @@ from .metadata import sppasMetaData
 
 
 class sppasAnnotation(sppasMetaData):
-    """
-    :author:       Brigitte Bigi, Jibril Saffi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Represents an annotation.
+    """ Represents an annotation.
 
     A sppasAnnotation() is a container for:
         - a sppasLocation()
@@ -63,9 +63,9 @@ class sppasAnnotation(sppasMetaData):
     def __init__(self, location, labels=list()):
         """ Creates a new sppasAnnotation instance.
 
-        :param location: (sppasLocation) the location(s) where the
-        annotation happens
-        :param labels: (sppasLabel, list) the label(s) to stamp this
+        :param location: (sppasLocation) the location(s) where the annotation\
+        happens
+        :param labels: (sppasLabel, list) the label(s) to stamp this\
         annotation, or a list of them.
 
         """
@@ -143,7 +143,8 @@ class sppasAnnotation(sppasMetaData):
         """ Set a parent tier.
 
         :param parent: (sppasTier) The parent tier of this annotation.
-        :raises: CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError
+        :raises: CtrlVocabContainsError, HierarchyContainsError, \
+        HierarchyTypeError
 
         """
         if parent is not None:
@@ -174,9 +175,9 @@ class sppasAnnotation(sppasMetaData):
     def set_labels(self, labels=[]):
         """ Fix/reset the list of labels of this annotation.
 
-        :param labels: (sppasLabel, list) the label(s) to stamp this
+        :param labels: (sppasLabel, list) the label(s) to stamp this \
         annotation, or a list of them.
-        :raises: AnnDataTypeError, TypeError, CtrlVocabContainsError,
+        :raises: AnnDataTypeError, TypeError, CtrlVocabContainsError, \
         HierarchyContainsError, HierarchyTypeError
 
         """
@@ -201,9 +202,10 @@ class sppasAnnotation(sppasMetaData):
     def validate(self):
         """ Validate the annotation.
 
-        Check if the labels and location match the requirements of this annotation.
+        Check if the labels and location match the requirements.
 
-        :raises: TypeError, CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError
+        :raises: TypeError, CtrlVocabContainsError, HierarchyContainsError, \
+        HierarchyTypeError
 
         """
         for label in self.__labels:
@@ -228,7 +230,8 @@ class sppasAnnotation(sppasMetaData):
             raise AnnDataTypeError(label, "sppasLabel")
 
         if len(self.__labels) > 0:
-            current_type = set(l.get_type() for l in self.__labels if l is not None)
+            current_type = set(l.get_type()
+                               for l in self.__labels if l is not None)
             if len(current_type) > 0 and label.get_type() not in current_type:
                 raise TypeError()
 
@@ -281,7 +284,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_best_tag(self, label_idx=0):
-        """ Return the tag with the highest score of a label or an empty string.
+        """ Return the tag with the highest score of a label or an empty str.
 
         :param label_idx: (int)
 
@@ -495,35 +498,35 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def location_is_point(self):
-        """ Return True if the location is made of sppasPoint localizations. """
+        """ Return True if the location is made of sppasPoint locs. """
 
         return self.__location.is_point()
 
     # -----------------------------------------------------------------------
 
     def location_is_interval(self):
-        """ Return True if the location is made of sppasInterval localizations. """
+        """ Return True if the location is made of sppasInterval locs. """
 
         return self.__location.is_interval()
 
     # -----------------------------------------------------------------------
 
     def location_is_disjoint(self):
-        """ Return True if the location is made of sppasDisjoint localizations. """
+        """ Return True if the location is made of sppasDisjoint locs. """
 
         return self.__location.is_disjoint()
 
     # -----------------------------------------------------------------------
 
     def get_highest_localization(self):
-        """ Return a copy of the sppasPoint with the highest localization. """
+        """ Return a copy of the sppasPoint with the highest loc. """
 
         if self.__location.is_point():
             max_localization = max([l[0] for l in self.__location])
         else:
             max_localization = max([l[0].get_end() for l in self.__location])
 
-        # We return a copy to be sure the original localization won't be modified
+        # We return a copy to ensure the original loc won't be modified
         return max_localization.copy()
 
     # -----------------------------------------------------------------------
@@ -536,7 +539,7 @@ class sppasAnnotation(sppasMetaData):
         else:
             min_localization = min([l[0].get_begin() for l in self.__location])
 
-        # We return a copy to be sure the original localization won't be modified
+        # We return a copy to be sure the original loc won't be modified
         return min_localization.copy()
 
     # -----------------------------------------------------------------------

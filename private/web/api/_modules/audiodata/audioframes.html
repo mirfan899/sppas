@@ -1,33 +1,22 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>audiodata.audioframes &mdash; SPPAS 1.9.8 documentation</title>
-    
+    <title>audiodata.audioframes &#8212; SPPAS 1.9.8 documentation</title>
     <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '1.9.8',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../index.html" />
-    <link rel="up" title="audiodata" href="../audiodata.html" /> 
-  </head>
-  <body>
-    <div class="related">
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -36,19 +25,18 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
-          <li><a href="../index.html" >Module code</a> &raquo;</li>
-          <li><a href="../audiodata.html" accesskey="U">audiodata</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for audiodata.audioframes</h1><div class="highlight"><pre>
-<span class="c"># -*- coding: UTF-8 -*-</span>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -86,9 +74,9 @@
 <span class="kn">import</span> <span class="nn">audioop</span>
 <span class="kn">import</span> <span class="nn">struct</span>
 
-<span class="kn">from</span> <span class="nn">.audiodataexc</span> <span class="kn">import</span> <span class="n">SampleWidthError</span><span class="p">,</span> <span class="n">ChannelIndexError</span>
+<span class="kn">from</span> <span class="nn">.audiodataexc</span> <span class="k">import</span> <span class="n">SampleWidthError</span><span class="p">,</span> <span class="n">ChannelIndexError</span>
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasAudioFrames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames">[docs]</a><span class="k">class</span> <span class="nc">sppasAudioFrames</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -103,7 +91,7 @@
 <span class="sd">    TODO: There&#39;s no unittests of this class.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasAudioFrames.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">sampwidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasAudioFrames.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">sampwidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create an sppasAudioFrames instance.</span>
 
 <span class="sd">        :param frames: (str) input frames.</span>
@@ -111,7 +99,7 @@
 <span class="sd">        :param nchannels: (int) number of channels in the samples</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Check the type and if values are appropriate</span>
+        <span class="c1"># Check the type and if values are appropriate</span>
         <span class="n">frames</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">sampwidth</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="n">SampleWidthError</span>
@@ -119,13 +107,13 @@
         <span class="k">if</span> <span class="n">nchannels</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ChannelIndexError</span><span class="p">(</span><span class="n">nchannels</span><span class="p">)</span>
 
-        <span class="c"># Set data</span>
+        <span class="c1"># Set data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_frames</span> <span class="o">=</span> <span class="n">frames</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span> <span class="o">=</span> <span class="n">sampwidth</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_nchannels</span> <span class="o">=</span> <span class="n">nchannels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nchannels</span> <span class="o">=</span> <span class="n">nchannels</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasAudioFrames.resample"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.resample">[docs]</a>    <span class="k">def</span> <span class="nf">resample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">new_rate</span><span class="o">=</span><span class="mi">16000</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return re-sampled frames.</span>
 
@@ -134,10 +122,10 @@
 <span class="sd">        :returns: (str) converted frames</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">ratecv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nchannels</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">new_rate</span><span class="p">,</span> <span class="bp">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">ratecv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nchannels</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">new_rate</span><span class="p">,</span> <span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasAudioFrames.change_sampwidth"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.change_sampwidth">[docs]</a>    <span class="k">def</span> <span class="nf">change_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_sampwidth</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return frames with the given number of bytes.</span>
 
@@ -148,10 +136,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">new_sampwidth</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="n">SampleWidthError</span>
-        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">lin2lin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">,</span> <span class="n">new_sampwidth</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">lin2lin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">,</span> <span class="n">new_sampwidth</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasAudioFrames.bias"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.bias">[docs]</a>    <span class="k">def</span> <span class="nf">bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return frames that is the original fragment with a bias added to each sample.</span>
 <span class="sd">        Samples wrap around in case of overflow.</span>
@@ -161,10 +149,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">bias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">bias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasAudioFrames.mul"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.mul">[docs]</a>    <span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return frames for which all samples are multiplied by factor.</span>
 <span class="sd">        Samples are truncated in case of overflow.</span>
@@ -173,51 +161,51 @@
 <span class="sd">        :returns: (str) converted frames</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">,</span> <span class="n">factor</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasAudioFrames.cross"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.cross">[docs]</a>    <span class="k">def</span> <span class="nf">cross</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the number of zero crossings in frames.</span>
 
 <span class="sd">        :returns: number of zero crossing</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasAudioFrames.minmax"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.minmax">[docs]</a>    <span class="k">def</span> <span class="nf">minmax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the (minimum,maximum) of the values of all frames.</span>
 
 <span class="sd">        :returns (min,max)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">minmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">minmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasAudioFrames.min"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.min">[docs]</a>    <span class="k">def</span> <span class="nf">min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the minimum of the values of all frames. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">minmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">minmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasAudioFrames.max"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.max">[docs]</a>    <span class="k">def</span> <span class="nf">max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the maximum of the values of all frames. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">minmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">minmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasAudioFrames.avg"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.avg">[docs]</a>    <span class="k">def</span> <span class="nf">avg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the average of all the frames. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasAudioFrames.rms"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.rms">[docs]</a>    <span class="k">def</span> <span class="nf">rms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the root mean square of the frames. &quot;&quot;&quot;</span>
 
@@ -226,16 +214,16 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">rms_sum</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nchannels</span><span class="p">):</span>
-                <span class="n">new_frames</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+                <span class="n">new_frames</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_nchannels</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">):</span>
                         <span class="n">new_frames</span> <span class="o">=</span> <span class="n">new_frames</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="n">k</span><span class="p">]</span>
                 <span class="n">rms_sum</span> <span class="o">+=</span> <span class="n">audioop</span><span class="o">.</span><span class="n">rms</span><span class="p">(</span><span class="n">new_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">rms_sum</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">_nchannels</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">rms_sum</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">_nchannels</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasAudioFrames.clipping_rate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.clipping_rate">[docs]</a>    <span class="k">def</span> <span class="nf">clipping_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the clipping rate of the frames.</span>
 
@@ -246,11 +234,11 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">&quot;&lt;</span><span class="si">%u</span><span class="s">l&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%u</span><span class="s2">l&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">&quot;&lt;</span><span class="si">%u</span><span class="s">h&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%u</span><span class="s2">h&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%u</span><span class="s">B&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%u</span><span class="s2">B&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">)</span>
             <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="o">-</span> <span class="mi">128</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
 
         <span class="n">max_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sppasAudioFrames</span><span class="o">.</span><span class="n">get_maxval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">factor</span><span class="o">/</span><span class="mf">2.</span><span class="p">))</span>
@@ -261,12 +249,12 @@
             <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">max_val</span> <span class="ow">or</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">min_val</span><span class="p">:</span>
                 <span class="n">nb_clipping</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">nb_clipping</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">nb_clipping</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasAudioFrames.get_maxval"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.get_maxval">[docs]</a>    <span class="k">def</span> <span class="nf">get_maxval</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasAudioFrames.get_maxval"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.get_maxval">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_maxval</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the max value for a given sampwidth.</span>
 
 <span class="sd">        :param size: (int) the sampwidth</span>
@@ -285,12 +273,12 @@
         <span class="k">elif</span> <span class="n">signed</span> <span class="ow">and</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
             <span class="k">return</span> <span class="mh">0x7fffffff</span>
         <span class="k">elif</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mh">0xffffffff</span>
+            <span class="k">return</span> <span class="mh">0xffffffff</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasAudioFrames.get_minval"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.get_minval">[docs]</a>    <span class="k">def</span> <span class="nf">get_minval</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasAudioFrames.get_minval"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.get_minval">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_minval</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the min value for a given sampwidth.</span>
 
 <span class="sd">        :param size: (int) the sampwidth</span>
@@ -311,26 +299,25 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -339,14 +326,13 @@
         <li class="right" >
           <a href="../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
-          <li><a href="../index.html" >Module code</a> &raquo;</li>
-          <li><a href="../audiodata.html" >audiodata</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
     </div>
   </body>
 </html>

@@ -212,9 +212,8 @@ class sppasHierarchy(object):
         :param link_type: (constant) One of the hierarchy types
         :param parent_tier: (Tier) The parent tier
         :param child_tier: (Tier) The child tier to be linked to reftier
-        :raises: AnnDataTypeError, HierarchyParentTierError,
-        HierarchyChildTierError, HierarchyAncestorTierError,
-        HierarchyAlignmentError, HierarchyAssociationError
+        :raises: AnnDataTypeError, HierarchyParentTierError, HierarchyChildTierError, \
+        HierarchyAncestorTierError, HierarchyAlignmentError, HierarchyAssociationError
 
         """
         if link_type not in sppasHierarchy.types:

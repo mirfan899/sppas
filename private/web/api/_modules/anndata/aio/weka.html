@@ -1,33 +1,22 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>anndata.aio.weka &mdash; SPPAS 1.9.8 documentation</title>
-    
+    <title>anndata.aio.weka &#8212; SPPAS 1.9.8 documentation</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '1.9.8',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../../index.html" />
-    <link rel="up" title="Module code" href="../../index.html" /> 
-  </head>
-  <body>
-    <div class="related">
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -36,18 +25,18 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for anndata.aio.weka</h1><div class="highlight"><pre>
-<span class="c"># -*- coding: UTF-8 -*-</span>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -92,28 +81,28 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">codecs</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
 
-<span class="kn">import</span> <span class="nn">sppas</span>
-<span class="kn">from</span> <span class="nn">.basetrs</span> <span class="kn">import</span> <span class="n">sppasBaseIO</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AioNoTiersError</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">TagValueError</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AioEmptyTierError</span>
-<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="kn">import</span> <span class="n">sppasLabel</span>
-<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="kn">import</span> <span class="n">sppasTag</span>
-<span class="kn">from</span> <span class="nn">..annlocation</span> <span class="kn">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">sppas.src.config</span> <span class="k">import</span> <span class="n">sg</span>
+<span class="kn">from</span> <span class="nn">.basetrs</span> <span class="k">import</span> <span class="n">sppasBaseIO</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioNoTiersError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">TagValueError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioEmptyTierError</span>
+<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="k">import</span> <span class="n">sppasLabel</span>
+<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
+<span class="kn">from</span> <span class="nn">..annlocation</span> <span class="k">import</span> <span class="n">sppasPoint</span>
 
-<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="kn">import</span> <span class="n">sppasUnicode</span><span class="p">,</span> <span class="n">b</span>
+<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="k">import</span> <span class="n">sppasUnicode</span><span class="p">,</span> <span class="n">b</span>
 
-<span class="c"># ----------------------------------------------------------------------------</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
 
-<span class="c"># Maximum number of class to predict</span>
+<span class="c1"># Maximum number of class to predict</span>
 <span class="n">MAX_CLASS_TAGS</span> <span class="o">=</span> <span class="mi">100</span>
 
-<span class="c"># Maximum of attributes to list explicitly. Others are mentioned with &quot;STRING&quot;.</span>
+<span class="c1"># Maximum of attributes to list explicitly. Others are mentioned with &quot;STRING&quot;.</span>
 <span class="n">MAX_ATTRIBUTES_TAGS</span> <span class="o">=</span> <span class="mi">200</span>
 
-<span class="c"># ----------------------------------------------------------------------------</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasWEKA"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA">[docs]</a><span class="k">class</span> <span class="nc">sppasWEKA</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">):</span>
@@ -148,49 +137,49 @@
 <span class="sd">        - `weka_epsilon` probability of an unobserved tag.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasWEKA.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasWEKA.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new sppasWEKA instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_class_tags</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">MAX_CLASS_TAGS</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_attributes_tags</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">MAX_ATTRIBUTES_TAGS</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_tag</span> <span class="o">=</span> <span class="s">&quot;none&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_class_tag</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_uncertain_annotation_tag</span> <span class="o">=</span> <span class="s">&quot;?&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_tag</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_class_tag</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_uncertain_annotation_tag</span> <span class="o">=</span> <span class="s2">&quot;?&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon_proba</span> <span class="o">=</span> <span class="mf">0.001</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_metadata</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_ctrl_vocab</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_media</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_hierarchy</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_point</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_interval</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_disjoint</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_localization</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_tag</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_radius</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="bp">True</span>       <span class="c"># is True only for the reference tier</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_metadata</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_ctrl_vocab</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_media</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_hierarchy</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_point</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_interval</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_disjoint</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_localization</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_tag</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_radius</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="kc">True</span>       <span class="c1"># is True only for the reference tier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-    <span class="c"># Getters and setters</span>
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------</span>
+    <span class="c1"># Getters and setters</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasWEKA.get_max_class_tags"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.get_max_class_tags">[docs]</a>    <span class="k">def</span> <span class="nf">get_max_class_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the maximum number of tags for the class. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_class_tags</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_class_tags</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasWEKA.set_max_class_tags"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.set_max_class_tags">[docs]</a>    <span class="k">def</span> <span class="nf">set_max_class_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb_tags</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set the maximum number of tags for a class.</span>
 
@@ -199,12 +188,12 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">sppasWEKA</span><span class="o">.</span><span class="n">check_max_class_tags</span><span class="p">(</span><span class="n">nb_tags</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_max_class_tags</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nb_tags</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_class_tags</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nb_tags</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasWEKA.check_max_class_tags"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.check_max_class_tags">[docs]</a>    <span class="k">def</span> <span class="nf">check_max_class_tags</span><span class="p">(</span><span class="n">nb_tags</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasWEKA.check_max_class_tags"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.check_max_class_tags">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">check_max_class_tags</span><span class="p">(</span><span class="n">nb_tags</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check the maximum number of tags for the class.</span>
 
 <span class="sd">        :param nb_tags: (int) Size of the controlled vocabulary of the</span>
@@ -213,13 +202,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">nb_tags</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nb_tags</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">nb_tags</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&quot;The class must have at least 2 different tags.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;The class must have at least 2 different tags.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">nb_tags</span> <span class="o">&gt;</span> <span class="n">MAX_CLASS_TAGS</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&quot;The class must have at max {:d} different tags.&quot;</span>
-                          <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">MAX_CLASS_TAGS</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;The class must have at max </span><span class="si">{:d}</span><span class="s2"> different tags.&quot;</span>
+                          <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">MAX_CLASS_TAGS</span><span class="p">))</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasWEKA.set_max_attributes_tags"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.set_max_attributes_tags">[docs]</a>    <span class="k">def</span> <span class="nf">set_max_attributes_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb_tags</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set the maximum number of tags for an attribute.</span>
 <span class="sd">        Instead, the program won&#39;t list the attribute and will use &#39;STRING&#39;.</span>
@@ -229,12 +218,12 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">sppasWEKA</span><span class="o">.</span><span class="n">check_max_attributes_tags</span><span class="p">(</span><span class="n">nb_tags</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_max_attributes_tags</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nb_tags</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_attributes_tags</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nb_tags</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasWEKA.check_max_attributes_tags"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.check_max_attributes_tags">[docs]</a>    <span class="k">def</span> <span class="nf">check_max_attributes_tags</span><span class="p">(</span><span class="n">nb_tags</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasWEKA.check_max_attributes_tags"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.check_max_attributes_tags">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">check_max_attributes_tags</span><span class="p">(</span><span class="n">nb_tags</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check the maximum number of tags for an attribute.</span>
 
 <span class="sd">        :param nb_tags: (int) Size of the controlled vocabulary of the</span>
@@ -243,13 +232,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">nb_tags</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nb_tags</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">nb_tags</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;The attributes must have at least one tag.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The attributes must have at least one tag.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">nb_tags</span> <span class="o">&gt;</span> <span class="n">MAX_ATTRIBUTES_TAGS</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;The attributes must have at max {:d} &quot;</span>
-                             <span class="s">&quot;different tags.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">MAX_ATTRIBUTES_TAGS</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The attributes must have at max </span><span class="si">{:d}</span><span class="s2"> &quot;</span>
+                             <span class="s2">&quot;different tags.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">MAX_ATTRIBUTES_TAGS</span><span class="p">))</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasWEKA.set_empty_annotation_tag"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.set_empty_annotation_tag">[docs]</a>    <span class="k">def</span> <span class="nf">set_empty_annotation_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fix the annotation string that will be used to replace</span>
 <span class="sd">        empty annotations.</span>
@@ -261,11 +250,11 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tag_str_formatted</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_tag</span> <span class="o">=</span> <span class="n">tag_str_formatted</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TagValueError</span><span class="p">(</span><span class="n">tag_str</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">TagValueError</span><span class="p">(</span><span class="n">tag_str</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasWEKA.set_empty_annotation_class_tag"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.set_empty_annotation_class_tag">[docs]</a>    <span class="k">def</span> <span class="nf">set_empty_annotation_class_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_str</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasWEKA.set_empty_annotation_class_tag"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.set_empty_annotation_class_tag">[docs]</a>    <span class="k">def</span> <span class="nf">set_empty_annotation_class_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fix the annotation string that will be used to replace</span>
 <span class="sd">        empty annotations in the class tier.</span>
 
@@ -273,17 +262,17 @@
 <span class="sd">        unlabelled annotations, so to ignore them in the data.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">tag_str</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_class_tag</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">tag_str</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_class_tag</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">tag_str_formatted</span> <span class="o">=</span> <span class="n">sppasUnicode</span><span class="p">(</span><span class="n">tag_str</span><span class="p">)</span><span class="o">.</span><span class="n">clear_whitespace</span><span class="p">()</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tag_str_formatted</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_class_tag</span> <span class="o">=</span> <span class="n">tag_str_formatted</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">TagValueError</span><span class="p">(</span><span class="n">tag_str</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">TagValueError</span><span class="p">(</span><span class="n">tag_str</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasWEKA.set_uncertain_annotation_tag"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.set_uncertain_annotation_tag">[docs]</a>    <span class="k">def</span> <span class="nf">set_uncertain_annotation_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fix the annotation string that is used in the annotations to</span>
 <span class="sd">        mention an uncertain label.</span>
@@ -295,37 +284,37 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tag_str_formatted</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_uncertain_annotation_tag</span> <span class="o">=</span> <span class="n">tag_str_formatted</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TagValueError</span><span class="p">(</span><span class="n">tag_str</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">TagValueError</span><span class="p">(</span><span class="n">tag_str</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-    <span class="c"># Validation methods</span>
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------</span>
+    <span class="c1"># Validation methods</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasWEKA.check_metadata"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.check_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">check_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check the metadata and fix the variable members. &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_max_class_tags&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_max_class_tags&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_max_class_tags</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&quot;weka_max_class_tags&quot;</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s2">&quot;weka_max_class_tags&quot;</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_max_attributes_tags&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_max_attributes_tags&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_max_attributes_tags</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&quot;weka_max_attributes_tags&quot;</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s2">&quot;weka_max_attributes_tags&quot;</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_empty_annotation_tag&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_empty_annotation_tag&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_empty_annotation_tag</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&quot;weka_empty_annotation_tag&quot;</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s2">&quot;weka_empty_annotation_tag&quot;</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_empty_annotation_class_tag&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_empty_annotation_class_tag&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_empty_annotation_class_tag</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&quot;weka_empty_annotation_class_tag&quot;</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s2">&quot;weka_empty_annotation_class_tag&quot;</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_uncertain_annotation_tag&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_uncertain_annotation_tag&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_uncertain_annotation_tag</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&quot;weka_uncertain_annotation_tag&quot;</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s2">&quot;weka_uncertain_annotation_tag&quot;</span><span class="p">))</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasWEKA.validate_annotations"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.validate_annotations">[docs]</a>    <span class="k">def</span> <span class="nf">validate_annotations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Prepare data to be compatible with the expected format.</span>
 
@@ -335,72 +324,72 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="n">AioNoTiersError</span><span class="p">(</span><span class="s">&quot;WEKA&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">AioNoTiersError</span><span class="p">(</span><span class="s2">&quot;WEKA&quot;</span><span class="p">)</span>
 
         <span class="n">min_time_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_min_loc</span><span class="p">()</span>
         <span class="n">max_time_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_max_loc</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">min_time_point</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">max_time_point</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="c"># it means there are only empty tiers in the transcription</span>
-            <span class="k">raise</span> <span class="n">AioNoTiersError</span><span class="p">(</span><span class="s">&quot;WEKA&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">min_time_point</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">max_time_point</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># it means there are only empty tiers in the transcription</span>
+            <span class="k">raise</span> <span class="n">AioNoTiersError</span><span class="p">(</span><span class="s2">&quot;WEKA&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
 
-            <span class="c"># only change the tiers to be used (no matter of the other ones!)</span>
-            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_attribute&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span> <span class="ow">and</span>\
-               <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_class&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="c1"># only change the tiers to be used (no matter of the other ones!)</span>
+            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_attribute&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span>\
+               <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_class&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="c"># Name of the tier: no whitespace</span>
+            <span class="c1"># Name of the tier: no whitespace</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
             <span class="n">tier</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">sppasUnicode</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">clear_whitespace</span><span class="p">())</span>
 
-            <span class="c"># Delete current controlled vocabulary.</span>
-            <span class="c">#  if tier.is_meta_key(&quot;weka_attribute&quot;) or tier.is_meta_key(&quot;weka_class&quot;):</span>
-            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="n">tier</span><span class="o">.</span><span class="n">set_ctrl_vocab</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+            <span class="c1"># Delete current controlled vocabulary.</span>
+            <span class="c1">#  if tier.is_meta_key(&quot;weka_attribute&quot;) or tier.is_meta_key(&quot;weka_class&quot;):</span>
+            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">tier</span><span class="o">.</span><span class="n">set_ctrl_vocab</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 
-            <span class="c"># Convert annotation tags.</span>
+            <span class="c1"># Convert annotation tags.</span>
             <span class="k">for</span> <span class="n">ann</span> <span class="ow">in</span> <span class="n">tier</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">is_labelled</span><span class="p">():</span>
                     <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_labels</span><span class="p">():</span>
-                        <span class="c">#if len(label) &gt; 0:</span>
+                        <span class="c1">#if len(label) &gt; 0:</span>
                         <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">label</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;str&quot;</span><span class="p">:</span>
-                                <span class="c"># Replace whitespace by underscore and check for an empty tag.</span>
+                            <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;str&quot;</span><span class="p">:</span>
+                                <span class="c1"># Replace whitespace by underscore and check for an empty tag.</span>
                                 <span class="n">tag_text</span> <span class="o">=</span> <span class="n">sppasUnicode</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">())</span><span class="o">.</span><span class="n">clear_whitespace</span><span class="p">()</span>
                                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tag_text</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                                    <span class="c"># The tag is empty. We have to fill it (or not).</span>
-                                    <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_class&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+                                    <span class="c1"># The tag is empty. We have to fill it (or not).</span>
+                                    <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_class&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
                                         <span class="n">tag_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_tag</span>
                                     <span class="k">else</span><span class="p">:</span>
-                                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_class_tag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_class_tag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                                             <span class="n">tag_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_class_tag</span>
 
                                 <span class="n">new_tag</span> <span class="o">=</span> <span class="n">sppasTag</span><span class="p">(</span><span class="n">tag_text</span><span class="p">)</span>
-                                <span class="c"># Set the new version of the tag to the label</span>
+                                <span class="c1"># Set the new version of the tag to the label</span>
                                 <span class="k">if</span> <span class="n">new_tag</span> <span class="o">!=</span> <span class="n">tag</span><span class="p">:</span>
                                     <span class="n">ann</span><span class="o">.</span><span class="n">remove_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
                                     <span class="n">label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_tag</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_class&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
-                                <span class="c"># The annotation was not labelled. We have to do it.</span>
+                            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_class&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                                <span class="c1"># The annotation was not labelled. We have to do it.</span>
                                 <span class="n">ann</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_tag</span><span class="p">))</span>
                             <span class="k">else</span><span class="p">:</span>
-                                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_class_tag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_class_tag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                                     <span class="n">ann</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_class_tag</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_class&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
-                        <span class="c"># The annotation was not labelled. We have to do it.</span>
+                    <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_class&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                        <span class="c1"># The annotation was not labelled. We have to do it.</span>
                         <span class="n">ann</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_tag</span><span class="p">))</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_class_tag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_class_tag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                             <span class="n">ann</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_class_tag</span><span class="p">))</span>
 
-        <span class="c"># Set the controlled vocabularies</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_create_ctrl_vocab</span><span class="p">()</span>
+        <span class="c1"># Set the controlled vocabularies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_ctrl_vocab</span><span class="p">()</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasWEKA.validate"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check the tiers.</span>
 
@@ -412,58 +401,58 @@
 <span class="sd">        Raises IOError or ValueError if something is wrong.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AioNoTiersError</span><span class="p">(</span><span class="s">&quot;WEKA&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AioNoTiersError</span><span class="p">(</span><span class="s2">&quot;WEKA&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&quot;The transcription must contain at least 2 tiers.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;The transcription must contain at least 2 tiers.&quot;</span><span class="p">)</span>
 
         <span class="n">class_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_class_tier</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">class_tier</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&quot;The transcription must contain a class.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">class_tier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;The transcription must contain a class.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">class_tier</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="n">AioEmptyTierError</span><span class="p">(</span><span class="s">&quot;WEKA&quot;</span><span class="p">,</span> <span class="n">class_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+            <span class="k">raise</span> <span class="n">AioEmptyTierError</span><span class="p">(</span><span class="s2">&quot;WEKA&quot;</span><span class="p">,</span> <span class="n">class_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
         <span class="n">sppasWEKA</span><span class="o">.</span><span class="n">check_max_class_tags</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">class_tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">()))</span>
 
         <span class="n">has_attribute</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_attribute&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_attribute&quot;</span><span class="p">):</span>
                 <span class="n">has_attribute</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">tier</span> <span class="ow">is</span> <span class="n">class_tier</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&quot;A tier can be either an attribute or &quot;</span>
-                                  <span class="s">&quot;the class. It can&#39;t be both.&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;A tier can be either an attribute or &quot;</span>
+                                  <span class="s2">&quot;the class. It can&#39;t be both.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">has_attribute</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&quot;The transcription must contain attributes.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;The transcription must contain attributes.&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="n">has_attribute</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
-                <span class="k">raise</span> <span class="n">AioEmptyTierError</span><span class="p">(</span><span class="s">&quot;WEKA&quot;</span><span class="p">,</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+                <span class="k">raise</span> <span class="n">AioEmptyTierError</span><span class="p">(</span><span class="s2">&quot;WEKA&quot;</span><span class="p">,</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
 
-        <span class="n">has_time_slice</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_instance_step&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+        <span class="n">has_time_slice</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_instance_step&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_instance_anchor&quot;</span><span class="p">):</span>
-                    <span class="n">has_time_slice</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_instance_anchor&quot;</span><span class="p">):</span>
+                    <span class="n">has_time_slice</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&quot;weka_instance_step&quot;</span><span class="p">))</span>
+                <span class="n">time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s2">&quot;weka_instance_step&quot;</span><span class="p">))</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;The instance step must be a numerical value. &quot;</span>
-                                 <span class="s">&quot;Got {:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&quot;weka_instance_step&quot;</span><span class="p">)))</span>
-            <span class="n">has_time_slice</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="k">if</span> <span class="n">has_time_slice</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&quot;An instance time step or an anchor must tier defined.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The instance step must be a numerical value. &quot;</span>
+                                 <span class="s2">&quot;Got </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s2">&quot;weka_instance_step&quot;</span><span class="p">)))</span>
+            <span class="n">has_time_slice</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">has_time_slice</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;An instance time step or an anchor must tier defined.&quot;</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-    <span class="c"># Private</span>
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------</span>
+    <span class="c1"># Private</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
     <span class="k">def</span> <span class="nf">_create_ctrl_vocab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fix the controlled vocabularies of attribute tiers. &quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_attribute&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_class&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_attribute&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_class&quot;</span><span class="p">):</span>
                 <span class="n">tier</span><span class="o">.</span><span class="n">create_ctrl_vocab</span><span class="p">()</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_tier_is_attribute</span><span class="p">(</span><span class="n">tier</span><span class="p">):</span>
@@ -473,40 +462,40 @@
 <span class="sd">        :returns: (is attribute, is numeric)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_class&quot;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_class&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
 
-        <span class="n">is_att</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="n">is_numeric</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_attribute&quot;</span><span class="p">):</span>
-            <span class="n">is_att</span> <span class="o">=</span> <span class="bp">True</span>
-            <span class="n">is_numeric</span> <span class="o">=</span> <span class="s">&quot;numeric&quot;</span> <span class="ow">in</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&quot;weka_attribute&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">is_att</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">is_numeric</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_attribute&quot;</span><span class="p">):</span>
+            <span class="n">is_att</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">is_numeric</span> <span class="o">=</span> <span class="s2">&quot;numeric&quot;</span> <span class="ow">in</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s2">&quot;weka_attribute&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">is_att</span><span class="p">,</span> <span class="n">is_numeric</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_get_class_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the tier which is the class or None. &quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_class&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_class&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">tier</span>
 
-        <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_get_anchor_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the tier which will be used to create the instances or None. &quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_instance_anchor&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_instance_anchor&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">tier</span>
 
-        <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">localization</span><span class="p">,</span> <span class="n">tier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the list of sppasLabel() at the given time in the given tier.</span>
@@ -518,26 +507,26 @@
 <span class="sd">        :returns: sppasLabel()</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Find the annotation at the given time.</span>
-        <span class="c"># Return the first one in case of overlapping annotations.</span>
-        <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="c1"># Find the annotation at the given time.</span>
+        <span class="c1"># Return the first one in case of overlapping annotations.</span>
+        <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">mindex</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">localization</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">mindex</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">mindex</span><span class="p">(</span><span class="n">localization</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-            <span class="c"># TODO: return all sppasLabel() during the localization</span>
-            <span class="c"># (i.e. during the period including the vagueness) and not only at the</span>
-            <span class="c"># midpoint of the localization.</span>
-            <span class="c"># And in the same idea, we have to deal with overlapping annotations.</span>
+            <span class="c1"># TODO: return all sppasLabel() during the localization</span>
+            <span class="c1"># (i.e. during the period including the vagueness) and not only at the</span>
+            <span class="c1"># midpoint of the localization.</span>
+            <span class="c1"># And in the same idea, we have to deal with overlapping annotations.</span>
 
         <span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="c"># Fix the label to be returned: the observed one or an empty one</span>
+        <span class="c1"># Fix the label to be returned: the observed one or an empty one</span>
         <span class="k">if</span> <span class="n">mindex</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
             <span class="n">ann</span> <span class="o">=</span> <span class="n">tier</span><span class="p">[</span><span class="n">mindex</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">is_labelled</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_labels</span><span class="p">():</span>
-                    <span class="c">#if len(label) &gt; 0:</span>
+                    <span class="c1">#if len(label) &gt; 0:</span>
                     <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">label</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
                             <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sppasLabel</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_tag</span><span class="p">),</span> <span class="n">score</span><span class="p">))</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
@@ -547,13 +536,13 @@
 
         <span class="k">return</span> <span class="n">labels</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_fix_all_possible_instance_steps</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span>
                                          <span class="n">end_time</span><span class="p">,</span>
-                                         <span class="n">time_step</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                                         <span class="n">anchor_tier</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                                         <span class="n">time_step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                         <span class="n">anchor_tier</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fix all the possible time-points of the instances.</span>
 
 <span class="sd">        If an anchor tier is given, only labelled annotations are used</span>
@@ -567,31 +556,31 @@
 <span class="sd">        :returns: list of sppasPoint()</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Create the list of all possible points for the instances</span>
+        <span class="c1"># Create the list of all possible points for the instances</span>
         <span class="n">all_points</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
-        <span class="c"># A timer is used to fix the steps</span>
-        <span class="k">if</span> <span class="n">time_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="c1"># A timer is used to fix the steps</span>
+        <span class="k">if</span> <span class="n">time_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">time_value</span> <span class="o">=</span> <span class="n">start_time</span>
 
             <span class="k">while</span> <span class="p">(</span><span class="n">time_value</span> <span class="o">+</span> <span class="p">(</span><span class="n">time_step</span><span class="o">/</span><span class="mf">2.</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">end_time</span><span class="p">:</span>
-                <span class="c"># Fix the anchor point of the instance</span>
+                <span class="c1"># Fix the anchor point of the instance</span>
                 <span class="n">midpoint</span> <span class="o">=</span> <span class="n">time_value</span> <span class="o">+</span> <span class="p">(</span><span class="n">time_step</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
                 <span class="n">radius</span> <span class="o">=</span> <span class="n">time_step</span><span class="o">/</span><span class="mf">2.</span>
                 <span class="n">all_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sppasPoint</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="n">radius</span><span class="p">))</span>
-                <span class="c"># next...</span>
+                <span class="c1"># next...</span>
                 <span class="n">time_value</span> <span class="o">+=</span> <span class="n">time_step</span>
 
-        <span class="c"># An anchor class is used to fix the steps</span>
-        <span class="c"># Only labelled annotations are selected</span>
-        <span class="k">elif</span> <span class="n">anchor_tier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="c1"># An anchor class is used to fix the steps</span>
+        <span class="c1"># Only labelled annotations are selected</span>
+        <span class="k">elif</span> <span class="n">anchor_tier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">ann</span> <span class="ow">in</span> <span class="n">anchor_tier</span><span class="p">:</span>
                 <span class="n">localization</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">label_is_filled</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">label_is_filled</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">localization</span><span class="o">.</span><span class="n">is_point</span><span class="p">():</span>
                         <span class="n">all_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">localization</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="c"># Fix the anchor point of the instance</span>
+                        <span class="c1"># Fix the anchor point of the instance</span>
                         <span class="n">duration</span> <span class="o">=</span> <span class="n">localization</span><span class="o">.</span><span class="n">duration</span><span class="p">()</span>
                         <span class="n">midpoint</span> <span class="o">=</span> \
                             <span class="n">localization</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span> <span class="o">+</span> \
@@ -602,7 +591,7 @@
 
         <span class="k">return</span> <span class="n">all_points</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_fix_instance_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fix the time-points to create the instances and the</span>
@@ -617,77 +606,77 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">class_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_class_tier</span><span class="p">()</span>
-        <span class="c"># The localization point to start the instances</span>
+        <span class="c1"># The localization point to start the instances</span>
         <span class="n">begin</span> <span class="o">=</span> <span class="n">class_tier</span><span class="o">.</span><span class="n">get_first_point</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span>
-        <span class="c"># The localization point to finish the instances</span>
+        <span class="c1"># The localization point to finish the instances</span>
         <span class="n">end</span> <span class="o">=</span> <span class="n">class_tier</span><span class="o">.</span><span class="n">get_last_point</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span>
 
-        <span class="c"># Fix the list of candidates for the instance points</span>
-        <span class="n">time_step</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&quot;weka_instance_step&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
-            <span class="n">time_step</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&quot;weka_instance_step&quot;</span><span class="p">))</span>
+        <span class="c1"># Fix the list of candidates for the instance points</span>
+        <span class="n">time_step</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_instance_step&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">time_step</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s2">&quot;weka_instance_step&quot;</span><span class="p">))</span>
         <span class="n">anchor_tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_anchor_tier</span><span class="p">()</span>
         <span class="n">all_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fix_all_possible_instance_steps</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">time_step</span><span class="p">,</span> <span class="n">anchor_tier</span><span class="p">)</span>
 
-        <span class="c"># Create the list of points for the instances</span>
+        <span class="c1"># Create the list of points for the instances</span>
         <span class="n">instance_points</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">all_points</span><span class="p">:</span>
 
-            <span class="c"># Fix the tag to predict</span>
+            <span class="c1"># Fix the tag to predict</span>
             <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">class_tier</span><span class="p">)</span>
             <span class="n">tags</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">label</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">():</span>
                     <span class="n">tag</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span>
                     <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_tag</span><span class="p">:</span>
                         <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">())</span>
 
-            <span class="c"># Append only if the class was labelled * * * WITH ONLY ONE LABEL * * *</span>
+            <span class="c1"># Append only if the class was labelled * * * WITH ONLY ONE LABEL * * *</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">instance_points</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">point</span><span class="p">,</span> <span class="n">tags</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
         <span class="k">return</span> <span class="n">instance_points</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_scores_to_probas</span><span class="p">(</span><span class="n">tags</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert scores of a set of tags to probas. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="c"># Convert &quot;None&quot; scores into a numerical value</span>
-        <span class="c"># then convert numerical values into probabilities.</span>
+        <span class="c1"># Convert &quot;None&quot; scores into a numerical value</span>
+        <span class="c1"># then convert numerical values into probabilities.</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
                 <span class="n">tags</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="c"># Search for the minimum score</span>
-            <span class="n">min_score</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="c1"># Search for the minimum score</span>
+            <span class="n">min_score</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
                 <span class="n">score</span> <span class="o">=</span> <span class="n">tags</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">score</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">min_score</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">min_score</span> <span class="o">&gt;</span> <span class="n">score</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">score</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">min_score</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">min_score</span> <span class="o">&gt;</span> <span class="n">score</span><span class="p">:</span>
                         <span class="n">min_score</span> <span class="o">=</span> <span class="n">score</span>
-            <span class="k">if</span> <span class="n">min_score</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="c"># None of the tags had a score.</span>
+            <span class="k">if</span> <span class="n">min_score</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># None of the tags had a score.</span>
                 <span class="n">min_score</span> <span class="o">=</span> <span class="mf">2.</span>
 
-            <span class="c"># Assign a score to the tags if needed</span>
+            <span class="c1"># Assign a score to the tags if needed</span>
             <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
                 <span class="n">score</span> <span class="o">=</span> <span class="n">tags</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">score</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">score</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">tags</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">min_score</span> <span class="o">/</span> <span class="mf">2.</span>
 
-            <span class="c"># Convert scores to probabilities</span>
+            <span class="c1"># Convert scores to probabilities</span>
             <span class="n">total</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">tags</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
                 <span class="n">score</span> <span class="o">=</span> <span class="n">tags</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span>
                 <span class="n">tags</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">)</span> <span class="o">/</span> <span class="n">total</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_fix_data_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fix the data content of an instance.</span>
@@ -709,18 +698,18 @@
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
 
             <span class="n">is_att</span><span class="p">,</span> <span class="n">is_numeric</span> <span class="o">=</span> <span class="n">sppasWEKA</span><span class="o">.</span><span class="n">_tier_is_attribute</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">is_att</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_att</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="c"># Get all labels of the annotation</span>
+            <span class="c1"># Get all labels of the annotation</span>
             <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">tier</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">is_numeric</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_numeric</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
 
-                <span class="c"># Create a list of tags</span>
+                <span class="c1"># Create a list of tags</span>
                 <span class="n">tags</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="k">continue</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="k">continue</span>
@@ -730,15 +719,15 @@
                         <span class="k">else</span><span class="p">:</span>
                             <span class="n">tags</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>
 
-                <span class="c"># Scores of observed tags are converted to probabilities</span>
+                <span class="c1"># Scores of observed tags are converted to probabilities</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_scores_to_probas</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span>
 
-                <span class="c"># Score of un-observed tags are all set to an epsilon probability</span>
+                <span class="c1"># Score of un-observed tags are all set to an epsilon probability</span>
                 <span class="n">nb_eps_tags</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">())</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span>
                 <span class="n">epsilon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon_proba</span>
-                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&#39;weka_epsilon&#39;</span><span class="p">):</span>
-                    <span class="n">epsilon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&#39;weka_epsilon&#39;</span><span class="p">))</span>
-                <span class="c"># ... if an uncertain tag is observed</span>
+                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s1">&#39;weka_epsilon&#39;</span><span class="p">):</span>
+                    <span class="n">epsilon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s1">&#39;weka_epsilon&#39;</span><span class="p">))</span>
+                <span class="c1"># ... if an uncertain tag is observed</span>
                 <span class="n">uncertain_tag</span> <span class="o">=</span> <span class="n">sppasTag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_uncertain_annotation_tag</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">uncertain_tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
                     <span class="n">score</span> <span class="o">=</span> <span class="n">tags</span><span class="p">[</span><span class="n">uncertain_tag</span><span class="p">]</span>
@@ -746,7 +735,7 @@
                     <span class="n">epsilon</span> <span class="o">=</span> <span class="n">score</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">nb_eps_tags</span><span class="p">)</span>
                     <span class="k">del</span> <span class="n">tags</span><span class="p">[</span><span class="n">uncertain_tag</span><span class="p">]</span>
 
-                <span class="c"># All possible tags are written</span>
+                <span class="c1"># All possible tags are written</span>
                 <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">():</span>
                     <span class="n">proba</span> <span class="o">=</span> <span class="n">epsilon</span>
                     <span class="k">if</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
@@ -755,23 +744,23 @@
 
             <span class="k">else</span><span class="p">:</span>
 
-                <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                 <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="k">continue</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="k">continue</span>
-                    <span class="n">content</span> <span class="o">+=</span> <span class="n">label</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot; &quot;</span>
+                    <span class="n">content</span> <span class="o">+=</span> <span class="n">label</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span>
                 <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_empty_annotation_tag</span>
                 <span class="n">instances_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">instances_data</span>
+        <span class="k">return</span> <span class="n">instances_data</span></div>
 
-<span class="c"># ----------------------------------------------------------------------------</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
 
-</div>
+
 <div class="viewcode-block" id="sppasARFF"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasARFF">[docs]</a><span class="k">class</span> <span class="nc">sppasARFF</span><span class="p">(</span><span class="n">sppasWEKA</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
@@ -791,132 +780,132 @@
 <span class="sd">        4. The set of instances.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasARFF.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasARFF.detect">[docs]</a>    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasARFF.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasARFF.detect">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">):</span>
                     <span class="n">line</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="s">&quot;@relation&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
-                        <span class="k">return</span> <span class="bp">True</span>
-            <span class="k">return</span> <span class="bp">False</span>
+                    <span class="k">if</span> <span class="s2">&quot;@relation&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                        <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasARFF.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasARFF.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasARFF.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasARFF.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new sppasARFF instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
-        <span class="n">sppasWEKA</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s">&quot;arff&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">sppasWEKA</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;arff&quot;</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-    <span class="c"># Write data</span>
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------</span>
+    <span class="c1"># Write data</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasARFF.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasARFF.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write a RawText file.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AioNoTiersError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8096</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8096</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
 
-            <span class="c"># Check metadata</span>
+            <span class="c1"># Check metadata</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">check_metadata</span><span class="p">()</span>
 
-            <span class="c"># Check the annotation tags.</span>
+            <span class="c1"># Check the annotation tags.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">validate_annotations</span><span class="p">()</span>
 
-            <span class="c"># Check if the metadata are properly fixed.</span>
+            <span class="c1"># Check if the metadata are properly fixed.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
 
-            <span class="c"># OK, we are ready to write</span>
+            <span class="c1"># OK, we are ready to write</span>
             <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sppasARFF</span><span class="o">.</span><span class="n">_serialize_header</span><span class="p">())</span>
             <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_serialize_metadata</span><span class="p">())</span>
             <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_serialize_relation</span><span class="p">())</span>
             <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_serialize_attributes</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write_data</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
 
-            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-    <span class="c"># Private</span>
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------</span>
+    <span class="c1"># Private</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_header</span><span class="p">():</span>
         <span class="sd">&quot;&quot;&quot; Returns a standard header in comments. &quot;&quot;&quot;</span>
 
-        <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">% c</span><span class="s">reator: {:s}</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sppas</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;% version: {:s}</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sppas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="si">% d</span><span class="s">ate: {:s}</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s">&quot;</span><span class="p">))</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;% author: {:s}</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sppas</span><span class="o">.</span><span class="n">__author__</span><span class="p">)</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="si">% li</span><span class="s">cense: {:s}</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sppas</span><span class="o">.</span><span class="n">__copyright__</span><span class="p">)</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;% </span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">% c</span><span class="s2">reator: </span><span class="si">{:s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sg</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;% version: </span><span class="si">{:s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sg</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">% d</span><span class="s2">ate: </span><span class="si">{:s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">))</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;% author: </span><span class="si">{:s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sg</span><span class="o">.</span><span class="n">__author__</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">% li</span><span class="s2">cense: </span><span class="si">{:s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sg</span><span class="o">.</span><span class="n">__copyright__</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;% </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">content</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_serialize_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Serialize metadata in comments. &quot;&quot;&quot;</span>
 
-        <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_meta_keys</span><span class="p">():</span>
-            <span class="c"># todo: we should ignore metadata already in the header.</span>
+            <span class="c1"># todo: we should ignore metadata already in the header.</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-            <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;% {:s}: {:s}</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span>
+            <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;% </span><span class="si">{:s}</span><span class="s2">: </span><span class="si">{:s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">content</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_serialize_relation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Serialize the relation of the ARFF file. &quot;&quot;&quot;</span>
 
-        <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;@RELATION {:s}</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;@RELATION </span><span class="si">{:s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">content</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_serialize_attributes_ctrl_vocab</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">is_class</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_serialize_attributes_ctrl_vocab</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">is_class</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Serialize the controlled vocabulary in an attribute set.</span>
 
 <span class="sd">        :param tier: (sppasTier)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Prepare the list of strings to write</span>
+        <span class="c1"># Prepare the list of strings to write</span>
         <span class="n">tags</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">():</span>
             <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">())</span>
 
-        <span class="c"># Write the name of the attribute serie</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;@ATTRIBUTES &quot;</span>
-        <span class="k">if</span> <span class="n">is_class</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
-            <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;class &quot;</span>
+        <span class="c1"># Write the name of the attribute serie</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;@ATTRIBUTES &quot;</span>
+        <span class="k">if</span> <span class="n">is_class</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;class &quot;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;{:s} &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+            <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2"> &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
 
-        <span class="c"># Write the attributes</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;{&quot;</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;{:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tags</span><span class="p">))</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;}</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="c1"># Write the attributes</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;{&quot;</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tags</span><span class="p">))</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">content</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_serialize_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write the attributes of the ARFF file.</span>
@@ -927,33 +916,33 @@
 <span class="sd">        It is supposed that the transcription has been already validated.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
 
             <span class="n">is_att</span><span class="p">,</span> <span class="n">is_numeric</span> <span class="o">=</span> <span class="n">sppasWEKA</span><span class="o">.</span><span class="n">_tier_is_attribute</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">is_att</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_att</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="k">if</span> <span class="n">is_numeric</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
-                <span class="c"># Tags will be converted to probabilities</span>
+            <span class="k">if</span> <span class="n">is_numeric</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="c1"># Tags will be converted to probabilities</span>
                 <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">():</span>
-                    <span class="c"># Do not write an uncertain label in that situation.</span>
+                    <span class="c1"># Do not write an uncertain label in that situation.</span>
                     <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uncertain_annotation_tag</span><span class="p">:</span>
-                        <span class="n">attribute_name</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span>
-                        <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;@ATTRIBUTES {:s} NUMERIC</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attribute_name</span><span class="p">)</span>
+                        <span class="n">attribute_name</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span>
+                        <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;@ATTRIBUTES </span><span class="si">{:s}</span><span class="s2"> NUMERIC</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attribute_name</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c"># Either a generic &quot;string&quot; or we can explicitly fix the list</span>
+                <span class="c1"># Either a generic &quot;string&quot; or we can explicitly fix the list</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">())</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_attributes_tags</span><span class="p">:</span>
-                    <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;@ATTRIBUTES {:s} STRING</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+                    <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;@ATTRIBUTES </span><span class="si">{:s}</span><span class="s2"> STRING</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">content</span> <span class="o">+=</span> <span class="n">sppasARFF</span><span class="o">.</span><span class="n">_serialize_attributes_ctrl_vocab</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span>
 
         <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_class_tier</span><span class="p">()</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="n">sppasARFF</span><span class="o">.</span><span class="n">_serialize_attributes_ctrl_vocab</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">is_class</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="n">sppasARFF</span><span class="o">.</span><span class="n">_serialize_attributes_ctrl_vocab</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">is_class</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="k">return</span> <span class="n">content</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_write_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write the data content of the ARFF file.</span>
@@ -971,21 +960,21 @@
 <span class="sd">        :param fp: FileDescriptor</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&quot;@DATA</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">))</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;@DATA</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">point</span><span class="p">,</span> <span class="n">class_str</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fix_instance_steps</span><span class="p">():</span>
-            <span class="n">line</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
             <span class="n">data_instances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fix_data_instance</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">data_instances</span><span class="p">:</span>
                 <span class="n">line</span> <span class="o">+=</span> <span class="n">attribute</span>
-                <span class="n">line</span> <span class="o">+=</span> <span class="s">&quot;,&quot;</span>
+                <span class="n">line</span> <span class="o">+=</span> <span class="s2">&quot;,&quot;</span>
             <span class="n">line</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">class_str</span><span class="p">)</span>
-            <span class="n">line</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+            <span class="n">line</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="n">line</span><span class="p">))</span></div>
 
-<span class="c"># ----------------------------------------------------------------------------</span>
+<span class="c1"># ----------------------------------------------------------------------------</span>
 
-</div>
+
 <div class="viewcode-block" id="sppasXRFF"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasXRFF">[docs]</a><span class="k">class</span> <span class="nc">sppasXRFF</span><span class="p">(</span><span class="n">sppasWEKA</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
@@ -1003,88 +992,91 @@
 <span class="sd">        1. Only the writers are implemented. No readers.</span>
 <span class="sd">        2. Sparse option is not supported by both writers.</span>
 <span class="sd">        3. XRFF output file is not gzipped.</span>
-<span class="sd">        4. XRFF format supports the followings that are not currently</span>
+<span class="sd">        4. XRFF format supports the followings that are not currently \</span>
 <span class="sd">        implemented into this class:</span>
+
 <span class="sd">            - attribute weights;</span>
 <span class="sd">            - instance weights.</span>
 
 <span class="sd">    -- !!!!!!!! No guarantee !!!!!! --</span>
+
 <span class="sd">    This class has never been tested.</span>
+
 <span class="sd">    -- !!!!!!!! No guarantee !!!!!! --</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasXRFF.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasXRFF.detect">[docs]</a>    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasXRFF.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasXRFF.detect">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="s">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">):</span>
                     <span class="n">line</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="s">&quot;&lt;dataset &quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
-                        <span class="k">return</span> <span class="bp">True</span>
+                    <span class="k">if</span> <span class="s2">&quot;&lt;dataset &quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                        <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasXRFF.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasXRFF.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasXRFF.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasXRFF.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new sppasXRFF instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
 
-        <span class="n">sppasWEKA</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s">&quot;xrff&quot;</span>
+        <span class="n">sppasWEKA</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;xrff&quot;</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-    <span class="c"># Write data</span>
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------</span>
+    <span class="c1"># Write data</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasXRFF.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasXRFF.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write a XRFF file.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AioNoTiersError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8096</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8096</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
 
-            <span class="c"># Check metadata</span>
+            <span class="c1"># Check metadata</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">check_metadata</span><span class="p">()</span>
 
-            <span class="c"># Check the annotation tags.</span>
+            <span class="c1"># Check the annotation tags.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">validate_annotations</span><span class="p">()</span>
 
-            <span class="c"># Check if the metadata are properly fixed.</span>
+            <span class="c1"># Check if the metadata are properly fixed.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
 
-            <span class="c"># OK, we are ready to write</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">))</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;&lt;dataset name=&quot;{:s}&quot; /&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">())))</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">))</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;&lt;header&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+            <span class="c1"># OK, we are ready to write</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;&lt;dataset name=&quot;</span><span class="si">{:s}</span><span class="s1">&quot; /&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">())))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;&lt;header&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write_attributes</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;&lt;/header&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;&lt;body&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;&lt;/header&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;&lt;body&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write_instances</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;&lt;/body&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;&lt;/body&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
 
-            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-    <span class="c"># -----------------------------------------------------------------</span>
-    <span class="c"># Private</span>
-    <span class="c"># -----------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------</span>
+    <span class="c1"># Private</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
+
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_write_attribute_ctrl_vocab</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">is_class</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_write_attribute_ctrl_vocab</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">is_class</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write the controlled vocabulary in an attribute set.</span>
 
 <span class="sd">        :param tier: (sppasTier)</span>
@@ -1092,17 +1084,17 @@
 <span class="sd">        :param is_class: (boolean)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;        &lt;attribute &#39;</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">is_class</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;class=&quot;yes&quot; &#39;</span><span class="p">))</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;name=&quot;{:s}&quot; type=&quot;nominal&quot;&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())))</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;            &lt;labels&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;        &lt;attribute &#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">is_class</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;class=&quot;yes&quot; &#39;</span><span class="p">))</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;name=&quot;</span><span class="si">{:s}</span><span class="s1">&quot; type=&quot;nominal&quot;&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())))</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;            &lt;labels&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">():</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&quot;            &lt;label&gt;{:s}&lt;/label&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">())))</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;            &lt;/labels&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;        &lt;/attribute&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;            &lt;label&gt;</span><span class="si">{:s}</span><span class="s2">&lt;/label&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">())))</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;            &lt;/labels&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;        &lt;/attribute&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_write_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write the attributes of the ARFF file.</span>
@@ -1113,43 +1105,43 @@
 <span class="sd">        It is supposed that the transcription has been already validated.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;    &lt;attributes&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;    &lt;attributes&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
 
             <span class="n">is_att</span><span class="p">,</span> <span class="n">is_numeric</span> <span class="o">=</span> <span class="n">sppasWEKA</span><span class="o">.</span><span class="n">_tier_is_attribute</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">is_att</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_att</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="k">if</span> <span class="n">is_numeric</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
-                <span class="c"># Tags will be converted to probabilities</span>
+            <span class="k">if</span> <span class="n">is_numeric</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="c1"># Tags will be converted to probabilities</span>
                 <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">():</span>
-                    <span class="c"># Do not write an uncertain label in that situation.</span>
+                    <span class="c1"># Do not write an uncertain label in that situation.</span>
                     <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uncertain_annotation_tag</span><span class="p">:</span>
-                        <span class="n">attribute_name</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span>
-                        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;        &lt;attribute name=&quot;{:s}&quot; &#39;</span>
-                                   <span class="s">&#39;type=&quot;numeric&quot; /&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attribute_name</span><span class="p">)))</span>
+                        <span class="n">attribute_name</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span>
+                        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;        &lt;attribute name=&quot;</span><span class="si">{:s}</span><span class="s1">&quot; &#39;</span>
+                                   <span class="s1">&#39;type=&quot;numeric&quot; /&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attribute_name</span><span class="p">)))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c"># Either a generic &quot;string&quot; or we can explicitly fix the list</span>
+                <span class="c1"># Either a generic &quot;string&quot; or we can explicitly fix the list</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">())</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_attributes_tags</span><span class="p">:</span>
-                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;        &lt;attribute name=&quot;{:s}&quot; &#39;</span>
-                               <span class="s">&#39;type=&quot;nominal&quot; /&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())))</span>
+                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;        &lt;attribute name=&quot;</span><span class="si">{:s}</span><span class="s1">&quot; &#39;</span>
+                               <span class="s1">&#39;type=&quot;nominal&quot; /&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())))</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="c"># The controlled vocabulary</span>
-                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;        &lt;attribute name=&quot;{:s}&quot; &#39;</span>
-                               <span class="s">&#39;type=&quot;nominal&quot;&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())))</span>
-                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;            &lt;labels&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+                    <span class="c1"># The controlled vocabulary</span>
+                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;        &lt;attribute name=&quot;</span><span class="si">{:s}</span><span class="s1">&quot; &#39;</span>
+                               <span class="s1">&#39;type=&quot;nominal&quot;&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())))</span>
+                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;            &lt;labels&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_ctrl_vocab</span><span class="p">():</span>
-                        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&quot;            &lt;label&gt;{:s}&quot;</span>
-                                   <span class="s">&quot;&lt;/label&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">())))</span>
-                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;            &lt;/labels&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
-                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;        &lt;/attribute&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+                        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;            &lt;label&gt;</span><span class="si">{:s}</span><span class="s2">&quot;</span>
+                                   <span class="s2">&quot;&lt;/label&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">())))</span>
+                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;            &lt;/labels&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+                    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;        &lt;/attribute&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
 
         <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_class_tier</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_write_attribute_ctrl_vocab</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">is_class</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_attribute_ctrl_vocab</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">is_class</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&#39;    &lt;/attributes&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s1">&#39;    &lt;/attributes&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
 
-    <span class="c"># -----------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_write_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write the data content of the XRFF file.</span>
@@ -1159,40 +1151,39 @@
 <span class="sd">        :param fp: FileDescriptor</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&quot;    &lt;instances&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">))</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;    &lt;instances&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">point</span><span class="p">,</span> <span class="n">class_str</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fix_instance_steps</span><span class="p">():</span>
             <span class="n">data_instances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fix_data_instance</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&quot;        &lt;instance&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;        &lt;instance&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">data_instances</span><span class="p">:</span>
-                <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&quot;            &lt;value&gt;{!s:s}&lt;/value&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attribute</span><span class="p">)))</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&quot;            &lt;value&gt;{!s:s}&lt;/value&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">class_str</span><span class="p">)))</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&quot;        &lt;/instance&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">))</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s">&quot;    &lt;/instances&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">))</span></div>
+                <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;            &lt;value&gt;</span><span class="si">{!s:s}</span><span class="s2">&lt;/value&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attribute</span><span class="p">)))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;            &lt;value&gt;</span><span class="si">{!s:s}</span><span class="s2">&lt;/value&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">class_str</span><span class="p">)))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;        &lt;/instance&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="s2">&quot;    &lt;/instances&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span></div>
 </pre></div>
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -1201,13 +1192,13 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
     </div>
   </body>
 </html>

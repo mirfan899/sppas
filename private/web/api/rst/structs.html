@@ -1,34 +1,24 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>structs package &mdash; SPPAS 1.9.8 documentation</title>
-    
+    <title>structs package &#8212; SPPAS 1.9.8 documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '1.9.8',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="SPPAS 1.9.8 documentation" href="../index.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="utils package" href="utils.html" />
     <link rel="prev" title="resources package" href="resources.html" /> 
-  </head>
-  <body>
-    <div class="related">
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -43,14 +33,14 @@
         <li class="right" >
           <a href="resources.html" title="resources package"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">SPPAS 1.9.8 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="structs-package">
 <h1>structs package<a class="headerlink" href="#structs-package" title="Permalink to this headline">¶</a></h1>
@@ -78,8 +68,8 @@
 data structures used into SPPAS.</p>
 <dl class="class">
 <dt id="structs.sppasBaseOption">
-<em class="property">class </em><tt class="descclassname">structs.</tt><tt class="descname">sppasBaseOption</tt><big>(</big><em>option_type</em>, <em>option_value=''</em><big>)</big><a class="headerlink" href="#structs.sppasBaseOption" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">structs.</code><code class="descname">sppasBaseOption</code><span class="sig-paren">(</span><em>option_type</em>, <em>option_value=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasBaseOption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -100,55 +90,55 @@ data structures used into SPPAS.</p>
 </table>
 <p>An option is a set of data with a main value and its type, plus 3 other
 variables to store any kind of information. By default, the type of an
-option is &#8220;str&#8221;, the value is an empty string and the name, text and
+option is “str”, the value is an empty string and the name, text and
 description are all empty strings.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">o</span> <span class="o">=</span> <span class="n">sppasBaseOption</span><span class="p">(</span><span class="s">&quot;integer&quot;</span><span class="p">,</span> <span class="s">&quot;3&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">o</span> <span class="o">=</span> <span class="n">sppasBaseOption</span><span class="p">(</span><span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="o">&lt;</span><span class="nb">type</span> <span class="s">&#39;int&#39;</span><span class="o">&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;int&#39;</span><span class="o">&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">get_untypedvalue</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="o">&lt;</span><span class="nb">type</span> <span class="s">&#39;str&#39;</span><span class="o">&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;str&#39;</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <dl class="method">
 <dt id="structs.sppasBaseOption.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>option_type</em>, <em>option_value=''</em><big>)</big><a class="headerlink" href="#structs.sppasBaseOption.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>option_type</em>, <em>option_value=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasBaseOption.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a sppasBaseOption instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>option_type</strong> &#8211; (str) Type of the option (i.e. &#8216;int&#8217;, &#8216;bool&#8217;,</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>option_type</strong> – (str) Type of the option (i.e. ‘int’, ‘bool’,</td>
 </tr>
 </tbody>
 </table>
-<p>&#8216;float&#8217;, ...). Notice that the type will be normalized. For example,
-&#8216;int, &#8216;integer&#8217;, &#8216;long or &#8216;short&#8217; will be all stored into &#8216;int&#8217; type.
+<p>‘float’, …). Notice that the type will be normalized. For example,
+‘int, ‘integer’, ‘long or ‘short’ will be all stored into ‘int’ type.
 :param option_value: (str) The value of the option.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.sppasBaseOption.get_description">
-<tt class="descname">get_description</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasBaseOption.get_description" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_description</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasBaseOption.get_description" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the long text which describes the option.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.sppasBaseOption.get_name">
-<tt class="descname">get_name</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasBaseOption.get_name" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasBaseOption.get_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the name of to this option.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.sppasBaseOption.get_text">
-<tt class="descname">get_text</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasBaseOption.get_text" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_text</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasBaseOption.get_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the brief text which describes the option.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.sppasBaseOption.get_type">
-<tt class="descname">get_type</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasBaseOption.get_type" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasBaseOption.get_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the type of the option.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -162,26 +152,26 @@ description are all empty strings.</p>
 
 <dl class="method">
 <dt id="structs.sppasBaseOption.get_untypedvalue">
-<tt class="descname">get_untypedvalue</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasBaseOption.get_untypedvalue" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_untypedvalue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_untypedvalue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasBaseOption.get_untypedvalue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value as it was given,
 i.e. without taking the given type into account.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.sppasBaseOption.get_value">
-<tt class="descname">get_value</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasBaseOption.get_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasBaseOption.get_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the typed-value or None if the type is unknown.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.sppasBaseOption.set">
-<tt class="descname">set</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#structs.sppasBaseOption.set" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasBaseOption.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set self from another instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other</strong> &#8211; (sppasBaseOption) The option from which to get information.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other</strong> – (sppasBaseOption) The option from which to get information.</td>
 </tr>
 </tbody>
 </table>
@@ -189,13 +179,13 @@ i.e. without taking the given type into account.</p>
 
 <dl class="method">
 <dt id="structs.sppasBaseOption.set_description">
-<tt class="descname">set_description</tt><big>(</big><em>description</em><big>)</big><a class="headerlink" href="#structs.sppasBaseOption.set_description" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_description</code><span class="sig-paren">(</span><em>description</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasBaseOption.set_description" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a long text to describe the option.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>description</strong> &#8211; (str) Option description.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>description</strong> – (str) Option description.</td>
 </tr>
 </tbody>
 </table>
@@ -203,13 +193,13 @@ i.e. without taking the given type into account.</p>
 
 <dl class="method">
 <dt id="structs.sppasBaseOption.set_name">
-<tt class="descname">set_name</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#structs.sppasBaseOption.set_name" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_name</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasBaseOption.set_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a name to describe the option.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> &#8211; (str) Option description.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> – (str) Option description.</td>
 </tr>
 </tbody>
 </table>
@@ -217,13 +207,13 @@ i.e. without taking the given type into account.</p>
 
 <dl class="method">
 <dt id="structs.sppasBaseOption.set_text">
-<tt class="descname">set_text</tt><big>(</big><em>text</em><big>)</big><a class="headerlink" href="#structs.sppasBaseOption.set_text" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_text</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasBaseOption.set_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a brief text to describe the option.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> &#8211; (str) Option description.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> – (str) Option description.</td>
 </tr>
 </tbody>
 </table>
@@ -231,29 +221,29 @@ i.e. without taking the given type into account.</p>
 
 <dl class="method">
 <dt id="structs.sppasBaseOption.set_type">
-<tt class="descname">set_type</tt><big>(</big><em>option_type</em><big>)</big><a class="headerlink" href="#structs.sppasBaseOption.set_type" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_type</code><span class="sig-paren">(</span><em>option_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasBaseOption.set_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a new type.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>option_type</strong> &#8211; (str) Type of the option (i.e. &#8216;int&#8217;, &#8216;bool&#8217;, &#8216;float&#8217;, ...).</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>option_type</strong> – (str) Type of the option (i.e. ‘int’, ‘bool’, ‘float’, …).</td>
 </tr>
 </tbody>
 </table>
-<p>If the option_type is not valid, type will be set to &#8216;str&#8217;.
+<p>If the option_type is not valid, type will be set to ‘str’.
 :returns: True if option_type is valid and set.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.sppasBaseOption.set_value">
-<tt class="descname">set_value</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#structs.sppasBaseOption.set_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_value</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasBaseOption.set_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a new value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> &#8211; (any type) Un-typed value of the option.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> – (any type) Un-typed value of the option.</td>
 </tr>
 </tbody>
 </table>
@@ -263,8 +253,8 @@ i.e. without taking the given type into account.</p>
 
 <dl class="class">
 <dt id="structs.sppasOption">
-<em class="property">class </em><tt class="descclassname">structs.</tt><tt class="descname">sppasOption</tt><big>(</big><em>option_key</em>, <em>option_type='str'</em>, <em>option_value=''</em><big>)</big><a class="headerlink" href="#structs.sppasOption" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#structs.baseoption.sppasBaseOption" title="structs.baseoption.sppasBaseOption"><tt class="xref py py-class docutils literal"><span class="pre">structs.baseoption.sppasBaseOption</span></tt></a></p>
+<em class="property">class </em><code class="descclassname">structs.</code><code class="descname">sppasOption</code><span class="sig-paren">(</span><em>option_key</em>, <em>option_type='str'</em>, <em>option_value=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasOption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#structs.baseoption.sppasBaseOption" title="structs.baseoption.sppasBaseOption"><code class="xref py py-class docutils literal notranslate"><span class="pre">structs.baseoption.sppasBaseOption</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -285,28 +275,28 @@ i.e. without taking the given type into account.</p>
 </table>
 <dl class="method">
 <dt id="structs.sppasOption.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>option_key</em>, <em>option_type='str'</em>, <em>option_value=''</em><big>)</big><a class="headerlink" href="#structs.sppasOption.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>option_key</em>, <em>option_type='str'</em>, <em>option_value=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasOption.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasOption.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a sppasOption instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>option_key</strong> &#8211; (any type) An identifier for that option.</li>
-<li><strong>option_type</strong> &#8211; (str) Type of the option (i.e. &#8216;int&#8217;, &#8216;bool&#8217;,</li>
+<li><strong>option_key</strong> – (any type) An identifier for that option.</li>
+<li><strong>option_type</strong> – (str) Type of the option (i.e. ‘int’, ‘bool’,</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<p>&#8216;float&#8217;, ...). Notice that the type will be normalized. For example,
-&#8216;int, &#8216;integer&#8217;, &#8216;long or &#8216;short&#8217; will be all stored into &#8216;int&#8217; type.
+<p>‘float’, …). Notice that the type will be normalized. For example,
+‘int, ‘integer’, ‘long or ‘short’ will be all stored into ‘int’ type.
 :param option_value: (str) The value of the option.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.sppasOption.get_key">
-<tt class="descname">get_key</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasOption.get_key" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasOption.get_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasOption.get_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the key of that option.</p>
 </dd></dl>
 
@@ -314,8 +304,8 @@ i.e. without taking the given type into account.</p>
 
 <dl class="class">
 <dt id="structs.sppasLangResource">
-<em class="property">class </em><tt class="descclassname">structs.</tt><tt class="descname">sppasLangResource</tt><a class="headerlink" href="#structs.sppasLangResource" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">structs.</code><code class="descname">sppasLangResource</code><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasLangResource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -336,23 +326,23 @@ i.e. without taking the given type into account.</p>
 </table>
 <dl class="attribute">
 <dt id="structs.sppasLangResource.RESOURCES_TYPES">
-<tt class="descname">RESOURCES_TYPES</tt><em class="property"> = ['file', 'directory']</em><a class="headerlink" href="#structs.sppasLangResource.RESOURCES_TYPES" title="Permalink to this definition">¶</a></dt>
+<code class="descname">RESOURCES_TYPES</code><em class="property"> = ['file', 'directory']</em><a class="headerlink" href="#structs.sppasLangResource.RESOURCES_TYPES" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="structs.sppasLangResource.__init__">
-<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasLangResource.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasLangResource.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a sppasLangResource instance.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.sppasLangResource.get_lang">
-<tt class="descname">get_lang</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasLangResource.get_lang" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_lang</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.get_lang"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasLangResource.get_lang" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the language name.</p>
 <p>Language names in SPPAS are commonly represented in iso-639-3.
 It is a code that aims to define three-letter identifiers for all
-known human languages. &#8220;und&#8221; is representing an undetermined language.
-See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">http://www-01.sil.org/iso639-3/</a>&gt; for details...</p>
+known human languages. “und” is representing an undetermined language.
+See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">http://www-01.sil.org/iso639-3/</a>&gt; for details…</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -365,7 +355,7 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="method">
 <dt id="structs.sppasLangResource.get_langlist">
-<tt class="descname">get_langlist</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasLangResource.get_langlist" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_langlist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.get_langlist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasLangResource.get_langlist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of available languages.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -379,29 +369,29 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="method">
 <dt id="structs.sppasLangResource.get_langresource">
-<tt class="descname">get_langresource</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasLangResource.get_langresource" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_langresource</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.get_langresource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasLangResource.get_langresource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the resource name defined for the given language.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.sppasLangResource.reset">
-<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasLangResource.reset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasLangResource.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set all members to their default value.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.sppasLangResource.set">
-<tt class="descname">set</tt><big>(</big><em>rtype</em>, <em>rpath</em>, <em>rname=''</em>, <em>rext=''</em><big>)</big><a class="headerlink" href="#structs.sppasLangResource.set" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set</code><span class="sig-paren">(</span><em>rtype</em>, <em>rpath</em>, <em>rname=''</em>, <em>rext=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasLangResource.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set resources then fix the list of available languages.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>rtype</strong> &#8211; (str) Resource type. One of: &#8220;file&#8221; or &#8220;directory&#8221;</li>
-<li><strong>rpath</strong> &#8211; (str) Resource path</li>
-<li><strong>rname</strong> &#8211; (str) Resource file name</li>
-<li><strong>rext</strong> &#8211; (str)  Resource extension</li>
+<li><strong>rtype</strong> – (str) Resource type. One of: “file” or “directory”</li>
+<li><strong>rpath</strong> – (str) Resource path</li>
+<li><strong>rname</strong> – (str) Resource file name</li>
+<li><strong>rext</strong> – (str)  Resource extension</li>
 </ul>
 </td>
 </tr>
@@ -411,13 +401,13 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="method">
 <dt id="structs.sppasLangResource.set_extension">
-<tt class="descname">set_extension</tt><big>(</big><em>resource_extension</em><big>)</big><a class="headerlink" href="#structs.sppasLangResource.set_extension" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_extension</code><span class="sig-paren">(</span><em>resource_extension</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_extension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasLangResource.set_extension" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fix the language resource file extension.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_extension</strong> &#8211; (str) Resource filename extension.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_extension</strong> – (str) Resource filename extension.</td>
 </tr>
 </tbody>
 </table>
@@ -425,13 +415,13 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="method">
 <dt id="structs.sppasLangResource.set_filename">
-<tt class="descname">set_filename</tt><big>(</big><em>resource_filename</em><big>)</big><a class="headerlink" href="#structs.sppasLangResource.set_filename" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_filename</code><span class="sig-paren">(</span><em>resource_filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasLangResource.set_filename" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fix the language resource filename.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_filename</strong> &#8211; (str) Resource filename.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_filename</strong> – (str) Resource filename.</td>
 </tr>
 </tbody>
 </table>
@@ -439,13 +429,13 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="method">
 <dt id="structs.sppasLangResource.set_lang">
-<tt class="descname">set_lang</tt><big>(</big><em>lang</em><big>)</big><a class="headerlink" href="#structs.sppasLangResource.set_lang" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_lang</code><span class="sig-paren">(</span><em>lang</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_lang"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasLangResource.set_lang" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the language.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lang</strong> &#8211; (str) The language must be UNDETERMINED or one of the language list.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lang</strong> – (str) The language must be UNDETERMINED or one of the language list.</td>
 </tr>
 </tbody>
 </table>
@@ -453,13 +443,13 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="method">
 <dt id="structs.sppasLangResource.set_path">
-<tt class="descname">set_path</tt><big>(</big><em>resource_path</em><big>)</big><a class="headerlink" href="#structs.sppasLangResource.set_path" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_path</code><span class="sig-paren">(</span><em>resource_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasLangResource.set_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fix the language resource path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_path</strong> &#8211; (str) Relative path to find the resource.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_path</strong> – (str) Relative path to find the resource.</td>
 </tr>
 </tbody>
 </table>
@@ -467,13 +457,13 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="method">
 <dt id="structs.sppasLangResource.set_type">
-<tt class="descname">set_type</tt><big>(</big><em>resource_type</em><big>)</big><a class="headerlink" href="#structs.sppasLangResource.set_type" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_type</code><span class="sig-paren">(</span><em>resource_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasLangResource.set_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the type of the resource.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_type</strong> &#8211; (str) One of &#8220;file&#8221; or &#8220;directory&#8221;.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_type</strong> – (str) One of “file” or “directory”.</td>
 </tr>
 </tbody>
 </table>
@@ -483,8 +473,8 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="class">
 <dt id="structs.sppasMetaInfo">
-<em class="property">class </em><tt class="descclassname">structs.</tt><tt class="descname">sppasMetaInfo</tt><a class="headerlink" href="#structs.sppasMetaInfo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">structs.</code><code class="descname">sppasMetaInfo</code><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasMetaInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -505,28 +495,28 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 </table>
 <p>Manage meta information of type (key,value). Allows to enable/disable
 each one. Keys are unicode strings, and values can be of any type.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">sppasMetaInfo</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">add_metainfo</span><span class="p">(</span><span class="s">&#39;author&#39;</span><span class="p">,</span> <span class="s">&#39;Brigitte Bigi&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">add_metainfo</span><span class="p">(</span><span class="s">&#39;version&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">sppasMetaInfo</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">add_metainfo</span><span class="p">(</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="s1">&#39;Brigitte Bigi&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">add_metainfo</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 <dl class="method">
 <dt id="structs.sppasMetaInfo.__init__">
-<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasMetaInfo.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasMetaInfo.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a new sppasMetaInfo instance.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.sppasMetaInfo.add_metainfo">
-<tt class="descname">add_metainfo</tt><big>(</big><em>key</em>, <em>strv</em><big>)</big><a class="headerlink" href="#structs.sppasMetaInfo.add_metainfo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_metainfo</code><span class="sig-paren">(</span><em>key</em>, <em>strv</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.add_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasMetaInfo.add_metainfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fix a meta information or update it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> &#8211; (str) The key of the meta-information</li>
-<li><strong>strv</strong> &#8211; (str)</li>
+<li><strong>key</strong> – (str) The key of the meta-information</li>
+<li><strong>strv</strong> – (str)</li>
 </ul>
 </td>
 </tr>
@@ -536,15 +526,15 @@ each one. Keys are unicode strings, and values can be of any type.</p>
 
 <dl class="method">
 <dt id="structs.sppasMetaInfo.enable_metainfo">
-<tt class="descname">enable_metainfo</tt><big>(</big><em>key</em>, <em>value=True</em><big>)</big><a class="headerlink" href="#structs.sppasMetaInfo.enable_metainfo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">enable_metainfo</code><span class="sig-paren">(</span><em>key</em>, <em>value=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.enable_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasMetaInfo.enable_metainfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enable/Disable a meta information or raise a MetaKeyError exception.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> &#8211; (str) The key of the meta-information</li>
-<li><strong>value</strong> &#8211; (bool) Status of the meta-information</li>
+<li><strong>key</strong> – (str) The key of the meta-information</li>
+<li><strong>value</strong> – (bool) Status of the meta-information</li>
 </ul>
 </td>
 </tr>
@@ -554,13 +544,13 @@ each one. Keys are unicode strings, and values can be of any type.</p>
 
 <dl class="method">
 <dt id="structs.sppasMetaInfo.get_metainfo">
-<tt class="descname">get_metainfo</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#structs.sppasMetaInfo.get_metainfo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_metainfo</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.get_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasMetaInfo.get_metainfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value of a given key or raise a MetaKeyError exception.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> &#8211; (str) The key of the meta-information</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> – (str) The key of the meta-information</td>
 </tr>
 </tbody>
 </table>
@@ -568,13 +558,13 @@ each one. Keys are unicode strings, and values can be of any type.</p>
 
 <dl class="method">
 <dt id="structs.sppasMetaInfo.is_enable_metainfo">
-<tt class="descname">is_enable_metainfo</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#structs.sppasMetaInfo.is_enable_metainfo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_enable_metainfo</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.is_enable_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasMetaInfo.is_enable_metainfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the status of a given key or raise a MetaKeyError exception.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> &#8211; (str) The key of the meta-information</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> – (str) The key of the meta-information</td>
 </tr>
 </tbody>
 </table>
@@ -582,7 +572,7 @@ each one. Keys are unicode strings, and values can be of any type.</p>
 
 <dl class="method">
 <dt id="structs.sppasMetaInfo.keys_enabled">
-<tt class="descname">keys_enabled</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasMetaInfo.keys_enabled" title="Permalink to this definition">¶</a></dt>
+<code class="descname">keys_enabled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.keys_enabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasMetaInfo.keys_enabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of the keys of enabled meta information.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -596,13 +586,13 @@ each one. Keys are unicode strings, and values can be of any type.</p>
 
 <dl class="method">
 <dt id="structs.sppasMetaInfo.pop_metainfo">
-<tt class="descname">pop_metainfo</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#structs.sppasMetaInfo.pop_metainfo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">pop_metainfo</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.pop_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasMetaInfo.pop_metainfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pop a meta information or raise a MetaKeyError exception.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> &#8211; (str) The key of the meta-information</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> – (str) The key of the meta-information</td>
 </tr>
 </tbody>
 </table>
@@ -612,8 +602,8 @@ each one. Keys are unicode strings, and values can be of any type.</p>
 
 <dl class="class">
 <dt id="structs.sppasTips">
-<em class="property">class </em><tt class="descclassname">structs.</tt><tt class="descname">sppasTips</tt><a class="headerlink" href="#structs.sppasTips" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">structs.</code><code class="descname">sppasTips</code><a class="reference internal" href="../_modules/structs/tips.html#sppasTips"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasTips" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -634,26 +624,26 @@ each one. Keys are unicode strings, and values can be of any type.</p>
 </table>
 <p>Tips are stored into a file with name TIPS_FILE. This file format is
 with one tip a line.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">sppasTips</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_message</span><span class="p">())</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">sppasTips</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_message</span><span class="p">())</span>
 </pre></div>
 </div>
 <dl class="method">
 <dt id="structs.sppasTips.__init__">
-<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasTips.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasTips.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a sppasTips instance.</p>
 <p>Load the list of message tips of the software.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.sppasTips.add_message">
-<tt class="descname">add_message</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#structs.sppasTips.add_message" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_message</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.add_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasTips.add_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new message tips in the list of tips.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> &#8211; (str) A help message.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> – (str) A help message.</td>
 </tr>
 </tbody>
 </table>
@@ -661,7 +651,7 @@ with one tip a line.</p>
 
 <dl class="method">
 <dt id="structs.sppasTips.get_message">
-<tt class="descname">get_message</tt><big>(</big><big>)</big><a class="headerlink" href="#structs.sppasTips.get_message" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_message</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.get_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasTips.get_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a random tips message.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -675,14 +665,14 @@ with one tip a line.</p>
 
 <dl class="method">
 <dt id="structs.sppasTips.load_tips">
-<tt class="descname">load_tips</tt><big>(</big><em>filename='/mnt/e/bigi/Projets/sppas/sppas/etc/tips.txt'</em><big>)</big><a class="headerlink" href="#structs.sppasTips.load_tips" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_tips</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.load_tips"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasTips.load_tips" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load message tips from a file.
 Update the existing tips of the list (if any).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (str) Name of the file to get message tips.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (str) Name of the file to get message tips.</td>
 </tr>
 </tbody>
 </table>
@@ -690,13 +680,13 @@ Update the existing tips of the list (if any).</p>
 
 <dl class="method">
 <dt id="structs.sppasTips.save_tips">
-<tt class="descname">save_tips</tt><big>(</big><em>filename='/mnt/e/bigi/Projets/sppas/sppas/etc/tips.txt'</em><big>)</big><a class="headerlink" href="#structs.sppasTips.save_tips" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_tips</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.save_tips"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.sppasTips.save_tips" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save tips in a file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (str) Name of the file to store message tips.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (str) Name of the file to store message tips.</td>
 </tr>
 </tbody>
 </table>
@@ -715,11 +705,11 @@ Update the existing tips of the list (if any).</p>
 <h3>src.structs.baseoption.py<a class="headerlink" href="#src-structs-baseoption-py" title="Permalink to this headline">¶</a></h3>
 <p>In many situations, we have to store an un-typed data and its type
 separately, plus eventually other information like a description.
-Such data is called &#8220;option&#8221;.</p>
+Such data is called “option”.</p>
 <dl class="class">
 <dt id="structs.baseoption.sppasBaseOption">
-<em class="property">class </em><tt class="descclassname">structs.baseoption.</tt><tt class="descname">sppasBaseOption</tt><big>(</big><em>option_type</em>, <em>option_value=''</em><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">structs.baseoption.</code><code class="descname">sppasBaseOption</code><span class="sig-paren">(</span><em>option_type</em>, <em>option_value=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -740,55 +730,55 @@ Such data is called &#8220;option&#8221;.</p>
 </table>
 <p>An option is a set of data with a main value and its type, plus 3 other
 variables to store any kind of information. By default, the type of an
-option is &#8220;str&#8221;, the value is an empty string and the name, text and
+option is “str”, the value is an empty string and the name, text and
 description are all empty strings.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">o</span> <span class="o">=</span> <span class="n">sppasBaseOption</span><span class="p">(</span><span class="s">&quot;integer&quot;</span><span class="p">,</span> <span class="s">&quot;3&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">o</span> <span class="o">=</span> <span class="n">sppasBaseOption</span><span class="p">(</span><span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="o">&lt;</span><span class="nb">type</span> <span class="s">&#39;int&#39;</span><span class="o">&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;int&#39;</span><span class="o">&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">get_untypedvalue</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="o">&lt;</span><span class="nb">type</span> <span class="s">&#39;str&#39;</span><span class="o">&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">&lt;</span><span class="nb">type</span> <span class="s1">&#39;str&#39;</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <dl class="method">
 <dt id="structs.baseoption.sppasBaseOption.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>option_type</em>, <em>option_value=''</em><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>option_type</em>, <em>option_value=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a sppasBaseOption instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>option_type</strong> &#8211; (str) Type of the option (i.e. &#8216;int&#8217;, &#8216;bool&#8217;,</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>option_type</strong> – (str) Type of the option (i.e. ‘int’, ‘bool’,</td>
 </tr>
 </tbody>
 </table>
-<p>&#8216;float&#8217;, ...). Notice that the type will be normalized. For example,
-&#8216;int, &#8216;integer&#8217;, &#8216;long or &#8216;short&#8217; will be all stored into &#8216;int&#8217; type.
+<p>‘float’, …). Notice that the type will be normalized. For example,
+‘int, ‘integer’, ‘long or ‘short’ will be all stored into ‘int’ type.
 :param option_value: (str) The value of the option.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.baseoption.sppasBaseOption.get_description">
-<tt class="descname">get_description</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.get_description" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_description</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.get_description" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the long text which describes the option.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.baseoption.sppasBaseOption.get_name">
-<tt class="descname">get_name</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.get_name" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.get_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the name of to this option.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.baseoption.sppasBaseOption.get_text">
-<tt class="descname">get_text</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.get_text" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_text</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.get_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the brief text which describes the option.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.baseoption.sppasBaseOption.get_type">
-<tt class="descname">get_type</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.get_type" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.get_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the type of the option.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -802,26 +792,26 @@ description are all empty strings.</p>
 
 <dl class="method">
 <dt id="structs.baseoption.sppasBaseOption.get_untypedvalue">
-<tt class="descname">get_untypedvalue</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_untypedvalue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.get_untypedvalue" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_untypedvalue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_untypedvalue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.get_untypedvalue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value as it was given,
 i.e. without taking the given type into account.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.baseoption.sppasBaseOption.get_value">
-<tt class="descname">get_value</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.get_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.get_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the typed-value or None if the type is unknown.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.baseoption.sppasBaseOption.set">
-<tt class="descname">set</tt><big>(</big><em>other</em><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.set" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set self from another instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other</strong> &#8211; (sppasBaseOption) The option from which to get information.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other</strong> – (sppasBaseOption) The option from which to get information.</td>
 </tr>
 </tbody>
 </table>
@@ -829,13 +819,13 @@ i.e. without taking the given type into account.</p>
 
 <dl class="method">
 <dt id="structs.baseoption.sppasBaseOption.set_description">
-<tt class="descname">set_description</tt><big>(</big><em>description</em><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.set_description" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_description</code><span class="sig-paren">(</span><em>description</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.set_description" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a long text to describe the option.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>description</strong> &#8211; (str) Option description.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>description</strong> – (str) Option description.</td>
 </tr>
 </tbody>
 </table>
@@ -843,13 +833,13 @@ i.e. without taking the given type into account.</p>
 
 <dl class="method">
 <dt id="structs.baseoption.sppasBaseOption.set_name">
-<tt class="descname">set_name</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.set_name" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_name</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.set_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a name to describe the option.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> &#8211; (str) Option description.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> – (str) Option description.</td>
 </tr>
 </tbody>
 </table>
@@ -857,13 +847,13 @@ i.e. without taking the given type into account.</p>
 
 <dl class="method">
 <dt id="structs.baseoption.sppasBaseOption.set_text">
-<tt class="descname">set_text</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.set_text" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_text</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.set_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a brief text to describe the option.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> &#8211; (str) Option description.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> – (str) Option description.</td>
 </tr>
 </tbody>
 </table>
@@ -871,29 +861,29 @@ i.e. without taking the given type into account.</p>
 
 <dl class="method">
 <dt id="structs.baseoption.sppasBaseOption.set_type">
-<tt class="descname">set_type</tt><big>(</big><em>option_type</em><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.set_type" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_type</code><span class="sig-paren">(</span><em>option_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.set_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a new type.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>option_type</strong> &#8211; (str) Type of the option (i.e. &#8216;int&#8217;, &#8216;bool&#8217;, &#8216;float&#8217;, ...).</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>option_type</strong> – (str) Type of the option (i.e. ‘int’, ‘bool’, ‘float’, …).</td>
 </tr>
 </tbody>
 </table>
-<p>If the option_type is not valid, type will be set to &#8216;str&#8217;.
+<p>If the option_type is not valid, type will be set to ‘str’.
 :returns: True if option_type is valid and set.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.baseoption.sppasBaseOption.set_value">
-<tt class="descname">set_value</tt><big>(</big><em>value</em><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.set_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_value</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasBaseOption.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasBaseOption.set_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a new value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> &#8211; (any type) Un-typed value of the option.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> – (any type) Un-typed value of the option.</td>
 </tr>
 </tbody>
 </table>
@@ -903,8 +893,8 @@ i.e. without taking the given type into account.</p>
 
 <dl class="class">
 <dt id="structs.baseoption.sppasOption">
-<em class="property">class </em><tt class="descclassname">structs.baseoption.</tt><tt class="descname">sppasOption</tt><big>(</big><em>option_key</em>, <em>option_type='str'</em>, <em>option_value=''</em><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasOption" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#structs.baseoption.sppasBaseOption" title="structs.baseoption.sppasBaseOption"><tt class="xref py py-class docutils literal"><span class="pre">structs.baseoption.sppasBaseOption</span></tt></a></p>
+<em class="property">class </em><code class="descclassname">structs.baseoption.</code><code class="descname">sppasOption</code><span class="sig-paren">(</span><em>option_key</em>, <em>option_type='str'</em>, <em>option_value=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasOption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#structs.baseoption.sppasBaseOption" title="structs.baseoption.sppasBaseOption"><code class="xref py py-class docutils literal notranslate"><span class="pre">structs.baseoption.sppasBaseOption</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -925,28 +915,28 @@ i.e. without taking the given type into account.</p>
 </table>
 <dl class="method">
 <dt id="structs.baseoption.sppasOption.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>option_key</em>, <em>option_type='str'</em>, <em>option_value=''</em><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasOption.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasOption.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>option_key</em>, <em>option_type='str'</em>, <em>option_value=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasOption.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasOption.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a sppasOption instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>option_key</strong> &#8211; (any type) An identifier for that option.</li>
-<li><strong>option_type</strong> &#8211; (str) Type of the option (i.e. &#8216;int&#8217;, &#8216;bool&#8217;,</li>
+<li><strong>option_key</strong> – (any type) An identifier for that option.</li>
+<li><strong>option_type</strong> – (str) Type of the option (i.e. ‘int’, ‘bool’,</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<p>&#8216;float&#8217;, ...). Notice that the type will be normalized. For example,
-&#8216;int, &#8216;integer&#8217;, &#8216;long or &#8216;short&#8217; will be all stored into &#8216;int&#8217; type.
+<p>‘float’, …). Notice that the type will be normalized. For example,
+‘int, ‘integer’, ‘long or ‘short’ will be all stored into ‘int’ type.
 :param option_value: (str) The value of the option.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.baseoption.sppasOption.get_key">
-<tt class="descname">get_key</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/baseoption.html#sppasOption.get_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasOption.get_key" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_key</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/baseoption.html#sppasOption.get_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.baseoption.sppasOption.get_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the key of that option.</p>
 </dd></dl>
 
@@ -961,18 +951,18 @@ i.e. without taking the given type into account.</p>
 <p>Implementation of a Direct Acyclic Graph.</p>
 <dl class="class">
 <dt id="structs.dag.DAG">
-<em class="property">class </em><tt class="descclassname">structs.dag.</tt><tt class="descname">DAG</tt><a class="reference internal" href="../_modules/structs/dag.html#DAG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">structs.dag.</code><code class="descname">DAG</code><a class="reference internal" href="../_modules/structs/dag.html#DAG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Direct Acyclic Graph.</p>
 <p>Implementation inspired from: <a class="reference external" href="http://www.python.org/doc/essays/graphs/">http://www.python.org/doc/essays/graphs/</a></p>
 <dl class="attribute">
 <dt id="structs.dag.DAG.Graph">
-<tt class="descname">Graph</tt><a class="headerlink" href="#structs.dag.DAG.Graph" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Graph</code><a class="headerlink" href="#structs.dag.DAG.Graph" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="structs.dag.DAG.__init__">
-<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/dag.html#DAG.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/dag.html#DAG.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new DAG instance.</p>
 <p>This class represents the DAG as a dictionary.
 For example:</p>
@@ -986,54 +976,54 @@ For example:</p>
 </ul>
 </div></blockquote>
 <p>will be represented as:
-{&#8216;A&#8217;: [&#8216;B&#8217;, &#8216;C&#8217;], &#8216;B&#8217;: [&#8216;C&#8217;, &#8216;D&#8217;], &#8216;C&#8217;: [&#8216;D&#8217;],}</p>
+{‘A’: [‘B’, ‘C’], ‘B’: [‘C’, ‘D’], ‘C’: [‘D’],}</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.dag.DAG.add_edge">
-<tt class="descname">add_edge</tt><big>(</big><em>src</em>, <em>dst</em><big>)</big><a class="reference internal" href="../_modules/structs/dag.html#DAG.add_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.add_edge" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_edge</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/dag.html#DAG.add_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.add_edge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new edge to a node.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.dag.DAG.add_node">
-<tt class="descname">add_node</tt><big>(</big><em>node</em><big>)</big><a class="reference internal" href="../_modules/structs/dag.html#DAG.add_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.add_node" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_node</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/dag.html#DAG.add_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.add_node" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new node (not added if already in the DAG).</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.dag.DAG.find_all_paths">
-<tt class="descname">find_all_paths</tt><big>(</big><em>start</em>, <em>end</em>, <em>path=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../_modules/structs/dag.html#DAG.find_all_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.find_all_paths" title="Permalink to this definition">¶</a></dt>
+<code class="descname">find_all_paths</code><span class="sig-paren">(</span><em>start</em>, <em>end</em>, <em>path=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/dag.html#DAG.find_all_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.find_all_paths" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="structs.dag.DAG.find_path">
-<tt class="descname">find_path</tt><big>(</big><em>start</em>, <em>end</em>, <em>path=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../_modules/structs/dag.html#DAG.find_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.find_path" title="Permalink to this definition">¶</a></dt>
+<code class="descname">find_path</code><span class="sig-paren">(</span><em>start</em>, <em>end</em>, <em>path=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/dag.html#DAG.find_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.find_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine a path between two nodes.</p>
 <p>It takes a graph and the start and end nodes as arguments. It
 will return a list of nodes (including the start and end nodes)
 comprising the path. When no path can be found, it returns None.
 Note: The same node will not occur more than once on the path
-returned (i.e. it won&#8217;t contain cycles).</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">find_path</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s">&#39;A&#39;</span><span class="p">,</span> <span class="s">&#39;C&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">,</span> <span class="s">&#39;B&#39;</span><span class="p">,</span> <span class="s">&#39;C&#39;</span><span class="p">]</span>
+returned (i.e. it won’t contain cycles).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">find_path</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.dag.DAG.find_shortest_path">
-<tt class="descname">find_shortest_path</tt><big>(</big><em>start</em>, <em>end</em>, <em>path=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../_modules/structs/dag.html#DAG.find_shortest_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.find_shortest_path" title="Permalink to this definition">¶</a></dt>
+<code class="descname">find_shortest_path</code><span class="sig-paren">(</span><em>start</em>, <em>end</em>, <em>path=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/dag.html#DAG.find_shortest_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.find_shortest_path" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="structs.dag.DAG.remove_edge">
-<tt class="descname">remove_edge</tt><big>(</big><em>src</em>, <em>dst</em><big>)</big><a class="reference internal" href="../_modules/structs/dag.html#DAG.remove_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.remove_edge" title="Permalink to this definition">¶</a></dt>
+<code class="descname">remove_edge</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/dag.html#DAG.remove_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.remove_edge" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="structs.dag.DAG.remove_node">
-<tt class="descname">remove_node</tt><big>(</big><em>node</em><big>)</big><a class="reference internal" href="../_modules/structs/dag.html#DAG.remove_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.remove_node" title="Permalink to this definition">¶</a></dt>
+<code class="descname">remove_node</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/dag.html#DAG.remove_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.dag.DAG.remove_node" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a node.</p>
 </dd></dl>
 
@@ -1050,8 +1040,8 @@ resources. Here, we store information about the type of resources,
 the path to get them, etc.</p>
 <dl class="class">
 <dt id="structs.lang.sppasLangResource">
-<em class="property">class </em><tt class="descclassname">structs.lang.</tt><tt class="descname">sppasLangResource</tt><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">structs.lang.</code><code class="descname">sppasLangResource</code><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1072,23 +1062,23 @@ the path to get them, etc.</p>
 </table>
 <dl class="attribute">
 <dt id="structs.lang.sppasLangResource.RESOURCES_TYPES">
-<tt class="descname">RESOURCES_TYPES</tt><em class="property"> = ['file', 'directory']</em><a class="headerlink" href="#structs.lang.sppasLangResource.RESOURCES_TYPES" title="Permalink to this definition">¶</a></dt>
+<code class="descname">RESOURCES_TYPES</code><em class="property"> = ['file', 'directory']</em><a class="headerlink" href="#structs.lang.sppasLangResource.RESOURCES_TYPES" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="structs.lang.sppasLangResource.__init__">
-<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a sppasLangResource instance.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.lang.sppasLangResource.get_lang">
-<tt class="descname">get_lang</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.get_lang"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.get_lang" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_lang</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.get_lang"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.get_lang" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the language name.</p>
 <p>Language names in SPPAS are commonly represented in iso-639-3.
 It is a code that aims to define three-letter identifiers for all
-known human languages. &#8220;und&#8221; is representing an undetermined language.
-See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">http://www-01.sil.org/iso639-3/</a>&gt; for details...</p>
+known human languages. “und” is representing an undetermined language.
+See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">http://www-01.sil.org/iso639-3/</a>&gt; for details…</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1101,7 +1091,7 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="method">
 <dt id="structs.lang.sppasLangResource.get_langlist">
-<tt class="descname">get_langlist</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.get_langlist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.get_langlist" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_langlist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.get_langlist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.get_langlist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of available languages.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1115,29 +1105,29 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="method">
 <dt id="structs.lang.sppasLangResource.get_langresource">
-<tt class="descname">get_langresource</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.get_langresource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.get_langresource" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_langresource</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.get_langresource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.get_langresource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the resource name defined for the given language.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.lang.sppasLangResource.reset">
-<tt class="descname">reset</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.reset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set all members to their default value.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.lang.sppasLangResource.set">
-<tt class="descname">set</tt><big>(</big><em>rtype</em>, <em>rpath</em>, <em>rname=''</em>, <em>rext=''</em><big>)</big><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.set" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set</code><span class="sig-paren">(</span><em>rtype</em>, <em>rpath</em>, <em>rname=''</em>, <em>rext=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set resources then fix the list of available languages.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>rtype</strong> &#8211; (str) Resource type. One of: &#8220;file&#8221; or &#8220;directory&#8221;</li>
-<li><strong>rpath</strong> &#8211; (str) Resource path</li>
-<li><strong>rname</strong> &#8211; (str) Resource file name</li>
-<li><strong>rext</strong> &#8211; (str)  Resource extension</li>
+<li><strong>rtype</strong> – (str) Resource type. One of: “file” or “directory”</li>
+<li><strong>rpath</strong> – (str) Resource path</li>
+<li><strong>rname</strong> – (str) Resource file name</li>
+<li><strong>rext</strong> – (str)  Resource extension</li>
 </ul>
 </td>
 </tr>
@@ -1147,13 +1137,13 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="method">
 <dt id="structs.lang.sppasLangResource.set_extension">
-<tt class="descname">set_extension</tt><big>(</big><em>resource_extension</em><big>)</big><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_extension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.set_extension" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_extension</code><span class="sig-paren">(</span><em>resource_extension</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_extension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.set_extension" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fix the language resource file extension.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_extension</strong> &#8211; (str) Resource filename extension.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_extension</strong> – (str) Resource filename extension.</td>
 </tr>
 </tbody>
 </table>
@@ -1161,13 +1151,13 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="method">
 <dt id="structs.lang.sppasLangResource.set_filename">
-<tt class="descname">set_filename</tt><big>(</big><em>resource_filename</em><big>)</big><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.set_filename" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_filename</code><span class="sig-paren">(</span><em>resource_filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.set_filename" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fix the language resource filename.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_filename</strong> &#8211; (str) Resource filename.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_filename</strong> – (str) Resource filename.</td>
 </tr>
 </tbody>
 </table>
@@ -1175,13 +1165,13 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="method">
 <dt id="structs.lang.sppasLangResource.set_lang">
-<tt class="descname">set_lang</tt><big>(</big><em>lang</em><big>)</big><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_lang"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.set_lang" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_lang</code><span class="sig-paren">(</span><em>lang</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_lang"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.set_lang" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the language.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lang</strong> &#8211; (str) The language must be UNDETERMINED or one of the language list.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lang</strong> – (str) The language must be UNDETERMINED or one of the language list.</td>
 </tr>
 </tbody>
 </table>
@@ -1189,13 +1179,13 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="method">
 <dt id="structs.lang.sppasLangResource.set_path">
-<tt class="descname">set_path</tt><big>(</big><em>resource_path</em><big>)</big><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.set_path" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_path</code><span class="sig-paren">(</span><em>resource_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.set_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fix the language resource path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_path</strong> &#8211; (str) Relative path to find the resource.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_path</strong> – (str) Relative path to find the resource.</td>
 </tr>
 </tbody>
 </table>
@@ -1203,13 +1193,13 @@ See &lt;<a class="reference external" href="http://www-01.sil.org/iso639-3/">htt
 
 <dl class="method">
 <dt id="structs.lang.sppasLangResource.set_type">
-<tt class="descname">set_type</tt><big>(</big><em>resource_type</em><big>)</big><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.set_type" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_type</code><span class="sig-paren">(</span><em>resource_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/lang.html#sppasLangResource.set_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.lang.sppasLangResource.set_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the type of the resource.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_type</strong> &#8211; (str) One of &#8220;file&#8221; or &#8220;directory&#8221;.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_type</strong> – (str) One of “file” or “directory”.</td>
 </tr>
 </tbody>
 </table>
@@ -1228,8 +1218,8 @@ value is a tuple with first argument of type boolean to indicate the
 state of the key: enabled/disabled.</p>
 <dl class="class">
 <dt id="structs.metainfo.sppasMetaInfo">
-<em class="property">class </em><tt class="descclassname">structs.metainfo.</tt><tt class="descname">sppasMetaInfo</tt><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">structs.metainfo.</code><code class="descname">sppasMetaInfo</code><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1250,28 +1240,28 @@ state of the key: enabled/disabled.</p>
 </table>
 <p>Manage meta information of type (key,value). Allows to enable/disable
 each one. Keys are unicode strings, and values can be of any type.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">sppasMetaInfo</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">add_metainfo</span><span class="p">(</span><span class="s">&#39;author&#39;</span><span class="p">,</span> <span class="s">&#39;Brigitte Bigi&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">add_metainfo</span><span class="p">(</span><span class="s">&#39;version&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">sppasMetaInfo</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">add_metainfo</span><span class="p">(</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="s1">&#39;Brigitte Bigi&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">add_metainfo</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 <dl class="method">
 <dt id="structs.metainfo.sppasMetaInfo.__init__">
-<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a new sppasMetaInfo instance.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.metainfo.sppasMetaInfo.add_metainfo">
-<tt class="descname">add_metainfo</tt><big>(</big><em>key</em>, <em>strv</em><big>)</big><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.add_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo.add_metainfo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_metainfo</code><span class="sig-paren">(</span><em>key</em>, <em>strv</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.add_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo.add_metainfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fix a meta information or update it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> &#8211; (str) The key of the meta-information</li>
-<li><strong>strv</strong> &#8211; (str)</li>
+<li><strong>key</strong> – (str) The key of the meta-information</li>
+<li><strong>strv</strong> – (str)</li>
 </ul>
 </td>
 </tr>
@@ -1281,15 +1271,15 @@ each one. Keys are unicode strings, and values can be of any type.</p>
 
 <dl class="method">
 <dt id="structs.metainfo.sppasMetaInfo.enable_metainfo">
-<tt class="descname">enable_metainfo</tt><big>(</big><em>key</em>, <em>value=True</em><big>)</big><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.enable_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo.enable_metainfo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">enable_metainfo</code><span class="sig-paren">(</span><em>key</em>, <em>value=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.enable_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo.enable_metainfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enable/Disable a meta information or raise a MetaKeyError exception.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> &#8211; (str) The key of the meta-information</li>
-<li><strong>value</strong> &#8211; (bool) Status of the meta-information</li>
+<li><strong>key</strong> – (str) The key of the meta-information</li>
+<li><strong>value</strong> – (bool) Status of the meta-information</li>
 </ul>
 </td>
 </tr>
@@ -1299,13 +1289,13 @@ each one. Keys are unicode strings, and values can be of any type.</p>
 
 <dl class="method">
 <dt id="structs.metainfo.sppasMetaInfo.get_metainfo">
-<tt class="descname">get_metainfo</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.get_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo.get_metainfo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_metainfo</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.get_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo.get_metainfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value of a given key or raise a MetaKeyError exception.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> &#8211; (str) The key of the meta-information</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> – (str) The key of the meta-information</td>
 </tr>
 </tbody>
 </table>
@@ -1313,13 +1303,13 @@ each one. Keys are unicode strings, and values can be of any type.</p>
 
 <dl class="method">
 <dt id="structs.metainfo.sppasMetaInfo.is_enable_metainfo">
-<tt class="descname">is_enable_metainfo</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.is_enable_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo.is_enable_metainfo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_enable_metainfo</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.is_enable_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo.is_enable_metainfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the status of a given key or raise a MetaKeyError exception.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> &#8211; (str) The key of the meta-information</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> – (str) The key of the meta-information</td>
 </tr>
 </tbody>
 </table>
@@ -1327,7 +1317,7 @@ each one. Keys are unicode strings, and values can be of any type.</p>
 
 <dl class="method">
 <dt id="structs.metainfo.sppasMetaInfo.keys_enabled">
-<tt class="descname">keys_enabled</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.keys_enabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo.keys_enabled" title="Permalink to this definition">¶</a></dt>
+<code class="descname">keys_enabled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.keys_enabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo.keys_enabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of the keys of enabled meta information.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1341,13 +1331,13 @@ each one. Keys are unicode strings, and values can be of any type.</p>
 
 <dl class="method">
 <dt id="structs.metainfo.sppasMetaInfo.pop_metainfo">
-<tt class="descname">pop_metainfo</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.pop_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo.pop_metainfo" title="Permalink to this definition">¶</a></dt>
+<code class="descname">pop_metainfo</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/metainfo.html#sppasMetaInfo.pop_metainfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.metainfo.sppasMetaInfo.pop_metainfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pop a meta information or raise a MetaKeyError exception.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> &#8211; (str) The key of the meta-information</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> – (str) The key of the meta-information</td>
 </tr>
 </tbody>
 </table>
@@ -1365,8 +1355,8 @@ each one. Keys are unicode strings, and values can be of any type.</p>
 outputs either True or False.</p>
 <dl class="class">
 <dt id="structs.predicate.sppasPredicate">
-<em class="property">class </em><tt class="descclassname">structs.predicate.</tt><tt class="descname">sppasPredicate</tt><big>(</big><em>pred</em><big>)</big><a class="reference internal" href="../_modules/structs/predicate.html#sppasPredicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.predicate.sppasPredicate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">structs.predicate.</code><code class="descname">sppasPredicate</code><span class="sig-paren">(</span><em>pred</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/predicate.html#sppasPredicate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.predicate.sppasPredicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1387,22 +1377,22 @@ outputs either True or False.</p>
 </table>
 <dl class="method">
 <dt id="structs.predicate.sppasPredicate.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>pred</em><big>)</big><a class="reference internal" href="../_modules/structs/predicate.html#sppasPredicate.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.predicate.sppasPredicate.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>pred</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/predicate.html#sppasPredicate.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.predicate.sppasPredicate.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a sppasPredicate instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pred</strong> &#8211; Boolean function.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pred</strong> – Boolean function.</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">pred</span> <span class="o">=</span> <span class="n">sppasPredicate</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="n">sppasPredicate</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pred</span> <span class="o">=</span> <span class="n">sppasPredicate</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="n">sppasPredicate</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span> <span class="k">if</span> <span class="n">pred</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>
 <span class="go">[0, 3, 5, 6, 9, 10, 12, 15]</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">pred</span> <span class="o">=</span> <span class="n">sppasPredicate</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">sppasPredicate</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pred</span> <span class="o">=</span> <span class="n">sppasPredicate</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">sppasPredicate</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span> <span class="k">if</span> <span class="n">pred</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>
 <span class="go">[0, 15]</span>
 </pre></div>
@@ -1420,27 +1410,28 @@ outputs either True or False.</p>
 <p>Exceptions for structs package.</p>
 <dl class="exception">
 <dt id="structs.structsexc.LangNameError">
-<em class="property">exception </em><tt class="descclassname">structs.structsexc.</tt><tt class="descname">LangNameError</tt><big>(</big><em>lang</em><big>)</big><a class="reference internal" href="../_modules/structs/structsexc.html#LangNameError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.LangNameError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.ValueError</span></tt></p>
+<em class="property">exception </em><code class="descclassname">structs.structsexc.</code><code class="descname">LangNameError</code><span class="sig-paren">(</span><em>lang</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/structsexc.html#LangNameError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.LangNameError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.ValueError</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">ERROR 6028:</th><td class="field-body">The language must be &#8220;und&#8221; or one of the language list. Unknown language {lang}.</td>
+<tr class="field-odd field"><th class="field-name">ERROR 6028:</th><td class="field-body">The language must be “und” or one of the language list. Unknown language {lang}.</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="structs.structsexc.LangNameError.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>lang</em><big>)</big><a class="reference internal" href="../_modules/structs/structsexc.html#LangNameError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.LangNameError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>lang</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/structsexc.html#LangNameError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.LangNameError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="structs.structsexc.LangPathError">
-<em class="property">exception </em><tt class="descclassname">structs.structsexc.</tt><tt class="descname">LangPathError</tt><big>(</big><em>folder</em><big>)</big><a class="reference internal" href="../_modules/structs/structsexc.html#LangPathError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.LangPathError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.TypeError</span></tt></p>
+<em class="property">exception </em><code class="descclassname">structs.structsexc.</code><code class="descname">LangPathError</code><span class="sig-paren">(</span><em>folder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/structsexc.html#LangPathError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.LangPathError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.TypeError</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1451,15 +1442,16 @@ outputs either True or False.</p>
 </table>
 <dl class="method">
 <dt id="structs.structsexc.LangPathError.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>folder</em><big>)</big><a class="reference internal" href="../_modules/structs/structsexc.html#LangPathError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.LangPathError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>folder</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/structsexc.html#LangPathError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.LangPathError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="structs.structsexc.LangTypeError">
-<em class="property">exception </em><tt class="descclassname">structs.structsexc.</tt><tt class="descname">LangTypeError</tt><big>(</big><em>lang_type</em><big>)</big><a class="reference internal" href="../_modules/structs/structsexc.html#LangTypeError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.LangTypeError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.TypeError</span></tt></p>
+<em class="property">exception </em><code class="descclassname">structs.structsexc.</code><code class="descname">LangTypeError</code><span class="sig-paren">(</span><em>lang_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/structsexc.html#LangTypeError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.LangTypeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.TypeError</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1470,15 +1462,16 @@ outputs either True or False.</p>
 </table>
 <dl class="method">
 <dt id="structs.structsexc.LangTypeError.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>lang_type</em><big>)</big><a class="reference internal" href="../_modules/structs/structsexc.html#LangTypeError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.LangTypeError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>lang_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/structsexc.html#LangTypeError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.LangTypeError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="exception">
 <dt id="structs.structsexc.MetaKeyError">
-<em class="property">exception </em><tt class="descclassname">structs.structsexc.</tt><tt class="descname">MetaKeyError</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../_modules/structs/structsexc.html#MetaKeyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.MetaKeyError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.KeyError</span></tt></p>
+<em class="property">exception </em><code class="descclassname">structs.structsexc.</code><code class="descname">MetaKeyError</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/structsexc.html#MetaKeyError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.MetaKeyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.KeyError</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1489,8 +1482,9 @@ outputs either True or False.</p>
 </table>
 <dl class="method">
 <dt id="structs.structsexc.MetaKeyError.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../_modules/structs/structsexc.html#MetaKeyError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.MetaKeyError.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/structsexc.html#MetaKeyError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.structsexc.MetaKeyError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>x.__init__(…) initializes x; see help(type(x)) for signature</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -1501,11 +1495,11 @@ outputs either True or False.</p>
 <div class="section" id="src-structs-tips-py">
 <h3>src.structs.tips.py<a class="headerlink" href="#src-structs-tips-py" title="Permalink to this headline">¶</a></h3>
 <p>Tips is a set of short help messages that a software tool can display 
-when it&#8217;s starting. Some users find them useful...</p>
+when it’s starting. Some users find them useful…</p>
 <dl class="class">
 <dt id="structs.tips.sppasTips">
-<em class="property">class </em><tt class="descclassname">structs.tips.</tt><tt class="descname">sppasTips</tt><a class="reference internal" href="../_modules/structs/tips.html#sppasTips"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.tips.sppasTips" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">structs.tips.</code><code class="descname">sppasTips</code><a class="reference internal" href="../_modules/structs/tips.html#sppasTips"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.tips.sppasTips" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1526,26 +1520,26 @@ when it&#8217;s starting. Some users find them useful...</p>
 </table>
 <p>Tips are stored into a file with name TIPS_FILE. This file format is
 with one tip a line.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">sppasTips</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_message</span><span class="p">())</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">sppasTips</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">get_message</span><span class="p">())</span>
 </pre></div>
 </div>
 <dl class="method">
 <dt id="structs.tips.sppasTips.__init__">
-<tt class="descname">__init__</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.tips.sppasTips.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.tips.sppasTips.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a sppasTips instance.</p>
 <p>Load the list of message tips of the software.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="structs.tips.sppasTips.add_message">
-<tt class="descname">add_message</tt><big>(</big><em>message</em><big>)</big><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.add_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.tips.sppasTips.add_message" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_message</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.add_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.tips.sppasTips.add_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new message tips in the list of tips.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> &#8211; (str) A help message.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> – (str) A help message.</td>
 </tr>
 </tbody>
 </table>
@@ -1553,7 +1547,7 @@ with one tip a line.</p>
 
 <dl class="method">
 <dt id="structs.tips.sppasTips.get_message">
-<tt class="descname">get_message</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.get_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.tips.sppasTips.get_message" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_message</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.get_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.tips.sppasTips.get_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a random tips message.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1567,14 +1561,14 @@ with one tip a line.</p>
 
 <dl class="method">
 <dt id="structs.tips.sppasTips.load_tips">
-<tt class="descname">load_tips</tt><big>(</big><em>filename='/mnt/e/bigi/Projets/sppas/sppas/etc/tips.txt'</em><big>)</big><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.load_tips"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.tips.sppasTips.load_tips" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_tips</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.load_tips"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.tips.sppasTips.load_tips" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load message tips from a file.
 Update the existing tips of the list (if any).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (str) Name of the file to get message tips.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (str) Name of the file to get message tips.</td>
 </tr>
 </tbody>
 </table>
@@ -1582,13 +1576,13 @@ Update the existing tips of the list (if any).</p>
 
 <dl class="method">
 <dt id="structs.tips.sppasTips.save_tips">
-<tt class="descname">save_tips</tt><big>(</big><em>filename='/mnt/e/bigi/Projets/sppas/sppas/etc/tips.txt'</em><big>)</big><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.save_tips"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.tips.sppasTips.save_tips" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_tips</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/structs/tips.html#sppasTips.save_tips"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#structs.tips.sppasTips.save_tips" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save tips in a file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; (str) Name of the file to store message tips.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (str) Name of the file to store message tips.</td>
 </tr>
 </tbody>
 </table>
@@ -1604,7 +1598,7 @@ Update the existing tips of the list (if any).</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
@@ -1652,29 +1646,30 @@ Update the existing tips of the list (if any).</p>
   <h4>Next topic</h4>
   <p class="topless"><a href="utils.html"
                         title="next chapter">utils package</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/rst/structs.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/rst/structs.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -1689,12 +1684,12 @@ Update the existing tips of the list (if any).</p>
         <li class="right" >
           <a href="resources.html" title="resources package"
              >previous</a> |</li>
-        <li><a href="../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">SPPAS 1.9.8 documentation</a> &#187;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
     </div>
   </body>
 </html>

@@ -967,8 +967,7 @@ class sppasTier(sppasMetaData):
 
         The current controlled vocabulary is deleted.
 
-        :param name: (str) Name of the controlled vocabulary. The name of
-        the tier is used by default.
+        :param name: (str) Name of the controlled vocabulary. The name of the tier is used by default.
 
         """
         if name is None:

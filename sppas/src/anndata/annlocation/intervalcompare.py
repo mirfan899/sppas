@@ -101,7 +101,6 @@
 """
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AnnDataValueError
-from ..anndataexc import AnnDataNegValueError
 from ..basecompare import sppasBaseCompare
 
 from .point import sppasPoint
@@ -172,7 +171,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
         :param i1:  |-------|
         :param i2:                  |-------|
-        :param max_delay: (int/float/sppasDuration) Maximum delay between the
+        :param max_delay: (int/float/sppasDuration) Maximum delay between the \
             end of i1 and the beginning of i2.
         :param **kwargs: unused.
 
@@ -215,7 +214,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
         :param i1:                  |--------|
         :param i2:  |-------|
-        :param max_delay: (int/float/sppasDuration) Maximum delay between
+        :param max_delay: (int/float/sppasDuration) Maximum delay between \
             the end of i2 and the beginning of i1.
         :param **kwargs: unused.
 
@@ -330,9 +329,9 @@ class sppasIntervalCompare(sppasBaseCompare):
 
         :param i1:  |-------|
         :param i2:      |------|
-        :param overlap_min: (int/float/sppasDuration) Minimum duration of the
+        :param overlap_min: (int/float/sppasDuration) Minimum duration of the \
             overlap between i1 and i2.
-        :param percent: (bool) The min_dur parameter is a percentage of i1,
+        :param percent: (bool) The min_dur parameter is a percentage of i1, \
             instead of an absolute duration.
         :param **kwargs: unused.
 

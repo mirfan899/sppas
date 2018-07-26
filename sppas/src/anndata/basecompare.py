@@ -69,4 +69,3 @@ class sppasBaseCompare(object):
         """ Return the list of comparison functions. """
 
         return list(self.methods.keys())
-

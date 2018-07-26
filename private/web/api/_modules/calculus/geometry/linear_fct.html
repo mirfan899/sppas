@@ -1,33 +1,22 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>calculus.geometry.linear_fct &mdash; SPPAS 1.9.8 documentation</title>
-    
+    <title>calculus.geometry.linear_fct &#8212; SPPAS 1.9.8 documentation</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '1.9.8',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../../index.html" />
-    <link rel="up" title="calculus" href="../../calculus.html" /> 
-  </head>
-  <body>
-    <div class="related">
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -36,19 +25,18 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" >Module code</a> &raquo;</li>
-          <li><a href="../../calculus.html" accesskey="U">calculus</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for calculus.geometry.linear_fct</h1><div class="highlight"><pre>
-<span class="c"># -*- coding: UTF-8 -*-</span>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -105,7 +93,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="slope"><a class="viewcode-back" href="../../../rst/calculus.geometry.html#calculus.geometry.linear_fct.slope">[docs]</a><span class="k">def</span> <span class="nf">slope</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
@@ -116,7 +104,7 @@
 <span class="sd">    :returns: float value</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c"># test types</span>
+    <span class="c1"># test types</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">x1</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">y1</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -125,18 +113,18 @@
     <span class="k">except</span><span class="p">:</span>
         <span class="k">raise</span>
 
-    <span class="c"># test values (p1 and p2 must be different)</span>
+    <span class="c1"># test values (p1 and p2 must be different)</span>
     <span class="k">if</span> <span class="n">x1</span> <span class="o">==</span> <span class="n">x2</span> <span class="ow">and</span> <span class="n">y1</span> <span class="o">==</span> <span class="n">y2</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span>
 
     <span class="n">x_diff</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span>
     <span class="n">y_diff</span> <span class="o">=</span> <span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span>
 
-    <span class="k">return</span> <span class="n">y_diff</span> <span class="o">/</span> <span class="n">x_diff</span>
+    <span class="k">return</span> <span class="n">y_diff</span> <span class="o">/</span> <span class="n">x_diff</span></div>
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
-</div>
+
 <div class="viewcode-block" id="intercept"><a class="viewcode-back" href="../../../rst/calculus.geometry.html#calculus.geometry.linear_fct.intercept">[docs]</a><span class="k">def</span> <span class="nf">intercept</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Estimates the intercept between 2 points.</span>
 
@@ -148,11 +136,11 @@
     <span class="n">a</span> <span class="o">=</span> <span class="n">slope</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
     <span class="n">b</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
-    <span class="k">return</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">b</span></div>
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
-</div>
+
 <div class="viewcode-block" id="slope_intercept"><a class="viewcode-back" href="../../../rst/calculus.geometry.html#calculus.geometry.linear_fct.slope_intercept">[docs]</a><span class="k">def</span> <span class="nf">slope_intercept</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Returns the slope and the intercept.</span>
 
@@ -164,11 +152,11 @@
     <span class="n">a</span> <span class="o">=</span> <span class="n">slope</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
     <span class="n">b</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 
-    <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span></div>
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
-</div>
+
 <div class="viewcode-block" id="linear_fct"><a class="viewcode-back" href="../../../rst/calculus.geometry.html#calculus.geometry.linear_fct.linear_fct">[docs]</a><span class="k">def</span> <span class="nf">linear_fct</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Return f(x) of the linear function f(x) = ax + b.</span>
 
@@ -180,11 +168,11 @@
     <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">a</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="n">b</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span></div>
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
-</div>
+
 <div class="viewcode-block" id="linear_values"><a class="viewcode-back" href="../../../rst/calculus.geometry.html#calculus.geometry.linear_fct.linear_values">[docs]</a><span class="k">def</span> <span class="nf">linear_values</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Estimates the values between 2 points, step-by-step.</span>
 
@@ -205,23 +193,23 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">delta</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
-    <span class="c"># linear function parameters</span>
+    <span class="c1"># linear function parameters</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">slope_intercept</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
 
     <span class="n">x1</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">x2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-    <span class="c"># number of values to add in the array</span>
+    <span class="c1"># number of values to add in the array</span>
     <span class="n">steps</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">x2</span><span class="o">-</span><span class="n">x1</span><span class="p">)</span> <span class="o">/</span> <span class="n">delta</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">]</span> <span class="o">*</span> <span class="n">steps</span>
 
-    <span class="c"># values to add in the array, from p1 to previous-p2</span>
+    <span class="c1"># values to add in the array, from p1 to previous-p2</span>
     <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">step</span><span class="o">*</span><span class="n">delta</span><span class="p">)</span> <span class="o">+</span> <span class="n">x1</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">linear_fct</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
         <span class="n">array</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
 
-    <span class="c"># first and last values (i.e. p1 and p2)</span>
+    <span class="c1"># first and last values (i.e. p1 and p2)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">linear_fct</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
     <span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">linear_fct</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
@@ -233,26 +221,25 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -261,14 +248,13 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" >Module code</a> &raquo;</li>
-          <li><a href="../../calculus.html" >calculus</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
     </div>
   </body>
 </html>

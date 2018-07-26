@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
-"""
+r"""
+
     ..
         ---------------------------------------------------------------------
          ___   __    __    __    ___
@@ -43,14 +44,14 @@ from .metadata import sppasMetaData
 
 
 class sppasMedia(sppasMetaData):
-    """
+    """ Generic representation of a media file.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Generic representation of a media file.
-    
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
     """
     def __init__(self, filename, media_id=None, mime_type=None):
         """ Creates a new sppasMedia instance.

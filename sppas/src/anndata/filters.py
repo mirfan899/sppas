@@ -45,15 +45,15 @@
     sppasAnnSet() can be combined with operators & and |, like for any other
     'set' in Python, 'an unordered collection of distinct hashable objects'.
 
-    Example1: extract silences:
+    :Example1: extract silences:
 
         >>> f.tag(exact=u('#')))
 
-    Example2: extract silences more than 200ms
+    :Example2: extract silences more than 200ms
 
         >>> f.tag(exact=u("#")) & f.dur(gt=0.2)
 
-    Example3: find the annotations with at least a label with a tag
+    :Example3: find the annotations with at least a label with a tag
     starting by "pa" and ending by "a" like "pa", "papa", "pasta", etc:
 
         >>> f.tag(startswith="pa", endswith='a')
@@ -172,8 +172,8 @@ class sppasAnnSet(object):
         """ Create a tier from the data set.
 
         :param name: (str) Name of the tier to be returned
-        :param annot_format: (bool) format of the resulting annotation label.
-            By default, the label of the annotation is used. Instead,
+        :param annot_value: (bool) format of the resulting annotation label. \
+            By default, the label of the annotation is used. Instead, \
             its value in the data set is used.
 
         :returns: (sppasTier)
@@ -292,7 +292,7 @@ class sppasFilters(object):
         """ Apply functions on all tags of all labels of annotations.
 
         Each argument is made of a function name and its expected value.
-        Each function can be prefixed with "not_", like:
+        Each function can be prefixed with 'not_', like:
 
             >>> f.tag(startswith="pa", not_endswith='a', logic_bool="and")
             >>> f.tag(startswith="pa") & f.tag(not_endswith='a')

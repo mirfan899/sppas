@@ -1,33 +1,22 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>anndata.aio.praat &mdash; SPPAS 1.9.8 documentation</title>
-    
+    <title>anndata.aio.praat &#8212; SPPAS 1.9.8 documentation</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '1.9.8',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../../index.html" />
-    <link rel="up" title="Module code" href="../../index.html" /> 
-  </head>
-  <body>
-    <div class="related">
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -36,18 +25,18 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for anndata.aio.praat</h1><div class="highlight"><pre>
-<span class="c"># -*- coding: UTF-8 -*-</span>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -95,32 +84,32 @@
 <span class="kn">import</span> <span class="nn">codecs</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
-<span class="kn">import</span> <span class="nn">sppas</span>
-<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="kn">import</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">sppas.src.config</span> <span class="k">import</span> <span class="n">sg</span>
+<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="k">import</span> <span class="n">u</span>
 
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AioEncodingError</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AioEmptyTierError</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AioMultiTiersError</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AioLocationTypeError</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AnnDataTypeError</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AioLineFormatError</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AioNoTiersError</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AioFormatError</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">TagValueError</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="kn">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="kn">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="kn">import</span> <span class="n">sppasInterval</span>
-<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="kn">import</span> <span class="n">sppasLabel</span>
-<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="kn">import</span> <span class="n">sppasTag</span>
-<span class="kn">from</span> <span class="nn">..annotation</span> <span class="kn">import</span> <span class="n">sppasAnnotation</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioEncodingError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioEmptyTierError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioMultiTiersError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioLocationTypeError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioLineFormatError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioNoTiersError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioFormatError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">TagValueError</span>
+<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="k">import</span> <span class="n">sppasLabel</span>
+<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
+<span class="kn">from</span> <span class="nn">..annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
 
-<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="kn">import</span> <span class="n">fill_gaps</span>
-<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="kn">import</span> <span class="n">merge_overlapping_annotations</span>
-<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="kn">import</span> <span class="n">load</span>
-<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="kn">import</span> <span class="n">format_labels</span>
-<span class="kn">from</span> <span class="nn">.basetrs</span> <span class="kn">import</span> <span class="n">sppasBaseIO</span>
+<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">fill_gaps</span>
+<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">merge_overlapping_annotations</span>
+<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">load</span>
+<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">format_labels</span>
+<span class="kn">from</span> <span class="nn">.basetrs</span> <span class="k">import</span> <span class="n">sppasBaseIO</span>
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasBasePraat"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasBasePraat">[docs]</a><span class="k">class</span> <span class="nc">sppasBasePraat</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">):</span>
@@ -135,8 +124,8 @@
 <span class="sd">    Try first to open the file with the default sppas encoding, then UTF-16.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasBasePraat.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasBasePraat.make_point">[docs]</a>    <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasBasePraat.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasBasePraat.make_point">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; The localization is a time value, so a float.</span>
 
 <span class="sd">        :param midpoint: (float, str, int) a time value (in seconds).</span>
@@ -148,39 +137,39 @@
             <span class="n">midpoint</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">midpoint</span><span class="p">)</span>
             <span class="n">radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="s">&quot;float&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">sppasPoint</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sppasPoint</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasBasePraat.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasBasePraat.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasBasePraat.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasBasePraat.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new Praat instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_metadata</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_ctrl_vocab</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_media</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_hierarchy</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_point</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_interval</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_disjoint</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_localization</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_tag</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_radius</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_metadata</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_ctrl_vocab</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_media</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_hierarchy</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_point</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_interval</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_disjoint</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_localization</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_tag</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_radius</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_int</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">line_number</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Parse an integer value from a line of a Praat formatted file.</span>
@@ -195,12 +184,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-            <span class="n">val</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AioLineFormatError</span><span class="p">(</span><span class="n">line_number</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_float</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">line_number</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -216,12 +205,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-            <span class="n">val</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
             <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AioLineFormatError</span><span class="p">(</span><span class="n">line_number</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_string</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
@@ -233,20 +222,20 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">):</span>
             <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">&#39;^[A-Za-z ]+=[ ]?&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;^[A-Za-z ]+=[ ]?&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
 
         <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">):</span>
             <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
-        <span class="c"># praat double quotes.</span>
-        <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&quot;&quot;&#39;</span><span class="p">,</span> <span class="s">&#39;&quot;&#39;</span><span class="p">)</span>
+        <span class="c1"># praat double quotes.</span>
+        <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_header</span><span class="p">(</span><span class="n">file_class</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">):</span>
@@ -258,60 +247,60 @@
 <span class="sd">        :returns: (str)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">header</span> <span class="o">=</span> <span class="s">&#39;File type = &quot;ooTextFile&quot;</span><span class="se">\n</span><span class="s">&#39;</span>
-        <span class="n">header</span> <span class="o">+=</span> <span class="s">&#39;Object class = &quot;{:s}&quot;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_class</span><span class="p">)</span>
-        <span class="n">header</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
-        <span class="n">header</span> <span class="o">+=</span> <span class="s">&#39;xmin = {:.18}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xmin</span><span class="p">)</span>
-        <span class="n">header</span> <span class="o">+=</span> <span class="s">&#39;xmax = {:.18}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xmax</span><span class="p">)</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="s1">&#39;File type = &quot;ooTextFile&quot;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">header</span> <span class="o">+=</span> <span class="s1">&#39;Object class = &quot;</span><span class="si">{:s}</span><span class="s1">&quot;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_class</span><span class="p">)</span>
+        <span class="n">header</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">header</span> <span class="o">+=</span> <span class="s1">&#39;xmin = </span><span class="si">{:.18}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xmin</span><span class="p">)</span>
+        <span class="n">header</span> <span class="o">+=</span> <span class="s1">&#39;xmax = </span><span class="si">{:.18}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xmax</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">header</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_labels_text</span><span class="p">(</span><span class="n">annotation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert the annotation labels into a string. &quot;&quot;&quot;</span>
 
-        <span class="n">text</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">serialize_labels</span><span class="p">(</span><span class="n">separator</span><span class="o">=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">alt</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">serialize_labels</span><span class="p">(</span><span class="n">separator</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">alt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="s">&#39;&quot;&#39;</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;([^&quot;])[&quot;]([^&quot;])&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">1&quot;&quot;</span><span class="se">\\</span><span class="s">2&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;([^&quot;])[&quot;]([^&quot;])&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">1&quot;&quot;</span><span class="se">\\</span><span class="s">2&#39;</span><span class="p">,</span>
-                          <span class="n">text</span><span class="p">)</span>  <span class="c"># miss occurrences if 2 &quot; are separated by only 1 character</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;([^&quot;])[&quot;]$&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">1&quot;&quot;&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c"># miss occurrences if &quot; is at the end of the label!</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;^[&quot;]([^&quot;])&#39;</span><span class="p">,</span> <span class="s">&#39;&quot;&quot;</span><span class="se">\\</span><span class="s">1&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c"># miss occurrences if &quot; is at the beginning of the label</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;^&quot;&quot;$&#39;</span><span class="p">,</span> <span class="s">&#39;&quot;&quot;&quot;&quot;&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&#39;^&quot;$&#39;</span><span class="p">,</span> <span class="s">&#39;&quot;&quot;&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;&quot;&#39;</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;([^&quot;])[&quot;]([^&quot;])&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">1&quot;&quot;</span><span class="se">\\</span><span class="s1">2&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;([^&quot;])[&quot;]([^&quot;])&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">1&quot;&quot;</span><span class="se">\\</span><span class="s1">2&#39;</span><span class="p">,</span>
+                          <span class="n">text</span><span class="p">)</span>  <span class="c1"># miss occurrences if 2 &quot; are separated by only 1 character</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;([^&quot;])[&quot;]$&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">1&quot;&quot;&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c1"># miss occurrences if &quot; is at the end of the label!</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^[&quot;]([^&quot;])&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&quot;</span><span class="se">\\</span><span class="s1">1&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c1"># miss occurrences if &quot; is at the beginning of the label</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^&quot;&quot;$&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&quot;&quot;&quot;&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;^&quot;$&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&quot;&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="s">&#39;</span><span class="se">\t\t\t</span><span class="s">text = &quot;{:s}&quot;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\t\t\t</span><span class="s1">text = &quot;</span><span class="si">{:s}</span><span class="s1">&quot;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_labels_value</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert a label with a numerical value into a string. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">TagValueError</span><span class="p">(</span><span class="s">&#39;empty label&#39;</span><span class="p">)</span>
+            <span class="n">TagValueError</span><span class="p">(</span><span class="s1">&#39;empty label&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">TagValueError</span><span class="p">(</span><span class="s">&#39;multiple labels&#39;</span><span class="p">)</span>
+            <span class="n">TagValueError</span><span class="p">(</span><span class="s1">&#39;multiple labels&#39;</span><span class="p">)</span>
 
         <span class="n">label</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TagValueError</span><span class="p">(</span><span class="s">&#39;None&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TagValueError</span><span class="p">(</span><span class="s">&#39;None&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TagValueError</span><span class="p">(</span><span class="s1">&#39;None&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TagValueError</span><span class="p">(</span><span class="s1">&#39;None&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
-            <span class="n">TagValueError</span><span class="p">(</span><span class="s">&#39;empty label&#39;</span><span class="p">)</span>
+            <span class="n">TagValueError</span><span class="p">(</span><span class="s1">&#39;empty label&#39;</span><span class="p">)</span>
 
         <span class="n">tag</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;int&#39;</span><span class="p">,</span> <span class="s">&#39;float&#39;</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">value = {}</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;int&#39;</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">value = </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">())</span>
 
-        <span class="k">raise</span> <span class="n">AioFormatError</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span>
+        <span class="k">raise</span> <span class="n">AioFormatError</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span></div>
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
-</div>
+
 <div class="viewcode-block" id="sppasTextGrid"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasTextGrid">[docs]</a><span class="k">class</span> <span class="nc">sppasTextGrid</span><span class="p">(</span><span class="n">sppasBasePraat</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
@@ -342,89 +331,89 @@
         <span class="n">file_type</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_string</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
         <span class="n">line</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="n">object_class</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_string</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s">&quot;ooTextFile&quot;</span> <span class="ow">and</span> <span class="n">object_class</span> <span class="o">==</span> <span class="s">&quot;TextGrid&quot;</span>
+        <span class="k">return</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s2">&quot;ooTextFile&quot;</span> <span class="ow">and</span> <span class="n">object_class</span> <span class="o">==</span> <span class="s2">&quot;TextGrid&quot;</span>
 
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasTextGrid.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasTextGrid.detect">[docs]</a>    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasTextGrid.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasTextGrid.detect">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check whether a file is of TextGrid format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
 <span class="sd">        :returns: (bool)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">detected</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">detected</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
                 <span class="n">detected</span> <span class="o">=</span> <span class="n">sppasTextGrid</span><span class="o">.</span><span class="n">_detect</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
                 <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">UnicodeError</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="s">&#39;UTF-16&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;UTF-16&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
                     <span class="n">detected</span> <span class="o">=</span> <span class="n">sppasTextGrid</span><span class="o">.</span><span class="n">_detect</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
                     <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="k">except</span> <span class="ne">UnicodeError</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">False</span>
+                <span class="k">return</span> <span class="kc">False</span>
         <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
             <span class="k">pass</span>
 
-        <span class="k">return</span> <span class="n">detected</span>
+        <span class="k">return</span> <span class="n">detected</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasTextGrid.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasTextGrid.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasTextGrid.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasTextGrid.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new sppasTextGrid instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
-        <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s">&quot;TextGrid&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">sppasBasePraat</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;TextGrid&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_point</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_interval</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_point</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_interval</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasTextGrid.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasTextGrid.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Read a TextGrid file.</span>
 
 <span class="sd">        :param filename: is the input file name, ending by &quot;.TextGrid&quot;</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># get the content of the file</span>
+        <span class="c1"># get the content of the file</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">lines</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">AioEncodingError</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">lines</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;UTF-16&quot;</span><span class="p">)</span>
+                <span class="n">lines</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;UTF-16&quot;</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">AioEncodingError</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AioEncodingError</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="o">+</span><span class="s">&quot;/UTF-16&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">AioEncodingError</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="o">+</span><span class="s2">&quot;/UTF-16&quot;</span><span class="p">)</span>
 
-        <span class="c"># parse the header of the file</span>
+        <span class="c1"># parse the header of the file</span>
 
-        <span class="c"># if the size isn&#39;t named, it is a short TextGrid file</span>
+        <span class="c1"># if the size isn&#39;t named, it is a short TextGrid file</span>
         <span class="n">is_long</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">lines</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
 
         <span class="n">last_line</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="n">cur_line</span> <span class="o">=</span> <span class="mi">7</span>
-        <span class="k">if</span> <span class="n">is_long</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
-            <span class="c"># Ignore the line &#39;item []:&#39;</span>
+        <span class="k">if</span> <span class="n">is_long</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1"># Ignore the line &#39;item []:&#39;</span>
             <span class="n">cur_line</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="c"># parse all lines of the file</span>
+        <span class="c1"># parse all lines of the file</span>
 
         <span class="k">while</span> <span class="n">cur_line</span> <span class="o">&lt;</span> <span class="n">last_line</span><span class="p">:</span>
-            <span class="c"># Ignore the line: &#39;item [1]:&#39;</span>
-            <span class="c"># with the tier number between the brackets</span>
-            <span class="k">if</span> <span class="n">is_long</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="c1"># Ignore the line: &#39;item [1]:&#39;</span>
+            <span class="c1"># with the tier number between the brackets</span>
+            <span class="k">if</span> <span class="n">is_long</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="n">cur_line</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">cur_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_tier</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">cur_line</span><span class="p">,</span> <span class="n">is_long</span><span class="p">)</span>
+            <span class="n">cur_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_tier</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">cur_line</span><span class="p">,</span> <span class="n">is_long</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
     <span class="k">def</span> <span class="nf">_parse_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">start_line</span><span class="p">,</span> <span class="n">is_long</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Parse a tier from the content of a TextGrid file.</span>
 
@@ -434,35 +423,35 @@
 <span class="sd">        :returns: (int) Number of lines of this tier</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Parse the header of the tier</span>
+        <span class="c1"># Parse the header of the tier</span>
 
         <span class="n">tier_type</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_string</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">])</span>
         <span class="n">tier_name</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_string</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">tier_size</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="o">+</span><span class="mi">4</span><span class="p">])</span>
         <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="n">tier_name</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">tier_type</span> <span class="o">==</span> <span class="s">&quot;IntervalTier&quot;</span><span class="p">:</span>
-            <span class="n">is_interval</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="k">elif</span> <span class="n">tier_type</span> <span class="o">==</span> <span class="s">&quot;TextTier&quot;</span><span class="p">:</span>
-            <span class="n">is_interval</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">tier_type</span> <span class="o">==</span> <span class="s2">&quot;IntervalTier&quot;</span><span class="p">:</span>
+            <span class="n">is_interval</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">tier_type</span> <span class="o">==</span> <span class="s2">&quot;TextTier&quot;</span><span class="p">:</span>
+            <span class="n">is_interval</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AioLineFormatError</span><span class="p">(</span><span class="n">start_line</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">])</span>
 
-        <span class="c"># Parse the content of the tier</span>
+        <span class="c1"># Parse the content of the tier</span>
         <span class="n">start_line</span> <span class="o">+=</span> <span class="mi">5</span>
         <span class="n">end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
         <span class="k">while</span> <span class="n">start_line</span> <span class="o">&lt;</span> <span class="n">end</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tier_size</span><span class="p">:</span>
-            <span class="c"># Ignore the line: &#39;intervals [1]:&#39;</span>
-            <span class="c"># with the interval number between the brackets</span>
-            <span class="k">if</span> <span class="n">is_long</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="c1"># Ignore the line: &#39;intervals [1]:&#39;</span>
+            <span class="c1"># with the interval number between the brackets</span>
+            <span class="k">if</span> <span class="n">is_long</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="n">start_line</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">ann</span><span class="p">,</span> <span class="n">start_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_annotation</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_line</span><span class="p">,</span> <span class="n">is_interval</span><span class="p">)</span>
             <span class="n">tier</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ann</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">start_line</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_annotation</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_line</span><span class="p">,</span> <span class="n">is_interval</span><span class="p">):</span>
@@ -474,13 +463,13 @@
 <span class="sd">        :returns: number of lines for this annotation in the file</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Parse the localization</span>
+        <span class="c1"># Parse the localization</span>
         <span class="n">localization</span><span class="p">,</span> <span class="n">start_line</span> <span class="o">=</span> \
             <span class="n">sppasTextGrid</span><span class="o">.</span><span class="n">_parse_localization</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_line</span><span class="p">,</span> <span class="n">is_interval</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">start_line</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">AioLineFormatError</span><span class="p">(</span><span class="n">start_line</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="c"># Parse the tag</span>
+        <span class="c1"># Parse the tag</span>
         <span class="n">labels</span><span class="p">,</span> <span class="n">start_line</span> <span class="o">=</span> \
             <span class="n">sppasTextGrid</span><span class="o">.</span><span class="n">_parse_text</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_line</span><span class="p">)</span>
 
@@ -489,7 +478,7 @@
 
         <span class="k">return</span> <span class="n">ann</span><span class="p">,</span> <span class="n">start_line</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_localization</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_line</span><span class="p">,</span> <span class="n">is_interval</span><span class="p">):</span>
@@ -497,7 +486,7 @@
 
         <span class="n">midpoint</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">],</span> <span class="n">start_line</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">start_line</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">is_interval</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_interval</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">start_line</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">AioLineFormatError</span><span class="p">(</span><span class="n">start_line</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">end</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">],</span> <span class="n">start_line</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
@@ -509,7 +498,7 @@
 
         <span class="k">return</span> <span class="n">localization</span><span class="p">,</span> <span class="n">start_line</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_text</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start_line</span><span class="p">):</span>
@@ -519,27 +508,27 @@
 <span class="sd">        we save each line in an individual label.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># read one line</span>
+        <span class="c1"># read one line</span>
         <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_string</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
         <span class="n">start_line</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="c"># if the text continue on the following lines</span>
-        <span class="k">while</span> <span class="n">line</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+        <span class="c1"># if the text continue on the following lines</span>
+        <span class="k">while</span> <span class="n">line</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
 
             <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">start_line</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-            <span class="n">text</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_string</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_string</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
             <span class="n">start_line</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">):</span>
                 <span class="k">break</span>
             <span class="k">if</span> <span class="n">start_line</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">AioLineFormatError</span><span class="p">(</span><span class="n">start_line</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">format_labels</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">),</span> <span class="n">start_line</span>
+        <span class="k">return</span> <span class="n">format_labels</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">start_line</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-    <span class="c"># Writer</span>
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c1"># Writer</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasTextGrid.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasTextGrid.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write a TextGrid file.</span>
@@ -548,87 +537,87 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="n">AioNoTiersError</span><span class="p">(</span><span class="s">&quot;TextGrid&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">AioNoTiersError</span><span class="p">(</span><span class="s2">&quot;TextGrid&quot;</span><span class="p">)</span>
 
         <span class="n">min_time_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_min_loc</span><span class="p">()</span>
         <span class="n">max_time_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_max_loc</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">min_time_point</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">max_time_point</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="c"># only empty tiers in the transcription</span>
-            <span class="k">raise</span> <span class="n">AioNoTiersError</span><span class="p">(</span><span class="s">&quot;TextGrid&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">min_time_point</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">max_time_point</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># only empty tiers in the transcription</span>
+            <span class="k">raise</span> <span class="n">AioNoTiersError</span><span class="p">(</span><span class="s2">&quot;TextGrid&quot;</span><span class="p">)</span>
 
-        <span class="c"># we have to remove the hierarchy because instead we can&#39;t fill gaps</span>
+        <span class="c1"># we have to remove the hierarchy because instead we can&#39;t fill gaps</span>
         <span class="n">hierarchy_backup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hierarchy</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_hierarchy</span><span class="p">()</span><span class="o">.</span><span class="n">remove_tier</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8096</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8096</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
 
-            <span class="c"># Write the header</span>
+            <span class="c1"># Write the header</span>
             <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sppasTextGrid</span><span class="o">.</span><span class="n">_serialize_textgrid_header</span><span class="p">(</span><span class="n">min_time_point</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">(),</span>
                                                               <span class="n">max_time_point</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">(),</span>
                                                               <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
 
-            <span class="c"># Write each tier</span>
+            <span class="c1"># Write each tier</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tier</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_disjoint</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_disjoint</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
                     <span class="k">continue</span>
 
-                <span class="c"># intervals of annotations must be in a continuum</span>
-                <span class="c"># (this won&#39;t do anything if it&#39;s not necessary...)</span>
+                <span class="c1"># intervals of annotations must be in a continuum</span>
+                <span class="c1"># (this won&#39;t do anything if it&#39;s not necessary...)</span>
                 <span class="n">new_tier</span> <span class="o">=</span> <span class="n">fill_gaps</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">min_time_point</span><span class="p">,</span> <span class="n">max_time_point</span><span class="p">)</span>
                 <span class="n">new_tier</span> <span class="o">=</span> <span class="n">merge_overlapping_annotations</span><span class="p">(</span><span class="n">new_tier</span><span class="p">)</span>
 
-                <span class="c"># Write the header of the tier</span>
+                <span class="c1"># Write the header of the tier</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sppasTextGrid</span><span class="o">.</span><span class="n">_serialize_tier_header</span><span class="p">(</span><span class="n">new_tier</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
                 <span class="k">except</span><span class="p">:</span>
                     <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                     <span class="k">raise</span>
 
-                <span class="c"># Write annotations of the tier</span>
+                <span class="c1"># Write annotations of the tier</span>
                 <span class="n">is_point</span> <span class="o">=</span> <span class="n">new_tier</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">new_tier</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">is_point</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">is_point</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
                         <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sppasTextGrid</span><span class="o">.</span><span class="n">_serialize_point_annotation</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sppasTextGrid</span><span class="o">.</span><span class="n">_serialize_interval_annotation</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 
             <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-        <span class="c"># restore the hierarchy...</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_hierarchy</span> <span class="o">=</span> <span class="n">hierarchy_backup</span>
+        <span class="c1"># restore the hierarchy...</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hierarchy</span> <span class="o">=</span> <span class="n">hierarchy_backup</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_textgrid_header</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a string with the header of the textgrid. &quot;&quot;&quot;</span>
 
-        <span class="n">content</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_serialize_header</span><span class="p">(</span><span class="s">&quot;TextGrid&quot;</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">)</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&#39;tiers? &lt;exists&gt;</span><span class="se">\n</span><span class="s">&#39;</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&#39;size = {:d}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&#39;item []:</span><span class="se">\n</span><span class="s">&#39;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_serialize_header</span><span class="p">(</span><span class="s2">&quot;TextGrid&quot;</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;tiers? &lt;exists&gt;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;size = </span><span class="si">{:d}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;item []:</span><span class="se">\n</span><span class="s1">&#39;</span>
         <span class="k">return</span> <span class="n">content</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_tier_header</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">tier_number</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create the string with the header for a new tier. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tier</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AioEmptyTierError</span><span class="p">(</span><span class="s">&quot;TextGrid&quot;</span><span class="p">,</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+            <span class="k">raise</span> <span class="n">AioEmptyTierError</span><span class="p">(</span><span class="s2">&quot;TextGrid&quot;</span><span class="p">,</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
 
-        <span class="n">content</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">item [{:d}]:</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier_number</span><span class="p">)</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\t\t</span><span class="s">class = &quot;{:s}&quot;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s">&#39;IntervalTier&#39;</span> <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_interval</span><span class="p">()</span> <span class="k">else</span> <span class="s">&#39;TextTier&#39;</span><span class="p">)</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\t\t</span><span class="s">name = &quot;{:s}&quot;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\t\t</span><span class="s">xmin = {}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_first_point</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">())</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\t\t</span><span class="s">xmax = {}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_last_point</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">())</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\t\t</span><span class="s">intervals: size = {:d}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tier</span><span class="p">))</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">item [</span><span class="si">{:d}</span><span class="s1">]:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier_number</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\t\t</span><span class="s1">class = &quot;</span><span class="si">{:s}</span><span class="s1">&quot;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;IntervalTier&#39;</span> <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_interval</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;TextTier&#39;</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\t\t</span><span class="s1">name = &quot;</span><span class="si">{:s}</span><span class="s1">&quot;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\t\t</span><span class="s1">xmin = </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_first_point</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">())</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\t\t</span><span class="s1">xmax = </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_last_point</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">())</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\t\t</span><span class="s1">intervals: size = </span><span class="si">{:d}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tier</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">content</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_interval_annotation</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
@@ -641,13 +630,13 @@
 <span class="sd">        :returns: (unicode)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\t\t</span><span class="s">intervals [{:d}]:</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\t\t\t</span><span class="s">xmin = {}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">())</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\t\t\t</span><span class="s">xmax = {}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">())</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t\t</span><span class="s1">intervals [</span><span class="si">{:d}</span><span class="s1">]:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\t\t\t</span><span class="s1">xmin = </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">())</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\t\t\t</span><span class="s1">xmax = </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">get_highest_localization</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">())</span>
         <span class="n">content</span> <span class="o">+=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_serialize_labels_text</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_point_annotation</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
@@ -659,16 +648,16 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_serialize_labels_text</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;text =&quot;</span><span class="p">,</span> <span class="s">&quot;mark =&quot;</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;text =&quot;</span><span class="p">,</span> <span class="s2">&quot;mark =&quot;</span><span class="p">)</span>
 
-        <span class="n">content</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\t\t\t</span><span class="s">points [{:d}]:</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
-        <span class="n">content</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\t\t\t</span><span class="s">time = {}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">())</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t\t\t</span><span class="s1">points [</span><span class="si">{:d}</span><span class="s1">]:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\t\t\t</span><span class="s1">time = </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">())</span>
         <span class="n">content</span> <span class="o">+=</span> <span class="n">text</span>
-        <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
-</div>
+
 <div class="viewcode-block" id="sppasBaseNumericalTier"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasBaseNumericalTier">[docs]</a><span class="k">class</span> <span class="nc">sppasBaseNumericalTier</span><span class="p">(</span><span class="n">sppasBasePraat</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
@@ -682,76 +671,76 @@
 <span class="sd">    pitch, intensity, etc.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasBaseNumericalTier.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasBaseNumericalTier.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasBaseNumericalTier.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasBaseNumericalTier.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new sppasBaseNumericalTier instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
-        <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">sppasBasePraat</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_metadata</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_ctrl_vocab</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_media</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_hierarchy</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_interval</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_disjoint</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_localization</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_tag</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_radius</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_metadata</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_ctrl_vocab</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_media</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_hierarchy</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_interval</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_disjoint</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_localization</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_tag</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_radius</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
     <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Read a file of any numerical file type.</span>
 
 <span class="sd">        :param filename: (str) the input file name</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># get the content of the file</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
+        <span class="c1"># get the content of the file</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">7</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AioLineFormatError</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="c"># parse the header of the file</span>
+        <span class="c1"># parse the header of the file</span>
         <span class="n">file_type</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_string</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="n">file_type</span><span class="p">)</span>
 
         <span class="n">last_line</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="n">cur_line</span> <span class="o">=</span> <span class="mi">6</span>
-        <span class="c"># if the size isn&#39;t named, it is a short numerical file</span>
+        <span class="c1"># if the size isn&#39;t named, it is a short numerical file</span>
         <span class="n">is_long</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">lines</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
 
-        <span class="c"># parse all lines of the file</span>
+        <span class="c1"># parse all lines of the file</span>
         <span class="k">while</span> <span class="n">cur_line</span> <span class="o">&lt;</span> <span class="n">last_line</span><span class="p">:</span>
-            <span class="c"># Ignore the line: &#39;points [1]:&#39;</span>
+            <span class="c1"># Ignore the line: &#39;points [1]:&#39;</span>
             <span class="k">if</span> <span class="n">is_long</span><span class="p">:</span>
                 <span class="n">cur_line</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">if</span> <span class="n">cur_line</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="n">AioLineFormatError</span><span class="p">(</span><span class="n">cur_line</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-            <span class="c"># Parse the localization</span>
+            <span class="c1"># Parse the localization</span>
             <span class="n">midpoint</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">cur_line</span><span class="p">],</span> <span class="n">cur_line</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">localization</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">)</span>
             <span class="n">cur_line</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">cur_line</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">AioLineFormatError</span><span class="p">(</span><span class="n">cur_line</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-            <span class="c"># Parse the tag value</span>
+            <span class="c1"># Parse the tag value</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">cur_line</span><span class="p">],</span> <span class="n">cur_line</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="n">tag</span> <span class="o">=</span> <span class="n">sppasTag</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">tag_type</span><span class="o">=</span><span class="s">&quot;float&quot;</span><span class="p">)</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="n">sppasTag</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">tag_type</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
 
             <span class="n">tier</span><span class="o">.</span><span class="n">create_annotation</span><span class="p">(</span><span class="n">sppasLocation</span><span class="p">(</span><span class="n">localization</span><span class="p">),</span>
                                    <span class="n">sppasLabel</span><span class="p">(</span><span class="n">tag</span><span class="p">))</span>
             <span class="n">cur_line</span> <span class="o">+=</span> <span class="mi">1</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">file_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write a file of the given file type.</span>
@@ -763,47 +752,47 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
             <span class="k">raise</span> <span class="n">AioNoTiersError</span><span class="p">(</span><span class="n">file_type</span><span class="p">)</span>
 
-        <span class="c"># Search for the tier</span>
+        <span class="c1"># Search for the tier</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">file_type</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">tier</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AioMultiTiersError</span><span class="p">(</span><span class="s">&quot;Praat &quot;</span><span class="o">+</span><span class="n">file_type</span><span class="p">)</span>
+            <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">file_type</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AioMultiTiersError</span><span class="p">(</span><span class="s2">&quot;Praat &quot;</span><span class="o">+</span><span class="n">file_type</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="c"># we expect a not empty tier</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AioEmptyTierError</span><span class="p">(</span><span class="s">&quot;Praat &quot;</span><span class="o">+</span><span class="n">file_type</span><span class="p">,</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+        <span class="c1"># we expect a not empty tier</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AioEmptyTierError</span><span class="p">(</span><span class="s2">&quot;Praat &quot;</span><span class="o">+</span><span class="n">file_type</span><span class="p">,</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
 
-        <span class="c"># we expect a tier with only sppasPoint</span>
-        <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AioLocationTypeError</span><span class="p">(</span><span class="n">file_type</span><span class="p">,</span> <span class="s">&quot;intervals&quot;</span><span class="p">)</span>
+        <span class="c1"># we expect a tier with only sppasPoint</span>
+        <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AioLocationTypeError</span><span class="p">(</span><span class="n">file_type</span><span class="p">,</span> <span class="s2">&quot;intervals&quot;</span><span class="p">)</span>
 
-        <span class="c"># right... we can write (numerical value will be tested time-to-time)</span>
+        <span class="c1"># right... we can write (numerical value will be tested time-to-time)</span>
         <span class="n">min_time_point</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_first_point</span><span class="p">()</span>
         <span class="n">max_time_point</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_last_point</span><span class="p">()</span>
 
-        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8096</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8096</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
 
-            <span class="c"># Write the header</span>
+            <span class="c1"># Write the header</span>
             <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_serialize_header</span><span class="p">(</span><span class="n">file_type</span><span class="p">,</span>
                                                       <span class="n">min_time_point</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">(),</span>
                                                       <span class="n">max_time_point</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()))</span>
-            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;points: size = {:d}</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tier</span><span class="p">)))</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;points: size = </span><span class="si">{:d}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tier</span><span class="p">)))</span>
 
-            <span class="c"># Write the annotations</span>
+            <span class="c1"># Write the annotations</span>
             <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tier</span><span class="p">):</span>
 
-                <span class="n">content</span> <span class="o">=</span> <span class="s">&#39;points [{:d}]:</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-                <span class="n">content</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">number = {}</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">())</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="s1">&#39;points [</span><span class="si">{:d}</span><span class="s1">]:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">number = </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">get_lowest_localization</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">())</span>
                 <span class="n">content</span> <span class="o">+=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_serialize_labels_value</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">get_labels</span><span class="p">())</span>
                 <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
 
-            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
-</div>
+
 <div class="viewcode-block" id="sppasPitchTier"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasPitchTier">[docs]</a><span class="k">class</span> <span class="nc">sppasPitchTier</span><span class="p">(</span><span class="n">sppasBaseNumericalTier</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
@@ -814,8 +803,8 @@
 <span class="sd">    :summary:      SPPAS PitchTier reader and writer.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasPitchTier.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasPitchTier.detect">[docs]</a>    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasPitchTier.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasPitchTier.detect">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check whether a file is of PitchTier format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
@@ -823,53 +812,53 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
                 <span class="n">file_type</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_string</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">readline</span><span class="p">())</span>
                 <span class="n">object_class</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_string</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">readline</span><span class="p">())</span>
                 <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-                <span class="k">return</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s">&quot;ooTextFile&quot;</span> <span class="ow">and</span> <span class="n">object_class</span> <span class="o">==</span> <span class="s">&quot;PitchTier&quot;</span>
+                <span class="k">return</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s2">&quot;ooTextFile&quot;</span> <span class="ow">and</span> <span class="n">object_class</span> <span class="o">==</span> <span class="s2">&quot;PitchTier&quot;</span>
         <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasPitchTier.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasPitchTier.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasPitchTier.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasPitchTier.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new sppasPitchTier instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
 
-        <span class="n">sppasBaseNumericalTier</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s">&quot;PitchTier&quot;</span>
+        <span class="n">sppasBaseNumericalTier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;PitchTier&quot;</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasPitchTier.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasPitchTier.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Read a PitchTier file.</span>
 
 <span class="sd">        :param filename: (str) the input file name</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasPitchTier.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasPitchTier.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write a PitchTier file.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;PitchTier&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;PitchTier&quot;</span><span class="p">)</span></div></div>
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
-</div></div>
+
 <div class="viewcode-block" id="sppasIntensityTier"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasIntensityTier">[docs]</a><span class="k">class</span> <span class="nc">sppasIntensityTier</span><span class="p">(</span><span class="n">sppasPitchTier</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
@@ -880,8 +869,8 @@
 <span class="sd">    :summary:      SPPAS IntensityTier reader and writer.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasIntensityTier.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasIntensityTier.detect">[docs]</a>    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasIntensityTier.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasIntensityTier.detect">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check whether a file is of IntensityTier format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
@@ -889,74 +878,73 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
                 <span class="n">file_type</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_string</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">readline</span><span class="p">())</span>
                 <span class="n">object_class</span> <span class="o">=</span> <span class="n">sppasBasePraat</span><span class="o">.</span><span class="n">_parse_string</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">readline</span><span class="p">())</span>
                 <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-                <span class="k">return</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s">&quot;ooTextFile&quot;</span> <span class="ow">and</span> <span class="n">object_class</span> <span class="o">==</span> <span class="s">&quot;IntensityTier&quot;</span>
+                <span class="k">return</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s2">&quot;ooTextFile&quot;</span> <span class="ow">and</span> <span class="n">object_class</span> <span class="o">==</span> <span class="s2">&quot;IntensityTier&quot;</span>
         <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasIntensityTier.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasIntensityTier.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasIntensityTier.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasIntensityTier.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new sppasIntensityTier instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
 
-        <span class="n">sppasBaseNumericalTier</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s">&quot;IntensityTier&quot;</span>
+        <span class="n">sppasBaseNumericalTier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;IntensityTier&quot;</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasIntensityTier.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasIntensityTier.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Read a IntensityTier file.</span>
 
 <span class="sd">        :param filename: (str) the input file name</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasIntensityTier.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.praat.sppasIntensityTier.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write a IntensityTier file.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;IntensityTier&quot;</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;IntensityTier&quot;</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -965,13 +953,13 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
     </div>
   </body>
 </html>

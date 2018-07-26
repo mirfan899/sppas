@@ -92,7 +92,7 @@ class sppasCtrlVocab(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_description(self):
-        """ Return the unicode string of the description of the controlled vocabulary. """
+        """ Return the unicode str of the description of the ctrl vocab. """
 
         return self.__desc
 
@@ -145,7 +145,7 @@ class sppasCtrlVocab(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def validate_tag(self, tag):
-        """ Check if the given tag can be added to the controlled vocabulary. """
+        """ Check if the given tag can be added to the ctrl vocabulary. """
 
         if isinstance(tag, sppasTag) is False:
             raise AnnDataTypeError(tag, "sppasTag")
@@ -227,7 +227,7 @@ class sppasCtrlVocab(sppasMetaData):
                "".format(self.get_meta('id'), self.__name, self.__desc)
 
     def __eq__(self, other):
-        """ Return True if other is strictly identical to self (even the id). """
+        """ Test if other is strictly identical to self (even the id). """
 
         if isinstance(other, sppasCtrlVocab) is False:
             return False
@@ -247,7 +247,8 @@ class sppasCtrlVocab(sppasMetaData):
         for entry in self:
             if other.contains(entry) is False:
                 return False
-            if self.get_tag_description(entry) != other.get_tag_description(entry):
+            if self.get_tag_description(entry) != \
+                    other.get_tag_description(entry):
                 return False
 
         return len(self) == len(other)

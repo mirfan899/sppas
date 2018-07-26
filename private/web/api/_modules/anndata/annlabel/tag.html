@@ -1,33 +1,22 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>anndata.annlabel.tag &mdash; SPPAS 1.9.8 documentation</title>
-    
+    <title>anndata.annlabel.tag &#8212; SPPAS 1.9.8 documentation</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '1.9.8',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../../index.html" />
-    <link rel="up" title="Module code" href="../../index.html" /> 
-  </head>
-  <body>
-    <div class="related">
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -36,18 +25,18 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for anndata.annlabel.tag</h1><div class="highlight"><pre>
-<span class="c"># -*- coding: UTF-8 -*-</span>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -96,15 +85,15 @@
 
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">sppas</span> <span class="kn">import</span> <span class="n">SYMBOLS</span>
-<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="kn">import</span> <span class="n">sppasUnicode</span><span class="p">,</span> <span class="n">b</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AnnDataTypeError</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AnnUnkTypeError</span>
+<span class="kn">from</span> <span class="nn">sppas.src.config</span> <span class="k">import</span> <span class="n">SYMBOLS</span>
+<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="k">import</span> <span class="n">sppasUnicode</span><span class="p">,</span> <span class="n">b</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnUnkTypeError</span>
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasTag"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag">[docs]</a><span class="k">class</span> <span class="nc">sppasTag</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasTag"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag">[docs]</a><span class="k">class</span> <span class="nc">sppasTag</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
@@ -133,11 +122,11 @@
 <span class="sd">        &gt;&gt;&gt; t7 = sppasTag(0, tag_type=&quot;bool&quot;)       # False (bool)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">TAG_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;str&quot;</span><span class="p">,</span> <span class="s">&quot;float&quot;</span><span class="p">,</span> <span class="s">&quot;int&quot;</span><span class="p">,</span> <span class="s">&quot;bool&quot;</span><span class="p">]</span>
+    <span class="n">TAG_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;str&quot;</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="s2">&quot;bool&quot;</span><span class="p">]</span>
 
-    <span class="c"># ------------------------------------------------------------------------</span>
+    <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasTag.__init__"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_content</span><span class="p">,</span> <span class="n">tag_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasTag.__init__"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_content</span><span class="p">,</span> <span class="n">tag_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new sppasTag instance.</span>
 
 <span class="sd">        :param tag_content: (any) Data content</span>
@@ -145,28 +134,28 @@
 <span class="sd">        str is used by default.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="o">=</span> <span class="kc">None</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_content</span><span class="p">(</span><span class="n">tag_content</span><span class="p">,</span> <span class="n">tag_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_content</span><span class="p">(</span><span class="n">tag_content</span><span class="p">,</span> <span class="n">tag_type</span><span class="p">)</span></div>
 
-    <span class="c"># ------------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasTag.set"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="c1"># ------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasTag.set"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set self members from another sppasTag instance.</span>
 
 <span class="sd">        :param other: (sppasTag)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasTag</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s">&quot;sppasTag&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasTag</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;sppasTag&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_content</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">get_content</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasTag.get_content"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag.get_content">[docs]</a>    <span class="k">def</span> <span class="nf">get_content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasTag.get_content"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag.get_content">[docs]</a>    <span class="k">def</span> <span class="nf">get_content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return an unicode string corresponding to the content.</span>
 <span class="sd">        Also returns a unicode string in case of a list (elements are</span>
 <span class="sd">        separated by a space).</span>
@@ -174,32 +163,32 @@
 <span class="sd">        :returns: (unicode)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span></div>
 
-    <span class="c"># ------------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasTag.get_typed_content"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag.get_typed_content">[docs]</a>    <span class="k">def</span> <span class="nf">get_typed_content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># ------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasTag.get_typed_content"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag.get_typed_content">[docs]</a>    <span class="k">def</span> <span class="nf">get_typed_content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the content value of this sppasTag, in its appropriate type. &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="o">==</span> <span class="s">&quot;int&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="o">==</span> <span class="s2">&quot;int&quot;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="o">==</span> <span class="s">&quot;float&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="o">==</span> <span class="s">&quot;bool&quot;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;true&quot;</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="o">==</span> <span class="s2">&quot;bool&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="bp">False</span>
+                    <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span></div>
 
-    <span class="c"># ------------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasTag.set_content"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag.set_content">[docs]</a>    <span class="k">def</span> <span class="nf">set_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_content</span><span class="p">,</span> <span class="n">tag_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c1"># ------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasTag.set_content"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag.set_content">[docs]</a>    <span class="k">def</span> <span class="nf">set_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_content</span><span class="p">,</span> <span class="n">tag_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Change content of this sppasTag.</span>
 
 <span class="sd">        :param tag_content: (any) New text content for this sppasTag</span>
@@ -207,155 +196,155 @@
 <span class="sd">        Default is &#39;str&#39; to represent an unicode string.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Check type</span>
-        <span class="k">if</span> <span class="n">tag_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">tag_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sppasTag</span><span class="o">.</span><span class="n">TAG_TYPES</span><span class="p">:</span>
+        <span class="c1"># Check type</span>
+        <span class="k">if</span> <span class="n">tag_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tag_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sppasTag</span><span class="o">.</span><span class="n">TAG_TYPES</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AnnUnkTypeError</span><span class="p">(</span><span class="n">tag_type</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">tag_type</span> <span class="o">==</span> <span class="s">&quot;str&quot;</span><span class="p">:</span>
-            <span class="n">tag_type</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">tag_type</span> <span class="o">==</span> <span class="s2">&quot;str&quot;</span><span class="p">:</span>
+            <span class="n">tag_type</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c"># Check content depending on the given type</span>
-        <span class="k">if</span> <span class="n">tag_content</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">tag_content</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="c1"># Check content depending on the given type</span>
+        <span class="k">if</span> <span class="n">tag_content</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tag_content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">tag_type</span> <span class="o">==</span> <span class="s">&quot;float&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tag_type</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">tag_content</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tag_content</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tag_content</span><span class="p">,</span> <span class="s">&quot;float&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tag_content</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">)</span>
 
-        <span class="k">elif</span> <span class="n">tag_type</span> <span class="o">==</span> <span class="s">&quot;int&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">tag_type</span> <span class="o">==</span> <span class="s2">&quot;int&quot;</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">tag_content</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tag_content</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tag_content</span><span class="p">,</span> <span class="s">&quot;int&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tag_content</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">)</span>
 
-        <span class="k">elif</span> <span class="n">tag_type</span> <span class="o">==</span> <span class="s">&quot;bool&quot;</span><span class="p">:</span>
-            <span class="c"># always works. Never raises ValueError!</span>
+        <span class="k">elif</span> <span class="n">tag_type</span> <span class="o">==</span> <span class="s2">&quot;bool&quot;</span><span class="p">:</span>
+            <span class="c1"># always works. Never raises ValueError!</span>
             <span class="n">tag_content</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">tag_content</span><span class="p">)</span>
 
-        <span class="c"># we systematically convert data into strings</span>
+        <span class="c1"># we systematically convert data into strings</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="o">=</span> <span class="n">tag_type</span>
         <span class="n">tag_content</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tag_content</span><span class="p">)</span>
         <span class="n">su</span> <span class="o">=</span> <span class="n">sppasUnicode</span><span class="p">(</span><span class="n">tag_content</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">to_strip</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="o">=</span> <span class="n">su</span><span class="o">.</span><span class="n">to_strip</span><span class="p">()</span></div>
 
-    <span class="c"># ------------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasTag.copy"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># ------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasTag.copy"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a deep copy of self. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">sppasTag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sppasTag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span><span class="p">)</span></div>
 
-    <span class="c"># ------------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasTag.get_type"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag.get_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># ------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasTag.get_type"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag.get_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the type of the tag content. &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&quot;str&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;str&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span></div>
 
-    <span class="c"># ------------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasTag.is_empty"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag.is_empty">[docs]</a>    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># ------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasTag.is_empty"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag.is_empty">[docs]</a>    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the tag is an empty string. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="o">==</span> <span class="s">&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasTag.is_speech"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag.is_speech">[docs]</a>    <span class="k">def</span> <span class="nf">is_speech</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasTag.is_speech"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag.is_speech">[docs]</a>    <span class="k">def</span> <span class="nf">is_speech</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the tag is not a silence. &quot;&quot;&quot;</span>
         
         <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_silence</span><span class="p">()</span> <span class="ow">or</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">is_pause</span><span class="p">()</span> <span class="ow">or</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">is_laugh</span><span class="p">()</span> <span class="ow">or</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">is_noise</span><span class="p">()</span> <span class="ow">or</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">is_dummy</span><span class="p">())</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">is_dummy</span><span class="p">())</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasTag.is_silence"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag.is_silence">[docs]</a>    <span class="k">def</span> <span class="nf">is_silence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasTag.is_silence"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag.is_silence">[docs]</a>    <span class="k">def</span> <span class="nf">is_silence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the tag is a silence. &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="o">==</span> <span class="s">&quot;str&quot;</span><span class="p">:</span>
-            <span class="c"># create a list of silence symbols from the list of all symbols</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span> <span class="o">==</span> <span class="s2">&quot;str&quot;</span><span class="p">:</span>
+            <span class="c1"># create a list of silence symbols from the list of all symbols</span>
             <span class="n">silences</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">SYMBOLS</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">SYMBOLS</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;silence&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">SYMBOLS</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;silence&quot;</span><span class="p">:</span>
                     <span class="n">silences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="ow">in</span> <span class="n">silences</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">True</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
-            <span class="c"># HACK. Exception for the French CID corpus:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;gpf_&quot;</span><span class="p">):</span>
-                <span class="k">return</span> <span class="bp">True</span>
+            <span class="c1"># HACK. Exception for the French CID corpus:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;gpf_&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
 
-        <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasTag.is_pause"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag.is_pause">[docs]</a>    <span class="k">def</span> <span class="nf">is_pause</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasTag.is_pause"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag.is_pause">[docs]</a>    <span class="k">def</span> <span class="nf">is_pause</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the tag is a short pause. &quot;&quot;&quot;</span>
 
-        <span class="c"># create a list of pause symbols from the list of all symbols</span>
+        <span class="c1"># create a list of pause symbols from the list of all symbols</span>
         <span class="n">pauses</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">SYMBOLS</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">SYMBOLS</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;pause&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">SYMBOLS</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;pause&quot;</span><span class="p">:</span>
                 <span class="n">pauses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="ow">in</span> <span class="n">pauses</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="ow">in</span> <span class="n">pauses</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasTag.is_laugh"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag.is_laugh">[docs]</a>    <span class="k">def</span> <span class="nf">is_laugh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasTag.is_laugh"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag.is_laugh">[docs]</a>    <span class="k">def</span> <span class="nf">is_laugh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the tag is a laughing. &quot;&quot;&quot;</span>
 
-        <span class="c"># create a list of laughter symbols from the list of all symbols</span>
+        <span class="c1"># create a list of laughter symbols from the list of all symbols</span>
         <span class="n">laugh</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">SYMBOLS</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">SYMBOLS</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;laugh&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">SYMBOLS</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;laugh&quot;</span><span class="p">:</span>
                 <span class="n">laugh</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="ow">in</span> <span class="n">laugh</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="ow">in</span> <span class="n">laugh</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasTag.is_noise"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag.is_noise">[docs]</a>    <span class="k">def</span> <span class="nf">is_noise</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasTag.is_noise"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag.is_noise">[docs]</a>    <span class="k">def</span> <span class="nf">is_noise</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the tag is a noise. &quot;&quot;&quot;</span>
 
-        <span class="c"># create a list of noise symbols from the list of all symbols</span>
+        <span class="c1"># create a list of noise symbols from the list of all symbols</span>
         <span class="n">noises</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">SYMBOLS</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">SYMBOLS</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;noise&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">SYMBOLS</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;noise&quot;</span><span class="p">:</span>
                 <span class="n">noises</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="ow">in</span> <span class="n">noises</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="ow">in</span> <span class="n">noises</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasTag.is_dummy"><a class="viewcode-back" href="../../../rst/anndata.annlabel.html#anndata.annlabel.tag.sppasTag.is_dummy">[docs]</a>    <span class="k">def</span> <span class="nf">is_dummy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasTag.is_dummy"><a class="viewcode-back" href="../../../rst/anndata.html#anndata.sppasTag.is_dummy">[docs]</a>    <span class="k">def</span> <span class="nf">is_dummy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return True if the tag is a dummy label. &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="o">==</span> <span class="s">&quot;dummy&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span> <span class="o">==</span> <span class="s2">&quot;dummy&quot;</span></div>
 
-    <span class="c"># ------------------------------------------------------------------------</span>
-    <span class="c"># Overloads</span>
-    <span class="c"># ------------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># ------------------------------------------------------------------------</span>
+    <span class="c1"># Overloads</span>
+    <span class="c1"># ------------------------------------------------------------------------</span>
+
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&quot;Tag: {!s:s},{!s:s}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_content</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span>
+        <span class="k">return</span> <span class="s2">&quot;Tag: </span><span class="si">{!s:s}</span><span class="s2">,</span><span class="si">{!s:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_content</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&quot;{!s:s} ({!s:s})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_content</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{!s:s}</span><span class="s2"> (</span><span class="si">{!s:s}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">b</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_content</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Compare 2 tags. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasTag</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__tag_content</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tag_type</span><span class="p">))</span>
@@ -363,32 +352,31 @@
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasTag</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">()</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">True</span></div>
+        <span class="k">return</span> <span class="kc">True</span></div>
 </pre></div>
 
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -397,13 +385,13 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
     </div>
   </body>
 </html>

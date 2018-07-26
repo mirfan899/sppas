@@ -34,7 +34,7 @@
 
     Support of the native format of ANVIL annotation tool.
 
-    **** this support has to be verified, tested and extended... ****
+    BE AWARE THAT: this support has to be verified, tested and extended!!!
 
 """
 import xml.etree.cElementTree as ET
@@ -43,8 +43,6 @@ from ..anndataexc import AnnDataTypeError
 from ..annlocation.location import sppasLocation
 from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
-from ..annlabel.label import sppasLabel
-from ..annlabel.tag import sppasTag
 
 from .basetrs import sppasBaseIO
 from .aioutils import format_labels

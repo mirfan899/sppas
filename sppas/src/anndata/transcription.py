@@ -65,6 +65,7 @@ class sppasTranscription(sppasMetaData):
     :summary:      Representation of a transcription.
 
     Transcriptions in SPPAS are represented with:
+
         - metadata: a list of tuple key/value;
         - a name (used to identify the transcription);
         - a list of tiers;
@@ -72,16 +73,19 @@ class sppasTranscription(sppasMetaData):
 
     Inter-tier relations are managed by establishing alignment or association
     links between 2 tiers:
+
         - alignment: annotations of a tier A (child) have only localization
           instances included in those of annotations of tier B (parent);
         - association: annotations of a tier A have exactly localization
          instances included in those of annotations of tier B.
 
-    >>> # Create an instance
-    >>> trs = sppasTranscription()
+    :Example:
 
-    >>> # Get a tier of a transcription from its index:
-    >>> tier = trs[0]
+        >>> # Create an instance
+        >>> trs = sppasTranscription()
+
+        >>> # Get a tier of a transcription from its index:
+        >>> tier = trs[0]
 
     """
     def __init__(self, name=None):

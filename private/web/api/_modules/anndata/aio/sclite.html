@@ -1,33 +1,22 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>anndata.aio.sclite &mdash; SPPAS 1.9.8 documentation</title>
-    
+    <title>anndata.aio.sclite &#8212; SPPAS 1.9.8 documentation</title>
     <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '1.9.8',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="top" title="SPPAS 1.9.8 documentation" href="../../../index.html" />
-    <link rel="up" title="Module code" href="../../index.html" /> 
-  </head>
-  <body>
-    <div class="related">
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -36,18 +25,18 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <h1>Source code for anndata.aio.sclite</h1><div class="highlight"><pre>
-<span class="c"># -*- coding: UTF-8 -*-</span>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -101,24 +90,24 @@
 <span class="kn">import</span> <span class="nn">codecs</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
 
-<span class="kn">import</span> <span class="nn">sppas</span>
+<span class="kn">from</span> <span class="nn">sppas.src.config</span> <span class="k">import</span> <span class="n">sg</span>
 
-<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="kn">import</span> <span class="n">sppasUnicode</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AioLocationTypeError</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AnnDataTypeError</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="kn">import</span> <span class="n">AioLineFormatError</span>
-<span class="kn">from</span> <span class="nn">..annotation</span> <span class="kn">import</span> <span class="n">sppasAnnotation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="kn">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="kn">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="kn">import</span> <span class="n">sppasInterval</span>
-<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="kn">import</span> <span class="n">sppasLabel</span>
-<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="kn">import</span> <span class="n">sppasTag</span>
+<span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="k">import</span> <span class="n">sppasUnicode</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioLocationTypeError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
+<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioLineFormatError</span>
+<span class="kn">from</span> <span class="nn">..annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
+<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="k">import</span> <span class="n">sppasLabel</span>
+<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
 
-<span class="kn">from</span> <span class="nn">.text</span> <span class="kn">import</span> <span class="n">sppasBaseText</span>
-<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="kn">import</span> <span class="n">format_labels</span>
-<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="kn">import</span> <span class="n">load</span>
+<span class="kn">from</span> <span class="nn">.text</span> <span class="k">import</span> <span class="n">sppasBaseText</span>
+<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">format_labels</span>
+<span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">load</span>
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasBaseSclite"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasBaseSclite">[docs]</a><span class="k">class</span> <span class="nc">sppasBaseSclite</span><span class="p">(</span><span class="n">sppasBaseText</span><span class="p">):</span>
@@ -133,48 +122,48 @@
 <span class="sd">    * * * * * Current version does not fully support alternations. * * * * *</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasBaseSclite.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasBaseSclite.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasBaseSclite.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasBaseSclite.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new sppasBaseSclite instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
-        <span class="n">sppasBaseText</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="n">sppasBaseText</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-        <span class="c"># override all</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_metadata</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_ctrl_vocab</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_media</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_hierarchy</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_point</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_interval</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_disjoint</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_localization</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_tag</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_radius</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="c1"># override all</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_metadata</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_ctrl_vocab</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_media</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_hierarchy</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_point</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_interval</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_disjoint</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_localization</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_tag</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_radius</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasBaseSclite.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasBaseSclite.make_point">[docs]</a>    <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasBaseSclite.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasBaseSclite.make_point">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; The localization is a time value, so always a float. &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">midpoint</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">midpoint</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="s">&quot;float&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">sppasPoint</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sppasPoint</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span></div></div>
 
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
-</div></div>
+
 <div class="viewcode-block" id="sppasCTM"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasCTM">[docs]</a><span class="k">class</span> <span class="nc">sppasCTM</span><span class="p">(</span><span class="n">sppasBaseSclite</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
@@ -235,39 +224,39 @@
 <span class="sd">        5555 A * * &lt;ALT_END&gt;</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasCTM.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasCTM.detect">[docs]</a>    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasCTM.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasCTM.detect">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check whether a file is of CTM format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
 <span class="sd">        :returns: (bool)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Open and load the content.</span>
+        <span class="c1"># Open and load the content.</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="c"># Check each line</span>
+        <span class="c1"># Check each line</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="c"># a comment, a blank line, an annotation</span>
+                <span class="c1"># a comment, a blank line, an annotation</span>
                 <span class="n">sppasCTM</span><span class="o">.</span><span class="n">check_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">AioLineFormatError</span><span class="p">:</span>
-                <span class="c"># not the right number of columns</span>
-                <span class="k">return</span> <span class="bp">False</span>
+                <span class="c1"># not the right number of columns</span>
+                <span class="k">return</span> <span class="kc">False</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="c"># can&#39;t convert begin/duration into float</span>
-                <span class="k">return</span> <span class="bp">False</span>
+                <span class="c1"># can&#39;t convert begin/duration into float</span>
+                <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasCTM.check_line"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasCTM.check_line">[docs]</a>    <span class="k">def</span> <span class="nf">check_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">line_number</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasCTM.check_line"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasCTM.check_line">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">check_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">line_number</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check whether a line is an annotation or not.</span>
 
 <span class="sd">        Raises AioLineFormatError() or ValueError() in case of a</span>
@@ -278,44 +267,44 @@
 <span class="sd">        :return: (bool)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Comment</span>
+        <span class="c1"># Comment</span>
         <span class="k">if</span> <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">is_comment</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="c"># Blank line</span>
+        <span class="c1"># Blank line</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="c"># A column-delimited line</span>
+        <span class="c1"># A column-delimited line</span>
         <span class="n">tab_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tab_line</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">tab_line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">6</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AioLineFormatError</span><span class="p">(</span><span class="n">line_number</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
 
-        <span class="c"># An alternation</span>
-        <span class="k">if</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&quot;*&quot;</span><span class="p">:</span>
-            <span class="nb">float</span><span class="p">(</span><span class="n">tab_line</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>  <span class="c"># begin</span>
-            <span class="nb">float</span><span class="p">(</span><span class="n">tab_line</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>  <span class="c"># duration</span>
+        <span class="c1"># An alternation</span>
+        <span class="k">if</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;*&quot;</span><span class="p">:</span>
+            <span class="nb">float</span><span class="p">(</span><span class="n">tab_line</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>  <span class="c1"># begin</span>
+            <span class="nb">float</span><span class="p">(</span><span class="n">tab_line</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>  <span class="c1"># duration</span>
 
-        <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasCTM.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasCTM.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasCTM.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasCTM.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new CTM instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
 
-        <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s">&quot;ctm&quot;</span>
+        <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;ctm&quot;</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-    <span class="c"># proceedReader</span>
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c1"># proceedReader</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasCTM.get_tier"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasCTM.get_tier">[docs]</a>    <span class="k">def</span> <span class="nf">get_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the tier related to the given line.</span>
 <span class="sd">        Find the tier or create it.</span>
@@ -325,23 +314,23 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tab_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-        <span class="n">tier_name</span> <span class="o">=</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">+</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">tier_name</span> <span class="o">=</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">tier_name</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">tier</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="c"># Create the media linked to the tier</span>
+        <span class="k">if</span> <span class="n">tier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Create the media linked to the tier</span>
             <span class="n">media</span> <span class="o">=</span> <span class="n">sppasBaseText</span><span class="o">.</span><span class="n">create_media</span><span class="p">(</span><span class="n">tab_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="bp">self</span><span class="p">)</span>
 
-            <span class="c"># Create the tier and set metadata</span>
+            <span class="c1"># Create the tier and set metadata</span>
             <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="n">tier_name</span><span class="p">,</span> <span class="n">media</span><span class="o">=</span><span class="n">media</span><span class="p">)</span>
-            <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;media_channel&quot;</span><span class="p">,</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;media_channel&quot;</span><span class="p">,</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">tier</span>
+        <span class="k">return</span> <span class="n">tier</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasCTM.get_score"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasCTM.get_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_score</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasCTM.get_score"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasCTM.get_score">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_score</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the score of the label of a given line.</span>
 
 <span class="sd">        :param line: (str)</span>
@@ -349,17 +338,17 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tab_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-        <span class="n">score</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tab_line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">score</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tab_line</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                 <span class="k">pass</span>
 
-        <span class="k">return</span> <span class="n">score</span>
+        <span class="k">return</span> <span class="n">score</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasCTM.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasCTM.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Read a ctm file and fill the Transcription.</span>
 <span class="sd">        It creates a tier for each media-channel observed in the file.</span>
@@ -368,56 +357,56 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_lines</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_lines</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
     <span class="k">def</span> <span class="nf">_parse_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fill the transcription from the lines of the CTM file. &quot;&quot;&quot;</span>
 
-        <span class="c"># the number of the current alternation</span>
+        <span class="c1"># the number of the current alternation</span>
         <span class="n">in_alt</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="c"># the annotations of the alternations</span>
+        <span class="c1"># the annotations of the alternations</span>
         <span class="n">alternates</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="c"># the current tier to fill</span>
-        <span class="n">tier</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c1"># the current tier to fill</span>
+        <span class="n">tier</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c"># Extract rows, create tiers and metadata.</span>
+        <span class="c1"># Extract rows, create tiers and metadata.</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">sppasUnicode</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">to_strip</span><span class="p">()</span>
 
-            <span class="c"># a comment can contain metadata</span>
+            <span class="c1"># a comment can contain metadata</span>
             <span class="k">if</span> <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">is_comment</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">tier</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">tier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">_parse_comment</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">_parse_comment</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">tier</span><span class="p">)</span>
-            <span class="c"># ignore comments and blank lines</span>
-            <span class="k">if</span> <span class="n">sppasCTM</span><span class="o">.</span><span class="n">check_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="c1"># ignore comments and blank lines</span>
+            <span class="k">if</span> <span class="n">sppasCTM</span><span class="o">.</span><span class="n">check_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="c"># check for the tier (find it or create it)</span>
+            <span class="c1"># check for the tier (find it or create it)</span>
             <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tier</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
-            <span class="c"># extract information of this annotation</span>
+            <span class="c1"># extract information of this annotation</span>
             <span class="n">tab_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
             <span class="n">wavname</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">word</span> <span class="o">=</span> <span class="n">tab_line</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
             <span class="n">score</span> <span class="o">=</span> <span class="n">sppasCTM</span><span class="o">.</span><span class="n">get_score</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
-            <span class="c"># check for an alternative annotation</span>
-            <span class="k">if</span> <span class="n">begin</span> <span class="o">==</span> <span class="s">&quot;*&quot;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">word</span> <span class="o">==</span> <span class="s">&quot;&lt;ALT_BEGIN&gt;&quot;</span><span class="p">:</span>
+            <span class="c1"># check for an alternative annotation</span>
+            <span class="k">if</span> <span class="n">begin</span> <span class="o">==</span> <span class="s2">&quot;*&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">word</span> <span class="o">==</span> <span class="s2">&quot;&lt;ALT_BEGIN&gt;&quot;</span><span class="p">:</span>
                     <span class="n">alternates</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
                     <span class="n">in_alt</span> <span class="o">=</span> <span class="mi">1</span>
                     <span class="n">alternates</span><span class="p">[</span><span class="n">in_alt</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-                <span class="k">elif</span> <span class="n">word</span> <span class="o">==</span> <span class="s">&quot;&lt;ALT&gt;&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">word</span> <span class="o">==</span> <span class="s2">&quot;&lt;ALT&gt;&quot;</span><span class="p">:</span>
                     <span class="n">in_alt</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="n">alternates</span><span class="p">[</span><span class="n">in_alt</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="c"># todo: we SHOULD add ALL the alternations into the tier</span>
-                    <span class="c"># but we add only the first one...</span>
+                    <span class="c1"># todo: we SHOULD add ALL the alternations into the tier</span>
+                    <span class="c1"># but we add only the first one...</span>
                     <span class="n">sppasCTM</span><span class="o">.</span><span class="n">_add_alt_annotations</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">alternates</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-                    <span class="c"># re-init</span>
+                    <span class="c1"># re-init</span>
                     <span class="n">alternates</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
                     <span class="n">in_alt</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">else</span><span class="p">:</span>
@@ -427,7 +416,7 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">alternates</span><span class="p">[</span><span class="n">in_alt</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ann</span><span class="p">)</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_add_alt_annotations</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">annotations</span><span class="p">):</span>
@@ -442,7 +431,7 @@
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_create_annotation</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
@@ -456,9 +445,9 @@
                                                <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="n">end</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">sppasAnnotation</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-    <span class="c"># Writer</span>
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c1"># Writer</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasCTM.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasCTM.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write a transcription into a file.</span>
@@ -466,37 +455,37 @@
 <span class="sd">        :param filename: (str)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8096</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8096</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
 
-            <span class="c"># write an header with the metadata</span>
+            <span class="c1"># write an header with the metadata</span>
             <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">serialize_header</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span>
 
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tier</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-                <span class="c"># fix the name of the waveform (for 1st column)</span>
-                <span class="n">waveform</span> <span class="o">=</span> <span class="s">&quot;waveform-&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_media</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="c1"># fix the name of the waveform (for 1st column)</span>
+                <span class="n">waveform</span> <span class="o">=</span> <span class="s2">&quot;waveform-&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_media</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">waveform</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_media</span><span class="p">()</span><span class="o">.</span><span class="n">get_filename</span><span class="p">())</span>
 
-                <span class="c"># fix the name of the channel (for 2nd column)</span>
-                <span class="n">channel</span> <span class="o">=</span> <span class="s">&quot;A&quot;</span>
-                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&#39;media_channel&#39;</span><span class="p">):</span>
-                    <span class="n">channel</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&#39;media_channel&#39;</span><span class="p">)</span>
+                <span class="c1"># fix the name of the channel (for 2nd column)</span>
+                <span class="n">channel</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span>
+                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s1">&#39;media_channel&#39;</span><span class="p">):</span>
+                    <span class="n">channel</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s1">&#39;media_channel&#39;</span><span class="p">)</span>
 
-                <span class="c"># serialize annotations</span>
+                <span class="c1"># serialize annotations</span>
                 <span class="k">for</span> <span class="n">ann</span> <span class="ow">in</span> <span class="n">tier</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">is_point</span><span class="p">():</span>
-                        <span class="k">raise</span> <span class="n">AioLocationTypeError</span><span class="p">(</span><span class="s">&#39;Sclite CTM&#39;</span><span class="p">,</span> <span class="s">&#39;points&#39;</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">AioLocationTypeError</span><span class="p">(</span><span class="s1">&#39;Sclite CTM&#39;</span><span class="p">,</span> <span class="s1">&#39;points&#39;</span><span class="p">)</span>
                     <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sppasCTM</span><span class="o">.</span><span class="n">_serialize_annotation</span><span class="p">(</span><span class="n">ann</span><span class="p">,</span> <span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">))</span>
 
-                <span class="c"># write the metadata of this tier</span>
+                <span class="c1"># write the metadata of this tier</span>
                 <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sppasBaseText</span><span class="o">.</span><span class="n">serialize_metadata</span><span class="p">(</span><span class="n">tier</span><span class="p">))</span>
-                <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
-            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_annotation</span><span class="p">(</span><span class="n">ann</span><span class="p">,</span> <span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert an annotation into lines for CTM files.</span>
@@ -507,59 +496,59 @@
 <span class="sd">        :returns: (str)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># fix location information</span>
+        <span class="c1"># fix location information</span>
         <span class="n">begin</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span>
         <span class="n">duration</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span>
 
-        <span class="c"># no label</span>
+        <span class="c1"># no label</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ann</span><span class="o">.</span><span class="n">get_labels</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="n">sppasCTM</span><span class="o">.</span><span class="n">_serialize_tag</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">sppasTag</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">))</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">sppasCTM</span><span class="o">.</span><span class="n">_serialize_tag</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">sppasTag</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
-            <span class="c"># all labels will have the same begin/duration.</span>
-            <span class="c"># todo: check if sequences of labels are supported by CTM.</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="c1"># all labels will have the same begin/duration.</span>
+            <span class="c1"># todo: check if sequences of labels are supported by CTM.</span>
             <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_labels</span><span class="p">():</span>
 
-                <span class="c"># only one tag in the label: no alternation</span>
+                <span class="c1"># only one tag in the label: no alternation</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="n">tag</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_best_tag</span><span class="p">()</span>
                     <span class="n">score</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">get_score</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
                     <span class="n">content</span> <span class="o">+=</span> <span class="n">sppasCTM</span><span class="o">.</span><span class="n">_serialize_tag</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
 
-                <span class="c"># label with alternation tags</span>
+                <span class="c1"># label with alternation tags</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;{:s} {:s} * * &lt;ALT_BEGIN&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
+                    <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2"> </span><span class="si">{:s}</span><span class="s2"> * * &lt;ALT_BEGIN&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">label</span><span class="p">:</span>
                         <span class="n">content</span> <span class="o">+=</span> <span class="n">sppasCTM</span><span class="o">.</span><span class="n">_serialize_tag</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
-                        <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;{:s} {:s} * * &lt;ALT&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
+                        <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2"> </span><span class="si">{:s}</span><span class="s2"> * * &lt;ALT&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
                     <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
-                    <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot;_END&gt;</span><span class="se">\n</span><span class="s">&quot;</span>
+                    <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;_END&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
         <span class="k">return</span> <span class="n">content</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_serialize_tag</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_serialize_tag</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert a tag with its score into a line for CTM files. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
-            <span class="n">tag_content</span> <span class="o">=</span> <span class="s">&quot;@&quot;</span>
+            <span class="n">tag_content</span> <span class="o">=</span> <span class="s2">&quot;@&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">tag_content</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span>
 
-        <span class="c"># serialize the content</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="s">&quot;{:s} {:s} {:s} {:s} {:s}&quot;</span> \
-                  <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">begin</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">duration</span><span class="p">),</span> <span class="n">tag_content</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">score</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">content</span> <span class="o">+=</span> <span class="s">&quot; {:s}&quot;</span> \
-                       <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">score</span><span class="p">))</span>
+        <span class="c1"># serialize the content</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2"> </span><span class="si">{:s}</span><span class="s2"> </span><span class="si">{:s}</span><span class="s2"> </span><span class="si">{:s}</span><span class="s2"> </span><span class="si">{:s}</span><span class="s2">&quot;</span> \
+                  <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">begin</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">duration</span><span class="p">),</span> <span class="n">tag_content</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">score</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{:s}</span><span class="s2">&quot;</span> \
+                       <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">score</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">content</span><span class="o">+</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="k">return</span> <span class="n">content</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span></div>
 
-<span class="c"># ---------------------------------------------------------------------------</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
 
-</div>
+
 <div class="viewcode-block" id="sppasSTM"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasSTM">[docs]</a><span class="k">class</span> <span class="nc">sppasSTM</span><span class="p">(</span><span class="n">sppasBaseSclite</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
@@ -604,39 +593,39 @@
 <span class="sd">    Blank lines are also ignored.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasSTM.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasSTM.detect">[docs]</a>    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasSTM.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasSTM.detect">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check whether a file is of STM format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
 <span class="sd">        :returns: (bool)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Open and load the content.</span>
+        <span class="c1"># Open and load the content.</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="c"># Check each line</span>
+        <span class="c1"># Check each line</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="c"># a comment, a blank line, an annotation</span>
+                <span class="c1"># a comment, a blank line, an annotation</span>
                 <span class="n">sppasSTM</span><span class="o">.</span><span class="n">check_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">AioLineFormatError</span><span class="p">:</span>
-                <span class="c"># not the right number of columns</span>
-                <span class="k">return</span> <span class="bp">False</span>
+                <span class="c1"># not the right number of columns</span>
+                <span class="k">return</span> <span class="kc">False</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="c"># can&#39;t convert begin/end into float</span>
-                <span class="k">return</span> <span class="bp">False</span>
+                <span class="c1"># can&#39;t convert begin/end into float</span>
+                <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="sppasSTM.check_line"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasSTM.check_line">[docs]</a>    <span class="k">def</span> <span class="nf">check_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">line_number</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasSTM.check_line"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasSTM.check_line">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">check_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">line_number</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check whether a line is an annotation or not.</span>
 <span class="sd">        Raises AioLineFormatError() or ValueError() in case of a</span>
 <span class="sd">        malformed line.</span>
@@ -646,42 +635,42 @@
 <span class="sd">        :return: (bool)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Comment</span>
+        <span class="c1"># Comment</span>
         <span class="k">if</span> <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">is_comment</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="c"># Blank line</span>
+        <span class="c1"># Blank line</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="c"># A column-delimited line</span>
+        <span class="c1"># A column-delimited line</span>
         <span class="n">tab_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tab_line</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AioLineFormatError</span><span class="p">(</span><span class="n">line_number</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
 
-        <span class="nb">float</span><span class="p">(</span><span class="n">tab_line</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>  <span class="c"># begin</span>
-        <span class="nb">float</span><span class="p">(</span><span class="n">tab_line</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>  <span class="c"># end</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">tab_line</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>  <span class="c1"># begin</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">tab_line</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>  <span class="c1"># end</span>
 
-        <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
-<div class="viewcode-block" id="sppasSTM.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasSTM.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasSTM.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasSTM.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a new STM instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
 
-        <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s">&quot;stm&quot;</span>
+        <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;stm&quot;</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-    <span class="c"># proceedReader</span>
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c1"># proceedReader</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasSTM.get_tier"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasSTM.get_tier">[docs]</a>    <span class="k">def</span> <span class="nf">get_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the tier related to the given line.</span>
 <span class="sd">        Find the tier or create it.</span>
@@ -691,22 +680,22 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tab_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-        <span class="n">tier_name</span> <span class="o">=</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">+</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s">&quot;-&quot;</span> <span class="o">+</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">tier_name</span> <span class="o">=</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">tier_name</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">tier</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="c"># Create the media linked to the tier</span>
+        <span class="k">if</span> <span class="n">tier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Create the media linked to the tier</span>
             <span class="n">media</span> <span class="o">=</span> <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">create_media</span><span class="p">(</span><span class="n">tab_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="bp">self</span><span class="p">)</span>
 
-            <span class="c"># Create the tier and set metadata</span>
+            <span class="c1"># Create the tier and set metadata</span>
             <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="n">tier_name</span><span class="p">,</span> <span class="n">media</span><span class="o">=</span><span class="n">media</span><span class="p">)</span>
-            <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;media_channel&quot;</span><span class="p">,</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s">&quot;speaker_id&quot;</span><span class="p">,</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;media_channel&quot;</span><span class="p">,</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_id&quot;</span><span class="p">,</span> <span class="n">tab_line</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">tier</span>
+        <span class="k">return</span> <span class="n">tier</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasSTM.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasSTM.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Read a ctm file and fill the Transcription.</span>
 <span class="sd">        It creates a tier for each media-channel observed in the file.</span>
@@ -715,41 +704,41 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_lines</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parse_lines</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
     <span class="k">def</span> <span class="nf">_parse_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fill the transcription from the lines of the STM file. &quot;&quot;&quot;</span>
 
-        <span class="c"># the current tier to fill</span>
-        <span class="n">tier</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c1"># the current tier to fill</span>
+        <span class="n">tier</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c"># Extract rows, create tiers and metadata.</span>
+        <span class="c1"># Extract rows, create tiers and metadata.</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">sppasUnicode</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">to_strip</span><span class="p">()</span>
 
-            <span class="c"># a comment can contain metadata</span>
+            <span class="c1"># a comment can contain metadata</span>
             <span class="k">if</span> <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">is_comment</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">tier</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">tier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">_parse_comment</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">_parse_comment</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">tier</span><span class="p">)</span>
-            <span class="c"># ignore comments and blank lines</span>
-            <span class="k">if</span> <span class="n">sppasSTM</span><span class="o">.</span><span class="n">check_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="c1"># ignore comments and blank lines</span>
+            <span class="k">if</span> <span class="n">sppasSTM</span><span class="o">.</span><span class="n">check_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="c"># check for the tier (find it or create it)</span>
+            <span class="c1"># check for the tier (find it or create it)</span>
             <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tier</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
-            <span class="c"># extract information of this annotation</span>
+            <span class="c1"># extract information of this annotation</span>
             <span class="n">tab_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
             <span class="n">sppasSTM</span><span class="o">.</span><span class="n">_create_annotation</span><span class="p">(</span><span class="n">tab_line</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
                                         <span class="n">tab_line</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span>
-                                        <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tab_line</span><span class="p">[</span><span class="mi">5</span><span class="p">:]),</span>
+                                        <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tab_line</span><span class="p">[</span><span class="mi">5</span><span class="p">:]),</span>
                                         <span class="n">tier</span><span class="p">)</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_create_annotation</span><span class="p">(</span><span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">utterance</span><span class="p">,</span> <span class="n">tier</span><span class="p">):</span>
@@ -761,9 +750,9 @@
                                                <span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">make_point</span><span class="p">(</span><span class="n">end</span><span class="p">)))</span>
         <span class="n">tier</span><span class="o">.</span><span class="n">create_annotation</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-    <span class="c"># Writer</span>
-    <span class="c"># -----------------------------------------------------------------------</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c1"># Writer</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasSTM.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.sclite.sppasSTM.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write a transcription into a file.</span>
@@ -771,44 +760,44 @@
 <span class="sd">        :param filename: (str)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">sppas</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8096</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">,</span> <span class="n">buffering</span><span class="o">=</span><span class="mi">8096</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
 
-            <span class="c"># write an header with the metadata</span>
+            <span class="c1"># write an header with the metadata</span>
             <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sppasBaseSclite</span><span class="o">.</span><span class="n">serialize_header</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span>
 
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tier</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-                <span class="c"># fix the name of the waveform (for 1st column)</span>
-                <span class="n">waveform</span> <span class="o">=</span> <span class="s">&quot;waveform-&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_media</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="c1"># fix the name of the waveform (for 1st column)</span>
+                <span class="n">waveform</span> <span class="o">=</span> <span class="s2">&quot;waveform-&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_media</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">waveform</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">tier</span><span class="o">.</span><span class="n">get_media</span><span class="p">()</span><span class="o">.</span><span class="n">get_filename</span><span class="p">())</span>
 
-                <span class="c"># fix the name of the channel (for 2nd column)</span>
-                <span class="n">channel</span> <span class="o">=</span> <span class="s">&quot;A&quot;</span>
-                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&#39;media_channel&#39;</span><span class="p">):</span>
-                    <span class="n">channel</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&#39;media_channel&#39;</span><span class="p">)</span>
+                <span class="c1"># fix the name of the channel (for 2nd column)</span>
+                <span class="n">channel</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span>
+                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s1">&#39;media_channel&#39;</span><span class="p">):</span>
+                    <span class="n">channel</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s1">&#39;media_channel&#39;</span><span class="p">)</span>
 
-                <span class="c"># fix the speaker</span>
-                <span class="n">speaker</span> <span class="o">=</span> <span class="s">&quot;A&quot;</span>
-                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&#39;speaker_id&#39;</span><span class="p">):</span>
-                    <span class="n">speaker</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&#39;speaker_id&#39;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s">&#39;speaker_name&#39;</span><span class="p">):</span>
-                    <span class="n">speaker</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s">&#39;speaker_name&#39;</span><span class="p">)</span>
+                <span class="c1"># fix the speaker</span>
+                <span class="n">speaker</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span>
+                <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s1">&#39;speaker_id&#39;</span><span class="p">):</span>
+                    <span class="n">speaker</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s1">&#39;speaker_id&#39;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s1">&#39;speaker_name&#39;</span><span class="p">):</span>
+                    <span class="n">speaker</span> <span class="o">=</span> <span class="n">tier</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s1">&#39;speaker_name&#39;</span><span class="p">)</span>
 
-                <span class="c"># serialize annotations</span>
+                <span class="c1"># serialize annotations</span>
                 <span class="k">for</span> <span class="n">ann</span> <span class="ow">in</span> <span class="n">tier</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">is_point</span><span class="p">():</span>
-                        <span class="k">raise</span> <span class="n">AioLocationTypeError</span><span class="p">(</span><span class="s">&#39;Sclite STM&#39;</span><span class="p">,</span> <span class="s">&#39;points&#39;</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">AioLocationTypeError</span><span class="p">(</span><span class="s1">&#39;Sclite STM&#39;</span><span class="p">,</span> <span class="s1">&#39;points&#39;</span><span class="p">)</span>
                     <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sppasSTM</span><span class="o">.</span><span class="n">_serialize_annotation</span><span class="p">(</span><span class="n">ann</span><span class="p">,</span> <span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">speaker</span><span class="p">))</span>
 
-                <span class="c"># write the metadata of this tier</span>
+                <span class="c1"># write the metadata of this tier</span>
                 <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sppasBaseText</span><span class="o">.</span><span class="n">serialize_metadata</span><span class="p">(</span><span class="n">tier</span><span class="p">))</span>
-                <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+                <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
-            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
-    <span class="c"># -----------------------------------------------------------------------</span>
-</div>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_annotation</span><span class="p">(</span><span class="n">ann</span><span class="p">,</span> <span class="n">waveform</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">speaker</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convert an annotation into lines for STM files.</span>
@@ -820,16 +809,16 @@
 <span class="sd">        :returns: (str)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># fix location information</span>
+        <span class="c1"># fix location information</span>
         <span class="n">begin</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span><span class="o">.</span><span class="n">get_begin</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span>
         <span class="n">end</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">get_location</span><span class="p">()</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span><span class="o">.</span><span class="n">get_end</span><span class="p">()</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">()</span>
 
-        <span class="c"># fix label information</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">serialize_labels</span><span class="p">(</span><span class="n">separator</span><span class="o">=</span><span class="s">&quot; &quot;</span><span class="p">,</span>
-                                       <span class="n">empty</span><span class="o">=</span><span class="s">&quot;IGNORE_TIME_SEGMENT_IN_SCORING&quot;</span><span class="p">,</span>
-                                       <span class="n">alt</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="c1"># fix label information</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">ann</span><span class="o">.</span><span class="n">serialize_labels</span><span class="p">(</span><span class="n">separator</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span>
+                                       <span class="n">empty</span><span class="o">=</span><span class="s2">&quot;IGNORE_TIME_SEGMENT_IN_SCORING&quot;</span><span class="p">,</span>
+                                       <span class="n">alt</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="s">&quot;{wav} {cha} {spk} {beg} {end} {lab}</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{wav}</span><span class="s2"> </span><span class="si">{cha}</span><span class="s2"> </span><span class="si">{spk}</span><span class="s2"> </span><span class="si">{beg}</span><span class="s2"> </span><span class="si">{end}</span><span class="s2"> </span><span class="si">{lab}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">wav</span><span class="o">=</span><span class="n">waveform</span><span class="p">,</span>
             <span class="n">cha</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
             <span class="n">spk</span><span class="o">=</span><span class="n">speaker</span><span class="p">,</span>
@@ -842,26 +831,25 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -870,13 +858,13 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &raquo;</li>
-          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
     </div>
   </body>
 </html>

@@ -954,13 +954,16 @@ class sppasXRFF(sppasWEKA):
         1. Only the writers are implemented. No readers.
         2. Sparse option is not supported by both writers.
         3. XRFF output file is not gzipped.
-        4. XRFF format supports the followings that are not currently
+        4. XRFF format supports the followings that are not currently \
         implemented into this class:
+
             - attribute weights;
             - instance weights.
 
     -- !!!!!!!! No guarantee !!!!!! --
+
     This class has never been tested.
+
     -- !!!!!!!! No guarantee !!!!!! --
 
     """
