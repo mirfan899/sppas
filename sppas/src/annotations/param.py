@@ -34,7 +34,7 @@
 """
 import os.path
 
-from sppas import SPPAS_CONFIG_DIR
+from sppas.src.config import paths
 from sppas.src.annotations.cfgparser import sppasAnnotationConfigParser
 from . import DEFAULT_OUTPUT_EXTENSION
 
@@ -247,7 +247,7 @@ class sppasParam(object):
     def parse_config_file(self):
         """ Parse the sppas.conf file to get the list of annotations. """
 
-        with open(os.path.join(SPPAS_CONFIG_DIR, "sppas.conf"), "r") as fp:
+        with open(os.path.join(paths.etc, "sppas.conf"), "r") as fp:
             lines = fp.readlines()
 
         # Read the whole file and load annotation options
@@ -256,7 +256,7 @@ class sppasParam(object):
             if line.lower().startswith("annotation:") is True:
                 data = line.split(":")
                 cfg_file = data[1].strip()
-                self.annotations.append(annotationParam(os.path.join(SPPAS_CONFIG_DIR, cfg_file)))
+                self.annotations.append(annotationParam(os.path.join(paths.etc, cfg_file)))
 
     # ------------------------------------------------------------------------
 

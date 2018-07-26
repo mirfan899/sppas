@@ -35,14 +35,14 @@
 import unittest
 import os.path
 
-from sppas import SAMPLES_PATH
+from sppas.src.config import paths
 from ..aio import open as audio_open
 from ..channelformatter import sppasChannelFormatter
 
 # ---------------------------------------------------------------------------
 
-sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")  # mono; 16000Hz; 16bits
-sample_2 = os.path.join(SAMPLES_PATH, "samples-fra", "F_F_B003-P9.wav")  # mono; 44100Hz; 32bits
+sample_1 = os.path.join(paths.samples, "samples-eng", "oriana1.wav")  # mono; 16000Hz; 16bits
+sample_2 = os.path.join(paths.samples, "samples-fra", "F_F_B003-P9.wav")  # mono; 44100Hz; 32bits
 
 # ---------------------------------------------------------------------------
 

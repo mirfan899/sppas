@@ -38,7 +38,7 @@
 import wx
 import logging
 
-from sppas import SETTINGS_FILE
+from sppas.src.ui import SETTINGS_FILE
 
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio

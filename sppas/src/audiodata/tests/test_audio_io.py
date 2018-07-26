@@ -36,7 +36,8 @@ import unittest
 import os.path
 import shutil
 
-from sppas import SAMPLES_PATH
+from sppas.src.config import paths
+
 from ..aio import open as audio_open
 from ..aio import save as audio_save
 from ..aio import save_fragment as audio_save_fragment
@@ -46,9 +47,9 @@ from sppas.src.utils.fileutils import sppasFileUtils
 # ---------------------------------------------------------------------------
 
 TEMP = sppasFileUtils().set_random()
-sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")
-sample_2 = os.path.join(SAMPLES_PATH, "samples-fra", "F_F_B003-P9.wav")
-sample_3 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana3.wave")
+sample_1 = os.path.join(paths.samples, "samples-eng", "oriana1.wav")
+sample_2 = os.path.join(paths.samples, "samples-fra", "F_F_B003-P9.wav")
+sample_3 = os.path.join(paths.samples, "samples-eng", "oriana3.wave")
 
 # ---------------------------------------------------------------------------
 

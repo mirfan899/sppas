@@ -38,8 +38,7 @@ import os.path
 import glob
 import logging
 
-from sppas import RESOURCES_PATH
-
+from sppas.src.config import paths
 import sppas.src.annotationdata.aio
 from sppas.src.annotationdata import Transcription
 from sppas.src.annotationdata import Tier
@@ -143,7 +142,7 @@ class sppasAlign(sppasBaseAnnotation):
             try:
                 model_mixer = sppasModelMixer()
                 model_mixer.load(model, model_L1)
-                output_dir = os.path.join(RESOURCES_PATH, "models", "models-mix")
+                output_dir = os.path.join(paths.resources, "models", "models-mix")
                 model_mixer.mix(output_dir, gamma=0.6)
                 model = output_dir
             except Exception as e:

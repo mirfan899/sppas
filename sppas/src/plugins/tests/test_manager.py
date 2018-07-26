@@ -3,14 +3,14 @@
 import unittest
 import os.path
 
-from sppas import BASE_PATH
+from sppas.src.config import paths
 from ..manager import sppasPluginsManager
 
 # ---------------------------------------------------------------------------
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 soxplugin = os.path.join(DATA, "soxplugin.zip")
-sample = os.path.join(os.path.dirname(BASE_PATH), "samples", "samples-eng", "oriana1.wav")
+sample = os.path.join(paths.samples, "samples-eng", "oriana1.wav")
 
 # ---------------------------------------------------------------------------
 

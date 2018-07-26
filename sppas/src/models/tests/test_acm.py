@@ -6,7 +6,7 @@ import copy
 import shutil
 
 from sppas import ORTHO_SYMBOLS, PHONE_SYMBOLS
-from sppas import RESOURCES_PATH, SAMPLES_PATH
+from sppas.src.config import paths
 from sppas.src.utils.compare import sppasCompare
 from sppas.src.utils.fileutils import sppasFileUtils
 
@@ -17,7 +17,7 @@ from ..acm.htktrain import sppasHTKModelTrainer, sppasDataTrainer, \
 # ---------------------------------------------------------------------------
 
 TEMP = sppasFileUtils().set_random()
-MODEL_PATH = os.path.join(RESOURCES_PATH, "models")
+MODEL_PATH = os.path.join(paths.resources, "models")
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 SIL_PHON = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
@@ -43,13 +43,13 @@ class TestTrainer(unittest.TestCase):
 
     def test_add_corpus(self):
         corpus = sppasTrainingCorpus()
-        corpus1 = os.path.join(SAMPLES_PATH, "samples-eng")
-        corpus2 = os.path.join(SAMPLES_PATH, "samples-ita")
+        corpus1 = os.path.join(paths.samples, "samples-eng")
+        corpus2 = os.path.join(paths.samples, "samples-ita")
         nb = corpus.add_corpus(corpus1)
         self.assertEqual(nb, 0)
         nb = corpus.add_corpus(corpus2)
         self.assertEqual(nb, 4)
-        corpus.add_corpus(SAMPLES_PATH)
+        corpus.add_corpus(paths.samples)
         self.assertGreater(len(corpus.transfiles), 10)
         self.assertEqual(len(corpus.phonfiles), 0)
         self.assertEqual(len(corpus.alignfiles), 0)
@@ -70,7 +70,7 @@ class TestTrainer(unittest.TestCase):
     def test_phoneset(self):
         pho = sppasPhoneSet()
         self.assertEqual(4, len(pho))
-        pho.add_from_dict(os.path.join(RESOURCES_PATH, "dict", "nan.dict"))
+        pho.add_from_dict(os.path.join(paths.resources, "dict", "nan.dict"))
         self.assertEqual(44, len(pho))
         pho.save(os.path.join(TEMP, "monophones"))
 
@@ -89,11 +89,11 @@ class TestTrainer(unittest.TestCase):
 
         self.assertEqual(corpus.phonemap.map_entry('#'), "#")
 
-        corpus.fix_resources(dict_file=os.path.join(RESOURCES_PATH, "dict", "nan.dict"))
+        corpus.fix_resources(dict_file=os.path.join(paths.resources, "dict", "nan.dict"))
         self.assertEqual(len(corpus.monophones), 45)
 
-        corpus.fix_resources(dict_file=os.path.join(RESOURCES_PATH, "dict", "nan.dict"),
-                             mapping_file=os.path.join(RESOURCES_PATH, "models", "models-nan", "monophones.repl"))
+        corpus.fix_resources(dict_file=os.path.join(paths.resources, "dict", "nan.dict"),
+                             mapping_file=os.path.join(paths.resources, "models", "models-nan", "monophones.repl"))
         self.assertEqual(corpus.phonemap.map_entry(SIL_ORTHO), SIL_PHON)
 
         self.assertFalse(corpus.add_file("toto", "toto"))
@@ -122,13 +122,13 @@ class TestTrainer(unittest.TestCase):
     # def test_trainer_with_data(self):
     #     setup_logging(1, None)
     #     corpus = sppasTrainingCorpus()
-    #     corpus.fix_resources(dictfile=os.path.join(RESOURCES_PATH, "dict", "fra.dict"),
-    #                          mappingfile=os.path.join(RESOURCES_PATH, "models", "models-fra", "monophones.repl"))
+    #     corpus.fix_resources(dictfile=os.path.join(paths.resources, "dict", "fra.dict"),
+    #                          mappingfile=os.path.join(paths.resources, "models", "models-fra", "monophones.repl"))
     #     corpus.lang = "fra"
     #     corpus.datatrainer.protodir = os.path.join(DATA, "protos")
     #     corpus.add_file(os.path.join(DATA, "F_F_B003-P8-palign.TextGrid"), os.path.join(DATA, "F_F_B003-P8.wav"))
     #     corpus.add_file(os.path.join(DATA, "track_0001-phon.xra"), os.path.join(DATA, "track_0001.wav"))
-    #     corpus.add_corpus(os.path.join(SAMPLES_PATH, "samples-fra"))
+    #     corpus.add_corpus(os.path.join(paths.samples, "samples-fra"))
     #
     #     trainer = sppasHTKModelTrainer(corpus)
     #     acmodel = trainer.training_recipe(delete=True)

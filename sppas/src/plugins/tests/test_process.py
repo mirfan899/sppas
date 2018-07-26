@@ -4,12 +4,12 @@ import unittest
 import os.path
 import time
 
-from sppas import BASE_PATH
+from sppas.src.config import paths
 from ..param import sppasPluginParam
 from ..process import sppasPluginProcess
 
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-sample = os.path.join(os.path.dirname(BASE_PATH), "samples", "samples-eng", "oriana1.wav")
+sample = os.path.join(paths.samples, "samples-eng", "oriana1.wav")
 
 # ---------------------------------------------------------------------------
 

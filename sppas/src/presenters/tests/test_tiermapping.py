@@ -4,7 +4,7 @@
 import unittest
 import os.path
 
-from sppas import VARIANTS_SEPARATOR
+from sppas.src.config import separators
 from sppas.src.annotationdata.aio.praat import TextGrid
 from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.annotation import Annotation
@@ -67,8 +67,8 @@ class TestTierMapping(unittest.TestCase):
             self.assertEqual(a1.GetLabel().GetValue(), a2.GetLabel().GetValue())
             self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
         for a1, a2 in zip(tI, self.tierI):
-            l1 = a1.GetLabel().GetValue().split(VARIANTS_SEPARATOR)
-            l2 = a2.GetLabel().GetValue().split(VARIANTS_SEPARATOR)
+            l1 = a1.GetLabel().GetValue().split(separators.variants)
+            l2 = a2.GetLabel().GetValue().split(separators.variants)
             self.assertEqual(sorted(list(set(l1))), sorted(l2))
             self.assertEqual(a1.GetLocation().GetValue(), a2.GetLocation().GetValue())
 

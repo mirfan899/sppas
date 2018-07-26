@@ -43,7 +43,7 @@
 import unittest
 import os.path
 
-from sppas import RESOURCES_PATH, SAMPLES_PATH
+from sppas.src.config import paths
 
 from sppas.src.utils.makeunicode import u
 from sppas.src.resources.vocab import sppasVocabulary
@@ -289,7 +289,7 @@ class TestNum2Letter(unittest.TestCase):
 class TestNormalizer(unittest.TestCase):
 
     def setUp(self):
-        dict_dir = os.path.join(RESOURCES_PATH, "vocab")
+        dict_dir = os.path.join(paths.resources, "vocab")
         vocab_file = os.path.join(dict_dir, "fra.vocab")
         punct_file = os.path.join(dict_dir, "Punctuations.txt")
         wds = sppasVocabulary(vocab_file)
@@ -302,7 +302,7 @@ class TestNormalizer(unittest.TestCase):
     def test_replace(self):
         """ ... Examine tokens and performs some replacements. """
 
-        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(paths.resources, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace([u("un"), u("taux"), u("de"), u("croissance"), u("de"), u("0,5"), u("%")])
         self.assertEquals(s, [u("un"), u("taux"), u("de"), u("croissance"), u("de"), u("0"), u("virgule"), u("5"),
@@ -310,31 +310,31 @@ class TestNormalizer(unittest.TestCase):
 
         text = [u("² % °c  km/h  etc   €  ¥ $ ")]
 
-        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "eng.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(paths.resources, "repl", "eng.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
         self.assertEquals(u("square percent degrees_Celsius km/h etc euros yens dollars"),
                           " ".join(s))
 
-        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "spa.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(paths.resources, "repl", "spa.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
         self.assertEquals(u("quadrados por_ciento grados_Celsius km/h etc euros yens dollars"),
                           " ".join(s))
 
-        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(paths.resources, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
         self.assertEquals(u("carrés pourcents degrés_celcius kilomètres_heure etcetera euros yens dollars"),
                           " ".join(s))
 
-        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "ita.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(paths.resources, "repl", "ita.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
         self.assertEquals(u("quadrato percento gradi_Celsius km/h etc euros yens dollars"),
                           " ".join(s))
 
-        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "cmn.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(paths.resources, "repl", "cmn.repl"), nodump=True)
         self.tok.set_repl(repl)
         s = self.tok.replace(text)
         self.assertEquals(u("的平方 个百分比 摄氏度 公里每小时 etc € ¥ $"),
@@ -362,7 +362,7 @@ class TestNormalizer(unittest.TestCase):
     def test_num2letter(self):
         """ ... Integration of num2letter into the TextNormalizer. """
 
-        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(paths.resources, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
         self.tok.set_lang("fra")
 
@@ -400,7 +400,7 @@ class TestNormalizer(unittest.TestCase):
     def test_sampa(self):
         """ ... X-SAMPA included into the ortho transcription. """
 
-        repl = sppasDictRepl(os.path.join(RESOURCES_PATH, "repl", "fra.repl"), nodump=True)
+        repl = sppasDictRepl(os.path.join(paths.resources, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
 
         self.assertEqual([u("/lemot/")], self.tok.normalize(u("[le mot,/lemot/]"), []))
@@ -419,7 +419,7 @@ class TestNormalizer(unittest.TestCase):
     def test_code_switching(self):
         """ ... [TO DO] support of language switching. """
 
-        dictdir  = os.path.join(RESOURCES_PATH, "vocab")
+        dictdir  = os.path.join(paths.resources, "vocab")
         vocabfra = os.path.join(dictdir, "fra.vocab")
         vocabcmn = os.path.join(dictdir, "cmn.vocab")
 
@@ -447,23 +447,23 @@ class TestTextNorm(unittest.TestCase):
     def test_samples(self):
         """ ... Compare the current result is the same as the existing one. """
 
-        for samples_folder in os.listdir(SAMPLES_PATH):
+        for samples_folder in os.listdir(paths.samples):
             if samples_folder.startswith("samples-") is False:
                 continue
-            expected_result_dir = os.path.join(SAMPLES_PATH,
+            expected_result_dir = os.path.join(paths.samples,
                                                "annotation-results",
                                                samples_folder)
 
             # Create a TextNormalizer for the given set of samples
             lang = samples_folder[-3:]
-            vocab = os.path.join(RESOURCES_PATH, "vocab", lang+".vocab")
+            vocab = os.path.join(paths.resources, "vocab", lang+".vocab")
             tn = sppasTextNorm(vocab, lang)
             tn.set_faked(True)
             tn.set_std(True)
             tn.set_custom(True)
 
             # Apply TextNormalization on each sample
-            for filename in os.listdir(os.path.join(SAMPLES_PATH, samples_folder)):
+            for filename in os.listdir(os.path.join(paths.samples, samples_folder)):
                 if filename.endswith(".TextGrid") is False:
                     continue
 
@@ -476,7 +476,7 @@ class TestTextNorm(unittest.TestCase):
                 expected_result = parser.read()
 
                 # Estimate the result and check if it's like expected.
-                result = tn.run(os.path.join(SAMPLES_PATH, samples_folder, filename))
+                result = tn.run(os.path.join(paths.samples, samples_folder, filename))
 
                 expected_tier_tokens = expected_result.find('Tokens')
                 if expected_tier_tokens is not None:

@@ -45,7 +45,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas import VARIANTS_SEPARATOR
+from sppas.src.config import separators
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.utils.fileutils import setup_logging
 
@@ -114,7 +114,7 @@ for dict_file in args.i:
 
     for entry in pron_dict:
         prons = pron_dict.get_pron(entry)
-        for pron in prons.split(VARIANTS_SEPARATOR):
+        for pron in prons.split(separators.variants):
             merge_dict.add_pron(entry, pron)
     del pron_dict
 

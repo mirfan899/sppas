@@ -41,8 +41,8 @@
 
 """
 from sppas import SYMBOLS
-from sppas import PHONEMES_SEPARATOR
 
+from sppas.src.config import separators
 from sppas.src.utils.makeunicode import sppasUnicode
 
 # ----------------------------------------------------------------------------
@@ -159,7 +159,8 @@ class Rules(object):
     def get_boundary(self, phonemes):
         """ Get the index of the syllable boundary (EXCRULES or GENRULES).
 
-        Phonemes are separated with the symbol defined by PHONEMES_SEPARATOR variable.
+        Phonemes are separated with the symbol defined by separators.phonemes
+        variable.
 
         :param phonemes: (str) Sequence of phonemes to syllabify
         :returns: (int) boundary index or -1 if phonemes does not match any rule.
@@ -167,7 +168,7 @@ class Rules(object):
         """
         sp = sppasUnicode(phonemes)
         phonemes = sp.to_strip()
-        phon_list = phonemes.split(PHONEMES_SEPARATOR)
+        phon_list = phonemes.split(separators.phonemes)
         classes = ""
         for phon in phon_list:
             classes += self.get_class(phon)

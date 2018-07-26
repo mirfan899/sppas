@@ -43,7 +43,7 @@
 import unittest
 import os.path
 
-from sppas import SAMPLES_PATH
+from sppas.src.config import paths
 
 from ..fileutils import sppasFileUtils, sppasDirUtils
 
@@ -53,8 +53,8 @@ from ..fileutils import sppasFileUtils, sppasDirUtils
 class TestFileUtils(unittest.TestCase):
 
     def setUp(self):
-        self.sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")
-        self.sample_2 = os.path.join(SAMPLES_PATH, "samples-fra", "AG_éàç_0460.TextGrid")
+        self.sample_1 = os.path.join(paths.samples, "samples-eng", "oriana1.wav")
+        self.sample_2 = os.path.join(paths.samples, "samples-fra", "AG_éàç_0460.TextGrid")
 
     def test_set_random(self):
         sf = sppasFileUtils()
@@ -85,7 +85,7 @@ class TestDirUtils(unittest.TestCase):
 
     def test_dir(self):
         # normal situation
-        sd = sppasDirUtils(os.path.join(SAMPLES_PATH, "samples-yue"))
+        sd = sppasDirUtils(os.path.join(paths.samples, "samples-yue"))
         fl = sd.get_files("wav")
         self.assertEqual(len(fl), 1)
 

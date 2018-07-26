@@ -47,11 +47,10 @@
     >>>my_string = t.gettext("Some string in the domain.")
 
 """
-import os.path
 import gettext
 import locale
 
-from sppas import BASE_PATH
+from sppas.src.config import paths
 from .makeunicode import u
 
 # ---------------------------------------------------------------------------
@@ -117,14 +116,14 @@ def translate(domain, language=None):
 
     try:
         # Install translation for the local language and English
-        t = gettext.translation(domain, os.path.join(BASE_PATH, "po"), lang)
+        t = gettext.translation(domain, paths.po, lang)
         t.install()
         return t
 
     except:
         try:
             # Install translation for English only
-            t = gettext.translation(domain, os.path.join(BASE_PATH, "po"), ["en_US"])
+            t = gettext.translation(domain, paths.po, ["en_US"])
             t.install()
             return t
 

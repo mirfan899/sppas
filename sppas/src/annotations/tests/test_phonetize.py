@@ -43,7 +43,7 @@
 import unittest
 import os.path
 
-from sppas import RESOURCES_PATH, SAMPLES_PATH
+from sppas.src.config import paths
 from sppas import unk_stamp
 from sppas import PHONE_SYMBOLS, ORTHO_SYMBOLS
 
@@ -217,8 +217,8 @@ class TestDictPhon(unittest.TestCase):
     def test_phon_from_loaded_data(self):
         """ ... Phonetization using real resource data. """
 
-        dict_file = os.path.join(RESOURCES_PATH, "dict", "eng.dict")
-        map_table = os.path.join(RESOURCES_PATH, "dict", "eng-fra.map")
+        dict_file = os.path.join(paths.resources, "dict", "eng.dict")
+        map_table = os.path.join(paths.resources, "dict", "eng-fra.map")
         mapt = sppasMapping(map_table)
         dd = sppasDictPron(dict_file)
         grph = sppasDictPhonetizer(dd)
@@ -347,8 +347,8 @@ class TestPhonetization(unittest.TestCase):
     """ Test the SPPAS integration of the Phonetization. """
 
     def setUp(self):
-        dict_file = os.path.join(RESOURCES_PATH, "dict", "eng.dict")
-        map_file = os.path.join(RESOURCES_PATH, "dict", "eng-fra.map")
+        dict_file = os.path.join(paths.resources, "dict", "eng.dict")
+        map_file = os.path.join(paths.resources, "dict", "eng-fra.map")
         self.sp = sppasPhon(dict_file)
         self.spl = sppasPhon(dict_file, map_file)
 
@@ -394,7 +394,7 @@ class TestPhonetization(unittest.TestCase):
         """ ... Compare the current result is the same as the existing one. """
 
         # the place where are the samples to be tested.
-        samples_path = os.path.join(SAMPLES_PATH, "annotation-results")
+        samples_path = os.path.join(paths.samples, "annotation-results")
 
         # each samples folder is tested
         for samples_folder in os.listdir(samples_path):
@@ -403,7 +403,7 @@ class TestPhonetization(unittest.TestCase):
 
             # Create a Phonetizer for the given set of samples of the given language
             lang = samples_folder[-3:]
-            pron_dict = os.path.join(RESOURCES_PATH, "dict", lang+".dict")
+            pron_dict = os.path.join(paths.resources, "dict", lang+".dict")
             tn = sppasPhon(pron_dict)
 
             # Apply Phonetization on each sample

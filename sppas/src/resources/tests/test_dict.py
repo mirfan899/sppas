@@ -43,7 +43,7 @@
 import unittest
 import os.path
 
-from sppas import RESOURCES_PATH
+from sppas.src.config import paths
 from sppas.src.utils.makeunicode import u
 
 from ..dictpron import sppasDictPron
@@ -186,7 +186,7 @@ class TestDictRepl(unittest.TestCase):
     """ Test of sppasDictRepl. """
 
     def setUp(self):
-        self.replfile = os.path.join(RESOURCES_PATH, "repl", "fra.repl")
+        self.replfile = os.path.join(paths.resources, "repl", "fra.repl")
 
     # -----------------------------------------------------------------
 
@@ -291,7 +291,7 @@ class TestMapping(unittest.TestCase):
     """ Test of sppasMapping. """
 
     def setUp(self):
-        self.replfile = os.path.join(RESOURCES_PATH, "models", "models-fra", "monophones.repl")
+        self.replfile = os.path.join(paths.resources, "models", "models-fra", "monophones.repl")
 
     # -----------------------------------------------------------------
 

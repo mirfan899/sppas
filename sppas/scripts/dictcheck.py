@@ -44,8 +44,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas import PHONEMES_SEPARATOR
-from sppas import VARIANTS_SEPARATOR
+from sppas.src.config import separators
 from sppas.src.resources.dictpron import sppasDictPron
 
 # ----------------------------------------------------------------------------
@@ -80,9 +79,9 @@ for entry in pron_dict:
     prons = pron_dict.get_pron(entry)
     nb_chars = float(len(entry))
 
-    for pron in prons.split(VARIANTS_SEPARATOR):
+    for pron in prons.split(separators.variants):
 
-        phonetization = pron.split(PHONEMES_SEPARATOR)
+        phonetization = pron.split(separators.phonemes)
         nb_phones = float(len(phonetization))
 
         if nb_phones < nb_chars * 0.5:

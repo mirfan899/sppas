@@ -43,7 +43,7 @@
 import unittest
 import os.path
 
-from sppas import RESOURCES_PATH, SAMPLES_PATH
+from sppas.src.config import paths
 from sppas.src.anndata import sppasTier
 from sppas.src.anndata import sppasLocation
 from sppas.src.anndata import sppasInterval
@@ -58,8 +58,8 @@ from ..Syll.sppassyll import sppasSyll
 
 # -------------------------------------------------------------------------
 
-POL_SYLL = os.path.join(RESOURCES_PATH, "syll", "syllConfig-pol.txt")
-FRA_SYLL = os.path.join(RESOURCES_PATH, "syll", "syllConfig-fra.txt")
+POL_SYLL = os.path.join(paths.resources, "syll", "syllConfig-pol.txt")
+FRA_SYLL = os.path.join(paths.resources, "syll", "syllConfig-fra.txt")
 
 # -------------------------------------------------------------------------
 
@@ -425,7 +425,7 @@ class TestsppasSyll(unittest.TestCase):
         """ ... Compare the current result is the same as the existing one. """
 
         # the place where are the samples to be tested.
-        samples_path = os.path.join(SAMPLES_PATH, "annotation-results")
+        samples_path = os.path.join(paths.samples, "annotation-results")
 
         # each samples folder is tested
         for samples_folder in os.listdir(samples_path):
@@ -434,7 +434,7 @@ class TestsppasSyll(unittest.TestCase):
 
             # Create a Syllabifier for the given set of samples of the given language
             lang = samples_folder[-3:]
-            rules_file = os.path.join(RESOURCES_PATH, "syll", "syllConfig-"+lang+".txt")
+            rules_file = os.path.join(paths.resources, "syll", "syllConfig-"+lang+".txt")
             if os.path.exists(rules_file) is False:
                 continue
 

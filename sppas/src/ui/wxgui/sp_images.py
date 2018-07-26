@@ -36,27 +36,24 @@
 # ----------------------------------------------------------------------------
 
 import os.path
-
-from sppas import BASE_PATH
-
-# ----------------------------------------------------------------------------
-
-IMAGES_PATH = os.path.join( BASE_PATH , "etc", "images")
+from sppas.src.config import paths
 
 # ----------------------------------------------------------------------------
 
-WIZARD_WELCOME_MAIN_BMP   = os.path.join(IMAGES_PATH, "wizard-display.bmp")
+IMAGES_PATH = os.path.join(paths.etc, "images")
+
+# ----------------------------------------------------------------------------
+
+WIZARD_WELCOME_MAIN_BMP = os.path.join(IMAGES_PATH, "wizard-display.bmp")
 WIZARD_WELCOME_SCROLL_BMP = os.path.join(IMAGES_PATH, "wizard-scroll.bmp")
-WIZARD_WELCOME_SOUND_BMP  = os.path.join(IMAGES_PATH, "wizard-sound.bmp")
-WIZARD_WELCOME_TRS_BMP    = os.path.join(IMAGES_PATH, "wizard-trs.bmp")
-WIZARD_WELCOME_ZOOM_BMP   = os.path.join(IMAGES_PATH, "wizard-zoom.bmp")
+WIZARD_WELCOME_SOUND_BMP = os.path.join(IMAGES_PATH, "wizard-sound.bmp")
+WIZARD_WELCOME_TRS_BMP = os.path.join(IMAGES_PATH, "wizard-trs.bmp")
+WIZARD_WELCOME_ZOOM_BMP = os.path.join(IMAGES_PATH, "wizard-zoom.bmp")
 
-WIZARD_SCROLL_PANEL_BMP   = os.path.join(IMAGES_PATH, "scroll-panel.png")
-WIZARD_ZOOM_PANEL_BMP     = os.path.join(IMAGES_PATH, "zoom-panel.png")
-WIZARD_ZOOM_KEYBOARD_BMP  = os.path.join(IMAGES_PATH, "keyboard-zoom.png")
-WIZARD_ZOOM_MOUSE_BMP     = os.path.join(IMAGES_PATH, "keyboard-mouse-zoom.png")
+WIZARD_SCROLL_PANEL_BMP = os.path.join(IMAGES_PATH, "scroll-panel.png")
+WIZARD_ZOOM_PANEL_BMP = os.path.join(IMAGES_PATH, "zoom-panel.png")
+WIZARD_ZOOM_KEYBOARD_BMP = os.path.join(IMAGES_PATH, "keyboard-zoom.png")
+WIZARD_ZOOM_MOUSE_BMP = os.path.join(IMAGES_PATH, "keyboard-mouse-zoom.png")
 
 # PlayerBoard
 PLAYER_BACKGROUND = os.path.join(IMAGES_PATH, "music.jpg")
-
-# ----------------------------------------------------------------------------

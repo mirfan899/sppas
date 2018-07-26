@@ -37,7 +37,8 @@
 """
 from sppas import unk_stamp
 from sppas import PHONE_SYMBOLS, ORTHO_SYMBOLS
-from sppas import VARIANTS_SEPARATOR
+
+from sppas.src.config import separators
 
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
@@ -242,7 +243,7 @@ class sppasPhon(sppasBaseAnnotation):
                     elif text.is_empty() is False:
                         phones = self.phonetize(text.get_content(), i)
                         for p in phones:
-                            phonetizations.extend(p.split(VARIANTS_SEPARATOR))
+                            phonetizations.extend(p.split(separators.variants))
 
                 # New in SPPAS 1.9.6.
                 #  - The result is a sequence of labels.

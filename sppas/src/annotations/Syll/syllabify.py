@@ -33,7 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from sppas import PHONEMES_SEPARATOR, SYLLABLES_SEPARATOR
+from sppas.src.config import separators
 from .rules import Rules
 
 # ----------------------------------------------------------------------------
@@ -128,9 +128,9 @@ class Syllabifier(object):
         """
         str_syll = list()
         for (begin, end) in syllables:
-            str_syll.append(PHONEMES_SEPARATOR.join(phonemes[begin:end+1]))
+            str_syll.append(separators.phonemes.join(phonemes[begin:end+1]))
 
-        return SYLLABLES_SEPARATOR.join(str_syll)
+        return separators.syllables.join(str_syll)
 
     # ------------------------------------------------------------------
 
@@ -143,10 +143,10 @@ class Syllabifier(object):
 
         """
         c = list()
-        for p in phonetized_syllable.split(PHONEMES_SEPARATOR):
+        for p in phonetized_syllable.split(separators.phonemes):
             c.append(self.rules.get_class(p))
 
-        return PHONEMES_SEPARATOR.join(c)
+        return separators.phonemes.join(c)
 
     # ------------------------------------------------------------------
     # Private

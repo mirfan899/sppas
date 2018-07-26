@@ -49,8 +49,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas import RESOURCES_PATH
-
+from sppas.src.config import paths
 from sppas.src.annotations.TextNorm.sppastextnorm import sppasTextNorm
 from sppas.src.annotations.TextNorm.normalize import TextNormalizer
 from sppas.src.resources.vocab import sppasVocabulary
@@ -128,12 +127,12 @@ else:
     vocab = sppasVocabulary(args.vocab)
     normalizer = TextNormalizer(vocab, lang)
 
-    replace_file = os.path.join(RESOURCES_PATH, "repl", lang + ".repl")
+    replace_file = os.path.join(paths.resources, "repl", lang + ".repl")
     if os.path.exists(replace_file):
         repl = sppasDictRepl(replace_file, nodump=True)
         normalizer.set_repl(repl)
 
-    punct_file = os.path.join(RESOURCES_PATH, "vocab", "Punctuations.txt")
+    punct_file = os.path.join(paths.resources, "vocab", "Punctuations.txt")
     if os.path.exists(punct_file):
         punct = sppasVocabulary(punct_file, nodump=True)
         normalizer.set_punct(punct)

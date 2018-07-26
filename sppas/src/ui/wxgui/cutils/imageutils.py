@@ -51,11 +51,10 @@ import wx
 import math
 import random
 
-from sppas import ICONS_PATH
+from sppas.src.config import paths
 from sppas.src.ui.wxgui.sp_icons import THEME_DEFAULT
 from sppas.src.ui.wxgui.sp_icons import CHECKED_ICON, ACTIVATED_ICON, RADIOCHECKED_ICON
 from sppas.src.ui.wxgui.sp_icons import UNCHECKED_ICON, DISABLED_ICON, RADIOUNCHECKED_ICON
-
 
 # ----------------------------------------------------------------------------
 
@@ -191,7 +190,7 @@ def MakeGray((r,g,b), factor, maskColor):
     if (r,g,b) != maskColor:
         return map(lambda x: int((230 - x) * factor) + x, (r,g,b))
     else:
-        return (r,g,b)
+        return (r, g, b)
 
 # -----------------------------------------------------------------------
 
@@ -206,20 +205,20 @@ def get_img_file(id, theme=None):
 
     """
     if theme is not None:
-        bmpdir = os.path.join( ICONS_PATH, theme)
-        if not os.path.exists( bmpdir ):
+        bmpdir = os.path.join(paths.etc, "icons", theme)
+        if not os.path.exists(bmpdir):
             theme = None
 
     if theme is None:
-        bmpdir = os.path.join( ICONS_PATH, THEME_DEFAULT)
+        bmpdir = os.path.join(paths.etc, "icons", THEME_DEFAULT)
 
-    bmpfile = os.path.join( bmpdir, id )
+    bmpfile = os.path.join(bmpdir, id)
 
     # if the icon is missing in the style, use the default style.
     if not os.path.exists(bmpfile):
-        bmpfile = os.path.join( ICONS_PATH, THEME_DEFAULT, id)
+        bmpfile = os.path.join(paths.etc, "icons", THEME_DEFAULT, id)
         if not os.path.exists(bmpfile):
-            return os.path.join( ICONS_PATH, THEME_DEFAULT, "actions", "missing.png")
+            return os.path.join(paths.etc, "icons", THEME_DEFAULT, "actions", "missing.png")
 
     return bmpfile
 

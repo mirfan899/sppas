@@ -64,7 +64,7 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 try:
-    from sppas import SETTINGS_FILE
+    from sppas.src.ui import SETTINGS_FILE
     from sppas.src.ui.wxgui.frames.dataroamerframe import DataRoamerFrame
     from sppas.src.ui.wxgui.sp_icons import DATAROAMER_APP_ICON
     from sppas.src.utils.fileutils import setup_logging

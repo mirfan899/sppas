@@ -34,6 +34,7 @@
     Classes to manage global non-modifiable settings of SPPAS.
 
 """
+import os.path
 from .settings import sppasBaseSettings
 
 # ---------------------------------------------------------------------------
@@ -70,7 +71,7 @@ class sppasGlobalSettings(sppasBaseSettings):
 # ---------------------------------------------------------------------------
 
 
-class sppasPathsSettings(sppasBaseSettings):
+class sppasPathSettings(sppasBaseSettings):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -81,9 +82,57 @@ class sppasPathsSettings(sppasBaseSettings):
 
     """
     def __init__(self):
+        sppas_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        sppasBaseSettings.__init__(self)
+        self.__dict__ = dict(
+            sppas=sppas_dir,
+            bin=os.path.join(sppas_dir, "bin"),
+            etc=os.path.join(sppas_dir, "etc"),
+            po=os.path.join(sppas_dir, "po"),
+            src=os.path.join(sppas_dir, "src"),
+            plugins=os.path.join(os.path.dirname(sppas_dir), "plugins"),
+            resources=os.path.join(os.path.dirname(sppas_dir), "resources"),
+            samples=os.path.join(os.path.dirname(sppas_dir), "samples")
+        )
+
+# ---------------------------------------------------------------------------
+
+
+class sppasSymbolSettings(sppasBaseSettings):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Representation of global non-modifiable symbols of SPPAS.
+
+    """
+    def __init__(self):
         sppasBaseSettings.__init__(self)
         self.__dict__ = dict(
 
         )
 
+
 # ---------------------------------------------------------------------------
+
+
+class sppasSeparatorSettings(sppasBaseSettings):
+    """
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Representation of global non-modifiable separators of SPPAS.
+
+    """
+
+    def __init__(self):
+        sppasBaseSettings.__init__(self)
+        self.__dict__ = dict(
+            phonemes="-",    # X-SAMPA standard
+            syllables=".",   # X-SAMPA standard
+            variants="|"     # used for all alternative tags
+        )

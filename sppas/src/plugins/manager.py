@@ -42,7 +42,7 @@ import logging
 import zipfile
 from threading import Thread
 
-from sppas import PLUGIN_PATH
+from sppas.src.config import paths
 from sppas.src.utils.fileutils import sppasDirUtils
 from sppas.src.utils.makeunicode import u
 from . import get_info
@@ -145,7 +145,7 @@ class sppasPluginsManager(Thread):
         if zipfile.is_zipfile(plugin_archive) is False:
             raise PluginArchiveFileError
 
-        plugin_dir = os.path.join(PLUGIN_PATH, plugin_folder)
+        plugin_dir = os.path.join(paths.plugins, plugin_folder)
         if os.path.exists(plugin_dir):
             raise PluginDuplicateError
 
@@ -191,7 +191,7 @@ class sppasPluginsManager(Thread):
 
         """
         # Fix the full path of the plugin
-        plugin_path = os.path.join(PLUGIN_PATH, plugin_folder)
+        plugin_path = os.path.join(paths.plugins, plugin_folder)
         if os.path.exists(plugin_path) is False:
             raise PluginFolderError(plugin_path)
 
@@ -273,10 +273,10 @@ class sppasPluginsManager(Thread):
     def __init_plugin_dir():
         """ Create the plugin directory if any. """
 
-        if os.path.exists(PLUGIN_PATH):
+        if os.path.exists(paths.plugins):
             return True
         try:
-            os.makedirs(PLUGIN_PATH)
+            os.makedirs(paths.plugins)
         except OSError:
             return False
         else:
@@ -288,9 +288,9 @@ class sppasPluginsManager(Thread):
     def __get_plugins():
         """ Return a list of plugin folders. """
 
-        folders = []
-        for entry in os.listdir(PLUGIN_PATH):
-            entry_path = os.path.join(PLUGIN_PATH, entry)
+        folders = list()
+        for entry in os.listdir(paths.plugins):
+            entry_path = os.path.join(paths.plugins, entry)
             if os.path.isdir(entry_path):
                 folders.append(entry)
 

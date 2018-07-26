@@ -39,7 +39,7 @@ import os
 import wx
 from wx.lib import stattext
 
-from sppas import ICONS_PATH
+from sppas.src.config import paths
 
 from sppas.src.annotationdata.aio import extensions_out_multitiers as extensions_out
 from sppas.src.ui.wxgui.dialogs.basedialog import spBaseDialog
@@ -54,7 +54,7 @@ from sppas.src.ui.wxgui.cutils.imageutils import spBitmap
 # class SettingsDialog
 # ----------------------------------------------------------------------------
 
-class SettingsDialog( spBaseDialog ):
+class SettingsDialog(spBaseDialog):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -312,7 +312,7 @@ class PrefsAnnotationPanel( wx.Panel ):
         s.Add(self.radiobox, 0, flag=wx.EXPAND|wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=5)
         self.SetSizer(s)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def onOutputFormat(self, event):
         """
@@ -324,6 +324,7 @@ class PrefsAnnotationPanel( wx.Panel ):
 
 # ----------------------------------------------------------------------------
 
+
 class PrefsThemePanel( wx.Panel ):
     """
     Panel with a radiobox to choose the theme of the icons.
@@ -332,34 +333,37 @@ class PrefsThemePanel( wx.Panel ):
     def __init__(self, parent, prefsIO):
 
         wx.Panel.__init__(self, parent)
-        self.SetBackgroundColour( prefsIO.GetValue("M_BG_COLOUR") )
+        self.SetBackgroundColour(prefsIO.GetValue("M_BG_COLOUR"))
 
         self.preferences = prefsIO
 
-        self.iconthemes = os.listdir(ICONS_PATH)
+        self.iconthemes = os.listdir(os.path.join(paths.etc, "icons"))
         currenttheme = self.preferences.GetValue('M_ICON_THEME')
         currentchoice = self.iconthemes.index(currenttheme)
 
-        self.radiobox = wx.RadioBox(self, label="Theme of the icons: ",
-                                    choices=self.iconthemes, majorDimension=1)
+        self.radiobox = wx.RadioBox(self,
+                                    label="Theme of the icons: ",
+                                    choices=self.iconthemes,
+                                    majorDimension=1)
         # check the current theme
-        self.radiobox.SetSelection( currentchoice )
+        self.radiobox.SetSelection(currentchoice)
 
         # bind any theme change
         self.Bind(wx.EVT_RADIOBOX, self.onIconThemeClick, self.radiobox)
 
-        text = "To apply the theme change,\nclick on Save button, then Close and re-start SPPAS."
-        txt = wx.StaticText(self, -1, text, style=wx.ALIGN_CENTER|wx.NO_BORDER)
+        text = "To apply the theme change,\n" \
+               "click on Save button, then Close and re-start SPPAS."
+        txt = wx.StaticText(self, -1, text, style=wx.ALIGN_CENTER | wx.NO_BORDER)
         font = wx.Font(10, wx.DEFAULT, wx.ITALIC, wx.NORMAL)
         txt.SetFont(font)
-        txt.SetForegroundColour( wx.RED )
+        txt.SetForegroundColour(wx.RED)
 
         s = wx.BoxSizer(wx.VERTICAL)
-        s.Add(self.radiobox, 2, flag=wx.EXPAND|wx.ALIGN_CENTER_VERTICAL|wx.ALL, border=5)
-        s.Add(txt, 1, flag=wx.ALL|wx.EXPAND, border=5)
+        s.Add(self.radiobox, 2, flag=wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALL, border=5)
+        s.Add(txt, 1, flag=wx.ALL | wx.EXPAND, border=5)
         self.SetSizer(s)
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def onIconThemeClick(self, event):
         """
@@ -367,6 +371,4 @@ class PrefsThemePanel( wx.Panel ):
 
         """
         idxtheme = self.radiobox.GetSelection()
-        self.preferences.SetValue( 'M_ICON_THEME', 'str', self.iconthemes[idxtheme] )
-
-# ----------------------------------------------------------------------------
+        self.preferences.SetValue('M_ICON_THEME', 'str', self.iconthemes[idxtheme])

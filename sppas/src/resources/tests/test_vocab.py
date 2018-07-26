@@ -37,9 +37,10 @@ import unittest
 import os.path
 import shutil
 
-from sppas import RESOURCES_PATH
+from sppas.src.config import paths
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.makeunicode import u
+
 from ..vocab import sppasVocabulary
 
 # ---------------------------------------------------------------------------
@@ -47,7 +48,7 @@ from ..vocab import sppasVocabulary
 TEMP = sppasFileUtils().set_random()
 
 VOCAB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "vocab.txt")
-ITA = os.path.join(RESOURCES_PATH, "vocab", "ita.vocab")
+ITA = os.path.join(paths.resources, "vocab", "ita.vocab")
 VOCAB_TEST = os.path.join(TEMP, "vocab.txt")
 
 # ---------------------------------------------------------------------------

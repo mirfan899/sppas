@@ -39,11 +39,11 @@ import codecs
 import logging
 import xml.etree.cElementTree as ET
 
-import sppas.src.config as sg
 from sppas import unk_stamp
-from sppas import RESOURCES_PATH
-from sppas import PHONEMES_SEPARATOR
-from sppas import VARIANTS_SEPARATOR
+
+import sppas.src.config as sg
+from sppas.src.config import paths
+from sppas.src.config import separators
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .dumpfile import sppasDumpFile
@@ -195,7 +195,7 @@ class sppasDictPron(object):
 
         if s in self._dict:
             p = sppasUnicode(pron).to_strip()
-            return p in self._dict[s].split(VARIANTS_SEPARATOR)
+            return p in self._dict[s].split(separators.variants)
 
         return False
 
@@ -226,14 +226,14 @@ class sppasDictPron(object):
         entry = sppasDictPron.format_token(token)
 
         new_pron = sppasUnicode(pron).to_strip()
-        new_pron = new_pron.replace(" ", PHONEMES_SEPARATOR)
+        new_pron = new_pron.replace(" ", separators.phonemes)
 
         # Already a pronunciation for this token?
         cur_pron = ""
         if entry in self._dict:
             # ... don't append an already known pronunciation
             if self.is_pron_of(entry, new_pron) is False:
-                cur_pron = self.get_pron(entry) + VARIANTS_SEPARATOR
+                cur_pron = self.get_pron(entry) + separators.variants
             else:
                 cur_pron = self.get_pron(entry)
                 new_pron = ""
@@ -255,7 +255,7 @@ class sppasDictPron(object):
 
         """
         map_table.set_reverse(True)
-        delimiters = [VARIANTS_SEPARATOR, PHONEMES_SEPARATOR]
+        delimiters = [separators.variants, separators.phonemes]
         new_dict = sppasDictPron()
 
         for key, value in self._dict.items():
@@ -346,10 +346,10 @@ class sppasDictPron(object):
             with codecs.open(filename, 'w', encoding=sg.__encoding__) as output:
 
                 for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
-                    variants = value.split(VARIANTS_SEPARATOR)
+                    variants = value.split(separators.variants)
 
                     for i, variant in enumerate(variants, 1):
-                        variant = variant.replace(PHONEMES_SEPARATOR, " ")
+                        variant = variant.replace(separators.phonemes, " ")
                         brackets = entry
                         if with_filled_brackets is False:
                             brackets = ""
@@ -421,7 +421,7 @@ class sppasDictPron(object):
         """ Load the sampa-ipa conversion file. Return it as a dict(). """
 
         conversion = dict()
-        ipa_sampa_mapfile = os.path.join(RESOURCES_PATH, "dict", "sampa-ipa.txt")
+        ipa_sampa_mapfile = os.path.join(paths.resources, "dict", "sampa-ipa.txt")
         with codecs.open(ipa_sampa_mapfile, "r", 'utf-8') as f:
             for line in f.readlines():
                 tab_line = line.split()
@@ -454,7 +454,7 @@ class sppasDictPron(object):
                 else:
                     sampa.append(sampa_p)
 
-        return PHONEMES_SEPARATOR.join(sampa)
+        return separators.phonemes.join(sampa)
 
     # ------------------------------------------------------------------------
     # Overloads

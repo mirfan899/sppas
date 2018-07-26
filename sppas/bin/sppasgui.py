@@ -64,8 +64,7 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 try:
-    from sppas import SETTINGS_FILE
-
+    from sppas.src.ui import SETTINGS_FILE
     from sppas.src.ui.wxgui.frames.mainframe import FrameSPPAS
     from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
     from sppas.src.ui.wxgui.structs.prefs import Preferences_IO

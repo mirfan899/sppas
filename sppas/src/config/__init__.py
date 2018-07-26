@@ -38,11 +38,19 @@
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      SPPAS configuration for global things.
 
-"""
-from .settings import sppasBaseSettings
-from .sglobal import sppasGlobalSettings
-import sys
+    We define a set of global settings which will allow to write:
 
+        >>> import sppas.src.config as sg
+        >>> sg.__encoding__
+
+    And we instantiate setting classes, to be used like:
+
+        >>> from sppas.src.config import sg, paths
+        >>> sg.__encoding
+        >>> paths.resources
+
+"""
+import sys
 try:
     reload  # Python 2.7
 except NameError:
@@ -51,10 +59,15 @@ except NameError:
     except ImportError:
         from imp import reload  # Python 3.0 - 3.3
 
-# ---------------------------------------------------------------------------
-# Fix the global settings variables
-# ---------------------------------------------------------------------------
+from .settings import sppasBaseSettings
+from .sglobal import sppasGlobalSettings
+from .sglobal import sppasPathSettings
+from .sglobal import sppasSymbolSettings
+from .sglobal import sppasSeparatorSettings
 
+# ---------------------------------------------------------------------------
+# Fix the global un-modifiable settings
+# ---------------------------------------------------------------------------
 
 with sppasGlobalSettings() as sg:
     __version__ = sg.__version__
@@ -68,6 +81,11 @@ with sppasGlobalSettings() as sg:
     __summary__ = sg.__summary__
     __title__ = sg.__title__
     __encoding__ = sg.__encoding__
+
+sg = sppasGlobalSettings()
+paths = sppasPathSettings()
+symbols = sppasSymbolSettings()
+separators = sppasSeparatorSettings()
 
 # ---------------------------------------------------------------------------
 
@@ -83,5 +101,8 @@ except AttributeError:  # Python 2.7
 
 __all__ = [
     "sppasBaseSettings",
-    "sppasGlobalSettings"
+    "sg",
+    "paths",
+    "symbols",
+    "separators"
 ]

@@ -37,7 +37,7 @@
 """
 import os.path
 
-from sppas import RESOURCES_PATH
+from sppas.src.config import paths
 from sppas import ORTHO_SYMBOLS
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
@@ -91,7 +91,7 @@ class sppasTextNorm(sppasBaseAnnotation):
         self.normalizer = TextNormalizer(voc, lang)
 
         # Replacement dictionary
-        replace_filename = os.path.join(RESOURCES_PATH, "repl", lang + ".repl")
+        replace_filename = os.path.join(paths.resources, "repl", lang + ".repl")
         if os.path.exists(replace_filename) is True:
             dict_replace = sppasDictRepl(replace_filename, nodump=True)
         else:
@@ -99,7 +99,7 @@ class sppasTextNorm(sppasBaseAnnotation):
         self.normalizer.set_repl(dict_replace)
 
         # Punctuations dictionary
-        punct_filename = os.path.join(RESOURCES_PATH, "vocab", "Punctuations.txt")
+        punct_filename = os.path.join(paths.resources, "vocab", "Punctuations.txt")
         if os.path.exists(punct_filename) is True:
             vocab_punct = sppasVocabulary(punct_filename, nodump=True)
         else:

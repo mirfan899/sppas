@@ -35,8 +35,8 @@
 import os
 import codecs
 
-import sppas.src.config as sg
-from sppas import VARIANTS_SEPARATOR, PHONEMES_SEPARATOR
+from sppas.src.config import sg
+from sppas.src.config import separators
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.makeunicode import sppasUnicode
 
@@ -119,7 +119,7 @@ class AlignIO(object):
     ??? HOW TO DO: READ ALL ALTERNATIVE LABELS AND MERGE ALTERNATIVE RESULTS ???
 
     """
-    DELIMITERS = (" ", VARIANTS_SEPARATOR, PHONEMES_SEPARATOR)
+    DELIMITERS = (" ", separators.variants, separators.phonemes)
 
     def __init__(self, mapping, model):
         """ Creates a new AlignIO instance.
@@ -251,7 +251,7 @@ class AlignIO(object):
                 # in case we previously had alternative tags, which we serialized into only one
                 content = content.replace('{', '')
                 content = content.replace('}', '')
-                content = content.replace('|', VARIANTS_SEPARATOR)
+                content = content.replace('|', separators.variants)
                 text.SetValue(self._mapping.map(content,
                                                 AlignIO.DELIMITERS))
 

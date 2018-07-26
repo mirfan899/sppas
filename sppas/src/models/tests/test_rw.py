@@ -6,7 +6,7 @@ import shutil
 import glob
 
 from sppas import ORTHO_SYMBOLS, PHONE_SYMBOLS
-from sppas import RESOURCES_PATH, SAMPLES_PATH
+from sppas.src.config import paths
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.compare import sppasCompare
 
@@ -18,7 +18,7 @@ from ..modelsexc import MioFileFormatError
 # ---------------------------------------------------------------------------
 
 TEMP = sppasFileUtils().set_random()
-MODEL_PATH = os.path.join(RESOURCES_PATH, "models")
+MODEL_PATH = os.path.join(paths.resources, "models")
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 SIL_PHON = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]

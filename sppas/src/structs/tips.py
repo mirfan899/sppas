@@ -36,12 +36,13 @@
     when it's starting. Some users find them useful...
 
 """
+import os.path
 import codecs
 import random
 import logging
 
 import sppas.src.config as sg
-from sppas import TIPS_FILE
+from sppas.src.config import paths
 from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.utils.makeunicode import b
 
@@ -76,13 +77,16 @@ class sppasTips(object):
 
     # -----------------------------------------------------------------------
 
-    def load_tips(self, filename=TIPS_FILE):
+    def load_tips(self, filename=None):
         """ Load message tips from a file.
         Update the existing tips of the list (if any).
 
         :param filename: (str) Name of the file to get message tips.
 
         """
+        if filename is None:
+            filename = os.path.join(paths.etc, "tips.txt")
+
         try:
             with codecs.open(filename, 'r', sg.__encoding__) as f:
                 for line in f.readlines():
@@ -95,12 +99,15 @@ class sppasTips(object):
 
     # -----------------------------------------------------------------------
 
-    def save_tips(self, filename=TIPS_FILE):
+    def save_tips(self, filename=None):
         """ Save tips in a file.
 
         :param filename: (str) Name of the file to store message tips.
 
         """
+        if filename is None:
+            filename = os.path.join(paths.etc, "tips.txt")
+
         with codecs.open(filename, 'w', sg.__encoding__) as f:
             for message in self._tips:
                 f.write("{:s}\n".format(b(message)))

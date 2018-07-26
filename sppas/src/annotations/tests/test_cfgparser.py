@@ -3,12 +3,12 @@
 import unittest
 import os.path
 
-from sppas import BASE_PATH
+from sppas.src.config import paths
 
 from ..cfgparser import sppasAnnotationConfigParser
 
-INITOK = os.path.join(BASE_PATH, "etc", "TextNorm.ini")
-INIMOMEL = os.path.join(BASE_PATH, "etc", "Momel.ini")
+INITOK = os.path.join(paths.etc, "TextNorm.ini")
+INIMOMEL = os.path.join(paths.etc, "Momel.ini")
 
 # ---------------------------------------------------------------------------
 

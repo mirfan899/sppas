@@ -37,7 +37,7 @@
 """
 import wx
 
-from sppas import SETTINGS_FILE
+from sppas.src.ui import SETTINGS_FILE
 
 from sppas.src.ui.wxgui.sp_icons import SETTINGS_ICON
 from sppas.src.ui.wxgui.sp_icons import COMPONENTS_ICON

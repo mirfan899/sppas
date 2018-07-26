@@ -5,8 +5,7 @@ import unittest
 import os.path
 import shutil
 
-from sppas import RESOURCES_PATH
-
+from sppas.src.config import paths
 from sppas.src.models.acm.acmodel import sppasAcModel
 from sppas.src.models.acm.hmm import sppasHMM
 from sppas.src.models.acm.modelmixer import sppasModelMixer
@@ -14,7 +13,7 @@ from ..acm.readwrite import sppasACMRW
 
 # ---------------------------------------------------------------------------
 
-MODELDIR = os.path.join(RESOURCES_PATH, "models")
+MODELDIR = os.path.join(paths.resources, "models")
 
 # ---------------------------------------------------------------------------
 

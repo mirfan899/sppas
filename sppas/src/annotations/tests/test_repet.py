@@ -3,7 +3,7 @@
 import os
 import unittest
 
-from sppas import RESOURCES_PATH
+from sppas.src.config import paths
 
 from ..Repet.datastructs import DataRepetition, Entry, DataSpeaker
 from ..Repet.rules import Rules
@@ -13,7 +13,7 @@ from ..Repet.sppasrepet import sppasRepet
 # ---------------------------------------------------------------------------
 
 STOP_LIST = ["ah", "aller", "alors", "après", "avec", "avoir", "bon", "ce", "comme", "c'est", "dans", "de", "de+le", "dire", "donc", "eeh", "eh", "en", "en_fait", "et", "etc", "euh", "hein", "heu", "hum", "hm", "il", "le", "lui", "là", "mais", "meuh", "mh", "mhmh", "mmh", "moi", "mon", "ne", "non", "null", "on", "ou", "ouais", "oui", "où", "pas", "peu", "pf", "pff", "plus", "pour", "quand", "que", "qui", "quoi", "se", "si", "sur", "tout", "très", "un", "voilà", "voir", "y", "à", "ça", "être"]
-STOP_LIST_FRA = os.path.join(RESOURCES_PATH, "vocab", "fra.stp")
+STOP_LIST_FRA = os.path.join(paths.resources, "vocab", "fra.stp")
 
 # ---------------------------------------------------------------------------
 

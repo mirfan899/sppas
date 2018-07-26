@@ -35,13 +35,13 @@
 import unittest
 import os
 
-from sppas import SAMPLES_PATH
+from sppas.src.config import paths
 from ..aio import open as audio_open
 from ..audioconvert import sppasAudioConverter
 
-sample_1 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana1.wav")
-sample_2 = os.path.join(SAMPLES_PATH, "samples-fra", "F_F_B003-P9.wav")
-sample_3 = os.path.join(SAMPLES_PATH, "samples-eng", "oriana3.wave")
+sample_1 = os.path.join(paths.samples, "samples-eng", "oriana1.wav")
+sample_2 = os.path.join(paths.samples, "samples-fra", "F_F_B003-P9.wav")
+sample_3 = os.path.join(paths.samples, "samples-eng", "oriana3.wave")
 
 # ---------------------------------------------------------------------------
 

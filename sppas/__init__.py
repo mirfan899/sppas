@@ -39,26 +39,6 @@
     :summary:      SPPAS global configuration.
 
 """
-import os.path
-
-# ---------------------------------------------------------------------------
-# Define paths
-# ---------------------------------------------------------------------------
-
-# SPPAS base directory
-BASE_PATH = os.path.dirname(os.path.abspath(__file__))
-
-# SPPAS folders
-PLUGIN_PATH = os.path.join(os.path.dirname(BASE_PATH), "plugins")
-RESOURCES_PATH = os.path.join(os.path.dirname(BASE_PATH), "resources")
-SAMPLES_PATH = os.path.join(os.path.dirname(BASE_PATH), "samples")
-DOCUMENTATION_PATH = os.path.join(os.path.dirname(BASE_PATH), "documentation")
-
-# etcetera
-SPPAS_CONFIG_DIR = os.path.join(BASE_PATH, "etc")
-ICONS_PATH = os.path.join(BASE_PATH, "etc", "icons")
-TIPS_FILE = os.path.join(BASE_PATH, "etc", "tips.txt")
-SETTINGS_FILE = os.path.join(BASE_PATH, "etc", "settings.dump")
 
 # ---------------------------------------------------------------------------
 # Symbols used by SPPAS to represent an event:
@@ -87,10 +67,3 @@ PHONE_SYMBOLS = {
 SYMBOLS = dict()
 SYMBOLS.update(ORTHO_SYMBOLS)
 SYMBOLS.update(PHONE_SYMBOLS)
-
-# ---------------------------------------------------------------------------
-# Symbols used by SPPAS to serialize the data (labels/tags)
-
-PHONEMES_SEPARATOR = "-"    # X-SAMPA standard
-SYLLABLES_SEPARATOR = "."   # X-SAMPA standard
-VARIANTS_SEPARATOR = "|"    # used for all alternative tags

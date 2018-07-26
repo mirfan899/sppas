@@ -37,19 +37,13 @@
 import os.path
 import wx
 
-import sppas
-import sppas.src.config as sg
+from sppas.src.config import paths, sg
 
 # ---------------------------------------------------------------------------
 # Define all paths (relatively to SPPAS base path)
 # ---------------------------------------------------------------------------
 
-PREFS_FILE = os.path.join(sppas.BASE_PATH, "etc", "sppas.prefs")
-
-HELP_PATH = os.path.join(sppas.BASE_PATH, "doc")
-HELP_IMG_PATH = os.path.join(HELP_PATH, "img")
-DOC_IDX = os.path.join(HELP_PATH, "markdown.idx")
-HELP_IDX_EXT = ".idx"
+PREFS_FILE = os.path.join(paths.etc, "sppas.prefs")
 
 
 # ---------------------------------------------------------------------------

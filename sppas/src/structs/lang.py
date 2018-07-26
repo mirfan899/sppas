@@ -39,7 +39,7 @@
 """
 import os.path
 
-from sppas import RESOURCES_PATH
+from sppas.src.config import paths
 from sppas.src.utils.fileutils import sppasDirUtils
 
 from .structsexc import LangTypeError
@@ -166,7 +166,7 @@ class sppasLangResource(object):
         """
         resource_path = str(resource_path)
 
-        folder = os.path.join(RESOURCES_PATH, resource_path)
+        folder = os.path.join(paths.resources, resource_path)
         if os.path.exists(folder) is False:
             self.reset()
             raise LangPathError(folder)
@@ -212,11 +212,11 @@ class sppasLangResource(object):
         self.set_filename(rname)
         self.set_extension(rext)
 
-        directory = os.path.join(RESOURCES_PATH, self._rpath)
+        directory = os.path.join(paths.resources, self._rpath)
 
         # Fix the language resource information
         if len(self._rname) > 0:
-            self.langresource = os.path.join(RESOURCES_PATH, self._rpath, self._rname)
+            self.langresource = os.path.join(paths.resources, self._rpath, self._rname)
         else:
             self.langresource = directory
 

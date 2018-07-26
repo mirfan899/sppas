@@ -36,7 +36,7 @@
 import unittest
 import os.path
 
-from sppas import RESOURCES_PATH
+from sppas.src.config import paths
 
 from ..lang import sppasLangResource
 from ..structsexc import LangTypeError, LangNameError, LangPathError
@@ -64,30 +64,30 @@ class TestLang(unittest.TestCase):
 
         # Tokenization:
         self.lr.set("file", "vocab", "", ".vocab")
-        self.assertEqual(os.path.join(RESOURCES_PATH, "vocab"), self.lr.get_langresource())
+        self.assertEqual(os.path.join(paths.resources, "vocab"), self.lr.get_langresource())
         self.lr.set_lang("fra")
         self.assertEqual("fra", self.lr.get_lang())
-        self.assertEqual(os.path.join(RESOURCES_PATH, "vocab", "fra.vocab"), self.lr.get_langresource())
+        self.assertEqual(os.path.join(paths.resources, "vocab", "fra.vocab"), self.lr.get_langresource())
         with self.assertRaises(LangNameError):
             self.lr.set_lang("wrong")
 
         # Syllabification:
         self.lr.set("file", "syll", "syllConfig-", ".txt")
         self.lr.set_lang("fra")
-        self.assertEqual(os.path.join(RESOURCES_PATH, "syll", "syllConfig-fra.txt"), self.lr.get_langresource())
+        self.assertEqual(os.path.join(paths.resources, "syll", "syllConfig-fra.txt"), self.lr.get_langresource())
         with self.assertRaises(LangNameError):
             self.lr.set_lang("wrong")
 
         # Alignment
         self.lr.set("directory", "models", "models-")
         self.lr.set_lang("fra")
-        self.assertEqual(os.path.join(RESOURCES_PATH, "models", "models-fra"), self.lr.get_langresource())
+        self.assertEqual(os.path.join(paths.resources, "models", "models-fra"), self.lr.get_langresource())
         with self.assertRaises(LangNameError):
             self.lr.set_lang("wrong")
 
         self.lr.set("directory", "models", "models-", ".txt")
         self.lr.set_lang("fra")
-        self.assertEqual(os.path.join(RESOURCES_PATH, "models", "models-fra"), self.lr.get_langresource())
+        self.assertEqual(os.path.join(paths.resources, "models", "models-fra"), self.lr.get_langresource())
         with self.assertRaises(LangNameError):
             self.lr.set_lang("wrong")
 
