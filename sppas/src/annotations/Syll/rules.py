@@ -40,7 +40,7 @@
     can change as needed.
 
 """
-from sppas.src.config import SYMBOLS
+from sppas.src.config import symbols
 from sppas.src.config import separators
 from sppas.src.utils.makeunicode import sppasUnicode
 
@@ -48,13 +48,13 @@ from sppas.src.utils.makeunicode import sppasUnicode
 
 
 class Rules(object):
-    """
+    """ Manager of a set of rules for syllabification.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Manager of a set of rules for syllabification.
 
     """
     BREAK_SYMBOL = "#"
@@ -94,7 +94,7 @@ class Rules(object):
         self.gap = dict()        # list of gap rules
 
         self.phonclass = dict()  # list of tuple (phoneme, class)
-        for phone in SYMBOLS:
+        for phone in symbols.all:
             self.phonclass[phone] = Rules.BREAK_SYMBOL
 
     # ------------------------------------------------------------------------

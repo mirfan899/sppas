@@ -35,11 +35,9 @@
 
     :Example:
 
-    >>>with sppasBaseSettings() as settings:
-    >>>    settings.newKey = 'myNewValue'
-    >>>    print(settings.newKey)
-    >>>with sppasGlobals() as sg:
-    >>>    print sg.__version__
+        >>>with sppasBaseSettings() as settings:
+        >>>    settings.newKey = 'myNewValue'
+        >>>    print(settings.newKey)
 
 """
 import json
@@ -81,13 +79,13 @@ class sppasBaseSettings(object):
 
 
 class sppasBaseModifiableSettings(sppasBaseSettings):
-    """
+    """ A dictionary of settings stored in a file.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      A dictionary of settings stored in a file.
 
     The configuration file is loaded when init and saved when exit.
 

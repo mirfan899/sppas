@@ -32,20 +32,20 @@
     src.annotations.tests.test_phonetize.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    Test the SPPAS Phonetization.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Test the SPPAS Phonetization.
 
 """
 import unittest
 import os.path
 
 from sppas.src.config import paths
-from sppas.src.config import unk_stamp
-from sppas.src.config import PHONE_SYMBOLS, ORTHO_SYMBOLS
+from sppas.src.config import symbols
 
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.mapping import sppasMapping
@@ -59,9 +59,9 @@ from ..Phon.sppasphon import sppasPhon
 
 # ---------------------------------------------------------------------------
 
-SIL = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
-SP = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("pause")]
-SP_ORTHO = list(ORTHO_SYMBOLS.keys())[list(ORTHO_SYMBOLS.values()).index("pause")]
+SIL = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
+SP = list(symbols.phone.keys())[list(symbols.phone.values()).index("pause")]
+SP_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("pause")]
 
 # ---------------------------------------------------------------------------
 
@@ -88,11 +88,11 @@ class TestDictPhon(unittest.TestCase):
         self.assertEqual(SIL, self.grph.get_phon_entry(" gpf_13 "))
 
         # an unknown entry
-        self.assertEqual(self.grph.get_phon_entry("ipu"), unk_stamp)
-        self.assertEqual(self.grph.get_phon_entry("gpd"), unk_stamp)
-        self.assertEqual(self.grph.get_phon_entry("gpf"), unk_stamp)
-        self.assertEqual(self.grph.get_phon_entry("aa"), unk_stamp)
-        self.assertEqual(self.grph.get_phon_entry("a-a"), unk_stamp)
+        self.assertEqual(self.grph.get_phon_entry("ipu"), symbols.unk)
+        self.assertEqual(self.grph.get_phon_entry("gpd"), symbols.unk)
+        self.assertEqual(self.grph.get_phon_entry("gpf"), symbols.unk)
+        self.assertEqual(self.grph.get_phon_entry("aa"), symbols.unk)
+        self.assertEqual(self.grph.get_phon_entry("a-a"), symbols.unk)
 
         # a filled entry
         self.assertEqual("a", self.grph.get_phon_entry("a"))
@@ -131,16 +131,16 @@ class TestDictPhon(unittest.TestCase):
         self.assertEqual([('a', 'a', OK_ID), ('aa', 'a-a', WARNING_ID)],
                          self.grph.get_phon_tokens(['a', 'aa']))
 
-        self.assertEqual([('a', 'a', OK_ID), ('aa', unk_stamp, ERROR_ID)],
+        self.assertEqual([('a', 'a', OK_ID), ('aa', symbols.unk, ERROR_ID)],
                          self.grph.get_phon_tokens(['a', 'aa'], phonunk=False))
 
-        self.assertEqual([('a', 'a', OK_ID), ('d', unk_stamp, ERROR_ID)],
+        self.assertEqual([('a', 'a', OK_ID), ('d', symbols.unk, ERROR_ID)],
                          self.grph.get_phon_tokens(['a', 'd']))
 
-        self.assertEqual([('/a/', 'a', OK_ID), ('d', unk_stamp, ERROR_ID)],
+        self.assertEqual([('/a/', 'a', OK_ID), ('d', symbols.unk, ERROR_ID)],
                          self.grph.get_phon_tokens(['/a/', 'd']))
 
-        self.assertEqual([('/A-a/', 'A-a', OK_ID), ('d', unk_stamp, ERROR_ID)],
+        self.assertEqual([('/A-a/', 'A-a', OK_ID), ('d', symbols.unk, ERROR_ID)],
                          self.grph.get_phon_tokens(['/A-a/', 'd']))
 
     # -----------------------------------------------------------------------
@@ -154,7 +154,7 @@ class TestDictPhon(unittest.TestCase):
         self.assertEqual("", self.grph.phonetize(' \n \t'))
         self.assertEqual("a", self.grph.phonetize('a'))
         self.assertEqual("a b a c", self.grph.phonetize('a b a c'))
-        self.assertEqual("a b a c "+unk_stamp, self.grph.phonetize('a b a c d'))
+        self.assertEqual("a b a c "+symbols.unk, self.grph.phonetize('a b a c d'))
         self.assertEqual("a sp a", self.grph.phonetize('a + a'))
         self.assertEqual("a b c", self.grph.phonetize('A B C'))
         self.assertEqual("a_b_c", self.grph.phonetize('A_B_C', delimiter="_"))
@@ -358,7 +358,7 @@ class TestPhonetization(unittest.TestCase):
         """ ... Phonetization of an utterance. """
 
         self.sp.set_unk(True)
-        self.assertEqual(unk_stamp, self.sp.phonetize("é à"))
+        self.assertEqual(symbols.unk, self.sp.phonetize("é à"))
 
         self.assertEqual(set("D-@|D-V|D-i:".split('|')),
                          set(self.sp.phonetize("THE")[0].split('|')))
@@ -367,7 +367,7 @@ class TestPhonetization(unittest.TestCase):
                          self.sp.phonetize("HE")[0])
 
         self.sp.set_unk(False)  # do not try to phonetize if missing of the dict
-        self.assertEqual(unk_stamp, self.sp.phonetize("THE BANCI THE"))
+        self.assertEqual(symbols.unk, self.sp.phonetize("THE BANCI THE"))
 
         self.sp.set_unk(True)
 

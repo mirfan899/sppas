@@ -60,13 +60,13 @@ from .media import sppasMedia
 
 
 class sppasTier(sppasMetaData):
-    """
+    """ Representation of a tier, a structured set of annotations.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Representation of a tier.
 
     A Tier is made of:
 
@@ -176,7 +176,8 @@ class sppasTier(sppasMetaData):
             if isinstance(ctrl_vocab, sppasCtrlVocab) is False:
                 raise AnnDataTypeError(ctrl_vocab, "sppasCtrlVocab")
 
-            # Check all annotation tags to validate the ctrl_vocab before assignment
+            # Check all annotation tags to validate the
+            # ctrl_vocab before assignment
             for annotation in self.__ann:
                 for label in annotation.get_labels():
                     annotation.validate_label(label)
@@ -254,8 +255,9 @@ class sppasTier(sppasMetaData):
     def create_annotation(self, location, labels=None):
         """ Create and add a new annotation into the tier.
 
-        :param location: (sppasLocation) the location(s) where the annotation happens
-        :param labels: (sppasLabel, list) the label(s) to stamp this annotation
+        :param location: (sppasLocation) the location(s) where \
+               the annotation happens
+        :param labels: (sppasLabel, list) the label(s) to stamp this annot.
         :returns: sppasAnnotation
 
         """
@@ -277,7 +279,8 @@ class sppasTier(sppasMetaData):
         Assign this tier as parent to the annotation.
 
         :param annotation: (sppasAnnotation)
-        :raises: AnnDataTypeError, CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError, TierAppendError
+        :raises: AnnDataTypeError, CtrlVocabContainsError, \
+        HierarchyContainsError, HierarchyTypeError, TierAppendError
 
         """
         self.validate_annotation(annotation)
@@ -299,7 +302,8 @@ class sppasTier(sppasMetaData):
         Assign this tier as parent to the annotation.
 
         :param annotation: (sppasAnnotation)
-        :raises: AnnDataTypeError, CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError
+        :raises: AnnDataTypeError, CtrlVocabContainsError, \
+        HierarchyContainsError, HierarchyTypeError
         :returns: the index of the annotation in the tier
 
         """
@@ -307,10 +311,12 @@ class sppasTier(sppasMetaData):
         try:
             self.append(annotation)
         except Exception:
+
             if annotation.location_is_point():
                 index = self.index(annotation.get_lowest_localization())
                 if index != -1:
-                    if self.__ann[index].get_lowest_localization().get_midpoint() == annotation.get_lowest_localization().get_midpoint():
+                    if self.__ann[index].get_lowest_localization().get_midpoint() == \
+                            annotation.get_lowest_localization().get_midpoint():
                         raise TierAddError(index)
                 else:
                     index = self.near(annotation.get_lowest_localization(), direction=-1)
@@ -464,7 +470,8 @@ class sppasTier(sppasMetaData):
 
         :param begin: sppasPoint or None to start from the beginning of the tier
         :param end: sppasPoint or None to end at the end of the tier
-        :param overlaps: (bool) Return also overlapped annotations. Not relevant for tiers with points.
+        :param overlaps: (bool) Return also overlapped annotations. \
+        Not relevant for tiers with points.
         :returns: List of sppasAnnotation
 
         """
@@ -569,8 +576,9 @@ class sppasTier(sppasMetaData):
 
     def lindex(self, moment):
         """ Return the index of the interval starting at a given moment, or -1.
-        If the tier contains more than one annotation starting at the same moment,
-        the method returns the first one.
+
+        If the tier contains more than one annotation starting at the same
+        moment, the method returns the first one.
         Only for tier with intervals or disjoint.
 
         :param moment: (sppasPoint)
@@ -598,7 +606,8 @@ class sppasTier(sppasMetaData):
         if mid == 0:
             return 0
 
-        # We go back to look at the previous localizations until they are different.
+        # We go back to look at the previous localizations
+        # until they are different.
         while mid >= 0 and self.__ann[mid].get_lowest_localization() == moment:
             mid -= 1
 
@@ -608,6 +617,7 @@ class sppasTier(sppasMetaData):
 
     def mindex(self, moment, bound=0):
         """ Return the index of the interval containing the given moment, or -1.
+
         If the tier contains more than one annotation at the same moment,
         the method returns the first one (i.e. the one which started at first).
         Only for tier with intervals or disjoint.
@@ -677,7 +687,8 @@ class sppasTier(sppasMetaData):
             return mid
 
         # We go further to look at the next localizations until they are different.
-        while mid+1 < len(self.__ann) and self.__ann[mid+1].get_highest_localization() == moment:
+        while mid+1 < len(self.__ann) and \
+                self.__ann[mid+1].get_highest_localization() == moment:
             mid += 1
 
         return mid
@@ -873,7 +884,8 @@ class sppasTier(sppasMetaData):
         """ Validate the annotation and set its parent to this tier.
 
         :param annotation: (sppasAnnotation)
-        :raises: AnnDataTypeError, CtrlVocabContainsError, HierarchyContainsError, HierarchyTypeError
+        :raises: AnnDataTypeError, CtrlVocabContainsError, \
+        HierarchyContainsError, HierarchyTypeError
 
         """
         # Check instance:
@@ -967,7 +979,8 @@ class sppasTier(sppasMetaData):
 
         The current controlled vocabulary is deleted.
 
-        :param name: (str) Name of the controlled vocabulary. The name of the tier is used by default.
+        :param name: (str) Name of the controlled vocabulary. \
+        The name of the tier is used by default.
 
         """
         if name is None:

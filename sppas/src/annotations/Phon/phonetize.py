@@ -32,12 +32,10 @@
     src.annotations.phonetize.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Dictionary-based phonetization.
-
 """
 import re
 
-from sppas.src.config import PHONE_SYMBOLS
+from sppas.src.config import symbols
 from sppas.src.config import separators
 from sppas.src.utils.makeunicode import sppasUnicode, u
 from sppas.src.resources.mapping import sppasMapping
@@ -49,19 +47,19 @@ from .dagphon import sppasDAGPhonetizer
 
 # ---------------------------------------------------------------------------
 
-SIL = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
+SIL = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
 
 # ---------------------------------------------------------------------------
 
 
 class sppasDictPhonetizer(object):
-    """
+    """ Dictionary-based automatic phonetization.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Dictionary-based automatic phonetization.
 
     Grapheme-to-phoneme conversion is a complex task, for which a number of
     diverse solutions have been proposed. It is a structure prediction task;

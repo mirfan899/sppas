@@ -2,8 +2,7 @@
 
 import unittest
 
-from sppas.src.config import unk_stamp
-from sppas.src.config import SYMBOLS
+from sppas.src.config import symbols
 from sppas.src.annotationdata import Transcription
 from ..Align.activity import sppasActivity
 
@@ -22,15 +21,15 @@ class TestActivity(unittest.TestCase):
 
         # create an instance with the default symbols
         a = sppasActivity()
-        for s in SYMBOLS:
+        for s in symbols.all:
             self.assertTrue(s in a)
-        self.assertTrue(unk_stamp in a)
-        self.assertEqual(len(a), len(SYMBOLS)+1)
+        self.assertTrue(symbols.unk in a)
+        self.assertEqual(len(a), len(symbols.all)+1)
 
         # try to add again the same symbols - they won't
-        for s in SYMBOLS:
-            a.append_activity(s, SYMBOLS[s])
-        self.assertEqual(len(a), len(SYMBOLS) + 1)
+        for s in symbols.all:
+            a.append_activity(s, symbols.all[s])
+        self.assertEqual(len(a), len(symbols.all) + 1)
 
     def test_get_tier(self):
         a = sppasActivity()

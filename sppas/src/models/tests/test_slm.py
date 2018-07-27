@@ -6,7 +6,7 @@ import os.path
 import math
 import shutil
 
-from sppas.src.config import unk_stamp
+from sppas.src.config import symbols
 from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
 from sppas.src.models.slm.ngramsmodel import sppasNgramCounter
 from sppas.src.models.slm.ngramsmodel import sppasNgramsModel
@@ -137,7 +137,7 @@ class TestNgramCounter(unittest.TestCase):
         self.assertEqual(ngramcounter.get_count('b'), 10)
         self.assertEqual(ngramcounter.get_count('c'), 4)
         self.assertEqual(ngramcounter.get_count('d'), 0)
-        self.assertEqual(ngramcounter.get_count(unk_stamp), 3)
+        self.assertEqual(ngramcounter.get_count(symbols.unk), 3)
         self.assertEqual(ngramcounter.get_count(START_SENT_SYMBOL), 0)
         self.assertEqual(ngramcounter.get_count(END_SENT_SYMBOL), 3)
 

@@ -32,11 +32,8 @@
     src.annotations.sppasphon.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    SPPAS integration of Phonetization.
-
 """
-from sppas.src.config import unk_stamp
-from sppas.src.config import PHONE_SYMBOLS, ORTHO_SYMBOLS
+from sppas.src.config import symbols
 from sppas.src.config import separators
 
 from sppas.src.anndata import sppasRW
@@ -65,20 +62,20 @@ MSG_PHONETIZED = (t.gettext(":INFO 1112: "))
 MSG_NOT_PHONETIZED = (t.gettext(":INFO 1114: "))
 MSG_TRACK = (t.gettext(":INFO 1220: "))
 
-SIL = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
-SIL_ORTHO = list(ORTHO_SYMBOLS.keys())[list(ORTHO_SYMBOLS.values()).index("silence")]
+SIL = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
+SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]
 
 # ---------------------------------------------------------------------------
 
 
 class sppasPhon(sppasBaseAnnotation):
-    """
+    """ SPPAS integration of the Phonetization automatic annotation.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      SPPAS integration of the Phonetization automatic annotation.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
     def __init__(self, dict_filename, map_filename=None, logfile=None):
@@ -86,8 +83,8 @@ class sppasPhon(sppasBaseAnnotation):
 
         :param dict_filename: (str) is the pronunciation dictionary file name
         (HTK-ASCII format, utf8).
-        :param map_filename: (str) is the filename of a mapping table. It is used
-        to generate new pronunciations by mapping phonemes of the dictionary.
+        :param map_filename: (str) is the filename of a mapping table. It is \
+        used to generate new pronunciations by mapping phonemes of the dict.
         :param logfile (sppasLog) is a log file utility class member.
         :raises: ValueError if loading the dictionary fails
 
@@ -180,10 +177,11 @@ class sppasPhon(sppasBaseAnnotation):
 
         Because we absolutely need to match with the number of tokens, this
         method will always return a string: either the automatic phonetization
-        (from dict or from phonunk) or the unk_stamp.
+        (from dict or from phonunk) or the unk stamp.
 
         :param entry: (str) The string to be phonetized.
-        :param idx: (int) number to communicate in the error/warning message. 0=disabled
+        :param idx: (int) number to communicate in the error/warning message. \
+                    0=disabled
         :returns: phonetization of the given entry
 
         """
@@ -195,7 +193,7 @@ class sppasPhon(sppasBaseAnnotation):
             if s == ERROR_ID:
                 message = MSG_MISSING.format(tex) + MSG_NOT_PHONETIZED
                 self.print_message(message, indent=3, status=s)
-                return unk_stamp
+                return symbols.unk
             else:
                 if s == WARNING_ID:
                     message = MSG_MISSING.format(tex)
@@ -203,7 +201,7 @@ class sppasPhon(sppasBaseAnnotation):
                         message = message + MSG_PHONETIZED.format(p)
                     else:
                         message = message + MSG_NOT_PHONETIZED
-                        p = unk_stamp
+                        p = symbols.unk
                 tab_phones.append(p)
 
             if message:
@@ -261,7 +259,7 @@ class sppasPhon(sppasBaseAnnotation):
         """ Run the Phonetization process on an input file.
 
         :param input_filename (str) Name of the file including a tokenization
-        :param output_filename (str) Name of the resulting file with phonetization
+        :param output_filename (str) Name of the resulting file
         :returns: (sppasTranscription)
 
         """

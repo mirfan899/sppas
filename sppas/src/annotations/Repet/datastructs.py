@@ -37,21 +37,21 @@
 import sys
 import re
 
-from sppas.src.config import SYMBOLS
+from sppas.src.config import symbols
 from sppas.src.utils.makeunicode import sppasUnicode
 
 # ----------------------------------------------------------------------------
 
 
 class DataRepetition(object):
-    """
+    """ Class to store one repetition (the source and the echos).
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Class to store one repetition (the source and the echos).
-    
+
     The source of a repetition is represented as a tuple (start, end).
     The echos of this latter are stored as a list of tuples (start, end).
 
@@ -196,7 +196,7 @@ class Entry(object):
         token = self.__clean()
 
         # Symbols used by SPPAS annotations to represent an event
-        if token in SYMBOLS:
+        if token in symbols.all:
             return False
 
         # Hesitations (language dependent !!!)

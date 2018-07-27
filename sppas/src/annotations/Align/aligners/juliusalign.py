@@ -37,7 +37,7 @@ import codecs
 from subprocess import Popen, PIPE, STDOUT
 
 from sppas.src.config import sg
-from sppas.src.config import PHONE_SYMBOLS
+from sppas.src.config import symbols
 from sppas.src.models.slm.ngramsmodel import sppasNgramsModel
 from sppas.src.models.slm.arpaio import sppasArpaIO
 from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
@@ -50,7 +50,7 @@ from .basealigner import BaseAligner
 
 JULIUS_EXT_OUT = ["palign", "walign"]
 DEFAULT_EXT_OUT = JULIUS_EXT_OUT[0]
-SIL_PHON = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
+SIL_PHON = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
 
 # ----------------------------------------------------------------------------
 

@@ -28,17 +28,16 @@
 
         ---------------------------------------------------------------------
 
-    config
-    ~~~~~~~~~~~~
+    config: SPPAS configuration for global things.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS configuration for global things.
 
-    We instantiate setting classes, to be used like:
+    :Example:
 
         >>> from sppas.src.config import sg, paths
         >>> sg.__encoding
@@ -79,43 +78,11 @@ except AttributeError:  # Python 2.7
     pass
 
 # ---------------------------------------------------------------------------
-# Symbols used by SPPAS to represent an event:
-
-# Default symbols used by annotations and resources
-unk_stamp = "<UNK>"
-
-# Symbols in an orthographic transcription, or after a text normalization:
-ORTHO_SYMBOLS = {
-    '#': "silence",
-    '+': "pause",
-    '*': "noise",
-    '@': "laugh",
-    'dummy': 'dummy'
-}
-
-PHONE_SYMBOLS = {
-    'sil': "silence",
-    'sp': "pause",
-    'noise': "noise",
-    'laugh': "laugh",
-    'dummy': 'dummy'
-}
-
-# All possible symbols:
-SYMBOLS = dict()
-SYMBOLS.update(ORTHO_SYMBOLS)
-SYMBOLS.update(PHONE_SYMBOLS)
-
-# ---------------------------------------------------------------------------
 
 __all__ = [
     "sppasBaseSettings",
     "sg",
     "paths",
     "symbols",
-    "separators",
-    "ORTHO_SYMBOLS",
-    "PHONE_SYMBOLS",
-    "SYMBOLS",
-    "unk_stamp"
+    "separators"
 ]

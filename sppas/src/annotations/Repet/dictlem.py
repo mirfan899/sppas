@@ -47,20 +47,17 @@ import re
 import codecs
 
 from sppas.src.config import sg
-from sppas.src.config import unk_stamp
+from sppas.src.config import symbols
 
 # ----------------------------------------------------------------------------
 
 
 class LemmaDict(object):
-    """ Perform a simple dictionary-based lemmatization.
-    """
+    """ Perform a simple dictionary-based lemmatization. """
 
     def __init__(self):
-        """ Create a new LemmaDict instance.
-
-        """
-        self.unk = unk_stamp
+        """ Create a new LemmaDict instance. """
+        
         # Load the dictionary:
         self.lemdict = dict()
 
@@ -108,7 +105,7 @@ class LemmaDict(object):
             Return:      int
             Exception:   None
         """
-        return self.lemdict.get( self.__lower(entry), self.unk )
+        return self.lemdict.get(self.__lower(entry), symbols.unk)
 
     # ------------------------------------------------------------------
 
@@ -135,14 +132,17 @@ class LemmaDict(object):
         if idx > 1 and entry.find(u">") > -1:
             entry = entry[:idx]
         # Specific strings... for the CID transcription...
-        if len(entry) == 0 or entry.find(u"gpd_") >- 1 or entry.find(u"gpf_") > -1 or entry.find(u"ipu_") > -1:
+        if len(entry) == 0 or \
+                entry.find(u"gpd_") > -1 or \
+                entry.find(u"gpf_") > -1 or \
+                entry.find(u"ipu_") > -1:
             return ""
 
         # Find entry in the dict as it is given
         _strlem = self.__get(entry)
 
         # OK, the entry is in the dictionary
-        if _strlem != self.unk:
+        if _strlem != symbols.unk:
             return _strlem
 
         # a missing compound word
@@ -154,7 +154,7 @@ class LemmaDict(object):
                 _strlem = _strlem + " " + self.__get(_w)
 
         # OK, finally the entry is in the dictionary?
-        if _strlem.find( self.unk )>-1:
+        if _strlem.find(symbols.unk)>-1:
             return entry
         else:
             return _strlem
@@ -210,15 +210,15 @@ class LemmaDict(object):
         # lemmatize each entry
         for entry in entries:
             entry = self.__lower(entry)
-            _lem = self.get_lem( entry )
-            if len(_lem)>0 and _lem.find(self.unk)>-1:
+            _lem = self.get_lem(entry)
+            if len(_lem)>0 and _lem.find(symbols.unk)>-1:
                 if unk is True:
                     _lem = entry
-            tablem.append( _lem )
+            tablem.append(_lem)
 
         # Concatenate entries into a lemmatized string
         _s = " "
-        return _s.join( tablem )
+        return _s.join(tablem)
 
     # -----------------------------------------------------------------------
     # Overloads
@@ -226,5 +226,3 @@ class LemmaDict(object):
 
     def __len__(self):
         return len(self.lemdict)
-
-    # -----------------------------------------------------------------------

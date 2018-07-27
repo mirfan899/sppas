@@ -47,7 +47,7 @@
 
 
 """
-from sppas.src.config import SYMBOLS
+from sppas.src.config import symbols
 from sppas.src.utils.makeunicode import sppasUnicode, b
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AnnUnkTypeError
@@ -56,13 +56,13 @@ from ..anndataexc import AnnUnkTypeError
 
 
 class sppasTag(object):
-    """
+    """ Represents one of the possible tags of a label.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Represents one of the possible tags of a label.
 
     A sppasTag() content can be one of the following types:
 
@@ -233,8 +233,8 @@ class sppasTag(object):
         if self.__tag_type is None or self.__tag_type == "str":
             # create a list of silence symbols from the list of all symbols
             silences = list()
-            for symbol in SYMBOLS:
-                if SYMBOLS[symbol] == "silence":
+            for symbol in symbols.all:
+                if symbols.all[symbol] == "silence":
                     silences.append(symbol)
 
             if self.__tag_content in silences:
@@ -253,8 +253,8 @@ class sppasTag(object):
 
         # create a list of pause symbols from the list of all symbols
         pauses = list()
-        for symbol in SYMBOLS:
-            if SYMBOLS[symbol] == "pause":
+        for symbol in symbols.all:
+            if symbols.all[symbol] == "pause":
                 pauses.append(symbol)
 
         return self.__tag_content in pauses
@@ -266,8 +266,8 @@ class sppasTag(object):
 
         # create a list of laughter symbols from the list of all symbols
         laugh = list()
-        for symbol in SYMBOLS:
-            if SYMBOLS[symbol] == "laugh":
+        for symbol in symbols.all:
+            if symbols.all[symbol] == "laugh":
                 laugh.append(symbol)
 
         return self.__tag_content in laugh
@@ -279,8 +279,8 @@ class sppasTag(object):
 
         # create a list of noise symbols from the list of all symbols
         noises = list()
-        for symbol in SYMBOLS:
-            if SYMBOLS[symbol] == "noise":
+        for symbol in symbols.all:
+            if symbols.all[symbol] == "noise":
                 noises.append(symbol)
 
         return self.__tag_content in noises

@@ -5,7 +5,7 @@ import os.path
 import shutil
 import glob
 
-from sppas.src.config import ORTHO_SYMBOLS, PHONE_SYMBOLS
+from sppas.src.config import symbols
 from sppas.src.config import paths
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.compare import sppasCompare
@@ -21,9 +21,9 @@ TEMP = sppasFileUtils().set_random()
 MODEL_PATH = os.path.join(paths.resources, "models")
 DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
-SIL_PHON = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
-LAUGH_PHON = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("laugh")]
-SIL_ORTHO = list(ORTHO_SYMBOLS.keys())[list(ORTHO_SYMBOLS.values()).index("silence")]
+SIL_PHON = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
+LAUGH_PHON = list(symbols.phone.keys())[list(symbols.phone.values()).index("laugh")]
+SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]
 
 # ---------------------------------------------------------------------------
 

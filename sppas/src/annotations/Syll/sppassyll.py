@@ -32,10 +32,8 @@
     src.annotations.sppassyll.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    SPPAS integration of syllabification.
-
 """
-from sppas.src.config import PHONE_SYMBOLS
+from sppas.src.config import symbols
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
 from sppas.src.anndata import sppasTier
@@ -63,13 +61,13 @@ MSG_NO_TIER = (t.gettext(":INFO 1264: "))
 
 
 class sppasSyll(sppasBaseAnnotation):
-    """
+    """ SPPAS integration of the automatic syllabification annotation.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS automatic syllabification annotation.
 
     """
     def __init__(self, config_filename, logfile=None):
@@ -326,11 +324,13 @@ class sppasSyll(sppasBaseAnnotation):
 
     @staticmethod
     def _phon_to_intervals(phonemes):
-        """ Create the intervals to be syllabified. """
+        """ Create the intervals to be syllabified.
 
-        # we could use PHONE_SYMBOLS, but for backward compatibility
-        # we hardly add the symbols previously used into SPPAS.
-        stop = list(PHONE_SYMBOLS.keys())
+        we could use symbols.phone only, but for backward compatibility
+        we hardly add the symbols we previously used into SPPAS.
+
+        """
+        stop = list(symbols.phone.keys())
         stop.append('#')
         stop.append('@@')
         stop.append('+')

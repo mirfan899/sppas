@@ -43,7 +43,7 @@
 
 import unittest
 
-from sppas.src.config import ORTHO_SYMBOLS, PHONE_SYMBOLS
+from sppas.src.config import symbols
 from ..annlocation.location import sppasLocation
 from ..annlocation.interval import sppasInterval
 from ..annlocation.point import sppasPoint
@@ -53,8 +53,8 @@ from ..annotation import sppasAnnotation
 
 # ---------------------------------------------------------------------------
 
-SIL_PHON = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
-SIL_ORTHO = list(ORTHO_SYMBOLS.keys())[list(ORTHO_SYMBOLS.values()).index("silence")]
+SIL_PHON = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
+SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]
 
 # ---------------------------------------------------------------------------
 
@@ -71,8 +71,12 @@ class TestAnnotation(unittest.TestCase):
         self.p2 = sppasPoint(2)
         self.p3 = sppasPoint(3)
         self.it = sppasInterval(self.p1, self.p2)
-        self.annotationI = sppasAnnotation(sppasLocation(self.it), sppasLabel(sppasTag(" \t\t  être être   être  \n ")))
-        self.annotationP = sppasAnnotation(sppasLocation(self.p1), sppasLabel(sppasTag("mark")))
+        self.annotationI = sppasAnnotation(sppasLocation(self.it),
+                                           sppasLabel(
+                                               sppasTag(" \t\t  être être   être  \n ")))
+        self.annotationP = sppasAnnotation(sppasLocation(self.p1),
+                                           sppasLabel(
+                                               sppasTag("mark")))
 
     # -----------------------------------------------------------------------
 
@@ -176,7 +180,9 @@ class TestAnnotation(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             self.annotationI.get_location().get_best().set_begin(sppasPoint(4))
-        self.annotationI.get_location().get_best().get_begin().set_midpoint(4) #### MUST BE FORBIDDEN...
+
+        # *** SHOULD BE FORBIDDEN... but in the long long long "to do" list
+        self.annotationI.get_location().get_best().get_begin().set_midpoint(4)
 
     # -----------------------------------------------------------------------
 

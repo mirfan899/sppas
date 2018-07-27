@@ -32,10 +32,8 @@
     src.annotations.TGA.sppastga.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Integration of TGA into SPPAS.
-
 """
-from sppas.src.config import PHONE_SYMBOLS
+from sppas.src.config import symbols
 from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
@@ -54,13 +52,13 @@ from .timegroupanalysis import TimeGroupAnalysis
 
 
 class sppasTGA(sppasBaseAnnotation):
-    """
+    """ Estimates TGA on a tier.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Estimates TGA on a tier.
 
     Create time groups then map them into a dictionary where:
 
@@ -77,7 +75,7 @@ class sppasTGA(sppasBaseAnnotation):
         sppasBaseAnnotation.__init__(self, logfile, "Syllabification")
 
         # List of the symbols used to create the time groups
-        self._tg_separators = list(PHONE_SYMBOLS.keys())
+        self._tg_separators = list(symbols.phone.keys())
 
         # List of options to configure this automatic annotation
         self._options = dict()
@@ -86,7 +84,7 @@ class sppasTGA(sppasBaseAnnotation):
         self._options['annotationpro'] = True
         self._options['tg_prefix_label'] = "tg_"
 
-        # for backward compatibility, we can't simply use PHONE_SYMBOLS...
+        # for backward compatibility, we can't simply use symbols.phone...
         self._tg_separators.append('#')
         self._tg_separators.append('@@')
         self._tg_separators.append('+')
@@ -212,7 +210,8 @@ class sppasTGA(sppasBaseAnnotation):
         intervals.set_name("TGA-TimeSegments")
 
         for i, tg in enumerate(intervals):
-            syll_anns = syllables.find(tg.get_lowest_localization(), tg.get_highest_localization())
+            syll_anns = syllables.find(tg.get_lowest_localization(),
+                                       tg.get_highest_localization())
             tag_str = ""
             for ann in syll_anns:
                 tag_str += ann.serialize_labels(separator=" ")

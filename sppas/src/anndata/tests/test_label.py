@@ -44,7 +44,7 @@
 """
 import unittest
 
-from sppas.src.config import ORTHO_SYMBOLS, PHONE_SYMBOLS
+from sppas.src.config import symbols
 from sppas.src.utils.makeunicode import u, b, text_type
 from ..annlabel.tag import sppasTag
 from ..annlabel.label import sppasLabel
@@ -52,11 +52,11 @@ from ..annlabel.tagcompare import sppasTagCompare
 
 # ---------------------------------------------------------------------------
 
-SIL_PHON = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
-NOISE_PHON = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("noise")]
-SIL_ORTHO = list(ORTHO_SYMBOLS.keys())[list(ORTHO_SYMBOLS.values()).index("silence")]
-PAUSE_ORTHO = list(ORTHO_SYMBOLS.keys())[list(ORTHO_SYMBOLS.values()).index("pause")]
-NOISE_ORTHO = list(ORTHO_SYMBOLS.keys())[list(ORTHO_SYMBOLS.values()).index("noise")]
+SIL_PHON = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
+NOISE_PHON = list(symbols.phone.keys())[list(symbols.phone.values()).index("noise")]
+SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]
+PAUSE_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("pause")]
+NOISE_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("noise")]
 
 # ---------------------------------------------------------------------------
 

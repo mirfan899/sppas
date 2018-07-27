@@ -38,7 +38,7 @@
 import os.path
 
 from sppas.src.config import paths
-from sppas.src.config import ORTHO_SYMBOLS
+from sppas.src.config import symbols
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
 
@@ -61,7 +61,7 @@ from .normalize import TextNormalizer
 
 MSG_TRACK = t.gettext(":INFO 1220: ")
 
-SIL_ORTHO = list(ORTHO_SYMBOLS.keys())[list(ORTHO_SYMBOLS.values()).index("silence")]
+SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]
 
 # ---------------------------------------------------------------------------
 

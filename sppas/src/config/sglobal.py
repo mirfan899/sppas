@@ -33,6 +33,11 @@
 
     Classes to manage global non-modifiable settings of SPPAS.
 
+    :Example:
+
+        >>>with sppasGlobalSettings() as sg:
+        >>>    print(sg.__version__)
+
 """
 import os.path
 from .settings import sppasBaseSettings
@@ -41,13 +46,13 @@ from .settings import sppasBaseSettings
 
 
 class sppasGlobalSettings(sppasBaseSettings):
-    """
+    """ Representation of global non-modifiable settings of SPPAS.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Representation of global non-modifiable settings of SPPAS.
 
     """
     def __init__(self):
@@ -72,13 +77,13 @@ class sppasGlobalSettings(sppasBaseSettings):
 
 
 class sppasPathSettings(sppasBaseSettings):
-    """
+    """ Representation of global non-modifiable paths of SPPAS.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Representation of global non-modifiable paths of SPPAS.
 
     """
     def __init__(self):
@@ -99,33 +104,73 @@ class sppasPathSettings(sppasBaseSettings):
 
 
 class sppasSymbolSettings(sppasBaseSettings):
-    """
+    """ Representation of global non-modifiable symbols of SPPAS.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Representation of global non-modifiable symbols of SPPAS.
+
+    This class defines:
+
+        - unk: the default symbol used by annotations and resources to \
+          represent unknown entries
+        - ortho: symbols used in an orthographic transcription, or after\
+          a text normalization
+        - phone: symbols used to represent events in grapheme to phoneme
+          conversion.
+        - all: ortho+phone (i.e. all known symbols)
 
     """
     def __init__(self):
+
         sppasBaseSettings.__init__(self)
         self.__dict__ = dict(
-
+            unk="<UNK>",
+            phone=sppasSymbolSettings.__phone_symbols(),
+            ortho=sppasSymbolSettings.__ortho_symbols(),
+            all=sppasSymbolSettings.__all_symbols()
         )
 
+    @staticmethod
+    def __ortho_symbols():
+        return {
+            '#': "silence",
+            '+': "pause",
+            '*': "noise",
+            '@': "laugh",
+            'dummy': 'dummy'
+        }
+
+    @staticmethod
+    def __phone_symbols():
+        return {
+            'sil': "silence",
+            'sp': "pause",
+            'noise': "noise",
+            'laugh': "laugh",
+            'dummy': 'dummy'
+        }
+
+    @staticmethod
+    def __all_symbols():
+        s = dict()
+        s.update(sppasSymbolSettings.__ortho_symbols())
+        s.update(sppasSymbolSettings.__phone_symbols())
+        return s
 
 # ---------------------------------------------------------------------------
 
 
 class sppasSeparatorSettings(sppasBaseSettings):
-    """
+    """ Representation of global non-modifiable separators of SPPAS.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Representation of global non-modifiable separators of SPPAS.
 
     """
 

@@ -32,7 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from sppas.src.config import PHONE_SYMBOLS
+from sppas.src.config import symbols
 from sppas.src.config import separators
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.vocab import sppasVocabulary
@@ -41,13 +41,13 @@ from sppas.src.resources.vocab import sppasVocabulary
 
 
 class sppasPhoneSet(sppasVocabulary):
-    """
+    """ Manager of the list of phonemes.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Manager of the list of phonemes.
 
     This class allows to manage the list of phonemes:
 
@@ -67,8 +67,8 @@ class sppasPhoneSet(sppasVocabulary):
         """
         sppasVocabulary.__init__(self, filename, nodump=True, case_sensitive=True)
 
-        for key in PHONE_SYMBOLS:
-            if PHONE_SYMBOLS[key] != "pause":
+        for key in symbols.phone:
+            if symbols.phone[key] != "pause":
                 self.add(key)
         # self.add("laugh")
         # self.add("dummy")

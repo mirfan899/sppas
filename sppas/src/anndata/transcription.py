@@ -56,13 +56,13 @@ from .annotation import sppasAnnotation
 
 
 class sppasTranscription(sppasMetaData):
-    """
+    """ Representation of a transcription, a structured set of tiers.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Representation of a transcription.
 
     Transcriptions in SPPAS are represented with:
 
@@ -82,16 +82,22 @@ class sppasTranscription(sppasMetaData):
     :Example:
 
         >>> # Create an instance
-        >>> trs = sppasTranscription()
+        >>> trs = sppasTranscription("trs name")
+
+        >>> # Create a tier
+        >>> trs.create_tier("tier name")
 
         >>> # Get a tier of a transcription from its index:
         >>> tier = trs[0]
+
+        >>> # Get a tier of a transcription from its name
+        >>> tier = trs.find("tier name")
 
     """
     def __init__(self, name=None):
         """ Creates a new sppasTranscription instance.
 
-        :param name: (str) Name of the transcription. It is used as identifier.
+        :param name: (str) Name of the transcription.
 
         """
         super(sppasTranscription, self).__init__()
@@ -114,7 +120,7 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_name(self):
-        """ Return the identifier name of the transcription. """
+        """ Return the name of the transcription. """
 
         return self._name
 
@@ -161,7 +167,8 @@ class sppasTranscription(sppasMetaData):
 
     def add_media(self, new_media):
         """ Add a new media in the list of media.
-         Do not add the media if a media with the same id is already in self.
+
+        Does not add the media if a media with the same id is already in self.
 
         :param new_media: (sppasMedia) The media to add.
         :raises: AnnDataTypeError, TrsAddError
@@ -229,7 +236,7 @@ class sppasTranscription(sppasMetaData):
     def get_ctrl_vocab_from_name(self, ctrl_vocab_name):
         """ Return a sppasCtrlVocab from its name or None.
 
-        :param ctrl_vocab_name: (str) Identifier name of a controlled vocabulary
+        :param ctrl_vocab_name: (str) Identifier name of a ctrl vocabulary
 
         """
         idt = ctrl_vocab_name.strip()
@@ -345,7 +352,8 @@ class sppasTranscription(sppasMetaData):
                     highest = max([l[0].get_end() for l in location])
                 anns = parent_tier.find(lowest, highest)
 
-                # Check if all localization are matching, so without checking the scores.
+                # Check if all localization are matching,
+                # so without checking the scores.
                 if len(anns) == 0:
                     raise TierHierarchyError(tier.get_name())
 
@@ -356,7 +364,6 @@ class sppasTranscription(sppasMetaData):
                 find_points = a.get_all_points()
                 for point in find_points:
                     if point not in points:
-                        # print("{} not in {}. {}.".format(point, points, type(point)))
                         raise TierHierarchyError(tier.get_name())
 
         else:
@@ -379,21 +386,21 @@ class sppasTranscription(sppasMetaData):
 
     # -----------------------------------------------------------------------
     # Tiers
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_tier_list(self):
         """ Return the list of tiers. """
 
         return self._tiers
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def is_empty(self):
         """ Return True if the transcription does not contains tiers. """
 
         return len(self._tiers) == 0
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def find(self, name, case_sensitive=True):
         """ Find a tier from its name.
@@ -413,7 +420,7 @@ class sppasTranscription(sppasMetaData):
 
         return None
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def find_id(self, tier_id):
         """ Find a tier from its identifier.
@@ -429,7 +436,7 @@ class sppasTranscription(sppasMetaData):
 
         return None
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_tier_index(self, name, case_sensitive=True):
         """ Get the index of a tier from its name.
@@ -445,7 +452,7 @@ class sppasTranscription(sppasMetaData):
             return -1
         return self._tiers.index(t)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_tier_index(self, name, new_index, case_sensitive=True):
         """ Get the index of a tier from its name.
@@ -465,7 +472,7 @@ class sppasTranscription(sppasMetaData):
         except:
             raise IndexError
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def rename_tier(self, tier):
         """ Rename a tier by appending a digit.
@@ -483,7 +490,7 @@ class sppasTranscription(sppasMetaData):
             i += 1
         tier.set_name(name)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def create_tier(self, name=None, ctrl_vocab=None, media=None):
         """ Create and append a new empty tier.
@@ -499,7 +506,7 @@ class sppasTranscription(sppasMetaData):
 
         return tier
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def append(self, tier):
         """ Append a new tier.
@@ -525,7 +532,7 @@ class sppasTranscription(sppasMetaData):
         self._tiers.append(tier)
         tier.set_parent(self)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def pop(self, index=-1):
         """ Remove the tier at the given position in the transcription,
@@ -544,7 +551,7 @@ class sppasTranscription(sppasMetaData):
         except IndexError:
             raise AnnDataIndexError(index)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_min_loc(self):
         """ Return the sppasPoint with the lowest value through all tiers. """
@@ -566,7 +573,7 @@ class sppasTranscription(sppasMetaData):
 
         return min_point
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_max_loc(self):
         """ Return the sppasPoint with the highest value through all tiers. """
@@ -588,20 +595,20 @@ class sppasTranscription(sppasMetaData):
 
         return max_point
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Overloads
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __len__(self):
         return len(self._tiers)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __iter__(self):
         for x in self._tiers:
             yield x
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __getitem__(self, i):
         return self._tiers[i]

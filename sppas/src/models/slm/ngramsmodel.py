@@ -35,7 +35,7 @@
 import collections
 import math
 
-from sppas.src.config import unk_stamp
+from sppas.src.config import symbols
 import sppas.src.annotationdata.aio
 from sppas.src.resources.vocab import sppasVocabulary
 
@@ -53,13 +53,13 @@ END_SENT_SYMBOL = "</s>"
 
 
 class sppasNgramsModel(object):
-    """
+    """ Statistical language model trainer.
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      brigitte.bigi@gmail.com
-    :summary:      Statistical language model trainer.
 
     A model is made of:
        - n-gram counts: a list of sppasNgramCounter instances.
@@ -537,7 +537,7 @@ class sppasNgramCounter(object):
                 if self._wordslist.is_in(token):
                     tokens.append(token)
                 else:
-                    tokens.append(unk_stamp)
+                    tokens.append(symbols.unk)
 
         if tokens[0] != self._ss:
             tokens.insert(0, self._ss)

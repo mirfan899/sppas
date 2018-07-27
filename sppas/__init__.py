@@ -36,7 +36,8 @@
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Global imports and some settings for external use.
+
+    Global imports and some settings for external use.
 
 """
 from sppas.src.anndata import *

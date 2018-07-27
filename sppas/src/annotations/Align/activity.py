@@ -32,8 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from sppas.src.config import unk_stamp
-from sppas.src.config import SYMBOLS
+from sppas.src.config import symbols
 
 from sppas.src.annotationdata.tier import Tier
 from sppas.src.annotationdata.ptime.interval import TimeInterval
@@ -48,13 +47,13 @@ from ..searchtier import sppasSearchTier
 
 
 class sppasActivity(object):
-    """
+    """ Create an activity tier from time-aligned tokens.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Create an activity tier from time-aligned tokens.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
     def __init__(self):
@@ -65,7 +64,7 @@ class sppasActivity(object):
 
     # -----------------------------------------------------------------------
 
-    def set_activities(self, activities=SYMBOLS):
+    def set_activities(self, activities=symbols.all):
         """ Fix the dictionary of possible non-speech activities.
 
         :param activities: (dict) A dictionary of activities.
@@ -77,7 +76,7 @@ class sppasActivity(object):
             self.append_activity(token, activities[token])
 
         # For empty intervals... activity is unknown
-        self.append_activity(unk_stamp, "")
+        self.append_activity(symbols.unk, "")
 
     # -----------------------------------------------------------------------
 
@@ -118,14 +117,15 @@ class sppasActivity(object):
 
             # Fix the activity name of this new token
             if ann.GetLabel().IsEmpty():
-                l = unk_stamp
+                l = symbols.unk
             else:
                 l = ann.GetLabel().GetValue()
             new_activity = self._activities.get(l, "speech")
 
             # The activity has changed
             if activity != new_activity and activity != "<INIT>":
-                new_tier.Append(Annotation(TimeInterval(new_tier.GetEnd(), ann.GetLocation().GetBegin()), 
+                new_tier.Append(Annotation(TimeInterval(new_tier.GetEnd(),
+                                                        ann.GetLocation().GetBegin()),
                                            Label(activity)))
 
             # In any case, update current activity

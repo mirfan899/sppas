@@ -42,8 +42,7 @@ import collections
 import codecs
 
 from sppas.src.config import sg
-from sppas.src.config import unk_stamp
-from sppas.src.config import PHONE_SYMBOLS, ORTHO_SYMBOLS
+from sppas.src.config import symbols
 
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.fileutils import sppasDirUtils
@@ -90,10 +89,10 @@ DEFAULT_SCRIPTS_DIR = "scripts"
 DEFAULT_FEATURES_DIR = "features"
 DEFAULT_LOG_DIR = "log"
 
-SIL_PHON = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
-SP_PHON = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("pause")]
-SIL_ORTHO = list(ORTHO_SYMBOLS.keys())[list(ORTHO_SYMBOLS.values()).index("silence")]
-SP_ORTHO = list(ORTHO_SYMBOLS.keys())[list(ORTHO_SYMBOLS.values()).index("pause")]
+SIL_PHON = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
+SP_PHON = list(symbols.phone.keys())[list(symbols.phone.values()).index("pause")]
+SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]
+SP_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("pause")]
 
 # ---------------------------------------------------------------------------
 
@@ -116,13 +115,13 @@ def test_command(command):
 
 
 class sppasDataTrainer(object):
-    """
+    """ Acoustic model trainer for HTK-ASCII models.
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      brigitte.bigi@gmail.com
-    :summary:      Acoustic model trainer for HTK-ASCII models.
 
     This class manage the data created at each step of the acoustic training
     model procedure, following the HTK Handbook. It includes:
@@ -724,7 +723,7 @@ class sppasTrainingCorpus(object):
 
     # -----------------------------------------------------------------------
 
-    def map_phonemes(self, tier, unkstamp=unk_stamp):
+    def map_phonemes(self, tier, unkstamp=symbols.unk):
         """ Map phonemes of a tier. """
 
         # Map phonemes.
@@ -1451,7 +1450,7 @@ class sppasHTKModelTrainer(object):
                              "".format(trs_workfile))
                 return False
 
-            tiera = self.corpus.map_phonemes(tiera, unkstamp=unk_stamp)
+            tiera = self.corpus.map_phonemes(tiera, unkstamp=symbols.unk)
             tier = tierutils.align2phon(tiera)
             trs = Transcription()
             trs.Add(tier)

@@ -36,8 +36,7 @@
 import os
 import logging
 
-from sppas.src.config import unk_stamp
-from sppas.src.config import PHONE_SYMBOLS
+from sppas.src.config import symbols
 
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.autils as autils
@@ -60,19 +59,19 @@ from .anchors import AnchorTier
 
 # ----------------------------------------------------------------------------
 
-SIL_PHON = list(PHONE_SYMBOLS.keys())[list(PHONE_SYMBOLS.values()).index("silence")]
+SIL_PHON = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
 
 # ----------------------------------------------------------------------------
 
 
 class Chunks(object):
-    """
+    """ Write tokenized-phonetized segments from Tiers.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Write tokenized-phonetized segments from Tiers.
 
     """
     def __init__(self, model):
@@ -584,8 +583,8 @@ class Chunks(object):
                 if mapp is True:
                     besttext = self._mapping.map(besttext)
 
-                if unk_stamp in besttext:
-                    besttext = besttext.replace(unk_stamp, SIL_PHON)
+                if symbols.unk in besttext:
+                    besttext = besttext.replace(symbols.unk, SIL_PHON)
                 raw = raw + " " + besttext
 
         return sppasUnicode(raw).to_strip()

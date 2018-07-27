@@ -31,15 +31,13 @@
     src.resources.dictpron.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Class to manage pronunciation dictionaries.
-
 """
 import os
 import codecs
 import logging
 import xml.etree.cElementTree as ET
 
-from sppas.src.config import unk_stamp
+from sppas.src.config import symbols
 from sppas.src.config import sg
 from sppas.src.config import paths
 from sppas.src.config import separators
@@ -52,13 +50,13 @@ from .resourcesexc import FileIOError, FileUnicodeError, FileFormatError
 
 
 class sppasDictPron(object):
-    """
+    """ Pronunciation dictionary manager.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Pronunciation dictionary manager.
 
     A pronunciation dictionary contains a list of tokens, each one with a list
     of possible pronunciations.
@@ -141,11 +139,11 @@ class sppasDictPron(object):
     def get_unkstamp(self):
         """ Returns the unknown words stamp. """
 
-        return unk_stamp
+        return symbols.unk
 
     # -----------------------------------------------------------------------
 
-    def get(self, entry, substitution=unk_stamp):
+    def get(self, entry, substitution=symbols.unk):
         """ Return the pronunciations of an entry in the dictionary.
 
         :param entry: (str) A token to find in the dictionary
@@ -166,7 +164,7 @@ class sppasDictPron(object):
 
         """
         s = sppasDictPron.format_token(entry)
-        return self._dict.get(s, unk_stamp)
+        return self._dict.get(s, symbols.unk)
 
     # -----------------------------------------------------------------------
 

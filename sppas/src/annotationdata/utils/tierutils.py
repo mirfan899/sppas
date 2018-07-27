@@ -37,7 +37,7 @@
 
 import collections
 
-from sppas.src.config import SYMBOLS
+from sppas.src.config import symbols
 from ..tier import Tier
 from ..annotation import Annotation
 from ..ptime.interval import TimeInterval
@@ -99,7 +99,7 @@ def has_bound(tier, bound):
 # ---------------------------------------------------------------------------
 
 
-def align2phon(aligntier, separators=SYMBOLS):
+def align2phon(aligntier, separators=symbols.all):
     """ Return the phonetization of a time-aligned tier.
 
     :param aligntier: (sppasTier)
