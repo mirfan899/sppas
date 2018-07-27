@@ -93,13 +93,13 @@ from .annlabel.tag import sppasTag
 
 
 class sppasAnnSet(object):
-    """
+    """ Manager for a set of annotations.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Manager for a set of annotations.
 
     Mainly used with the data that are the result of the filter system.
     A sppasAnnSet() manages a dictionary with:
@@ -247,8 +247,10 @@ class sppasAnnSet(object):
     # -----------------------------------------------------------------------
 
     def __or__(self, other):
-        """ When used with data sets, the operator '|' does the intersection operation. """
+        """ Implements the '|' operator between 2 data sets.
+        The operator '|' does the intersection operation.
 
+        """
         d = self.copy()
         for ann in other:
             d.append(ann, other.get_value(ann))
@@ -258,8 +260,10 @@ class sppasAnnSet(object):
     # -----------------------------------------------------------------------
 
     def __and__(self, other):
-        """ When used with data sets, the operator '&' does the union operation. """
+        """ Implements the '&' operator between 2 data sets.
+        The operator '&' does the union operation.
 
+        """
         d = sppasAnnSet()
         for ann in self:
             if ann in other:
@@ -272,18 +276,21 @@ class sppasAnnSet(object):
 
 
 class sppasFilters(object):
-    """
+    """ This class implements the 'SPPAS tier' filter system.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS tier filter system.
 
     """
     def __init__(self, tier):
-        """ Create a sppasFilters instance. """
+        """ Create a sppasFilters instance.
 
+        :param tier: (sppasTier) The tier to be filtered.
+
+        """
         self.tier = tier
 
     # -----------------------------------------------------------------------
@@ -292,7 +299,9 @@ class sppasFilters(object):
         """ Apply functions on all tags of all labels of annotations.
 
         Each argument is made of a function name and its expected value.
-        Each function can be prefixed with 'not_', like:
+        Each function can be prefixed with 'not_', like in the example.
+
+        :Example:
 
             >>> f.tag(startswith="pa", not_endswith='a', logic_bool="and")
             >>> f.tag(startswith="pa") & f.tag(not_endswith='a')
@@ -306,8 +315,10 @@ class sppasFilters(object):
         # extract the information from the arguments
         sppasFilters.__test_args(comparator, **kwargs)
         logic_bool = sppasFilters.__fix_logic_bool(**kwargs)
-        tag_fct_values = sppasFilters.__fix_function_values(comparator, **kwargs)
-        tag_functions = sppasFilters.__fix_functions(comparator, **kwargs)
+        tag_fct_values = sppasFilters.__fix_function_values(comparator,
+                                                            **kwargs)
+        tag_functions = sppasFilters.__fix_functions(comparator,
+                                                     **kwargs)
 
         data = sppasAnnSet()
 
@@ -343,8 +354,10 @@ class sppasFilters(object):
         # extract the information from the arguments
         sppasFilters.__test_args(comparator, **kwargs)
         logic_bool = sppasFilters.__fix_logic_bool(**kwargs)
-        dur_fct_values = sppasFilters.__fix_function_values(comparator, **kwargs)
-        dur_functions = sppasFilters.__fix_functions(comparator, **kwargs)
+        dur_fct_values = sppasFilters.__fix_function_values(comparator,
+                                                            **kwargs)
+        dur_functions = sppasFilters.__fix_functions(comparator,
+                                                     **kwargs)
 
         data = sppasAnnSet()
 
@@ -366,7 +379,8 @@ class sppasFilters(object):
         :param kwargs: logic_bool/any sppasLocalizationCompare() method.
         :returns: (sppasAnnSet)
 
-        Examples:
+        :Example:
+
             >>> f.loc(rangefrom=3.01) & f.loc(rangeto=10.07)
             >>> f.loc(rangefrom=3.01, rangeto=10.07, logic_bool="and")
 
@@ -401,14 +415,18 @@ class sppasFilters(object):
         :param kwargs: any option of the methods.
         :returns: (sppasAnnSet)
 
-        Examples:
-            >>> f.rel(other_tier, "equals", "overlaps", "overlappedby", min_overlap=0.04)
+        :Example:
+
+            >>> f.rel(other_tier, "equals",
+            >>>                   "overlaps",
+            >>>                   "overlappedby", min_overlap=0.04)
 
         """
         comparator = sppasIntervalCompare()
 
         # extract the information from the arguments
-        rel_functions = sppasFilters.__fix_relation_functions(comparator, *args)
+        rel_functions = sppasFilters.__fix_relation_functions(comparator,
+                                                              *args)
 
         data = sppasAnnSet()
 
@@ -471,7 +489,7 @@ class sppasFilters(object):
 
     @staticmethod
     def __fix_functions(comparator, **kwargs):
-        """ Parse the arguments to get the list of function/value/complement. """
+        """ Parse the args to get the list of function/value/complement. """
 
         f_functions = list()
         for func_name, value in kwargs.items():
@@ -521,7 +539,9 @@ class sppasFilters(object):
             for localization, score in location:
                 for other_loc, other_score in other_ann.get_location():
                     for func_name, complement in rel_functions:
-                        is_connected = func_name(localization, other_loc, **kwargs)
+                        is_connected = func_name(localization,
+                                                 other_loc,
+                                                 **kwargs)
                         if is_connected:
                             values.append(func_name.__name__)
 

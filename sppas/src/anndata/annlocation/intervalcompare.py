@@ -48,11 +48,13 @@
       - qualitative (rather than quantitative) because no numeric time
       spans are considered.
 
-    These relations and the operations on them form "Allen's Interval Algebra".
+    These relations and the operations on them form the
+    "Allen's Interval Algebra".
+
     Using this calculus, given facts can be formalized and then used for
-    automatic reasoning. Relations are: before, after, meets, met by, overlaps,
-    overlapped by, starts, started by, finishes, finished by, contains,
-    during and equals.
+    automatic reasoning. Relations are: before, after, meets, met by,
+    overlaps, overlapped by, starts, started by, finishes, finished by,
+    contains, during and equals.
 
     Pujari, Kumari and Sattar proposed INDU in 1999: an Interval & Duration
     network. They extended the IA to model qualitative information about
@@ -95,8 +97,8 @@
             'during'
             'equals'
 
-    So that they are not distinct nor exhaustive. Moreover, some of them
-    accept parameters.
+    So that they are not distinct. Some of them accept parameters so they
+    are not exhaustive too.
 
 """
 from ..anndataexc import AnnDataTypeError
@@ -112,20 +114,29 @@ from .duration import sppasDuration
 
 
 class sppasIntervalCompare(sppasBaseCompare):
-    """
+    """ SPPAS implementation of interval'comparisons.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS implementation of interval'comparisons.
 
     Includes "Allen's Interval Algebra" and INDU, with several options.
 
+    This class can be used to compare any of the localization-derived classes:
+
+        - sppasInterval(): begin and end points are used,
+        - sppasDisjoint(): the first and the last points are used and then it\
+        is considered a full interval.
+        - sppasPoint(): considered like a degenerated interval.
+
     """
     def __init__(self):
-        """ Create a sppasIntervalCompare instance. """
+        """ Create a sppasIntervalCompare instance.
+        Defines the list of implemented methods.
 
+        """
         sppasBaseCompare.__init__(self)
 
         # Allen
@@ -168,12 +179,13 @@ class sppasIntervalCompare(sppasBaseCompare):
     @staticmethod
     def before(i1, i2, max_delay=None, **kwargs):
         """ Return True if i1 precedes i2.
+        This is part of the Allen algebra.
 
         :param i1:  |-------|
         :param i2:                  |-------|
         :param max_delay: (int/float/sppasDuration) Maximum delay between the \
             end of i1 and the beginning of i2.
-        :param **kwargs: unused.
+        :param **kwargs: un-used.
 
         """
         x1, x2 = sppasIntervalCompare._unpack(i1)
@@ -189,6 +201,15 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def before_equal(i1, i2, *args):
+        """ Return True if i1 precedes i2 and the durations are equals.
+        This is part of the INDU algebra.
+
+        :param i1:  |-------|
+        :param i2:                  |-------|
+        :param max_delay: (int/float/sppasDuration) Maximum delay between the \
+            end of i1 and the beginning of i2.
+
+        """
         return sppasIntervalCompare.before(i1, i2, *args) and \
                i1.duration() == i2.duration()
 
@@ -196,6 +217,15 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def before_greater(i1, i2, *args):
+        """ Return True if i1 precedes i2 and the duration of i1 is greater.
+        This is part of the INDU algebra.
+
+        :param i1:  |-----------|
+        :param i2:                  |-----|
+        :param max_delay: (int/float/sppasDuration) Maximum delay between the \
+            end of i1 and the beginning of i2.
+
+        """
         return sppasIntervalCompare.before(i1, i2, *args) and \
                i1.duration() > i2.duration()
 
@@ -203,6 +233,15 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def before_lower(i1, i2, *args):
+        """ Return True if i1 precedes i2 and the duration of i1 is lower.
+        This is part of the INDU algebra.
+
+        :param i1:  |-----|
+        :param i2:                  |------------|
+        :param max_delay: (int/float/sppasDuration) Maximum delay between the \
+            end of i1 and the beginning of i2.
+
+        """
         return sppasIntervalCompare.before(i1, i2, *args) and \
                i1.duration() < i2.duration()
 
@@ -211,6 +250,7 @@ class sppasIntervalCompare(sppasBaseCompare):
     @staticmethod
     def after(i1, i2, max_delay=None, **kwargs):
         """ Return True if i1 follows i2.
+        This is part of the Allen algebra.
 
         :param i1:                  |--------|
         :param i2:  |-------|
@@ -408,7 +448,8 @@ class sppasIntervalCompare(sppasBaseCompare):
                 v, m = i1.duration().get_value(), i1.duration().get_margin()
                 duration = sppasDuration(v * float(overlap_min) / 100., m)
             else:
-                # absolute duration (min_dur parameter represents the minimum duration)
+                # absolute duration
+                # (min_dur parameter represents the minimum duration)
                 duration = overlap_min
             return overlap_interval.duration() >= duration
 
@@ -418,21 +459,30 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def overlappedby_equal(i1, i2, overlap_min=None, percent=False, **kwargs):
-        return sppasIntervalCompare.overlappedby(i1, i2, overlap_min, percent) and \
+        return sppasIntervalCompare.overlappedby(i1,
+                                                 i2,
+                                                 overlap_min,
+                                                 percent) and \
                i1.duration() == i2.duration()
 
     # ---------------------------------------------------------------------------
 
     @staticmethod
     def overlappedby_greater(i1, i2, overlap_min=None, percent=False, **kwargs):
-        return sppasIntervalCompare.overlappedby(i1, i2, overlap_min, percent) and \
+        return sppasIntervalCompare.overlappedby(i1,
+                                                 i2,
+                                                 overlap_min,
+                                                 percent) and \
                i1.duration() > i2.duration()
 
     # ---------------------------------------------------------------------------
 
     @staticmethod
     def overlappedby_lower(i1, i2, overlap_min=None, percent=False, **kwargs):
-        return sppasIntervalCompare.overlappedby(i1, i2, overlap_min, percent) and \
+        return sppasIntervalCompare.overlappedby(i1,
+                                                 i2,
+                                                 overlap_min,
+                                                 percent) and \
                i1.duration() < i2.duration()
 
     # ---------------------------------------------------------------------------

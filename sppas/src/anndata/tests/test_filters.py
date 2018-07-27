@@ -37,7 +37,8 @@
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Test the filter system.
+
+    Tests of the filter system.
 
 """
 import unittest
@@ -76,7 +77,8 @@ class TestSetFilter(unittest.TestCase):
         self.it2 = sppasInterval(self.p2, self.p4)
         self.it3 = sppasInterval(self.p4, self.p9)
         self.a1 = sppasAnnotation(sppasLocation(self.it1),
-                                  sppasLabel(sppasTag(" \t\t  être être   être  \n ")))
+                                  sppasLabel(
+                                      sppasTag(" \t\t  être    être  \n ")))
         self.a2 = sppasAnnotation(sppasLocation(self.it2),
                                   sppasLabel([sppasTag("toto"),
                                               sppasTag("titi")]))
@@ -238,31 +240,28 @@ class TestFilterTier(unittest.TestCase):
             f = sppasFilters(tier)
             f.tag(function="value")
 
-        print('FILTER ======= f.tag(startswith=u("l")) | f.tag(endswith=u("l")) ====== ')
         start_time = time.time()
         f = sppasFilters(tier)
         d1 = f.tag(startswith=u("l"))
         d2 = f.tag(endswith=u("l"))
         res = d1 | d2
         end_time = time.time()
-        print("  - elapsed time: {:f} seconds".format(end_time - start_time))
-        print("  - res size = {:d}".format(len(res)))
+        # print("  - elapsed time: {:f} seconds".format(end_time - start_time))
+        # print("  - res size = {:d}".format(len(res)))
 
-        print('FILTER ======= f.tag(startswith=u("l"), endswith=u("l"), logic_bool="and") ====== ')
         start_time = time.time()
         f = sppasFilters(tier)
         res = f.tag(startswith=u("l"), endswith=u("l"), logic_bool="and")
         end_time = time.time()
-        print("  - elapsed time: {:f} seconds".format(end_time - start_time))
-        print("  - res size = {:d}".format(len(res)))
+        # print("  - elapsed time: {:f} seconds".format(end_time - start_time))
+        # print("  - res size = {:d}".format(len(res)))
 
-        print('FILTER ======= f.tag(startswith=u("l"), endswith=u("l"), logic_bool="or") ====== ')
         start_time = time.time()
         f = sppasFilters(tier)
         res = f.tag(startswith=u("l"), endswith=u("l"), logic_bool="or")
         end_time = time.time()
-        print("  - elapsed time: {:f} seconds".format(end_time - start_time))
-        print("  - res size = {:d}".format(len(res)))
+        # print("  - elapsed time: {:f} seconds".format(end_time - start_time))
+        # print("  - res size = {:d}".format(len(res)))
 
     # -----------------------------------------------------------------------
 
@@ -310,7 +309,9 @@ class TestFilterTier(unittest.TestCase):
         res1 = f.loc(rangefrom=219.177) & f.loc(rangeto=sppasPoint(221.369, 0.002))
         self.assertEqual(34, len(res1))
 
-        res2 = f.loc(rangefrom=219.177, rangeto=sppasPoint(221.369, 0.002), logic_bool="and")
+        res2 = f.loc(rangefrom=219.177,
+                     rangeto=sppasPoint(221.369, 0.002),
+                     logic_bool="and")
         self.assertEqual(34, len(res2))
 
         self.assertEqual(res1, res2)
@@ -380,20 +381,32 @@ class TestFilterRelationTier(unittest.TestCase):
     """
     def setUp(self):
         self.tier = sppasTier("Tier")
-        self.tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(0), sppasPoint(3))))
-        self.tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(3), sppasPoint(5))))
-        self.tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(5), sppasPoint(7))))
-        self.tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(7), sppasPoint(9))))
-        self.tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(9), sppasPoint(10))))
-        self.tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(10), sppasPoint(11))))
+        self.tier.create_annotation(sppasLocation(
+            sppasInterval(sppasPoint(0), sppasPoint(3))))
+        self.tier.create_annotation(sppasLocation(
+            sppasInterval(sppasPoint(3), sppasPoint(5))))
+        self.tier.create_annotation(sppasLocation(
+            sppasInterval(sppasPoint(5), sppasPoint(7))))
+        self.tier.create_annotation(sppasLocation(
+            sppasInterval(sppasPoint(7), sppasPoint(9))))
+        self.tier.create_annotation(sppasLocation(
+            sppasInterval(sppasPoint(9), sppasPoint(10))))
+        self.tier.create_annotation(sppasLocation(
+            sppasInterval(sppasPoint(10), sppasPoint(11))))
 
         self.rtier = sppasTier("RelationTier")
-        self.rtier.create_annotation(sppasLocation(sppasInterval(sppasPoint(0), sppasPoint(1))))
-        self.rtier.create_annotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(2))))
-        self.rtier.create_annotation(sppasLocation(sppasInterval(sppasPoint(2), sppasPoint(3))))
-        self.rtier.create_annotation(sppasLocation(sppasInterval(sppasPoint(3), sppasPoint(5))))
-        self.rtier.create_annotation(sppasLocation(sppasInterval(sppasPoint(5), sppasPoint(8))))
-        self.rtier.create_annotation(sppasLocation(sppasInterval(sppasPoint(8), sppasPoint(11))))
+        self.rtier.create_annotation(sppasLocation(
+            sppasInterval(sppasPoint(0), sppasPoint(1))))
+        self.rtier.create_annotation(sppasLocation(
+            sppasInterval(sppasPoint(1), sppasPoint(2))))
+        self.rtier.create_annotation(sppasLocation(
+            sppasInterval(sppasPoint(2), sppasPoint(3))))
+        self.rtier.create_annotation(sppasLocation(
+            sppasInterval(sppasPoint(3), sppasPoint(5))))
+        self.rtier.create_annotation(sppasLocation(
+            sppasInterval(sppasPoint(5), sppasPoint(8))))
+        self.rtier.create_annotation(sppasLocation(
+            sppasInterval(sppasPoint(8), sppasPoint(11))))
 
     def test_one_relation(self):
 
@@ -524,6 +537,21 @@ class TestFilterRelationTier(unittest.TestCase):
         self.assertFalse(self.tier[4] in res)
         self.assertFalse(self.tier[5] in res)
 
+        # 'before_equal': [0,3]
+        res = f.rel(self.rtier, "before_equal")
+        self.assertEquals(1, len(res))
+        self.assertTrue(self.tier[0] in res)
+
+        # 'before_greater':
+        res = f.rel(self.rtier, "before_greater")
+        self.assertEquals(0, len(res))
+
+        # before_lower: [3,5], [5,7]
+        res = f.rel(self.rtier, "before_lower")
+        self.assertEquals(2, len(res))
+        self.assertTrue(self.tier[1] in res)
+        self.assertTrue(self.tier[2] in res)
+
         with self.assertRaises(KeyError):
             f.rel(self.rtier, "relation")
 
@@ -552,7 +580,9 @@ class TestFilterRelationTier(unittest.TestCase):
         self.assertEquals(0, len(res))
 
         f = sppasFilters(self.tier)
-        res = f.rel(self.rtier, "overlaps", "overlappedby", overlap_min=50, percent=True)
+        res = f.rel(self.rtier, "overlaps", "overlappedby",
+                    overlap_min=50,
+                    percent=True)
         self.assertEquals(1, len(res))
 
         # Add tests with after/before for a better testing of options and results
