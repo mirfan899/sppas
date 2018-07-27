@@ -29,12 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.aio.anvil.py
-    ~~~~~~~~~~~~~~~~~~~~~~~
-
-    Support of the native format of ANVIL annotation tool.
-
-    BE AWARE THAT: this support has to be verified, tested and extended!!!
+    anndata.aio.anvil.py
+    ~~~~~~~~~~~~~~~~~~~~
 
 """
 import xml.etree.cElementTree as ET
@@ -51,13 +47,17 @@ from .aioutils import format_labels
 
 
 class sppasAnvil(sppasBaseIO):
-    """
+    """ ANVIL (partially) reader.
+
     :author:       Brigitte Bigi, Jibril Saffi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      ANVIL reader.
+
+    Support of the native format of ANVIL annotation tool.
+
+    BE AWARE THAT: this support has to be verified, tested and extended!!!
 
     """
     @staticmethod

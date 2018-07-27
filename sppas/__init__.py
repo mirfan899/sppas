@@ -28,16 +28,14 @@
 
         ---------------------------------------------------------------------
 
-    sppas
-    ~~~~~~~~~~~~
+sppas: Global imports and some settings for external use.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-
-    Global imports and some settings for external use.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 """
 from sppas.src.anndata import *

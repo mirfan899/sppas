@@ -29,17 +29,17 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.aio.aioutils.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    anndata.aio.aioutils.py: Utilities for readers and writers.
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Utilities for readers and writers.
 
     BNF to represent alternative tags:
+
         ALTERNATE :== "{" TEXT ALT+ "}"
         ALT :== "|" TEXT
         TEXT :== tag content | empty
@@ -55,7 +55,6 @@ from ..annlocation.interval import sppasInterval
 from ..annlocation.point import sppasPoint
 from ..annlabel.label import sppasLabel
 from ..annlabel.tag import sppasTag
-from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioError
 from ..anndataexc import AioEncodingError
 

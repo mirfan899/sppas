@@ -28,20 +28,20 @@
 
         ---------------------------------------------------------------------
 
-    config: SPPAS configuration for global things.
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+config: SPPAS configuration for global things.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    :Example:
+:Example:
 
-        >>> from sppas.src.config import sg, paths
-        >>> sg.__encoding
-        >>> paths.resources
+    >>> from sppas.src.config import sg, paths
+    >>> sg.__encoding
+    >>> paths.resources
 
 """
 import sys

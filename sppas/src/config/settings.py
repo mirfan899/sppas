@@ -31,14 +31,6 @@
     config.settings.py
     ~~~~~~~~~~~~~~~~~~
 
-    Base classes to manage any kind of settings, represented in a dictionary.
-
-    :Example:
-
-        >>>with sppasBaseSettings() as settings:
-        >>>    settings.newKey = 'myNewValue'
-        >>>    print(settings.newKey)
-
 """
 import json
 
@@ -46,34 +38,32 @@ import json
 
 
 class sppasBaseSettings(object):
-    """
+    """ Base class to manage any kind of settings, represented in a dictionary.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Representation of a dictionary of settings.
+
+    :Example:
+
+        >>>with sppasBaseSettings() as settings:
+        >>>    settings.newKey = 'myNewValue'
+        >>>    print(settings.newKey)
 
     """
     def __init__(self):
-        self.__dict__ = dict()  # load(open(self._config_location))
+        """ Create the dictionary of settings. """
+
+        self.__dict__ = dict()
 
     def __enter__(self):
         return self
 
-    # def __iter__(self):
-    #     return self.__dict__.__iter__()
-    #
-    # def __getitem__(self, key):
-    #     return self.__dict__[key]
-    #
-    # def __len__(self):
-    #     return len(self)
-
     def __exit__(self, exc_type, exc_value, traceback):
+        """ to be overridden. """
         pass
-        # here we could write things on the console, or anything else!
-        # json.dump(self.__dict__, open(self._config_location, 'w'))
 
 # ---------------------------------------------------------------------------
 
@@ -87,13 +77,23 @@ class sppasBaseModifiableSettings(sppasBaseSettings):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    The configuration file is loaded when init and saved when exit.
+    A configuration file is loaded when init and saved when exit.
 
     """
     def __init__(self, _config_location):
+        """ Create the dictionary. """
         sppasBaseSettings.__init__(self)
         self.__dict__ = json.load(open(_config_location))
         self._config_location = _config_location
 
     def __exit__(self, exc_type, exc_value, traceback):
         json.dump(self.__dict__, open(self._config_location, 'w'))
+
+    # def __iter__(self):
+    #     return self.__dict__.__iter__()
+    #
+    # def __getitem__(self, key):
+    #     return self.__dict__[key]
+    #
+    # def __len__(self):
+    #     return len(self)

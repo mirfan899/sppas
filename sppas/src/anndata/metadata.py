@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.metadata.py
-    ~~~~~~~~~~~~~~~~~~~~~~~
+    anndata.metadata.py
+    ~~~~~~~~~~~~~~~~~~~
 
 """
 from collections import OrderedDict
@@ -43,23 +43,23 @@ from sppas.src.utils.fileutils import sppasGUID
 
 
 class sppasMetaData(object):
-    """
+    """ Dictionary of meta data.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Dictionary of meta data.
 
     Meta data keys and values are unicode strings.
 
     """
     def __init__(self):
         """ Create a sppasMetaData instance.
+
         Add a GUID in the dictionary of metadata, with key "id".
 
         """
-        # Dictionary with key and value
         self.__metadata = OrderedDict()
         self.__metadata['id'] = sppasGUID().get()
 
@@ -78,11 +78,10 @@ class sppasMetaData(object):
 
     def get_meta(self, entry, default=""):
         """ Return the value of the given key.
-        Return an empty string if the given entry if not a key of metadata.
 
         :param entry: (str) Entry to be checked as a key.
         :param default: (str) Default value to return if entry is not a key.
-        :returns: (str)
+        :returns: (str) meta data value or default value
 
         """
         return self.__metadata.get(entry, default)
@@ -132,13 +131,15 @@ class sppasMetaData(object):
         """ Add metadata about the license applied to the object (GPLv3). """
 
         # Elan
-        self.set_meta('file_license_text_%s' % idx, 'GNU GPL V3')
-        self.set_meta('file_license_url_%s' % idx, 'https://www.gnu.org/licenses/gpl-3.0.en.html')
+        self.set_meta('file_license_text_%s' % idx,
+                      'GNU GPL V3')
+        self.set_meta('file_license_url_%s' % idx,
+                      'https://www.gnu.org/licenses/gpl-3.0.en.html')
 
     # -----------------------------------------------------------------------
 
     def add_software_metadata(self):
-        """ Add metadata about SPPAS software. """
+        """ Add metadata about this software. """
 
         self.set_meta('software_name', sg.__name__)
         self.set_meta('software_version', sg.__version__)
@@ -161,8 +162,11 @@ class sppasMetaData(object):
     # -----------------------------------------------------------------------
 
     def add_project_metadata(self):
-        """ Add metadata about the project this object is included-in. """
+        """ Add metadata about the project this object is included-in.
 
+        Currently do not assign any value.
+
+        """
         # annotation pro
         self.set_meta("project_description", "")
         self.set_meta("project_corpus_owner", "")
@@ -192,13 +196,13 @@ class sppasMetaData(object):
 
 
 class sppasDefaultMeta(sppasMetaData):
-    """
+    """ Dictionary of default meta data in SPPAS.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Dictionary of default meta data in SPPAS.
 
     Many annotation tools are using metadata... Moreover, each annotation
     tool is encoding data with its own formalism. SPPAS aio API enables
@@ -210,6 +214,7 @@ class sppasDefaultMeta(sppasMetaData):
     """
     def __init__(self):
         """ Instantiate a default set of meta data. """
+
         super(sppasDefaultMeta, self).__init__()
 
     # -----------------------------------------------------------------------

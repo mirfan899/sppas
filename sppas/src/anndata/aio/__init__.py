@@ -29,10 +29,16 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.aio
-    ~~~~~~~~~~~~~~~~
+    anndata.aio
+    ~~~~~~~~~~~
 
     Readers and writers of annotated data.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 """
 

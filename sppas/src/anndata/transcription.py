@@ -29,10 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.transcription.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    A transcription is a set of tiers.
+    anndata.transcription.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 from sppas.src.utils.fileutils import sppasGUID

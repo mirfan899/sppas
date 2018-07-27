@@ -29,11 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.ctrlvocab.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    A controlled Vocabulary is a set of tags. It is used to restrict the use
-    of tags in a label: only the accepted tags can be set to a label.
+    anndata.ctrlvocab.py
+    ~~~~~~~~~~~~~~~~~~~~
 
 """
 from collections import OrderedDict
@@ -48,13 +45,16 @@ from .metadata import sppasMetaData
 
 
 class sppasCtrlVocab(sppasMetaData):
-    """
+    """ Generic representation of a controlled vocabulary.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Generic representation of a controlled vocabulary.
+
+    A controlled Vocabulary is a set of tags. It is used to restrict the use
+    of tags in a label: only the accepted tags can be set to a label.
 
     A controlled vocabulary is made of an identifier name, a description and
     a list of pairs tag/description.

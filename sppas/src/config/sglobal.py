@@ -31,13 +31,6 @@
     config.sglobal.py
     ~~~~~~~~~~~~~~~~~~
 
-    Classes to manage global non-modifiable settings of SPPAS.
-
-    :Example:
-
-        >>>with sppasGlobalSettings() as sg:
-        >>>    print(sg.__version__)
-
 """
 import os.path
 from .settings import sppasBaseSettings

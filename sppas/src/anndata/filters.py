@@ -29,53 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.filter.filters.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Search in tiers. The class sppasFilters() allows to create several types
-    of filter (tag, duration, ...), and the class sppasAnnSet() is a data set
-    manager, i.e. it contains the annotations selected by a filter and a
-    string representing the filter.
-
-    Create a filter:
-
-        >>> f = sppasFilters(tier)
-
-    then, apply a filter with some pattern like in the following examples.
-    sppasAnnSet() can be combined with operators & and |, like for any other
-    'set' in Python, 'an unordered collection of distinct hashable objects'.
-
-    :Example1: extract silences:
-
-        >>> f.tag(exact=u('#')))
-
-    :Example2: extract silences more than 200ms
-
-        >>> f.tag(exact=u("#")) & f.dur(gt=0.2)
-
-    :Example3: find the annotations with at least a label with a tag
-    starting by "pa" and ending by "a" like "pa", "papa", "pasta", etc:
-
-        >>> f.tag(startswith="pa", endswith='a')
-
-    It's equivalent to write:
-
-        >>> f.tag(startswith="pa", endswith='a', logic_bool="and")
-
-    The classical "and" and "or" logical boolean predicates are accepted;
-    "and" is the default one. It defines whether all the functions must
-    be True ("and") or any of them ("or").
-
-    The result of the two previous lines of code is the same, but two
-    times faster, compared to use this one:
-
-        >>> f.tag(startswith="pa") & f.tag(endswith='a')
-
-    In the first case, for each tag, the method applies the logical boolean
-    between two predicates and creates the data set matching the combined
-    condition. In the second case, each call to the method creates a data
-    set matching each individual condition, then the data sets are
-    combined.
+    anndata.filter.filters.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 from .anndataexc import AnnDataValueError
@@ -248,6 +203,7 @@ class sppasAnnSet(object):
 
     def __or__(self, other):
         """ Implements the '|' operator between 2 data sets.
+
         The operator '|' does the intersection operation.
 
         """
@@ -261,6 +217,7 @@ class sppasAnnSet(object):
 
     def __and__(self, other):
         """ Implements the '&' operator between 2 data sets.
+
         The operator '&' does the union operation.
 
         """
@@ -283,6 +240,51 @@ class sppasFilters(object):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    Search in tiers. The class sppasFilters() allows to create several types
+    of filter (tag, duration, ...), and the class sppasAnnSet() is a data set
+    manager, i.e. it contains the annotations selected by a filter and a
+    string representing the filter.
+
+    Create a filter:
+
+        >>> f = sppasFilters(tier)
+
+    then, apply a filter with some pattern like in the following examples.
+    sppasAnnSet() can be combined with operators & and |, like for any other
+    'set' in Python, 'an unordered collection of distinct hashable objects'.
+
+    :Example1: extract silences:
+
+        >>> f.tag(exact=u('#')))
+
+    :Example2: extract silences more than 200ms
+
+        >>> f.tag(exact=u("#")) & f.dur(gt=0.2)
+
+    :Example3: find the annotations with at least a label with a tag
+    starting by "pa" and ending by "a" like "pa", "papa", "pasta", etc:
+
+        >>> f.tag(startswith="pa", endswith='a')
+
+    It's equivalent to write:
+
+        >>> f.tag(startswith="pa", endswith='a', logic_bool="and")
+
+    The classical "and" and "or" logical boolean predicates are accepted;
+    "and" is the default one. It defines whether all the functions must
+    be True ("and") or any of them ("or").
+
+    The result of the two previous lines of code is the same, but two
+    times faster, compared to use this one:
+
+        >>> f.tag(startswith="pa") & f.tag(endswith='a')
+
+    In the first case, for each tag, the method applies the logical boolean
+    between two predicates and creates the data set matching the combined
+    condition. In the second case, each call to the method creates a data
+    set matching each individual condition, then the data sets are
+    combined.
 
     """
     def __init__(self, tier):

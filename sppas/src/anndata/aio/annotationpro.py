@@ -32,8 +32,6 @@
     src.anndata.aio.annotationpro.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    http://annotationpro.org/
-
 """
 import os.path
 import zipfile
@@ -101,13 +99,15 @@ def color_to_rgb(color):
 
 
 class sppasANTX(sppasBaseIO):
-    """
+    """ AnnotationPro ANTX reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      AnnotationPro ANTX reader and writer.
+
+    http://annotationpro.org/
 
     """
     @staticmethod
@@ -631,13 +631,13 @@ class sppasANTX(sppasBaseIO):
 
 
 class sppasANT(sppasBaseIO):
-    """
+    """ AnnotationPro ANT reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      AnnotationPro ANT reader and writer.
 
     An ANT file is a ZIPPED directory.
 

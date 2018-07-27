@@ -32,10 +32,6 @@
     src.anndata.tier.py
     ~~~~~~~~~~~~~~~~~~~
 
-    A tier is a set of annotations with an optional controlled vocabulary, an
-    optional media, and metadata. Annotations are sorted depending on their
-    location (from lowest to highest).
-
 """
 from sppas.src.utils.fileutils import sppasGUID
 from sppas.src.utils.makeunicode import sppasUnicode
@@ -61,6 +57,9 @@ from .media import sppasMedia
 
 class sppasTier(sppasMetaData):
     """ Representation of a tier, a structured set of annotations.
+
+    Annotations of a tier are sorted depending on their location
+    (from lowest to highest).
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France

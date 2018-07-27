@@ -34,6 +34,12 @@
 
     Exceptions for anndata package.
 
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
 """
 from sppas.src.config import sg
 from . import t
@@ -85,6 +91,7 @@ AIO_LOCATION_TYPE_ERROR = ":ERROR 1530: "
 
 class AnnDataError(Exception):
     """ :ERROR 1000: ANN_DATA_ERROR.
+
     No annotated data file is defined.
 
     """
@@ -99,6 +106,7 @@ class AnnDataError(Exception):
 
 class AnnDataEqError(Exception):
     """ :ERROR 1010: ANN_DATA_EQ_ERROR.
+
     Values are expected to be equals but are {:s!s} and {:s!s}.
 
     """
@@ -114,6 +122,7 @@ class AnnDataEqError(Exception):
 
 class AnnDataTypeError(TypeError):
     """ :ERROR 1100: ANN_DATA_TYPE_ERROR.
+
     {!s:s} is not of the expected type '{:s}'.
 
     """
@@ -129,6 +138,7 @@ class AnnDataTypeError(TypeError):
 
 class AnnUnkTypeError(TypeError):
     """ :ERROR 1050: ANN_UNK_TYPE_ERROR.
+
     {!s:s} is not a valid type.
 
     """
@@ -144,6 +154,7 @@ class AnnUnkTypeError(TypeError):
 
 class AnnDataIndexError(IndexError):
     """ :ERROR 1200: ANN_DATA_INDEX_ERROR.
+
     Invalid index value {:d}.
 
     """
@@ -159,6 +170,7 @@ class AnnDataIndexError(IndexError):
 
 class AnnDataEqTypeError(TypeError):
     """ :ERROR 1105: ANN_DATA_EQ_TYPE_ERROR.
+
     {!s:s} is not of the same type as {!s:s}.
 
     """
@@ -174,6 +186,7 @@ class AnnDataEqTypeError(TypeError):
 
 class AnnDataValueError(ValueError):
     """ :ERROR 1300: ANN_DATA_VALUE_ERROR.
+
     Invalid value '{!s:s}' for '{!s:s}'.
 
     """
@@ -190,6 +203,7 @@ class AnnDataValueError(ValueError):
 
 class AnnDataNegValueError(ValueError):
     """ :ERROR 1310: ANN_DATA_NEG_VALUE_ERROR.
+
     Expected a positive value. Got '{:f}'.
 
     """
@@ -205,6 +219,7 @@ class AnnDataNegValueError(ValueError):
 
 class AnnDataKeyError(KeyError):
     """ :ERROR 1250: ANN_DATA_KEY_ERROR.
+
     Invalid key '{!s:s}' for data '{!s:s}'.
 
     """
@@ -222,6 +237,7 @@ class AnnDataKeyError(KeyError):
 
 class IntervalBoundsError(ValueError):
     """ :ERROR 1120: INTERVAL_BOUNDS_ERROR.
+
     The begin must be strictly lesser than the end in an interval.
     Got: [{:s};{:s}].
 
@@ -238,6 +254,7 @@ class IntervalBoundsError(ValueError):
 
 class CtrlVocabContainsError(ValueError):
     """ :ERROR 1130: CTRL_VOCAB_CONTAINS_ERROR.
+
     {:s} is not part of the controlled vocabulary.
 
     """
@@ -253,6 +270,7 @@ class CtrlVocabContainsError(ValueError):
 
 class CtrlVocabSetTierError(ValueError):
     """ :ERROR 1132: CTRL_VOCAB_SET_TIER_ERROR.
+
     The controlled vocabulary {:s} can't be associated to the tier {:s}.
 
     """
@@ -268,6 +286,7 @@ class CtrlVocabSetTierError(ValueError):
 
 class TierAppendError(ValueError):
     """ :ERROR 1140: TIER_APPEND_ERROR.
+
     Can't append annotation. Current end {!s:s} is highest than the given
     one {!s:s}.
 
@@ -284,6 +303,7 @@ class TierAppendError(ValueError):
 
 class TierAddError(ValueError):
     """ :ERROR 1142: TIER_ADD_ERROR.
+
     Can't add annotation. An annotation with the same location is already
     in the tier at index {:d}.
 
@@ -300,6 +320,7 @@ class TierAddError(ValueError):
 
 class TierHierarchyError(ValueError):
     """ :ERROR 1144: TIER_HIERARCHY_ERROR.
+
     Attempt a modification in tier '{:s}' that invalidates its hierarchy.
 
     """
@@ -315,6 +336,7 @@ class TierHierarchyError(ValueError):
 
 class TrsAddError(ValueError):
     """ :ERROR 1150: TRS_ADD_ERROR.
+
     Can't add: '{:s}' is already in '{:s}'.
 
     """
@@ -331,6 +353,7 @@ class TrsAddError(ValueError):
 
 class TrsRemoveError(ValueError):
     """ :ERROR 1152: TRS_REMOVE_ERROR.
+
     Can't remove: '{:s}' is not in '{:s}'.
 
     """
@@ -347,6 +370,7 @@ class TrsRemoveError(ValueError):
 
 class TrsInvalidTierError(ValueError):
     """ :ERROR 1160: TRS_INVALID_TIER_ERROR.
+
     {:s} is not a tier of {:s}. It can't be included in its hierarchy.
 
     """
@@ -363,6 +387,7 @@ class TrsInvalidTierError(ValueError):
 
 class HierarchyAlignmentError(ValueError):
     """ :ERROR 1170: HIERARCHY_ALIGNMENT_ERROR.
+
     Can't create a time alignment between tiers: '{:s}' is not a superset
     of '{:s}'."
 
@@ -380,6 +405,7 @@ class HierarchyAlignmentError(ValueError):
 
 class HierarchyAssociationError(ValueError):
     """ :ERROR 1172: HIERARCHY_ASSOCIATION_ERROR.
+
     Can't create a time association between tiers: '{:s}' and '{:s}' are not
     supersets of each other.
 
@@ -397,6 +423,7 @@ class HierarchyAssociationError(ValueError):
 
 class HierarchyParentTierError(ValueError):
     """ :ERROR 1174: HIERARCHY_PARENT_TIER_ERROR.
+
     The tier can't be added into the hierarchy: '{:s}' has already a link of
     type {:s} with its parent tier '{:s}'.
 
@@ -415,6 +442,7 @@ class HierarchyParentTierError(ValueError):
 
 class HierarchyChildTierError(ValueError):
     """ :ERROR 1176: HIERARCHY_CHILD_TIER_ERROR.
+
     The tier '{:s}' can't be added into the hierarchy: a tier can't be its
     own child.
 
@@ -433,6 +461,7 @@ class HierarchyChildTierError(ValueError):
 
 class HierarchyAncestorTierError(ValueError):
     """ :ERROR 1178: HIERARCHY_ANCESTOR_TIER_ERROR.
+
     The tier can't be added into the hierarchy: '{:s}' is an ancestor
     of '{:s}'.
 
@@ -453,6 +482,7 @@ class HierarchyAncestorTierError(ValueError):
 
 class AioError(IOError):
     """ :ERROR 1400: AIO_ERROR.
+
     No such file: '{!s:s}'.
 
     """
@@ -468,6 +498,7 @@ class AioError(IOError):
 
 class AioEncodingError(UnicodeDecodeError):
     """ :ERROR 1500: AIO_ENCODING_ERROR.
+
     The file {filename} contains non {encoding} characters: {error}.
 
     """
@@ -485,6 +516,7 @@ class AioEncodingError(UnicodeDecodeError):
 
 class AioFileExtensionError(IOError):
     """ :ERROR 1505: AIO_FILE_EXTENSION_ERROR.
+
     Fail formats: unrecognized extension for file {:s}.
 
     """
@@ -500,6 +532,7 @@ class AioFileExtensionError(IOError):
 
 class AioMultiTiersError(IOError):
     """ :ERROR 1510: AIO_MULTI_TIERS_ERROR.
+
     The file format {!s:s} does not support multi-tiers.
 
     """
@@ -515,6 +548,7 @@ class AioMultiTiersError(IOError):
 
 class AioNoTiersError(IOError):
     """ :ERROR 1515: AIO_NO_TIERS_ERROR.
+
     The file format {!s:s} does not support to save no tiers.
 
     """
@@ -530,6 +564,7 @@ class AioNoTiersError(IOError):
 
 class AioLineFormatError(IOError):
     """ :ERROR 1520: AIO_LINE_FORMAT_ERROR.
+
     Unexpected format string at line {:d}: '{!s:s}'.
 
     """
@@ -545,6 +580,7 @@ class AioLineFormatError(IOError):
 
 class AioFormatError(IOError):
     """ :ERROR 1521: AIO_FORMAT_ERROR.
+
     Unexpected format about '{!s:s}'.
 
     """
@@ -562,6 +598,7 @@ class AioFormatError(IOError):
 
 class AioEmptyTierError(IOError):
     """ :ERROR 1525: AIO_EMPTY_TIER_ERROR.
+
     The file format {!s:s} does not support to save empty tiers: {:s}.
 
     """
@@ -578,6 +615,7 @@ class AioEmptyTierError(IOError):
 
 class AioLocationTypeError(TypeError):
     """ :ERROR 1530: AIO_LOCATION_TYPE_ERROR.
+
     The file format {!s:s} does not support tiers with {:s}.
 
     """
@@ -594,6 +632,7 @@ class AioLocationTypeError(TypeError):
 
 class TagValueError(ValueError):
     """ :ERROR 1190: TAG_VALUE_ERROR.
+
     {!s:s} is not a valid tag.
 
     """

@@ -32,12 +32,6 @@
     src.anndata.annotation.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi, Jibril Saffi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-
 """
 from .anndataexc import AnnDataTypeError
 from .annlabel.tag import sppasTag
@@ -51,13 +45,22 @@ from .metadata import sppasMetaData
 class sppasAnnotation(sppasMetaData):
     """ Represents an annotation.
 
-    A sppasAnnotation() is a container for:
+    :author:       Brigitte Bigi, Jibril Saffi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      brigitte.bigi@gmail.com
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    A sppasAnnotation() is defined as a container for:
+
         - a sppasLocation()
         - a list of sppasLabel()
 
-    >>> location = sppasLocation(sppasPoint(1.5, radius=0.01))
-    >>> labels = sppasLabel(sppasTag("foo"))
-    >>> ann = sppasAnnotation(location, labels)
+    :Example:
+
+        >>> location = sppasLocation(sppasPoint(1.5, radius=0.01))
+        >>> labels = sppasLabel(sppasTag("foo"))
+        >>> ann = sppasAnnotation(location, labels)
 
     """
     def __init__(self, location, labels=list()):
