@@ -29,10 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annloc.disjoint.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Localization of a serie of intervals in time.
+    anndata.annloc.disjoint.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 from ..anndataexc import AnnDataTypeError
@@ -46,13 +44,13 @@ from .duration import sppasDuration
 
 
 class sppasDisjoint(sppasBaseLocalization):
-    """
+    """ Localization of a serie of intervals in time.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Representation of a serie of intervals in time.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
     def __init__(self, intervals=None):
@@ -189,8 +187,10 @@ class sppasDisjoint(sppasBaseLocalization):
         """ Return the sppasDuration.
          Make the sum of all interval' durations. """
 
-        value = sum(interval.duration().get_value() for interval in self.get_intervals())
-        vagueness = sum(interval.duration().get_margin() for interval in self.get_intervals())
+        value = sum(interval.duration().get_value()
+                    for interval in self.get_intervals())
+        vagueness = sum(interval.duration().get_margin()
+                        for interval in self.get_intervals())
 
         return sppasDuration(value, vagueness)
 
@@ -214,7 +214,8 @@ class sppasDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        return "sppasDisjoint: {:s}".format("".join([str(i) for i in self.get_intervals()]))
+        return "sppasDisjoint: {:s}" \
+               "".format("".join([str(i) for i in self.get_intervals()]))
 
     # -----------------------------------------------------------------------
 

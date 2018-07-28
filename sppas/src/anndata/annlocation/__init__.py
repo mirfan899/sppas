@@ -29,10 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annloc
-    ~~~~~~~~~~~~~~~~~~~
-
-    Location of the annotations of a tier.
+    anndata.annloc
+    ~~~~~~~~~~~~~~
 
 """
 from .localization import sppasBaseLocalization
@@ -41,6 +39,10 @@ from .interval import sppasInterval
 from .disjoint import sppasDisjoint
 from .duration import sppasDuration
 from .location import sppasLocation
+from .duration import sppasDuration
+from .durationcompare import sppasDurationCompare
+from .localizationcompare import sppasLocalizationCompare
+from .intervalcompare import sppasIntervalCompare
 
 __all__ = [
     'sppasBaseLocalization',
@@ -48,5 +50,9 @@ __all__ = [
     'sppasInterval',
     'sppasDisjoint',
     'sppasDuration',
-    'sppasLocation'
+    'sppasLocation',
+    'sppasDuration',
+    'sppasDurationCompare',
+    'sppasLocalizationCompare',
+    'sppasIntervalCompare'
 ]

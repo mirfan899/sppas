@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annlocation.localizationcompare.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    anndata.annlocation.localizationcompare.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 from sppas.src.utils.datatype import sppasType
@@ -61,7 +61,7 @@ class sppasLocalizationCompare(sppasBaseCompare):
         Defines the list of implemented methods.
 
         """
-        sppasBaseCompare.__init__(self)
+        super(sppasLocalizationCompare, self).__init__()
 
         self.methods['rangefrom'] = sppasLocalizationCompare.rangefrom
         self.methods['rangeto'] = sppasLocalizationCompare.rangeto

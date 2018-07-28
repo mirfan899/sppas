@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annlocation.intervalcompare.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    anndata.annlocation.intervalcompare.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     This class is inspired by both the "Allen's Interval Algebra" and INDU.
 
@@ -134,10 +134,11 @@ class sppasIntervalCompare(sppasBaseCompare):
     """
     def __init__(self):
         """ Create a sppasIntervalCompare instance.
+
         Defines the list of implemented methods.
 
         """
-        sppasBaseCompare.__init__(self)
+        super(sppasIntervalCompare, self).__init__()
 
         # Allen
         self.methods['before'] = sppasIntervalCompare.before

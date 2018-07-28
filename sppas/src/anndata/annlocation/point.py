@@ -29,12 +29,11 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annloc.point.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Localization of a point in time, frame, or any numerical representation.
+    anndata.annloc.point.py
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+import logging
 from sppas.src.utils.makeunicode import text_type, binary_type
 
 from ..anndataexc import AnnDataTypeError
@@ -47,13 +46,13 @@ from .duration import sppasDuration
 
 
 class sppasPoint(sppasBaseLocalization):
-    """
+    """ Localization of a point for any numerical representation.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Point in time, frame, etc.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     Represents a point identified by a midpoint value and a radius value.
     Generally, time is represented in seconds, as a float value ; frames
@@ -68,34 +67,32 @@ class sppasPoint(sppasBaseLocalization):
         - x < y iff not(x = y) and x < y
         - x > y iff not(x = y) and x > y
 
-    Examples:
+    :Example 1: Strictly equals:
 
-        - Strictly equals:
+        - x = 1.000, dx=0.
+        - y = 1.000, dy=0.
+        - x = y is true
 
-            - x = 1.000, dx=0.
-            - y = 1.000, dy=0.
-            - x = y is true
+        - x = 1.00000000000, dx=0.
+        - y = 0.99999999675, dy=0.
+        - x = y is false
 
-            - x = 1.00000000000, dx=0.
-            - y = 0.99999999675, dy=0.
-            - x = y is false
+    :Example 2: Using the radius:
 
-        - Using the radius:
+        - x = 1.0000000000, dx=0.0005
+        - y = 1.0000987653, dx=0.0005
+        - x = y is true  (accept a margin of 1ms between x and y)
 
-            - x = 1.0000000000, dx=0.0005
-            - y = 1.0000987653, dx=0.0005
-            - x = y is true  (accept a margin of 1ms between x and y)
-
-            - x = 1.0000000, dx=0.0005
-            - y = 1.0011235, dx=0.0005
-            - x = y is false
+        - x = 1.0000000, dx=0.0005
+        - y = 1.0011235, dx=0.0005
+        - x = y is false
 
     """
     def __init__(self, midpoint, radius=None):
         """ Create a sppasPoint instance.
 
         :param midpoint: (float, int) midpoint value.
-        :param radius: (float, int) represents the vagueness of the point.
+        :param radius: (float, int) represents the vagueness of the point.\
         Radius must be of the same type as midpoint.
 
         """
@@ -123,7 +120,7 @@ class sppasPoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def is_point(self):
-        """ Overrides. Return True, because self is representing a point. """
+        """ Overrides. Return True, because self represents a point. """
 
         return True
 
@@ -146,6 +143,10 @@ class sppasPoint(sppasBaseLocalization):
     def set_midpoint(self, midpoint):
         """ Set the midpoint value.
 
+        In versions < 1.9.8, it was required that midpoint >= 0.
+        Negative values are now accepted because some annotations are not
+        properly synchronized and then some of them can be negative.
+
         :param midpoint: (float, int) is the new midpoint value.
 
         """
@@ -156,9 +157,10 @@ class sppasPoint(sppasBaseLocalization):
             try:
                 self.__midpoint = int(midpoint)
                 if self.__midpoint < 0:
-                    # Assign a value, just in case this exception will be ignored...
-                    self.__midpoint = 0
-                    raise AnnDataNegValueError(midpoint)
+                    logging.warning('Midpoint is negative: {:d}'
+                                    ''.format(midpoint))
+                    # self.__midpoint = 0
+                    # raise AnnDataNegValueError(midpoint)
                 return
             except ValueError:
                 pass  # will try with float...
@@ -169,8 +171,10 @@ class sppasPoint(sppasBaseLocalization):
             raise AnnDataTypeError(midpoint, "float, int")
 
         if self.__midpoint < 0.:
-            self.__midpoint = 0.
-            raise AnnDataNegValueError(midpoint)
+            logging.warning('Midpoint is negative: {:f}'
+                            ''.format(midpoint))
+            #     self.__midpoint = 0.
+        #     raise AnnDataNegValueError(midpoint)
 
     # -----------------------------------------------------------------------
 

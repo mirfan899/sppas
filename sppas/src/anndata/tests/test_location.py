@@ -46,7 +46,6 @@ from ..annlocation.point import sppasPoint
 from ..annlocation.interval import sppasInterval
 from ..annlocation.disjoint import sppasDisjoint
 from ..anndataexc import AnnDataTypeError
-from ..anndataexc import AnnDataNegValueError
 from ..anndataexc import IntervalBoundsError
 from ..annlocation.location import sppasLocation
 from ..annlocation.localizationcompare import sppasLocalizationCompare
@@ -239,10 +238,10 @@ class TestTimePoint(unittest.TestCase):
             point0.set_midpoint([9])
         with self.assertRaises(AnnDataTypeError):
             point0.set_radius([9])
-        with self.assertRaises(AnnDataNegValueError):
-            point0.set_midpoint(-5)
-        with self.assertRaises(AnnDataNegValueError):
-            point0.set_radius(-5.)
+        # with self.assertRaises(AnnDataNegValueError):
+        #     point0.set_midpoint(-5)
+        # with self.assertRaises(AnnDataNegValueError):
+        #     point0.set_radius(-5.)
         with self.assertRaises(AnnDataTypeError):
             point0.set_radius(-5)
 
@@ -350,6 +349,18 @@ class TestTimeInterval(unittest.TestCase):
         """
         with self.assertRaises(ValueError):
             sppasInterval(self.point1000, self.point1000)
+
+    # -----------------------------------------------------------------------
+
+    def test_check_interval_bounds(self):
+        """ Check if bounds form an interval. """
+
+        self.assertTrue(sppasPoint(1), sppasPoint(2))
+        self.assertTrue(sppasPoint(1, 1), sppasPoint(2, 1))
+        self.assertTrue(sppasPoint(3, 3), sppasPoint(4, 3))
+
+        self.assertFalse(sppasPoint(1), sppasPoint(1))
+        self.assertFalse(sppasPoint(2), sppasPoint(1))
 
     # -----------------------------------------------------------------------
 

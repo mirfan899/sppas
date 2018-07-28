@@ -29,14 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annlabel.tagcompare.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Search in an annotation label'tags.
-
-    Label'tags can be of 3 types in anndata (str, num, bool) so
-    that this class allows to create different comparison methods
-    depending on the type of the tags.
+    anndata.annlabel.tagcompare.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import re
@@ -53,15 +47,19 @@ from .tag import sppasTag
 
 
 class sppasTagCompare(sppasBaseCompare):
-    """
+    """ Comparison methods for sppasTag.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Comparison methods for sppasTag.
 
-    Examples:
+    Label'tags can be of 3 types in anndata (str, num, bool) so
+    that this class allows to create different comparison methods
+    depending on the type of the tags.
+
+    :Example: Three different ways to compare a tag content to a given string
 
         >>> tc = sppasTagCompare()
         >>> tc.exact(sppasTag("abc"), u("abc"))
@@ -72,7 +70,7 @@ class sppasTagCompare(sppasBaseCompare):
     def __init__(self):
         """ Create a sppasTagCompare instance. """
 
-        sppasBaseCompare.__init__(self)
+        super(sppasTagCompare, self).__init__()
 
         # Methods on strings
         self.methods['exact'] = sppasTagCompare.exact

@@ -29,23 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annloc.location.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    sppasLocation allows to store a set of localizations with their scores.
-    This class is using a list of lists, i.e. a list of pairs (localization,
-    score). This is the best compromise between memory usage, speed and
-    readability... because:
-
-    >>> import sys
-    >>> sys.getsizeof(None)
-    >>> 16
-    >>> sys.getsizeof(tuple())
-    >>> 56
-    >>> sys.getsizeof(list())
-    >>> 72
-    >>> sys.getsizeof(dict())
-    >>> 280
+    anndata.annloc.location.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import copy
@@ -56,22 +41,25 @@ from .localization import sppasBaseLocalization
 
 
 class sppasLocation(object):
-    """
+    """ Location of the annotations of a tier.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Represents the location of an Annotation.
 
-    The location is a set of alternative localizations.
+    sppasLocation allows to store a set of localizations with their scores.
+    This class is using a list of lists, i.e. a list of pairs (localization,
+    score). This is the best compromise between memory usage, speed and
+    readability.
 
     """
     def __init__(self, localization=None, score=None):
         """ Create a new sppasLocation instance and add the entry.
 
         :param localization: (Localization or list of localizations)
-        :param score: (float)
+        :param score: (float or list of float)
 
         If a list of alternative localizations are given, the same score
         is assigned to all items.
@@ -81,8 +69,12 @@ class sppasLocation(object):
 
         if localization is not None:
             if isinstance(localization, list):
-                for loc in localization:
-                    self.append(loc, 1./len(localization))
+                if isinstance(score, list) and len(localization) == len(score):
+                    for l, s in zip(localization, score):
+                        self.append(l, s)
+                else:
+                    for loc in localization:
+                        self.append(loc, 1./len(localization))
             else:
                 self.append(localization, score)
 
@@ -115,7 +107,7 @@ class sppasLocation(object):
     def remove(self, localization):
         """ Remove a localization of the list.
 
-        :param localization: (sppasLocalization) the loc to be removed of the list.
+        :param localization: (sppasLocalization) the loc to be removed
 
         """
         if isinstance(localization, sppasBaseLocalization) is False:
@@ -131,7 +123,7 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def get_score(self, loc):
-        """ Return the score of a localization or None if it is not in the location.
+        """ Return the score of a localization or None if it is not in.
 
         :param loc: (sppasLocalization)
         :return: score: (float)
@@ -166,10 +158,9 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def get_best(self):
-        """ Return a copy of the best Localization, i.e.
-        the localization with the better score.
+        """ Return a copy of the best Localization.
 
-        :returns: (sppasLocalization)
+        :returns: (sppasLocalization) localization with the highest score.
 
         """
         if len(self.__localizations) == 1:
@@ -195,7 +186,7 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def is_interval(self):
-        """ Return True if the location is made of sppasInterval localizations. """
+        """ Return True if the location is made of sppasInterval locs. """
 
         l = self.__localizations[0][0]
         return l.is_interval()
@@ -203,7 +194,7 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def is_disjoint(self):
-        """ Return True if the location is made of sppasDisjoint localizations. """
+        """ Return True if the location is made of sppasDisjoint locs. """
 
         l = self.__localizations[0][0]
         return l.is_disjoint()
@@ -231,23 +222,25 @@ class sppasLocation(object):
         """ Return True if a duration matches all or any of the functions.
 
         :param dur_functions: list of (function, value, logical_not)
-
-            - function: a function in python with 2 arguments: dur/value
-            - value: the expected value for the duration (int/float/sppasDuration)
-            - logical_not: boolean
-
         :param logic_bool: (str) Apply a logical "and" or a logical "or" between the functions.
         :returns: (bool)
 
-        Example to search if a duration is exactly 30ms:
+        - function: a function in python with 2 arguments: dur/value
+        - value: the expected value for the duration (int/float/sppasDuration)
+        - logical_not: boolean
+
+        :Example: Search if a duration is exactly 30ms
+
             >>> d.match([(eq, 0.03, False)])
 
-        Example to search if a duration is not 30ms:
+        :Example: Search if a duration is not 30ms
+
             >>> d.match([(eq, 0.03, True)])
             >>> d.match([(ne, 0.03, False)])
 
-        Example to search if a duration is comprised between 0.3 and 0.7:
-            >>> l.match([(ge, 0.03, False), (le, 0.07, False)], logic_bool="and")
+        :Example: Search if a duration is comprised between 0.3 and 0.7
+            >>> l.match([(ge, 0.03, False),
+            >>>          (le, 0.07, False)], logic_bool="and")
 
         See sppasDurationCompare() to get a list of functions.
 
@@ -282,22 +275,26 @@ class sppasLocation(object):
         """ Return True if a localization matches all or any of the functions.
 
         :param loc_functions: list of (function, value, logical_not)
-
-            - function: a function in python with 2 arguments: loc/value
-            - value: the expected value for the localization (int/float/sppasPoint)
-            - logical_not: boolean
-
-        :param logic_bool: (str) Apply a logical "and" or a logical "or" between the functions.
+        :param logic_bool: (str) Apply a logical "and" or a logical "or" \
+        between the functions.
         :returns: (bool)
 
-        Example to search if a localization is after (or starts at) 1 minutes:
+        - function: a function in python with 2 arguments: loc/value
+        - value: the expected value for the localization (int/float/sppasPoint)
+        - logical_not: boolean
+
+        :Example: Search if a localization is after (or starts at) 1 minutes
+
             >>> l.match([(rangefrom, 60., False)])
 
-        Example to search if a localization is before (or ends at) 3 minutes:
+        :Example: Search if a localization is before (or ends at) 3 minutes
+
             >>> l.match([(rangeto, 180., True)])
 
-        Example to search if a localization is between 1 min and 3 min:
-            >>> l.match([(rangefrom, 60., False), (rangeto, 180., False)], logic_bool="and")
+        :Example: Search if a localization is between 1 min and 3 min
+
+            >>> l.match([(rangefrom, 60., False),
+            >>>          (rangeto, 180., False)], logic_bool="and")
 
         See sppasLocalizationCompare() to get a list of functions.
 

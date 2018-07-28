@@ -29,10 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annlabel
-    ~~~~~~~~~~~~~~~~~~~~
-
-    Label of the annotations of a tier.
+    anndata.annlabel
+    ~~~~~~~~~~~~~~~~
 
 """
 from .label import sppasLabel

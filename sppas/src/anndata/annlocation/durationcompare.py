@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annlocation.durationcompare.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    anndata.annlocation.durationcompare.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 from sppas.src.utils.datatype import sppasType
@@ -44,19 +44,19 @@ from .duration import sppasDuration
 
 
 class sppasDurationCompare(sppasBaseCompare):
-    """
+    """Comparison methods for sppasDuration.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Comparison methods for sppasDuration.
 
     """
     def __init__(self):
         """ Create a sppasDurationCompare instance. """
 
-        sppasBaseCompare.__init__(self)
+        super(sppasDurationCompare, self).__init__()
 
         self.methods['eq'] = sppasDurationCompare.eq
         self.methods['ne'] = sppasDurationCompare.ne
@@ -78,7 +78,8 @@ class sppasDurationCompare(sppasBaseCompare):
         """
         if isinstance(duration, sppasDuration) is False:
             raise AnnDataTypeError(duration, "sppasDuration")
-        if (sppasType().is_number(x) or isinstance(x, sppasDuration)) is False:
+        if (sppasType().is_number(x) or
+                isinstance(x, sppasDuration)) is False:
             raise AnnDataTypeError(x, "int/float/sppasDuration")
 
         return duration == x
@@ -96,7 +97,8 @@ class sppasDurationCompare(sppasBaseCompare):
         """
         if isinstance(duration, sppasDuration) is False:
             raise AnnDataTypeError(duration, "sppasDuration")
-        if (sppasType().is_number(x) or isinstance(x, sppasDuration)) is False:
+        if (sppasType().is_number(x) or
+                isinstance(x, sppasDuration)) is False:
             raise AnnDataTypeError(x, "int/float/sppasDuration")
 
         return duration != x
@@ -114,7 +116,8 @@ class sppasDurationCompare(sppasBaseCompare):
         """
         if isinstance(duration, sppasDuration) is False:
             raise AnnDataTypeError(duration, "sppasDuration")
-        if (sppasType().is_number(x) or isinstance(x, sppasDuration)) is False:
+        if (sppasType().is_number(x) or
+                isinstance(x, sppasDuration)) is False:
             raise AnnDataTypeError(x, "int/float/sppasDuration")
 
         return duration > x
@@ -150,7 +153,8 @@ class sppasDurationCompare(sppasBaseCompare):
         """
         if isinstance(duration, sppasDuration) is False:
             raise AnnDataTypeError(duration, "sppasDuration")
-        if (sppasType().is_number(x) or isinstance(x, sppasDuration)) is False:
+        if (sppasType().is_number(x) or
+                isinstance(x, sppasDuration)) is False:
             raise AnnDataTypeError(x, "int/float/sppasDuration")
 
         return duration >= x
@@ -168,7 +172,8 @@ class sppasDurationCompare(sppasBaseCompare):
         """
         if isinstance(duration, sppasDuration) is False:
             raise AnnDataTypeError(duration, "sppasDuration")
-        if (sppasType().is_number(x) or isinstance(x, sppasDuration)) is False:
+        if (sppasType().is_number(x) or
+                isinstance(x, sppasDuration)) is False:
             raise AnnDataTypeError(x, "int/float/sppasDuration")
 
         return duration <= x

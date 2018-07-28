@@ -29,22 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annlabel.tag.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    A sppasTag is a data content of any type.
-
-    By default, the type of the data is "str" and the content is empty, but
-    sppasTag stores 'None' values because:
-
-        >>> import sys
-        >>> sys.getsizeof(None)
-        16
-        >>> sys.getsizeof("str")
-        40
-        >>> sys.getsizeof("")
-        37
-
+    anndata.annlabel.tag.py
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 from sppas.src.config import symbols
@@ -63,6 +49,11 @@ class sppasTag(object):
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    A sppasTag is a data content of any type.
+    By default, the type of the data is "str" and the content is empty, but
+    sppasTag stores 'None' values because None is 16 bits and an empty string
+    is 37.
 
     A sppasTag() content can be one of the following types:
 
@@ -84,7 +75,7 @@ class sppasTag(object):
         >>> t7 = sppasTag(0, tag_type="bool")       # False (bool)
 
     """
-    TAG_TYPES = ["str", "float", "int", "bool"]
+    TAG_TYPES = ("str", "float", "int", "bool")
 
     # ------------------------------------------------------------------------
 
@@ -92,8 +83,10 @@ class sppasTag(object):
         """ Initialize a new sppasTag instance.
 
         :param tag_content: (any) Data content
-        :param tag_type: (str): The type of this content (str, int, float, bool, list).
-        str is used by default.
+        :param tag_type: (str): The type of this content.\
+        One of: (str, int, float, bool, list).
+
+        str type is used by default.
 
         """
         self.__tag_content = ""
@@ -130,7 +123,7 @@ class sppasTag(object):
     # ------------------------------------------------------------------------
 
     def get_typed_content(self):
-        """ Return the content value of this sppasTag, in its appropriate type. """
+        """ Return the content value, in its appropriate type. """
 
         if self.__tag_type is not None:
 
@@ -154,7 +147,7 @@ class sppasTag(object):
         """ Change content of this sppasTag.
 
         :param tag_content: (any) New text content for this sppasTag
-        :param tag_type: The type of this tag content in (str, int, float, bool, list).
+        :param tag_type: The type of this tag.\
         Default is 'str' to represent an unicode string.
 
         """
@@ -297,10 +290,12 @@ class sppasTag(object):
     # ------------------------------------------------------------------------
 
     def __repr__(self):
-        return "Tag: {!s:s},{!s:s}".format(b(self.get_content()), self.get_type())
+        return "Tag: {!s:s},{!s:s}".format(b(self.get_content()),
+                                           self.get_type())
 
     def __str__(self):
-        return "{!s:s} ({!s:s})".format(b(self.get_content()), self.get_type())
+        return "{!s:s} ({!s:s})".format(b(self.get_content()),
+                                        self.get_type())
 
     def __eq__(self, other):
         """ Compare 2 tags. """

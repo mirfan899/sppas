@@ -29,23 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annlabel.label.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    sppasLabel allows to store a set of sppasTags with their scores.
-    This class is using a list of lists, i.e. a list of pairs (tag, score).
-    This is the best compromise between memory usage, speed and
-    readability... because:
-
-    >>> import sys
-    >>> sys.getsizeof(None)
-    >>> 16
-    >>> sys.getsizeof(tuple())
-    >>> 56
-    >>> sys.getsizeof(list())
-    >>> 72
-    >>> sys.getsizeof(dict())
-    >>> 280
+    anndata.annlabel.label.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import copy
@@ -56,20 +41,26 @@ from .tag import sppasTag
 
 
 class sppasLabel(object):
-    """
+    """ Represents the content of an annotation.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Represents the label of an Annotation.
+    
+    sppasLabel allows to store a set of sppasTags with their scores.
+    This class is using a list of lists, i.e. a list of pairs (tag, score).
+    This is the best compromise between memory usage, speed and
+    readability. 
 
-    A label is a list of possible sppasTag(), represented as a UNICODE string.
-    A data type can be associated, as sppasTag() can be 'int', 'float' or 'bool'.
+    A label is a list of possible sppasTag(), represented as a UNICODE 
+    string. A data type can be associated, as sppasTag() can be 'int', 
+    'float' or 'bool'.
 
     """
     def __init__(self, tag, score=None):
-        """ Creates a new Label instance.
+        """ Creates a new sppasLabel instance.
 
         :param tag: (sppasTag or list of sppasTag)
         :param score: (float or list of float)
@@ -96,7 +87,8 @@ class sppasLabel(object):
         """ Add a text into the list.
 
         :param content: (str)
-        :param data_type: (str): The type of this text content (str, int, float, bool)
+        :param data_type: (str): The type of this text content.\ 
+        One of: (str, int, float, bool)
         :param score: (float)
 
         """
@@ -194,14 +186,14 @@ class sppasLabel(object):
         if len(self.__tags) == 1:
             return self.__tags[0][0]
 
-        _maxt = self.__tags[0][0]
-        _maxscore = self.__tags[0][1]
+        _max_tag = self.__tags[0][0]
+        _max_score = self.__tags[0][1]
         for (t, s) in reversed(self.__tags):
-            if _maxscore is None or (s is not None and s > _maxscore):
-                _maxscore = s
-                _maxt = t
+            if _max_score is None or (s is not None and s > _max_score):
+                _max_score = s
+                _max_tag = t
 
-        return _maxt
+        return _max_tag
 
     # -----------------------------------------------------------------------
 
@@ -229,6 +221,7 @@ class sppasLabel(object):
 
     def is_string(self):
         """ Return True if tags are string or unicode.
+
         Return False if no tag is set.
 
         """
@@ -240,6 +233,7 @@ class sppasLabel(object):
 
     def is_float(self):
         """ Return True if tags are of type "float".
+
         Return False if no tag is set.
 
         """
@@ -251,6 +245,7 @@ class sppasLabel(object):
 
     def is_int(self):
         """ Return True if tags are of type "int".
+
         Return False if no tag is set.
 
         """
@@ -262,6 +257,7 @@ class sppasLabel(object):
 
     def is_bool(self):
         """ Return True if tags are of type "bool".
+
         Return False if no tag is set.
 
         """
@@ -290,11 +286,14 @@ class sppasLabel(object):
         :param logic_bool: (str) Apply a logical "and" or a logical "or" between the functions.
         :returns: (bool)
 
-        Example to search if a tag is exactly matching "R":
+        :Example: Search if a tag is exactly matching "R":
+
             >>> l.match([(exact, "R", False)])
 
-        Example to search if a tag is starting with "p" or starting with "t":
-            >>> l.match([(startswith, "p", False), (startswith, "t", False), ], logic_bool="or")
+        :Example: Search if a tag is starting with "p" or starting with "t":
+
+            >>> l.match([(startswith, "p", False),
+            >>>          (startswith, "t", False), ], logic_bool="or")
 
         """
         is_matching = False
@@ -327,7 +326,7 @@ class sppasLabel(object):
     def contains(self, tag, search_function='exact'):
         """ Return True if the label contains a given tag.
 
-        * * * * *   WILL BE DEPRECATED (when filter will be finished)  * * * * *
+        * * *   WILL BE DEPRECATED (when filter will be finished)  * * *
 
         :param tag: (sppasTag)
         :param search_function: (str) Can be one of the followings:
@@ -358,26 +357,35 @@ class sppasLabel(object):
             for t, s in self.__tags:
                 unicode_content = t.get_content()
                 lunicode_content = unicode_content.lower()
-                if search_function == "iexact" and lunicode_content == lsearch_unicode_content:
+                if search_function == "iexact" and \
+                        lunicode_content == lsearch_unicode_content:
                     return True
-                elif search_function == "startswith" and unicode_content.startswith(search_unicode_content):
+                elif search_function == "startswith" and \
+                        unicode_content.startswith(search_unicode_content):
                     return True
-                elif search_function == "istartswith" and lunicode_content.startswith(lsearch_unicode_content):
+                elif search_function == "istartswith" and \
+                        lunicode_content.startswith(lsearch_unicode_content):
                     return True
-                elif search_function == "endswith" and unicode_content.endswith(search_unicode_content):
+                elif search_function == "endswith" and \
+                        unicode_content.endswith(search_unicode_content):
                     return True
-                elif search_function == "iendswith" and lunicode_content.endswith(lsearch_unicode_content):
+                elif search_function == "iendswith" and \
+                        lunicode_content.endswith(lsearch_unicode_content):
                     return True
-                elif search_function == "contains" and search_unicode_content in unicode_content:
+                elif search_function == "contains" and \
+                        search_unicode_content in unicode_content:
                     return True
-                elif search_function == "icontains" and lsearch_unicode_content in lunicode_content:
+                elif search_function == "icontains" and \
+                        lsearch_unicode_content in lunicode_content:
                     return True
 
         elif tag.get_type() in ["float", "int"]:
             for t, s in self.__tags:
-                if search_function == "greater" and t.get_typed_content() > tag.get_typed_content():
+                if search_function == "greater" and \
+                   t.get_typed_content() > tag.get_typed_content():
                     return True
-                if search_function == "lower" and t.get_typed_content() < tag.get_typed_content():
+                if search_function == "lower" and \
+                   t.get_typed_content() < tag.get_typed_content():
                     return True
 
         return False
@@ -385,7 +393,7 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def serialize(self, empty="", alt=True):
-        """ Convert the label into a string, including or not alternative tags.
+        """ Convert the label into a string, include or not alternative tags.
 
         Use the "{ | }" system to serialize the alternative tags.
         Scores of the tags are not returned.

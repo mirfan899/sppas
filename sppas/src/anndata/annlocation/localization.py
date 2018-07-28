@@ -29,20 +29,20 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annloc.localization.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    anndata.annloc.localization.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 
 
 class sppasBaseLocalization(object):
-    """
+    """ Represents a base class for any kind of localization.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Represents a base class for any kind of localization.
 
     """
     def __init__(self):
@@ -70,6 +70,7 @@ class sppasBaseLocalization(object):
 
     def duration(self):
         """ Return the duration of the localization.
+
         Must be overridden
 
         :returns: (sppasDuration) Duration and its vagueness.
@@ -87,6 +88,7 @@ class sppasBaseLocalization(object):
 
     def is_point(self):
         """ Return True if this object is an instance of sppasPoint.
+
         Should be overridden.
 
         """
@@ -96,6 +98,7 @@ class sppasBaseLocalization(object):
 
     def is_interval(self):
         """ Return True if this object is an instance of sppasInterval.
+
         Should be overridden.
 
         """
@@ -105,6 +108,7 @@ class sppasBaseLocalization(object):
 
     def is_disjoint(self):
         """ Return True if this object is an instance of sppasDisjoint.
+
         Should be overridden.
 
         """
@@ -121,8 +125,9 @@ class sppasBaseLocalization(object):
 
     def __eq__(self, other):
         """ Equal is required to use '==' between 2 localization instances.
-        Two localization instances are equals iff they are of the same instance
-        and their values are equals.
+
+        Two localization instances are equals iff they are of the same
+        instance and their values are equals.
 
         :param other: the other localization to compare with.
 
@@ -132,7 +137,7 @@ class sppasBaseLocalization(object):
     # ---------------------------------------------------------------------
 
     def __lt__(self, other):
-        """ LowerThan is required to use '<' between 2 localization instances.
+        """ LowerThan is required to use '<' between two loc instances.
 
         :param other: the other localization to compare with.
 
@@ -142,7 +147,7 @@ class sppasBaseLocalization(object):
     # ---------------------------------------------------------------------
 
     def __gt__(self, other):
-        """ GreaterThan is required to use '>' between 2 localization instances.
+        """ GreaterThan is required to use '>' between two loc instances.
 
         :param other: the other localization to compare with.
 

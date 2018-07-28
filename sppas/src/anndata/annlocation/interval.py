@@ -29,10 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annloc.interval.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Localization of an interval between two sppasPoint instances.
+    anndata.annloc.interval.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import logging
@@ -48,13 +46,13 @@ from .duration import sppasDuration
 
 
 class sppasInterval(sppasBaseLocalization):
-    """
+    """ Localization of an interval between two sppasPoint instances.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Representation of a localization as an interval.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     An interval is identified by two sppasPoint objects:
 
@@ -67,6 +65,8 @@ class sppasInterval(sppasBaseLocalization):
 
         :param begin: (sppasPoint)
         :param end: (sppasPoint)
+
+        Degenerated interval is forbidden, i.e. begin > end.
 
         """
         sppasBaseLocalization.__init__(self)
@@ -83,8 +83,9 @@ class sppasInterval(sppasBaseLocalization):
         if sppasInterval.check_interval_bounds(begin, end) is False:
             raise IntervalBoundsError(begin, end)
 
+        # we accept some overlap
         if begin >= end:
-            logging.info('[WARNING] begin >= end with ({!s:s}, {!s:s})'.format(begin, end))
+            logging.warning('begin >= end with ({!s:s}, {!s:s})'.format(begin, end))
 
         self.__begin = begin
         self.__end = end
@@ -106,7 +107,7 @@ class sppasInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def is_interval(self):
-        """ Overrides. Return True, because self is representing an interval. """
+        """ Overrides. Return True, because self represents an interval. """
 
         return True
 
@@ -128,6 +129,7 @@ class sppasInterval(sppasBaseLocalization):
 
     def set_begin(self, tp):
         """ Set the begin of the interval to a new sppasPoint.
+
         Attention: it is a reference assignment.
 
         :param tp: (sppasPoint)
@@ -156,6 +158,7 @@ class sppasInterval(sppasBaseLocalization):
 
     def set_end(self, tp):
         """ Set the end of the interval to a new sppasPoint.
+
         Attention: it is a reference assignment.
 
         :param tp: (sppasPoint)
@@ -224,14 +227,15 @@ class sppasInterval(sppasBaseLocalization):
 
         """
         # duration is the difference between the midpoints
-        value = self.get_end().get_midpoint() - self.get_begin().get_midpoint()
+        value = self.__end.get_midpoint() - \
+                self.__begin.get_midpoint()
 
         # vagueness of the duration is based on begin/end radius values
         vagueness = 0
-        if self.get_begin().get_radius() is not None:
-            vagueness += self.get_begin().get_radius()
-        if self.get_end().get_radius() is not None:
-            vagueness += self.get_end().get_radius()
+        if self.__begin.get_radius() is not None:
+            vagueness += self.__begin().get_radius()
+        if self.__end.get_radius() is not None:
+            vagueness += self.__end.get_radius()
 
         return sppasDuration(value, vagueness)
 
@@ -252,7 +256,8 @@ class sppasInterval(sppasBaseLocalization):
             return False
 
         if begin.get_radius() is not None and end.get_radius() is not None:
-            if begin.get_midpoint() - begin.get_radius() > end.get_midpoint() - end.get_radius():
+            if begin.get_midpoint() - begin.get_radius() > \
+                            end.get_midpoint() - end.get_radius():
                 return False
 
         return True
@@ -261,7 +266,7 @@ class sppasInterval(sppasBaseLocalization):
 
     @staticmethod
     def check_types(begin, end):
-        """ True only if begin and end are both the same types of sppasPoint().
+        """ True only if begin and end are both the same types of sppasPoint.
 
         :param begin: any kind of data
         :param end: any kind of data
@@ -281,7 +286,8 @@ class sppasInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        return "sppasInterval: [{!s:s},{!s:s}]".format(self.get_begin(), self.get_end())
+        return "sppasInterval: [{!s:s},{!s:s}]".format(self.get_begin(),
+                                                       self.get_end())
 
     def __str__(self):
         return "[{!s:s},{!s:s}]".format(self.get_begin(), self.get_end())
@@ -291,11 +297,12 @@ class sppasInterval(sppasBaseLocalization):
     def __contains__(self, other):
         """ Return True if the given data is contained in the interval.
 
-        :param other: (sppasInterval, sppasPoint, int, float) the point to verify.
+        :param other: (sppasInterval, sppasPoint, int, float)
 
         """
         if isinstance(other, (sppasInterval, sppasPoint, float, int,)) is False:
-            raise AnnDataTypeError(other, "sppasInterval, sppasPoint, float, int")
+            raise AnnDataTypeError(other,
+                                   "sppasInterval, sppasPoint, float, int")
 
         if isinstance(other, sppasInterval):
             return (self.__begin <= other.get_begin() and
@@ -322,7 +329,7 @@ class sppasInterval(sppasBaseLocalization):
     def __lt__(self, other):
         """ LowerThan.
 
-        :param other: (sppasInterval, sppasPoint, float, int) the other to compare with.
+        :param other: (sppasInterval, sppasPoint, float, int)
 
         """
         if isinstance(other, (sppasPoint, float, int)):
@@ -338,7 +345,7 @@ class sppasInterval(sppasBaseLocalization):
     def __gt__(self, other):
         """ GreaterThan.
 
-        :param other: (sppasInterval, sppasPoint, float, int) the other to compare with.
+        :param other: (sppasInterval, sppasPoint, float, int)
 
         """
         if isinstance(other, (int, float, sppasPoint)):
