@@ -49,7 +49,8 @@ class sppasGlobalSettings(sppasBaseSettings):
 
     """
     def __init__(self):
-        sppasBaseSettings.__init__(self)
+        super(sppasGlobalSettings, self).__init__()
+
         self.__dict__ = dict(
             __version__="1.9.8",
             __author__="Brigitte Bigi",
@@ -80,8 +81,10 @@ class sppasPathSettings(sppasBaseSettings):
 
     """
     def __init__(self):
+        super(sppasPathSettings, self).__init__()
+
         sppas_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        sppasBaseSettings.__init__(self)
+
         self.__dict__ = dict(
             sppas=sppas_dir,
             bin=os.path.join(sppas_dir, "bin"),
@@ -117,8 +120,8 @@ class sppasSymbolSettings(sppasBaseSettings):
 
     """
     def __init__(self):
+        super(sppasSymbolSettings, self).__init__()
 
-        sppasBaseSettings.__init__(self)
         self.__dict__ = dict(
             unk="<UNK>",
             phone=sppasSymbolSettings.__phone_symbols(),
@@ -168,7 +171,7 @@ class sppasSeparatorSettings(sppasBaseSettings):
     """
 
     def __init__(self):
-        sppasBaseSettings.__init__(self)
+        super(sppasSeparatorSettings, self).__init__()
         self.__dict__ = dict(
             phonemes="-",    # X-SAMPA standard
             syllables=".",   # X-SAMPA standard

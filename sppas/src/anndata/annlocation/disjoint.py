@@ -59,7 +59,7 @@ class sppasDisjoint(sppasBaseLocalization):
         :param intervals: (list of sppasInterval)
 
         """
-        sppasBaseLocalization.__init__(self)
+        super(sppasDisjoint, self).__init__()
 
         self.__intervals = list()
         if intervals is not None:

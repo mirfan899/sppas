@@ -69,7 +69,7 @@ class sppasInterval(sppasBaseLocalization):
         Degenerated interval is forbidden, i.e. begin > end.
 
         """
-        sppasBaseLocalization.__init__(self)
+        super(sppasInterval, self).__init__()
 
         if isinstance(begin, sppasPoint) is False:
             AnnDataTypeError(begin, "sppasPoint")

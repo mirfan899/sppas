@@ -96,7 +96,8 @@ class sppasPoint(sppasBaseLocalization):
         Radius must be of the same type as midpoint.
 
         """
-        sppasBaseLocalization.__init__(self)
+        super(sppasPoint, self).__init__()
+
         self.__midpoint = 0
         self.__radius = None
 
