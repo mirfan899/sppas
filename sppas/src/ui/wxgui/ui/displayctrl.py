@@ -49,14 +49,8 @@ import wx.lib
 import logging
 import os.path
 
-from sppas.src.config import sg
-import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
-
-# and temporary.......
-from sppas.src.annotationdata.label.label import Label
-from sppas.src.annotationdata.label.text import Text
-# end temporary
+from sppas.src.anndata import sppasRW
 
 from sppas.src.ui.wxgui.structs.files import xFiles
 from sppas.src.ui.wxgui.structs.dataperiod import DataPeriod
@@ -68,7 +62,7 @@ from trsctrl import TranscriptionCtrl
 from wavectrl import WaveCtrl
 from spControl import spEVT_CTRL_SELECTED
 
-from sppas.src.ui.wxgui.ui.CustomEvents import ObjectSelectedEvent, spEVT_OBJECT_SELECTED
+from sppas.src.ui.wxgui.ui.CustomEvents import ObjectSelectedEvent
 
 # ----------------------------------------------------------------------------
 # CONSTANTS (can not be changed)
@@ -80,9 +74,8 @@ MIN_H = 200
 # ----------------------------------------------------------------------------
 
 
-class DisplayCtrl( wx.Window ):
-    """
-    Displays annotated files and media files.
+class DisplayCtrl(wx.Window):
+    """Displays annotated files and media files.
 
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -98,22 +91,21 @@ class DisplayCtrl( wx.Window ):
                  pos=wx.DefaultPosition,
                  size=wx.DefaultSize,
                  prefsIO = None):
-        """
-        Constructor.
+        """Constructor.
 
         Non-wxPython related parameter:
             - prefsIO [REQUIRED]
 
         """
-        style=wx.NO_BORDER|wx.NO_FULL_REPAINT_ON_RESIZE|wx.CLIP_CHILDREN|wx.WANTS_CHARS
-        wx.Window.__init__(self, parent, id, pos, size=(MIN_W,MIN_H), style=style)
+        style = wx.NO_BORDER | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN | wx.WANTS_CHARS
+        wx.Window.__init__(self, parent, id, pos, size=(MIN_W, MIN_H), style=style)
         self.SetDoubleBuffered(True)
         self.SetBackgroundStyle(wx.BG_STYLE_CUSTOM)
-        self.SetBackgroundColour( prefsIO.GetValue('M_BG_COLOUR') )
-        self.SetMinSize((MIN_W,MIN_H))
+        self.SetBackgroundColour(prefsIO.GetValue('M_BG_COLOUR'))
+        self.SetMinSize((MIN_W, MIN_H))
 
         # Members
-        self._xfiles  = xFiles()
+        self._xfiles = xFiles()
         self._prefsIO = prefsIO
 
         # Members indicating the current state
@@ -137,9 +129,8 @@ class DisplayCtrl( wx.Window ):
     # ------------------------------------------------------------------------
 
     def __set_tools(self):
-        """
-        Create tools and set their default parameters.
-        """
+        """Create tools and set their default parameters."""
+
         s = self.GetSize()
 
         try:
@@ -163,29 +154,27 @@ class DisplayCtrl( wx.Window ):
             maxzoom = 300.  # max zoom to 5 minutes
 
         # The displayed period of time
-        self._period = DataPeriod( mintime, maxtime )
-        self._period.SetMin( mintime )
-        self._period.SetMax( maxtime )
-        self._period.SetMinDelta( minzoom )
-        self._period.SetMaxDelta( maxzoom )
+        self._period = DataPeriod(mintime, maxtime)
+        self._period.SetMin(mintime)
+        self._period.SetMax(maxtime)
+        self._period.SetMinDelta(minzoom)
+        self._period.SetMaxDelta(maxzoom)
 
         # The ruler, at the top of the drawing
-        self._timeruler = TimeRulerCtrl(self, -1, pos=(0,0), size=(s.width,24))
+        self._timeruler = TimeRulerCtrl(self, -1, pos=(0, 0), size=(s.width, 24))
         self._objSetPreferences(self._timeruler)
         self._timeruler.SetDrawingParent(self)
-        self._timeruler.SetTime(0.,self._period.GetMax())
+        self._timeruler.SetTime(0., self._period.GetMax())
         # indicators on the ruler:
-        self._timeruler.SetPlayerIndicatorValue( self._period.GetStart() )
-        self._timeruler.SetSelectionIndicatorValues( self._period.GetStart(), self._period.GetStart())
+        self._timeruler.SetPlayerIndicatorValue(self._period.GetStart())
+        self._timeruler.SetSelectionIndicatorValues(self._period.GetStart(), self._period.GetStart())
         # Store the ruler into the list of objects
-        self._xfiles.Append("TIME_RULER",self._timeruler)
+        self._xfiles.Append("TIME_RULER", self._timeruler)
 
     # -----------------------------------------------------------------------
 
     def __bind_events(self):
-        """
-        Bind events.
-        """
+        """Bind events."""
 
         # Only refresh drawing when resizing is finished
         wx.EVT_PAINT(self, self.onPaint)
@@ -204,140 +193,119 @@ class DisplayCtrl( wx.Window ):
     # -----------------------------------------------------------------------
 
     def DisplayPeriodInStatusbar(self, mint, maxt):
-        """
-        Display the time period in the status bar.
-        """
+        """Display the time period in the status bar."""
+
         text = 'Period: ' + str(mint) + ' to ' + str(maxt)
         try:
             wx.GetTopLevelParent(self).SetStatusText(text, 1)
-        except Exception:
+        except:
             logging.info(text)
 
     # -----------------------------------------------------------------------
 
     def DisplayMouseInStatusbar(self, t):
-        """
-        Display the mouse position in the status bar.
-        """
+        """Display the mouse position in the status bar."""
+
         text = 'Mouse: ' + str(t)
         try:
             wx.GetTopLevelParent(self).SetStatusText(text, 2)
-        except Exception:
+        except:
             pass
 
     # -----------------------------------------------------------------------
     # Data: -- Setters --
     # -----------------------------------------------------------------------
 
-
-    #####################............HUM HUM..................################
-    def __uncertaintyCooking(self, tin):
-
-        for tier in tin:
-            if not "TOE" in tier.GetName() and not "IPU" in tier.GetName():
-                # uncertain label (some text between parenthesis)
-                for a in tier:
-                    label = a.GetLabel().GetValue()
-                    if ')' in label and ')' in label:
-                        label = label.replace( ')', '')
-                        labels = label.split( '(' )
-                        if len(labels)>1:
-                            newlabel = Label( Text(labels[0], 0.6) )
-                            newlabel.AddValue( Text(labels[1], 0.4) )
-                            a.SetLabel( newlabel )
-
-            # uncertain localization (fix a radius value)
-            if tier.IsPoint() is True or "I-" in tier.GetName():
-                tier.SetRadius( 0.0 )
-            elif "gest" in tier.GetName().lower() or "hand" in tier.GetName().lower() or "G-" in tier.GetName():
-                tier.SetRadius(0.04)
-            elif "TOE" in tier.GetName() or "IPU" in tier.GetName() :
-                tier.SetRadius( 0. )
-            else:
-                tier.SetRadius( 0.005 )
-    ###################........................................###############
-
-
     def FixWaveHeight(self, wf):
         try:
-            channelheight = self._prefsIO.GetValue('W_HEIGHT')
-        except Exception:
-            channelheight = 100
-        return channelheight*wf.get_nchannels() #+ ((wf.getnchannels()-1)*self._prefsIO.GetValue('S_PEN_WIDTH'))
+            channel_height = self._prefsIO.GetValue('W_HEIGHT')
+        except:
+            channel_height = 100
+        return channel_height * wf.get_nchannels()
 
+    # -----------------------------------------------------------------------
 
     def FixTranscriptionHeight(self, tf):
         try:
-            tierheight = self._prefsIO.GetValue('T_HEIGHT')
-        except Exception:
-            tierheight = 30
-        return tierheight*tf.GetSize() #+ ((tf.GetSize()-1)*self._prefsIO.GetValue('S_PEN_WIDTH'))
+            tier_height = self._prefsIO.GetValue('T_HEIGHT')
+        except:
+            tier_height = 30
+        return tier_height * len(tf)
 
+    # -----------------------------------------------------------------------
 
     def SetData(self, f):
-        """
-        Add a new file to draw.
+        """Add a new file to draw.
 
-        @param f (string) is a file name.
+        :param f: (string) is a file name.
 
         """
-        if self._xfiles.Exists( f ):
+        if self._xfiles.Exists(f):
             raise IOError('Display. SetData. The file was already loaded: %s' % f)
 
         s = self.GetClientSize()
-        fileName, fileExtension = os.path.splitext(f)
-        logging.debug('DisplayCtrl.SetData: %s , %s'%(fileName, fileExtension))
+        file_name, file_ext = os.path.splitext(f)
+        logging.debug('DisplayCtrl.SetData: %s , %s' % (file_name, file_ext))
 
         # Load data, create the corresponding control
-        if fileExtension.lower() in sppas.src.audiodata.aio.extensions:
+        if file_ext.lower() in sppas.src.audiodata.aio.extensions:
             try:
-                wf = sppas.src.audiodata.aio.open( f )
+                wf = sppas.src.audiodata.aio.open(f)
             except Exception as e:
-                ShowInformation(self, self._prefsIO,"The following error occurred while loading file "+f+".\n"+str(e), style=wx.ICON_INFORMATION)
-                raise Exception('Display. SetData. Error while loading the sound: %s.'%str(e))
+                ShowInformation(self,
+                                self._prefsIO,
+                                "The following error occurred while loading file "+f+".\n"+str(e),
+                                style=wx.ICON_INFORMATION)
+                raise
             h = self.FixWaveHeight(wf)
-            dcobj = WaveCtrl( self, -1, pos=wx.Point(0,self._ymax), size=wx.Size(s.width,h), audio=wf )
-            dcobj.SetGradientBackground( True ) # Gradient bg
+            dcobj = WaveCtrl(self, -1,
+                             pos=wx.Point(0, self._ymax),
+                             size=wx.Size(s.width, h),
+                             audio=wf)
+            dcobj.SetGradientBackground(True)  # Gradient bg
 
         else:
             try:
-                tf = sppas.src.annotationdata.aio.read( f )
+                parser = sppasRW(f)
+                tf = parser.read()
             except Exception as e:
-                ShowInformation(self, self._prefsIO, "The following error occurred while loading file "+f+".\n"+str(e), style=wx.ICON_INFORMATION)
-                raise Exception('Display. SetData. Error while loading the file: %s.'%str(e))
-            if "devel" in sg.__version__:
-                self.__uncertaintyCooking(tf)
-            h = self.FixTranscriptionHeight(tf)
-            logging.debug(' Transcription height: %d'%h)
-            dcobj = TranscriptionCtrl( self, -1, pos=wx.Point(0,self._ymax), size=wx.Size(s.width,h), trs=tf )
+                ShowInformation(self,
+                                self._prefsIO,
+                                "The following error occurred while loading file "+f+".\n"+str(e),
+                                style=wx.ICON_INFORMATION)
+                raise
 
-        self._period.SetMax( max(dcobj.GetEnd(), self._period.GetMax()) )
+            h = self.FixTranscriptionHeight(tf)
+            dcobj = TranscriptionCtrl(self, -1,
+                                      pos=wx.Point(0, self._ymax),
+                                      size=wx.Size(s.width, h),
+                                      trs=tf)
+
+        self._period.SetMax(max(dcobj.GetEnd(), self._period.GetMax()))
 
         # Preferences
-        dcobj.SetTime(self._period.GetStart(),self._period.GetEnd())
+        dcobj.SetTime(self._period.GetStart(), self._period.GetEnd())
         self._objSetPreferences(dcobj)
 
         # Add the bottom separator
         #s = Separator(self, -1, pos=wx.Point(0,0), size=wx.Size(s.width,self._prefsIO.GetValue('S_PEN_WIDTH')))
-        #s.SetColour( self._prefsIO.GetValue('S_COLOUR') )
+        #s.SetColour(self._prefsIO.GetValue('S_COLOUR'))
 
         # Store the filename , the control and the separator
-        self._xfiles.Append(f,dcobj)
+        self._xfiles.Append(f, dcobj)
 
         # updates
-        self.DisplayPeriodInStatusbar(self._period.GetStart(),self._period.GetEnd())
+        self.DisplayPeriodInStatusbar(self._period.GetStart(),
+                                      self._period.GetEnd())
 
         self.RequestRedraw()
 
-    # End SetData
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def UnsetData(self, f):
-        """
-        Remove a file of the drawing.
+        """Remove a file of the drawing.
 
-        @param f (string) is a file name.
+        :param f: (string) is a file name.
 
         """
         if self._xfiles.Exists(f) is False:
@@ -351,10 +319,11 @@ class DisplayCtrl( wx.Window ):
             self.SetSelectedObject(None)
 
         # remove the filemane/control of the dict
-        self._xfiles.Remove( idx )
+        self._xfiles.Remove(idx)
 
         # ask the control to close itself
-        wx.PostEvent(dcobj.GetEventHandler(), wx.PyCommandEvent(wx.EVT_CLOSE.typeId, dcobj.GetId()))
+        wx.PostEvent(dcobj.GetEventHandler(), 
+                     wx.PyCommandEvent(wx.EVT_CLOSE.typeId, dcobj.GetId()))
         dcobj.Destroy()
 
         # update the max time value
@@ -364,15 +333,14 @@ class DisplayCtrl( wx.Window ):
             m = o.GetEnd()
             if m > mmax:
                 mmax = m
-        self._period.SetMax( mmax )
-        self.DisplayPeriodInStatusbar(self._period.GetStart(),self._period.GetEnd())
+        self._period.SetMax(mmax)
+        self.DisplayPeriodInStatusbar(self._period.GetStart(),
+                                      self._period.GetEnd())
 
         self.RequestRedraw()
         return True
 
-    # End UnsetData
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def UnsetAllData(self):
         """
@@ -381,16 +349,11 @@ class DisplayCtrl( wx.Window ):
 
         for i in reversed(range(self._xfiles.GetSize())):
             f = self._xfiles.GetFilename(i)
-            self.UnsetData( f )
+            self.UnsetData(f)
 
-    # End UnsetAllData
     # ------------------------------------------------------------------------
-
-
-    #-------------------------------------------------------------------------
     # Preferences: -- Setters --
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def SetPreferences(self, prefs):
         """ Set new preferences. """
@@ -402,15 +365,9 @@ class DisplayCtrl( wx.Window ):
 
         self.RequestRedraw()
 
-    # End SetPreferences
-    #-------------------------------------------------------------------------
-
-
-
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     # Members: -- Getters -- Setters --
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def GetData(self):
         """ Return the list of really displayed file names. """
@@ -423,17 +380,14 @@ class DisplayCtrl( wx.Window ):
                 l.append(f)
         return l
 
-    # End GetData
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def GetRuler(self):
         """ Return the ruler (TimeRuler). """
 
         return self._timeruler
 
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def GetSelectedObject(self):
         """ Return the the selected object (or None). """
@@ -445,9 +399,7 @@ class DisplayCtrl( wx.Window ):
 
         return None
 
-    # End GetSelectedObject
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def SetSelectedObject(self, sel):
         """ Set selected object (if sel is different of the current' one). """
@@ -460,9 +412,9 @@ class DisplayCtrl( wx.Window ):
         for i in range(self._xfiles.GetSize()):
             obj = self._xfiles.GetObject(i)
             if obj != sel:
-                obj.SetSelected( False )
+                obj.SetSelected(False)
             else:
-                obj.SetSelected( True )
+                obj.SetSelected(True)
                 if "TIME_RULER" != self._xfiles.GetFilename(i):
                     f = self._xfiles.GetFilename(i)
                 break
@@ -471,9 +423,7 @@ class DisplayCtrl( wx.Window ):
         evt.SetEventObject(self)
         wx.PostEvent(self.GetParent(), evt)
 
-    # End SetSelectedObject
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def GetSelectionFilename(self):
         """ Return the file name of the selected object (or an empty string). """
@@ -485,60 +435,49 @@ class DisplayCtrl( wx.Window ):
 
         return ""
 
-    # End GetSelectionFilename
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def GetPeriod(self):
         """ Return the displayed period. """
 
         return self._period
 
-    # End GetPeriodValues
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def SetPeriod(self, period):
         """ Set a new data period. """
+        
         self._period = period
         self._updatedPeriod()
         self._updateRulerIndicators(period)
         self.RequestRedraw()
 
-        self.DisplayPeriodInStatusbar(self._period.GetStart(),self._period.GetEnd())
+        self.DisplayPeriodInStatusbar(self._period.GetStart(),
+                                      self._period.GetEnd())
         self.DisplayMouseInStatusbar("...")
 
-    # End SetPeriod
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def GetPeriodValues(self):
         """ Return a tuple with (mintime,maxtime) of the displayed period. """
 
-        return (self._period.GetStart() , self._period.GetEnd() )
+        return self._period.GetStart() , self._period.GetEnd()
 
-    # End GetPeriodValues
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def SetPeriodValues(self, start, end):
         """ Return a tuple with (mintime,maxtime) of the displayed period. """
 
-        self._period.Update( start,end )
+        self._period.Update(start, end)
         self._updatedPeriod()
         self.RequestRedraw()
 
-        self.DisplayPeriodInStatusbar(self._period.GetStart(),self._period.GetEnd())
+        self.DisplayPeriodInStatusbar(self._period.GetStart(),
+                                      self._period.GetEnd())
 
-    # End SetPeriodValues
-    #-------------------------------------------------------------------------
-
-
-
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     # Callbacks to MOUSE events
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def onSelectionRange(self, event):
         """ The period selection was changed by an object. """
@@ -547,21 +486,19 @@ class DisplayCtrl( wx.Window ):
         for i in range(self._xfiles.GetSize()):
             obj = self._xfiles.GetObject(i)
             if idt == obj.GetId():
-                (x1,x2) = obj.GetCurrentMouseSelection()
-                s = self._getTimeValue(x1,self.GetSize()[1])
-                e = self._getTimeValue(x2,self.GetSize()[1])
+                (x1, x2) = obj.GetCurrentMouseSelection()
+                s = self._getTimeValue(x1, self.GetSize()[1])
+                e = self._getTimeValue(x2, self.GetSize()[1])
                 # Report on the ruler indicators...
-                period = DataPeriod(s,e)
+                period = DataPeriod(s, e)
                 self.SetPeriod(period)
 
-    # End onSelectionRange
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def onSelectedObject(self, event):
         """ Event handler used by an object when it is selected. """
 
-        idt  = event.GetId()
+        idt = event.GetId()
         ctrl = event.GetEventObject()
 
         for i in range(self._xfiles.GetSize()):
@@ -569,14 +506,10 @@ class DisplayCtrl( wx.Window ):
             if idt == obj.GetId() or ctrl == obj:
                 self.SetSelectedObject(obj)
 
-    # End onSelectedObject
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def onMouseEvents(self, event):
-        """
-        Event handler used when the mouse is operated.
-        """
+        """Event handler used when the mouse is operated."""
 
         if event.Entering():
             pass
@@ -638,9 +571,7 @@ class DisplayCtrl( wx.Window ):
 
         event.Skip()
 
-    # End onMouseEvents
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def onMouseMotion(self, event):
         """
@@ -648,9 +579,7 @@ class DisplayCtrl( wx.Window ):
         """
         self.DisplayMousePosition(event.X, event.Y)
 
-    # End onMouseMotion
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def onMouseLeftDown(self, event):
         """
@@ -658,9 +587,7 @@ class DisplayCtrl( wx.Window ):
         """
         self._mousescroll = wx.Point(event.X,event.Y)
 
-    # End onMouseLeftDown
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def onMouseLeftUp(self,event):
         """
@@ -672,8 +599,8 @@ class DisplayCtrl( wx.Window ):
 
         if self._mousescroll is not None:
             # this is an approximation (do not take into account the left pane)
-            w,h = self.GetSize()
-            (_x,_y) = mousePt
+            w, h = self.GetSize()
+            (_x, _y) = mousePt
             coeff = float(self._mousescroll.x - _x) / float(w)
             # update the navig panel (it will do everything)
             try:
@@ -685,9 +612,7 @@ class DisplayCtrl( wx.Window ):
         self.SetSelectedObject(None)
         self.RequestRedraw()
 
-    # End onMouseLeftUp
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def onMouseDragging(self, event):
         """
@@ -695,8 +620,8 @@ class DisplayCtrl( wx.Window ):
         """
         if self._mousescroll is not None:
             # this is an approximation (do not take into account the left pane)
-            w,h = self.GetSize()
-            (_x,_y) = wx.Point(event.GetX(), event.GetY())
+            w, h = self.GetSize()
+            (_x, _y) = wx.Point(event.GetX(), event.GetY())
             coeff = float(self._mousescroll.x - _x) / float(w)
             try:
                 self.GetParent().GetNavigPanel().SetNewPeriod(1.0+coeff, "scroll")
@@ -705,29 +630,25 @@ class DisplayCtrl( wx.Window ):
             # Show changes
             self.RequestRedraw()
             self._mousescroll = wx.Point(event.GetX(), event.GetY())
-
-    # End onMouseDragging
-    #-------------------------------------------------------------------------
-
-
-    #-------------------------------------------------------------------------
+            
+    # ------------------------------------------------------------------------
     # Display management -- Vertical Zoom --
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def ZoomUp(self):
-        self.SetVertZoom( 1.0 + self._prefsIO.GetValue('D_V_ZOOM')/100.0 )
+        self.SetVertZoom(1.0 + self._prefsIO.GetValue('D_V_ZOOM')/100.0)
 
+    # ------------------------------------------------------------------------
 
     def ZoomDown(self):
-        self.SetVertZoom( 1.0 - self._prefsIO.GetValue('D_V_ZOOM')/100.0 )
+        self.SetVertZoom(1.0 - self._prefsIO.GetValue('D_V_ZOOM')/100.0)
 
+    # ------------------------------------------------------------------------
 
     def SetVertZoom(self, z):
-        """
-        Apply a vertical zoom to all objects or only on the selected (if any).
+        """Apply a vertical zoom to all objects or only on the selected (if any).
 
-        @param z (float) is a zoom coefficient (typical values are ranging from 0.5 to 1.5).
+        :param z: (float) is a zoom coefficient (typical values are ranging from 0.5 to 1.5).
 
         """
         if z == 1.0 or z < 0.0 or z > 2.0:
@@ -738,26 +659,20 @@ class DisplayCtrl( wx.Window ):
         for i in range(self._xfiles.GetSize()):
             obj = self._xfiles.GetObject(i)
             if obj.IsSelected() or selected is None:
-                obj.VertZoom( z )
+                obj.VertZoom(z)
 
         self.RequestRedraw()
 
-    # End SetVertZoom
-    #-------------------------------------------------------------------------
-
-
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     # DC management (draw, redraw, resize, refresh, ...)
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def InitBuffer(self):
-        """
-        Initialize the bitmap used for buffering the display.
-        """
-        w,h = self.GetSize()
+        """Initialize the bitmap used for buffering the display."""
+        
+        w, h = self.GetSize()
 
-        self._buffer = wx.EmptyBitmap(max(1,w),max(1,h))
+        self._buffer = wx.EmptyBitmap(max(1, w), max(1, h))
         dc = wx.BufferedDC(None, self._buffer)
         dc.SetBackground(wx.Brush(self._prefsIO.GetValue('W_BG_COLOUR')))
         dc.Clear()
@@ -766,30 +681,24 @@ class DisplayCtrl( wx.Window ):
         del dc  # commits all drawing to the buffer
         self._reInitBuffer = False
 
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def RequestRedraw(self):
-        """
-        Requests a redraw of the drawing panel contents.
+        """Requests a redraw of the drawing panel contents.
 
         The actual redrawing doesn't happen until the next idle time.
+        
         """
         self._reInitBuffer = True
 
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def onSize(self, event):
-        """
-        Event handler used when the window has been resized.
-        """
+        """Event handler used when the window has been resized."""
         self.Layout()
         self.RequestRedraw()
 
-    # End onSize
     # ------------------------------------------------------------------------
-
 
     def onIdle(self, event):
         """
@@ -797,35 +706,28 @@ class DisplayCtrl( wx.Window ):
         buffering to match the window size.  We do it in Idle time so
         there is only one refresh after resizing is done, not lots while
         it is happening.
+        
         """
         if self._reInitBuffer and self.IsShown():
             self.InitBuffer()
             self.Refresh(False)
 
-    # onIdle
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def onPaint(self, event):
-        """
-        Called when the window is exposed.
-        """
+        """ Called when the window is exposed. """
         dc = wx.BufferedPaintDC(self, self._buffer)
 
-    # onPaint
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def Draw(self):
-        """
-        Draw all the objects on the DC.
-        """
+        """Draw all the objects on the DC."""
         if self._xfiles.GetSize() == 0:
             return
 
         size = self.GetSize()
-        w,h = size.width, size.height
-        x,y = 0,0
+        w, h = size.width, size.height
+        x, y = 0, 0
 
         # The objects
         for i in range(self._xfiles.GetSize()):
@@ -834,9 +736,9 @@ class DisplayCtrl( wx.Window ):
             if dcobj is None:
                 continue
             try:
-                logging.debug('DisplayCtrl.draw. %s, y=%d'%(self._xfiles.GetFilename(i),y))
-                (wo,ho) = dcobj.GetSize()
-                dcobj.MoveWindow( wx.Point(x,y) , wx.Size(w,ho) )
+                logging.debug('DisplayCtrl.draw. %s, y=%d'%(self._xfiles.GetFilename(i), y))
+                (wo, ho) = dcobj.GetSize()
+                dcobj.MoveWindow(wx.Point(x,y) , wx.Size(w,ho))
                 h = dcobj.GetHeight()
             except Exception as e:
                 logging.info(' * * * * Error while drawing * * *  ... %s ' % str(e))
@@ -845,42 +747,38 @@ class DisplayCtrl( wx.Window ):
 
         self._ymax = y
 
-    # End DrawObjects
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def GetImage(self):
         """ Return the drawer as an image, or None. """
 
         rect = self.GetParent().GetRect()
         client_x, client_y = self.ClientToScreen((0,0))
-        logging.info('Take a snap shot of the display: %d,%d,%d,%d ; %d,%d'%(rect.x, rect.y,rect.width,rect.height,client_x,client_y))
-        (rect.x,rect.y) = self.ClientToScreenXY(rect.x, rect.y)
+        logging.info('Take a snap shot of the display: %d,%d,%d,%d ; '
+                     '%d,%d' % (rect.x, rect.y, rect.width, rect.height, 
+                                client_x, client_y))
+        (rect.x, rect.y) = self.ClientToScreenXY(rect.x, rect.y)
 
         return TakeScreenShot(rect, client_x, client_y)
 
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def DisplayMousePosition(self, x, y):
-        """
-        Display the time value corresponding to the mouse position
+        """Display the time value corresponding to the mouse position
         in the parent statusbar.
+        
         """
         size = self.GetSize()
-        w,h = size.width, size.height
-        t = self._getTimeValue(x,w)
-        if t>=0:
-            self.DisplayMouseInStatusbar( t )
+        w, h = size.width, size.height
+        t = self._getTimeValue(x, w)
+        if t >= 0:
+            self.DisplayMouseInStatusbar(t)
         else:
             self.DisplayMouseInStatusbar('...')
 
-    #-------------------------------------------------------------------------
-
-
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     # EVENT CALLBACKS
-    #-------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def onClose(self, event):
         """
@@ -894,66 +792,60 @@ class DisplayCtrl( wx.Window ):
             dcobj = self._xfiles.GetObject(i)
             if dcobj is not None:
                 # ask the control to close itself
-                wx.PostEvent(dcobj.GetEventHandler(), wx.PyCommandEvent(wx.EVT_CLOSE.typeId, dcobj.GetId()))
+                wx.PostEvent(dcobj.GetEventHandler(), 
+                             wx.PyCommandEvent(wx.EVT_CLOSE.typeId, dcobj.GetId()))
                 dcobj.Destroy()
 
         self.Destroy()
 
-    # End Close
     # ------------------------------------------------------------------------
-
 
     # =====================
     # == Private Methods ==
     # =====================
 
-
     def _objSetPreferences(self, obj):
         """ Set current preferences to any spControl object. """
 
         if isinstance(obj,TimeRulerCtrl):
-            obj.SetBackgroundColour( self._prefsIO.GetValue( 'R_BG_COLOUR' ) )
-            obj.SetForegroundColour( self._prefsIO.GetValue( 'R_FG_COLOUR' ) )
-            obj.SetTicksColour( self._prefsIO.GetValue( 'R_FG_COLOUR' ) )
-            obj.SetFont(self._prefsIO.GetValue( 'R_FONT' ) )
-            obj.SetHandlesColour( self._prefsIO.GetValue( 'R_HANDLES_COLOUR' ) )
-            obj.SetTextColour( self._prefsIO.GetValue( 'R_FONT_COLOUR' ) )
-            obj.SetHeight( self._prefsIO.GetValue( 'R_HEIGHT' ))
+            obj.SetBackgroundColour(self._prefsIO.GetValue('R_BG_COLOUR'))
+            obj.SetForegroundColour(self._prefsIO.GetValue('R_FG_COLOUR'))
+            obj.SetTicksColour(self._prefsIO.GetValue('R_FG_COLOUR'))
+            obj.SetFont(self._prefsIO.GetValue('R_FONT'))
+            obj.SetHandlesColour(self._prefsIO.GetValue('R_HANDLES_COLOUR'))
+            obj.SetTextColour(self._prefsIO.GetValue('R_FONT_COLOUR'))
+            obj.SetHeight(self._prefsIO.GetValue('R_HEIGHT'))
 
-        if isinstance(obj,TranscriptionCtrl):
-            obj.SetForegroundColour( self._prefsIO.GetValue( 'T_FG_COLOUR') )
-            obj.SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR') )
-            obj.SetTierBackgroundColour( self._prefsIO.GetValue( 'T_BG_COLOUR' ) )
-            obj.SetTextAlign( self._prefsIO.GetValue( 'T_LABEL_ALIGN' ) )
-            obj.SetHandlesColour( self._prefsIO.GetValue( 'T_HANDLES_COLOUR' ) )
-            obj.SetPointColour( self._prefsIO.GetValue( 'T_RADIUS_COLOUR' ) )
-            obj.SetFont( self._prefsIO.GetValue( 'T_FONT') )
-            obj.SetTextColour( self._prefsIO.GetValue( 'T_FONT_COLOUR') )
+        if isinstance(obj, TranscriptionCtrl):
+            obj.SetForegroundColour(self._prefsIO.GetValue('T_FG_COLOUR'))
+            obj.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
+            obj.SetTierBackgroundColour(self._prefsIO.GetValue('T_BG_COLOUR'))
+            obj.SetTextAlign(self._prefsIO.GetValue('T_LABEL_ALIGN'))
+            obj.SetHandlesColour(self._prefsIO.GetValue('T_HANDLES_COLOUR'))
+            obj.SetPointColour(self._prefsIO.GetValue('T_RADIUS_COLOUR'))
+            obj.SetFont(self._prefsIO.GetValue('T_FONT'))
+            obj.SetTextColour(self._prefsIO.GetValue('T_FONT_COLOUR'))
             # tier height ???
 
-        if isinstance(obj,WaveCtrl):
-            obj.SetForegroundColour( self._prefsIO.GetValue( 'W_FG_COLOUR') )
-            obj.SetBackgroundColour( self._prefsIO.GetValue( 'W_BG_COLOUR') )
-            obj.SetAutoAdjust( self._prefsIO.GetValue( 'W_AUTOSCROLL' ) )
-            obj.SetAutoColor( self._prefsIO.GetValue( 'W_FG_DISCO' ) )
-            obj.SetHandlesColour( self._prefsIO.GetValue( 'W_HANDLES_COLOUR' ) )
-            obj.SetBackgroundGradientColour( self._prefsIO.GetValue( 'W_BG_GRADIENT_COLOUR' ) )
-            obj.SetFont( self._prefsIO.GetValue( 'W_FONT') )
-            obj.SetTextColour( self._prefsIO.GetValue( 'W_FONT_COLOUR') )
+        if isinstance(obj, WaveCtrl):
+            obj.SetForegroundColour(self._prefsIO.GetValue('W_FG_COLOUR'))
+            obj.SetBackgroundColour(self._prefsIO.GetValue('W_BG_COLOUR'))
+            obj.SetAutoAdjust(self._prefsIO.GetValue('W_AUTOSCROLL'))
+            obj.SetAutoColor(self._prefsIO.GetValue('W_FG_DISCO'))
+            obj.SetHandlesColour(self._prefsIO.GetValue('W_HANDLES_COLOUR'))
+            obj.SetBackgroundGradientColour(self._prefsIO.GetValue('W_BG_GRADIENT_COLOUR'))
+            obj.SetFont(self._prefsIO.GetValue('W_FONT'))
+            obj.SetTextColour(self._prefsIO.GetValue('W_FONT_COLOUR'))
             # channel height ???
 
-    # End _objSetPreferences
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def _updatedPeriod(self):
         for i in range(self._xfiles.GetSize()):
             obj = self._xfiles.GetObject(i)
-            obj.SetTime( self._period.GetStart(),self._period.GetEnd() )
+            obj.SetTime(self._period.GetStart(),self._period.GetEnd())
 
-    # End _updatePeriod
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def _updateRulerIndicators(self, period):
         # update the ruler selection period, depending on the new period.
@@ -961,10 +853,10 @@ class DisplayCtrl( wx.Window ):
         start = period.GetStart()
         end = period.GetEnd()
 
-        self._timeruler.SetPlayerIndicatorValue( start )
+        self._timeruler.SetPlayerIndicatorValue(start)
 
         selstart = self._timeruler.GetSelectionIndicatorMinValue()
-        selend   = self._timeruler.GetSelectionIndicatorMaxValue()
+        selend = self._timeruler.GetSelectionIndicatorMaxValue()
         if selstart >= start and selend <= end:
             return
 
@@ -972,7 +864,7 @@ class DisplayCtrl( wx.Window ):
         if selend > start or selstart > end:
             # selection is outside the period
             selstart = start+quart
-            selend   = end-quart
+            selend = end-quart
         elif selstart < start:
             # selection overlaps at start
             selstart = start
@@ -984,11 +876,9 @@ class DisplayCtrl( wx.Window ):
             if selend <= selstart:
                 selstart = selend - quart
 
-        self._timeruler.SetSelectionIndicatorValues( selstart , selend )
+        self._timeruler.SetSelectionIndicatorValues(selstart, selend)
 
-    # End _updateRulerIndicators
-    #-------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def _getTimeValue(self, x, w):
         """
@@ -1006,8 +896,4 @@ class DisplayCtrl( wx.Window ):
                 if pos == wx.ALIGN_LEFT:
                     xx = x - panew
 
-        return self._period.PixelsToDuration(xx,ww)
-
-    # ------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------
+        return self._period.PixelsToDuration(xx, ww)

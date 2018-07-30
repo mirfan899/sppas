@@ -65,6 +65,12 @@ class sppasMetaData(object):
 
     # -----------------------------------------------------------------------
 
+    def gen_id(self):
+        """ Re-generate an 'id'. """
+        self.__metadata['id'] = sppasGUID().get()
+
+    # -----------------------------------------------------------------------
+
     def is_meta_key(self, entry):
         """ Check if an entry is a key in the list of metadata.
 

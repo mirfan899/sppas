@@ -49,11 +49,7 @@ import wx.media
 import logging
 
 from sppas.src.ui.wxgui.sp_icons import TIER_CHECK
-from sppas.src.ui.wxgui.sp_icons import TIER_INFO
-from sppas.src.ui.wxgui.sp_icons import TIER_SEARCH
 from sppas.src.ui.wxgui.sp_icons import TIER_CHECK_DISABLED
-from sppas.src.ui.wxgui.sp_icons import TIER_INFO_DISABLED
-from sppas.src.ui.wxgui.sp_icons import TIER_SEARCH_DISABLED
 
 from sppas.src.ui.wxgui.sp_icons import NAV_GO_START_ICON
 from sppas.src.ui.wxgui.sp_icons import NAV_GO_PREVIOUS_ICON
@@ -77,10 +73,8 @@ from sppas.src.ui.wxgui.ui.trsctrl import TranscriptionCtrl
 from sppas.src.ui.wxgui.ui.wavectrl import WaveCtrl
 
 from sppas.src.ui.wxgui.dialogs.choosers import PeriodChooser
-from sppas.src.ui.wxgui.dialogs.trsinfodialog import TrsInfoDialog
 from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
 
-from sppas.src.ui.wxgui.views.search import SearchDialog, spEVT_SEARCHED
 from sppas.src.ui.wxgui.panels.sndplayer import SndPlayer
 from sppas.src.ui.wxgui.structs.theme import sppasTheme
 from sppas.src.ui.wxgui.structs.prefs import Preferences
@@ -102,26 +96,22 @@ ZOOM_OUT_ID = wx.NewId()
 # ----------------------------------------------------------------------------
 
 
-class SppasEditClient( BaseClient ):
-    """
+class SppasEditClient(BaseClient):
+    """This class manages the pages of a notebook with all opened files.
+
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: This class is used to display the opened files.
-
-    This class manages the pages of a notebook with all opened files.
 
     Each page (except if empty...) contains an instance of a SppasEdit.
 
     """
 
-    def __init__( self, parent, prefsIO ):
-        BaseClient.__init__( self, parent, prefsIO )
+    def __init__(self, parent, prefsIO):
+        BaseClient.__init__(self, parent, prefsIO)
         self._update_members()
 
-    # End __init__
     # ------------------------------------------------------------------------
-
 
     def _update_members(self):
         """
@@ -129,42 +119,36 @@ class SppasEditClient( BaseClient ):
         """
         self._multiplefiles = True
         # Quick and dirty solution to communicate with the file manager:
-        self._prefsIO.SetValue( 'F_CCB_MULTIPLE', t='bool', v=True, text='')
+        self._prefsIO.SetValue('F_CCB_MULTIPLE', t='bool', v=True, text='')
 
-    # End _update_members
     # ------------------------------------------------------------------------
 
-
-    def CreateComponent(self, parent, prefsIO ):
+    def CreateComponent(self, parent, prefsIO):
         return SppasEdit(parent, prefsIO)
-
-    # ------------------------------------------------------------------------
-
 
 # ----------------------------------------------------------------------------
 # The Component is the content of one page of the notebook.
 # ----------------------------------------------------------------------------
 
 
-class SppasEdit( wx.Panel ):
-    """
+class SppasEdit(wx.Panel):
+    """used to display all opened files.
+
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: This class is used to display all opened files.
 
     """
-
     def __init__(self, parent, prefsIO):
         """
         Constructor.
         """
         wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
-        sizer = wx.BoxSizer( wx.VERTICAL )
+        sizer = wx.BoxSizer(wx.VERTICAL)
 
         # members
         self._prefsIO = self._check_prefs(prefsIO)
-        self._xfiles  = xFiles()
+        self._xfiles = xFiles()
 
         # the display panel
         dp = self._set_display()
@@ -177,22 +161,18 @@ class SppasEdit( wx.Panel ):
 
         # events
 
-        self.Bind(wx.EVT_SIZE,      self.OnSize)
+        self.Bind(wx.EVT_SIZE, self.OnSize)
         self.GetTopLevelParent().Bind(wx.EVT_CHAR_HOOK, self.OnKeyPress)
 
-        self.Bind(spEVT_FILE_WANDER,     self.OnFileWander)
-        self.Bind(spEVT_SETTINGS,        self.OnSettings)
+        self.Bind(spEVT_FILE_WANDER, self.OnFileWander)
+        self.Bind(spEVT_SETTINGS, self.OnSettings)
         self.Bind(spEVT_OBJECT_SELECTED, self.OnObjectSelected)
 
-        self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
+        self.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
 
         self.SetSizer(sizer)
-        self.SetAutoLayout( True )
+        self.SetAutoLayout(True)
         self.Layout()
-
-    # End __init__
-    # ------------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------------
     # GUI construction
@@ -201,18 +181,18 @@ class SppasEdit( wx.Panel ):
     def _set_display(self):
         """ Set the display panel. """
 
-        self._displayctrl = DisplayCtrl(self, id=-1, pos=(10,80), size=wx.Size(400,160), prefsIO=self._prefsIO)
+        self._displayctrl = DisplayCtrl(self, id=-1, pos=(10, 80), size=wx.Size(400, 160), prefsIO=self._prefsIO)
         return self._displayctrl
 
 
     def _set_navigation(self):
         """ Set all panels: transcription, media and navigate. """
 
-        sp = wx.BoxSizer( wx.HORIZONTAL )
+        sp = wx.BoxSizer(wx.HORIZONTAL)
 
-        self._trans = TrsPanel( self, self._prefsIO )
-        self._media = MediaPanel( self, self._prefsIO )
-        self._navig = NavigatePanel( self, self._prefsIO )
+        self._trans = TrsPanel(self, self._prefsIO)
+        self._media = MediaPanel(self, self._prefsIO)
+        self._navig = NavigatePanel(self, self._prefsIO)
 
         sp.Add(self._trans, 0, wx.LEFT|wx.TOP|wx.BOTTOM|wx.EXPAND, border=2)
         sp.AddStretchSpacer(1)
@@ -222,15 +202,13 @@ class SppasEdit( wx.Panel ):
 
         sp.Add(self._navig, 0, wx.RIGHT|wx.TOP|wx.BOTTOM|wx.EXPAND, border=2)
 
-        self._trans.SetDisplay( self._displayctrl )
-        self._media.SetDisplay( self._displayctrl )
-        self._navig.SetDisplay( self._displayctrl )
+        self._trans.SetDisplay(self._displayctrl)
+        self._media.SetDisplay(self._displayctrl)
+        self._navig.SetDisplay(self._displayctrl)
 
         return sp
 
-    # End _set_navigation
     # ------------------------------------------------------------------------
-
 
     def _check_prefs(self, prefs):
         """
@@ -238,15 +216,15 @@ class SppasEdit( wx.Panel ):
         Return the new version.
         """
         if prefs is None:
-            prefs = Preferences( sppasTheme() )
+            prefs = Preferences(sppasTheme())
         else:
             try:
-                prefs.GetValue( 'M_BG_COLOUR' )
-                prefs.GetValue( 'M_FG_COLOUR' )
-                prefs.GetValue( 'M_FONT' )
-                prefs.GetValue( 'M_ICON_THEME' )
+                prefs.GetValue('M_BG_COLOUR')
+                prefs.GetValue('M_FG_COLOUR')
+                prefs.GetValue('M_FONT')
+                prefs.GetValue('M_ICON_THEME')
             except Exception:
-                self._prefsIO.SetTheme( sppasTheme() )
+                self._prefsIO.SetTheme(sppasTheme())
                 prefs = self._prefsIO
 
         prefs.SetValue('SND_INFO',       'bool', True)
@@ -260,13 +238,9 @@ class SppasEdit( wx.Panel ):
 
         return prefs
 
-    # ----------------------------------------------------------------------
-
-
     # ------------------------------------------------------------------------
     # Callbacks
     # ------------------------------------------------------------------------
-
 
     def OnSettings(self, event):
         """
@@ -276,25 +250,20 @@ class SppasEdit( wx.Panel ):
         self._prefsIO = event.prefsIO
 
         # Apply the changes on self
-        wx.Window.SetBackgroundColour( self,self._prefsIO.GetValue( 'M_BG_COLOUR' ) )
-        wx.Window.SetForegroundColour( self,self._prefsIO.GetValue( 'M_FG_COLOUR' ) )
-        wx.Window.SetFont( self,self._prefsIO.GetValue( 'M_FONT' ) )
+        wx.Window.SetBackgroundColour(self, self._prefsIO.GetValue('M_BG_COLOUR'))
+        wx.Window.SetForegroundColour(self, self._prefsIO.GetValue('M_FG_COLOUR'))
+        wx.Window.SetFont(self, self._prefsIO.GetValue('M_FONT'))
 
         # Apply on panels of self
-        self._trans.SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ) )
-        self._media.SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ) )
-        self._navig.SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ) )
+        self._trans.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
+        self._media.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
+        self._navig.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
 
-        self._displayctrl.SetPreferences( self._prefsIO )
-
-    # End OnSettings
-    # ------------------------------------------------------------------------
-
+        self._displayctrl.SetPreferences(self._prefsIO)
 
     # ------------------------------------------------------------------------
     # Callbacks to keyboard events
     # ------------------------------------------------------------------------
-
 
     def OnKeyPress(self, event):
         """
@@ -319,10 +288,10 @@ class SppasEdit( wx.Panel ):
 
         # Transcription
         # CTRL+F -> Search
-        if keycode == ord('F') and event.ControlDown():
-            self._trans.onSearch( event )
-        elif keycode == ord('G') and event.ControlDown():
-            self._trans.onSearch( event )
+        # if keycode == ord('F') and event.ControlDown():
+        #     self._trans.onSearch(event)
+        # elif keycode == ord('G') and event.ControlDown():
+        #     self._trans.onSearch(event)
 
         # Media player
         # TAB -> PLay
@@ -331,25 +300,21 @@ class SppasEdit( wx.Panel ):
         # F1 -> Pause
         # ESC -> Stop
         elif keycode == wx.WXK_TAB and event.ShiftDown():
-            self._media.onNext( event )
+            self._media.onNext(event)
         elif keycode == wx.WXK_TAB and event.ControlDown():
-            self._media.onRewind( event )
+            self._media.onRewind(event)
         elif keycode == wx.WXK_TAB:
-            self._media.onPlay( event )
+            self._media.onPlay(event)
         elif keycode == wx.WXK_F1:
-            self._media.onPause( event )
+            self._media.onPause(event)
         elif keycode == wx.WXK_ESCAPE:
-            self._media.onStop( event )
+            self._media.onStop(event)
 
         event.Skip()
 
     # ------------------------------------------------------------------------
-
-
-    # ------------------------------------------------------------------------
     # Callbacks
     # ------------------------------------------------------------------------
-
 
     def OnFileWander(self, event):
         """
@@ -360,7 +325,7 @@ class SppasEdit( wx.Panel ):
 
         if s is True:
             try:
-                self._displayctrl.SetData( event.filename )
+                self._displayctrl.SetData(event.filename)
             except Exception as e:
                 #import traceback
                 #print(traceback.format_exc())
@@ -373,11 +338,9 @@ class SppasEdit( wx.Panel ):
             self.Refresh()
             evt = FileWanderEvent(filename=f, status=False)
             evt.SetEventObject(self)
-            wx.PostEvent( self.GetParent().GetParent().GetParent(), evt )
+            wx.PostEvent(self.GetParent().GetParent().GetParent(), evt)
 
-    # End OnFileWander
     # ------------------------------------------------------------------------
-
 
     def OnObjectSelected(self, event):
         """
@@ -402,10 +365,6 @@ class SppasEdit( wx.Panel ):
         self.Layout()
         self.Refresh()
 
-    # End OnSize
-    # ------------------------------------------------------------------------
-
-
     # ------------------------------------------------------------------------
 
     def GetNavigPanel(self):
@@ -417,29 +376,20 @@ class SppasEdit( wx.Panel ):
     def GetMediaPanel(self):
         return self._media
 
-    # ------------------------------------------------------------------------
-
-
 # ----------------------------------------------------------------------------
 
 
+class NavigatePanel(wx.Panel):
+    """It is used to change the displayed time period.
 
-
-class NavigatePanel( wx.Panel ):
-    """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL
-    @summary: This class is used to display a time-navigation panel.
-
-    It is used to change the displayed time period.
 
     """
-
     def __init__(self, parent, prefsIO):
-        """
-        Constructor.
-        """
+        """Constructor."""
+
         wx.Panel.__init__(self, parent, style=wx.NO_BORDER)
         gbs = wx.GridBagSizer(hgap=5, vgap=5)
 
@@ -454,17 +404,17 @@ class NavigatePanel( wx.Panel ):
         theme = self._prefsIO.GetValue('M_ICON_THEME')
         bgcolour = self._prefsIO.GetValue('M_BG_COLOUR')
         tbsize = self._prefsIO.GetValue('M_TOOLBAR_ICONSIZE')
-        self._buttons['gostart'] = CreateButton( self, spBitmap(NAV_GO_START_ICON, tbsize, theme),    self.onGoStart, gbs, colour=bgcolour)
-        self._buttons['goback']  = CreateButton( self, spBitmap(NAV_GO_PREVIOUS_ICON, tbsize, theme), self.onGoBack,  gbs, colour=bgcolour)
-        self._buttons['gonext']  = CreateButton( self, spBitmap(NAV_GO_NEXT_ICON, tbsize, theme),     self.onGoNext,  gbs, colour=bgcolour)
-        self._buttons['goend']   = CreateButton( self, spBitmap(NAV_GO_END_ICON, tbsize, theme),      self.onGoEnd,   gbs, colour=bgcolour)
-        self._buttons['fitsel']  = CreateButton( self, spBitmap(NAV_FIT_SELECTION_ICON, tbsize, theme), self.onFitSelection, gbs, colour=bgcolour)
+        self._buttons['gostart'] = CreateButton(self, spBitmap(NAV_GO_START_ICON, tbsize, theme),    self.onGoStart, gbs, colour=bgcolour)
+        self._buttons['goback']  = CreateButton(self, spBitmap(NAV_GO_PREVIOUS_ICON, tbsize, theme), self.onGoBack,  gbs, colour=bgcolour)
+        self._buttons['gonext']  = CreateButton(self, spBitmap(NAV_GO_NEXT_ICON, tbsize, theme),     self.onGoNext,  gbs, colour=bgcolour)
+        self._buttons['goend']   = CreateButton(self, spBitmap(NAV_GO_END_ICON, tbsize, theme),      self.onGoEnd,   gbs, colour=bgcolour)
+        self._buttons['fitsel']  = CreateButton(self, spBitmap(NAV_FIT_SELECTION_ICON, tbsize, theme), self.onFitSelection, gbs, colour=bgcolour)
 
-        self._buttons['hzoom']    = CreateButton( self, spBitmap(NAV_PERIOD_ZOOM_ICON, tbsize, theme),    self.onPeriodZoom, gbs, colour=bgcolour)
-        self._buttons['hzoomin']  = CreateButton( self, spBitmap(NAV_PERIOD_ZOOM_IN_ICON, tbsize, theme), self.onPeriodZoomIn, gbs, colour=bgcolour)
-        self._buttons['hzoomout'] = CreateButton( self, spBitmap(NAV_PERIOD_ZOOM_OUT_ICON, tbsize, theme),self.onPeriodZoomOut,gbs, colour=bgcolour)
-        self._buttons['vzoomin']  = CreateButton( self, spBitmap(NAV_VIEW_ZOOM_IN_ICON, tbsize, theme),   self.onViewZoomIn,   gbs, colour=bgcolour)
-        self._buttons['vzoomout'] = CreateButton( self, spBitmap(NAV_VIEW_ZOOM_OUT_ICON, tbsize, theme),  self.onViewZoomOut,  gbs, colour=bgcolour)
+        self._buttons['hzoom']    = CreateButton(self, spBitmap(NAV_PERIOD_ZOOM_ICON, tbsize, theme),    self.onPeriodZoom, gbs, colour=bgcolour)
+        self._buttons['hzoomin']  = CreateButton(self, spBitmap(NAV_PERIOD_ZOOM_IN_ICON, tbsize, theme), self.onPeriodZoomIn, gbs, colour=bgcolour)
+        self._buttons['hzoomout'] = CreateButton(self, spBitmap(NAV_PERIOD_ZOOM_OUT_ICON, tbsize, theme),self.onPeriodZoomOut,gbs, colour=bgcolour)
+        self._buttons['vzoomin']  = CreateButton(self, spBitmap(NAV_VIEW_ZOOM_IN_ICON, tbsize, theme),   self.onViewZoomIn,   gbs, colour=bgcolour)
+        self._buttons['vzoomout'] = CreateButton(self, spBitmap(NAV_VIEW_ZOOM_OUT_ICON, tbsize, theme),  self.onViewZoomOut,  gbs, colour=bgcolour)
 
         # button placement in the sizer
         gbs.Add(self._buttons['gostart'],(0,0), flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=1)
@@ -480,66 +430,49 @@ class NavigatePanel( wx.Panel ):
         gbs.Add(self._buttons['vzoomin'], (0,8), flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=1)
         gbs.Add(self._buttons['vzoomout'],(0,9), flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=1)
 
-        self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
+        self.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
 
-        self.SetSizer( gbs )
-        self.SetAutoLayout( True )
+        self.SetSizer(gbs)
+        self.SetAutoLayout(True)
         self.Layout()
-
-    # End __init__
-    # ------------------------------------------------------------------------
-
-
 
     # ------------------------------------------------------------------------
     # Callbacks for Scrolling...
     # ------------------------------------------------------------------------
 
-
     def onGoStart(self, event):
         """
         Go at the beginning (change time period).
         """
-        self.SetNewPeriod( 1.0, "start" )
+        self.SetNewPeriod(1.0, "start")
 
-    # End onGoStart
     # ------------------------------------------------------------------------
-
 
     def onGoBack(self, event):
         """
         Go backward (change time period).
         """
-        self.SetNewPeriod( 1.0 - self._scrollcoef/100.0, "scroll" )
+        self.SetNewPeriod(1.0 - self._scrollcoef/100.0, "scroll")
 
-    # End onGoBack
     # ------------------------------------------------------------------------
-
 
     def onGoNext(self, event):
         """
         Go forward (change time period).
         """
-        self.SetNewPeriod( 1.0 + self._scrollcoef/100.0, "scroll" )
+        self.SetNewPeriod(1.0 + self._scrollcoef/100.0, "scroll")
 
-    # End onGoNext
     # ------------------------------------------------------------------------
-
 
     def onGoEnd(self, event):
         """
         Go at the end of the drawing (change time period).
         """
-        self.SetNewPeriod( 1.0, "end" )
-
-    # End onGoEnd
-    # ------------------------------------------------------------------------
-
+        self.SetNewPeriod(1.0, "end")
 
     # ------------------------------------------------------------------------
     # Callbacks for Zooming...
     # ------------------------------------------------------------------------
-
 
     def onPeriodZoom(self, event):
         """
@@ -547,9 +480,9 @@ class NavigatePanel( wx.Panel ):
         """
         if self._display is None: return
 
-        dlg = PeriodChooser( self, self._prefsIO, self._display.GetPeriod().GetStart(), self._display.GetPeriod().GetEnd() )
+        dlg = PeriodChooser(self, self._prefsIO, self._display.GetPeriod().GetStart(), self._display.GetPeriod().GetEnd())
         if dlg.ShowModal() == wx.ID_OK:
-            (s,e) = dlg.GetValues()
+            (s, e) = dlg.GetValues()
             try:
                 s = float(s)
                 e = float(e)
@@ -557,33 +490,27 @@ class NavigatePanel( wx.Panel ):
                 logging.info('Zoom cancelled (can not be applied: from %f to %f).'%(s,e))
                 return
             (s,e) = self._display.GetPeriod().Check(float(s), float(e))
-            self._changedrawingperiod( s,e )
+            self._changedrawingperiod(s,e)
 
         dlg.Destroy()
 
-    # End onPeriodZoom
     # ------------------------------------------------------------------------
-
 
     def onPeriodZoomIn(self, event):
         """
         Reduce the displayed time period of the drawing.
         """
-        self.SetNewPeriod( 1.0 - self._zoomcoef/100.0, "zoom" )
+        self.SetNewPeriod(1.0 - self._zoomcoef/100.0, "zoom")
 
-    # End onPeriodZoomIn
     # ------------------------------------------------------------------------
-
 
     def onPeriodZoomOut(self, event):
         """
         Enlarge the displayed time period of the drawing.
         """
-        self.SetNewPeriod( 1.0 + self._zoomcoef/100.0, "zoom" )
+        self.SetNewPeriod(1.0 + self._zoomcoef/100.0, "zoom")
 
-    # End onPeriodZoomOut
     # ------------------------------------------------------------------------
-
 
     def onViewZoomIn(self, event):
         """
@@ -592,9 +519,7 @@ class NavigatePanel( wx.Panel ):
         if self._display is None: return
         self._display.ZoomUp()
 
-    # End onViewZoomIn
     # ------------------------------------------------------------------------
-
 
     def onViewZoomOut(self, event):
         """
@@ -603,9 +528,7 @@ class NavigatePanel( wx.Panel ):
         if self._display is None: return
         self._display.ZoomDown()
 
-    # End onViewZoomOut
     # ------------------------------------------------------------------------
-
 
     def onFitSelection(self, event):
         """
@@ -629,9 +552,7 @@ class NavigatePanel( wx.Panel ):
 
         self._display.Refresh()
 
-    # End onFitSelection
     # ------------------------------------------------------------------------
-
 
     def OnCenterSelection(self, event):
         """
@@ -642,49 +563,39 @@ class NavigatePanel( wx.Panel ):
         if self._display is None:
             return
 
-        ruler  = self._display.GetRuler()
+        ruler = self._display.GetRuler()
         period = self._display.GetPeriod()
 
-        selstart,selend = ruler.GetSelectionIndicatorValues()
-        start,end = period.GetStart(),period.GetEnd()
+        selstart, selend = ruler.GetSelectionIndicatorValues()
+        start, end = period.GetStart(), period.GetEnd()
         delta = period.Delta()
 
-        middle    = round(start + (end-start)/2.,           2)
+        middle = round(start + (end-start)/2.,           2)
         selmiddle = round(selstart + (selend-selstart)/2.,  2)
         if middle != selmiddle:
             start = selmiddle - delta/2.
-            end   = selmiddle + delta/2.
-            start,end = period.Check(start,end)
+            end = selmiddle + delta/2.
+            start, end = period.Check(start, end)
             self._changedrawingperiod(start, end)
             self._display.Refresh()
-
-    # End onCenterSelection
-    # ------------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------------
     # GUI...
     # ------------------------------------------------------------------------
-
 
     def SetBackgroundColour(self, colour):
         """
         Set the background color of this panel.
         """
 
-        wx.Window.SetBackgroundColour( self,colour )
+        wx.Window.SetBackgroundColour(self, colour)
         for b in self._buttons:
-            self._buttons[b].SetBackgroundColour( colour )
+            self._buttons[b].SetBackgroundColour(colour)
         self.Refresh()
-
-    # End SetBackgroundColour
-    # ------------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------------
     # Getters and Setters
     # ------------------------------------------------------------------------
-
 
     def SetNewPeriod(self, coeff, mode):
         """ Update the drawing period. """
@@ -693,19 +604,17 @@ class NavigatePanel( wx.Panel ):
 
         period = self._display.GetPeriod()
         if mode == "zoom":
-            start,end = period.Zoom( coeff )
+            start, end = period.Zoom(coeff)
         elif mode == "scroll":
-            start,end = period.Scroll( coeff )
+            start, end = period.Scroll(coeff)
         elif mode == "start":
-            start,end = period.ScrollToStart( )
+            start, end = period.ScrollToStart()
         elif mode == "end":
-            start,end = period.ScrollToEnd( )
+            start, end = period.ScrollToEnd()
 
-        self._changedrawingperiod(start,end)
+        self._changedrawingperiod(start, end)
 
-    # End SetNewPeriod
     # ------------------------------------------------------------------------
-
 
     def SetDisplay(self, drawing):
         """
@@ -713,78 +622,58 @@ class NavigatePanel( wx.Panel ):
         """
         self._display = drawing
 
-    # End SetDisplay
-    # -----------------------------------------------------------------------
-
-
     # ------------------------------------------------------------------------
     # Private
     # ------------------------------------------------------------------------
 
-
     def _changedrawingperiod(self, start, end):
         period = self._display.GetPeriod()
         if start != period.GetStart() or end != period.GetEnd():
-            period.Update(start,end)
-            self._display.SetPeriod( period )
-
-    # End _changedrawingperiod
-    # ------------------------------------------------------------------------
-
-
+            period.Update(start, end)
+            self._display.SetPeriod(period)
 
 # ----------------------------------------------------------------------------
 
 
+class TrsPanel(wx.Panel):
+    """This panel is used to manage transcription files.
 
-class TrsPanel( wx.Panel ):
-    """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: This class is used to display a transcription panel.
-
-    This panel is used to manage transcription files.
 
     """
-
     def __init__(self, parent, prefsIO):
         """ Create a new instance. """
 
         wx.Panel.__init__(self, parent, style=wx.NO_BORDER)
-        sizer = wx.BoxSizer( wx.HORIZONTAL )
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         # members
-        self._prefsIO  = prefsIO
-        self._display  = None
-        self._trsctrl  = None
-        self._buttons  = {}
-        self._search    = None
+        self._prefsIO = prefsIO
+        self._display = None
+        self._trsctrl = None
+        self._buttons = {}
 
         # create the buttons bar
         theme = self._prefsIO.GetValue('M_ICON_THEME')
         bgcolour = self._prefsIO.GetValue('M_BG_COLOUR')
         tbsize = self._prefsIO.GetValue('M_TOOLBAR_ICONSIZE')
-        self._buttons['tiercheck'] = CreateButton( self, spBitmap(TIER_CHECK_DISABLED, tbsize, theme),  self.onTierCheck,sizer, colour=bgcolour)
-        self._buttons['tierinfo']  = CreateButton( self, spBitmap(TIER_INFO_DISABLED, tbsize, theme),   self.onTierInfo, sizer, colour=bgcolour)
-        self._buttons['search']    = CreateButton( self, spBitmap(TIER_SEARCH_DISABLED, tbsize, theme), self.onSearch,   sizer, colour=bgcolour)
+        self._buttons['tiercheck'] = CreateButton(self, spBitmap(TIER_CHECK_DISABLED, tbsize, theme),
+                                                  self.onTierCheck,sizer, colour=bgcolour)
 
         # sizer
         sizer.Add(self._buttons['tiercheck'], 1, flag=wx.ALL, border=2)
-        sizer.Add(self._buttons['tierinfo'],  1, flag=wx.ALL, border=2)
-        sizer.Add(self._buttons['search'],    1, flag=wx.ALL, border=2)
 
-        self.Bind(spEVT_SEARCHED, self.onSearched)
-        self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
+        self.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
 
-        self.SetSizer( sizer )
-        self.SetAutoLayout( True )
+        self.SetSizer(sizer)
+        self.SetAutoLayout(True)
         self.Layout()
 
     # -------------------------------------------------------------------------
     # Callbacks
     # -------------------------------------------------------------------------
-
 
     def onTierCheck(self, event):
         """ Fix the list of tiers to Show/Hide. """
@@ -795,10 +684,10 @@ class TrsPanel( wx.Panel ):
         lst = self._trsctrl.GetTierNames()
         if len(lst) == 0: return # hum... just to be sure
 
-        dlg = wx.MultiChoiceDialog( self,
+        dlg = wx.MultiChoiceDialog(self,
                                    "Check the tiers to show:",
                                    "Tiers to show/hide", lst)
-        dlg.SetSelections( self._trsctrl.GetTierIdxChecked() )
+        dlg.SetSelections(self._trsctrl.GetTierIdxChecked())
 
         if dlg.ShowModal() == wx.ID_OK:
             # get the list of tiers' names that are checked
@@ -809,64 +698,9 @@ class TrsPanel( wx.Panel ):
                 ShowInformation(self, self._prefsIO, "At least one tier must be checked!", wx.ICON_INFORMATION)
             else:
                 # send the list to the trsctrl instance, then redraw
-                self._trsctrl.SetTierChecked( checked )
+                self._trsctrl.SetTierChecked(checked)
 
         dlg.Destroy()
-
-    # ------------------------------------------------------------------------
-
-    def onTierInfo(self, event):
-        """ Show details about the selected transcription file. """
-
-        if self._trsctrl is None: return
-
-        fname = self._display.GetSelectionFilename()
-        dlg = TrsInfoDialog( self, self._prefsIO, fname,  self._trsctrl.GetTranscription() )
-
-    # ------------------------------------------------------------------------
-
-    def onSearch(self, event):
-        """ Open a frame to search patterns into a tier. """
-
-        if self._trsctrl is None: return
-
-        try:
-            self._search.SetFocus()
-        except Exception:
-            self._search = None
-
-        focus = True
-        if self._search is not None:
-            # If CTRL+G then find next occurrence
-            # else just set the focus to the _search frame.
-            obj = event.GetEventObject()
-            try:
-                keycode = event.GetKeyCode()
-                if keycode==71 and event.ControlDown():
-                    self._search.OnFind(event)
-                    focus = False
-            except Exception:
-                pass
-        else:
-            self._search = SearchDialog(self, self._prefsIO, self._trsctrl.GetTranscription())
-            self._search.Show()
-
-        if focus is True:
-            self._search.SetFocus()
-            self._search.Raise()
-
-    # ------------------------------------------------------------------------
-
-    def onSearched(self, event):
-        """
-        Something was found by the Search frame.
-        """
-        s = event.start
-        e = event.end
-        logging.debug('onSearched. Found from %f to %f'%(s,e))
-
-        self._display.GetRuler().SetSelectionIndicatorValues(s,e)
-        self.GetParent().GetNavigPanel().OnCenterSelection(None)
 
     # ------------------------------------------------------------------------
     # Functions...
@@ -875,9 +709,9 @@ class TrsPanel( wx.Panel ):
     def SetBackgroundColour(self, colour):
         """ Change the background of the panel. """
 
-        wx.Window.SetBackgroundColour( self, colour )
+        wx.Window.SetBackgroundColour(self, colour)
         for b in self._buttons:
-            self._buttons[b].SetBackgroundColour( colour )
+            self._buttons[b].SetBackgroundColour(colour)
         self.Refresh()
 
     # ------------------------------------------------------------------------
@@ -909,17 +743,11 @@ class TrsPanel( wx.Panel ):
         dcobj = self._display.GetSelectedObject()
         if dcobj is None:
             return
-        if not isinstance(dcobj,TranscriptionCtrl):
+        if not isinstance(dcobj, TranscriptionCtrl):
             return
 
         self._trsctrl = dcobj
         self.ActivateButtons(True)
-        if self._search is not None:
-            try:
-                self._search.SetTranscription(self._trsctrl.GetTranscription())
-            except Exception:
-                pass
-
         self.Refresh()
 
     # ------------------------------------------------------------------------
@@ -937,7 +765,7 @@ class TrsPanel( wx.Panel ):
         self.EnableButtons(True)
 
         for k in self._buttons:
-            self._buttons[k].Enable( False )
+            self._buttons[k].Enable(False)
 
         self.Refresh()
 
@@ -948,47 +776,39 @@ class TrsPanel( wx.Panel ):
     def ActivateButtons(self, value=True):
         self.EnableButtons(False)
         if value is True:
-            self._buttons['tiercheck'].SetBitmapLabel( spBitmap( TIER_CHECK ) )
-            self._buttons['tierinfo'].SetBitmapLabel( spBitmap( TIER_INFO ) )
-            self._buttons['search'].SetBitmapLabel( spBitmap( TIER_SEARCH ) )
+            self._buttons['tiercheck'].SetBitmapLabel(spBitmap(TIER_CHECK))
         else:
-            self._buttons['tiercheck'].SetBitmapLabel(  spBitmap( TIER_CHECK_DISABLED ) )
-            self._buttons['tierinfo'].SetBitmapLabel(  spBitmap( TIER_INFO_DISABLED ) )
-            self._buttons['search'].SetBitmapLabel(  spBitmap( TIER_SEARCH_DISABLED ) )
+            self._buttons['tiercheck'].SetBitmapLabel(spBitmap(TIER_CHECK_DISABLED))
 
     # ------------------------------------------------------------------------
 
     def EnableButtons(self, value=True):
         for b in self._buttons:
-            self._buttons[b].Enable( not value )
+            self._buttons[b].Enable(not value)
 
 # ----------------------------------------------------------------------------
 
 
-class MediaPanel( SndPlayer ):
-    """
+class MediaPanel(SndPlayer):
+    """Display an audio player panel, used to play media files (wave only).
+
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL, v3
-    @summary: This class is used to display an audio player panel.
-
-    Display an audio player panel, used to play media files (wave only).
 
     """
-
     def __init__(self, parent, prefsIO):
-        """
-        Creates a new MediaPanel instance.
+        """Creates a new MediaPanel instance.
 
         @param prefsIO (PreferencesIO) Fix preferences for colors, fonts, etc.
 
         """
         SndPlayer.__init__(self, parent, orient=wx.HORIZONTAL, refreshtimer=10, prefsIO=prefsIO)
-        self.ActivateButtons( False )
+        self.ActivateButtons(False)
 
         # members
         self._display = None
-        self.SetBackgroundColour( prefsIO.GetValue('M_BG_COLOUR') )
+        self.SetBackgroundColour(prefsIO.GetValue('M_BG_COLOUR'))
 
     # ------------------------------------------------------------------------
     # Callbacks
@@ -1024,26 +844,27 @@ class MediaPanel( SndPlayer ):
         if self._mediaplayer is None and self._display is None:
             return
         if self._mediaplayer is None and self._display is not None:
-            self.SetMedia() # now, a selection?
+            self.SetMedia()  # now, a selection?
         if self._dcobj != self._display.GetSelectedObject():
-            self.SetMedia() # selection has changed since last play...
+            self.SetMedia()  # selection has changed since last play...
 
         # The period on screen
         start,end = self._display.GetPeriodValues()
-        self.SetOffsetPeriod( int(start*1000.), int(end*1000.) )
+        self.SetOffsetPeriod(int(start*1000.), int(end*1000.))
 
         # Use the indicator as a slider, then get the value to seek
         v = self._display.GetRuler().GetPlayerIndicatorValue()
         if v is not None:
             offset = int(v*1000.0)
             # is required in some wx versions (bug)
-            if offset == 0: offset = 1
+            if offset == 0:
+                offset = 1
         else:
             offset = int(start*1000.)
         if offset == -1:
             offset = int(start*1000.)
 
-        self._mediaplayer.Seek( offset, mode=wx.FromStart )
+        self._mediaplayer.Seek(offset, mode=wx.FromStart)
         SndPlayer.onPlay(self, event)
 
     # ------------------------------------------------------------------------
@@ -1051,7 +872,8 @@ class MediaPanel( SndPlayer ):
     def onStop(self, event):
         """ Stops the music and resets the play button. """
 
-        if self._mediaplayer is None: return
+        if self._mediaplayer is None:
+            return
 
         self._offsets = (0, 0)
         if self._display is not None:
@@ -1063,10 +885,11 @@ class MediaPanel( SndPlayer ):
     # ------------------------------------------------------------------------
 
     def onTimer(self, event):
-        """
-        Keeps the player updated.
+        """Keeps the player updated.
+
         OVERRIDE because we dont stop at the end of the displayed period fixed
         by self._offsets: instead we update the period and continue to play.
+
         """
         if self._mediaplayer is None:
             return
@@ -1083,9 +906,9 @@ class MediaPanel( SndPlayer ):
             # Quick and dirty:
             delta = (e-s)*100
             maxoffset = int(e*1000)
-            if offset >= ( maxoffset - delta ) and self._mediaplayer.GetState() != wx.media.MEDIASTATE_STOPPED:
+            if offset >= (maxoffset - delta) and self._mediaplayer.GetState() != wx.media.MEDIASTATE_STOPPED:
                 m = (e-s)/2
-                self._display.SetPeriodValues( s+m, e+m )
+                self._display.SetPeriodValues(s+m, e+m)
         except Exception:
             self.onStop(event)
 
@@ -1101,11 +924,8 @@ class MediaPanel( SndPlayer ):
     def UpdateRuler(self):
         offset = self._mediaplayer.Tell()
         if self._display:
-            self._display.GetRuler().SetPlayerIndicatorValue( float(offset)/1000.0 )
+            self._display.GetRuler().SetPlayerIndicatorValue(float(offset)/1000.0)
             self._display.GetRuler().Refresh()
-
-    # ------------------------------------------------------------------------
-
 
     # ------------------------------------------------------------------------
     # Data management
@@ -1128,19 +948,20 @@ class MediaPanel( SndPlayer ):
 
         self.onStop(None)
         self._mediaplayer = None
-        if self._display is None: return
+        if self._display is None:
+            return
 
         self._dcobj = self._display.GetSelectedObject()
 
         if self._dcobj is None:
             self.FileDeSelected()
 
-        if not isinstance(self._dcobj,WaveCtrl):
+        if not isinstance(self._dcobj, WaveCtrl):
             self.FileDeSelected()
             return
 
         filename = self._display.GetSelectionFilename()
-        SndPlayer.FileSelected( self,filename )
+        SndPlayer.FileSelected(self, filename)
 
         self.Refresh()
 
@@ -1152,7 +973,3 @@ class MediaPanel( SndPlayer ):
         if self._display is None: return
         #self._display = None
         SndPlayer.FileDeSelected(self)
-
-    # ------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------

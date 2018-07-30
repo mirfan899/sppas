@@ -339,15 +339,16 @@ class TierPanel(wx.Panel):
         choices = []
         if trs:
             for t in trs:
-                choices.append(t.GetName())
+                choices.append(t.get_name())
         else:
             choices.append('Empty transcription')
 
         self.radiobox = wx.RadioBox(self, label="Tier:",
-                                    choices=choices, majorDimension=1)
+                                    choices=choices,
+                                    majorDimension=1)
         self.radiobox.SetForegroundColour(wx.Colour(87, 3, 3))
         vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.radiobox, 1, wx.EXPAND|wx.ALL, border=2)
+        vbox.Add(self.radiobox, 1, wx.EXPAND | wx.ALL, border=2)
 
         self.SetSizer(vbox)
         self.SetAutoLayout(True)
@@ -366,7 +367,8 @@ def ShowSearchDialog(parent, preferences, trs):
 
 # ---------------------------------------------------------------------------
 
+
 if __name__ == "__main__":
     app = wx.PySimpleApp()
-    ShowSearchDialog(None,None,None)
+    ShowSearchDialog(None,  None, None)
     app.MainLoop()

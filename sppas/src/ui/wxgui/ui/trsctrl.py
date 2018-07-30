@@ -47,14 +47,12 @@ from spControl import spControl
 
 
 class TranscriptionCtrl(spControl):
-    """
+    """Display a Transcription (see anndata for details).
+
     :author:  Brigitte Bigi
     :contact: brigitte.bigi@gmail.com
     :license: GPL, v3
-    :summary: Display a Transcription (see annotationdata for details).
-
-    TranscriptionCtrl implements an annotation window that can be placed
-    anywhere to any wxPython widget.
+    :summary:
 
     """
     def __init__(self, parent, id=wx.ID_ANY,
@@ -101,7 +99,7 @@ class TranscriptionCtrl(spControl):
 
             # Create each tier instance
             for t in trs:
-                logging.debug('Create TierCtrl for tier: %s' % t.GetName())
+                logging.debug('Create TierCtrl for tier: %s' % t.get_name())
                 pos = wx.Point(x, y)
                 size = wx.Size(w, theight)
                 tdc = TierCtrl(self, -1, pos, size, tier=t)
@@ -121,7 +119,7 @@ class TranscriptionCtrl(spControl):
         """ Override. Return the begin time value of the Transcription(). """
 
         if self._trs is not None:
-            return self._trs.GetBegin()
+            return self._trs.get_min_loc().get_midpoint()
         return 0.
 
     # -----------------------------------------------------------------------
@@ -130,7 +128,7 @@ class TranscriptionCtrl(spControl):
         """ Override. Return the end time value of the Transcription(). """
         
         if self._trs is not None:
-            return self._trs.GetEnd()
+            return self._trs.get_max_loc().get_midpoint()
         return 0.
 
     # -----------------------------------------------------------------------
@@ -153,14 +151,15 @@ class TranscriptionCtrl(spControl):
 
     def GetTierNames(self):
 
-        if self._trs is None: return []
-        return [t.GetName() for t in self._trs]
+        if self._trs is None:
+            return list()
+        return [t.get_name() for t in self._trs]
 
     # -----------------------------------------------------------------------
 
     def SetTierChecked(self, checked):
         for i, t in enumerate(self._trs):
-            if t.GetName() in checked:
+            if t.get_name() in checked:
                 self._tiers[i].Show()
             else:
                 self._tiers[i].Hide()
@@ -169,8 +168,8 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def GetTierIdxChecked(self):
-        checked = []
-        for i,t in enumerate(self._tiers):
+        checked = list()
+        for i, t in enumerate(self._tiers):
             if t.IsShown() is True:
                 checked.append(i)
         return checked
@@ -216,7 +215,6 @@ class TranscriptionCtrl(spControl):
         :param color: (wx.Colour)
 
         """
-
         for tdc in self._tiers:
             tdc.SetPointColour(color)
 
@@ -231,7 +229,6 @@ class TranscriptionCtrl(spControl):
         :param colour: (wx.Colour)
 
         """
-
         spControl.SetBackgroundColour(self, colour)
         for t in self._tiers:
             t.SetBackgroundColour(colour)
@@ -239,8 +236,7 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def SetHandlesColour(self, colour):
-        """
-        Sets the TranscriptionCtrl handles color.
+        """ Sets the TranscriptionCtrl handles color.
         Ask to redraw only if color has changed.
 
         :param colour: (wx.Colour)
@@ -264,14 +260,12 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def SetFont(self, font):
-        """
-        Sets the TranscriptionCtrl text font.
+        """Sets the TranscriptionCtrl text font.
         Ask to redraw only if color has changed.
 
         :param font: (wx.Font)
 
         """
-
         spControl.SetFont(self, font)
         for t in self._tiers:
             t.SetFont(font)
@@ -335,9 +329,8 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def DrawContent(self, dc, x, y, w, h):
-        """
-        Draw each tier of the trs on the DC, in the range of the given time period.
-        """
+        """Draw each tier of the trs on the DC, in the range of the given time period."""
+
         if self._trs is None:
             return  # not initialized
         if self._tiers is None:
@@ -359,7 +352,7 @@ class TranscriptionCtrl(spControl):
                 y = y + ht
 
         if y != h:
-            logging.info(' [WARNING] Transcription. '
+            logging.info('[WARNING] Transcription. '
                          'DO NOT Force resize from %d to %d.' % (h, y))
             self.SetSize(wx.Size(w, y))
 
@@ -369,7 +362,7 @@ class TranscriptionCtrl(spControl):
 
     def _getTierHeight(self, h):
         nbt = 0
-        for i,t in enumerate(self._tiers):
+        for i, t in enumerate(self._tiers):
             if t.IsShown() is True:
                 nbt = nbt + 1
         if nbt == 0:

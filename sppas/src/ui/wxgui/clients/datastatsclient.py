@@ -464,7 +464,7 @@ class DataStats(wx.Panel):
             obj = self._filetrs.GetObject(i)
             trs = obj.GetTranscription()
             for tier in trs:
-                name = tier.GetName()
+                name = tier.get_name()
                 if obj.IsSelected(name):
                     if name not in tiersX:
                         tiersX.append(name)
@@ -485,8 +485,8 @@ class DataStats(wx.Panel):
             obj = self._filetrs.GetObject(i)
             trs = obj.GetTranscription()
             for tier in trs:
-                if obj.IsSelected(tier.GetName()):
-                    if not fname in data.keys():
+                if obj.IsSelected(tier.get_name()):
+                    if fname not in data.keys():
                         data[fname] = []
                     data[fname].append(tier)
         return data

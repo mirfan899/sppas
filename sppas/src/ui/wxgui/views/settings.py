@@ -41,7 +41,7 @@ from wx.lib import stattext
 
 from sppas.src.config import paths
 
-from sppas.src.annotationdata.aio import extensions_out_multitiers as extensions_out
+from sppas.src.anndata.aio import extensions_out_multitiers as extensions_out
 from sppas.src.ui.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.ui.wxgui.sp_icons import SETTINGS_ICON
 from sppas.src.ui.wxgui.sp_icons import BG_COLOR_ICON

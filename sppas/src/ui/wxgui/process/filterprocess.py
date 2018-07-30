@@ -97,12 +97,12 @@ class FilterProcess:
 
             for tier in trs:
                 # tier is selected to be filtered
-                if obj.IsSelected(tier.GetName()):
+                if obj.IsSelected(tier.get_name()):
                     # create an apply filter
                     tierfilter = Filter(tier)
                     sf = SingleFilter(predicate, tierfilter)
                     new_tier = sf.Filter()
-                    new_tier.SetName(self.tier_name)
+                    new_tier.set_name(self.tier_name)
                     # append the new tier both in Transcription and in the list
                     obj.Append(new_tier)
 
@@ -126,11 +126,11 @@ class FilterProcess:
             obj = self.file_manager.GetObject(i)
             trs = obj.GetTranscription()
             logging.debug(' ... Apply on transcription: %s (%s)'
-                          '' % (self.file_manager.GetFilename(i), trs.GetName()))
+                          '' % (self.file_manager.GetFilename(i), trs.get_name()))
             progress.set_header(self.file_manager.GetFilename(i))
 
             # find the Y-tier
-            ytier = trs.Find(tiername)
+            ytier = trs.find(tiername)
             if not ytier:
                 logging.debug(' ... ... tier Y is missing.')
                 continue
@@ -140,23 +140,23 @@ class FilterProcess:
             for tier in trs:
 
                 # tier is selected to be filtered
-                if obj.IsSelected(tier.GetName()):
-                    logging.debug(' ... ... tier %s will be filtered'%tier.GetName())
-                    progress.set_text("... %s"%tier.GetName())
+                if obj.IsSelected(tier.get_name()):
+                    logging.debug(' ... ... tier %s will be filtered' % tier.get_name())
+                    progress.set_text("... %s" % tier.get_name())
 
                     # create an apply filter
                     xfilter = Filter(tier)
                     sf = RelationFilter(predicate, xfilter, yfilter)
                     new_tier = sf.Filter(annotformat)
-                    new_tier.SetName(self.tier_name)
-                    logging.debug(' ... ... ... new tier %s created '%new_tier.GetName())
+                    new_tier.set_name(self.tier_name)
+                    logging.debug(' ... ... ... new tier %s created ' % new_tier.get_name())
 
                     # append the new tier both in Transcription and in the list
                     obj.Append(new_tier)
-                    logging.debug(' ... ... ... new tier %s appended '%new_tier.GetName())
+                    logging.debug(' ... ... ... new tier %s appended ' % new_tier.get_name())
 
                 else:
-                    logging.debug(' ... ... tier %s WONT be filtered'%tier.GetName())
+                    logging.debug(' ... ... tier %s WONT be filtered' % tier.get_name())
 
             logging.debug('filter is finished!')
             progress.set_fraction(float((i+1))/float(total))

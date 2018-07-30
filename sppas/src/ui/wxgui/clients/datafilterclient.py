@@ -634,11 +634,11 @@ class DataFilter(wx.Panel):
             obj = self._filetrs.GetObject(i)
             trs = obj.GetTranscription()
             for tier in trs:
-                name = tier.GetName()
+                name = tier.get_name()
                 if obj.IsSelected(name):
-                    if not name in tiersX:
+                    if name not in tiersX:
                         tiersX.append(name)
-                if not name in tiersY:
+                if name not in tiersY:
                     tiersY.append(name)
 
         return sorted(tiersX), sorted(tiersY)

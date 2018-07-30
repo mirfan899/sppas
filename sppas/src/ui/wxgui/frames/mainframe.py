@@ -40,7 +40,7 @@ import logging
 
 from sppas.src.ui import SETTINGS_FILE
 
-import sppas.src.annotationdata.aio
+import sppas.src.anndata.aio
 import sppas.src.audiodata.aio
 
 from sppas.src.ui.wxgui.cutils.imageutils import spBitmap
@@ -105,11 +105,21 @@ class FrameSPPAS(wx.Frame):
         wx.Frame.__init__(self, None, -1, title=FRAME_TITLE, style=FRAME_STYLE)
 
         # Members
-        self._init_members(preferencesIO)
+        if preferencesIO is None:
+            # Try to get prefs from a file, or fix default values.
+            preferencesIO = Preferences_IO(SETTINGS_FILE)
+            preferencesIO.Read()
+        self.preferences = preferencesIO
+        self.actions = None
+        self.flp = None
+        self._left_panel = None
+        self._right_panel = None
+        self._leftsizer = None
+        self._rightsizer = None
 
         # Create GUI
         self._init_infos()
-        self._mainpanel = self._create_content()
+        self._main_panel = self._create_content()
 
         # Events of this frame
         self.Bind(wx.EVT_CLOSE,  self.ProcessEvent)
@@ -128,26 +138,6 @@ class FrameSPPAS(wx.Frame):
 
     # ------------------------------------------------------------------------
     # Private methods to create the GUI and initialize members
-    # ------------------------------------------------------------------------
-
-    def _init_members(self, preferencesIO):
-        """ Sets the members settings with default values. """
-
-        # Data
-        if preferencesIO is None:
-            # Try to get prefs from a file, or fix default values.
-            preferencesIO = Preferences_IO(SETTINGS_FILE)
-            preferencesIO.Read()
-        self.preferences = preferencesIO
-
-        # wx: panels and sizers
-        self.actions = None
-        self.flp = None
-        self._leftpanel = None
-        self._rightpanel = None
-        self._leftsizer = None
-        self._rightsizer = None
-
     # ------------------------------------------------------------------------
 
     def _init_infos(self):
@@ -170,66 +160,66 @@ class FrameSPPAS(wx.Frame):
     def _create_content(self):
         """ Organize all sub-panels into a main panel and return it. """
 
-        mainpanel = wx.Panel(self, -1, style=wx.NO_BORDER)
-        mainpanel.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
-        mainpanel.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
-        mainpanel.SetFont(self.preferences.GetValue('M_FONT'))
+        main_panel = wx.Panel(self, -1, style=wx.NO_BORDER)
+        main_panel.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
+        main_panel.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
+        main_panel.SetFont(self.preferences.GetValue('M_FONT'))
 
-        mainmenu  = MainMenuPanel(mainpanel, self.preferences)
-        maintitle = MainTitlePanel(mainpanel, self.preferences)
-        splitpanel = self._create_splitter(mainpanel)
+        main_menu = MainMenuPanel(main_panel, self.preferences)
+        main_title = MainTitlePanel(main_panel, self.preferences)
+        split_panel = self._create_splitter(main_panel)
 
         vsizer = wx.BoxSizer(wx.VERTICAL)
-        vsizer.Add(maintitle, proportion=0, flag=wx.ALL | wx.EXPAND, border=0)
-        vsizer.Add(splitpanel, proportion=1, flag=wx.ALL | wx.EXPAND, border=0)
+        vsizer.Add(main_title, proportion=0, flag=wx.ALL | wx.EXPAND, border=0)
+        vsizer.Add(split_panel, proportion=1, flag=wx.ALL | wx.EXPAND, border=0)
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(mainmenu, proportion=0, flag=wx.ALL | wx.EXPAND, border=0)
+        sizer.Add(main_menu, proportion=0, flag=wx.ALL | wx.EXPAND, border=0)
         sizer.Add(vsizer, proportion=2, flag=wx.ALL | wx.EXPAND, border=0)
-        mainpanel.SetSizer(sizer)
+        main_panel.SetSizer(sizer)
 
-        return mainpanel
+        return main_panel
 
     # ------------------------------------------------------------------------
 
     def _create_splitter(self, parent):
         """ Create the main panel content. """
 
-        splitpanel = SplitterPanel(parent, proportion=0.5)
-        splitpanel.SetBackgroundColour(self.preferences.GetValue('M_BGM_COLOUR'))
-        splitpanel.SetForegroundColour(self.preferences.GetValue('M_BGM_COLOUR'))
+        split_panel = SplitterPanel(parent, proportion=0.5)
+        split_panel.SetBackgroundColour(self.preferences.GetValue('M_BGM_COLOUR'))
+        split_panel.SetForegroundColour(self.preferences.GetValue('M_BGM_COLOUR'))
 
         # Left: File explorer and tips
-        self._leftpanel = wx.Panel(splitpanel, -1)
-        self._leftpanel.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
-        self.flp = FiletreePanel(self._leftpanel, self.preferences)
-        tips = MainTooltips(self._leftpanel, self.preferences)
+        self._left_panel = wx.Panel(split_panel, -1)
+        self._left_panel.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
+        self.flp = FiletreePanel(self._left_panel, self.preferences)
+        tips = MainTooltips(self._left_panel, self.preferences)
 
         self._leftsizer = wx.BoxSizer(wx.VERTICAL)
         self._leftsizer.Add(self.flp, proportion=2, flag=wx.EXPAND, border=0)
         self._leftsizer.Add(tips, proportion=0, flag=wx.ALL | wx.ALIGN_CENTER, border=20)
-        self._leftpanel.SetSizer(self._leftsizer)
+        self._left_panel.SetSizer(self._leftsizer)
         if self.preferences.GetValue('M_TIPS') is False:
             tips.Hide()
 
         # Right: Actions to perform on selected files
-        self._rightpanel = wx.Panel(splitpanel, -1)
-        self.actionsmenu = MainActionsMenuPanel(self._rightpanel, self.preferences)
+        self._right_panel = wx.Panel(split_panel, -1)
+        self.actionsmenu = MainActionsMenuPanel(self._right_panel, self.preferences)
         self.actionsmenu.ShowBack(False)
-        self.actions = MainActionsPanel(self._rightpanel, self.preferences)
+        self.actions = MainActionsPanel(self._right_panel, self.preferences)
 
         self._rightsizer = wx.BoxSizer(wx.VERTICAL)
         self._rightsizer.Add(self.actionsmenu, proportion=0, flag=wx.ALL | wx.EXPAND, border=0)
         self._rightsizer.Add(self.actions, proportion=1, flag=wx.ALL | wx.EXPAND, border=0)
-        self._rightpanel.SetSizer(self._rightsizer)
+        self._right_panel.SetSizer(self._rightsizer)
 
-        splitpanel.SetMinimumPaneSize(0.4*MIN_FRAME_W)
-        splitpanel.SplitVertically(self._leftpanel, self._rightpanel)
+        split_panel.SetMinimumPaneSize(0.4*MIN_FRAME_W)
+        split_panel.SplitVertically(self._left_panel, self._right_panel)
 
-        self._leftpanel.SetMinSize((0.4*MIN_FRAME_W, 0.7*MIN_FRAME_H))
-        self._rightpanel.SetMinSize((0.4*MIN_FRAME_W, 0.7*MIN_FRAME_H))
+        self._left_panel.SetMinSize((0.4*MIN_FRAME_W, 0.7*MIN_FRAME_H))
+        self._right_panel.SetMinSize((0.4*MIN_FRAME_W, 0.7*MIN_FRAME_H))
 
-        return splitpanel
+        return split_panel
 
     # ------------------------------------------------------------------------
 
@@ -237,8 +227,8 @@ class FrameSPPAS(wx.Frame):
         """ Fix the file explorer panel content. """
 
         self.flp.RefreshTree()
-        self._leftpanel.Layout()
-        self._leftpanel.Refresh()
+        self._left_panel.Layout()
+        self._left_panel.Refresh()
 
     # ------------------------------------------------------------------------
 
@@ -252,23 +242,23 @@ class FrameSPPAS(wx.Frame):
 
         # Create the new one:
         if ide == ID_ACTIONS:
-            self.actions = MainActionsPanel(self._rightpanel, self.preferences)
+            self.actions = MainActionsPanel(self._right_panel, self.preferences)
             self.actionsmenu.ShowBack(False, "")
 
         elif ide == ID_COMPONENTS:
-            self.actions = AnalyzePanel(self._rightpanel, self.preferences)
+            self.actions = AnalyzePanel(self._right_panel, self.preferences)
             self.actionsmenu.ShowBack(True, "   A N A L Y Z E ")
 
         elif ide == ID_ANNOTATIONS:
-            self.actions = AnnotationsPanel(self._rightpanel, self.preferences)
+            self.actions = AnnotationsPanel(self._right_panel, self.preferences)
             self.actionsmenu.ShowBack(True, "   A N N O T A T E ")
 
         elif ide == wx.ID_ABOUT:
-            self.actions = AboutSPPASPanel(self._rightpanel, self.preferences)
+            self.actions = AboutSPPASPanel(self._right_panel, self.preferences)
             self.actionsmenu.ShowBack(True, "   A B O U T ")
 
         elif ide == ID_PLUGINS:
-            self.actions = PluginsPanel(self._rightpanel, self.preferences)
+            self.actions = PluginsPanel(self._right_panel, self.preferences)
             self.actionsmenu.ShowBack(True, "   P L U G I N S ")
 
         self._rightsizer.Add(self.actions, proportion=1, flag=wx.ALL | wx.EXPAND, border=0)
@@ -279,8 +269,8 @@ class FrameSPPAS(wx.Frame):
     def _LayoutFrame(self):
         """ Lays out the frame. """
 
-        wx.LayoutAlgorithm().LayoutFrame(self, self._mainpanel)
-        self._rightpanel.SendSizeEvent()
+        wx.LayoutAlgorithm().LayoutFrame(self, self._main_panel)
+        self._right_panel.SendSizeEvent()
         self.Refresh()
 
     # -----------------------------------------------------------------------
@@ -406,6 +396,9 @@ class FrameSPPAS(wx.Frame):
             selection = self.GetTrsSelection()
             analyzer = self.__create_component(DataStatsFrame, ID_FRAME_STATISTICS)
 
+        else:
+            raise ValueError('Unknown frame id: {:d}'.format(eid))
+
         if len(selection) > 0:
             analyzer.AddFiles(selection)
 
@@ -418,13 +411,13 @@ class FrameSPPAS(wx.Frame):
 
         self.preferences = prefs
 
-        self._leftpanel.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
+        self._left_panel.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
 
         self.flp.SetPrefs(self.preferences)
 
         self._rightsizer.Detach(self.actions)
         self.actions.Destroy()
-        self.actions = MainActionsPanel(self._rightpanel, self.preferences)
+        self.actions = MainActionsPanel(self._right_panel, self.preferences)
         self._rightsizer.Add(self.actions, proportion=1, flag=wx.ALL | wx.EXPAND, border=0)
 
         self._LayoutFrame()
@@ -441,8 +434,8 @@ class FrameSPPAS(wx.Frame):
     def GetTrsSelection(self):
         """ Return the list of annotated files selected in the FLP. """
 
-        selection = []
-        for ext in sppas.src.annotationdata.aio.extensions:
+        selection = list()
+        for ext in sppas.src.anndata.aio.extensions:
             selection.extend(self.flp.GetSelected(ext))
         return selection
 
@@ -451,7 +444,7 @@ class FrameSPPAS(wx.Frame):
     def GetAudioSelection(self):
         """ Return the list of audio files selected in the FLP. """
 
-        selection = []
+        selection = list()
         for ext in sppas.src.audiodata.aio.extensions:
             selection.extend(self.flp.GetSelected(ext))
         return selection

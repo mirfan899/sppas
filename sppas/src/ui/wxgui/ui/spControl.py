@@ -96,7 +96,7 @@ ControlSelectedCommandEvent, spEVT_CTRL_SELECTED_COMMAND = wx.lib.newevent.NewCo
 # Class spControl
 # ---------------------------------------------------------------------------
 
-class spControl( wx.Window ):
+class spControl(wx.Window):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -149,7 +149,7 @@ class spControl( wx.Window ):
         self.redrawTimer.Start(500)
 
     # End __init__
-    #------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def Initialize(self, size):
@@ -165,13 +165,13 @@ class spControl( wx.Window ):
         self.InitBuffer()
 
     # End Initialize
-    #------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Members
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def GetTime(self):
@@ -182,7 +182,7 @@ class spControl( wx.Window ):
         return (self._mintime,self._maxtime)
 
     # End GetTime
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def GetBegin(self):
@@ -193,7 +193,7 @@ class spControl( wx.Window ):
         return self._mintime
 
     # End GetBegin
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def GetEnd(self):
@@ -205,7 +205,7 @@ class spControl( wx.Window ):
 
 
     # End GetEnd
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def SetTime(self, start, end):
@@ -235,7 +235,7 @@ class spControl( wx.Window ):
         if torepaint is True: self.RequestRedraw()
 
     # End SetTime
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def IsSelected(self):
@@ -246,7 +246,7 @@ class spControl( wx.Window ):
         return self._isselected
 
     # End IsSelected
-    #------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def SetSelected(self, value):
@@ -265,7 +265,7 @@ class spControl( wx.Window ):
             self.RequestRedraw()
 
     # End SetSelected
-    #------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def SetFontAutoAdjust(self, value):
@@ -281,7 +281,7 @@ class spControl( wx.Window ):
             self.RequestRedraw()
 
     # End SetFontAutoAdjust
-    #------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def GetPanePosition(self):
@@ -294,7 +294,7 @@ class spControl( wx.Window ):
         return self._infopanep
 
     # End GetPanePosition
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def SetPanePosition(self, value):
@@ -312,7 +312,7 @@ class spControl( wx.Window ):
             self.RequestRedraw()
 
     # End SetPanePosition
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def GetPaneWidth(self):
@@ -340,7 +340,7 @@ class spControl( wx.Window ):
             self.RequestRedraw()
 
     # End SetPaneWidth
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def MoveWindow(self, pos, size):
@@ -360,7 +360,7 @@ class spControl( wx.Window ):
 
         # New width
         if ow != w:
-            self.SetSize( wx.Size(w,oh) )
+            self.SetSize(wx.Size(w,oh))
             torepaint = True
 
         # New height
@@ -376,12 +376,12 @@ class spControl( wx.Window ):
         if torepaint is True: self.RequestRedraw()
 
     # End MoveWindow
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Look & style
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def GetBackgroundColour(self):
@@ -392,7 +392,7 @@ class spControl( wx.Window ):
         return self._bgcolor
 
     # End GetBackgroundColour
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def SetBackgroundColour(self, colour):
@@ -410,7 +410,7 @@ class spControl( wx.Window ):
             self.RequestRedraw()
 
     # End SetBackgroundColour
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def GetForegroundColour(self):
@@ -421,7 +421,7 @@ class spControl( wx.Window ):
         return self._fgcolor
 
     # End GetBackgroundColour
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def SetForegroundColour(self, colour):
@@ -439,7 +439,7 @@ class spControl( wx.Window ):
             self.RequestRedraw()
 
     # End SetForegroundColour
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def GetHandlesColour(self):
@@ -450,7 +450,7 @@ class spControl( wx.Window ):
         return self._handlescolor
 
     # End GetHandlesColour
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def SetHandlesColour(self, colour):
@@ -469,7 +469,7 @@ class spControl( wx.Window ):
                 self.RequestRedraw()
 
     # End SetHandlesColour
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def GetTextColour(self):
@@ -480,7 +480,7 @@ class spControl( wx.Window ):
         return self._textcolor
 
     # End GetTextColour
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def SetTextColour(self, colour):
@@ -497,7 +497,7 @@ class spControl( wx.Window ):
             self.RequestRedraw()
 
     # End SetTextColour
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def SetLeftMargin(self, margin):
@@ -510,7 +510,7 @@ class spControl( wx.Window ):
             self.RequestRedraw()
 
     # End SetLeftMargin
-    #------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def SetRightMargin(self, margin):
@@ -523,7 +523,7 @@ class spControl( wx.Window ):
             self.RequestRedraw()
 
     # End SetRightMargin
-    #------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def SetTopMargin(self, margin):
@@ -536,7 +536,7 @@ class spControl( wx.Window ):
             self.RequestRedraw()
 
     # End SetTopMargin
-    #------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def SetBottomMargin(self, margin):
@@ -549,7 +549,7 @@ class spControl( wx.Window ):
             self.RequestRedraw()
 
     # End SetBottomMargin
-    #------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
 
     def SetFontSize(self, s):
@@ -561,11 +561,11 @@ class spControl( wx.Window ):
         """
         sreal = min(max(FONT_SIZE_MIN,s),FONT_SIZE_MAX)
         if sreal != self._font.GetPointSize():
-            self._font.SetPointSize( sreal )
+            self._font.SetPointSize(sreal)
             self.RequestRedraw()
 
     # End SetFontSize
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def GetFont(self):
@@ -576,7 +576,7 @@ class spControl( wx.Window ):
         return self._font
 
     # End GetFont
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def SetFont(self, font):
@@ -597,7 +597,7 @@ class spControl( wx.Window ):
             self.RequestRedraw()
 
     # End SetFont
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def AutoAdjustFont(self):
@@ -620,7 +620,7 @@ class spControl( wx.Window ):
             pxh = self.__getTextHeight()
 
     # End AutoAdjustFont
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def VertZoom(self, z):
@@ -630,7 +630,7 @@ class spControl( wx.Window ):
         @param z (float) Zoom coefficient.
 
         """
-        self.SetHeight( int(z * self.GetHeight()) )
+        self.SetHeight(int(z * self.GetHeight()))
 
     # End VertZoom
     # -----------------------------------------------------------------------
@@ -669,12 +669,12 @@ class spControl( wx.Window ):
             self.RequestRedraw()
 
     # End SetHeight
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Callbacks
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def OnMouseLeftUp(self, event):
@@ -682,7 +682,7 @@ class spControl( wx.Window ):
         Event handler used when the mouse clicked on the spControl.
         """
 
-        wx.PostEvent( self.GetParent().GetEventHandler(), event )
+        wx.PostEvent(self.GetParent().GetEventHandler(), event)
 
         if self.isselectable is False:
             return
@@ -695,7 +695,7 @@ class spControl( wx.Window ):
         wx.PostEvent(self.GetParent(), evt)
 
     # End OnMouseLeftUp
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def OnClose(self, event):
@@ -707,7 +707,7 @@ class spControl( wx.Window ):
         self.Destroy()
 
     # End OnClose
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def OnSize(self, event):
@@ -719,7 +719,7 @@ class spControl( wx.Window ):
         event.Skip()
 
     # End OnSize
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def OnIdle(self, event):
@@ -735,7 +735,7 @@ class spControl( wx.Window ):
             self.Refresh(False)
 
     # End OnIdle
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def OnPaint(self, event):
@@ -746,12 +746,12 @@ class spControl( wx.Window ):
         dc = wx.BufferedPaintDC(self, self.buffer)
 
     # OnPaint
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Painting
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def RequestRedraw(self):
@@ -763,7 +763,7 @@ class spControl( wx.Window ):
         self._requestredraw = True
 
     # End RequestRedraw
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def InitBuffer(self):
@@ -782,7 +782,7 @@ class spControl( wx.Window ):
         self._requestredraw = False
 
     # End InitBuffer
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def GetDrawingSize(self):
@@ -807,7 +807,7 @@ class spControl( wx.Window ):
         return (w,h)
 
     # End GetDrawingSize
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def GetDrawingPosition(self):
@@ -825,7 +825,7 @@ class spControl( wx.Window ):
         return (x+self._margins.Left, y+self._margins.Top)
 
     # End GetDrawingPosition
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
 
     def Draw(self, dc):
@@ -842,15 +842,16 @@ class spControl( wx.Window ):
         """
 
         # Get the actual client size of ourselves
-        (rw,rh) = self.GetClientSize() # self.GetSize()
-        (w,h)   = self.GetDrawingSize()
-        (x,y)   = self.GetDrawingPosition()
+        (rw, rh) = self.GetClientSize()   # self.GetSize()
+        (w, h) = self.GetDrawingSize()
+        (x, y) = self.GetDrawingPosition()
 
         # Nothing to do, we still don't have dimensions!
-        if rw*rh == 0: return
+        if rw*rh == 0: 
+            return
 
         # Fill background
-        dc.SetBackground( self._bgbrush )
+        dc.SetBackground(self._bgbrush)
         dc.Clear()
 
         try:
@@ -859,25 +860,27 @@ class spControl( wx.Window ):
                 self.DrawPane(dc, self._margins.Left, y, self._infopanew, h)
             elif self._infopanep == wx.ALIGN_RIGHT:
                 self.DrawPane(dc, w-self._infopanew, y, self._infopanew, h)
+        except Exception as e:
+            logging.debug(' [ERROR] while drawing pane. {:s}'.format(str(e)))
+            pass
 
+        try:
             # Content
             if w*h > 0:
-                self.DrawContent(dc, x,y, w,h)
+                self.DrawContent(dc, x, y, w, h)
         except Exception as e:
-            logging.debug(' [ERROR]. Got exception %s'%e)
+            logging.debug(' [ERROR] while drawing content. {:s}'.format(str(e)))
             pass
 
         # Draws selection handles
         if self._isselected is True:
-            self.DrawHandles(dc, 0,0, rw,rh)
+            self.DrawHandles(dc, 0, 0, rw, rh)
 
-    # End Draw
-    #-------------------------------------------------------------------------
-
+    # -------------------------------------------------------------------------
 
     def DrawHandles(self, dc, x,y, w,h):
-        """
-        Draw selection handles for this spControl.
+        """Draw selection handles for this spControl.
+        
         Default is to draw selection handles at all four corners.
 
         @param dc (PaintDC, MemoryDC, BufferedDC...)
@@ -885,9 +888,8 @@ class spControl( wx.Window ):
         @param w,h (int,int) are width and height available for drawing.
 
         """
-
-        dc.SetBrush( self._handlesbrush )
-        dc.SetPen( self._handlespen )
+        dc.SetBrush(self._handlesbrush)
+        dc.SetPen(self._handlespen)
         l = self._handlessize
         r = self._handlessize
 
@@ -896,13 +898,10 @@ class spControl( wx.Window ):
         dc.DrawRectangle(x,     y+h-l, l, l)
         dc.DrawRectangle(x+w-r, y+h-r, r, r)
 
-    # End DrawHandles
-    #------------------------------------------------------------------------
-
+    # ------------------------------------------------------------------------
 
     def DrawPane(self, dc, x,y, w,h):
-        """
-        Draw something inside the pane of the spControl. Must be overridden.
+        """Draw something inside the pane of the spControl. Must be overridden.
 
         @param dc (PaintDC, MemoryDC, BufferedDC...)
         @param x,y (int,int) are coord. of top left corner from which drawing
@@ -911,13 +910,10 @@ class spControl( wx.Window ):
         """
         raise NotImplementedError
 
-    # End DrawPane
-    #-------------------------------------------------------------------------
-
+    # -------------------------------------------------------------------------
 
     def DrawContent(self, dc, x,y, w,h):
-        """
-        Draw something inside the spControl. Must be overridden.
+        """Draw something inside the spControl. Must be overridden.
 
         @param dc (PaintDC, MemoryDC, BufferedDC...)
         @param x,y (int,int) are coord. of top left corner from which drawing
@@ -926,14 +922,9 @@ class spControl( wx.Window ):
         """
         raise NotImplementedError
 
-    # End DrawContent
-    #-------------------------------------------------------------------------
-
-
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Private
-    #-------------------------------------------------------------------------
-
+    # -------------------------------------------------------------------------
 
     def __initializeMembers(self):
         """ Initialize all members. """
@@ -957,17 +948,15 @@ class spControl( wx.Window ):
 
         # Margins are required to draw handles.
         self._margins = Margins()
-        self._margins.Left   = H_MARGIN_SIZE
-        self._margins.Right  = H_MARGIN_SIZE
-        self._margins.Top    = V_MARGIN_SIZE
+        self._margins.Left = H_MARGIN_SIZE
+        self._margins.Right = H_MARGIN_SIZE
+        self._margins.Top = V_MARGIN_SIZE
         self._margins.Bottom = V_MARGIN_SIZE
 
         # Handles
         self._handlessize = HANDLES_SIZE
 
-    # End __initializeMembers
-    #-------------------------------------------------------------------------
-
+    # -------------------------------------------------------------------------
 
     def __initializeColours(self):
         """ Create the pens and brush with default colors. """
@@ -987,9 +976,7 @@ class spControl( wx.Window ):
         self._textcolor  = TEXT_COLOUR
         self._textpen    = wx.Pen(TEXT_COLOUR,1,wx.SOLID)
 
-    # End __initializeColours
-    #-------------------------------------------------------------------------
-
+    # -------------------------------------------------------------------------
 
     def __initializeSize(self, size):
         """ Initialize the size. """
@@ -997,23 +984,18 @@ class spControl( wx.Window ):
         self.SetMinSize(wx.Size(MIN_W,MIN_H))
         self.SetSize(size)
 
-    # End __initializeSize
-    #-------------------------------------------------------------------------
-
+    # -------------------------------------------------------------------------
 
     def __getTextHeight(self):
-        dc = wx.ClientDC( self )
+        dc = wx.ClientDC(self)
         dc.SetFont(self._font)
         return dc.GetTextExtent('azertyuiopqsdfghjklmwxcvbn')[1]
 
-
-
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 
 class Margins:
-    """
-    Represents margins of an object, with 4 values: Top, Bottom, Left, Right.
+    """Represents margins of an object, with 4 values: Top, Bottom, Left, Right.
 
     Margins are represented by integer values. Default values are 0.
 
@@ -1025,7 +1007,7 @@ class Margins:
               - margin (int) margin value set to Top, Bottom, Left and Right.
         """
         try:
-            margin = int( margin )
+            margin = int(margin)
         except ValueError:
             raise TypeError("Margins. Integer argument required, not %r" % margin)
 
@@ -1034,13 +1016,9 @@ class Margins:
         self._top    = margin
         self._bottom = margin
 
-    # End __init__
-    #-------------------------------------------------------------------------
-
-
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Getters...
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def GetLeft(self):
         """
@@ -1048,9 +1026,7 @@ class Margins:
         """
         return self._left
 
-    # End GetLeft
-    #-------------------------------------------------------------------------
-
+    # -------------------------------------------------------------------------
 
     def GetRight(self):
         """
@@ -1058,9 +1034,7 @@ class Margins:
         """
         return self._right
 
-    # End GetRight
-    #-------------------------------------------------------------------------
-
+    # -------------------------------------------------------------------------
 
     def GetTop(self):
         """
@@ -1068,9 +1042,7 @@ class Margins:
         """
         return self._top
 
-    # End GetTop
-    #-------------------------------------------------------------------------
-
+    # -------------------------------------------------------------------------
 
     def GetBottom(self):
         """
@@ -1078,14 +1050,9 @@ class Margins:
         """
         return self._bottom
 
-    # End GetBottom
-    #-------------------------------------------------------------------------
-
-
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Setters...
-    #-------------------------------------------------------------------------
-
+    # -------------------------------------------------------------------------
 
     def SetValue(self, margin):
         """
@@ -1096,9 +1063,7 @@ class Margins:
         self._top    = margin
         self._bottom = margin
 
-    # End SetMargins
-    #-------------------------------------------------------------------------
-
+    # -------------------------------------------------------------------------
 
     def SetLeft(self, margin):
         """
@@ -1106,9 +1071,7 @@ class Margins:
         """
         self._left = margin
 
-    # End SetLeft
-    #-------------------------------------------------------------------------
-
+    # -------------------------------------------------------------------------
 
     def SetRight(self, margin):
         """
@@ -1116,9 +1079,7 @@ class Margins:
         """
         self._right = margin
 
-    # End SetRight
-    #-------------------------------------------------------------------------
-
+    # -------------------------------------------------------------------------
 
     def SetTop(self, margin):
         """
@@ -1126,9 +1087,7 @@ class Margins:
         """
         self._top = margin
 
-    # End SetTop
-    #-------------------------------------------------------------------------
-
+    # -------------------------------------------------------------------------
 
     def SetBottom(self, margin):
         """
@@ -1136,19 +1095,11 @@ class Margins:
         """
         self._bottom = margin
 
-    # End SetBottom
-    #-------------------------------------------------------------------------
-
-
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Properties
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     Top    = property(GetTop,    SetTop)
     Bottom = property(GetBottom, SetBottom)
     Left   = property(GetLeft,   SetLeft)
     Right  = property(GetRight,  SetRight)
-
-    #-------------------------------------------------------------------------
-
-#-----------------------------------------------------------------------------

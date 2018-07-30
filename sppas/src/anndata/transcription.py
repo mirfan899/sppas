@@ -453,10 +453,10 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def set_tier_index(self, name, new_index, case_sensitive=True):
-        """ Get the index of a tier from its name.
+        """ Set the index of a tier from its name.
 
         :param name: (str) EXACT name of the tier
-        :param index: (int) New index of the tier in self
+        :param new_index: (int) New index of the tier in self
         :param case_sensitive: (bool)
         :returns: index or -1 if not found
 
@@ -484,7 +484,7 @@ class sppasTranscription(sppasMetaData):
         name = tier.get_name()
         i = 2
         while self.find(name) is not None:
-            name = u"%s(%d)" % (tier.get_name(), i)
+            name = "{:s}({:d})".format(tier.get_name(), i)
             i += 1
         tier.set_name(name)
 

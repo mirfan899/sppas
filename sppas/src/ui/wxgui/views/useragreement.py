@@ -57,7 +57,7 @@ from sppas.src.ui.wxgui.sp_icons import USERCHECK
 # class UserAgreementDialog
 # ----------------------------------------------------------------------------
 
-class UserAgreementDialog( spBaseDialog ):
+class UserAgreementDialog(spBaseDialog):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -75,7 +75,7 @@ class UserAgreementDialog( spBaseDialog ):
 
         """
         spBaseDialog.__init__(self, parent, preferences, title=" - User Agreement")
-        wx.GetApp().SetAppName( "useragreement" )
+        wx.GetApp().SetAppName("useragreement")
 
         self.tiers = tiers
 
@@ -83,17 +83,17 @@ class UserAgreementDialog( spBaseDialog ):
         contentbox = self._create_content()
         buttonbox  = self._create_buttons()
 
-        self.LayoutComponents( titlebox,
+        self.LayoutComponents(titlebox,
                                contentbox,
-                               buttonbox )
+                               buttonbox)
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
     def _create_buttons(self):
-        btn_close = self.CreateCloseButton( )
-        return self.CreateButtonBox( [],[btn_close] )
+        btn_close = self.CreateCloseButton()
+        return self.CreateButtonBox([],[btn_close])
 
     def _create_content(self):
         self.notebook = wx.Notebook(self)
@@ -118,15 +118,15 @@ class UserAgreementDialog( spBaseDialog ):
         oldselection = event.GetOldSelection()
         newselection = event.GetSelection()
         if oldselection != newselection:
-            page = self.notebook.GetPage( newselection )
-            page.ShowContent( self.tiers )
+            page = self.notebook.GetPage(newselection)
+            page.ShowContent(self.tiers)
 
 
 # ----------------------------------------------------------------------------
 # Base Tier Panel
 # ----------------------------------------------------------------------------
 
-class BaseTierPanel( wx.Panel ):
+class BaseTierPanel(wx.Panel):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -167,7 +167,7 @@ class BaseTierPanel( wx.Panel ):
 # First tab: information
 # ----------------------------------------------------------------------------
 
-class InformationPanel( BaseTierPanel ):
+class InformationPanel(BaseTierPanel):
     """
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
@@ -191,8 +191,8 @@ class InformationPanel( BaseTierPanel ):
             return
 
         self.text_ctrl = wx.richtext.RichTextCtrl(self, style=wx.VSCROLL|wx.HSCROLL|wx.NO_BORDER)
-        self.text_ctrl.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        self.text_ctrl.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
+        self.text_ctrl.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
+        self.text_ctrl.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
         self.text_ctrl.SetMinSize((600, 380))
         self.text_ctrl.SetEditable(False)
         self._create_text_content(tiers)
@@ -210,31 +210,31 @@ class InformationPanel( BaseTierPanel ):
 
         """
         if not tiers:
-            self.text_ctrl.WriteText( "Nothing to view!" )
+            self.text_ctrl.WriteText("Nothing to view!")
             return
 
-        self.text_ctrl.WriteText( "Selected tiers:\n" )
+        self.text_ctrl.WriteText("Selected tiers:\n")
         i = 0
         for filename,tiers in tiers.items():
             for t in tiers:
-                self.text_ctrl.WriteText( "    "+str(i)+". "+filename+" - "+t.GetName()+"\n" )
+                self.text_ctrl.WriteText("    "+str(i)+". "+filename+" - "+t.GetName()+"\n")
                 i = i+1
-        self.text_ctrl.WriteText( "\n" )
+        self.text_ctrl.WriteText("\n")
 
-        self.text_ctrl.WriteText( "Confusion matrix:\n" )
-        self.text_ctrl.WriteText( "\n" )
+        self.text_ctrl.WriteText("Confusion matrix:\n")
+        self.text_ctrl.WriteText("\n")
 
 
 # ----------------------------------------------------------------------------
 # Second tab: Details of each annotation
 # ----------------------------------------------------------------------------
 
-class KappaPanel( BaseTierPanel ):
-    """
+class KappaPanel(BaseTierPanel):
+    """Detailed-view of a tiers.
+
     @author:  Brigitte Bigi
     @contact: brigitte.bigi@gmail.com
     @license: GPL
-    @summary: Detailed-view of a tiers.
 
     """
 
@@ -249,8 +249,8 @@ class KappaPanel( BaseTierPanel ):
 
         """
         self.text_ctrl = wx.richtext.RichTextCtrl(self, style=wx.VSCROLL|wx.HSCROLL|wx.NO_BORDER)
-        self.text_ctrl.SetForegroundColour( self.preferences.GetValue('M_FG_COLOUR') )
-        self.text_ctrl.SetBackgroundColour( self.preferences.GetValue('M_BG_COLOUR') )
+        self.text_ctrl.SetForegroundColour(self.preferences.GetValue('M_FG_COLOUR'))
+        self.text_ctrl.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
         self.text_ctrl.SetMinSize((600, 380))
         self.text_ctrl.SetEditable(False)
         self._create_text_content(tiers)
@@ -267,35 +267,34 @@ class KappaPanel( BaseTierPanel ):
         Add the content of the tier in the RichTextCtrl.
         """
         if not tiers:
-            self.text_ctrl.WriteText( "Nothing to view!" )
+            self.text_ctrl.WriteText("Nothing to view!")
             return
 
-        self.text_ctrl.WriteText( "Cohen's Kappa on labels of tiers:\n" )
+        self.text_ctrl.WriteText("Cohen's Kappa on labels of tiers:\n")
         tier = []
         for filename,tiers in tiers.items():
             for t in tiers:
                 tier.append(t)
-        self.text_ctrl.WriteText( "\n" )
+        self.text_ctrl.WriteText("\n")
 
         if len(tier) != 2:
-            self.text_ctrl.WriteText( "Cohen's Kappa can be estimated only with exactly 2 tiers. Got %d\n"%len(tier) )
+            self.text_ctrl.WriteText("Cohen's Kappa can be estimated only with exactly 2 tiers. Got %d\n" % len(tier))
             return
         if tier[0].GetSize() != tier[1].GetSize():
-            self.text_ctrl.WriteText( "Cohen's Kappa on labels of tiers can be estimated only if the 2 tiers have the same number of annotations. Got %d and %d\n"%(len(tier[0]),len(tier[1])) )
+            self.text_ctrl.WriteText("Cohen's Kappa on labels of tiers can be estimated only if the 2 tiers have the same number of annotations. "
+                                     "Got %d and %d\n"%(len(tier[0]),len(tier[1])))
             return
 
         # Create the list of items in both tiers 1 and 2
-        d1 = TierConverter( tier[0] )
-        items1 = d1.tier_to_items( )
-        d2 = TierConverter( tier[1] )
-        items2 = d2.tier_to_items( )
+        d1 = TierConverter(tier[0])
+        items1 = d1.tier_to_items()
+        d2 = TierConverter(tier[1])
+        items2 = d2.tier_to_items()
         items = sorted(list(set(items1+items2)))
 
-        p = d1.labels_to_vector( items )
-        q = d2.labels_to_vector( items )
+        p = d1.labels_to_vector(items)
+        q = d2.labels_to_vector(items)
 
-        kappa = sppasKappa(p,q)
+        kappa = sppasKappa(p, q)
         v = kappa.evaluate()
-        self.text_ctrl.WriteText( "value = "+str(v)+"\n" )
-
-# ----------------------------------------------------------------------------
+        self.text_ctrl.WriteText("value = "+str(v)+"\n")

@@ -1,55 +1,46 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: filetree.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi, Cazambe Henry"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
+        http://www.sppas.org/
 
+        Use of this software is governed by the GNU Public License, version 3.
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
 
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    wxgui.panels.filetree.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import os.path
 import wx
 import logging
 
 import sppas.src.audiodata.aio
-import sppas.src.annotationdata.aio
+import sppas.src.anndata.aio
+
+from sppas.src.anndata import sppasRW
 
 from sppas.src.ui.wxgui.cutils.imageutils import spBitmap
 from sppas.src.ui.wxgui.dialogs.filedialogs import OpenSoundFiles
@@ -96,11 +87,11 @@ ID_TB_EXPORT = wx.NewId()
 
 class FiletreePanel(wx.Panel):
     """
-    :author:       Brigitte Bigi
+    :author:       Brigitte Bigi, Cazembe Henry
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      A panel with a toolbar and a tree-style list of files.
 
     """
@@ -115,7 +106,7 @@ class FiletreePanel(wx.Panel):
         font = self._prefsIO.GetValue('M_FONT')
         font.SetWeight(wx.BOLD)
 
-        self._toolbar   = self._create_toolbar()
+        self._toolbar = self._create_toolbar()
         self._filestree = self._create_filestree()
 
         _vbox = wx.BoxSizer(wx.VERTICAL)
@@ -147,7 +138,8 @@ class FiletreePanel(wx.Panel):
     def _create_filestree(self):
         """ Create the tree to store file names. """
 
-        t = wx.TreeCtrl(self, 1, wx.DefaultPosition, (-1, -1), style=wx.TR_MULTIPLE | wx.TR_HIDE_ROOT | wx.TR_HAS_BUTTONS | wx.NO_BORDER)
+        t = wx.TreeCtrl(self, 1, wx.DefaultPosition, (-1, -1), 
+                        style=wx.TR_MULTIPLE | wx.TR_HIDE_ROOT | wx.TR_HAS_BUTTONS | wx.NO_BORDER)
         t.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
         t.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
         t.SetFont(self._prefsIO.GetValue('M_FONT'))
@@ -158,23 +150,23 @@ class FiletreePanel(wx.Panel):
         theme = self._prefsIO.GetValue('M_ICON_THEME')
         il = wx.ImageList(iconsize, iconsize)
 
-        self.rootidx      = il.Add(spBitmap(TREE_ROOT, iconsize, theme))
-        self.fldridx      = il.Add(spBitmap(TREE_FOLDER_CLOSE, iconsize, theme))
-        self.fldropenidx  = il.Add(spBitmap(TREE_FOLDER_OPEN,  iconsize, theme))
-        self.wavfileidx   = il.Add(spBitmap(MIME_WAV, iconsize, theme))
-        self.txtfileidx   = il.Add(spBitmap(MIME_ASCII, iconsize, theme))
-        self.csvfileidx   = il.Add(spBitmap(MIME_ASCII, iconsize, theme))
+        self.rootidx = il.Add(spBitmap(TREE_ROOT, iconsize, theme))
+        self.fldridx = il.Add(spBitmap(TREE_FOLDER_CLOSE, iconsize, theme))
+        self.fldropenidx = il.Add(spBitmap(TREE_FOLDER_OPEN,  iconsize, theme))
+        self.wavfileidx = il.Add(spBitmap(MIME_WAV, iconsize, theme))
+        self.txtfileidx = il.Add(spBitmap(MIME_ASCII, iconsize, theme))
+        self.csvfileidx = il.Add(spBitmap(MIME_ASCII, iconsize, theme))
         self.ptierfileidx = il.Add(spBitmap(MIME_PITCHTIER, iconsize, theme))
         self.tgridfileidx = il.Add(spBitmap(MIME_TEXTGRID,  iconsize, theme))
-        self.trsfileidx   = il.Add(spBitmap(MIME_TRS, iconsize, theme))
-        self.eaffileidx   = il.Add(spBitmap(MIME_EAF, iconsize, theme))
-        self.xrafileidx   = il.Add(spBitmap(MIME_XRA, iconsize, theme))
-        self.mrkfileidx   = il.Add(spBitmap(MIME_MRK, iconsize, theme))
-        self.subfileidx   = il.Add(spBitmap(MIME_SUBTITLES, iconsize, theme))
+        self.trsfileidx = il.Add(spBitmap(MIME_TRS, iconsize, theme))
+        self.eaffileidx = il.Add(spBitmap(MIME_EAF, iconsize, theme))
+        self.xrafileidx = il.Add(spBitmap(MIME_XRA, iconsize, theme))
+        self.mrkfileidx = il.Add(spBitmap(MIME_MRK, iconsize, theme))
+        self.subfileidx = il.Add(spBitmap(MIME_SUBTITLES, iconsize, theme))
         self.anvilfileidx = il.Add(spBitmap(MIME_ANVIL, iconsize, theme))
-        self.antxfileidx  = il.Add(spBitmap(MIME_ANTX, iconsize, theme))
+        self.antxfileidx = il.Add(spBitmap(MIME_ANTX, iconsize, theme))
         self.xtransfileidx = il.Add(spBitmap(MIME_XTRANS, iconsize, theme))
-        self.aupfileidx    = il.Add(spBitmap(MIME_AUP, iconsize, theme))
+        self.aupfileidx = il.Add(spBitmap(MIME_AUP, iconsize, theme))
 
         t.AssignImageList(il)
 
@@ -185,6 +177,7 @@ class FiletreePanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnButtonClick(self, event):
+        
         ide = event.GetId()
         if ide == wx.ID_ADD:
             self._add_file()
@@ -286,7 +279,7 @@ class FiletreePanel(wx.Panel):
 
         # Ask for the expected file format
         errors = False
-        extensions = sppas.src.annotationdata.aio.extensions_out
+        extensions = sppas.src.anndata.aio.extensions_out
         dlg = Choice(self, self._prefsIO, "Select the file extension to export to:", extensions)
         dlg.SetSelection(0)  # default choice (=xra)
 
@@ -296,24 +289,30 @@ class FiletreePanel(wx.Panel):
             # Convert all files
             for filename in files:
                 try:
-                    oldextension = os.path.splitext(filename)[1][1:]
-                    newfilename = filename.replace("."+oldextension,extensions[checked])
-                    trs = sppas.src.annotationdata.aio.read(filename)
-                    sppas.src.annotationdata.aio.write(newfilename, trs)
+                    old_extension = os.path.splitext(filename)[1][1:]
+                    new_filename = filename.replace("." + old_extension, extensions[checked])
+                    parser = sppasRW(filename)
+                    trs = parser.read()
+                    parser.set_filename(new_filename)
+                    parser.write(trs)
                 except Exception as e:
-                    ShowInformation(self, self._prefsIO,
+                    ShowInformation(self, 
+                                    self._prefsIO,
                                     "Export failed for file %s: %s" % (filename, e),
                                     style=wx.ICON_ERROR)
                     errors = True
                 else:
-                    self._append_file(newfilename)
+                    self._append_file(new_filename)
         else:
             errors = None
 
         dlg.Destroy()
 
         if errors is False:
-            ShowInformation(self, self._prefsIO, "Export with success.", style=wx.ICON_INFORMATION)
+            ShowInformation(self, 
+                            self._prefsIO, 
+                            "Export with success.", 
+                            style=wx.ICON_INFORMATION)
 
     # -----------------------------------------------------------------------
 
@@ -325,20 +324,26 @@ class FiletreePanel(wx.Panel):
         if not files: return
 
         for filename in files:
-            default_dir  = os.path.dirname(filename)
+            default_dir = os.path.dirname(filename)
             default_file = os.path.basename(filename)
 
             # Show the dialog and retrieve the user response.
-            newfilename = SaveAsAnnotationFile(default_dir, default_file)
+            new_filename = SaveAsAnnotationFile(default_dir, default_file)
+            
             # If it is the OK response, process the data.
-            if newfilename:
+            if new_filename:
                 try:
-                    trs = sppas.src.annotationdata.aio.read(filename)
-                    sppas.src.annotationdata.aio.write(newfilename, trs)
+                    parser = sppasRW(filename)
+                    trs = parser.read()
+                    parser.set_filename(new_filename)
+                    parser.write(trs)
                 except Exception as e:
-                    ShowInformation(self, self._prefsIO, "Copy/Export failed: %s" % e, style=wx.ICON_ERROR)
+                    ShowInformation(self, 
+                                    self._prefsIO, 
+                                    "Copy/Export failed: {:s}".format(e), 
+                                    style=wx.ICON_ERROR)
                 else:
-                    self._append_file(newfilename)
+                    self._append_file(new_filename)
 
     # -----------------------------------------------------------------------
     # Functions
@@ -405,7 +410,9 @@ class FiletreePanel(wx.Panel):
             try:
                 IsDir = os.path.isdir(filename)
             except UnicodeEncodeError:
-                ShowInformation(None, self._prefsIO, "File names can only contain ASCII characters.", style=wx.ICON_INFORMATION)
+                ShowInformation(None, self._prefsIO, 
+                                "File names can only contain ASCII characters.", 
+                                style=wx.ICON_INFORMATION)
                 continue
 
             if item == self._filestree.GetRootItem():
@@ -447,7 +454,7 @@ class FiletreePanel(wx.Panel):
         # Get the directory name
         dirname = os.path.dirname(filename)
         basename = os.path.basename(filename)
-        fname, fileExtension = os.path.splitext(filename)
+        fname, file_ext = os.path.splitext(filename)
 
         # Add the directory as item of the tree if it isn't already done
         item = self._get_item_by_label(dirname, self._filestree.GetRootItem())
@@ -461,7 +468,7 @@ class FiletreePanel(wx.Panel):
             child = self._get_item_by_label(basename, item)
             if not child.IsOk():
                 child = self._add_item(item, basename)
-            if fileExtension.lower() in sppas.src.audiodata.aio.extensions:
+            if file_ext.lower() in sppas.src.audiodata.aio.extensions:
                 self._add_related_files(os.path.join(dirname, basename))
                 self._filestree.SelectItem(child)
 
@@ -553,80 +560,80 @@ class FiletreePanel(wx.Panel):
         :returns the child
 
         """
-        fileName, fileExtension = os.path.splitext(son.lower())
+        filename, file_ext = os.path.splitext(son.lower())
 
         if isdir:
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
-            self._filestree.SetItemImage(child, self.fldridx,     which=wx.TreeItemIcon_Normal)
+            self._filestree.SetItemImage(child, self.fldridx, which=wx.TreeItemIcon_Normal)
             self._filestree.SetItemImage(child, self.fldropenidx, which=wx.TreeItemIcon_Expanded)
 
-        elif fileExtension in sppas.src.audiodata.aio.extensions:
+        elif file_ext in sppas.src.audiodata.aio.extensions:
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.wavfileidx, wx.TreeItemIcon_Normal)
 
-        elif fileExtension in [ ".txt",".ctm",".stm",".lab",".mlf" ]:
+        elif file_ext in [".txt", ".ctm", ".stm", ".lab", ".mlf"]:
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.txtfileidx, wx.TreeItemIcon_Normal)
 
-        elif fileExtension == ".csv":
+        elif file_ext == ".csv":
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.csvfileidx, wx.TreeItemIcon_Normal)
 
-        elif fileExtension == ".textgrid":
+        elif file_ext == ".textgrid":
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.tgridfileidx, wx.TreeItemIcon_Normal)
 
-        elif fileExtension in [".pitchtier",".hz"]:
+        elif file_ext in [".pitchtier", ".hz"]:
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.ptierfileidx, wx.TreeItemIcon_Normal)
 
-        elif fileExtension == ".trs": # Transcriber
+        elif file_ext == ".trs":  # Transcriber
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.trsfileidx, wx.TreeItemIcon_Normal)
 
-        elif fileExtension == ".mrk": # Phonedit
+        elif file_ext == ".mrk":  # Phonedit
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.mrkfileidx, wx.TreeItemIcon_Normal)
 
-        elif fileExtension == ".eaf": # Elan
+        elif file_ext == ".eaf":  # Elan
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.eaffileidx, wx.TreeItemIcon_Normal)
 
-        elif fileExtension == ".xra":  # SPPAS
+        elif file_ext == ".xra":  # SPPAS
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.xrafileidx, wx.TreeItemIcon_Normal)
 
-        elif fileExtension in [".srt",".sub"]:
+        elif file_ext in [".srt", ".sub"]:
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.subfileidx, wx.TreeItemIcon_Normal)
 
-        elif fileExtension == ".anvil":
+        elif file_ext == ".anvil":
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.anvilfileidx, wx.TreeItemIcon_Normal)
 
-        elif fileExtension == ".antx":
+        elif file_ext in [".ant", ".antx"]:
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.antxfileidx, wx.TreeItemIcon_Normal)
 
-        elif fileExtension == ".tdf":
+        elif file_ext == ".tdf":
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.xtransfileidx, wx.TreeItemIcon_Normal)
 
-        elif fileExtension == ".aup":
+        elif file_ext == ".aup":
             child = self._filestree.AppendItem(parent, son)
             self._filestree.SetPyData(child, None)
             self._filestree.SetItemImage(child, self.aupfileidx, wx.TreeItemIcon_Normal)
@@ -660,10 +667,10 @@ class FiletreePanel(wx.Panel):
                     item = self._get_item_by_label(f, self._filestree.GetRootItem())
                     if not item.IsOk():
                         #if the file is associated to the wave file, add it to the tree
-                        if os.path.isfile(os.path.join(dirname,f)):
+                        if os.path.isfile(os.path.join(dirname, f)):
                             self._add_item(dir_item, f)
-                        elif os.path.isdir(os.path.join(dirname,f)):
-                            self._append_dir(os.path.join(dirname,f))
+                        elif os.path.isdir(os.path.join(dirname, f)):
+                            self._append_dir(os.path.join(dirname, f))
             except Exception:
                 pass
 
@@ -730,14 +737,12 @@ class FiletreePanel(wx.Panel):
         """
         dirname = self._filestree.GetItemText(dir)
         file_item, cookie = self._filestree.GetFirstChild(dir)
-        while(file_item.IsOk()):
+        while file_item.IsOk():
             filename = self._filestree.GetItemText(file_item)
             fpath = os.path.join(dirname, filename)
             #if the file has the right extension and is not already in the the list pathlist
-            if filename.lower().endswith(extension.lower()) and not fpath in pathlist:
+            if filename.lower().endswith(extension.lower()) and fpath not in pathlist:
                 pathlist.append(fpath)
             file_item, cookie = self._filestree.GetNextChild(dir, cookie)
 
         return pathlist
-
-# ----------------------------------------------------------------------------
