@@ -58,7 +58,7 @@ class sppasNgramsModel(object):
 
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      brigitte.bigi@gmail.com
 
@@ -393,7 +393,7 @@ class sppasNgramCounter(object):
 
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      brigitte.bigi@gmail.com
 
@@ -500,7 +500,7 @@ class sppasNgramCounter(object):
         symbols = self._sentence_to_tokens(sentence)
 
         # get a list of ngrams from a list of tokens.
-        ngrams = zip(*[symbols[i:] for i in range(self._n)])
+        ngrams = list(zip(*[symbols[i:] for i in range(self._n)]))
 
         # append the list of ngrams into a dictionary of such items.
         for each in ngrams:

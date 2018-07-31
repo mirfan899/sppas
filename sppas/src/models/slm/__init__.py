@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.models.slm.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    models.slm
+    ~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -38,7 +38,7 @@
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    slm is a package to manege Statistical Language Models.
+    slm is a package to manage Statistical Language Models.
 
 """
 from .arpaio import sppasArpaIO
@@ -46,19 +46,9 @@ from .ngramsmodel import sppasNgramsModel
 from .ngramsmodel import sppasNgramCounter
 from .statlangmodel import sppasSLM
 
-# ---------------------------------
-
 __all__ = [
     "sppasArpaIO",
     "sppasNgramCounter",
     "sppasNgramsModel",
     "sppasSLM"
 ]
-
-# ---------------------------------------------------------------------------
-
-MAX_ORDER = 20
-START_SENT_SYMBOL = "<s>"
-END_SENT_SYMBOL = "</s>"
-
-# ---------------------------------------------------------------------------
