@@ -90,14 +90,15 @@ class TestTrainer(unittest.TestCase):
         self.assertEqual(corpus.phonemap.map_entry('#'), "#")
 
         corpus.fix_resources(dict_file=os.path.join(paths.resources, "dict", "nan.dict"))
-        self.assertEqual(len(corpus.monophones), 45)
+        self.assertEqual(len(corpus.monophones), 43)
 
         corpus.fix_resources(dict_file=os.path.join(paths.resources, "dict", "nan.dict"),
                              mapping_file=os.path.join(paths.resources, "models", "models-nan", "monophones.repl"))
         self.assertEqual(corpus.phonemap.map_entry(SIL_ORTHO), SIL_PHON)
 
         self.assertFalse(corpus.add_file("toto", "toto"))
-        self.assertTrue(corpus.add_file(os.path.join(DATA, "F_F_B003-P8-palign.TextGrid"), os.path.join(DATA, "F_F_B003-P8.wav")))
+        self.assertTrue(corpus.add_file(os.path.join(DATA, "F_F_B003-P8-palign.TextGrid"),
+                                        os.path.join(DATA, "F_F_B003-P8.wav")))
         corpus.datatrainer.delete()
 
     # -----------------------------------------------------------------------

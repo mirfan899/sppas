@@ -56,7 +56,7 @@ from sppas.src.config import sg
 
 # ---------------------------------------------------------------------------
 
-""" Unicode conversion for Python 2.7. """
+"""Unicode conversion for Python 2.7. """
 
 if sys.version_info < (3,):
 
@@ -81,7 +81,7 @@ if sys.version_info < (3,):
             return s
 
 else:
-    """ Unicode conversion for Python > 3.2 """
+    """Unicode conversion for Python > 3.2 """
 
     text_type = str
     binary_type = bytes
@@ -113,7 +113,7 @@ class sppasUnicode(object):
 
     """
     def __init__(self, entry):
-        """ Create a sppasUnicode instance.
+        """Create a sppasUnicode instance.
 
         :param entry: (str or unicode or bytes in python 2)
 
@@ -125,7 +125,7 @@ class sppasUnicode(object):
     # -----------------------------------------------------------------------
 
     def unicode(self):
-        """ Return the unicode string of the given entry.
+        """Return the unicode string of the given entry.
 
         :returns: unicode
 
@@ -138,7 +138,7 @@ class sppasUnicode(object):
     # -----------------------------------------------------------------------
 
     def to_lower(self):
-        """ Return the unicode string with lower case.
+        """Return the unicode string with lower case.
 
         :returns: unicode
 
@@ -151,7 +151,8 @@ class sppasUnicode(object):
     # -----------------------------------------------------------------------
 
     def to_strip(self):
-        """ Strip the string.
+        """Strip the string.
+        
         Remove also multiple whitespace, tab and CR/LF inside the string.
 
         :returns: unicode
@@ -173,7 +174,7 @@ class sppasUnicode(object):
     # ----------------------------------------------------------------------------
 
     def clear_whitespace(self):
-        """ Replace the whitespace by underscores.
+        """Replace the whitespace by underscores.
 
         :returns: unicode
 
@@ -187,7 +188,7 @@ class sppasUnicode(object):
     # ------------------------------------------------------------------------
 
     def to_ascii(self):
-        """ Replace the non-ASCII characters by underscores.
+        """Replace the non-ASCII characters by underscores.
 
         :returns: unicode
 

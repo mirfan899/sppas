@@ -46,12 +46,14 @@ from .fileutils import sppasFileUtils
 from .fileutils import sppasDirUtils
 from .compare import sppasCompare
 from .makeunicode import u, b
+from .makeunicode import sppasUnicode
 from .maketext import translate
 
 __all__ = [
     'sppasFileUtils',
     'sppasDirUtils',
     'sppasCompare',
+    'sppasUnicode',
     'u',
     'b',
     'translate'
