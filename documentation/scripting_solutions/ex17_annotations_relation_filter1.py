@@ -33,7 +33,7 @@ sys.path.append(os.path.join("..", ".."))
 
 from sppas.src.anndata import sppasFilters
 from sppas.src.utils.makeunicode import u
-from ex15_annotations_label_filter import get_tier
+from .ex15_annotations_label_filter import get_tier
 
 # ----------------------------------------------------------------------------
 # Variables

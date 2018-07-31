@@ -60,7 +60,8 @@ from sppas.src.ui.wxgui.panels.trslist import TrsList
 from sppas.src.ui.wxgui.panels.mainbuttons import MainToolbarPanel
 from sppas.src.ui.wxgui.views.singlefilter import SingleFilterDialog
 from sppas.src.ui.wxgui.views.relationfilter import RelationFilterDialog
-from sppas.src.ui.wxgui.process.filterprocess import FilterProcess
+from sppas.src.ui.wxgui.process.filterprocess import SingleFilterProcess
+from sppas.src.ui.wxgui.process.filterprocess import RelationFilterProcess
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -99,7 +100,7 @@ class DataFilterClient(BaseClient):
     # ------------------------------------------------------------------------
 
     def _update_members(self):
-        """ Update members. """
+        """Update members."""
 
         self._multiplefiles = True
 
@@ -114,7 +115,7 @@ class DataFilterClient(BaseClient):
     # ------------------------------------------------------------------------
 
     def Save(self):
-        """ Save the current file(s). """
+        """Save the current file(s)."""
 
         page = self._notebook.GetCurrentPage()
         for i in range(self._xfiles.GetSize()):
@@ -125,7 +126,7 @@ class DataFilterClient(BaseClient):
     # ------------------------------------------------------------------------
 
     def SaveAs(self):
-        """ Save the current file(s). """
+        """Save the current file(s)."""
 
         page = self._notebook.GetCurrentPage()
         for i in range(self._xfiles.GetSize()):
@@ -136,7 +137,7 @@ class DataFilterClient(BaseClient):
     # ------------------------------------------------------------------------
 
     def SaveAll(self):
-        """ Save all files (one per page). """
+        """Save all files (one per page)."""
 
         for i in range(self._xfiles.GetSize()):
             o = self._xfiles.GetObject(i)
@@ -149,17 +150,18 @@ class DataFilterClient(BaseClient):
 
 
 class DataFilter(wx.Panel):
-    """
+    """This component allows to manage annotated files.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      This component allows to manage annotated files.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     It is used to select which tiers will be filtered.
 
     """
+
     def __init__(self, parent, prefsIO):
 
         wx.Panel.__init__(self, parent, -1)
@@ -189,7 +191,7 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def _create_toolbar(self):
-        """ Creates a toolbar panel. """
+        """Creates a toolbar panel."""
 
         toolbar = MainToolbarPanel(self, self._prefsIO)
 
@@ -208,7 +210,7 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def _create_content(self):
-        """ Create the panel with files content. """
+        """Create the panel with files content."""
 
         panel = scrolled.ScrolledPanel(self, -1)
         self._trssizer = wx.BoxSizer(wx.VERTICAL)
@@ -222,7 +224,7 @@ class DataFilter(wx.Panel):
     # ------------------------------------------------------------------------
 
     def ProcessEvent(self, event):
-        """ Processes an event.
+        """Processes an event.
 
         Processes an event, searching event tables and calling zero or more
         suitable event handler function(s).  Note that the ProcessEvent
@@ -260,7 +262,8 @@ class DataFilter(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnFileWander(self, event):
-        """ A file was checked/unchecked somewhere else.
+        """A file was checked/unchecked somewhere else.
+        
         set/unset the data.
 
         """
@@ -307,17 +310,17 @@ class DataFilter(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Check(self):
-        """ Choose tiers to check. """
+        """Choose tiers to check."""
 
         nb = 0
         dlg = wx.TextEntryDialog(self, 'What is name of tier(s) to check?', 'Tier checker', '')
         ret = dlg.ShowModal()
         # Let's check if user clicked OK or pressed ENTER
         if ret == wx.ID_OK:
-            tiername = dlg.GetValue()
+            tier_name = dlg.GetValue()
             for i in range(self._filetrs.GetSize()):
                 p = self._filetrs.GetObject(i)
-                r = p.Select(tiername)
+                r = p.Select(tier_name)
                 if r:
                     nb += 1
         dlg.Destroy()
@@ -325,7 +328,7 @@ class DataFilter(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Uncheck(self):
-        """ Un-check all tiers in all files. """
+        """Un-check all tiers in all files."""
 
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -334,7 +337,7 @@ class DataFilter(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Delete(self):
-        """ Delete all checked tiers of all panels. """
+        """Delete all checked tiers of all panels."""
 
         delete = 0
         for i in range(self._filetrs.GetSize()):
@@ -345,7 +348,7 @@ class DataFilter(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Preview(self):
-        """ Open a frame to view a tier. """
+        """Open a frame to view a tier."""
 
         nb = 0
         for i in range(self._filetrs.GetSize()):
@@ -370,7 +373,7 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def Save(self):
-        """ Save the selected file. """
+        """Save the selected file."""
 
         if self._selection is None:
             ShowInformation(self, self._prefsIO, "No file selected!\n"
@@ -385,7 +388,7 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SaveAs(self):
-        """ Save as... the selected file. """
+        """Save as... the selected file."""
 
         if self._selection is None:
             ShowInformation(self, self._prefsIO, 'No file selected!\nClick on a tier to select a file...', style=wx.ICON_INFORMATION)
@@ -428,7 +431,7 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SaveAll(self):
-        """ Save all files. """
+        """Save all files."""
 
         for i in range(self._filetrs.GetSize()):
             o = self._filetrs.GetObject(i)
@@ -439,7 +442,7 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SingleFilter(self):
-        """ Filter selected tiers with Sel predicate. """
+        """Filter selected tiers with Sel predicate."""
 
         dlg = SingleFilterDialog(self, self._prefsIO)
         if dlg.ShowModal() == wx.ID_OK:
@@ -447,20 +450,20 @@ class DataFilter(wx.Panel):
             # Match all or match any of the predicates
             match_all = dlg.GetMatchAll()
             # Output tier name
-            tiername = dlg.GetFiltererdTierName()
-            # List of SinglePredicates
-            psel = dlg.GetPredicates()
+            tier_name = dlg.GetFiltererdTierName()
+            # List of selected data
+            data = dlg.GetSelectedData()
             # OK, go...
-            if len(psel):
-                process = FilterProcess(psel, [], match_all, tiername, self._filetrs)
-                process.RunSingleFilter()
+            if len(data) > 0:
+                process = SingleFilterProcess(data, match_all, tier_name, self._filetrs)
+                process.run()
 
         dlg.Destroy()
 
     # ----------------------------------------------------------------------
 
     def RelationFilter(self):
-        """ Filter selected tiers with Rel predicate. """
+        """Filter selected tiers with Rel predicate."""
 
         (tiersX, tiersY) = self._get_tiernames()
         dlg = RelationFilterDialog(self, self._prefsIO, tiersX, tiersY)
@@ -471,13 +474,14 @@ class DataFilter(wx.Panel):
             # Relation Tier name
             reltiername = dlg.GetRelationTierName()
             # The RelationPredicate to be applied
-            prel = dlg.GetPredicate()
+            # List of selected data
+            data = dlg.GetSelectedData()
             annotformat = dlg.GetAnnotationFormat()
 
             # OK, go...
-            if prel:
-                process = FilterProcess([], prel, False, tiername, self._filetrs)
-                process.RunRelationFilter(self, reltiername, annotformat)
+            if len(data) > 0:
+                process = RelationFilterProcess(data, tiername, self._filetrs)
+                process.run(self, reltiername, annotformat)
 
         dlg.Destroy()
 
@@ -580,7 +584,7 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def UnsetData(self, f):
-        """ Remove the given file. """
+        """Remove the given file."""
 
         if self._filetrs.Exists(f):
             i = self._filetrs.GetIndex(f)
@@ -605,7 +609,7 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def UnsetAllData(self):
-        """ Clean information and destroy all data. """
+        """Clean information and destroy all data."""
 
         self._filetrs.RemoveAll()
         self._trssizer.DeleteWindows()
@@ -616,7 +620,7 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def GetSelection(self):
-        """ Return the current selection (the panel TrsList witch is selected). """
+        """Return the current selection (the panel TrsList witch is selected)."""
 
         return self._selection
 
@@ -625,7 +629,7 @@ class DataFilter(wx.Panel):
     # -----------------------------------------------------------------------
 
     def _get_tiernames(self):
-        """ Create a list of selected tier names, and the whole list of tier names."""
+        """Create a list of selected tier names, and the whole list of tier names."""
 
         tiersX = []
         tiersY = []

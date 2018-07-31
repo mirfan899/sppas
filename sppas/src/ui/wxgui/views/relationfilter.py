@@ -203,11 +203,11 @@ class RelationFilterDialog( spBaseDialog ):
     # Getters...
     #-------------------------------------------------------------------------
 
-    def GetPredicate(self):
+    def GetSelectedData(self):
         """
         Convert the content of the checklist in a list of Sel predicates and return it.
         """
-        return self.filterpanel.GetPredicate()
+        return self.filterpanel.GetSelectedData()
 
 
     def GetFiltererdTierName(self):
@@ -227,6 +227,7 @@ class RelationFilterDialog( spBaseDialog ):
         return self.filterpanel.GetAnnotationFormat()
 
 # ----------------------------------------------------------------------------
+
 
 class RelationFilterPanel(wx.Panel):
     """
@@ -259,7 +260,7 @@ class RelationFilterPanel(wx.Panel):
     # Public Methods
     # ----------------------------------------------------------------------
 
-    def GetPredicate(self):
+    def GetSelectedData(self):
         """
         Return a predicate, constructed from the data.
 
@@ -298,5 +299,3 @@ class _genPredicateRel(object):
             else:
                 pred = p
         return pred
-
-# --------------------------------------------------------------------------

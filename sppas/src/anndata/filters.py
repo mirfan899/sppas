@@ -48,7 +48,7 @@ from .annlabel.tag import sppasTag
 
 
 class sppasAnnSet(object):
-    """ Manager for a set of annotations.
+    """Manager for a set of annotations.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -64,14 +64,14 @@ class sppasAnnSet(object):
 
     """
     def __init__(self):
-        """ Create a sppasAnnSet instance. """
+        """Create a sppasAnnSet instance. """
 
         self._data_set = dict()
 
     # -----------------------------------------------------------------------
 
     def get_value(self, ann):
-        """ Return the value corresponding to an annotation.
+        """Return the value corresponding to an annotation.
 
         :param ann: (sppasAnnotation)
         :returns: (list of str) the value corresponding to the annotation.
@@ -82,7 +82,7 @@ class sppasAnnSet(object):
     # -----------------------------------------------------------------------
 
     def append(self, ann, value):
-        """ Append an annotation in the data set, with the given value.
+        """Append an annotation in the data set, with the given value.
 
         :param ann: (sppasAnnotation)
         :param value: (list of str) List of any string.
@@ -102,7 +102,7 @@ class sppasAnnSet(object):
     # -----------------------------------------------------------------------
 
     def remove(self, ann):
-        """ Remove the annotation of the data set.
+        """Remove the annotation of the data set.
 
         :param ann: (sppasAnnotation)
 
@@ -113,7 +113,7 @@ class sppasAnnSet(object):
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """ Make a deep copy of self. """
+        """Make a deep copy of self. """
 
         d = sppasAnnSet()
         for ann, value in self._data_set.items():
@@ -124,7 +124,7 @@ class sppasAnnSet(object):
     # -----------------------------------------------------------------------
 
     def to_tier(self, name="AnnSet", annot_value=False):
-        """ Create a tier from the data set.
+        """Create a tier from the data set.
 
         :param name: (str) Name of the tier to be returned
         :param annot_value: (bool) format of the resulting annotation label. \
@@ -181,7 +181,7 @@ class sppasAnnSet(object):
     # -----------------------------------------------------------------------
 
     def __eq__(self, other):
-        """ Check if data sets are equals, i.e. share the same data. """
+        """Check if data sets are equals, i.e. share the same data. """
 
         # check len
         if len(self) != len(other):
@@ -202,7 +202,7 @@ class sppasAnnSet(object):
     # -----------------------------------------------------------------------
 
     def __or__(self, other):
-        """ Implements the '|' operator between 2 data sets.
+        """Implements the '|' operator between 2 data sets.
 
         The operator '|' does the intersection operation.
 
@@ -216,7 +216,7 @@ class sppasAnnSet(object):
     # -----------------------------------------------------------------------
 
     def __and__(self, other):
-        """ Implements the '&' operator between 2 data sets.
+        """Implements the '&' operator between 2 data sets.
 
         The operator '&' does the union operation.
 
@@ -233,7 +233,7 @@ class sppasAnnSet(object):
 
 
 class sppasFilters(object):
-    """ This class implements the 'SPPAS tier' filter system.
+    """This class implements the 'SPPAS tier' filter system.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -287,8 +287,9 @@ class sppasFilters(object):
     combined.
 
     """
+
     def __init__(self, tier):
-        """ Create a sppasFilters instance.
+        """Create a sppasFilters instance.
 
         :param tier: (sppasTier) The tier to be filtered.
 
@@ -298,7 +299,7 @@ class sppasFilters(object):
     # -----------------------------------------------------------------------
 
     def tag(self, **kwargs):
-        """ Apply functions on all tags of all labels of annotations.
+        """Apply functions on all tags of all labels of annotations.
 
         Each argument is made of a function name and its expected value.
         Each function can be prefixed with 'not_', like in the example.
@@ -341,7 +342,7 @@ class sppasFilters(object):
     # -----------------------------------------------------------------------
 
     def dur(self, **kwargs):
-        """ Apply functions on durations of the location of annotations.
+        """Apply functions on durations of the location of annotations.
 
         :param kwargs: logic_bool/any sppasTagCompare() method.
         :returns: (sppasAnnSet)
@@ -376,7 +377,7 @@ class sppasFilters(object):
     # -----------------------------------------------------------------------
 
     def loc(self, **kwargs):
-        """ Apply functions on localizations of annotations.
+        """Apply functions on localizations of annotations.
 
         :param kwargs: logic_bool/any sppasLocalizationCompare() method.
         :returns: (sppasAnnSet)
@@ -410,7 +411,7 @@ class sppasFilters(object):
     # -----------------------------------------------------------------------
 
     def rel(self, other_tier, *args, **kwargs):
-        """ Apply functions of relations between localizations of annotations.
+        """Apply functions of relations between localizations of annotations.
 
         :param other_tier: the tier to be in relation with.
         :param args: any sppasIntervalCompare() method.
@@ -451,7 +452,7 @@ class sppasFilters(object):
 
     @staticmethod
     def __test_args(comparator, **kwargs):
-        """ Raise an exception if any of the args is not correct. """
+        """Raise an exception if any of the args is not correct. """
 
         names = ["logic_bool"] + comparator.get_function_names()
         for func_name, value in kwargs.items():
@@ -465,7 +466,7 @@ class sppasFilters(object):
 
     @staticmethod
     def __fix_logic_bool(**kwargs):
-        """ Return the value of a logic boolean predicate. """
+        """Return the value of a logic boolean predicate. """
 
         for func_name, value in kwargs.items():
             if func_name == "logic_bool":
@@ -478,7 +479,7 @@ class sppasFilters(object):
 
     @staticmethod
     def __fix_function_values(comparator, **kwargs):
-        """ Return the list of function names and the expected value. """
+        """Return the list of function names and the expected value. """
 
         fct_values = list()
         for func_name, value in kwargs.items():
@@ -491,7 +492,7 @@ class sppasFilters(object):
 
     @staticmethod
     def __fix_functions(comparator, **kwargs):
-        """ Parse the args to get the list of function/value/complement. """
+        """Parse the args to get the list of function/value/complement. """
 
         f_functions = list()
         for func_name, value in kwargs.items():
@@ -512,7 +513,7 @@ class sppasFilters(object):
 
     @staticmethod
     def __fix_relation_functions(comparator, *args):
-        """ Parse the arguments to get the list of function/complement. """
+        """Parse the arguments to get the list of function/complement. """
 
         f_functions = list()
         for func_name in args:
@@ -534,7 +535,7 @@ class sppasFilters(object):
 
     @staticmethod
     def __connect(location, other_tier, rel_functions, **kwargs):
-        """ Find connections between location and the other tier. """
+        """Find connections between location and the other tier. """
 
         values = list()
         for other_ann in other_tier:

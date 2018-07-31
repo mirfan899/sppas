@@ -35,60 +35,105 @@
 # File: filterprocess.py
 # ----------------------------------------------------------------------------
 
-import operator
 import wx
 import logging
-import functools
 
-from sppas.src.annotationdata import Filter, SingleFilter, RelationFilter
-from sppas.src.annotationdata.filter.predicate import Rel, Sel
-
+from sppas.src.anndata import sppasFilters
 from sppas.src.ui.wxgui.views.processprogress import ProcessProgressDialog
 
 # ----------------------------------------------------------------------------
 
 
-class FilterProcess:
+class SingleFilterProcess:
 
-    def __init__(self, sel_predicates,
-                       rel_predicate,
+    def __init__(self, data,
                        match_all,
                        tier_name,
                        file_manager,
                 ):
-        """
-        :param sel_predicates: (list) list of SinglePredicate
-        :param rel_predicates: (RelationPredicate)
+        """Filter process for "tag", "loc" and "dur" filters.
+
+        :param data: tuple(filter, function, patterns)
         :param match_all: (bool) match all predicates, instead of match any of them
-        :param output: (str) output tier name
+        :param tier_name: (str) output tier name
         :param file_manager: (xFiles)
 
         """
-        self.sel_predicates = sel_predicates
-        self.rel_predicate = rel_predicate
+        self.data = data
         self.match_all = match_all
         self.file_manager = file_manager
         self.tier_name = tier_name
 
     # -----------------------------------------------------------------------
-
-    def __create_single_predicate(self):
-        # Musn't occur, but we take care...
-        if not len(self.sel_predicates):
-            # create a predicate that will filter... nothing: everything is matching!
-            return Sel(regexp='*')
-        # Define operator:
-        #    - AND if "Apply All"
-        #    - OR  if "Apply any"
-        if self.match_all:
-            return functools.reduce(operator.and_, self.sel_predicates)
-        return functools.reduce(operator.or_, self.sel_predicates)
+    #
+    # def __create_single_predicate(self):
+    #     # Musn't occur, but we take care...
+    #     if not len(self.sel_predicates):
+    #         # create a predicate that will filter... nothing: everything is matching!
+    #         return Sel(regexp='*')
+    #     # Define operator:
+    #     #    - AND if "Apply All"
+    #     #    - OR  if "Apply any"
+    #     if self.match_all:
+    #         return functools.reduce(operator.and_, self.sel_predicates)
+    #     return functools.reduce(operator.or_, self.sel_predicates)
 
     # -----------------------------------------------------------------------
 
-    def RunSingleFilter(self):
+    def run_on_tier(self, tier):
+        """Apply filters on a tier.
 
-        predicate = self.__create_single_predicate()
+        :param tier: (sppasTier)
+        :param data: tuple(filter, function, patterns)
+        :return: (sppasTier)
+
+        TODO: can work with multiple values (only if tag)
+        TODO: convert the type of the value (str is only if tag-str)
+
+        """
+
+        logging.info("Apply sppasFilter() on tier: {:s}".format(tier.get_name()))
+        filter = sppasFilters(tier)
+        ann_sets = list()
+
+        for d in self.data:
+
+            if len(d[2]) == 1:
+                # a little bit of doc:
+                #   - getattr() returns the value of the named attributed of object.
+                #     it returns filter.tag if called like getattr(filter, "tag")
+                #   - func(**{'x': '3'}) is equivalent to func(x='3')
+                #
+                logging.info(" >>> filter.{:s}({:s}={:s})".format(
+                    d[0],
+                    d[1],
+                    d[2][0]))
+
+                ann_sets.append(getattr(filter, d[0])(**{d[1]: d[2][0]}))
+
+        if len(ann_sets) == 0:
+            return None
+
+        # Merge results (apply '&' or '|' on the resulting data sets)
+        ann_set = ann_sets[0]
+        if self.match_all:
+            for i in range(1, len(ann_sets)):
+                ann_set = ann_set & ann_sets[i]
+                if len(ann_set) == 0:
+                    return None
+        else:
+            for i in range(1, len(ann_sets)):
+                ann_set = ann_set | ann_sets[i]
+
+        # convert the annotations set into a tier
+        filtered_tier = ann_set.to_tier(name=self.tier_name, annot_value=False)
+
+        return filtered_tier
+
+    # -----------------------------------------------------------------------
+
+    def run(self):
+        """Filter all the given tiers."""
 
         for i in range(self.file_manager.GetSize()):
             # obj is a TrsList instance
@@ -98,13 +143,27 @@ class FilterProcess:
             for tier in trs:
                 # tier is selected to be filtered
                 if obj.IsSelected(tier.get_name()):
-                    # create an apply filter
-                    tierfilter = Filter(tier)
-                    sf = SingleFilter(predicate, tierfilter)
-                    new_tier = sf.Filter()
-                    new_tier.set_name(self.tier_name)
-                    # append the new tier both in Transcription and in the list
-                    obj.Append(new_tier)
+                    # so, we do the job!
+                    new_tier = self.run_on_tier(tier)
+                    if new_tier is not None:
+                        # add the new tier both in Transcription and in the list
+                        obj.AddTier(new_tier)
+
+# ---------------------------------------------------------------------------
+
+class RelationFilterProcess:
+
+    def __init__(self, data, tier_name, file_manager):
+        """Filter process for "rel".
+
+        :param data: tuple(filter, function, patterns)
+        :param tier_name: (str) output tier name
+        :param file_manager: (xFiles)
+
+        """
+        self.data = data
+        self.file_manager = file_manager
+        self.tier_name = tier_name
 
     # -----------------------------------------------------------------------
 
@@ -167,7 +226,7 @@ class FilterProcess:
 
     # -----------------------------------------------------------------------
 
-    def RunRelationFilter(self, parent, tiername, annotformat):
+    def run(self, parent, tiername, annotformat):
         wx.BeginBusyCursor()
         # Create the progress bar
         p = ProcessProgressDialog(parent, parent._prefsIO, "Filtering progress...")

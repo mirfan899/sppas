@@ -278,13 +278,13 @@ class sppasLabel(object):
         """ Return True if a tag matches all or any of the functions.
 
         :param tag_functions: list of (function, value, logical_not)
+        :param logic_bool: (str) Apply a logical "and" or a logical "or" \
+        between the functions.
+        :returns: (bool)
 
             - function: a function in python with 2 arguments: tag/value
             - value: the expected value for the tag
             - logical_not: boolean
-
-        :param logic_bool: (str) Apply a logical "and" or a logical "or" between the functions.
-        :returns: (bool)
 
         :Example: Search if a tag is exactly matching "R":
 

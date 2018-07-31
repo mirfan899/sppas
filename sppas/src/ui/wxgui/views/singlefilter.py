@@ -43,13 +43,13 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 # Imports
 # ----------------------------------------------------------------------------
 
-import os
+import logging
 import wx
 import re
 import operator
 import functools
 
-from sppas.src.annotationdata.filter.predicate import Sel
+from sppas.src.anndata import sppasFilters
 
 from sppas.src.ui.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.ui.wxgui.sp_icons import FILTER_SINGLE
@@ -83,25 +83,19 @@ DEFAULT_LABEL = "label1, label2..."
 # class SingleFilterDialog
 # ----------------------------------------------------------------------------
 
-class SingleFilterDialog( spBaseDialog ):
-    """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: This class is used to fix a set of filters for a tier.
-
-    Dialog for the user to fix a set of filters to be applied to a tier, thanks
-    to the predicate Sel.
+class SingleFilterDialog(spBaseDialog):
+    """Dialog for the user to fix a set of filters to be applied to a tier.
+    
+    :author:  Brigitte Bigi
+    :contact: brigitte.bigi@gmail.com
+    :license: GPL, v3
 
     """
 
     def __init__(self, parent, preferences):
-        """
-        Create a new dialog.
-
-        """
+        """Create a new dialog."""
         spBaseDialog.__init__(self, parent, preferences, title=" - SingleFilter")
-        wx.GetApp().SetAppName( "singlefilter" )
+        wx.GetApp().SetAppName("singlefilter")
 
         # Members
         self.match_all = False
@@ -110,9 +104,9 @@ class SingleFilterDialog( spBaseDialog ):
         contentbox = self._create_content()
         buttonbox  = self._create_buttons()
 
-        self.LayoutComponents( titlebox,
+        self.LayoutComponents(titlebox,
                                contentbox,
-                               buttonbox )
+                               buttonbox)
         self.SetMinSize((540,460))
 
     # ------------------------------------------------------------------------
@@ -120,22 +114,22 @@ class SingleFilterDialog( spBaseDialog ):
     # ------------------------------------------------------------------------
 
     def _create_buttons(self):
-        btn_cancel   = self.CreateCancelButton( )
-        btn_applyany = self.CreateButton(APPLY_ICON, "Apply ANY", btnid=wx.ID_OK )
-        btn_applyall = self.CreateButton(APPLY_ICON, "Apply ALL", btnid=wx.ID_OK )
+        btn_cancel   = self.CreateCancelButton()
+        btn_applyany = self.CreateButton(APPLY_ICON, "Apply - OR", btnid=wx.ID_OK)
+        btn_applyall = self.CreateButton(APPLY_ICON, "Apply - AND", btnid=wx.ID_OK)
         self.SetAffirmativeId(wx.ID_OK)
         btn_applyall.SetDefault()
         btn_applyall.Bind(wx.EVT_BUTTON, self._on_button_all, btn_applyall)
-        return self.CreateButtonBox( [btn_cancel],[btn_applyany,btn_applyall] )
+        return self.CreateButtonBox([btn_cancel],[btn_applyany,btn_applyall])
 
     def _create_content(self):
         self.filterpanel = SingleFilterPanel(self, self.preferences)
 
         self.tiername_layout = wx.BoxSizer(wx.HORIZONTAL)
         title_tiername = wx.StaticText(self, label="Name of filtered tier: ", style=wx.ALIGN_CENTER)
-        title_tiername.SetFont( self.preferences.GetValue('M_FONT') )
+        title_tiername.SetFont(self.preferences.GetValue('M_FONT'))
         self.text_tiername = wx.TextCtrl(self, size=(250, -1), validator=TextValidator())
-        self.text_tiername.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        self.text_tiername.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
         self.text_tiername.SetForegroundColour(wx.Colour(128,128,128))
         self.text_tiername.SetValue(DEFAULT_TIERNAME)
         self.text_tiername.Bind(wx.EVT_TEXT, self.OnTextChanged)
@@ -157,54 +151,49 @@ class SingleFilterDialog( spBaseDialog ):
         event.Skip()
 
     def OnTextClick(self, event):
-        self.text_tiername.SetForegroundColour( wx.BLACK )
+        self.text_tiername.SetForegroundColour(wx.BLACK)
         if self.text_tiername.GetValue().strip() == "":
             self.OnTextErase(event)
         event.Skip()
 
     def OnTextChanged(self, event):
         self.text_tiername.SetFocus()
-        self.text_tiername.SetBackgroundColour(wx.SystemSettings_GetColour(wx.SYS_COLOUR_WINDOW))
+        self.text_tiername.SetBackgroundColour(
+            wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
         self.text_tiername.Refresh()
 
     def OnTextErase(self, event):
         self.text_tiername.SetValue('')
         self.text_tiername.SetFocus()
-        self.text_tiername.SetBackgroundColour( wx.Colour(245,220,240) )
+        self.text_tiername.SetBackgroundColour(wx.Colour(245,220,240))
         self.text_tiername.Refresh()
-
-    #-------------------------------------------------------------------------
 
     #-------------------------------------------------------------------------
     # Getters...
     #-------------------------------------------------------------------------
 
-    def GetPredicates(self):
-        """
-        Convert the content in a list of Sel predicates and return it.
-        """
-        return self.filterpanel.GetPredicates()
+    def GetSelectedData(self):
+        """Convert the content in a list into filters and return it."""
+        return self.filterpanel.GetSelectedData()
+
+    #-------------------------------------------------------------------------
 
     def GetFiltererdTierName(self):
-        """
-        Return the future name for the filtered tier.
-        """
+        """Return the future name for the filtered tier."""
         return self.text_tiername.GetValue().strip()
 
     def GetMatchAll(self):
-        """
-        Return True if all predicates must match.
-        """
+        """Return True if all predicates must match (i.e. AND operator)."""
         return self.match_all
 
 # ----------------------------------------------------------------------------
 
 class SingleFilterPanel(wx.Panel):
-    """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL
-    @summary: Panel to fix filters to be used with Sel predicate.
+    """Panel to fix the filters to be used.
+
+    :author:  Brigitte Bigi
+    :contact: brigitte.bigi@gmail.com
+    :license: GPL
 
     """
 
@@ -224,29 +213,45 @@ class SingleFilterPanel(wx.Panel):
         sizer.Add(self.toolbar,     proportion=0, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=4)
         sizer.Add(self.filterlist,  proportion=1, flag=wx.EXPAND|wx.LEFT|wx.RIGHT, border=4)
         self.SetSizer(sizer)
-        self.SetAutoLayout( True )
+        self.SetAutoLayout(True)
 
 
     def _create_toolbar(self):
 
         self.toolbar = MainToolbarPanel(self, self.preferences)
-        self.toolbar.AddButton( ID_ADD_LABEL, FILTER_ADD_LABEL, "Label", tooltip="Add a filter on the content of each annotation of the tier.")
-        self.toolbar.AddButton( ID_ADD_TIME, FILTER_ADD_TIME,   "Time",  tooltip="Add a filter to fix the time to start or to end to filter.")
-        self.toolbar.AddButton( ID_ADD_DURATION, FILTER_ADD_DURATION, "Duration", tooltip="Add a filter on the duration of each annotations of the tier.")
+
+        self.toolbar.AddButton(ID_ADD_LABEL,
+                               FILTER_ADD_LABEL,
+                               "Label",
+                               tooltip="Add a filter on the content of each annotation of the tier.")
+
+        self.toolbar.AddButton(ID_ADD_TIME,
+                               FILTER_ADD_TIME,
+                               "Time",
+                               tooltip="Add a time to start or to end filtering.")
+
+        self.toolbar.AddButton(ID_ADD_DURATION,
+                               FILTER_ADD_DURATION,
+                               "Duration",
+                               tooltip="Add a filter on the duration of each annotations of the tier.")
+
         self.toolbar.AddSpacer()
-        self.toolbar.AddButton( ID_CLEAR, FILTER_REMOVE, "Remove", tooltip="Remove checked filters of the list.")
+        self.toolbar.AddButton(ID_CLEAR,
+                               FILTER_REMOVE,
+                               "Remove",
+                               tooltip="Remove checked filters of the list.")
 
 
     def _create_filterlist(self):
 
         self.filterlist = CheckListCtrl(self, -1, style=wx.LC_REPORT|wx.BORDER_NONE)
         self.filterlist.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
-        self.filterlist.SetFont( self.preferences.GetValue('M_FONT') )
+        self.filterlist.SetFont(self.preferences.GetValue('M_FONT'))
 
-        cols = ("Filter", "Function", "Value", "Option")
+        cols = ("Filter", "Function", "Value")
         for i, col in enumerate(cols):
             self.filterlist.InsertColumn(i, col)
-            self.filterlist.SetColumnWidth(i, 120)
+        self.filterlist.SetColumnWidth(1, 120)
         self.filterlist.SetFocus()
 
     # ------------------------------------------------------------------------
@@ -254,11 +259,13 @@ class SingleFilterPanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def ProcessEvent(self, event):
-        """
-        Processes an event, searching event tables and calling zero or more
+        """ Process an event.
+
+        Processes an event., searching event tables and calling zero or more
         suitable event handler function(s).  Note that the ProcessEvent
         method is called from the wxPython docview framework directly since
         wxPython does not have a virtual ProcessEvent function.
+
         """
         id = event.GetId()
 
@@ -288,16 +295,16 @@ class SingleFilterPanel(wx.Panel):
         dlg = LabelFilterDialog(self, self.preferences)
         if dlg.ShowModal() == wx.ID_OK:
             data = dlg.GetData()
-            self._add_filter( data )
-            self.data.append( data )
+            self._add_filter(data)
+            self.data.append(data)
         dlg.Destroy()
 
     def OnAddTime(self, event):
         dlg = TimeFilterDialog(self, self.preferences)
         if dlg.ShowModal() == wx.ID_OK:
             data = dlg.GetData()
-            self._add_filter( data )
-            self.data.append( data )
+            self._add_filter(data)
+            self.data.append(data)
         dlg.Destroy()
 
     def OnAddDuration(self, event):
@@ -305,8 +312,8 @@ class SingleFilterPanel(wx.Panel):
         dlg.Show()
         if dlg.ShowModal() == wx.ID_OK:
             data = dlg.GetData()
-            self._add_filter( data )
-            self.data.append( data )
+            self._add_filter(data)
+            self.data.append(data)
         dlg.Destroy()
 
     def OnRemove(self, event):
@@ -314,107 +321,53 @@ class SingleFilterPanel(wx.Panel):
         selected = []
         currentf = self.filterlist.GetFirstSelected()
         while currentf != -1:
-            nextf = self.filterlist.GetNextSelected( currentf )
-            selected.append( currentf )
+            nextf = self.filterlist.GetNextSelected(currentf)
+            selected.append(currentf)
             currentf = nextf
 
         # remove selected items (starting from end!)
         for index in reversed(selected):
-            self.data.pop( index )
-            self.filterlist.DeleteItem( index )
+            self.data.pop(index)
+            self.filterlist.DeleteItem(index)
 
     # ----------------------------------------------------------------------
     # Public Methods
     # ----------------------------------------------------------------------
 
-    def GetPredicates(self):
-        """ Return a predicate, constructed from the data. """
+    def GetSelectedData(self):
+        """Return all the selected data defined in the notebook. """
 
-        predicates = []
-        sellist = self.filterlist.GetFirstSelected()
-        while sellist != -1:
-            d = self.data[sellist]
-            p = _genPredicateSel( **d ).generate()
-            predicates.append( p )
-            sellist = self.filterlist.GetNextSelected( sellist )
+        all_data = list()
+        sel_list = self.filterlist.GetFirstSelected()
+        while sel_list != -1:
+            all_data.append(self.data[sel_list])
+            sel_list = self.filterlist.GetNextSelected(sel_list)
 
-        return predicates
+        return all_data
 
     # ----------------------------------------------------------------------
     # Private methods
     # ----------------------------------------------------------------------
 
     def _add_filter(self, data):
-        """ Add a filter in the list. """
+        """Add a filter in the list. """
 
-        row = self._format_data(data)
         index = self.filterlist.GetItemCount()
 
-        self.filterlist.InsertStringItem( index, row[0] )
-        for i in range(1,len(row)):
-            self.filterlist.SetStringItem( index, i, row[i] )
-        self.filterlist.Select( index,on=True )
-
-
-    def _format_data(self, data):
-        """ Format data to be included in the list. """
-
-        opt = ""
-        if "label" in data['type'].lower() and 'string' in data['type'].lower():
-            values = ", ".join( data['value'] )
-            if data['case_sensitive'] is True:
-                opt = "Case-sensitive"
-            else:
-                opt = "Case-insensitive"
-        else:
-            values = str(data['value'][0])
-
-        if 'opt' in data.keys() and data['opt'] == "any":
-            opt += " Alternatives"
-
-        return (data['type'], data['name'], values, opt)
+        self.filterlist.InsertStringItem(index, data[0])
+        self.filterlist.SetStringItem(index, 1, data[1])
+        self.filterlist.SetStringItem(index, 2, str(data[2]))
+        self.filterlist.Select(index, on=True)
 
 # --------------------------------------------------------------------------
 
-class _genPredicateSel(object):
-    """
-    Generate a Sel predicate from data.
-    """
-    def __init__(self, **kwargs):
-        for k, v in kwargs.items():
-            setattr(self, k, v)
 
-    def generate(self):
-        """
-        Returns:
-            (Predicate)
-        """
-        preds = []
-        for v in self.value:
-            kwargs = {}
-            kwargs[ self.function ] = v
-            if 'opt' in kwargs.keys():
-                kwargs[ 'opt' ] = self.opt
-            preds.append( Sel(**kwargs) )
+class LabelFilterDialog(spBaseDialog):
+    """Open a frame to fix the list of patterns and mode to filter tags.
 
-        pred  = functools.reduce(operator.or_, preds)
-
-        if self.reverse:
-            return ~pred
-        return pred
-
-# ----------------------------------------------------------------------------
-
-
-class LabelFilterDialog( spBaseDialog ):
-    """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: This class is used to display a Label filter dialog.
-
-    Open a frame to fix the list of patterns and mode to filter labels
-    of annotations.
+    :author:  Brigitte Bigi
+    :contact: brigitte.bigi@gmail.com
+    :license: GPL, v3
 
     """
     choices = (
@@ -428,32 +381,29 @@ class LabelFilterDialog( spBaseDialog ):
                ("not ends with", "endswith"),
                ("match (regexp)", "regexp"),
                ("not match", "regexp")
-               )
+              )
 
     def __init__(self, parent, preferences):
-        """
-        Constructor.
-
-        """
+        """Constructor."""
         spBaseDialog.__init__(self, parent, preferences, title=" - Label Filter")
-        wx.GetApp().SetAppName( "labelfilter" )
+        wx.GetApp().SetAppName("labelfilter")
 
         titlebox   = self.CreateTitle(FILTER_ADD_LABEL,"Label-based single filter")
         contentbox = self._create_content()
         buttonbox  = self._create_buttons()
 
-        self.LayoutComponents( titlebox,
+        self.LayoutComponents(titlebox,
                                contentbox,
-                               buttonbox )
+                               buttonbox)
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
     def _create_buttons(self):
-        btn_cancel = self.CreateCancelButton( )
-        btn_okay   = self.CreateOkayButton( )
-        return self.CreateButtonBox( [btn_cancel],[btn_okay] )
+        btn_cancel = self.CreateCancelButton()
+        btn_okay   = self.CreateOkayButton()
+        return self.CreateButtonBox([btn_cancel],[btn_okay])
 
     def _create_content(self):
         self.notebook = wx.Notebook(self)
@@ -467,31 +417,29 @@ class LabelFilterDialog( spBaseDialog ):
         self.notebook.AddPage(page2, "  Number  ")
         self.notebook.AddPage(page3, "  Boolean ")
 
-        self.checkbox = wx.CheckBox(self, label="Search also in alternative labels")
-        self.checkbox.SetValue(False)
-
-        vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.notebook, 1, flag=wx.ALL|wx.EXPAND, border=0)
-        vbox.Add(self.checkbox, 0, flag=wx.ALL|wx.EXPAND, border=0)
-        return vbox
+        # vbox = wx.BoxSizer(wx.VERTICAL)
+        #vbox.Add(self.notebook, 1, flag=wx.ALL|wx.EXPAND, border=0)
+        return self.notebook
 
     # -----------------------------------------------------------------------
 
     def GetData(self):
+        """Get the data.
+
+        :returns: (tuple) with
+               type (str): tag
+               function (str): one of the methods in TagCompare
+               values (list): patterns to find
+        """
         pageidx = self.notebook.GetSelection()
         data = self.notebook.GetPage(pageidx).GetData()
-        if self.checkbox.GetValue() is True:
-            data['opt'] = "any"
-        else:
-            data['opt'] = "best"
         return data
 
 # ---------------------------------------------------------------------------
 
-class LabelString( wx.Panel ):
-    """
-    Search into a label of type string.
-    """
+
+class LabelString(wx.Panel):
+    """Search into a label of type string."""
 
     def __init__(self, parent, prefsIO):
 
@@ -518,12 +466,12 @@ class LabelString( wx.Panel ):
         sizer.Add(self.radiobox,  flag=wx.EXPAND|wx.ALL, border=4)
         sizer.Add(self.checkbox,  flag=wx.EXPAND|wx.ALL, border=4)
 
-        self.SetSizer( sizer )
+        self.SetSizer(sizer)
 
     # ------------------------------------------------------------------------
 
     def OnTextClick(self, event):
-        self.text.SetForegroundColour( wx.BLACK )
+        self.text.SetForegroundColour(wx.BLACK)
         if self.text.GetValue() == DEFAULT_LABEL:
             self.OnTextErase(event)
         event.Skip()
@@ -541,46 +489,47 @@ class LabelString( wx.Panel ):
     # -----------------------------------------------------------------------
 
     def GetData(self):
+        """Return the data defined by the user.
+
+        Returns: (tuple) with
+               type (str): tag
+               function (str): one of the methods in TagCompare (strings)
+               values (list): patterns to find separated by commas
+
         """
-        Returns:
-             (dict):
-               name (str)
-               type (str)
-               function (str)
-               patterns (list) patterns to find
-               reverse (bool)
-        """
-        data = {}
         idx = self.radiobox.GetSelection()
-        data['type'] = "Label (string)"
-        data['name'] = LabelFilterDialog.choices[idx][0]
-        data['function'] = LabelFilterDialog.choices[idx][1]
-        data['reverse'] = idx % 2 != 0
-        case_sensitive = self.checkbox.GetValue()
-        data['case_sensitive'] = case_sensitive
-        if not case_sensitive and data['function'] != "regexp":
-            data['function'] = 'i' + data['function']
+        given_fct = LabelFilterDialog.choices[idx][1]
 
-        if data['function'] == "regexp":
-            data['value'] = [self.text.GetValue()]
+        # Fill the resulting dict
+        prepend_fct = ""
+
+        if given_fct != "regexp":
+            # prepend "not_" if reverse
+            if (idx % 2) != 0:
+                prepend_fct += "not_"
+            # prepend "i" if case-insensitive
+            if self.checkbox.GetValue() is False:
+                prepend_fct += "i"
+
+            # fix the value to find (one or several with the same function)
+            values = re.split(',', self.text.GetValue())
+            values = [" ".join(p.split()) for p in values]
         else:
-            patterns = re.split(',', self.text.GetValue())
-            patterns = [" ".join(p.split()) for p in patterns]
-            data['value'] = patterns
+            values = [self.text.GetValue()]
 
-        return data
+        return "tag", prepend_fct+given_fct, values
 
-    # -----------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-class LabelNumber( wx.Panel ):
-    """
-    Search into a label of type string.
-    """
+
+class LabelNumber(wx.Panel):
+    """Search into a label of type number. """
+
     choices = (
                (" is equal to...",     "equal"),
                (" is greater than...", "greater"),
                (" is less than...",    "lower"),
-              )
+             )
 
     def __init__(self, parent, prefsIO):
 
@@ -603,30 +552,36 @@ class LabelNumber( wx.Panel ):
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.radiobox, 1, flag=wx.EXPAND|wx.ALL, border=4)
         sizer.Add(hbox,          0, flag=wx.EXPAND|wx.ALL, border=4)
-        self.SetSizer( sizer )
+        self.SetSizer(sizer)
 
     # -----------------------------------------------------------------------
 
     def GetData(self):
-        data = {}
+        """Return the data defined by the user.
+
+        Returns: (tuple) with
+               type (str): tag
+               function (str): one of the methods in TagCompare (numbers)
+               values (list): number to be compared with (but of 'str' type)
+
+        """
         idx = self.radiobox.GetSelection()
-        data['name']     = LabelNumber.choices[idx][0]
-        data['function'] = LabelNumber.choices[idx][1]
-        data['value']    = [ float(self.ctrl.GetValue()) ]
-        data['type']     = "Label (number)"
-        data['reverse']  = False
-        return data
+        given_fct = LabelNumber.choices[idx][1]
+        value = self.ctrl.GetValue()
+
+        return "tag", given_fct, [value]
 
 # ---------------------------------------------------------------------------
 
-class LabelBoolean( wx.Panel ):
-    """
-    Search into a label of type string.
-    """
+
+class LabelBoolean(wx.Panel):
+    """Search into a label of type boolean."""
+
     choices = (
                (" is False", "bool"),
                (" is True",  "bool"),
-              )
+             )
+
     def __init__(self, parent, prefsIO):
 
         wx.Panel.__init__(self, parent)
@@ -635,60 +590,61 @@ class LabelBoolean( wx.Panel ):
 
         choices = [choice[0] for choice in LabelBoolean.choices]
         self.radiobox = wx.RadioBox(self, label="The label ",
-                                    choices=choices, majorDimension=1, style=wx.RA_SPECIFY_COLS)
+                                    choices=choices,
+                                    majorDimension=1,
+                                    style=wx.RA_SPECIFY_COLS)
 
     # -----------------------------------------------------------------------
 
     def GetData(self):
-        data = {}
+        """Return the data defined by the user.
+
+        Returns: (tuple) with
+               type (str): tag
+               function (str): "bool"
+               values (list): True or False
+
+        """
         idx = self.radiobox.GetSelection()
-        val = bool(idx)
-        data['name']     = LabelBoolean.choices[idx][0]
-        data['function'] = LabelBoolean.choices[idx][1]
-        data['value']    = [ val ]
-        data['type']     = "Label (Boolean)"
-        data['reverse']  = False
-        return data
+        return "tag", "bool", [bool(idx)]
 
 # ---------------------------------------------------------------------------
 
-class TimeFilterDialog( spBaseDialog ):
-    """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: This class is used to display a Time filter dialog.
 
-    Open a frame to fix the list of modes and values to filter time(s)
-    of annotations.
+class TimeFilterDialog(spBaseDialog):
+    """Open a frame to fix the list of modes and values to filter time(s).
+
+    :author:  Brigitte Bigi
+    :contact: brigitte.bigi@gmail.com
+    :license: GPL, v3
 
     """
     choices = (
-               (" is starting at...", "begin_ge"),
-               (" is ending at...",   "end_le")
-               )
+               (" is starting at...", "rangefrom"),
+               (" is ending at...",   "rangeto")
+              )
 
     def __init__(self, parent, preferences):
         """ Constructor. """
         spBaseDialog.__init__(self, parent, preferences, title=" - Time Filter")
-        wx.GetApp().SetAppName( "timefilter" )
+        wx.GetApp().SetAppName("timefilter")
 
         titlebox   = self.CreateTitle(FILTER_ADD_TIME,"Time-based single filter")
         contentbox = self._create_content()
         buttonbox  = self._create_buttons()
 
-        self.LayoutComponents( titlebox,
+        self.LayoutComponents(titlebox,
                                contentbox,
-                               buttonbox )
+                               buttonbox)
 
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
     def _create_buttons(self):
-        btn_cancel = self.CreateCancelButton( )
-        btn_okay   = self.CreateOkayButton( )
-        return self.CreateButtonBox( [btn_cancel],[btn_okay] )
+        btn_cancel = self.CreateCancelButton()
+        btn_okay   = self.CreateOkayButton()
+        return self.CreateButtonBox([btn_cancel],[btn_okay])
 
     def _create_content(self):
         # Widgets
@@ -710,64 +666,60 @@ class TimeFilterDialog( spBaseDialog ):
     # -----------------------------------------------------------------------
 
     def GetData(self):
+        """Return the data defined by the user.
+
+        Returns: (tuple) with
+               type (str): loc
+               function (str): "rangefrom" or "rangeto"
+               values (list): time value (represented by a 'str')
+
         """
-        Returns:
-            (dict):
-               name (str)
-               type (str)
-               function (str)
-               value (float) time value in seconds
-        """
-        data = {}
         idx = self.radiobox.GetSelection()
-        data['name']     = TimeFilterDialog.choices[idx][0]
-        data['function'] = TimeFilterDialog.choices[idx][1]
-        data['value']    = [self.ctrl.GetValue()]
-        data['type']     = "Time"
-        data['reverse']  = False
-        return data
+        given_fct = TimeFilterDialog.choices[idx][1]
+        value = self.ctrl.GetValue()
+
+        return "loc", given_fct, [value]
 
 # ---------------------------------------------------------------------------
 
-class DurationFilterDialog( spBaseDialog):
-    """
-    @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
-    @license: GPL, v3
-    @summary: This class is used to display a Duration filter dialog.
+class DurationFilterDialog(spBaseDialog):
+    """Open a frame to fix the list of modes and values to filter duration(s).
 
-    Open a frame to fix the list of modes and values to filter duration(s)
-    of annotations.
+    :author:  Brigitte Bigi
+    :contact: brigitte.bigi@gmail.com
+    :license: GPL, v3
 
     """
     choices = (
-               (" is equal to...",   "duration_eq"),
-               (" is greater than...",   "duration_gt"),
-               (" is less than...",    "duration_lt"),
-               (" is greater or equal to...", "duration_ge"),
-               (" is lesser or equal to...", "duration_le")
-              )
+               (" is equal to...", "eq"),
+               (" is not equal to...", "ne"),
+               (" is greater than...", "gt"),
+               (" is less than...", "lt"),
+               (" is greater or equal to...", "ge"),
+               (" is lesser or equal to...", "le")
+             )
 
     def __init__(self, parent, preferences):
         """ Constructor. """
         spBaseDialog.__init__(self, parent, preferences, title=" - Duration Filter")
-        wx.GetApp().SetAppName( "durationfilter" )
+        wx.GetApp().SetAppName("durationfilter")
 
         titlebox   = self.CreateTitle(FILTER_ADD_DURATION,"Duration-based single filter")
         contentbox = self._create_content()
         buttonbox  = self._create_buttons()
 
-        self.LayoutComponents( titlebox,
+        self.LayoutComponents(titlebox,
                                contentbox,
-                               buttonbox )
+                               buttonbox)
+
     # ------------------------------------------------------------------------
     # Create the GUI
     # ------------------------------------------------------------------------
 
     def _create_buttons(self):
-        btn_cancel = self.CreateCancelButton( )
-        btn_okay   = self.CreateOkayButton( )
-        return self.CreateButtonBox( [btn_cancel],[btn_okay] )
+        btn_cancel = self.CreateCancelButton()
+        btn_okay   = self.CreateOkayButton()
+        return self.CreateButtonBox([btn_cancel],[btn_okay])
 
     def _create_content(self):
         # Widgets
@@ -789,21 +741,15 @@ class DurationFilterDialog( spBaseDialog):
     # -----------------------------------------------------------------------
 
     def GetData(self):
-        """
-        Returns:
-            (dict):
-               name (str)
-               type (str)
-               function (str)
-               value (float) duration value in seconds
-        """
-        data = {}
-        idx = self.radiobox.GetSelection()
-        data['name']     = DurationFilterDialog.choices[idx][0]
-        data['function'] = DurationFilterDialog.choices[idx][1]
-        data['value']    = [self.ctrl.GetValue()]
-        data['type']     = "Duration"
-        data['reverse']  = False
-        return data
+        """Return the data defined by the user.
 
-    # -----------------------------------------------------------------------
+        Returns: (tuple) with
+               type (str): dur
+               function (str): one of the choices
+               values (list): time value (represented by a 'str')
+
+        """
+        idx = self.radiobox.GetSelection()
+        given_fct = DurationFilterDialog.choices[idx][1]
+        value = self.ctrl.GetValue()
+        return "dur", given_fct, [value]

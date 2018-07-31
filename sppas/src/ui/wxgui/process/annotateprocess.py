@@ -144,7 +144,9 @@ class AnnotateProcess(object):
             try:
                 os.remove(parameters.get_logfilename())
                 # eg. source or destination doesn't exist
-            except IOError, shutil.Error:
+            except IOError:
+                pass
+            except shutil.Error:
                 pass
         except Exception:
             message = "Automatic annotation finished.\nSee " + \
