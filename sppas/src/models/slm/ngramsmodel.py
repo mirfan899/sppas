@@ -121,6 +121,7 @@ class sppasNgramsModel(object):
             - logml:  idem with log values
 
     """
+
     def __init__(self, norder=1):
         """Create a sppasNgramsModel instance.
 
@@ -193,7 +194,7 @@ class sppasNgramsModel(object):
     # -----------------------------------------------------------------------
 
     def count(self, *datafiles):
-        """ ount ngrams from data files.
+        """Count ngrams from data files.
 
         :param datafiles: (*args) is a set of file names, with UTF-8 encoding.
         If the file contains more than one tier, only the first one is used.
@@ -226,6 +227,7 @@ class sppasNgramsModel(object):
 
     def set_min_count(self, value):
         """Fix a minimum count values, applied only to the max order.
+
         Any observed n-gram with a count under the value is removed.
 
         :param value: (int) Threshold for minimum count
@@ -325,7 +327,7 @@ class sppasNgramsModel(object):
     # -----------------------------------------------------------------------
 
     def _probas_as_ml(self, tolog=True):
-        """Estimates probas with maximum likelihood method.
+        r"""Estimate probas with maximum likelihood method.
 
         (1) p(a_z) = c(a_z)/c(a_)
 
@@ -351,9 +353,11 @@ class sppasNgramsModel(object):
                     hist = hist.strip()
                     if hist != oldhist:
                         if hist == self._ss:
-                            total = float(self._ngramcounts[n-1].get_count(self._es))
+                            total = float(
+                                self._ngramcounts[n-1].get_count(self._es))
                         else:
-                            total = float(self._ngramcounts[n-1].get_count(hist))
+                            total = float(
+                                self._ngramcounts[n-1].get_count(hist))
 
                 # Estimates c(a_z)
                 token = " ".join(entry)
@@ -398,6 +402,7 @@ class sppasNgramCounter(object):
     :contact:      brigitte.bigi@gmail.com
 
     """
+
     def __init__(self, n=1, wordslist=None):
         """Create a sppasNgramSounter instance.
 
@@ -482,7 +487,8 @@ class sppasNgramCounter(object):
                 labels = ann.get_labels()
                 for label in labels:
                     for tag, score in label:
-                        if tag.is_empty() is False and tag.is_silence() is False:
+                        if tag.is_empty() is False and\
+                           tag.is_silence() is False:
                             self.append_sentence(tag.get_content())
 
         if self._n == 1:

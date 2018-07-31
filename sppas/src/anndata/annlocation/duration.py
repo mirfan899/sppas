@@ -54,8 +54,9 @@ class sppasDuration(object):
         - the duration margin.
 
     """
+
     def __init__(self, value, vagueness=0.):
-        """ Create a new sppasDuration instance.
+        """Create a new sppasDuration instance.
 
         :param value: (float) value of the duration.
         :param vagueness: (float) represents the vagueness of the value.
@@ -71,7 +72,6 @@ class sppasDuration(object):
 
     def get(self):
         """ Return myself. """
-
         return self
 
     # -----------------------------------------------------------------------

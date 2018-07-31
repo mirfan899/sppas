@@ -46,11 +46,11 @@ class sppasSLM(object):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      brigitte.bigi@gmail.com
-    
-    """
-    def __init__(self):
-        """Create a sppasSLM instance without model. """
 
+    """
+
+    def __init__(self):
+        """Create a sppasSLM instance without model."""
         self.model = None
 
     # -----------------------------------------------------------------------
@@ -62,7 +62,7 @@ class sppasSLM(object):
 
         """
         if not (isinstance(model, list) and
-           all([isinstance(m, list) for m in model])):
+                all([isinstance(m, list) for m in model])):
             raise ModelsDataTypeError("slm",
                                       "list of lists of tuples",
                                       type(model))
@@ -95,13 +95,16 @@ class sppasSLM(object):
     # -----------------------------------------------------------------------
 
     def evaluate(self, filename):
+        """Evaluate a model on a file (perplexity)."""
         raise NotImplementedError("The method 'evaluate' of sppasSLM is "
                                   "not implemented yet. Any help is welcome!")
 
     # -----------------------------------------------------------------------
 
     def interpolate(self, other):
-        """An N-Gram language model can be constructed from a linear interpolation
+        """Interpolate the model with another one.
+
+        An N-Gram language model can be constructed from a linear interpolation
         of several models. In this case, the overall likelihood P(w|h) of a
         word w occurring after the history h is computed as the arithmetic
         average of P(w|h) for each of the models.

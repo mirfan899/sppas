@@ -38,8 +38,6 @@
 import wx
 import wx.lib.scrolledpanel as scrolled
 
-from sppas.src.ui.wxgui.sp_icons import TIMEANALYSIS
-from sppas.src.ui.wxgui.sp_icons import USERCHECK
 from sppas.src.ui.wxgui.sp_icons import SPREADSHEETS
 from sppas.src.ui.wxgui.sp_icons import FILTER_CHECK
 from sppas.src.ui.wxgui.sp_icons import FILTER_UNCHECK
@@ -49,7 +47,6 @@ from sppas.src.ui.wxgui.ui.CustomEvents  import FileWanderEvent, spEVT_FILE_WAND
 from sppas.src.ui.wxgui.ui.CustomEvents  import spEVT_PANEL_SELECTED
 from sppas.src.ui.wxgui.ui.CustomEvents  import spEVT_SETTINGS
 
-from baseclient import BaseClient
 from sppas.src.ui.wxgui.structs.files import xFiles
 
 from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
@@ -58,7 +55,8 @@ from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowYesNoQuestion
 from sppas.src.ui.wxgui.panels.trslist import TrsList
 from sppas.src.ui.wxgui.panels.mainbuttons import MainToolbarPanel
 from sppas.src.ui.wxgui.views.descriptivestats import DescriptivesStatsDialog
-from sppas.src.ui.wxgui.views.useragreement import UserAgreementDialog
+
+from .baseclient import BaseClient
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -67,7 +65,6 @@ from sppas.src.ui.wxgui.views.useragreement import UserAgreementDialog
 FILTER_CHECK_ID = wx.NewId()
 FILTER_UNCHECK_ID = wx.NewId()
 DESCRIPTIVES_ID = wx.NewId()
-USERCHECK_ID = wx.NewId()
 PREVIEW_ID = wx.NewId()
 
 # ----------------------------------------------------------------------------
@@ -160,7 +157,6 @@ class DataStats(wx.Panel):
         toolbar.AddButton(PREVIEW_ID, TIER_PREVIEW, 'View', tooltip="Preview one checked tier of the selected file.")
         toolbar.AddSpacer()
         toolbar.AddButton(DESCRIPTIVES_ID, SPREADSHEETS, 'Statistics', tooltip="Estimates descriptive statistics of checked tier(s).")
-        toolbar.AddButton(USERCHECK_ID, USERCHECK, 'User\nAgreement', tooltip="Estimates Kappa of checked tier(s).")
         toolbar.AddSpacer()
 
         return toolbar
@@ -200,9 +196,6 @@ class DataStats(wx.Panel):
             self.Preview()
             return True
 
-        elif id == USERCHECK_ID:
-            self.UserAgreement()
-            return True
         elif id == DESCRIPTIVES_ID:
             self.DescriptivesStats()
             return True
@@ -318,19 +311,6 @@ class DataStats(wx.Panel):
             dlg.Destroy()
         else:
             ShowInformation(self, self._prefsIO, "At least one tier must be checked!", wx.ICON_INFORMATION)
-
-    # ----------------------------------------------------------------------
-
-    def UserAgreement(self):
-        """ User agreement ."""
-        
-        nb = self._get_nbselectedtiers(inselection=False)
-        if nb == 2:
-            dlg = UserAgreementDialog(self, self._prefsIO, self._get_selectedtiers())
-            dlg.ShowModal()
-            dlg.Destroy()
-        else:
-            ShowInformation(self, self._prefsIO, "Two tiers must be checked!", wx.ICON_WARNING)
 
     # ----------------------------------------------------------------------
     # GUI

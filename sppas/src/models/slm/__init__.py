@@ -46,9 +46,9 @@ from .ngramsmodel import sppasNgramsModel
 from .ngramsmodel import sppasNgramCounter
 from .statlangmodel import sppasSLM
 
-__all__ = [
+__all__ = (
     "sppasArpaIO",
     "sppasNgramCounter",
     "sppasNgramsModel",
     "sppasSLM"
-]
+)

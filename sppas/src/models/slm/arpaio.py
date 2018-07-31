@@ -44,20 +44,20 @@ from ..modelsexc import ArpaFileError
 
 class sppasArpaIO(object):
     """ARPA statistical language models reader/writer.
-    
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      brigitte.bigi@gmail.com
-    
+
     This class is able to load and save statistical language models from
     ARPA-ASCII files.
 
     """
-    def __init__(self):
-        """Create a sppasArpaIO instance without model. """
 
+    def __init__(self):
+        """Create a sppasArpaIO instance without model."""
         self.__slm = None
 
     # -----------------------------------------------------------------------
@@ -68,10 +68,10 @@ class sppasArpaIO(object):
         :param slm: (list) List of tuples for 1-gram, 2-grams, ...
 
         """
-        if not (isinstance(slm, list) and 
-           all([isinstance(m, list) for m in slm])):
-            raise ModelsDataTypeError("slm", 
-                                      "list of lists of tuples", 
+        if not (isinstance(slm, list) and
+                all([isinstance(m, list) for m in slm])):
+            raise ModelsDataTypeError("slm",
+                                      "list of lists of tuples",
                                       type(slm))
 
         self.__slm = slm
@@ -125,29 +125,29 @@ class sppasArpaIO(object):
     # -----------------------------------------------------------------------
 
     def save(self, filename):
-        """Save the model into a file, in ARPA-ASCII format.
+        r"""Save the model into a file, in ARPA-ASCII format.
 
         The ARPA format:
 
-            \data\
-             ngram 1=nb1
-             ngram 2=nb2
-             . . .
-             ngram N=nbN
+        \data\
+         ngram 1=nb1
+         ngram 2=nb2
+         . . .
+         ngram N=nbN
 
-             \1-grams:
-             p(a_z)  a_z  bow(a_z)
-             . . .
+         \1-grams:
+         p(a_z)  a_z  bow(a_z)
+         . . .
 
-             \2-grams:
-             p(a_z)  a_z  bow(a_z)
-             . . .
+         \2-grams:
+         p(a_z)  a_z  bow(a_z)
+         . . .
 
-             \n-grams:
-             p(a_z)  a_z
-             . . .
+         \n-grams:
+         p(a_z)  a_z
+         . . .
 
-             \end\
+         \end\
 
         :param filename: (str) File where to save the model.
 
@@ -177,13 +177,13 @@ class sppasArpaIO(object):
     # -----------------------------------------------------------------------
 
     def _serialize_header(self):
-        """Serialize the header of an ARPA file.
+        r"""Serialize the header of an ARPA file.
 
-             \data\
-             ngram 1=nb1
-             ngram 2=nb2
-             ...
-             ngram N=nbN
+        \data\
+        ngram 1=nb1
+        ngram 2=nb2
+        ...
+        ngram N=nbN
 
         """
         r = "\\data\\ \n"
@@ -197,11 +197,11 @@ class sppasArpaIO(object):
 
     @staticmethod
     def _serialize_ngram(model, order):
-        """Serialize one of the ngrams of an ARPA file.
+        r"""Serialize one of the ngrams of an ARPA file.
 
-             \2-grams:
-             p(a_z)  a_z  bow(a_z)
-             ...
+        \2-grams:
+        p(a_z)  a_z  bow(a_z)
+        ...
 
         """
         r = "\\"+str(order)+"-grams: \n"
@@ -219,9 +219,9 @@ class sppasArpaIO(object):
 
     @staticmethod
     def _serialize_footer():
-        """Serialize the footer of an ARPA file.
+        r"""Serialize the footer of an ARPA file.
 
-             \end
+        \end
 
         """
         return "\\end\n"

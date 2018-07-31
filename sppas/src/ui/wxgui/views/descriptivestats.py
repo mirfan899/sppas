@@ -184,6 +184,7 @@ class DescriptivesStatsDialog(spBaseDialog):
         newvalue = bool(event.GetSelection())
         if self.withalt == newvalue:
             return
+        self.withalt = newvalue
         # update infos of TierStats objects
         for ts in self._data:
             ts.set_withalt(self.withalt)

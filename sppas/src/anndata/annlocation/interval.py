@@ -233,7 +233,7 @@ class sppasInterval(sppasBaseLocalization):
         # vagueness of the duration is based on begin/end radius values
         vagueness = 0
         if self.__begin.get_radius() is not None:
-            vagueness += self.__begin().get_radius()
+            vagueness += self.__begin.get_radius()
         if self.__end.get_radius() is not None:
             vagueness += self.__end.get_radius()
 
