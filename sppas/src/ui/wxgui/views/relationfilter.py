@@ -34,18 +34,131 @@
 
 """
 import wx
+import logging
+try:
+    from agw import floatspin as FS
+except ImportError:
+    import wx.lib.agw.floatspin as FS
 
 from sppas.src.ui.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.ui.wxgui.sp_icons import FILTER_RELATION
-
 from sppas.src.ui.wxgui.cutils.textutils import TextValidator
-from sppas.src.ui.wxgui.panels.relationstable import AllensRelationsTable
+import sppas.src.ui.wxgui.panels.ultimatelistctrl as ulc
 
 # ----------------------------------------------------------------------------
 # Constants
 # ----------------------------------------------------------------------------
 
 DEFAULT_TIERNAME = "Filtered tier"
+
+
+DISJOINT = ("before",
+            "after",
+            "meets",
+            "metby")
+
+CONVERGENT = ("starts",
+              "startedby",
+              "finishes",
+              "finishedby",
+              "overlaps",
+              "overlappedby",
+              "contains",
+              "during")
+
+EQUALS = ("equals",)
+
+CUSTOM = ("equals",)
+
+META_RELATIONS = (EQUALS, DISJOINT, CONVERGENT, CUSTOM)
+
+
+ALLEN_RELATIONS = (
+                   ('equals', 'Equals', '', '', ''),
+                   ('before', 'Before', 'Max delay\nin seconds:', 3.0, 'max_delay'),
+                   ('after', 'After', 'Max delay\nin seconds:', 3.0, 'max_delay'),
+                   ('meets', 'Meets', '', '', ''),
+                   ('metby', 'Met by', '', '', ''),
+                   ('overlaps', 'Overlaps', 'Min overlap\n in seconds', 0.030, 'overlap_min'),
+                   ('overlappedby', 'Overlapped by', 'Min overlap\n in seconds', 0.030, 'overlap_min'),
+                   ('starts', 'Starts', '', '', ''),
+                   ('startedby', 'Started by', '', '', ''),
+                   ('finishes', 'Finishes', '', '', ''),
+                   ('finishedby', 'Finished by', '', '', ''),
+                   ('during', 'During', '', '', ''),
+                   ('contains', 'Contains', '', '', '')
+                   )
+
+illustration = (
+               # equals
+               ('X |-----|\nY |-----|',
+                'Non efficient',
+                'Non efficient',
+                'X |\nY |'),
+               # before
+               ('X |-----|\nY' + ' ' * 15 + '|-----|',
+                'X |-----|\nY' + ' ' * 15 + '|',
+                'X |\nY   |-----|',
+                'X |\nY   |'),
+               # after
+               ('X' + ' ' * 15 + '|-----|\nY |-----|',
+                'X' + ' ' * 15 + '|\nY |-----|',
+                'X   |-----|\nY |',
+                'X   |\nY |'),
+               # meets
+               ('X |-----|\nY' + ' ' * 8 + '|-----|',
+                'Non efficient',
+                'Non efficient',
+                'Non efficient'),
+               # metby
+               ('X' + ' ' * 8 + '|-----|\nY |-----|',
+                'Non efficient',
+                'Non efficient',
+                'Non efficient'),
+               # overlaps
+               ('X |-----|\nY ' + ' ' * 5 + '|-----|',
+                'Non efficient',
+                'Non efficient',
+                'Non efficient'),
+               # overlappedby
+               ('X' + ' ' * 5 + '|-----|\nY |-----|',
+                'Non efficient',
+                'Non efficient',
+                'Non efficient'),
+               # starts
+               ('X |---|\nY |-----|',
+                'Non efficient',
+                'Non efficient',
+                'Non efficient'),
+               # startedby
+               ('X |-----|\nY |---|',
+                'Non efficient',
+                'Non efficient',
+                'Non efficient'),
+               # finishes
+               ('X |---|\nY    |------|',
+                'Non efficient',
+                'Non efficient',
+                'Non efficient'),
+               # finishedby
+               ('X |------|\nY    |---|',
+                'Non efficient',
+                'Non efficient',
+                'Non efficient'),
+               # during
+               ('X    |---|\nY |------|',
+                'Non efficient',
+                'X      |\nY |------|',
+                'Non efficient'),
+               # contains
+               ('X |------|\nY    |---|',
+                'X |-----|\nY     |',
+                'Non efficient',
+                'Non efficient'),
+               )
+
+ALLEN_RELATIONS = tuple(row + illustration[i] for i, row in enumerate(ALLEN_RELATIONS))
+
 # ----------------------------------------------------------------------------
 
 
@@ -69,7 +182,8 @@ class RelationFilterDialog(spBaseDialog):
         self.tierY = tierY
 
         titlebox = self.CreateTitle(FILTER_RELATION,
-                                    "Filter a tier X, depending on time-relations with a tier Y")
+                                    "Filter a tier X, "
+                                    "depending on time-relations with a tier Y")
         contentbox = self._create_content()
         buttonbox = self._create_buttons()
 
@@ -84,7 +198,7 @@ class RelationFilterDialog(spBaseDialog):
     def _create_buttons(self):
         btn_cancel = self.CreateCancelButton()
         btn_okay = self.CreateOkayButton()
-        return self.CreateButtonBox([btn_cancel],[btn_okay])
+        return self.CreateButtonBox([btn_cancel], [btn_okay])
 
     def _create_content(self):
         self.xy_layout = self._create_xy_layout()
@@ -129,16 +243,16 @@ class RelationFilterDialog(spBaseDialog):
         return sizer
 
     def _createX(self):
-        textX = wx.StaticText(self, -1, label="Tier X: ")
-        tiersX = wx.TextCtrl(self, -1, size=(250, 24), style=wx.TE_READONLY)
-        tiersX.SetValue(", ".join(self.tierX))
+        text = wx.StaticText(self, -1, label="Tier X: ")
+        tiers = wx.TextCtrl(self, -1, size=(250, 24), style=wx.TE_READONLY)
+        tiers.SetValue(", ".join(self.tierX))
         s = wx.BoxSizer(wx.HORIZONTAL)
-        s.Add(textX,  0, wx.ALIGN_CENTER_VERTICAL | wx.BOTTOM, border=4)
-        s.Add(tiersX, 1, wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, border=0)
+        s.Add(text,  0, wx.ALIGN_CENTER_VERTICAL | wx.BOTTOM, border=4)
+        s.Add(tiers, 1, wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, border=0)
         return s
 
     def _createY(self):
-        textY = wx.StaticText(self, -1, label="Tier Y: ")
+        text = wx.StaticText(self, -1, label="Tier Y: ")
         self.texttierY = wx.TextCtrl(self, size=(250, 24), validator=TextValidator())
         self.texttierY.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
         self.texttierY.SetForegroundColour(wx.Colour(128, 128, 128))
@@ -147,8 +261,8 @@ class RelationFilterDialog(spBaseDialog):
         self.texttierY.Bind(wx.EVT_SET_FOCUS, self.OnTextClick)
         btn = wx.Button(self, 1, 'Fix name', (50, 24))
         s = wx.BoxSizer(wx.HORIZONTAL)
-        s.Add(textY, 0, wx.ALIGN_CENTER_VERTICAL,   border=0)
-        s.Add(self.texttierY, 1, wx.ALIGN_CENTER_VERTICAL|wx.EXPAND, border=0)
+        s.Add(text, 0, wx.ALIGN_CENTER_VERTICAL,   border=0)
+        s.Add(self.texttierY, 1, wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, border=0)
         s.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL, border=0)
         btn.Bind(wx.EVT_BUTTON, self.OnChooseY)
         return s
@@ -244,4 +358,105 @@ class RelationFilterPanel(wx.Panel):
 
     def GetSelectedData(self):
         """Return a predicate, constructed from the data."""
-        return self.relTable.GetData()
+        return self.relTable.GetSelectedData()
+
+# ---------------------------------------------------------------------------
+
+
+class AllensRelationsTable(ulc.UltimateListCtrl):
+
+    def __init__(self, parent, *args, **kwargs):
+        agw_style = ulc.ULC_REPORT | ulc.ULC_VRULES | ulc.ULC_HRULES |\
+                    ulc.ULC_HAS_VARIABLE_ROW_HEIGHT | ulc.ULC_NO_HEADER
+        ulc.UltimateListCtrl.__init__(self, parent, agwStyle=agw_style, *args, **kwargs)
+        self._optionCtrlList = []
+        self.InitUI()
+
+    def InitUI(self):
+        headers = ('Name',
+                   'Option',
+                   'X: Interval \nY: Interval',
+                   'X: Interval \nY: Point',
+                   'X: Point \nY: Interval',
+                   'X: Point \nY: Point'
+                   )
+        # Create columns
+        for i, col in enumerate(headers):
+            self.InsertColumn(col=i, heading=col)
+
+        self.SetColumnWidth(col=0, width=150)
+        self.SetColumnWidth(col=1, width=180)
+        self.SetColumnWidth(col=2, width=150)
+        self.SetColumnWidth(col=3, width=100)
+        self.SetColumnWidth(col=4, width=100)
+        self.SetColumnWidth(col=5, width=100)
+
+        # Create first row
+        index = self.InsertStringItem(0, headers[0])
+        for i, col in enumerate(headers[1:], 1):
+            self.SetStringItem(index, i, col)
+
+        # Add rows
+        for i, row in enumerate(ALLEN_RELATIONS, 1):
+            func, name, opt_label, opt_value, opt_name, desc1, desc2, desc3, desc4 = row
+
+            opt_panel = wx.Panel(self)
+            opt_sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+            if isinstance(opt_value, float):
+                opt_ctrl = FS.FloatSpin(opt_panel,
+                                        min_val=0.001,
+                                        increment=0.001,
+                                        value=opt_value,
+                                        digits=3)
+            elif isinstance(opt_value, int):
+                opt_ctrl = wx.SpinCtrl(opt_panel, min=1, value=str(opt_value))
+            else:
+                opt_ctrl = wx.StaticText(opt_panel, label="")
+
+            self._optionCtrlList.append(opt_ctrl)
+            opt_text = wx.StaticText(opt_panel, label=opt_label)
+            opt_sizer.Add(opt_text)
+            opt_sizer.Add(opt_ctrl)
+            opt_panel.SetSizer(opt_sizer)
+
+            index = self.InsertStringItem(i, name, 1)
+            self.SetItemWindow(index, 1, opt_panel, expand=True)
+            self.SetStringItem(index, 2, desc1)
+            self.SetStringItem(index, 3, desc2)
+            self.SetStringItem(index, 4, desc3)
+            self.SetStringItem(index, 5, desc4)
+
+        item = self.GetItem(1)
+        self._mainWin.CheckItem(item)
+
+    # -----------------------------------------------------------------------
+
+    def GetSelectedData(self):
+
+        fcts = list()
+        opts = list()
+
+        for i, option in enumerate(self._optionCtrlList, 1):
+            if self.IsItemChecked(i, col=0):
+                func_name = ALLEN_RELATIONS[i-1][0]
+                fcts.append(func_name)
+
+                try:
+                    option_value = option.GetValue()
+                    option_name = ALLEN_RELATIONS[i-1][4]
+                    opts.append((option_name, option_value))
+                except:
+                    pass
+
+        return fcts, opts
+
+    # -----------------------------------------------------------------------
+    #
+    # def SetData(self, relations, value=True):
+    #     for i, relation in enumerate(ALLEN_RELATIONS, 1):
+    #         item = self.GetItem(i)
+    #         if relation[0] in relations:
+    #             self._mainWin.CheckItem(item, checked=True)
+    #         else:
+    #             self._mainWin.CheckItem(item, checked=False)

@@ -493,19 +493,10 @@ class DataFilter(wx.Panel):
         dlg = RelationFilterDialog(self, self._prefsIO, tiersX, tiersY)
 
         if dlg.ShowModal() == wx.ID_OK:
-            # Output tier name
-            tiername = dlg.GetFiltererdTierName()
-            # Relation Tier name
-            reltiername = dlg.GetRelationTierName()
-            # The RelationPredicate to be applied
-            # List of selected data
-            data = dlg.GetSelectedData()
-            annotformat = dlg.GetAnnotationFormat()
 
-            # OK, go...
-            if len(data) > 0:
+            if len(dlg.GetSelectedData()) > 0:
                 process = RelationFilterProcess(dlg, self._filetrs)
-                process.run(self, reltiername, annotformat)
+                process.run()
 
         dlg.Destroy()
 

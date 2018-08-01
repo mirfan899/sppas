@@ -92,7 +92,18 @@ class FilterProcess(object):
         # List of files/tiers to filter
         self.file_manager = file_manager
 
-        self.y_tier_name = None
+        # for "rel" filter only
+        try:
+            self.y_tier_name = parent.GetRelationTierName()
+        except AttributeError:
+            self.y_tier_name = None
+
+        # for "tag", "loc" and "dur" filters
+        try:
+            # Match all or match any of the filters
+            self.match_all = parent.GetMatchAll()
+        except AttributeError:
+            self.match_all = None
 
     # -----------------------------------------------------------------------
 
@@ -156,20 +167,6 @@ class FilterProcess(object):
 
 class SingleFilterProcess(FilterProcess):
 
-    def __init__(self, parent, file_manager):
-        """Filter process for "tag", "loc" and "dur" filters.
-
-        :param parent: (SingleFilterDialog)
-        :param file_manager: (xFiles)
-
-        """
-        super(SingleFilterProcess, self).__init__(parent, file_manager)
-
-        # Match all or match any of the filters
-        self.match_all = parent.GetMatchAll()
-
-    # -----------------------------------------------------------------------
-
     def run_on_tier(self, tier, tier_y=None):
         """Apply filters on a tier.
 
@@ -229,17 +226,6 @@ class SingleFilterProcess(FilterProcess):
 
 class RelationFilterProcess(FilterProcess):
 
-    def __init__(self, parent, file_manager):
-        """Filter process for "tag", "loc" and "dur" filters.
-
-        :param parent: (SingleFilterDialog)
-        :param file_manager: (xFiles)
-
-        """
-        super(RelationFilterProcess, self).__init__(parent, file_manager)
-
-    # -----------------------------------------------------------------------
-
     def run_on_tier(self, tier, tier_y=None):
         """Apply filters on a tier.
 
@@ -253,32 +239,14 @@ class RelationFilterProcess(FilterProcess):
 
         logging.info("Apply sppasFilter() on tier: {:s}".format(tier.get_name()))
         sfilter = sppasFilters(tier)
-        ann_sets = list()
 
-        for d in self.data:
-            pass
+        logging.debug("Data in RelationFilterProcess: {:s}".format(self.data))
+        ann_set = sfilter.rel(tier_y,
+                              *(self.data[0]),
+                              **{self.data[1][i][0]: self.data[1][i][1] for i in range(len(self.data[1]))})
+
         # convert the annotations set into a tier
-        # filtered_tier = ann_set.to_tier(name=self.tier_name,
-        #                                annot_value=self.annot_format)
+        filtered_tier = ann_set.to_tier(name=self.tier_name,
+                                        annot_value=self.annot_format)
 
-        return None
-    #
-    # def _runRelationFilter(self, tiername, progress, annotformat):
-    #
-    #
-    #     # Musn't occur, but we take care...
-    #     if not self.rel_predicate:
-    #         # create a predicate that will filter... nothing: everything is matching!
-    #         predicate = Rel('after') | Rel('before')
-    #     else:
-    #         predicate = self.rel_predicate
-    #
-    #         # apply to X-tier
-    #         for tier in trs:
-    #
-    #                 # create an apply filter
-    #                 xfilter = Filter(tier)
-    #                 sf = RelationFilter(predicate, xfilter, yfilter)
-    #                 new_tier = sf.Filter(annotformat)
-    #                 new_tier.set_name(self.tier_name)
-    #                 logging.debug(' ... ... ... new tier %s created ' % new_tier.get_name())
+        return filtered_tier
