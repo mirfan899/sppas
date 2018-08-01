@@ -1,55 +1,40 @@
-#!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
-# ---------------------------------------------------------------------------
-#            ___   __    __    __    ___
-#           /     |  \  |  \  |  \  /              Automatic
-#           \__   |__/  |__/  |___| \__             Annotation
-#              \  |     |     |   |    \             of
-#           ___/  |     |     |   | ___/              Speech
-#
-#
-#                           http://www.sppas.org/
-#
-# ---------------------------------------------------------------------------
-#            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2016  Brigitte Bigi
-#
-#                   This banner notice must not be removed
-# ---------------------------------------------------------------------------
-# Use of this software is governed by the GNU Public License, version 3.
-#
-# SPPAS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# SPPAS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
-#
-# ---------------------------------------------------------------------------
-# File: singlefilter.py
-# ----------------------------------------------------------------------------
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
-__docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi"""
-__copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
+        http://www.sppas.org/
 
-# ----------------------------------------------------------------------------
-# Imports
-# ----------------------------------------------------------------------------
+        Use of this software is governed by the GNU Public License, version 3.
 
-import logging
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    wxgui.views.singlefilter.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import wx
 import re
-import operator
-import functools
-
-from sppas.src.anndata import sppasFilters
 
 from sppas.src.ui.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.ui.wxgui.sp_icons import FILTER_SINGLE
@@ -67,21 +52,20 @@ try:
 except ImportError:
     import wx.lib.agw.floatspin as FS
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Constants
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-ID_ADD_LABEL    = wx.NewId()
-ID_ADD_TIME     = wx.NewId()
+ID_ADD_LABEL = wx.NewId()
+ID_ADD_TIME = wx.NewId()
 ID_ADD_DURATION = wx.NewId()
-ID_CLEAR        = wx.NewId()
+ID_CLEAR = wx.NewId()
 
 DEFAULT_TIERNAME = "Filtered tier"
-DEFAULT_LABEL = "label1, label2..."
+DEFAULT_LABEL = "tag1, tag2..."
 
-# ----------------------------------------------------------------------------
-# class SingleFilterDialog
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+
 
 class SingleFilterDialog(spBaseDialog):
     """Dialog for the user to fix a set of filters to be applied to a tier.
@@ -94,57 +78,72 @@ class SingleFilterDialog(spBaseDialog):
 
     def __init__(self, parent, preferences):
         """Create a new dialog."""
-        spBaseDialog.__init__(self, parent, preferences, title=" - SingleFilter")
+        spBaseDialog.__init__(self,
+                              parent,
+                              preferences,
+                              title=" - SingleFilter")
         wx.GetApp().SetAppName("singlefilter")
 
         # Members
         self.match_all = False
 
-        titlebox   = self.CreateTitle(FILTER_SINGLE,"Filter annotations of a tier")
+        titlebox = self.CreateTitle(FILTER_SINGLE,
+                                    "Filter annotations of a tier")
         contentbox = self._create_content()
-        buttonbox  = self._create_buttons()
+        buttonbox = self._create_buttons()
 
         self.LayoutComponents(titlebox,
-                               contentbox,
-                               buttonbox)
-        self.SetMinSize((540,460))
+                              contentbox,
+                              buttonbox)
+        self.SetMinSize((540, 460))
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Create the GUI
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _create_buttons(self):
-        btn_cancel   = self.CreateCancelButton()
-        btn_applyany = self.CreateButton(APPLY_ICON, "Apply - OR", btnid=wx.ID_OK)
-        btn_applyall = self.CreateButton(APPLY_ICON, "Apply - AND", btnid=wx.ID_OK)
+        btn_cancel = self.CreateCancelButton()
+        btn_applyany = self.CreateButton(APPLY_ICON,
+                                         "Apply - OR", btnid=wx.ID_OK)
+        btn_applyall = self.CreateButton(APPLY_ICON,
+                                         "Apply - AND", btnid=wx.ID_OK)
         self.SetAffirmativeId(wx.ID_OK)
         btn_applyall.SetDefault()
         btn_applyall.Bind(wx.EVT_BUTTON, self._on_button_all, btn_applyall)
-        return self.CreateButtonBox([btn_cancel],[btn_applyany,btn_applyall])
+        return self.CreateButtonBox([btn_cancel], [btn_applyany, btn_applyall])
 
     def _create_content(self):
         self.filterpanel = SingleFilterPanel(self, self.preferences)
 
         self.tiername_layout = wx.BoxSizer(wx.HORIZONTAL)
-        title_tiername = wx.StaticText(self, label="Name of filtered tier: ", style=wx.ALIGN_CENTER)
+        title_tiername = wx.StaticText(self,
+                                       label="Name of filtered tier: ",
+                                       style=wx.ALIGN_CENTER)
         title_tiername.SetFont(self.preferences.GetValue('M_FONT'))
-        self.text_tiername = wx.TextCtrl(self, size=(250, -1), validator=TextValidator())
+
+        self.text_tiername = wx.TextCtrl(self, size=(250, -1),
+                                         validator=TextValidator())
         self.text_tiername.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
-        self.text_tiername.SetForegroundColour(wx.Colour(128,128,128))
+        self.text_tiername.SetForegroundColour(wx.Colour(128, 128, 128))
         self.text_tiername.SetValue(DEFAULT_TIERNAME)
         self.text_tiername.Bind(wx.EVT_TEXT, self.OnTextChanged)
         self.text_tiername.Bind(wx.EVT_SET_FOCUS, self.OnTextClick)
-        self.tiername_layout.Add(title_tiername,  flag=wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
-        self.tiername_layout.Add(self.text_tiername, flag=wx.EXPAND|wx.ALL|wx.wx.ALIGN_CENTER_VERTICAL, border=5)
+
+        self.tiername_layout.Add(title_tiername,
+                                 flag=wx.ALL | wx.wx.ALIGN_CENTER_VERTICAL,
+                                 border=5)
+        self.tiername_layout.Add(self.text_tiername,
+                                 flag=wx.EXPAND | wx.ALL | wx.wx.ALIGN_CENTER_VERTICAL,
+                                 border=5)
 
         vbox = wx.BoxSizer(wx.VERTICAL)
-        vbox.Add(self.filterpanel,     1, flag=wx.ALL|wx.EXPAND, border=0)
-        vbox.Add(self.tiername_layout, 0, flag=wx.ALL|wx.EXPAND, border=0)
+        vbox.Add(self.filterpanel, 1, flag=wx.ALL | wx.EXPAND, border=0)
+        vbox.Add(self.tiername_layout, 0, flag=wx.ALL | wx.EXPAND, border=0)
         return vbox
 
-    #-------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Callbacks
-    #-------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _on_button_all(self, event):
         self.match_all = True
@@ -165,18 +164,16 @@ class SingleFilterDialog(spBaseDialog):
     def OnTextErase(self, event):
         self.text_tiername.SetValue('')
         self.text_tiername.SetFocus()
-        self.text_tiername.SetBackgroundColour(wx.Colour(245,220,240))
+        self.text_tiername.SetBackgroundColour(wx.Colour(245, 220, 240))
         self.text_tiername.Refresh()
 
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Getters...
-    #-------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def GetSelectedData(self):
         """Convert the content in a list into filters and return it."""
         return self.filterpanel.GetSelectedData()
-
-    #-------------------------------------------------------------------------
 
     def GetFiltererdTierName(self):
         """Return the future name for the filtered tier."""
@@ -186,7 +183,11 @@ class SingleFilterDialog(spBaseDialog):
         """Return True if all predicates must match (i.e. AND operator)."""
         return self.match_all
 
+    def GetAnnotationFormat(self):
+        return self.filterpanel.opt.GetValue()
+
 # ----------------------------------------------------------------------------
+
 
 class SingleFilterPanel(wx.Panel):
     """Panel to fix the filters to be used.
@@ -209,12 +210,32 @@ class SingleFilterPanel(wx.Panel):
         self._create_filterlist()
         self.Bind(wx.EVT_BUTTON, self.ProcessEvent)
 
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.toolbar,     proportion=0, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=4)
-        sizer.Add(self.filterlist,  proportion=1, flag=wx.EXPAND|wx.LEFT|wx.RIGHT, border=4)
-        self.SetSizer(sizer)
-        self.SetAutoLayout(True)
+        self.opt = wx.CheckBox(self, label='Replace tag of annotations '
+                                           'by the filter name.')
+        self.opt.SetBackgroundColour(prefsIO.GetValue('M_BG_COLOUR'))
 
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(self.toolbar,
+                  proportion=0,
+                  flag=wx.EXPAND | wx.TOP | wx.LEFT | wx.RIGHT,
+                  border=4)
+
+        sizer.Add(self.filterlist,
+                  proportion=1,
+                  flag=wx.EXPAND | wx.LEFT | wx.RIGHT,
+                  border=4)
+
+        sizer.Add(self.opt,
+                  proportion=0,
+                  flag=wx.EXPAND | wx.TOP,
+                  border=5)
+
+        self.SetSizer(sizer)
+        self.SetMinSize((380, 280))
+        self.SetAutoLayout(True)
+        self.Center()
+
+    # -------------------------------------------------------------------------
 
     def _create_toolbar(self):
 
@@ -222,29 +243,35 @@ class SingleFilterPanel(wx.Panel):
 
         self.toolbar.AddButton(ID_ADD_LABEL,
                                FILTER_ADD_LABEL,
-                               "Label",
-                               tooltip="Add a filter on the content of each annotation of the tier.")
+                               "+ Tag",
+                               tooltip="Add a filter on the content of "
+                                       "each annotation of the tier.")
 
         self.toolbar.AddButton(ID_ADD_TIME,
                                FILTER_ADD_TIME,
-                               "Time",
-                               tooltip="Add a time to start or to end filtering.")
+                               "+ Loc",
+                               tooltip="Add a localization to start or "
+                                       "to end filtering.")
 
         self.toolbar.AddButton(ID_ADD_DURATION,
                                FILTER_ADD_DURATION,
-                               "Duration",
-                               tooltip="Add a filter on the duration of each annotations of the tier.")
+                               "+ Dur",
+                               tooltip="Add a filter on the duration of "
+                                       "each annotations of the tier.")
 
         self.toolbar.AddSpacer()
+
         self.toolbar.AddButton(ID_CLEAR,
                                FILTER_REMOVE,
-                               "Remove",
+                               "- Remove",
                                tooltip="Remove checked filters of the list.")
 
+    # -------------------------------------------------------------------------
 
     def _create_filterlist(self):
 
-        self.filterlist = CheckListCtrl(self, -1, style=wx.LC_REPORT|wx.BORDER_NONE)
+        self.filterlist = CheckListCtrl(self, -1,
+                                        style=wx.LC_REPORT | wx.BORDER_NONE)
         self.filterlist.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
         self.filterlist.SetFont(self.preferences.GetValue('M_FONT'))
 
@@ -259,7 +286,7 @@ class SingleFilterPanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def ProcessEvent(self, event):
-        """ Process an event.
+        """Process an event.
 
         Processes an event., searching event tables and calling zero or more
         suitable event handler function(s).  Note that the ProcessEvent
@@ -267,21 +294,21 @@ class SingleFilterPanel(wx.Panel):
         wxPython does not have a virtual ProcessEvent function.
 
         """
-        id = event.GetId()
+        pid = event.GetId()
 
-        if id == ID_ADD_LABEL:
+        if pid == ID_ADD_LABEL:
             self.OnAddLabel(event)
             return True
 
-        elif id == ID_ADD_TIME:
+        elif pid == ID_ADD_TIME:
             self.OnAddTime(event)
             return True
 
-        elif id == ID_ADD_DURATION:
+        elif pid == ID_ADD_DURATION:
             self.OnAddDuration(event)
             return True
 
-        elif id == ID_CLEAR:
+        elif pid == ID_CLEAR:
             self.OnRemove(event)
             return True
 
@@ -335,7 +362,7 @@ class SingleFilterPanel(wx.Panel):
     # ----------------------------------------------------------------------
 
     def GetSelectedData(self):
-        """Return all the selected data defined in the notebook. """
+        """Return list of the selected data defined in the notebook. """
 
         all_data = list()
         sel_list = self.filterlist.GetFirstSelected()
@@ -385,16 +412,17 @@ class LabelFilterDialog(spBaseDialog):
 
     def __init__(self, parent, preferences):
         """Constructor."""
-        spBaseDialog.__init__(self, parent, preferences, title=" - Label Filter")
-        wx.GetApp().SetAppName("labelfilter")
+        spBaseDialog.__init__(self, parent, preferences,
+                              title=" - Tag filter")
+        wx.GetApp().SetAppName("tagfilter")
 
-        titlebox   = self.CreateTitle(FILTER_ADD_LABEL,"Label-based single filter")
+        titlebox = self.CreateTitle(FILTER_ADD_LABEL, "Tag-based single filter")
         contentbox = self._create_content()
-        buttonbox  = self._create_buttons()
+        buttonbox = self._create_buttons()
 
         self.LayoutComponents(titlebox,
-                               contentbox,
-                               buttonbox)
+                              contentbox,
+                              buttonbox)
 
     # ------------------------------------------------------------------------
     # Create the GUI
@@ -402,7 +430,7 @@ class LabelFilterDialog(spBaseDialog):
 
     def _create_buttons(self):
         btn_cancel = self.CreateCancelButton()
-        btn_okay   = self.CreateOkayButton()
+        btn_okay = self.CreateOkayButton()
         return self.CreateButtonBox([btn_cancel],[btn_okay])
 
     def _create_content(self):
@@ -417,8 +445,6 @@ class LabelFilterDialog(spBaseDialog):
         self.notebook.AddPage(page2, "  Number  ")
         self.notebook.AddPage(page3, "  Boolean ")
 
-        # vbox = wx.BoxSizer(wx.VERTICAL)
-        #vbox.Add(self.notebook, 1, flag=wx.ALL|wx.EXPAND, border=0)
         return self.notebook
 
     # -----------------------------------------------------------------------
@@ -426,13 +452,14 @@ class LabelFilterDialog(spBaseDialog):
     def GetData(self):
         """Get the data.
 
-        :returns: (tuple) with
-               type (str): tag
-               function (str): one of the methods in TagCompare
-               values (list): patterns to find
+        :returns: (tuple) with:
+
+               - "tag"
+               - function (str): one of the methods in TagCompare
+               - values (list): patterns to find
         """
-        pageidx = self.notebook.GetSelection()
-        data = self.notebook.GetPage(pageidx).GetData()
+        page_idx = self.notebook.GetSelection()
+        data = self.notebook.GetPage(page_idx).GetData()
         return data
 
 # ---------------------------------------------------------------------------
@@ -450,21 +477,25 @@ class LabelString(wx.Panel):
         # Widgets
         msg = "Patterns to find (separated by commas):"
         self.label = wx.StaticText(self, label=msg)
-        self.text = wx.TextCtrl(self, value=DEFAULT_LABEL, validator=TextValidator())
+        self.text = wx.TextCtrl(self,
+                                value=DEFAULT_LABEL,
+                                validator=TextValidator())
         self.text.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
 
         choices = [row[0] for row in LabelFilterDialog.choices]
-        self.radiobox = wx.RadioBox(self, label="Functions",
-                                    choices=choices, majorDimension=2)
+        self.radiobox = wx.RadioBox(self,
+                                    label="Functions",
+                                    choices=choices,
+                                    majorDimension=2)
         self.checkbox = wx.CheckBox(self, label="Case Sensitive")
         self.checkbox.SetValue(True)
 
         # Layout
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.label,     flag=wx.EXPAND|wx.ALL, border=4)
-        sizer.Add(self.text,      flag=wx.EXPAND|wx.ALL, border=4)
-        sizer.Add(self.radiobox,  flag=wx.EXPAND|wx.ALL, border=4)
-        sizer.Add(self.checkbox,  flag=wx.EXPAND|wx.ALL, border=4)
+        sizer.Add(self.label, flag=wx.EXPAND | wx.ALL, border=4)
+        sizer.Add(self.text, flag=wx.EXPAND | wx.ALL, border=4)
+        sizer.Add(self.radiobox, flag=wx.EXPAND | wx.ALL, border=4)
+        sizer.Add(self.checkbox, flag=wx.EXPAND | wx.ALL, border=4)
 
         self.SetSizer(sizer)
 
@@ -491,10 +522,11 @@ class LabelString(wx.Panel):
     def GetData(self):
         """Return the data defined by the user.
 
-        Returns: (tuple) with
-               type (str): tag
-               function (str): one of the methods in TagCompare (strings)
-               values (list): patterns to find separated by commas
+        Returns: (tuple) with:
+
+               - "tag"
+               - function (str): one of the methods in TagCompare (strings)
+               - values (list): patterns to find separated by commas
 
         """
         idx = self.radiobox.GetSelection()
@@ -540,18 +572,25 @@ class LabelNumber(wx.Panel):
         # Widgets
         label = wx.StaticText(self, label="... this value: ")
         choices = [choice[0] for choice in LabelNumber.choices]
-        self.radiobox = wx.RadioBox(self, label="The label ",
-                                    choices=choices, majorDimension=1, style=wx.RA_SPECIFY_COLS)
-        self.ctrl = FS.FloatSpin(self, min_val=0.0, increment=0.01, value=0, digits=3)
+        self.radiobox = wx.RadioBox(self,
+                                    label="The tag ",
+                                    choices=choices,
+                                    majorDimension=1,
+                                    style=wx.RA_SPECIFY_COLS)
+        self.ctrl = FS.FloatSpin(self,
+                                 min_val=0.0,
+                                 increment=0.01,
+                                 value=0,
+                                 digits=3)
 
         # Layout
         hbox = wx.BoxSizer(wx.HORIZONTAL)
-        hbox.Add(label,     flag=wx.EXPAND|wx.ALL, border=5)
-        hbox.Add(self.ctrl, flag=wx.EXPAND|wx.ALL, border=5)
+        hbox.Add(label, flag=wx.EXPAND | wx.ALL, border=5)
+        hbox.Add(self.ctrl, flag=wx.EXPAND | wx.ALL, border=5)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.radiobox, 1, flag=wx.EXPAND|wx.ALL, border=4)
-        sizer.Add(hbox,          0, flag=wx.EXPAND|wx.ALL, border=4)
+        sizer.Add(self.radiobox, 1, flag=wx.EXPAND | wx.ALL, border=4)
+        sizer.Add(hbox, 0, flag=wx.EXPAND | wx.ALL, border=4)
         self.SetSizer(sizer)
 
     # -----------------------------------------------------------------------
@@ -559,10 +598,11 @@ class LabelNumber(wx.Panel):
     def GetData(self):
         """Return the data defined by the user.
 
-        Returns: (tuple) with
-               type (str): tag
-               function (str): one of the methods in TagCompare (numbers)
-               values (list): number to be compared with (but of 'str' type)
+        Returns: (tuple) with:
+
+               - "tag"
+               - function (str): one of the methods in TagCompare (numbers)
+               - values (list): number to be compared with (but of 'str' type)
 
         """
         idx = self.radiobox.GetSelection()
@@ -589,7 +629,8 @@ class LabelBoolean(wx.Panel):
         self.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
 
         choices = [choice[0] for choice in LabelBoolean.choices]
-        self.radiobox = wx.RadioBox(self, label="The label ",
+        self.radiobox = wx.RadioBox(self,
+                                    label="The tag ",
                                     choices=choices,
                                     majorDimension=1,
                                     style=wx.RA_SPECIFY_COLS)
@@ -599,10 +640,11 @@ class LabelBoolean(wx.Panel):
     def GetData(self):
         """Return the data defined by the user.
 
-        Returns: (tuple) with
-               type (str): tag
-               function (str): "bool"
-               values (list): True or False
+        Returns: (tuple) with:
+
+               - "tag"
+               - function (str): "bool"
+               - values (list): True or False
 
         """
         idx = self.radiobox.GetSelection()
@@ -626,16 +668,18 @@ class TimeFilterDialog(spBaseDialog):
 
     def __init__(self, parent, preferences):
         """ Constructor. """
-        spBaseDialog.__init__(self, parent, preferences, title=" - Time Filter")
-        wx.GetApp().SetAppName("timefilter")
+        spBaseDialog.__init__(self, parent, preferences,
+                              title=" - Localization filter")
+        wx.GetApp().SetAppName("locfilter")
 
-        titlebox   = self.CreateTitle(FILTER_ADD_TIME,"Time-based single filter")
+        titlebox = self.CreateTitle(FILTER_ADD_TIME,
+                                    "Localization-based filter")
         contentbox = self._create_content()
-        buttonbox  = self._create_buttons()
+        buttonbox = self._create_buttons()
 
         self.LayoutComponents(titlebox,
-                               contentbox,
-                               buttonbox)
+                              contentbox,
+                              buttonbox)
 
     # ------------------------------------------------------------------------
     # Create the GUI
@@ -643,24 +687,29 @@ class TimeFilterDialog(spBaseDialog):
 
     def _create_buttons(self):
         btn_cancel = self.CreateCancelButton()
-        btn_okay   = self.CreateOkayButton()
-        return self.CreateButtonBox([btn_cancel],[btn_okay])
+        btn_okay = self.CreateOkayButton()
+        return self.CreateButtonBox([btn_cancel], [btn_okay])
 
     def _create_content(self):
         # Widgets
         label = wx.StaticText(self, label="... this time value in seconds: ")
         choices = [choice[0] for choice in TimeFilterDialog.choices]
-        self.radiobox = wx.RadioBox(self, label="The time ",
-                                    choices=choices, majorDimension=1)
-        self.ctrl = FS.FloatSpin(self, min_val=0.0, increment=0.001, value=0, digits=3)
+        self.radiobox = wx.RadioBox(self,
+                                    label="The time ",
+                                    choices=choices,
+                                    majorDimension=1)
+        self.ctrl = FS.FloatSpin(self, min_val=0.0,
+                                 increment=0.001,
+                                 value=0,
+                                 digits=3)
         # Layout
         hbox = wx.BoxSizer(wx.HORIZONTAL)
-        hbox.Add(label, flag=wx.EXPAND|wx.ALL, border=5)
-        hbox.Add(self.ctrl, flag=wx.EXPAND|wx.ALL, border=5)
+        hbox.Add(label, flag=wx.EXPAND | wx.ALL, border=5)
+        hbox.Add(self.ctrl, flag=wx.EXPAND | wx.ALL, border=5)
 
         content_layout = wx.BoxSizer(wx.VERTICAL)
-        content_layout.Add(self.radiobox,1, flag=wx.EXPAND|wx.ALL, border=0)
-        content_layout.Add(hbox,         0, flag=wx.EXPAND|wx.ALL, border=0)
+        content_layout.Add(self.radiobox, 1, flag=wx.EXPAND | wx.ALL, border=0)
+        content_layout.Add(hbox, 0, flag=wx.EXPAND | wx.ALL, border=0)
         return content_layout
 
     # -----------------------------------------------------------------------
@@ -682,6 +731,7 @@ class TimeFilterDialog(spBaseDialog):
 
 # ---------------------------------------------------------------------------
 
+
 class DurationFilterDialog(spBaseDialog):
     """Open a frame to fix the list of modes and values to filter duration(s).
 
@@ -701,16 +751,17 @@ class DurationFilterDialog(spBaseDialog):
 
     def __init__(self, parent, preferences):
         """ Constructor. """
-        spBaseDialog.__init__(self, parent, preferences, title=" - Duration Filter")
-        wx.GetApp().SetAppName("durationfilter")
+        spBaseDialog.__init__(self, parent, preferences,
+                              title=" - Duration Filter")
+        wx.GetApp().SetAppName("durfilter")
 
-        titlebox   = self.CreateTitle(FILTER_ADD_DURATION,"Duration-based single filter")
+        titlebox = self.CreateTitle(FILTER_ADD_DURATION, "Duration-based single filter")
         contentbox = self._create_content()
-        buttonbox  = self._create_buttons()
+        buttonbox = self._create_buttons()
 
         self.LayoutComponents(titlebox,
-                               contentbox,
-                               buttonbox)
+                              contentbox,
+                              buttonbox)
 
     # ------------------------------------------------------------------------
     # Create the GUI
@@ -725,17 +776,23 @@ class DurationFilterDialog(spBaseDialog):
         # Widgets
         label = wx.StaticText(self, label="... this value in seconds: ")
         choices = [choice[0] for choice in DurationFilterDialog.choices]
-        self.radiobox = wx.RadioBox(self, label="The duration",
-                                    choices=choices, majorDimension=1)
-        self.ctrl = FS.FloatSpin(self, min_val=0.0, increment=0.01, value=0, digits=3)
+        self.radiobox = wx.RadioBox(self,
+                                    label="The duration",
+                                    choices=choices,
+                                    majorDimension=1)
+        self.ctrl = FS.FloatSpin(self,
+                                 min_val=0.0,
+                                 increment=0.01,
+                                 value=0,
+                                 digits=3)
         # Layout
         hbox = wx.BoxSizer(wx.HORIZONTAL)
-        hbox.Add(label,     flag=wx.EXPAND|wx.ALL, border=5)
-        hbox.Add(self.ctrl, flag=wx.EXPAND|wx.ALL, border=5)
+        hbox.Add(label, flag=wx.EXPAND | wx.ALL, border=5)
+        hbox.Add(self.ctrl, flag=wx.EXPAND | wx.ALL, border=5)
 
         content_layout = wx.BoxSizer(wx.VERTICAL)
-        content_layout.Add(self.radiobox, 1, flag=wx.EXPAND|wx.ALL, border=0)
-        content_layout.Add(hbox,          0, flag=wx.EXPAND|wx.ALL, border=0)
+        content_layout.Add(self.radiobox, 1, flag=wx.EXPAND | wx.ALL, border=0)
+        content_layout.Add(hbox, 0, flag=wx.EXPAND | wx.ALL, border=0)
         return content_layout
 
     # -----------------------------------------------------------------------

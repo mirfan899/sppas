@@ -437,15 +437,25 @@ class TrsList(wx.Panel):
             indexes.append(sel_list)
             sel_list = self.tier_list.GetNextSelected(sel_list)
 
+        # how many tiers to delete???
+        d = 0
+        for sel_list in indexes:
+            tier = self._transcription[sel_list]
+            if tier not in self._protected:
+                d += 1
+        if d == 0:
+            message = 'None of the selected tiers can be deleted.' \
+                      ''.format(d, self._filename)
+            ShowInformation(self, self._prefs, message, style=wx.ICON_INFORMATION)
+            return
+
         # Ask the user to confirm before deleting
         delete = 0
         message = 'Are you sure you want to definitively delete:\n' \
-                  '{:d} tiers in {:s}?'.format(len(indexes), self._filename)
+                  '{:d} tiers in {:s}?'.format(d, self._filename)
         dlg = ShowYesNoQuestion(self, self._prefs, message)
         if dlg == wx.ID_YES:
             for sel_list in reversed(sorted(indexes)):
-
-                item = self.tier_list.GetItem(sel_list)
 
                 tier = self._transcription[sel_list]
                 if tier in self._protected:

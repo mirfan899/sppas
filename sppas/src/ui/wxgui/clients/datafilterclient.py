@@ -32,8 +32,6 @@
     src.wxgui.cliens.datafilterclient.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    GUI request system of annotated data.
-
 """
 import os.path
 import wx
@@ -81,13 +79,13 @@ FILTER_REL_ID = wx.NewId()
 
 
 class DataFilterClient(BaseClient):
-    """
+    """Manage the opened files.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Manage the opened files.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     This class manages the pages of a notebook with all opened files.
     Each page (except if empty...) contains an instance of a DataFilter.
@@ -175,9 +173,16 @@ class DataFilter(wx.Panel):
         # create the client panel
         sizer = wx.BoxSizer(wx.VERTICAL)
         toolbar = self._create_toolbar()
-        sizer.Add(toolbar, proportion=0, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=4)
+
+        sizer.Add(toolbar,
+                  proportion=0,
+                  flag=wx.EXPAND | wx.LEFT | wx.RIGHT,
+                  border=4)
         self._trspanel = self._create_content()
-        sizer.Add(self._trspanel, proportion=2, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=4)
+        sizer.Add(self._trspanel,
+                  proportion=2,
+                  flag=wx.EXPAND | wx.LEFT | wx.RIGHT,
+                  border=4)
 
         # Bind events
         self._trspanel.Bind(spEVT_PANEL_SELECTED, self.OnPanelSelection)
@@ -195,14 +200,29 @@ class DataFilter(wx.Panel):
 
         toolbar = MainToolbarPanel(self, self._prefsIO)
 
-        toolbar.AddButton(FILTER_CHECK_ID, FILTER_CHECK, 'Check', tooltip="Choose the tier(s) to check.")
-        toolbar.AddButton(FILTER_UNCHECK_ID, FILTER_UNCHECK, 'Uncheck', tooltip="Uncheck all the tier(s) of the page.")
-        toolbar.AddButton(wx.ID_DELETE, TIER_DELETE, 'Delete', tooltip="Delete all the checked tier(s) of the page.")
-        toolbar.AddButton(PREVIEW_ID, TIER_PREVIEW, 'View', tooltip="Preview one checked tier of the selected file.")
+        toolbar.AddButton(FILTER_CHECK_ID, FILTER_CHECK,
+                          'Check',
+                          tooltip="Choose the tier(s) to check.")
+        toolbar.AddButton(FILTER_UNCHECK_ID, FILTER_UNCHECK,
+                          'Uncheck',
+                          tooltip="Uncheck all the tier(s) of the page.")
+        toolbar.AddButton(wx.ID_DELETE, TIER_DELETE,
+                          'Delete',
+                          tooltip="Delete all the checked tier(s) of the page.")
+        toolbar.AddButton(PREVIEW_ID, TIER_PREVIEW,
+                          'View',
+                          tooltip="Preview a tier of the selected file.")
         toolbar.AddSpacer()
 
-        toolbar.AddButton(FILTER_SEL_ID, FILTER_SINGLE, 'Single', tooltip="Filter checked tier(s) depending on its annotations.")
-        toolbar.AddButton(FILTER_REL_ID, FILTER_RELATION, 'Relation', tooltip="Filter checked tier(s) depending on time-relations of its annotation with annotations of another tier.")
+        toolbar.AddButton(FILTER_SEL_ID, FILTER_SINGLE,
+                          'Single',
+                          tooltip="Filter checked tier(s) depending on "
+                                  "its annotations.")
+        toolbar.AddButton(FILTER_REL_ID, FILTER_RELATION,
+                          'Relation',
+                          tooltip="Filter checked tier(s) depending on "
+                                  "time-relations of its annotation with "
+                                  "annotations of another tier.")
         toolbar.AddSpacer()
 
         return toolbar
@@ -293,8 +313,9 @@ class DataFilter(wx.Panel):
     # ------------------------------------------------------------------------
 
     def OnPanelSelection(self, event):
-        """
-        Change the current selection (the transcription file that was clicked on).
+        """Change the current selection.
+
+        Change the transcription file that was clicked on.
 
         """
         self._selection = event.panel
@@ -313,7 +334,9 @@ class DataFilter(wx.Panel):
         """Choose tiers to check."""
 
         nb = 0
-        dlg = wx.TextEntryDialog(self, 'What is name of tier(s) to check?', 'Tier checker', '')
+        dlg = wx.TextEntryDialog(self,
+                                 'What is name of tier(s) to check?',
+                                 'Tier checker', '')
         ret = dlg.ShowModal()
         # Let's check if user clicked OK or pressed ENTER
         if ret == wx.ID_OK:
@@ -339,11 +362,9 @@ class DataFilter(wx.Panel):
     def Delete(self):
         """Delete all checked tiers of all panels."""
 
-        delete = 0
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
-            d = p.Delete()
-            delete = delete + d
+            p.Delete()
 
     # -----------------------------------------------------------------------
 
@@ -366,7 +387,9 @@ class DataFilter(wx.Panel):
             pass
 
         else:
-            ShowInformation(self, self._prefsIO, "You must check only one tier to view...", style=wx.ICON_WARNING)
+            ShowInformation(self, self._prefsIO,
+                            "You must check only one tier to view...",
+                            style=wx.ICON_WARNING)
 
     # ----------------------------------------------------------------------
     # Actions on a file...
@@ -376,8 +399,11 @@ class DataFilter(wx.Panel):
         """Save the selected file."""
 
         if self._selection is None:
-            ShowInformation(self, self._prefsIO, "No file selected!\n"
-                                                 "Click on a tier to select a file...", style=wx.ICON_INFORMATION)
+            ShowInformation(self,
+                            self._prefsIO,
+                            "No file selected!\n"
+                            "Click on a tier to select a file...",
+                            style=wx.ICON_INFORMATION)
             return
 
         for i in range(self._filetrs.GetSize()):
@@ -391,7 +417,10 @@ class DataFilter(wx.Panel):
         """Save as... the selected file."""
 
         if self._selection is None:
-            ShowInformation(self, self._prefsIO, 'No file selected!\nClick on a tier to select a file...', style=wx.ICON_INFORMATION)
+            ShowInformation(self, self._prefsIO,
+                            'No file selected!\n'
+                            'Click on a tier to select a file...',
+                            style=wx.ICON_INFORMATION)
             return
 
         found = -1
@@ -413,14 +442,16 @@ class DataFilter(wx.Panel):
 
             # do not erase the file if it is already existing!
             if os.path.exists(filename) and f != filename:
-                ShowInformation(self, self._prefsIO, "File not saved: "
-                                                     "this file name is already existing!", style=wx.ICON_INFORMATION)
-            elif f == filename :
+                ShowInformation(self, self._prefsIO,
+                                "File not saved: "
+                                "this file name is already existing!",
+                                style=wx.ICON_INFORMATION)
+            elif f == filename:
                 p.Save()
             else:
                 p.SaveAs(filename)
                 # Add the newly created file in the file manager
-                evt = FileWanderEvent(filename=filename,status=True)
+                evt = FileWanderEvent(filename=filename, status=True)
                 evt.SetEventObject(self)
                 wx.PostEvent(self.GetTopLevelParent(), evt)
 
@@ -447,15 +478,8 @@ class DataFilter(wx.Panel):
         dlg = SingleFilterDialog(self, self._prefsIO)
         if dlg.ShowModal() == wx.ID_OK:
 
-            # Match all or match any of the predicates
-            match_all = dlg.GetMatchAll()
-            # Output tier name
-            tier_name = dlg.GetFiltererdTierName()
-            # List of selected data
-            data = dlg.GetSelectedData()
-            # OK, go...
-            if len(data) > 0:
-                process = SingleFilterProcess(data, match_all, tier_name, self._filetrs)
+            if len(dlg.GetSelectedData()) > 0:
+                process = SingleFilterProcess(dlg, self._filetrs)
                 process.run()
 
         dlg.Destroy()
@@ -480,7 +504,7 @@ class DataFilter(wx.Panel):
 
             # OK, go...
             if len(data) > 0:
-                process = RelationFilterProcess(data, tiername, self._filetrs)
+                process = RelationFilterProcess(dlg, self._filetrs)
                 process.run(self, reltiername, annotformat)
 
         dlg.Destroy()
@@ -490,10 +514,7 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def OnSettings(self, event):
-        """
-        Set new preferences, then apply them.
-
-        """
+        """Set new preferences, then apply them."""
         self._prefsIO = event.prefsIO
 
         # Apply the changes on self
@@ -511,11 +532,9 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetFont(self, font):
-        """
-        Change font of all texts.
+        """Change font of all texts."""
 
-        """
-        wx.Window.SetFont(self,font)
+        wx.Window.SetFont(self, font)
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
             p.SetFont(font)
@@ -523,11 +542,9 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetBackgroundColour(self, color):
-        """
-        Change background of all texts.
+        """Change background of all texts."""
 
-        """
-        wx.Window.SetBackgroundColour(self,color)
+        wx.Window.SetBackgroundColour(self, color)
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
             p.SetBackgroundColour(color)
@@ -535,11 +552,9 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetForegroundColour(self, color):
-        """
-        Change foreground of all texts.
+        """Change foreground of all texts."""
 
-        """
-        wx.Window.SetForegroundColour(self,color)
+        wx.Window.SetForegroundColour(self, color)
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
             p.SetForegroundColour(color)
@@ -549,10 +564,8 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetData(self, filename):
-        """
-        Add a file.
+        """Add a file."""
 
-        """
         # Do not add an existing file
         if self._filetrs.Exists(filename):
             return False
@@ -560,7 +573,8 @@ class DataFilter(wx.Panel):
         # Add the file...
 
         # create the object
-        newtrs = TrsList(self._trspanel, filename, multiple=self._prefsIO.GetValue('F_CCB_MULTIPLE'))
+        newtrs = TrsList(self._trspanel, filename,
+                         multiple=self._prefsIO.GetValue('F_CCB_MULTIPLE'))
         newtrs.SetPreferences(self._prefsIO)
         newtrs.Protect()
         if newtrs.GetTranscriptionName() == "IO-Error":
@@ -572,9 +586,12 @@ class DataFilter(wx.Panel):
         # put the new trs in a sizer (required to enable sizer.Remove())
         s = wx.BoxSizer(wx.HORIZONTAL)
         s.Add(newtrs, 1, wx.EXPAND)
-        self._trssizer.Add(s, proportion=1, flag=wx.EXPAND|wx.TOP, border=4)
+        self._trssizer.Add(s,
+                           proportion=1,
+                           flag=wx.EXPAND | wx.TOP,
+                           border=4)
         # add in the list of files
-        self._filetrs.Append(filename,newtrs)
+        self._filetrs.Append(filename, newtrs)
 
         self.Layout()
         self._trspanel.Refresh()
@@ -620,7 +637,7 @@ class DataFilter(wx.Panel):
     # ----------------------------------------------------------------------
 
     def GetSelection(self):
-        """Return the current selection (the panel TrsList witch is selected)."""
+        """Return the panel TrsList witch is selected."""
 
         return self._selection
 

@@ -568,13 +568,13 @@ class sppasXRA(sppasBaseIO):
         root.set('name', self.get_name())
 
         metadata_root = ET.SubElement(root, 'Metadata')
-        sppasXRA._format_metadata(metadata_root, self)
+        sppasXRA.format_metadata(metadata_root, self)
         if len(metadata_root.findall('Entry')) == 0:
             root.remove(metadata_root)
 
         for tier in self:
             tier_root = ET.SubElement(root, 'Tier')
-            sppasXRA._format_tier(tier_root, tier)
+            sppasXRA.format_tier(tier_root, tier)
 
         for media in self.get_media_list():
             media_root = ET.SubElement(root, 'Media')
@@ -594,7 +594,7 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def _format_metadata(metadata_root, meta_object, exclude=[]):
+    def format_metadata(metadata_root, meta_object, exclude=[]):
         """ Add 'Metadata' element in the tree from a sppasMetaData().
 
         :param metadata_root: (ET) XML Element tree root.
@@ -613,7 +613,7 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def _format_tier(tier_root, tier):
+    def format_tier(tier_root, tier):
         """ Add a 'Tier' object in the tree from a sppasTier().
 
         :param tier_root: (ET) XML Element tree root.
@@ -629,19 +629,19 @@ class sppasXRA(sppasBaseIO):
 
         # Tier Metadata
         metadata_root = ET.SubElement(tier_root, 'Metadata')
-        sppasXRA._format_metadata(metadata_root, tier, exclude=['id'])
+        sppasXRA.format_metadata(metadata_root, tier, exclude=['id'])
         if len(metadata_root.findall('Entry')) == 0:
             tier_root.remove(metadata_root)
 
         # Tier annotations list
         for annotation in tier:
             annotation_root = ET.SubElement(tier_root, 'Annotation')
-            sppasXRA._format_annotation(annotation_root, annotation)
+            sppasXRA.format_annotation(annotation_root, annotation)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def _format_annotation(annotation_root, annotation):
+    def format_annotation(annotation_root, annotation):
         """ Add an 'Annotation' element in the tree from a sppasAnnotation().
 
         :param annotation_root: (ET) XML Element tree root.
@@ -656,21 +656,21 @@ class sppasXRA(sppasBaseIO):
 
         # Elements:
         metadata_root = ET.SubElement(annotation_root, 'Metadata')
-        sppasXRA._format_metadata(metadata_root, annotation, exclude=['id'])
+        sppasXRA.format_metadata(metadata_root, annotation, exclude=['id'])
         if len(metadata_root.findall('Entry')) == 0:
             annotation_root.remove(metadata_root)
 
         location_root = ET.SubElement(annotation_root, 'Location')
-        sppasXRA._format_location(location_root, annotation.get_location())
+        sppasXRA.format_location(location_root, annotation.get_location())
 
         for label in annotation.get_labels():
             label_root = ET.SubElement(annotation_root, 'Label')
-            sppasXRA._format_label(label_root, label)
+            sppasXRA.format_label(label_root, label)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def _format_location(location_root, location):
+    def format_location(location_root, location):
         """ Add a 'Location' element in the tree from a sppasLocation().
 
         :param location_root: (ET) XML Element tree root.
@@ -743,7 +743,7 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def _format_label(label_root, label):
+    def format_label(label_root, label):
         """ Add a 'Label' element in the tree from a sppasLabel().
 
         :param label_root: (ET) XML Element tree root.
@@ -795,7 +795,7 @@ class sppasXRA(sppasBaseIO):
         # Element Metadata (except 'id')
         metadata_root = ET.SubElement(media_root, 'Metadata')
         if len(media.get_meta_keys()) > 1:
-            sppasXRA._format_metadata(metadata_root, media, exclude=['id'])
+            sppasXRA.format_metadata(metadata_root, media, exclude=['id'])
         if len(metadata_root.findall('Entry')) == 0:
             media_root.remove(metadata_root)
 
@@ -853,7 +853,7 @@ class sppasXRA(sppasBaseIO):
 
         # Element Metadata (except 'id')
         metadata_root = ET.SubElement(vocabulary_root, 'Metadata')
-        sppasXRA._format_metadata(metadata_root, vocabulary)
+        sppasXRA.format_metadata(metadata_root, vocabulary)
         if len(metadata_root.findall('Entry')) == 0:
             vocabulary_root.remove(metadata_root)
 

@@ -33,6 +33,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+import collections
+
 from .anndataexc import AnnDataValueError
 from .anndataexc import AnnDataKeyError
 from .anndataexc import AnnDataTypeError
@@ -66,7 +68,7 @@ class sppasAnnSet(object):
     def __init__(self):
         """Create a sppasAnnSet instance. """
 
-        self._data_set = dict()
+        self._data_set = collections.OrderedDict()
 
     # -----------------------------------------------------------------------
 
@@ -302,12 +304,13 @@ class sppasFilters(object):
         """Apply functions on all tags of all labels of annotations.
 
         Each argument is made of a function name and its expected value.
-        Each function can be prefixed with 'not_', like in the example.
+        Each function can be prefixed with 'not_', like in the next example.
 
         :Example:
 
             >>> f.tag(startswith="pa", not_endswith='a', logic_bool="and")
             >>> f.tag(startswith="pa") & f.tag(not_endswith='a')
+            >>> f.tag(startswith="pa") | f.tag(startswith="ta")
 
         :param kwargs: logic_bool/any sppasTagCompare() method.
         :returns: (sppasAnnSet)
