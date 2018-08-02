@@ -1,5 +1,4 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
+#!/usr/bin/env python
 """
     ..
         ---------------------------------------------------------------------
@@ -37,16 +36,20 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     This is the main program to execute the Graphical User Interface of SPPAS.
-    
+
 """
 import sys
-import os.path
 import traceback
 from argparse import ArgumentParser
-from butils import exit_error, check_python, check_aligner
+
+from os import path, getcwd
+PROGRAM = path.abspath(__file__)
+SPPAS = path.dirname(path.dirname(path.dirname(PROGRAM)))
+sys.path.append(SPPAS)
+from sppas.bin import exit_error, check_python, check_aligner
 check_python()
 
 try:
@@ -54,14 +57,8 @@ try:
 except ImportError:
     exit_error("WxPython is not installed on your system\n."
                "The Graphical User Interface of SPPAS can't work.")
-from checkwx import get_wx_version
+from sppas.bin.checkwx import get_wx_version
 
-# import SPPAS Application Programming Interface
-# ----------------------------------------------
-
-PROGRAM = os.path.abspath(__file__)
-SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
-sys.path.append(SPPAS)
 
 try:
     from sppas.src.ui import SETTINGS_FILE
@@ -80,9 +77,9 @@ except ImportError:
 # ---------------------------------------------------------------------------
 
 # Arguments
-# ------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s files" % os.path.basename(PROGRAM),
+parser = ArgumentParser(usage="{:s} files".format(path.basename(PROGRAM)),
                         description="SPPAS Graphical User Interface.")
 parser.add_argument("files", nargs="*", help='Input audio file name(s)')
 args = parser.parse_args()
@@ -90,10 +87,10 @@ args = parser.parse_args()
 # force to add path
 filenames = []
 for f in args.files:
-    p, b = os.path.split(f)
+    p, b = path.split(f)
     if not p:
-        p = os.getcwd()
-    filenames.append(os.path.abspath(os.path.join(p, b)))
+        p = getcwd()
+    filenames.append(path.abspath(path.join(p, b)))
 
 # Logging
 # ----------------------------------------------------------------------------
@@ -104,7 +101,8 @@ try:
     setup_logging(log_level, log_file)
 except Exception:
     # stdin is not available if pythonw is used instead of python, on Windows!
-    log_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM))), "sppas.log")
+    log_file = path.join(path.dirname(
+        path.dirname(path.dirname(PROGRAM))), "sppas.log")
     setup_logging(log_level, log_file)
 
 # GUI is here:
@@ -125,8 +123,9 @@ if v < 3:
     ShowInformation(None, prefsIO, message, style=wx.ICON_WARNING)
 
 if check_aligner() is False:
-    ShowInformation(None, prefsIO, 'None of julius or HVite command is installed on your system.\n'
-                                   'The Alignment automatic annotation will NOT WORK normally.',
+    ShowInformation(None, prefsIO,
+                    'None of julius or HVite is installed on your system.\n'
+                    'The Alignment automatic annotation WONT WORK normally.',
                     style=wx.ICON_ERROR)
 
 # Main frame

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 """
     ..
         ---------------------------------------------------------------------
@@ -36,7 +36,7 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Run the DataRoamer analysis tool
 
 """
@@ -45,7 +45,7 @@ import os.path
 import traceback
 from argparse import ArgumentParser
 
-from butils import exit_error, check_python
+from .butils import exit_error, check_python
 
 check_python()
 
@@ -54,7 +54,7 @@ try:
 except ImportError:
     exit_error("WxPython is not installed on your system\n. "
                "The Graphical User Interface of SPPAS can't work. "
-               "Refer to the installation instructions of the SPPAS web site.")
+               "Refer to the installation instructions of the web site.")
 
 # import SPPAS Application Programming Interface
 # ----------------------------------------------
@@ -82,9 +82,9 @@ except ImportError:
 # ---------------------------------------------------------------------------
 
 # Arguments
-# ------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s files" % os.path.basename(PROGRAM),
+parser = ArgumentParser(usage="{:s} files".format(os.path.basename(PROGRAM)),
                         description="DataRoamer graphical user interface.")
 parser.add_argument("files", nargs="*", help='Input file name(s)')
 args = parser.parse_args()
@@ -92,10 +92,10 @@ args = parser.parse_args()
 # force to add path
 filenames = []
 for f in args.files:
-    p,b = os.path.split(f)
+    p, b = os.path.split(f)
     if not p:
         p = os.getcwd()
-    filenames.append(os.path.abspath(os.path.join(p,b)))
+    filenames.append(os.path.abspath(os.path.join(p, b)))
 
 # Logging
 # ----------------------------------------------------------------------------
@@ -106,7 +106,8 @@ try:
     setup_logging(log_level, log_file)
 except Exception:
     # stdin is not available if pythonw is used instead of python, on Windows!
-    log_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM))), "sppas.log")
+    log_file = os.path.join(os.path.dirname(
+        os.path.dirname(os.path.dirname(PROGRAM))), "sppas.log")
     setup_logging(log_level, log_file)
 
 # GUI is here:

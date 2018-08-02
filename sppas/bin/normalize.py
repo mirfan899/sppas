@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
     ..
@@ -37,12 +37,12 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Text normalization automatic annotation.
 
 """
 import sys
-import os.path
+import os
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
@@ -60,9 +60,10 @@ from sppas.src.utils.fileutils import setup_logging
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -r vocab [options]" % os.path.basename(PROGRAM),
+parser = ArgumentParser(usage="{:s} -r vocab [options]"
+                              "".format(os.path.basename(PROGRAM)),
                         prog=PROGRAM,
-                        description="Text normalization command line interface.")
+                        description="Text normalization command line.")
 
 parser.add_argument("-r", "--vocab",
                     required=True,
@@ -80,15 +81,18 @@ parser.add_argument("-o",
 
 parser.add_argument("--nofaked",
                     action='store_true',
-                    help="Do not add the tier with faked orthography (available only if -i is fixed)")
+                    help="Do not add the tier with faked orthography "
+                         "(available only if -i is fixed)")
 
 parser.add_argument("--std",
                     action='store_true',
-                    help="Add a tier with the standard orthography (available only if -i is fixed)")
+                    help="Add a tier with the standard orthography "
+                         "(available only if -i is fixed)")
 
 parser.add_argument("--custom",
                     action='store_true',
-                    help="Add a customized text normalization (available only if -i is fixed)")
+                    help="Add a customized text normalization "
+                         "(available only if -i is fixed)")
 
 parser.add_argument("--quiet",  action='store_true', help="Disable verbose.")
 
@@ -141,4 +145,4 @@ else:
     for line in sys.stdin:
         tokens = normalizer.normalize(line)
         for token in tokens:
-            print("{!s:s}".format(token))  #.encode('utf8'))
+            print("{!s:s}".format(token))

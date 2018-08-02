@@ -36,8 +36,8 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      ~Utility functions for scripts of the bin directory.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:      Utility functions for scripts of the bin directory.
 
 """
 import os
@@ -54,7 +54,7 @@ EXIT_STATUS = 1
 
 
 def exit_error(msg="Unknown."):
-    """ Exit the program with status 1 and an error message.
+    """Exit the program with status 1 and an error message.
 
     :param msg: (str) Message to print on stdout.
 
@@ -67,21 +67,24 @@ def exit_error(msg="Unknown."):
 
 
 def check_python():
-    """ Check if the current python in use is the right one: 2.7.something.
+    """Check if the current python in use is the right one: 2.7.something.
+
     Exit if it's not the case.
 
     """
     if sys.version_info < (2, 7):
-        exit_error("The version of Python is too old: SPPAS requires exactly the version 2.7.something.")
+        exit_error("The version of Python is too old: "
+                   "SPPAS requires exactly the version 2.7.something.")
 
     if sys.version_info >= (3, 0):
-        exit_error("The version of Python is not the right one: SPPAS requires exactly the version 2.7.something.")
+        exit_error("The version of Python is not the right one: "
+                   "SPPAS requires exactly the version 2.7.something.")
 
 # ----------------------------------------------------------------------------
 
 
 def check_aligner():
-    """ Test if one of julius/HVite is available.
+    """Test if one of julius/HVite is available.
 
     :returns: False if none of them are available.
 

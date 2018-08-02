@@ -42,7 +42,7 @@
 
 """
 import sys
-import os.path
+import os
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
@@ -56,7 +56,9 @@ from sppas.src.annotations.Syll.sppassyll import sppasSyll
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -r config [options]" % os.path.basename(PROGRAM), prog=PROGRAM,
+parser = ArgumentParser(usage="{:s} -r config [options]"
+                              "".format(os.path.basename(PROGRAM)),
+                        prog=PROGRAM,
                         description="Syllabification automatic annotation.")
 
 parser.add_argument("-r",
@@ -81,11 +83,13 @@ parser.add_argument("-t",
 
 parser.add_argument("--nophn",
                     action='store_true',
-                    help="Disable the output of the result that does not use the reference tier")
+                    help="Disable the output of the result that does not "
+                         "use the reference tier")
 
 parser.add_argument("--noclass",
                     action='store_true',
-                    help="Disable the creation of the tier with syllable classes")
+                    help="Disable the creation of the tier with syllable "
+                         "classes")
 
 
 if len(sys.argv) <= 1:
@@ -94,7 +98,8 @@ if len(sys.argv) <= 1:
 args = parser.parse_args()
 
 if args.nophn and not args.t:
-    print("Warning. The option --nophn will not have any effect! It must be used with -t option.")
+    print("Warning. The option --nophn will not have any effect! "
+          "It must be used with -t option.")
 
 
 # ----------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 """
     ..
         ---------------------------------------------------------------------
@@ -36,12 +36,12 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Run the chunck alignment automatic annotation
 
 """
 import sys
-import os.path
+import os
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
@@ -55,40 +55,42 @@ from sppas.src.utils.fileutils import setup_logging
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -w file -i file -r dir -o file [options]" % os.path.basename(PROGRAM),
+parser = ArgumentParser(usage="{:s} -w file -i file -r dir -o file [options]"
+                              "".format(os.path.basename(PROGRAM)),
                         description="Speech segmentation at chunks level.")
 
-parser.add_argument("-w", 
-                    metavar="file", 
-                    required=True,  
+parser.add_argument("-w",
+                    metavar="file",
+                    required=True,
                     help='Input audio file name')
 
-parser.add_argument("-i", 
-                    metavar="file", 
-                    required=True,  
+parser.add_argument("-i",
+                    metavar="file",
+                    required=True,
                     help='Input file name with raw phonetization')
 
-parser.add_argument("-I", 
-                    metavar="file", 
-                    required=False, 
+parser.add_argument("-I",
+                    metavar="file",
+                    required=False,
                     help='Input file name with raw tokenization')
 
-parser.add_argument("-r", 
-                    metavar="file", 
-                    required=True,  
-                    help='Directory of the acoustic model of the language of the text')
+parser.add_argument("-r",
+                    metavar="file",
+                    required=True,
+                    help='Directory of the acoustic model of the '
+                         'language of the text')
 
-parser.add_argument("-o", 
-                    metavar="file", 
-                    required=True,  
+parser.add_argument("-o",
+                    metavar="file",
+                    required=True,
                     help='Output file name with estimated chunks alignments')
 
-parser.add_argument("--noclean", 
-                    action='store_true', 
+parser.add_argument("--noclean",
+                    action='store_true',
                     help="Do not remove working directory")
 
-parser.add_argument("--quiet",  
-                    action='store_true',  
+parser.add_argument("--quiet",
+                    action='store_true',
                     help="Disable verbose.")
 
 if len(sys.argv) <= 1:

@@ -1,5 +1,4 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
+#!/usr/bin/env python
 """
     ..
         ---------------------------------------------------------------------
@@ -37,12 +36,12 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Repetitions (self- and other-) automatic annotation.
 
 """
 import sys
-import os.path
+import os
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
@@ -55,18 +54,22 @@ from sppas.src.annotations.Repet.sppasrepet import sppasRepet
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM),
+parser = ArgumentParser(usage="{:s} -i file [options]"
+                              "".format(os.path.basename(PROGRAM)),
                         description="Self- and Other- repetitions detection.")
 
 parser.add_argument("-i", metavar="file",
                     required=True,
-                    help='Input file name with time-aligned tokens of the main speaker')
+                    help='Input file name with time-aligned tokens '
+                         'of the main speaker')
 
 parser.add_argument("-r", metavar="file",
-                    help='Either the lemma dictionary or the list of stop-words')
+                    help='Either the lemma dictionary or '
+                         'the list of stop-words')
 
 parser.add_argument("-I", metavar="file",
-                    help='Input file name with time-aligned tokens of the echoing-speaker (if ORs)')
+                    help='Input file name with time-aligned tokens of '
+                         'the echoing-speaker (if ORs)')
 
 parser.add_argument("-o", metavar="file",
                     help='Output file name')

@@ -343,7 +343,7 @@ class sppasTGA(sppasBaseAnnotation):
         trs_out.append(tier)
         trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
 
-        tier = self.tga_to_tier(ts.total(), timegroups, "TGA-Total", "int")
+        tier = self.tga_to_tier(ts.total(), timegroups, "TGA-Total")
         trs_out.append(tier)
         trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
 

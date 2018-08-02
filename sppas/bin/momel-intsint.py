@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 """
     ..
         ---------------------------------------------------------------------
@@ -36,12 +36,12 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Run the momel and intsint automatic annotations
 
 """
 import sys
-import os.path
+import os
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
@@ -56,30 +56,39 @@ from sppas.src.annotations.Intsint.sppasintsint import sppasIntsint
 # Verify and extract args:
 # ------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM), 
+parser = ArgumentParser(usage="{:s} -i file [options]"
+                              "".format(os.path.basename(PROGRAM)),
                         description="Momel-INTSINT automatic annotations.")
 
-parser.add_argument("-i", 
-                    required=True, 
-                    metavar="file", 
+parser.add_argument("-i",
+                    required=True,
+                    metavar="file",
                     help='Input file name (extension: .hz or .PitchTier)')
 
-parser.add_argument("-o", 
+parser.add_argument("-o",
                     metavar="file",
                     help="Momel output file name (default: stdout)")
 
-parser.add_argument("-O", 
-                    metavar="file", 
+parser.add_argument("-O",
+                    metavar="file",
                     help="Intsint output file name")
 
-parser.add_argument("--win1",   type=int,   default=30,   help="Target window length (default: 30)")
-parser.add_argument("--lo",     type=float, default=50,   help="f0 threshold (default:  50)")
-parser.add_argument("--hi",     type=int,   default=600,  help="f0 ceiling (default: 600)")
-parser.add_argument("--maxerr", type=float, default=1.04, help="Maximum error (default:   1.04)")
-parser.add_argument("--win2",   type=int,   default=20,   help="Reduct window length (default:  20)")
-parser.add_argument("--mind",   type=int,   default=5,    help="Minimal distance (default:   5)")
-parser.add_argument("--minr",   type=float, default=0.05, help="Minimal frequency ratio (default: 0.05)")
-parser.add_argument("--non-elim-glitch", dest="nonglitch", action='store_true')
+parser.add_argument("--win1", type=int, default=30,
+                    help="Target window length (default: 30)")
+parser.add_argument("--lo", type=float, default=50,
+                    help="f0 threshold (default:  50)")
+parser.add_argument("--hi", type=int, default=600,
+                    help="f0 ceiling (default: 600)")
+parser.add_argument("--maxerr", type=float, default=1.04,
+                    help="Maximum error (default:   1.04)")
+parser.add_argument("--win2", type=int, default=20,
+                    help="Reduct window length (default:  20)")
+parser.add_argument("--mind", type=int, default=5,
+                    help="Minimal distance (default:   5)")
+parser.add_argument("--minr", type=float, default=0.05,
+                    help="Minimal frequency ratio (default: 0.05)")
+parser.add_argument("--non-elim-glitch", dest="nonglitch",
+                    action='store_true')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')

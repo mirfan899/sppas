@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
     ..
@@ -40,7 +40,7 @@
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      Main script to work with SPPAS plugins.
 
-    Examples of use:
+    Examples:
 
     Install a plugin:
     >>> ./sppas/bin/plugin.py --install -p sppas/src/plugins/tests/data/soxplugin.zip
@@ -71,7 +71,8 @@ from sppas.src.plugins import sppasPluginsManager
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s [actions] [options]" % os.path.basename(PROGRAM),
+parser = ArgumentParser(usage="{:s} [actions] [options]"
+                              "".format(os.path.basename(PROGRAM)),
                         prog=PROGRAM,
                         description="Plugin command line interface.")
 
@@ -111,20 +112,22 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 # Plugins is here:
 # ----------------------------------------------------------------------------
+sep = "-"*72
 
 try:
     term = TerminalController()
-    print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}'))
-    print(term.render('${RED}'+sg.__name__+' - Version '+sg.__version__+'${NORMAL}'))
-    print(term.render('${BLUE}'+sg.__copyright__+'${NORMAL}'))
-    print(term.render('${BLUE}'+sg.__url__+'${NORMAL}'))
-    print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}\n'))
+    print(term.render('${GREEN}{:s}${NORMAL}').format(sep))
+    print(term.render('${RED} {} - Version {}${NORMAL}'
+                      '').format(sg.__name__, sg.__version__))
+    print(term.render('${BLUE} {} ${NORMAL}').format(sg.__copyright__))
+    print(term.render('${BLUE} {} ${NORMAL}').format(sg.__url__))
+    print(term.render('${GREEN}{:s}${NORMAL}').format(sep))
 except Exception:
-    print('-----------------------------------------------------------------------\n')
-    print(sg.__name__+'   -  Version '+sg.__version__)
+    print('{:s}\n'.format(sep))
+    print('{:s}   -  Version {}'.format(sg.__name__, sg.__version__))
     print(sg.__copyright__)
     print(sg.__url__+'\n')
-    print('-----------------------------------------------------------------------\n')
+    print('{:s}\n'.format(sep))
 
 manager = sppasPluginsManager()
 plugin_id = args.p
@@ -160,7 +163,6 @@ if args.apply and args.i:
 
 
 if args.remove:
-
     manager.delete(plugin_id)
 
-print("-----------------------------------------------------------------------\n")
+print('{:s}\n'.format(sep))

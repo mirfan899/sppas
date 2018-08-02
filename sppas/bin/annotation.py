@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 """
     ..
         ---------------------------------------------------------------------
@@ -41,7 +41,7 @@
 
 """
 import sys
-import os.path
+import os
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
@@ -62,39 +62,54 @@ from sppas.src.ui.term.terminalcontroller import TerminalController
 # ----------------------------------------------------------------------------
 
 parameters = sppasParam()
-parser = ArgumentParser(usage="%s -w file|folder [options]" % os.path.basename(PROGRAM),
+parser = ArgumentParser(usage="{:s} -w file|folder [options]"
+                              "".format(os.path.basename(PROGRAM)),
                         prog=PROGRAM,
                         description="Automatic annotations.")
 
-parser.add_argument("-w", 
-                    required=True, 
-                    metavar="file|folder", 
+parser.add_argument("-w",
+                    required=True,
+                    metavar="file|folder",
                     help='Input wav file name, or directory')
 
-parser.add_argument("-l", 
+parser.add_argument("-l",
                     metavar="lang",
                     help='Input language, using iso639-3 code')
 
-parser.add_argument("-e", 
+parser.add_argument("-e",
                     default=DEFAULT_OUTPUT_EXTENSION,
                     metavar="extension",
-                    help='Output extension. One of: %s' % " ".join(extensions_out))
+                    help='Output extension. One of: {:s}'
+                         ''.format(" ".join(extensions_out)))
 
-parser.add_argument("--momel", action='store_true', help="Activate Momel")
-parser.add_argument("--intsint", action='store_true', help="Activate INTSINT")
-parser.add_argument("--ipus", action='store_true', help="Activate IPUs Segmentation")
-parser.add_argument("--tok", action='store_true', help="Activate Tokenization")
-parser.add_argument("--phon", action='store_true', help="Activate Phonetization")
-parser.add_argument("--chunks", action='store_true', help="Activate Chunks alignment")
-parser.add_argument("--align", action='store_true', help="Activate Phones alignment")
-parser.add_argument("--syll", action='store_true', help="Activate Syllabification")
-parser.add_argument("--tga", action='store_true', help="Activate TimeGroupAnalyzer")
-parser.add_argument("--repet", action='store_true', help="Activate Self-Repetitions")
-parser.add_argument("--all", action='store_true', help="Activate ALL automatic annotations")
+parser.add_argument("--momel", action='store_true',
+                    help="Activate Momel")
+parser.add_argument("--intsint", action='store_true',
+                    help="Activate INTSINT")
+parser.add_argument("--ipus", action='store_true',
+                    help="Activate IPUs Segmentation")
+parser.add_argument("--tok", action='store_true',
+                    help="Activate Tokenization")
+parser.add_argument("--phon", action='store_true',
+                    help="Activate Phonetization")
+parser.add_argument("--chunks", action='store_true',
+                    help="Activate Chunks alignment")
+parser.add_argument("--align", action='store_true',
+                    help="Activate Phones alignment")
+parser.add_argument("--syll", action='store_true',
+                    help="Activate Syllabification")
+parser.add_argument("--tga", action='store_true',
+                    help="Activate TimeGroupAnalyzer")
+parser.add_argument("--repet", action='store_true',
+                    help="Activate Self-Repetitions")
+parser.add_argument("--all", action='store_true',
+                    help="Activate ALL automatic annotations")
 
 parser.add_argument("--merge",
                     action='store_true',
-                    help="Create a merged TextGrid file, if more than two automatic annotations. (this is the default)")
+                    help="Create a merged TextGrid file, "
+                         "if more than two automatic annotations. "
+                         "(this is the default)")
 
 parser.add_argument("--nomerge",
                     action='store_true',
@@ -110,6 +125,8 @@ args = parser.parse_args()
 # Automatic Annotations are here:
 # ----------------------------------------------------------------------------
 
+sep = "-"*72
+
 parameters.add_sppasinput(os.path.abspath(args.w))
 
 if args.l:
@@ -117,10 +134,11 @@ if args.l:
 ext = args.e
 if not ext.startswith("."):
     ext = "." + ext
-extensions = [e.lower() for e in extensions_out]  #_multitiers]
+extensions = [e.lower() for e in extensions_out]
 if not ext.lower() in extensions:
     print("\n")
-    print("[WARNING] Unknown extension:", args.e, ". Extension is set to its default value.")
+    print("[WARNING] Unknown extension: {:s}. Extension is set to "
+          "its default value.".format(args.e))
     print("\n")
     ext = DEFAULT_OUTPUT_EXTENSION
 parameters.set_output_format(ext)
@@ -151,17 +169,18 @@ if args.all:
 
 try:
     term = TerminalController()
-    print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}'))
-    print(term.render('${RED}'+sg.__name__+' - Version '+sg.__version__+'${NORMAL}'))
-    print(term.render('${BLUE}'+sg.__copyrigh__+'${NORMAL}'))
-    print(term.render('${BLUE}'+sg.__url__+'${NORMAL}'))
-    print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}\n'))
+    print(term.render('${GREEN}{:s}${NORMAL}').format(sep))
+    print(term.render('${RED} {} - Version {}${NORMAL}'
+                      '').format(sg.__name__, sg.__version__))
+    print(term.render('${BLUE} {} ${NORMAL}').format(sg.__copyright__))
+    print(term.render('${BLUE} {} ${NORMAL}').format(sg.__url__))
+    print(term.render('${GREEN}{:s}${NORMAL}\n').format(sep))
 except:
-    print('-----------------------------------------------------------------------\n')
-    print(sg.__name__+'   -  Version '+sg.__version__)
+    print('{:s}\n'.format(sep))
+    print('{}   -  Version {}'.format(sg.__name__, sg.__version__))
     print(sg.__copyright__)
     print(sg.__url__+'\n')
-    print('-----------------------------------------------------------------------\n')
+    print('{:s}\n'.format(sep))
 
 
 # ----------------------------------------------------------------------------
@@ -178,11 +197,12 @@ process.run_annotations(p)
 
 try:
     term = TerminalController()
-    print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}'))
-    print(term.render('${RED}See '+parameters.get_logfilename()+' for details.'))
-    print(term.render('${GREEN}Thank you for using '+sg.__name__+"."))
-    print(term.render('${GREEN}-----------------------------------------------------------------------${NORMAL}\n'))
+    print(term.render('\n${GREEN}{:s}${NORMAL}').format(sep))
+    print(term.render('${RED}See {}.').format(parameters.get_logfilename()))
+    print(term.render('${GREEN}Thank you for using {}.').format(sg.__name__))
+    print(term.render('${GREEN}{:s}${NORMAL}').format(sep))
 except:
-    print('-----------------------------------------------------------------------\n')
-    print("See "+parameters.get_logfilename()+" for details.\nThank you for using "+sg.__name__+".")
-    print('-----------------------------------------------------------------------\n')
+    print('\n{:s}\n'.format(sep))
+    print("See {} for details.\nThank you for using {}."
+          "".format(parameters.get_logfilename(), sg.__name__))
+    print('{:s}\n'.format(sep))

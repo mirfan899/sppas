@@ -1,5 +1,4 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
+#!/usr/bin/env python
 """
     ..
         ---------------------------------------------------------------------
@@ -37,10 +36,10 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Main script to build a plugin for SPPAS.
 
-    A plugin for SPPAS is a ZIP archive of a directory content.
+    In SPPAS, a plugin is a ZIP archive of a directory content.
     This directory must contain a configuration file with extension ".ini".
     This directory should contain an icon, a README.txt file and a license
     in PDF format.
@@ -62,7 +61,8 @@ from sppas.src.utils import sppasDirUtils
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s [actions] [options]" % os.path.basename(PROGRAM),
+parser = ArgumentParser(usage="{:s} [actions] [options]"
+                              "".format(os.path.basename(PROGRAM)),
                         prog=PROGRAM,
                         description="Build a plugin archive.")
 
@@ -82,7 +82,7 @@ args = parser.parse_args()
 
 if not os.path.isdir(args.i):
     raise OSError("-i argument must point to a directory. "
-                  "'%s' does not." % args.i)
+                  "'{:s}' does not.".format(args.i))
 
 sd = sppasDirUtils(args.i)
 ini_list = sd.get_files(".ini", recurs=False)
@@ -104,7 +104,8 @@ if found is False:
 # Check if there's an icon file at the root directory
 png_list = sd.get_files(".png", recurs=False)
 if len(png_list) == 0:
-    print("[ WARNING] Plugin should contain a PNG image to be used as an icon.")
+    print("[ WARNING] Plugin should contain a PNG image to be used "
+          "as an icon.")
 
 # Check if there's a license file at the root directory
 pdf_list = sd.get_files(".pdf", recurs=False)
@@ -132,7 +133,8 @@ if "name" not in config:
     print("[ WARNING] Plugin name is missing of the configuration file.")
 
 if "descr" not in config:
-    print("[ WARNING] Plugin description is missing of the configuration file.")
+    print("[ WARNING] Plugin description is missing "
+          "of the configuration file.")
 
 # ----------------------------------------------------------------------------
 # Create the plugin zip file
@@ -143,7 +145,8 @@ plugin_archive = os.path.join(os.path.dirname(args.i), dest_name)
 print("Create the plugin archive: {:s}".format(plugin_archive))
 
 print("Files appended to the zip:")
-out_file = zipfile.ZipFile(plugin_archive, "w", compression=zipfile.ZIP_DEFLATED)
+out_file = zipfile.ZipFile(plugin_archive, "w",
+                           compression=zipfile.ZIP_DEFLATED)
 for f in sd.dir_entries(args.i, extension="*", subdir=True):
     f_dest = f.replace(args.i, "")
     print("   - {:s}".format(f_dest))

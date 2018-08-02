@@ -42,7 +42,7 @@
 
 """
 import sys
-import os.path
+import os
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
@@ -55,7 +55,9 @@ from sppas.src.annotations.TGA import sppasTGA
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -r config [options]" % os.path.basename(PROGRAM), prog=PROGRAM,
+parser = ArgumentParser(usage="{:s} -r config [options]"
+                              "".format(os.path.basename(PROGRAM)),
+                        prog=PROGRAM,
                         description="TGA automatic annotation.")
 
 parser.add_argument("-i",

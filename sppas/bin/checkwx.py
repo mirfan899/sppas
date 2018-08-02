@@ -1,5 +1,4 @@
-#!/usr/bin/env python2
-# -*- coding: UTF-8 -*-
+#!/usr/bin/env python
 """
     ..
         ---------------------------------------------------------------------
@@ -31,7 +30,7 @@
         ---------------------------------------------------------------------
 
     bin.checkwx.py
-    ~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France

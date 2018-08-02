@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
     ..
@@ -37,7 +37,7 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Phonetization automatic annotation.
 
 """
@@ -60,18 +60,20 @@ from sppas.src.utils.fileutils import setup_logging
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -r dict [options]" % os.path.basename(PROGRAM),
+parser = ArgumentParser(usage="{:s} -r dict [options]"
+                              "".format(os.path.basename(PROGRAM)),
                         prog=PROGRAM,
                         description="Phonetization automatic annotation.")
 
 parser.add_argument("-r", "--dict",
                     required=True,
-                    help='Pronunciation dictionary file name (HTK-ASCII format).')
+                    help='Pronunciation dictionary (HTK-ASCII format).')
 
 parser.add_argument("-m", "--map",
                     required=False,
                     help='Pronunciation mapping table. '
-                         'It is used to generate new pronunciations by mapping phonemes of the dictionary.')
+                         'It is used to generate new pronunciations by '
+                         'mapping phonemes of the dictionary.')
 
 parser.add_argument("-i",
                     metavar="file",

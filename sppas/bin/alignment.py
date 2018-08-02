@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 """
     ..
         ---------------------------------------------------------------------
@@ -41,7 +41,7 @@
 
 """
 import sys
-import os.path
+import os
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
@@ -56,7 +56,8 @@ from sppas.src.utils.fileutils import setup_logging
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -w file -i file -r dir -o file [options]" % os.path.basename(PROGRAM),
+parser = ArgumentParser(usage="{:s} -w file -i file -r dir -o file [options]"
+                              "".format(os.path.basename(PROGRAM)),
                         description="Alignment automatic annotation.")
 
 parser.add_argument("-w",
@@ -77,12 +78,14 @@ parser.add_argument("-I",
 parser.add_argument("-r",
                     metavar="file",
                     required=True,
-                    help='Directory of the acoustic model of the language of the text')
+                    help='Directory of the acoustic model '
+                         'of the language of the text')
 
 parser.add_argument("-R",
                     metavar="file",
                     required=False,
-                    help='Directory of the acoustic model of the mother language of the speaker')
+                    help='Directory of the acoustic model of '
+                         'the mother language of the speaker')
 
 parser.add_argument("-o",
                     metavar="file",
@@ -94,7 +97,8 @@ parser.add_argument("-a",
                     required=False,
                     choices=aligners.aligner_names(),
                     default="julius",
-                    help='Speech automatic aligner system: julius, hvite, basic (default: julius)')
+                    help='Speech automatic aligner system: '
+                         'julius, hvite, basic (default: julius)')
 
 parser.add_argument("--basic",
                     action='store_true',
@@ -134,8 +138,11 @@ else:
 
 # Fix resources
 
-modelText = args.r  # Acoustic model of the language of the text (required)
-modelSpk = args.R   # Acoustic model of the mother language of the speaker (optional)
+# Acoustic model of the language of the text (required)
+modelText = args.r
+# Acoustic model of the mother language of the speaker (optional)
+modelSpk = args.R
+# Create aligner
 a = sppasAlign(modelText, modelSpk)
 
 # Fix options

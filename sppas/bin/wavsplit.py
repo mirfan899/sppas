@@ -37,12 +37,12 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      IPUs segmentation automatic annotation.
 
 """
 import sys
-import os.path
+import os
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
@@ -57,7 +57,8 @@ from sppas.src.utils.fileutils import setup_logging
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -w file [options]" % os.path.basename(PROGRAM),
+parser = ArgumentParser(usage="{:s} -w file [options]"
+                              "".format(os.path.basename(PROGRAM)),
                         description="IPUs segmentation command line interface.")
 
 parser.add_argument("-w",
@@ -68,61 +69,73 @@ parser.add_argument("-w",
 # Silence/Speech segmentation options:
 parser.add_argument("-r", "--winrms",
                     type=float,
-                    help='Window size to estimate rms, in seconds (default: 0.010)')
+                    help='Window size to estimate rms, in seconds '
+                         '(default: 0.010)')
 
 parser.add_argument("-m",
                     "--minipu",
                     type=float,
-                    help='Drop speech shorter than m seconds long (default: 0.300)')
+                    help='Drop speech shorter than m seconds long '
+                         '(default: 0.300)')
 
 parser.add_argument("-s",
                     "--minsil",
                     type=float,
-                    help='Drop silences shorter than s seconds long (default: 0.200)')
+                    help='Drop silences shorter than s seconds long '
+                         '(default: 0.200)')
 
 parser.add_argument("-v",
                     "--minrms",
                     type=int,
                     default=0,
-                    help='Assume everything with a rms lower than v is a silence. (default: auto-adjust)')
+                    help='Assume everything with a rms lower than v is a silence. '
+                         '(default: auto-adjust)')
 
 # Controlled search, choose one of -t or -n options:
 parser.add_argument("-t",
                     metavar="file",
-                    help='Input transcription (default: None)')
+                    help='Input transcription '
+                         '(default: None)')
 
 parser.add_argument("-n",
                     type=int,
                     default=-1,
-                    help='Input transcription tier number (if any, default = 0 = first tier).')
+                    help='Input transcription tier number '
+                         '(if any, default = 0 = first tier).')
 
 parser.add_argument("-N",
                     type=int,
-                    help='Adjust the volume cap until it splits into N tracks. (default = 0 = do not do that).')
+                    help='Adjust the volume cap until it splits into N tracks. '
+                         '(default = 0 = do not do that).')
 
 # Other options:
 parser.add_argument("-d",
                     "--shiftstart",
                     type=float,
-                    help='Shift-left the start boundary of IPUs (default: 0.010)')
+                    help='Shift-left the start boundary of IPUs '
+                         '(default: 0.010)')
 
 parser.add_argument("-D",
                     "--shiftend",
                     type=float,
-                    help='Shift-right the end boundary of IPUs (default: 0.020)')
+                    help='Shift-right the end boundary of IPUs '
+                         '(default: 0.020)')
 
 # Output options:
 parser.add_argument("-o",
                     metavar="dir",
-                    help='Output directory name (default: None)')
+                    help='Output directory name '
+                         '(default: None)')
 
 parser.add_argument("-e",
                     metavar="ext",
-                    help='Output tracks extension, available only if -t (default: txt)')
+                    help='Output tracks extension, available only if -t '
+                         '(default: txt)')
 
 parser.add_argument("-p",
                     metavar="file",
-                    help='Annotated file with silences/units segmentation (default: None)')
+                    help='Annotated file with silences/units segmentation '
+                         '(default: None)')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
