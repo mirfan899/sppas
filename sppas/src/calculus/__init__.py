@@ -58,6 +58,7 @@ from .stats.variability import lvariance, lstdev, lz, rPVI, nPVI
 from .scoring.ubpa import ubpa
 from .infotheory import sppasKullbackLeibler
 from .infotheory import sppasEntropy
+from .infotheory.utilit import find_ngrams
 
 
 # ---------------------------------
@@ -73,5 +74,5 @@ __all__ = [
     "lmoment", "lvariation", "lskew", "lkurtosis",
     "lvariance", "lstdev", "lz", "rPVI", "nPVI",
     "ubpa",
-    "sppasKullbackLeibler", "sppasEntropy"
+    "sppasKullbackLeibler", "sppasEntropy", "find_ngrams"
 ]

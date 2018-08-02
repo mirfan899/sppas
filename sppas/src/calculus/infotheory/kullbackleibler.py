@@ -32,37 +32,6 @@
     src.calculus.infotheory.kullbackleibler.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    In probability theory and information theory, the Kullback–Leibler
-    divergence (also called relative entropy) is a measure of the difference
-    between two probability distributions P and Q. It is not symmetric in P
-    and Q.
-    Specifically, the Kullback–Leibler divergence of Q from P, denoted DKL(P‖Q),
-    is a measure of the information gained when one revises ones beliefs from
-    the prior probability distribution Q to the posterior probability
-    distribution P.
-
-    However, the sppasKullbackLeibler class estimates the KL distance, i.e. the
-    *symmetric Kullback-Leibler divergence*.
-
-    This sppasKullbackLeibler class implements the distance estimation
-    between a model and the content of a moving window on data,
-    as described in:
-
-        | Brigitte Bigi, Renato De Mori, Marc El-Bèze, Thierry Spriet (1997).
-        | *Combined models for topic spotting and topic-dependent language modeling*
-        | IEEE Workshop on Automatic Speech Recognition and Understanding Proceedings
-        | (ASRU), Edited by S. Furui, B. H. Huang and Wu Chu, IEEE Signal Processing
-        | Society Publ, NY, pages 535-542.
-
-    This KL distance can also be used to estimate the distance between
-    documents for text categorization, as proposed in:
-
-        | Brigitte Bigi (2003).
-        | Using Kullback-Leibler Distance for Text Categorization.
-        | Lecture Notes in Computer Science, Advances in Information Retrieval,
-        | ISSN 0302-9743, Fabrizio Sebastiani (Editor), Springer-Verlag (Publisher), 
-        | pages 305--319, Pisa (Italy).
-
 """
 from ..calculusexc import EmptyError, InsideIntervalError
 from ..calculusexc import SumProbabilityError, ProbabilityError
@@ -72,13 +41,47 @@ from .utilit import log2
 
 
 class sppasKullbackLeibler(object):
-    """
+    """Kullback-Leibler distance estimator.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Kullback-Leibler distance estimator.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    In probability theory and information theory, the Kullback–Leibler
+    divergence (also called relative entropy) is a measure of the difference
+    between two probability distributions P and Q. It is not symmetric in P
+    and Q.
+
+    Specifically, the Kullback–Leibler divergence of Q from P, denoted
+    DKL(P‖Q), is a measure of the information gained when one revises ones
+    beliefs from the prior probability distribution Q to the posterior
+    probability distribution P.
+
+    However, the sppasKullbackLeibler class estimates the KL distance, i.e. the
+    *symmetric Kullback-Leibler divergence*.
+
+    This sppasKullbackLeibler class implements the distance estimation
+    between a model and the content of a moving window on data,
+    as described in:
+
+    Brigitte Bigi, Renato De Mori, Marc El-Bèze, Thierry Spriet (1997).
+    *Combined models for topic spotting and topic-dependent language modeling*
+    IEEE Workshop on Automatic Speech Recognition and Understanding Proceedings
+    (ASRU), Edited by S. Furui, B. H. Huang and Wu Chu, IEEE Signal Processing
+    Society Publ, NY, pages 535-542.
+
+    This KL distance can also be used to estimate the distance between
+    documents for text categorization, as proposed in:
+
+    Brigitte Bigi (2003).
+    Using Kullback-Leibler Distance for Text Categorization.
+    Lecture Notes in Computer Science, Advances in Information Retrieval,
+    ISSN 0302-9743, Fabrizio Sebastiani (Editor), Springer-Verlag (Publisher),
+    pages 305--319, Pisa (Italy).
+
+    In this class...
 
     A model is a dictionary with:
 
@@ -88,10 +91,11 @@ class sppasKullbackLeibler(object):
     The window of observed symbols is represented as a list of n-grams.
 
     """
+
     DEFAULT_EPSILON = 0.000001
 
     def __init__(self, model=None, observations=None):
-        """ Create a sppasKullbackLeibler instance from a list of symbols.
+        """Create a sppasKullbackLeibler instance from a list of symbols.
 
         :param model: (dict) a dictionary with key=item, value=probability
         :param observations: list ob observed items
@@ -108,8 +112,20 @@ class sppasKullbackLeibler(object):
 
     # -----------------------------------------------------------------------
 
+    def get_epsilon(self):
+        """Return the epsilon value."""
+        return self._epsilon
+
+    # -----------------------------------------------------------------------
+
+    def get_model(self):
+        """Return the model."""
+        return self._model
+
+    # -----------------------------------------------------------------------
+
     def set_model(self, model):
-        """ Set the model.
+        """Set the model.
 
         :param model: (dict) Probability distribution of the model.
 
@@ -131,7 +147,7 @@ class sppasKullbackLeibler(object):
     # -----------------------------------------------------------------------
 
     def set_model_from_data(self, data):
-        """ Set the model from a given set of observations.
+        """Set the model from a given set of observations.
 
         :param data: (list) List of observed items.
 
@@ -144,16 +160,15 @@ class sppasKullbackLeibler(object):
             if obs not in model:
                 model[obs] = data.count(obs)
 
+        self._model = dict()
         n = float(len(data))
         for obs in model:
-            model[obs] /= float(model[obs]) / n
-
-        self._model = model
+            self._model[obs] = (float(model[obs]) / n)
 
     # -----------------------------------------------------------------------
 
     def set_observations(self, observations):
-        """ Fix the set of observed items.
+        """Fix the set of observed items.
 
         :param observations: (list) The list of observed items.
 
@@ -166,8 +181,8 @@ class sppasKullbackLeibler(object):
     # -----------------------------------------------------------------------
 
     def set_epsilon(self, eps):
-        """ Fix the linear back-off value for unknown observations.
-        
+        """Fix the linear back-off value for unknown observations.
+
         The optimal value for this coefficient is the product of the size
         of both model and observations to estimate the KL. This value must
         be significantly lower than the minimum value in the model.
@@ -194,7 +209,7 @@ class sppasKullbackLeibler(object):
     # -----------------------------------------------------------------------
 
     def eval_kld(self):
-        """ Estimates the KL distance between a model and observations.
+        """Estimate the KL distance between a model and observations.
 
         :returns: float value
 
@@ -213,8 +228,10 @@ class sppasKullbackLeibler(object):
             else:
                 na += 1
 
-        alpha = 1. - (na * self._epsilon)  # coefficient applied to the model
-        beta = 1. - (nb * self._epsilon)   # coefficient applied to the observed n-grams
+        # coefficient applied to the model
+        alpha = 1. - (na * self._epsilon)
+        # coefficient applied to the observed n-grams
+        beta = 1. - (nb * self._epsilon)
 
         return self.__distance(alpha, beta)
 
@@ -223,7 +240,7 @@ class sppasKullbackLeibler(object):
     # -----------------------------------------------------------------------
 
     def __distance(self, alpha, beta):
-        """ Kullback-Leibler Distance between the model and observations.
+        """Kullback-Leibler Distance between the model and observations.
 
         We expect a model, observations and epsilon already estimated properly.
 
@@ -238,7 +255,9 @@ class sppasKullbackLeibler(object):
             proba_model = self._epsilon
             if x in self._model:
                 proba_model = alpha * self._model[x]
-            proba_ngram = beta * (float(self._observations.count(x)) / float(len(self._observations)))
+            proba_ngram = beta * \
+                          (float(self._observations.count(x)) /
+                           float(len(self._observations)))
             d = (proba_model - proba_ngram) * log2(proba_model / proba_ngram)
             dist += d
 
@@ -246,6 +265,7 @@ class sppasKullbackLeibler(object):
         for x in self._model:
             if x not in self._observations:
                 proba_model = alpha * self._model[x]
-                dist += ((proba_model - self._epsilon) * log2(proba_model / self._epsilon))
+                dist += ((proba_model - self._epsilon) *
+                         log2(proba_model / self._epsilon))
 
         return dist

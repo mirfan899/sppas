@@ -31,41 +31,40 @@
         ---------------------------------------------------------------------
 
     scripts.dendity.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~
 
-    ... a script to find phoneme reduction density areas of a tier of an annotated file.
+    ... a script to search for phoneme reduction density areas.
 
 """
 import sys
-import os.path
+import os
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas.src.annotationdata.aio
-from sppas.src.annotationdata.transcription import Transcription
-from sppas.src.annotationdata.transcription import Tier
-from sppas.src.annotationdata.annotation import Annotation
-from sppas.src.annotationdata.ptime.interval import TimeInterval
-from sppas.src.annotationdata.label.label import Label
+from sppas.src.anndata import sppasRW
+from sppas.src.anndata import sppasTranscription
+from sppas.src.anndata import sppasTag
+from sppas.src.anndata import sppasLabel
 
-from sppas import sppasKullbackLeibler
-from sppas.src.calculus.infotheory.utilit import find_ngrams
+from sppas.src.calculus import sppasKullbackLeibler
+from sppas.src.calculus import find_ngrams
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM), 
-                        description="... a script to find phoneme reduction density areas "
-                                    "of a tier of an annotated file.")
+parser = ArgumentParser(usage="{:s} -i file [options]"
+                              "".format(os.path.basename(PROGRAM)),
+                        description="... a script to find phoneme "
+                                    "reduction density areas.")
 
 parser.add_argument("-i",
                     metavar="file",
                     required=True,
-                    help='Input annotated file file name')
+                    help='Input annotated file name')
 
 parser.add_argument("-t",
                     metavar="value",
@@ -85,22 +84,26 @@ args = parser.parse_args()
 # ----------------------------------------------------------------------------
 # Extract parameters, load data...
 
-tier_idx = args.t-1
-file_input = args.i
 file_output = None
 if args.o:
     file_output = args.o
 n = 3   # n-value of the ngram
 w = 7   # window size
 
-trs = sppas.src.annotationdata.aio.read(file_input)
+parser = sppasRW(args.i)
+trs = parser.read()
 
-if tier_idx < 0 or tier_idx > trs.GetSize():
-    print('Error: Bad tier number.\n')
+if args.t <= 0 or args.t > len(trs):
+    print('Error: Bad tier number {:d}.\n'.format(args.t))
     sys.exit(1)
 
-tier = trs[tier_idx]
-tier.SetRadius(0.001)
+tier = trs[args.t-1]
+if len(tier) == 0:
+    print('Empty tier {:s}.\n'.format(tier.get_name()))
+    sys.exit(1)
+
+if tier.get_first_point().get_radius() is None:
+    tier.set_radius(0.001)
 
 # ----------------------------------------------------------------------------
 # Extract areas in which there is a density of phonemes reductions
@@ -110,24 +113,36 @@ tier.SetRadius(0.001)
 # We create a list of the same size than the tier, with values:
 # 0: the phoneme is not during 30ms
 # 1: the phoneme is during 30ms
-values = []
+values = list()
+nb_reduced = 0
 for ann in tier:
-    duration = ann.GetLocation().GetDuration()  # a Duration instance
+    duration = ann.get_location().get_best().duration()
+    # duration here is an instance of sppasDuration()
     if duration == 0.03:
         values.append(1)
+        nb_reduced += 1
     else:
         values.append(0)
+if len(values) < 3:
+    print('Not enough reduced phonemes {:d}.'.format(len(values)))
+print('Among the {:d} phonemes, {:d} are reduced.'
+      ''.format(len(values), nb_reduced))
 
 # Train an ngram model with the list of values
 # ---------------------------------------------
 
 data = find_ngrams(values, n)
+
 kl = sppasKullbackLeibler()
-kl.set_epsilon(1.0/(len(data)))
+eps = 1.0 / (10*float(len(data)))
+print("Estimated epsilon = {:f}".format(eps))
+kl.set_epsilon(eps)
+print("Corrected epsilon = {:f}".format(kl.get_epsilon()))
+
 kl.set_model_from_data(data)
 
 print("The model:")
-for k, v in kl.model.items():
+for k, v in kl.get_model().items():
     print("  --> P({}) = {}".format(k, v))
 
 # Use the model:
@@ -157,12 +172,13 @@ for i, d in enumerate(distances):
     else:
         distances[i] = distances[i] - base_dist
 
-# Select the windows corresponding to interesting areas
+
+# Select the windows corresponding to non-zero areas
 # -----------------------------------------------------
 
 inside = False
 idx_begin = 0
-areas = []
+areas = list()
 for i, d in enumerate(distances):
     if d == 0.:
         if inside is True:
@@ -171,53 +187,64 @@ for i, d in enumerate(distances):
             areas.append((idx_begin, i-1))
         else:
             # It's the beginning of a block of zero distances
-            idx_begin = i+1
-            inside = True
+            idx_begin = i
+            inside = False
     else:
         inside = True
+
+# the last block was interesting!
+if inside is True:
+    areas.append((idx_begin, len(distances)-1))
 
 # ----------------------------------------------------------------------------
 # From windows to annotations
 
-filtered_tier = Tier('ReductionDensity')
+trs_out = sppasTranscription("PhonemesDensity")
+filtered_tier = trs_out.create_tier('ReductionDensity')
+filtered_tier.set_meta('density_estimation_on_tier', tier.get_name())
+filtered_tier.set_meta('density_estimation_on_file', args.i)
 
 for t in areas:
     idx_begin = t[0]  # index of the first interesting window
-    idx_end = t[1]  # index of the last interesting window
+    idx_end = t[1]    # index of the last interesting window
 
     # Find the index of the first interesting annotation
     window_begin = windows[idx_begin]
     i = 0
-    while window_begin[i] == 0:
-        i = i + 1
+    while window_begin[i] == 0 :
+        i += 1
+        if i == len(window_begin):
+            break
+    if i == len(window_begin):
+        print("No density area found (i.e. only phonemes during more than 30ms.")
+        continue
     ann_idx_begin = idx_begin + i
 
     # Find the index of the last interesting annotation
     window_end = windows[idx_end]
     i = w - 1
     while window_end[i] == 0:
-        i = i - 1
+        i -= 1
+        if i < 0:
+            break
+    if i < 0:
+        print("No density area found (i.e. only phonemes during more than 30ms.")
+        continue
     ann_idx_end = idx_end + i
 
     # Assign a label to the new annotation
     max_dist = round(max(distances[idx_begin:idx_end+1]), 2)
     if max_dist == 0:
         print(" ERROR: max dist equal to 0...")
+        continue
 
-    begin = tier[ann_idx_begin].GetLocation().GetBegin()
-    end = tier[ann_idx_end].GetLocation().GetEnd()
-    label = Label(max_dist, data_type="float")
+    loc = tier[ann_idx_begin].get_location().copy()
+    label = sppasLabel(sppasTag(max_dist, "float"))
 
-    a = Annotation(TimeInterval(begin, end), label)
-    filtered_tier.Append(a)
+    filtered_tier.create_annotation(loc, label)
 
-#     for i in range(idxbegin,idxend+1):
-#         print windows[i],distances[i]
-#         for j in range (w):
-#             print tier[i+j].GetLocation().GetDuration().GetValue(),tier[i+j].GetLabel().GetValue(), "/",
-#     print " -> maxdist=",maxdist
-#     print a
-#     print
+if len(filtered_tier) == 0:
+    print("No density area found.")
 
 # ----------------------------------------------------------------------------
 # Save result
@@ -226,13 +253,12 @@ if file_output is None:
     for a in filtered_tier:
         print(a)
 else:
-    trs = Transcription()
-    trs.Add(filtered_tier)
 
 #     t = Tier('PhonAlign30')
-#     for v,a in zip(values,tier):
+#     for v,a in zip(values, tier):
 #         if v == 1:
-#             t.Append(a)
-#     trs.Add(t)
+#             t.append(a)
+#     trs.add(t)
 
-    sppas.src.annotationdata.aio.write(file_output, trs)
+    parser.set_filename(file_output)
+    parser.write(trs_out)

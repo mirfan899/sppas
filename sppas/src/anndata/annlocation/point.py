@@ -180,7 +180,7 @@ class sppasPoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def get_radius(self):
-        """ Return the radius value (float). """
+        """ Return the radius value (float or None). """
 
         return self.__radius
 
