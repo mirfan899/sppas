@@ -37,30 +37,35 @@
 import logging
 import os.path
 
+from sppas.src.config import annotations_translation
 from sppas.src.utils.makeunicode import u
 from . import ERROR_ID, WARNING_ID, INFO_ID
-from . import t
 from .diagnosis import sppasDiagnosis
 
 # ---------------------------------------------------------------------------
 
-MSG_OPTIONS = t.gettext(":INFO 1050: ")
-MSG_DIAGNOSIS = t.gettext(":INFO 1052: ")
-MSG_ANN_FILE = (t.gettext(":INFO 1056: "))
+_ = annotations_translation.gettext
+
+# ---------------------------------------------------------------------------
+
+MSG_OPTIONS = _(":INFO 1050: ")
+MSG_DIAGNOSIS = _(":INFO 1052: ")
+MSG_ANN_FILE = (_(":INFO 1056: "))
 
 # ---------------------------------------------------------------------------
 
 
 class sppasBaseAnnotation(object):
-    """
+    """SPPAS Base class of any automatic annotation.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      SPPAS Base class of any automatic annotation.
 
     """
+
     def __init__(self, logfile=None, name="Annotation"):
         """ Base class for any SPPAS automatic annotation.
 

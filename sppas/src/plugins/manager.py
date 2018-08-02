@@ -31,11 +31,7 @@
     src.plugins.manager.py
     ~~~~~~~~~~~~~~~~~~~~~~
 
-    A manager for the set of plugins of a software: load, install, apply,
-    delete, etc.
-
 """
-
 import os
 import shutil
 import logging
@@ -43,9 +39,9 @@ import zipfile
 from threading import Thread
 
 from sppas.src.config import paths
-from sppas.src.utils.fileutils import sppasDirUtils
+from sppas.src.config import plugins_translation
 from sppas.src.utils.makeunicode import u
-from . import get_info
+from sppas.src.utils.fileutils import sppasDirUtils
 from .pluginsexc import PluginArchiveFileError
 from .pluginsexc import PluginArchiveIOError
 from .pluginsexc import PluginDuplicateError
@@ -56,19 +52,24 @@ from .pluginsexc import PluginKeyError
 from .param import sppasPluginParam
 from .process import sppasPluginProcess
 
+
+def get_info(msg_id):
+    return u(plugins_translation.gettext(":INFO " + msg_id + ": "))
+
 # ----------------------------------------------------------------------------
 
 
 class sppasPluginsManager(Thread):
-    """
+    """Class to manage the list of plugins into SPPAS.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Class to manage the list of plugins into SPPAS.
 
     """
+
     def __init__(self):
         """ Instantiate the sppasPluginsManager and load the current plugins. """
 

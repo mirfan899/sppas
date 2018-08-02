@@ -44,7 +44,7 @@ from .metadata import sppasMetaData
 
 
 class sppasMedia(sppasMetaData):
-    """ Generic representation of a media file.
+    """Generic representation of a media file.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -54,7 +54,7 @@ class sppasMedia(sppasMetaData):
 
     """
     def __init__(self, filename, media_id=None, mime_type=None):
-        """ Creates a new sppasMedia instance.
+        """Creates a new sppasMedia instance.
 
         :param filename: (str) File name of the media
         :param media_id: (str) Identifier of the media
@@ -81,28 +81,25 @@ class sppasMedia(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_filename(self):
-        """ Return the URL of the media. """
-
+        """Return the URL of the media."""
         return self.__url
 
     # -----------------------------------------------------------------------
 
     def get_mime_type(self):
-        """ Return the mime type of the media. """
-
+        """Return the mime type of the media."""
         return self.__mime
 
     # -----------------------------------------------------------------------
 
     def get_content(self):
-        """ Return the content of the media. """
-
+        """Return the content of the media."""
         return self.__content
 
     # -----------------------------------------------------------------------
 
     def set_content(self, content):
-        """ Set the content of the media.
+        """Set the content of the media.
 
         :param content: (str)
         """
@@ -118,7 +115,7 @@ class sppasMedia(sppasMetaData):
                "".format(self.get_meta('id'), self.__url, self.__mime)
 
     def __eq__(self, other):
-        """ Return True if other is strictly identical to self (even the id). """
+        """Return True if other is strictly identical to self (even id)."""
 
         if isinstance(other, sppasMedia) is False:
             return False

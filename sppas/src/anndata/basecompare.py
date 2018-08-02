@@ -37,7 +37,7 @@ from .anndataexc import AnnDataValueError
 
 
 class sppasBaseCompare(object):
-    """ Base class for comparisons.
+    """Base class for comparisons.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -46,15 +46,16 @@ class sppasBaseCompare(object):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self):
-        """ Create a sppasBaseCompare instance. """
+        """Create a sppasBaseCompare instance."""
 
         self.methods = dict()
 
     # -----------------------------------------------------------------------
 
     def get(self, name):
-        """ Return the function of the given name.
+        """Return the function of the given name.
 
         :param name: (str) Simple name of a method of this class
 
@@ -66,6 +67,5 @@ class sppasBaseCompare(object):
     # -----------------------------------------------------------------------
 
     def get_function_names(self):
-        """ Return the list of comparison functions. """
-
+        """Return the list of comparison functions."""
         return list(self.methods.keys())

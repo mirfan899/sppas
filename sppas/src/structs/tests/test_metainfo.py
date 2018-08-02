@@ -35,7 +35,7 @@
 """
 import unittest
 
-from sppas.src.utils.maketext import u
+from sppas.src.utils.makeunicode import u
 
 from ..metainfo import sppasMetaInfo
 from ..structsexc import MetaKeyError

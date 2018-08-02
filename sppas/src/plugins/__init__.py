@@ -53,15 +53,6 @@
     >>> manager.delete(plugin_id)
 
 """
-from sppas.src.utils.maketext import sppasTranslate
-from sppas.src.utils.makeunicode import u
-t = sppasTranslate().translation("plugins")
-
-
-def get_info(msg_id):
-    return u(t.gettext(":INFO " + msg_id + ": "))
-
-
 from .manager import sppasPluginsManager
 from .param import sppasPluginParam
 from .process import sppasPluginProcess

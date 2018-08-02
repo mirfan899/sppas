@@ -35,6 +35,7 @@
 """
 from sppas.src.config import symbols
 from sppas.src.config import separators
+from sppas.src.config import annotations_translation
 
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
@@ -46,7 +47,6 @@ from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.mapping import sppasMapping
 
 from .. import ERROR_ID, WARNING_ID
-from .. import t
 from ..annotationsexc import AnnotationOptionError
 from ..annotationsexc import EmptyInputError
 from ..annotationsexc import EmptyOutputError
@@ -57,10 +57,14 @@ from .phonetize import sppasDictPhonetizer
 
 # ---------------------------------------------------------------------------
 
-MSG_MISSING = (t.gettext(":INFO 1110: "))
-MSG_PHONETIZED = (t.gettext(":INFO 1112: "))
-MSG_NOT_PHONETIZED = (t.gettext(":INFO 1114: "))
-MSG_TRACK = (t.gettext(":INFO 1220: "))
+_ = annotations_translation.gettext
+
+# ---------------------------------------------------------------------------
+
+MSG_MISSING = (_(":INFO 1110: "))
+MSG_PHONETIZED = (_(":INFO 1112: "))
+MSG_NOT_PHONETIZED = (_(":INFO 1114: "))
+MSG_TRACK = (_(":INFO 1220: "))
 
 SIL = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
 SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]

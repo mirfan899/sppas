@@ -46,7 +46,7 @@ from .anndataexc import HierarchyAncestorTierError
 
 
 class sppasHierarchy(object):
-    """ Generic representation of a hierarchy between tiers.
+    """Generic representation of a hierarchy between tiers.
     
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -83,7 +83,6 @@ class sppasHierarchy(object):
         - A parent can have as many children as wanted.
         - A hierarchy is a tree, not a graph.
 
-
     Todo is to consider a time association that is not fully completed:
 
             | parent:  Tokens     | l' |  âne  | euh | euh | est |  là   | @ |
@@ -93,7 +92,7 @@ class sppasHierarchy(object):
     types = {"TimeAssociation", "TimeAlignment"}
 
     def __init__(self):
-        """ Creates a new sppasHierarchy instance. """
+        """Creates a new sppasHierarchy instance."""
 
         super(sppasHierarchy, self).__init__()
 
@@ -105,7 +104,7 @@ class sppasHierarchy(object):
     # -----------------------------------------------------------------------
 
     def get_parent(self, child_tier):
-        """ Return the parent tier for a given child tier.
+        """Return the parent tier for a given child tier.
 
         :param child_tier: (sppasTier) The child tier to found
 
@@ -119,7 +118,7 @@ class sppasHierarchy(object):
     # -----------------------------------------------------------------------
 
     def get_hierarchy_type(self, child_tier):
-        """ Return the hierarchy type between a child tier and its parent.
+        """Return the hierarchy type between a child tier and its parent.
 
         :returns: (str) one of the hierarchy type
 
@@ -133,7 +132,7 @@ class sppasHierarchy(object):
     # -----------------------------------------------------------------------
 
     def get_children(self, parent_tier, link_type=None):
-        """ Return the list of children of a tier, for a given type.
+        """Return the list of children of a tier, for a given type.
 
         :param parent_tier: (sppasTier) The child tier to found
         :param link_type: (str) The type of hierarchy
@@ -157,7 +156,7 @@ class sppasHierarchy(object):
     # -----------------------------------------------------------------------
 
     def get_ancestors(self, child_tier):
-        """ Return all the direct ancestors of a tier.
+        """Return all the direct ancestors of a tier.
 
         :param child_tier: (sppasTier)
         :returns: List of tiers with parent, grand-parent, grand-grand-parent...
@@ -180,7 +179,7 @@ class sppasHierarchy(object):
 
     @staticmethod
     def validate_time_alignment(parent_tier, child_tier):
-        """ Validate a time alignment hierarchy link between 2 tiers.
+        """Validate a time alignment hierarchy link between 2 tiers.
 
         :param parent_tier: (sppasTier) The parent tier
         :param child_tier: (sppasTier) The child tier to be linked to parent
@@ -195,7 +194,7 @@ class sppasHierarchy(object):
 
     @staticmethod
     def validate_time_association(parent_tier, child_tier):
-        """ Validate a time association hierarchy link between 2 tiers.
+        """Validate a time association hierarchy link between 2 tiers.
 
         :param parent_tier: (sppasTier) The parent tier
         :param child_tier: (sppasTier) The child tier to be linked to the parent
@@ -210,13 +209,14 @@ class sppasHierarchy(object):
     # -----------------------------------------------------------------------
 
     def validate_link(self, link_type, parent_tier, child_tier):
-        """ Validate a hierarchy link between 2 tiers.
+        """Validate a hierarchy link between 2 tiers.
 
         :param link_type: (constant) One of the hierarchy types
         :param parent_tier: (sppasTier) The parent tier
         :param child_tier: (sppasTier) The child tier to be linked to parent
-        :raises: AnnDataTypeError, HierarchyParentTierError, HierarchyChildTierError, \
-        HierarchyAncestorTierError, HierarchyAlignmentError, HierarchyAssociationError
+        :raises: AnnDataTypeError, HierarchyParentTierError, \
+        HierarchyChildTierError, HierarchyAncestorTierError, \
+        HierarchyAlignmentError, HierarchyAssociationError
 
         """
         if link_type not in sppasHierarchy.types:
@@ -259,7 +259,7 @@ class sppasHierarchy(object):
     # -----------------------------------------------------------------------
 
     def add_link(self, link_type, parent_tier, child_tier):
-        """ Validate and add a hierarchy link between 2 tiers.
+        """Validate and add a hierarchy link between 2 tiers.
 
         :param link_type: (constant) One of the hierarchy types
         :param parent_tier: (sppasTier) The parent tier
@@ -272,7 +272,7 @@ class sppasHierarchy(object):
     # -----------------------------------------------------------------------
 
     def remove_child(self, child_tier):
-        """ Remove a hierarchy link between a parent and a child.
+        """Remove a hierarchy link between a parent and a child.
 
         :param child_tier: (sppasTier) The tier linked to a reference
 
@@ -283,7 +283,7 @@ class sppasHierarchy(object):
     # -----------------------------------------------------------------------
 
     def remove_parent(self, parent_tier):
-        """ Remove all hierarchy links between a parent and its children.
+        """Remove all hierarchy links between a parent and its children.
 
         :param parent_tier: (sppasTier) The parent tier
 
@@ -300,7 +300,7 @@ class sppasHierarchy(object):
     # -----------------------------------------------------------------------
 
     def remove_tier(self, tier):
-        """ Remove all occurrences of a tier inside the hierarchy.
+        """Remove all occurrences of a tier inside the hierarchy.
 
         :param tier: (sppasTier) The tier to remove as parent or child.
 
@@ -317,7 +317,7 @@ class sppasHierarchy(object):
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """ Returns a deep copy of the hierarchy. """
+        """Returns a deep copy of the hierarchy."""
 
         h = sppasHierarchy()
 
@@ -334,7 +334,7 @@ class sppasHierarchy(object):
 
     @staticmethod
     def infer_hierarchy_type(tier1, tier2):
-        """ Test if tier1 can be a parent tier for tier2.
+        """Test if tier1 can be a parent tier for tier2.
 
         :returns: One of hierarchy types or an empty string
 

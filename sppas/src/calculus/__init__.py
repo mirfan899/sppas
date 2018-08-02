@@ -43,9 +43,6 @@
     statistics on annotated data.
 
 """
-from sppas.src.utils.maketext import sppasTranslate
-t = sppasTranslate().translation("calculus")
-
 from .descriptivesstats import sppasDescriptiveStatistics
 from .kappa import sppasKappa
 from .geometry.distances import squared_euclidian, euclidian, manathan, minkowski, chi_squared

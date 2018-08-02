@@ -39,6 +39,7 @@ import glob
 import logging
 
 from sppas.src.config import paths
+from sppas.src.config import annotations_translation
 import sppas.src.annotationdata.aio
 from sppas.src.annotationdata import Transcription
 from sppas.src.annotationdata import Tier
@@ -48,7 +49,6 @@ from sppas.src.annotationdata.aio.utils import gen_id
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.models.acm.modelmixer import sppasModelMixer
 
-from .. import t
 from .. import ERROR_ID, WARNING_ID, INFO_ID
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasSearchTier
@@ -63,17 +63,21 @@ from .activity import sppasActivity
 
 # ----------------------------------------------------------------------------
 
-MSG_MODEL_L1_FAILED = (t.gettext(":INFO 1210: "))
-MSG_ALIGN_TRACK = (t.gettext(":INFO 1220: "))
-MSG_ALIGN_FAILED = (t.gettext(":INFO 1230: "))
-MSG_BASIC = (t.gettext(":INFO 1240: "))
-MSG_ACTION_SPLIT_INTERVALS = (t.gettext(":INFO 1250: "))
-MSG_ACTION_ALIGN_INTERVALS = (t.gettext(":INFO 1252: "))
-MSG_ACTION_MERGE_INTERVALS = (t.gettext(":INFO 1254: "))
-MSG_TOKENS_DISABLED = (t.gettext(":INFO 1260: "))
-MSG_NO_TOKENS_ALIGN = (t.gettext(":INFO 1262: "))
-MSG_EXTRA_TIER = (t.gettext(":INFO 1270: "))
-MSG_WORKDIR = (t.gettext(":INFO 1280: "))
+_ = annotations_translation.gettext
+
+# ----------------------------------------------------------------------------
+
+MSG_MODEL_L1_FAILED = (_(":INFO 1210: "))
+MSG_ALIGN_TRACK = (_(":INFO 1220: "))
+MSG_ALIGN_FAILED = (_(":INFO 1230: "))
+MSG_BASIC = (_(":INFO 1240: "))
+MSG_ACTION_SPLIT_INTERVALS = (_(":INFO 1250: "))
+MSG_ACTION_ALIGN_INTERVALS = (_(":INFO 1252: "))
+MSG_ACTION_MERGE_INTERVALS = (_(":INFO 1254: "))
+MSG_TOKENS_DISABLED = (_(":INFO 1260: "))
+MSG_NO_TOKENS_ALIGN = (_(":INFO 1262: "))
+MSG_EXTRA_TIER = (_(":INFO 1270: "))
+MSG_WORKDIR = (_(":INFO 1280: "))
 
 # ----------------------------------------------------------------------------
 

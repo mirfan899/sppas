@@ -31,10 +31,12 @@
     src.resources.resourcesexc.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Exceptions for resources package.
-
 """
-from . import t
+from sppas.src.config import resources_translation
+
+# -----------------------------------------------------------------------
+
+_ = resources_translation.gettext
 
 # -----------------------------------------------------------------------
 
@@ -54,7 +56,8 @@ class FileUnicodeError(UnicodeDecodeError):
     """ :ERROR 5005: Encoding error while trying to read the file: {name}. """
 
     def __init__(self, filename):
-        self.parameter = FILE_UNICODE_ERROR + (t.gettext(FILE_UNICODE_ERROR)).format(name=filename)
+        self.parameter = FILE_UNICODE_ERROR + \
+                         (_(FILE_UNICODE_ERROR)).format(name=filename)
 
     def __str__(self):
         return repr(self.parameter)
@@ -66,7 +69,8 @@ class FileIOError(Exception):
     """ :ERROR 5010: Error while trying to open and read the file: {name}. """
 
     def __init__(self, filename):
-        self.parameter = FILE_IO_ERROR + (t.gettext(FILE_IO_ERROR)).format(name=filename)
+        self.parameter = FILE_IO_ERROR + \
+                         (_(FILE_IO_ERROR)).format(name=filename)
 
     def __str__(self):
         return repr(self.parameter)
@@ -79,7 +83,10 @@ class FileFormatError(ValueError):
 
     def __init__(self, line_number, filename):
         line_number = int(line_number)
-        self.parameter = FILE_FORMAT_ERROR + (t.gettext(FILE_FORMAT_ERROR)).format(number=line_number, string=filename)
+        self.parameter = FILE_FORMAT_ERROR + \
+                         (_(FILE_FORMAT_ERROR)).format(
+                             number=line_number,
+                             string=filename)
 
     def __str__(self):
         return repr(self.parameter)
@@ -93,7 +100,10 @@ class NgramRangeError(ValueError):
     def __init__(self, maxi, value):
         maxi = int(maxi)
         value = int(value)
-        self.parameter = NGRAM_RANGE_ERROR + (t.gettext(NGRAM_RANGE_ERROR)).format(maximum=maxi, observed=value)
+        self.parameter = NGRAM_RANGE_ERROR + \
+                         (_(NGRAM_RANGE_ERROR)).format(
+                             maximum=maxi,
+                             observed=value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -107,7 +117,8 @@ class GapRangeError(ValueError):
     def __init__(self, maxi, value):
         maxi = int(maxi)
         value = int(value)
-        self.parameter = GAP_RANGE_ERROR + (t.gettext(GAP_RANGE_ERROR)).format(maximum=maxi, observed=value)
+        self.parameter = GAP_RANGE_ERROR + \
+                         (_(GAP_RANGE_ERROR)).format(maximum=maxi, observed=value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -120,7 +131,8 @@ class ScoreRangeError(ValueError):
 
     def __init__(self, value):
         value = float(value)
-        self.parameter = SCORE_RANGE_ERROR + (t.gettext(SCORE_RANGE_ERROR)).format(observed=value)
+        self.parameter = SCORE_RANGE_ERROR + \
+                         (_(SCORE_RANGE_ERROR)).format(observed=value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -132,7 +144,8 @@ class DumpExtensionError(ValueError):
     """ :ERROR 5030: The dump file can't have the same extension as the ASCII file ({extension}). """
 
     def __init__(self, extension):
-        self.parameter = DUMP_EXTENSION_ERROR + (t.gettext(DUMP_EXTENSION_ERROR)).format(extension=extension)
+        self.parameter = DUMP_EXTENSION_ERROR + \
+                         (_(DUMP_EXTENSION_ERROR)).format(extension=extension)
 
     def __str__(self):
         return repr(self.parameter)
@@ -144,7 +157,8 @@ class PositiveValueError(ValueError):
     """ :ERROR 5040: The count value must be positive. Got ({count}). """
 
     def __init__(self, count):
-        self.parameter = POSITIVE_VALUE_ERROR + (t.gettext(POSITIVE_VALUE_ERROR)).format(count=count)
+        self.parameter = POSITIVE_VALUE_ERROR + \
+                         (_(POSITIVE_VALUE_ERROR)).format(count=count)
 
     def __str__(self):
         return repr(self.parameter)

@@ -43,7 +43,7 @@ from sppas.src.utils.fileutils import sppasGUID
 
 
 class sppasMetaData(object):
-    """ Dictionary of meta data.
+    """Dictionary of meta data.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -54,8 +54,9 @@ class sppasMetaData(object):
     Meta data keys and values are unicode strings.
 
     """
+
     def __init__(self):
-        """ Create a sppasMetaData instance.
+        """Create a sppasMetaData instance.
 
         Add a GUID in the dictionary of metadata, with key "id".
 
@@ -66,13 +67,13 @@ class sppasMetaData(object):
     # -----------------------------------------------------------------------
 
     def gen_id(self):
-        """ Re-generate an 'id'. """
+        """Re-generate an 'id'."""
         self.__metadata['id'] = sppasGUID().get()
 
     # -----------------------------------------------------------------------
 
     def is_meta_key(self, entry):
-        """ Check if an entry is a key in the list of metadata.
+        """Check if an entry is a key in the list of metadata.
 
         :param entry: (str) Entry to check
         :returns: (Boolean)
@@ -83,7 +84,7 @@ class sppasMetaData(object):
     # -----------------------------------------------------------------------
 
     def get_meta(self, entry, default=""):
-        """ Return the value of the given key.
+        """Return the value of the given key.
 
         :param entry: (str) Entry to be checked as a key.
         :param default: (str) Default value to return if entry is not a key.
@@ -95,14 +96,14 @@ class sppasMetaData(object):
     # -----------------------------------------------------------------------
 
     def get_meta_keys(self):
-        """ Return the list of metadata keys. """
+        """Return the list of metadata keys."""
 
         return self.__metadata.keys()
 
     # -----------------------------------------------------------------------
 
     def set_meta(self, key, value):
-        """ Set or update a metadata.
+        """Set or update a metadata.
 
         :param key: (str) The key of the metadata.
         :param value: (str) The value assigned to the key.
@@ -121,7 +122,7 @@ class sppasMetaData(object):
     # -----------------------------------------------------------------------
 
     def pop_meta(self, key):
-        """ Remove a metadata from its key.
+        """Remove a metadata from its key.
 
         :param key: (str)
 
@@ -134,7 +135,7 @@ class sppasMetaData(object):
     # -----------------------------------------------------------------------
 
     def add_license_metadata(self, idx):
-        """ Add metadata about the license applied to the object (GPLv3). """
+        """Add metadata about the license applied to the object (GPLv3)."""
 
         # Elan
         self.set_meta('file_license_text_%s' % idx,
@@ -145,7 +146,7 @@ class sppasMetaData(object):
     # -----------------------------------------------------------------------
 
     def add_software_metadata(self):
-        """ Add metadata about this software. """
+        """Add metadata about this software."""
 
         self.set_meta('software_name', sg.__name__)
         self.set_meta('software_version', sg.__version__)
@@ -157,7 +158,7 @@ class sppasMetaData(object):
     # -----------------------------------------------------------------------
 
     def add_language_metadata(self):
-        """ Add metadata about the language (und). """
+        """Add metadata about the language (und)."""
 
         # Elan
         self.set_meta('language_iso', "iso639-3")
@@ -168,7 +169,7 @@ class sppasMetaData(object):
     # -----------------------------------------------------------------------
 
     def add_project_metadata(self):
-        """ Add metadata about the project this object is included-in.
+        """Add metadata about the project this object is included-in.
 
         Currently do not assign any value.
 
@@ -186,7 +187,7 @@ class sppasMetaData(object):
     # -----------------------------------------------------------------------
 
     def add_annotator_metadata(self, name="", version="", version_date=""):
-        """ Add metadata about an annotator. """
+        """Add metadata about an annotator."""
 
         # subtitle, transcriber, elan
         self.set_meta("annotator_name", name)
@@ -202,7 +203,7 @@ class sppasMetaData(object):
 
 
 class sppasDefaultMeta(sppasMetaData):
-    """ Dictionary of default meta data in SPPAS.
+    """Dictionary of default meta data in SPPAS.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -218,15 +219,16 @@ class sppasDefaultMeta(sppasMetaData):
     kind of "generic" metadata names are fixed.
 
     """
+
     def __init__(self):
-        """ Instantiate a default set of meta data. """
+        """Instantiate a default set of meta data."""
 
         super(sppasDefaultMeta, self).__init__()
 
     # -----------------------------------------------------------------------
 
     def speaker(self):
-        """ Add metadata related to a speaker. """
+        """Add metadata related to a speaker."""
 
         # sclite, transcriber
         self.set_meta("speaker_id", "")
@@ -263,7 +265,7 @@ class sppasDefaultMeta(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def tier(self):
-        """ Add metadata related to a tier. """
+        """Add metadata related to a tier."""
 
         # audacity, annotation pro
         self.set_meta("tier_is_closed", "")
@@ -277,7 +279,7 @@ class sppasDefaultMeta(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def media(self):
-        """ Add metadata related to a media. """
+        """Add metadata related to a media."""
 
         # sclite, xtrans
         self.set_meta("media_channel", "")

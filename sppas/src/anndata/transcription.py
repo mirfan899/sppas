@@ -54,7 +54,7 @@ from .annotation import sppasAnnotation
 
 
 class sppasTranscription(sppasMetaData):
-    """ Representation of a transcription, a structured set of tiers.
+    """Representation of a transcription, a structured set of tiers.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -93,7 +93,7 @@ class sppasTranscription(sppasMetaData):
 
     """
     def __init__(self, name=None):
-        """ Creates a new sppasTranscription instance.
+        """Creates a new sppasTranscription instance.
 
         :param name: (str) Name of the transcription.
 
@@ -118,14 +118,14 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_name(self):
-        """ Return the name of the transcription. """
+        """Return the name of the transcription."""
 
         return self._name
 
     # -----------------------------------------------------------------------
 
     def set_name(self, name=None):
-        """ Set the name of the transcription.
+        """Set the name of the transcription.
 
         :param name: (str or None) The identifier name or None.
         :returns: the name
@@ -143,14 +143,14 @@ class sppasTranscription(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def get_media_list(self):
-        """ Return the list of sppasMedia. """
+        """Return the list of sppasMedia."""
 
         return self._media
 
     # ------------------------------------------------------------------------
 
     def get_media_from_id(self, media_id):
-        """ Return a sppasMedia from its name or None.
+        """Return a sppasMedia from its name or None.
 
         :param media_id: (str) Identifier name of a media
 
@@ -164,7 +164,7 @@ class sppasTranscription(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def add_media(self, new_media):
-        """ Add a new media in the list of media.
+        """Add a new media in the list of media.
 
         Does not add the media if a media with the same id is already in self.
 
@@ -184,7 +184,7 @@ class sppasTranscription(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def remove_media(self, old_media):
-        """ Remove a media of the list of media.
+        """Remove a media of the list of media.
 
         :param old_media: (sppasMedia)
         :raises: AnnDataTypeError, TrsRemoveError
@@ -204,7 +204,7 @@ class sppasTranscription(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def set_media_list(self, media_list):
-        """ Set the list of media.
+        """Set the list of media.
 
         :param media_list: (list)
         :returns: list of rejected media
@@ -225,14 +225,14 @@ class sppasTranscription(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def get_ctrl_vocab_list(self):
-        """ Return the list of controlled vocabularies. """
+        """Return the list of controlled vocabularies."""
 
         return self._ctrlvocab
 
     # ------------------------------------------------------------------------
 
     def get_ctrl_vocab_from_name(self, ctrl_vocab_name):
-        """ Return a sppasCtrlVocab from its name or None.
+        """Return a sppasCtrlVocab from its name or None.
 
         :param ctrl_vocab_name: (str) Identifier name of a ctrl vocabulary
 
@@ -247,7 +247,7 @@ class sppasTranscription(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def add_ctrl_vocab(self, new_ctrl_vocab):
-        """ Add a new controlled vocabulary in the list of ctrl vocab.
+        """Add a new controlled vocabulary in the list of ctrl vocab.
 
         :param new_ctrl_vocab: (sppasCtrlVocab)
         :raises: AnnDataTypeError, TrsAddError
@@ -265,7 +265,7 @@ class sppasTranscription(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def remove_ctrl_vocab(self, old_ctrl_vocab):
-        """ Remove a controlled vocabulary of the list of ctrl vocab.
+        """Remove a controlled vocabulary of the list of ctrl vocab.
 
         :param old_ctrl_vocab: (sppasCtrlVocab)
         :raises: AnnDataTypeError, TrsRemoveError
@@ -285,7 +285,7 @@ class sppasTranscription(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def set_ctrl_vocab_list(self, ctrl_vocab_list):
-        """ Set the list of controlled vocabularies.
+        """Set the list of controlled vocabularies.
 
         :param ctrl_vocab_list: (list)
         :returns: list of rejected ctrl_vocab
@@ -306,7 +306,7 @@ class sppasTranscription(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def add_hierarchy_link(self, link_type, parent_tier, child_tier):
-        """ Validate and add a hierarchy link between 2 tiers.
+        """Validate and add a hierarchy link between 2 tiers.
 
         :param link_type: (constant) One of the hierarchy types
         :param parent_tier: (Tier) The reference tier
@@ -324,7 +324,7 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def validate_annotation_location(self, tier, location):
-        """ Validate a location.
+        """Validate a location.
 
         :param tier: (Tier) The reference tier
         :param location: (sppasLocation)
@@ -378,7 +378,7 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_hierarchy(self):
-        """ Return the hierarchy. """
+        """Return the hierarchy."""
 
         return self._hierarchy
 
@@ -387,21 +387,21 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_tier_list(self):
-        """ Return the list of tiers. """
+        """Return the list of tiers."""
 
         return self._tiers
 
     # -----------------------------------------------------------------------
 
     def is_empty(self):
-        """ Return True if the transcription does not contains tiers. """
+        """Return True if the transcription does not contains tiers."""
 
         return len(self._tiers) == 0
 
     # -----------------------------------------------------------------------
 
     def find(self, name, case_sensitive=True):
-        """ Find a tier from its name.
+        """Find a tier from its name.
 
         :param name: (str) EXACT name of the tier
         :param case_sensitive: (bool)
@@ -421,7 +421,7 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def find_id(self, tier_id):
-        """ Find a tier from its identifier.
+        """Find a tier from its identifier.
 
         :param tier_id: (str) Exact identifier of the tier
         :returns: sppasTier or None
@@ -437,7 +437,7 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_tier_index(self, name, case_sensitive=True):
-        """ Get the index of a tier from its name.
+        """Get the index of a tier from its name.
 
         :param name: (str) EXACT name of the tier
         :param case_sensitive: (bool)
@@ -453,7 +453,7 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def set_tier_index(self, name, new_index, case_sensitive=True):
-        """ Set the index of a tier from its name.
+        """Set the index of a tier from its name.
 
         :param name: (str) EXACT name of the tier
         :param new_index: (int) New index of the tier in self
@@ -473,7 +473,7 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def rename_tier(self, tier):
-        """ Rename a tier by appending a digit.
+        """Rename a tier by appending a digit.
 
         :param tier: (sppasTier) The tier to rename.
 
@@ -491,7 +491,7 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def create_tier(self, name=None, ctrl_vocab=None, media=None):
-        """ Create and append a new empty tier.
+        """Create and append a new empty tier.
 
         :param name: (str) the name of the tier to create
         :param ctrl_vocab: (sppasCtrlVocab)
@@ -507,7 +507,7 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def append(self, tier):
-        """ Append a new tier.
+        """Append a new tier.
 
         :param tier: (sppasTier) the tier to append
 
@@ -533,7 +533,7 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def pop(self, index=-1):
-        """ Remove the tier at the given position in the transcription,
+        """Remove the tier at the given position in the transcription,
         and return it. If no index is specified, pop() removes
         and returns the last tier in the transcription.
 
@@ -552,7 +552,7 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_min_loc(self):
-        """ Return the sppasPoint with the lowest value through all tiers. """
+        """Return the sppasPoint with the lowest value through all tiers."""
 
         if self.is_empty():
             return None
@@ -574,7 +574,7 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_max_loc(self):
-        """ Return the sppasPoint with the highest value through all tiers. """
+        """Return the sppasPoint with the highest value through all tiers."""
 
         if self.is_empty():
             return None

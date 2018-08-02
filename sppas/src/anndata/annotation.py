@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.annotation.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    anndata.annotation.py
+    ~~~~~~~~~~~~~~~~~~~~~
 
 """
 from .anndataexc import AnnDataTypeError
@@ -43,9 +43,9 @@ from .metadata import sppasMetaData
 
 
 class sppasAnnotation(sppasMetaData):
-    """ Represents an annotation.
+    """Represents an annotation.
 
-    :author:       Brigitte Bigi, Jibril Saffi
+    :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
@@ -63,8 +63,9 @@ class sppasAnnotation(sppasMetaData):
         >>> ann = sppasAnnotation(location, labels)
 
     """
+
     def __init__(self, location, labels=list()):
-        """ Creates a new sppasAnnotation instance.
+        """Creates a new sppasAnnotation instance.
 
         :param location: (sppasLocation) the location(s) where the annotation\
         happens
@@ -72,6 +73,7 @@ class sppasAnnotation(sppasMetaData):
         annotation, or a list of them.
 
         """
+
         super(sppasAnnotation, self).__init__()
 
         # Check location instance.
@@ -89,7 +91,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_score(self):
-        """ Return the score of this annotation or None if no score is set.
+        """Return the score of this annotation or None if no score is set.
 
         :returns: score: (float)
 
@@ -99,21 +101,21 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_location(self):
-        """ Return the sppasLocation() of this annotation. """
+        """Return the sppasLocation() of this annotation."""
 
         return self.__location
 
     # -----------------------------------------------------------------------
 
     def get_labels(self):
-        """ Return the list of sppasLabel() of this annotation. """
+        """Return the list of sppasLabel() of this annotation."""
 
         return self.__labels
 
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """ Return a full copy of the annotation.
+        """Return a full copy of the annotation.
 
         The location, the labels and the metadata are all copied. The 'id'
         of the returned annotation is then the same.
@@ -143,7 +145,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def set_parent(self, parent=None):
-        """ Set a parent tier.
+        """Set a parent tier.
 
         :param parent: (sppasTier) The parent tier of this annotation.
         :raises: CtrlVocabContainsError, HierarchyContainsError, \
@@ -160,7 +162,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def set_score(self, score=None):
-        """ Set or reset the score to this annotation.
+        """Set or reset the score to this annotation.
 
         :param score: (float)
 
@@ -176,7 +178,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def set_labels(self, labels=[]):
-        """ Fix/reset the list of labels of this annotation.
+        """Fix/reset the list of labels of this annotation.
 
         :param labels: (sppasLabel, list) the label(s) to stamp this \
         annotation, or a list of them.
@@ -203,7 +205,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def validate(self):
-        """ Validate the annotation.
+        """Validate the annotation.
 
         Check if the labels and location match the requirements.
 
@@ -219,7 +221,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def validate_label(self, label):
-        """ Validate the label.
+        """Validate the label.
 
         Check if the label matches the requirements of this annotation.
 
@@ -246,7 +248,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def is_labelled(self):
-        """ Return True if at least a sppasTag exists and is not None. """
+        """Return True if at least a sppasTag exists and is not None."""
 
         if len(self.__labels) == 0:
             return False
@@ -261,7 +263,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def append_label(self, label):
-        """ Append a label into the list of labels.
+        """Append a label into the list of labels.
 
         :param label: (sppasLabel)
 
@@ -272,7 +274,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_labels_best_tag(self):
-        """ Return a list with the best tag of each label. """
+        """Return a list with the best tag of each label."""
 
         tags = list()
         for label in self.__labels:
@@ -287,7 +289,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_best_tag(self, label_idx=0):
-        """ Return the tag with the highest score of a label or an empty str.
+        """Return the tag with the highest score of a label or an empty str.
 
         :param label_idx: (int)
 
@@ -312,7 +314,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def add_tag(self, tag, score=None, label_idx=0):
-        """ Append an alternative tag in a label.
+        """Append an alternative tag in a label.
 
         :param tag: (sppasTag)
         :param score: (float)
@@ -345,7 +347,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def remove_tag(self, tag, label_idx=0):
-        """ Remove an alternative tag of the label.
+        """Remove an alternative tag of the label.
 
         :param tag: (sppasTag) the tag to be removed of the list.
         :param label_idx: (int)
@@ -361,7 +363,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def contains_tag(self, tag, function='exact', reverse=False, label_idx=0):
-        """ Return True if the given tag is in the label.
+        """Return True if the given tag is in the label.
 
         :param tag: (sppasTag)
         :param function: Search function
@@ -392,7 +394,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def label_is_filled(self):
-        """ Return True if at least one BEST tag is filled. """
+        """Return True if at least one BEST tag is filled."""
 
         for label in self.__labels:
             if label is not None:
@@ -404,7 +406,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def label_is_string(self):
-        """ Return True if the type of the labels is 'str'. """
+        """Return True if the type of the labels is 'str'."""
 
         if len(self.__labels) == 0:
             return False
@@ -418,7 +420,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def label_is_float(self):
-        """ Return True if the type of the labels is 'float'. """
+        """Return True if the type of the labels is 'float'."""
 
         if len(self.__labels) == 0:
             return False
@@ -431,7 +433,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def label_is_int(self):
-        """ Return True if the type of the labels is 'int'. """
+        """Return True if the type of the labels is 'int'."""
 
         if len(self.__labels) == 0:
             return False
@@ -445,7 +447,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def label_is_bool(self):
-        """ Return True if the type of the labels is 'bool'. """
+        """Return True if the type of the labels is 'bool'."""
 
         if len(self.__labels) == 0:
             return False
@@ -459,7 +461,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def serialize_labels(self, separator="\n", empty="", alt=True):
-        """ Convert labels into a string.
+        """Convert labels into a string.
 
         :param separator: (str) String to separate labels.
         :param empty: (str) The text to return if a tag is empty or not set.
@@ -484,7 +486,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def set_best_localization(self, localization):
-        """ Set the best localization of the location.
+        """Set the best localization of the location.
 
         :param localization: (sppasBaseLocalization)
 
@@ -501,28 +503,28 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def location_is_point(self):
-        """ Return True if the location is made of sppasPoint locs. """
+        """Return True if the location is made of sppasPoint locs."""
 
         return self.__location.is_point()
 
     # -----------------------------------------------------------------------
 
     def location_is_interval(self):
-        """ Return True if the location is made of sppasInterval locs. """
+        """Return True if the location is made of sppasInterval locs."""
 
         return self.__location.is_interval()
 
     # -----------------------------------------------------------------------
 
     def location_is_disjoint(self):
-        """ Return True if the location is made of sppasDisjoint locs. """
+        """Return True if the location is made of sppasDisjoint locs."""
 
         return self.__location.is_disjoint()
 
     # -----------------------------------------------------------------------
 
     def get_highest_localization(self):
-        """ Return a copy of the sppasPoint with the highest loc. """
+        """Return a copy of the sppasPoint with the highest loc."""
 
         if self.__location.is_point():
             max_localization = max([l[0] for l in self.__location])
@@ -535,7 +537,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_lowest_localization(self):
-        """ Return a copy of the sppasPoint with the lowest localization. """
+        """Return a copy of the sppasPoint with the lowest localization."""
 
         if self.__location.is_point():
             min_localization = min([l[0] for l in self.__location])
@@ -548,7 +550,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_all_points(self):
-        """ Return the list of a copy of all points of this annotation. """
+        """Return the list of a copy of all points of this annotation."""
 
         points = list()
         if self.__location.is_point():
@@ -571,14 +573,14 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def contains_localization(self, localization):
-        """ Return True if the given localization is in the location. """
+        """Return True if the given localization is in the location."""
 
         return self.__location.contains(localization)
 
     # -----------------------------------------------------------------------
 
     def validate_location(self):
-        """ Validate the location of the annotation.
+        """Validate the location of the annotation.
 
         :raises: 
 

@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.tier.py
-    ~~~~~~~~~~~~~~~~~~~
+    anndata.tier.py
+    ~~~~~~~~~~~~~~~~
 
 """
 from sppas.src.utils.fileutils import sppasGUID
@@ -56,7 +56,7 @@ from .media import sppasMedia
 
 
 class sppasTier(sppasMetaData):
-    """ Representation of a tier, a structured set of annotations.
+    """Representation of a tier, a structured set of annotations.
 
     Annotations of a tier are sorted depending on their location
     (from lowest to highest).
@@ -78,7 +78,7 @@ class sppasTier(sppasMetaData):
 
     """
     def __init__(self, name=None, ctrl_vocab=None, media=None, parent=None):
-        """ Creates a new sppasTier instance.
+        """Creates a new sppasTier instance.
 
         :param name: (str) Name of the tier. It is used as identifier.
         :param ctrl_vocab: (sppasCtrlVocab)
@@ -104,29 +104,25 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_name(self):
-        """ Return the identifier name of the tier. """
-
+        """Return the identifier name of the tier."""
         return self.__name
 
     # -----------------------------------------------------------------------
 
     def get_ctrl_vocab(self):
-        """ Return the controlled vocabulary of the tier. """
-
+        """Return the controlled vocabulary of the tier."""
         return self.__ctrl_vocab
 
     # -----------------------------------------------------------------------
 
     def get_media(self):
-        """ Return the media of the tier. """
-
+        """Return the media of the tier."""
         return self.__media
 
     # -----------------------------------------------------------------------
 
     def get_parent(self):
-        """ Return the parent of the tier. """
-
+        """Return the parent of the tier."""
         return self.__parent
 
     # -----------------------------------------------------------------------
@@ -134,7 +130,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def create_meta_id(self):
-        """ Create a metadata with 'id' as key and a GUID as value.
+        """Create a metadata with 'id' as key and a GUID as value.
 
         :returns: GUID identifier
 
@@ -146,7 +142,8 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def set_name(self, name=None):
-        """ Set the name of the tier.
+        """Set the name of the tier.
+
         If no name is given, an GUID is randomly assigned.
 
         :param name: (str) The identifier name or None.
@@ -165,7 +162,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def set_ctrl_vocab(self, ctrl_vocab=None):
-        """ Set a controlled vocabulary to this tier.
+        """Set a controlled vocabulary to this tier.
 
         :param ctrl_vocab: (sppasCtrlVocab or None)
         :raises: AnnDataTypeError, CtrlVocabContainsError
@@ -192,7 +189,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def set_media(self, media):
-        """ Set a media to the tier.
+        """Set a media to the tier.
 
         :param media: (sppasMedia)
         :raises: AnnDataTypeError
@@ -212,7 +209,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def set_parent(self, parent):
-        """ Set the parent of the tier.
+        """Set the parent of the tier.
 
         :param parent: (sppasTranscription)
 
@@ -237,7 +234,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """ Return a deep copy of the tier. """
+        """Return a deep copy of the tier."""
         
         new_tier = sppasTier(self.__name)
         new_tier.set_ctrl_vocab(self.__ctrl_vocab)
@@ -252,7 +249,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def create_annotation(self, location, labels=None):
-        """ Create and add a new annotation into the tier.
+        """Create and add a new annotation into the tier.
 
         :param location: (sppasLocation) the location(s) where \
                the annotation happens
@@ -267,14 +264,14 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def is_empty(self):
-        """ Return True if the tier does not contain annotations. """
+        """Return True if the tier does not contain annotations."""
 
         return len(self.__ann) == 0
 
     # -----------------------------------------------------------------------
 
     def append(self, annotation):
-        """ Append the given annotation at the end of the tier.
+        """Append the given annotation at the end of the tier.
         Assign this tier as parent to the annotation.
 
         :param annotation: (sppasAnnotation)
@@ -297,7 +294,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def add(self, annotation):
-        """ Add an annotation to the tier in sorted order.
+        """Add an annotation to the tier in sorted order.
         Assign this tier as parent to the annotation.
 
         :param annotation: (sppasAnnotation)
@@ -350,7 +347,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def remove(self, begin, end, overlaps=False):
-        """ Remove intervals between begin and end.
+        """Remove intervals between begin and end.
 
         :param begin: (sppasPoint)
         :param end: (sppasPoint)
@@ -370,7 +367,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def pop(self, index=-1):
-        """ Remove the annotation at the given position in the tier,
+        """Remove the annotation at the given position in the tier,
         and return it. If no index is specified, pop() removes
         and returns the last annotation in the tier.
 
@@ -387,7 +384,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_all_points(self):
-        """ Return the list of all points of the tier. """
+        """Return the list of all points of the tier."""
 
         if len(self.__ann) == 0:
             return []
@@ -401,7 +398,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_first_point(self):
-        """ Return the first point of the first annotation. """
+        """Return the first point of the first annotation."""
 
         if len(self.__ann) == 0:
             return None
@@ -411,7 +408,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_last_point(self):
-        """ Return the last point of the last location. """
+        """Return the last point of the last location."""
 
         if len(self.__ann) == 0:
             return None
@@ -421,7 +418,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def has_point(self, point):
-        """ Return True if the tier contains a given point.
+        """Return True if the tier contains a given point.
 
         :param point: (sppasPoint) The point to find in the tier.
         :returns: Boolean
@@ -435,7 +432,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def is_disjoint(self):
-        """ Return True if the tier is made of disjoint localizations. """
+        """Return True if the tier is made of disjoint localizations."""
 
         if len(self.__ann) == 0:
             return False
@@ -445,7 +442,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def is_interval(self):
-        """ Return True if the tier is made of interval localizations. """
+        """Return True if the tier is made of interval localizations."""
 
         if len(self.__ann) == 0:
             return False
@@ -455,7 +452,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def is_point(self):
-        """ Return True if the tier is made of point localizations. """
+        """Return True if the tier is made of point localizations."""
 
         if len(self.__ann) == 0:
             return False
@@ -465,7 +462,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def find(self, begin, end, overlaps=True):
-        """ Return a list of annotations between begin and end.
+        """Return a list of annotations between begin and end.
 
         :param begin: sppasPoint or None to start from the beginning of the tier
         :param end: sppasPoint or None to end at the end of the tier
@@ -542,7 +539,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def index(self, moment):
-        """ Return the index of the moment (int), or -1.
+        """Return the index of the moment (int), or -1.
         Only for tier with points.
 
         :param moment: (sppasPoint)
@@ -574,7 +571,7 @@ class sppasTier(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def lindex(self, moment):
-        """ Return the index of the interval starting at a given moment, or -1.
+        """Return the index of the interval starting at a given moment, or -1.
 
         If the tier contains more than one annotation starting at the same
         moment, the method returns the first one.
@@ -615,7 +612,7 @@ class sppasTier(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def mindex(self, moment, bound=0):
-        """ Return the index of the interval containing the given moment, or -1.
+        """Return the index of the interval containing the given moment, or -1.
 
         If the tier contains more than one annotation at the same moment,
         the method returns the first one (i.e. the one which started at first).
@@ -654,7 +651,7 @@ class sppasTier(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def rindex(self, moment):
-        """ Return the index of the interval ending at the given moment.
+        """Return the index of the interval ending at the given moment.
         If the tier contains more than one annotation ending at the same moment,
         the method returns the last one.
         Only for tier with intervals or disjoint.
@@ -695,7 +692,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def is_superset(self, other):
-        """ Return True if this tier contains all points of the other tier.
+        """Return True if this tier contains all points of the other tier.
 
         :param other: (sppasTier)
         :returns: Boolean
@@ -716,7 +713,7 @@ class sppasTier(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def near(self, moment, direction=1):
-        """ Return the index of the annotation whose localization is closest
+        """Return the index of the annotation whose localization is closest
         to the given moment for a given direction.
 
         :param moment: (sppasPoint)
@@ -779,7 +776,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def is_string(self):
-        """ All label tags are string or unicode or None. """
+        """All label tags are string or unicode or None."""
 
         if len(self.__ann) == 0:
             return False
@@ -793,7 +790,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def is_float(self):
-        """ All label tags are float values or None. """
+        """All label tags are float values or None."""
 
         if len(self.__ann) == 0:
             return False
@@ -807,7 +804,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def is_int(self):
-        """ All label tags are integer values or None. """
+        """All label tags are integer values or None."""
 
         if len(self.__ann) == 0:
             return False
@@ -821,7 +818,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def is_bool(self):
-        """ All label tags are boolean values or None. """
+        """All label tags are boolean values or None."""
 
         if len(self.__ann) == 0:
             return False
@@ -835,7 +832,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def search(self, tags, pos=0, forward=True, any_tag=True, function='exact', reverse=False):
-        """ Return the index in the tier of the first annotation whose a tag matches.
+        """Return the index in the tier of the first annotation whose a tag matches.
 
         :param tags: (list) the list of sppasTag to search
         :param pos: (int) the index of the annotation to start to search
@@ -880,7 +877,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def validate_annotation(self, annotation):
-        """ Validate the annotation and set its parent to this tier.
+        """Validate the annotation and set its parent to this tier.
 
         :param annotation: (sppasAnnotation)
         :raises: AnnDataTypeError, CtrlVocabContainsError, \
@@ -910,7 +907,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def validate_annotation_label(self, label):
-        """ Validate a label.
+        """Validate a label.
 
         :param label: (sppasLabel)
         :raises: CtrlVocabContainsError
@@ -945,7 +942,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def validate_annotation_location(self, location):
-        """ Ask the parent to validate a location.
+        """Ask the parent to validate a location.
 
         :param location: (sppasLocation)
         :raises: AnnDataTypeError, HierarchyContainsError, HierarchyTypeError
@@ -957,7 +954,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_annotation(self, identifier):
-        """ Find an annotation from its metadata 'id'.
+        """Find an annotation from its metadata 'id'.
 
         :param identifier: (str) Metadata 'id' of an annotation.
         :returns: sppasAnnotation or None
@@ -973,7 +970,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def create_ctrl_vocab(self, name=None):
-        """ Create (or re-create) the controlled vocabulary from the list of
+        """Create (or re-create) the controlled vocabulary from the list of
         already existing annotation labels.
 
         The current controlled vocabulary is deleted.
@@ -995,7 +992,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def set_radius(self, radius):
-        """ Fix a radius value to all points of the tier.
+        """Fix a radius value to all points of the tier.
 
         :param radius: (int, float) New radius value
 
@@ -1006,7 +1003,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def export_to_intervals(self, separators):
-        """ Create a tier with the consecutive filled intervals.
+        """Create a tier with the consecutive filled intervals.
         The created intervals are not filled.
 
         :param separators: (list)
@@ -1057,7 +1054,7 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def __find(self, x, direction=1):
-        """ Return the index of the annotation whose moment value contains x.
+        """Return the index of the annotation whose moment value contains x.
 
         :param x: (sppasPoint)
 

@@ -65,6 +65,7 @@ class sppasAnnSet(object):
         - value: a list of strings
 
     """
+
     def __init__(self):
         """Create a sppasAnnSet instance. """
 

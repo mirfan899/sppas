@@ -44,9 +44,6 @@
         - statistical language models: slm
 
 """
-from sppas.src.utils.maketext import sppasTranslate
-t = sppasTranslate().translation("models")
-
 from .acm.hmm import sppasHMM, HMMInterpolation
 from .slm import sppasArpaIO, sppasNgramCounter, sppasNgramsModel, sppasSLM
 

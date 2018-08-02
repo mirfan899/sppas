@@ -36,26 +36,30 @@ import codecs
 import os
 
 from sppas.src.config import sg
+from sppas.src.config import annotations_translation
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
 from . import ERROR_ID, WARNING_ID, OK_ID
-from . import t
 
 # ----------------------------------------------------------------------------
 
-MSG_VALID = t.gettext(":INFO 1000: ")
-MSG_ADMIT = t.gettext(":INFO 1002: ")
-MSG_INVALID = t.gettext(":INFO 1004: ")
-MSG_FAILED = t.gettext(":INFO 1006: ")
-MSG_AUDIO_CHANNELS_ERROR = (t.gettext(":INFO 1010: "))
-MSG_AUDIO_SAMPWIDTH_ERROR = (t.gettext(":INFO 1012: "))
-MSG_AUDIO_FRAMERATE_ERROR = (t.gettext(":INFO 1014: "))
-MSG_AUDIO_SAMPWIDTH_WARN = (t.gettext(":INFO 1016: "))
-MSG_AUDIO_FRAMERATE_WARN = (t.gettext(":INFO 1018: "))
-MSG_UNKNOWN_FILE = (t.gettext(":INFO 1020: "))
-MSG_FILE_NON_ASCII = (t.gettext(":INFO 1022: "))
-MSG_FILE_WHITESPACE = (t.gettext(":INFO 1024: "))
-MSG_FILE_ENCODING = (t.gettext(":INFO 1026: "))
+_ = annotations_translation.gettext
+
+# ----------------------------------------------------------------------------
+
+MSG_VALID = _(":INFO 1000: ")
+MSG_ADMIT = _(":INFO 1002: ")
+MSG_INVALID = _(":INFO 1004: ")
+MSG_FAILED = _(":INFO 1006: ")
+MSG_AUDIO_CHANNELS_ERROR = (_(":INFO 1010: "))
+MSG_AUDIO_SAMPWIDTH_ERROR = (_(":INFO 1012: "))
+MSG_AUDIO_FRAMERATE_ERROR = (_(":INFO 1014: "))
+MSG_AUDIO_SAMPWIDTH_WARN = (_(":INFO 1016: "))
+MSG_AUDIO_FRAMERATE_WARN = (_(":INFO 1018: "))
+MSG_UNKNOWN_FILE = (_(":INFO 1020: "))
+MSG_FILE_NON_ASCII = (_(":INFO 1022: "))
+MSG_FILE_WHITESPACE = (_(":INFO 1024: "))
+MSG_FILE_ENCODING = (_(":INFO 1026: "))
 
 # ----------------------------------------------------------------------------
 

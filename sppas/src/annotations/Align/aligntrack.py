@@ -29,22 +29,26 @@
         ---------------------------------------------------------------------
 
     src.annotations.Align.aligntrack.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import codecs
 
 from sppas.src.config import sg
+from sppas.src.config import annotations_translation
 from sppas.src.utils.makeunicode import sppasUnicode
 
-from .. import t
 from .aligners import DEFAULT_ALIGNER
 from .aligners import instantiate as aligners_instantiate
 from .aligners import check as aligners_check
 
 # ----------------------------------------------------------------------------
 
-MSG_EMPTY_INTERVAL = (t.gettext(":INFO 1222: "))
+_ = annotations_translation.gettext
+
+# ----------------------------------------------------------------------------
+
+MSG_EMPTY_INTERVAL = (_(":INFO 1222: "))
 
 # ----------------------------------------------------------------------------
 

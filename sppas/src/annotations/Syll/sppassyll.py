@@ -34,6 +34,7 @@
 
 """
 from sppas.src.config import symbols
+from sppas.src.config import annotations_translation
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
 from sppas.src.anndata import sppasTier
@@ -44,7 +45,6 @@ from sppas.src.anndata import sppasLabel
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .. import WARNING_ID
-from .. import t
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasFindTier
 from ..annotationsexc import AnnotationOptionError
@@ -54,8 +54,12 @@ from .syllabify import Syllabifier
 
 # ----------------------------------------------------------------------------
 
-MSG_INVALID = (t.gettext(":INFO 1224: "))
-MSG_NO_TIER = (t.gettext(":INFO 1264: "))
+_ = annotations_translation.gettext
+
+# ----------------------------------------------------------------------------
+
+MSG_INVALID = (_(":INFO 1224: "))
+MSG_NO_TIER = (_(":INFO 1264: "))
 
 # ----------------------------------------------------------------------------
 

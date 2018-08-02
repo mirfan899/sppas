@@ -38,28 +38,33 @@ import logging
 import os
 
 from sppas.src.config import sg
+from sppas.src.config import annotations_translation
+
 from . import OK_ID, INFO_ID, WARNING_ID, IGNORE_ID, ERROR_ID
-from .import t
 
 # ----------------------------------------------------------------------------
 
-MSG_ENABLED = t.gettext(":INFO 1030: ")
-MSG_DISABLED = t.gettext(":INFO 1031: ")
-MSG_VERSION = (t.gettext(":INFO 1032: "))
-MSG_URL = (t.gettext(":INFO 1033: "))
-MSG_CONTACT = (t.gettext(":INFO 1034: "))
-MSG_AUTO_ANNS = (t.gettext(":INFO 1035: "))
-MSG_DATE = (t.gettext(":INFO 1036: "))
-MSG_LANGUAGES = (t.gettext(":INFO 1037: "))
-MSG_SEL_FILES = (t.gettext(":INFO 1038: "))
-MSG_SEL_ANNS = (t.gettext(":INFO 1039: "))
-MSG_FILE_EXT = (t.gettext(":INFO 1040: "))
-MSG_STATUS_OK = (t.gettext(":INFO 1041: "))
-MSG_STATUS_INFO = (t.gettext(":INFO 1042: "))
-MSG_STATUS_WARNING = (t.gettext(":INFO 1043: "))
-MSG_STATUS_IGNORE = (t.gettext(":INFO 1044: "))
-MSG_STATUS_ERROR = (t.gettext(":INFO 1045: "))
-MSG_REPORT = t.gettext(":INFO 1054: ")
+_ = annotations_translation.gettext
+
+# ----------------------------------------------------------------------------
+
+MSG_ENABLED = _(":INFO 1030: ")
+MSG_DISABLED = _(":INFO 1031: ")
+MSG_VERSION = (_(":INFO 1032: "))
+MSG_URL = (_(":INFO 1033: "))
+MSG_CONTACT = (_(":INFO 1034: "))
+MSG_AUTO_ANNS = (_(":INFO 1035: "))
+MSG_DATE = (_(":INFO 1036: "))
+MSG_LANGUAGES = (_(":INFO 1037: "))
+MSG_SEL_FILES = (_(":INFO 1038: "))
+MSG_SEL_ANNS = (_(":INFO 1039: "))
+MSG_FILE_EXT = (_(":INFO 1040: "))
+MSG_STATUS_OK = (_(":INFO 1041: "))
+MSG_STATUS_INFO = (_(":INFO 1042: "))
+MSG_STATUS_WARNING = (_(":INFO 1043: "))
+MSG_STATUS_IGNORE = (_(":INFO 1044: "))
+MSG_STATUS_ERROR = (_(":INFO 1045: "))
+MSG_REPORT = _(":INFO 1054: ")
 
 # ----------------------------------------------------------------------------
 

@@ -34,5 +34,3 @@
     Exceptions for the automatic annotation: Repet.
 
 """
-from .. import t
-

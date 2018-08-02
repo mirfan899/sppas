@@ -39,6 +39,7 @@ import os.path
 
 from sppas.src.config import paths
 from sppas.src.config import symbols
+from sppas.src.config import annotations_translation
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
 
@@ -48,7 +49,6 @@ from sppas.src.anndata import sppasTier
 from sppas.src.anndata import sppasLabel
 from sppas.src.anndata import sppasTag
 
-from .. import t
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasFindTier
 from ..annotationsexc import AnnotationOptionError
@@ -59,7 +59,11 @@ from .normalize import TextNormalizer
 
 # ---------------------------------------------------------------------------
 
-MSG_TRACK = t.gettext(":INFO 1220: ")
+_ = annotations_translation.gettext
+
+# ---------------------------------------------------------------------------
+
+MSG_TRACK = _(":INFO 1220: ")
 
 SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]
 

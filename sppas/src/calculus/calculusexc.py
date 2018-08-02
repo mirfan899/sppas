@@ -34,7 +34,9 @@
     Exceptions for calculus package.
 
 """
-from . import t
+from sppas.src.config import calculus_translation
+
+_ = calculus_translation.gettext
 
 # -----------------------------------------------------------------------
 
@@ -52,7 +54,7 @@ class VectorsError(Exception):
     """ :ERROR 3010: Both vectors p and q must have the same length and must contain probabilities. """
 
     def __init__(self):
-        self.parameter = VECTORS_ERROR + (t.gettext(VECTORS_ERROR))
+        self.parameter = VECTORS_ERROR + (_(VECTORS_ERROR))
 
     def __str__(self):
         return repr(self.parameter)
@@ -66,9 +68,9 @@ class ProbabilityError(Exception):
     def __init__(self, value=None):
         if value is not None:
             value = float(value)
-            self.parameter = PROBABILITY_VALUE_ERROR + (t.gettext(PROBABILITY_VALUE_ERROR)).format(value=value)
+            self.parameter = PROBABILITY_VALUE_ERROR + (_(PROBABILITY_VALUE_ERROR)).format(value=value)
         else:
-            self.parameter = PROBABILITY_VALUE_ERROR + t.gettext(PROBABILITY_VALUE_ERROR).replace("{value}", "")
+            self.parameter = PROBABILITY_VALUE_ERROR + _(PROBABILITY_VALUE_ERROR).replace("{value}", "")
 
     def __str__(self):
         return repr(self.parameter)
@@ -82,9 +84,9 @@ class SumProbabilityError(Exception):
     def __init__(self, value=None):
         if value is not None:
             value = float(value)
-            self.parameter = PROBABILITY_SUM_ERROR + (t.gettext(PROBABILITY_SUM_ERROR)).format(value=value)
+            self.parameter = PROBABILITY_SUM_ERROR + (_(PROBABILITY_SUM_ERROR)).format(value=value)
         else:
-            self.parameter = PROBABILITY_SUM_ERROR + t.gettext(PROBABILITY_SUM_ERROR).replace("{value}", "")
+            self.parameter = PROBABILITY_SUM_ERROR + _(PROBABILITY_SUM_ERROR).replace("{value}", "")
 
     def __str__(self):
         return repr(self.parameter)
@@ -96,7 +98,7 @@ class EuclidianDistanceError(ValueError):
     """ :ERROR 3025: Error while estimating Euclidian distances of rows and columns. """
 
     def __init__(self):
-        self.parameter = EUCLIDIAN_DISTANCE_ERROR + (t.gettext(EUCLIDIAN_DISTANCE_ERROR))
+        self.parameter = EUCLIDIAN_DISTANCE_ERROR + (_(EUCLIDIAN_DISTANCE_ERROR))
 
     def __str__(self):
         return repr(self.parameter)
@@ -108,7 +110,7 @@ class EmptyError(Exception):
     """ :ERROR 3030: The given data must be defined or must not be empty. """
 
     def __init__(self):
-        self.parameter = EMPTY_LIST + (t.gettext(EMPTY_LIST))
+        self.parameter = EMPTY_LIST + (_(EMPTY_LIST))
 
     def __str__(self):
         return repr(self.parameter)
@@ -124,7 +126,7 @@ class InsideIntervalError(ValueError):
         max_value = int(max_value)
         value = int(value)
         self.parameter = IN_INTERVAL_ERROR + \
-                         (t.gettext(IN_INTERVAL_ERROR)).format(value=value, min_value=min_value, max_value=max_value)
+                         (_(IN_INTERVAL_ERROR)).format(value=value, min_value=min_value, max_value=max_value)
 
     def __str__(self):
         return repr(self.parameter)

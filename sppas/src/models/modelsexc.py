@@ -34,7 +34,9 @@
     Exceptions for models package.
 
 """
-from . import t
+from sppas.src.config import models_translation
+
+_ = models_translation.gettext
 
 # -----------------------------------------------------------------------
 
@@ -59,9 +61,9 @@ class ModelsDataTypeError(TypeError):
     """
     def __init__(self, data_name, expected_type, data_type):
         self.parameter = DATATYPE_ERROR + \
-                         (t.gettext(DATATYPE_ERROR)).format(data_name=data_name,
-                                                            expected_type=expected_type,
-                                                            data_type=data_type)
+                         (_(DATATYPE_ERROR)).format(data_name=data_name,
+                                                    expected_type=expected_type,
+                                                    data_type=data_type)
 
     def __str__(self):
         return repr(self.parameter)
@@ -76,7 +78,7 @@ class MioEncodingError(UnicodeDecodeError):
     """
     def __init__(self, filename, error):
         self.parameter = MIO_ENCODING_ERROR + \
-                         (t.gettext(MIO_ENCODING_ERROR)).format(filename, error)
+                         (_(MIO_ENCODING_ERROR)).format(filename, error)
 
     def __str__(self):
         return repr(self.parameter)
@@ -91,7 +93,7 @@ class MioFileFormatError(IOError):
     """
     def __init__(self, name):
         self.parameter = MIO_FILE_FORMAT_ERROR + \
-                         (t.gettext(MIO_FILE_FORMAT_ERROR)).format(name)
+                         (_(MIO_FILE_FORMAT_ERROR)).format(name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -106,7 +108,7 @@ class MioFileError(IOError):
     """
     def __init__(self, name):
         self.parameter = MIO_FILE_ERROR + \
-                         (t.gettext(MIO_FILE_ERROR)).format(name)
+                         (_(MIO_FILE_ERROR)).format(name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -121,7 +123,7 @@ class MioFolderError(IOError):
     """
     def __init__(self, folder):
         self.parameter = MIO_FOLDER_ERROR + \
-                         (t.gettext(MIO_FOLDER_ERROR)).format(folder)
+                         (_(MIO_FOLDER_ERROR)).format(folder)
 
     def __str__(self):
         return repr(self.parameter)
@@ -136,9 +138,9 @@ class NgramOrderValueError(ValueError):
     """
     def __init__(self, min_value, max_value, got_value):
         self.parameter = NGRAM_ORDER_VALUE_ERROR + \
-                         (t.gettext(NGRAM_ORDER_VALUE_ERROR)).format(min_value=min_value,
-                                                                     max_value=max_value,
-                                                                     got_value=got_value)
+                         (_(NGRAM_ORDER_VALUE_ERROR)).format(min_value=min_value,
+                                                             max_value=max_value,
+                                                             got_value=got_value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -153,8 +155,8 @@ class NgramCountValueError(ValueError):
     """
     def __init__(self, min_value, got_value):
         self.parameter = NGRAM_COUNT_VALUE_ERROR + \
-                         (t.gettext(NGRAM_COUNT_VALUE_ERROR)).format(min_value=min_value,
-                                                                     got_value=got_value)
+                         (_(NGRAM_COUNT_VALUE_ERROR)).format(min_value=min_value,
+                                                             got_value=got_value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -168,7 +170,7 @@ class NgramMethodNameError(NameError):
     """
     def __init__(self, got_name):
         self.parameter = NGRAM_METHOD_NAME_ERROR + \
-                         (t.gettext(NGRAM_METHOD_NAME_ERROR)).format(got_name=got_name)
+                         (_(NGRAM_METHOD_NAME_ERROR)).format(got_name=got_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -182,7 +184,7 @@ class ArpaFileError(IOError):
     """
     def __init__(self, line):
         self.parameter = ARPA_FILE_ERROR + \
-                         (t.gettext(ARPA_FILE_ERROR)).format(line=line)
+                         (_(ARPA_FILE_ERROR)).format(line=line)
 
     def __str__(self):
         return repr(self.parameter)

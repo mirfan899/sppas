@@ -42,8 +42,6 @@
 
 """
 import os.path
-from sppas.src.utils.maketext import translate
 from sppas.src.config import paths
 
-t = translate("ui")
 SETTINGS_FILE = os.path.join(paths.etc, "settings.dump")

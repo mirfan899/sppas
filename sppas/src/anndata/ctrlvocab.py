@@ -45,13 +45,13 @@ from .metadata import sppasMetaData
 
 
 class sppasCtrlVocab(sppasMetaData):
-    """ Generic representation of a controlled vocabulary.
+    """Generic representation of a controlled vocabulary.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018 Brigitte Bigi
 
     A controlled Vocabulary is a set of tags. It is used to restrict the use
     of tags in a label: only the accepted tags can be set to a label.
@@ -60,6 +60,7 @@ class sppasCtrlVocab(sppasMetaData):
     a list of pairs tag/description.
 
     """
+
     def __init__(self, name, description=""):
         """ Creates a new sppasCtrlVocab instance.
 
@@ -85,22 +86,19 @@ class sppasCtrlVocab(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_name(self):
-        """ Return the name of the controlled vocabulary. """
-
+        """Return the name of the controlled vocabulary."""
         return self.__name
 
     # -----------------------------------------------------------------------
 
     def get_description(self):
-        """ Return the unicode str of the description of the ctrl vocab. """
-
+        """Return the unicode str of the description of the ctrl vocab."""
         return self.__desc
 
     # -----------------------------------------------------------------------
 
     def get_tag_description(self, tag):
-        """ Return the unicode string of the description of an entry of the
-        controlled vocabulary.
+        """Return the unicode string of the description of an entry.
 
         :param tag: (sppasTag) the tag to get the description.
         :returns: (str)
@@ -114,7 +112,7 @@ class sppasCtrlVocab(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def set_description(self, description=""):
-        """ Set the description of the controlled vocabulary.
+        """Set the description of the controlled vocabulary.
 
         :param description: (str)
 
@@ -125,7 +123,7 @@ class sppasCtrlVocab(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def contains(self, tag):
-        """ Test if a tag is in the controlled vocabulary.
+        """Test if a tag is in the controlled vocabulary.
         Attention: Do not check the instance but the data content of the tag.
 
         :param tag: (sppasTag) the tag to check.
@@ -145,7 +143,7 @@ class sppasCtrlVocab(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def validate_tag(self, tag):
-        """ Check if the given tag can be added to the ctrl vocabulary. """
+        """Check if the given tag can be added to the ctrl vocabulary."""
 
         if isinstance(tag, sppasTag) is False:
             raise AnnDataTypeError(tag, "sppasTag")
@@ -161,7 +159,7 @@ class sppasCtrlVocab(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def add(self, tag, description=""):
-        """ Add a tag to the controlled vocab.
+        """Add a tag to the controlled vocab.
 
         :param tag: (sppasTag): the tag to add.
         :param description: (str)
@@ -179,7 +177,7 @@ class sppasCtrlVocab(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def remove(self, tag):
-        """ Remove a tag of the controlled vocab.
+        """Remove a tag of the controlled vocab.
 
         :param tag: (sppasTag) the tag to remove.
         :returns: Boolean
@@ -197,8 +195,7 @@ class sppasCtrlVocab(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def set_tag_description(self, tag, description):
-        """ Set the unicode string of the description of an entry of the
-        controlled vocabulary.
+        """Set the unicode string of the description of an entry.
 
         :param tag: (sppasTag) the tag to get the description.
         :param description: (str)
@@ -227,7 +224,7 @@ class sppasCtrlVocab(sppasMetaData):
                "".format(self.get_meta('id'), self.__name, self.__desc)
 
     def __eq__(self, other):
-        """ Test if other is strictly identical to self (even the id). """
+        """Test if other is strictly identical to self (even the id)."""
 
         if isinstance(other, sppasCtrlVocab) is False:
             return False

@@ -32,8 +32,11 @@
     ~~~~~~~~~~~~~~~~~
 
 """
-from .maketext import sppasTranslate
-t = sppasTranslate().translation("utils")
+from sppas.src.config import utils_translation
+
+# -----------------------------------------------------------------------
+
+_ = utils_translation.gettext
 
 # -----------------------------------------------------------------------
 
@@ -52,7 +55,7 @@ class UtilsDataTypeError(TypeError):
 
     def __init__(self, data_name, expected_type, data_type):
         self.parameter = DATA_TYPE_ERROR + \
-                         (t.gettext(DATA_TYPE_ERROR)).format(
+                         (_(DATA_TYPE_ERROR)).format(
                              data_name=data_name,
                              expected_type=expected_type,
                              data_type=data_type)
@@ -72,7 +75,7 @@ class NoDirectoryError(IOError):
 
     def __init__(self, dirname):
         self.parameter = NO_DIR_ERROR + \
-                         (t.gettext(NO_DIR_ERROR)).format(dirname=dirname)
+                         (_(NO_DIR_ERROR)).format(dirname=dirname)
 
     def __str__(self):
         return repr(self.parameter)
