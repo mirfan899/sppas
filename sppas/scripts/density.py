@@ -48,6 +48,8 @@ from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
 from sppas.src.anndata import sppasTag
 from sppas.src.anndata import sppasLabel
+from sppas.src.anndata import sppasInterval
+from sppas.src.anndata import sppasLocation
 
 from sppas.src.calculus import sppasKullbackLeibler
 from sppas.src.calculus import find_ngrams
@@ -87,6 +89,8 @@ args = parser.parse_args()
 file_output = None
 if args.o:
     file_output = args.o
+trs_out = sppasTranscription("PhonemesDensity")
+
 n = 3   # n-value of the ngram
 w = 7   # window size
 
@@ -113,20 +117,29 @@ if tier.get_first_point().get_radius() is None:
 # We create a list of the same size than the tier, with values:
 # 0: the phoneme is not during 30ms
 # 1: the phoneme is during 30ms
+
+t = trs_out.create_tier('PhonCandidates')
 values = list()
-nb_reduced = 0
+nb_reduced_1 = 0
+nb_reduced_2 = 0
 for ann in tier:
     duration = ann.get_location().get_best().duration()
     # duration here is an instance of sppasDuration()
-    if duration == 0.03:
+    if duration == 0.030:
+        values.append(2)
+        nb_reduced_1 += 1
+        t.append(ann.copy())
+    elif duration == 0.040:
         values.append(1)
-        nb_reduced += 1
+        nb_reduced_2 += 1
+        t.append(ann.copy())
     else:
         values.append(0)
 if len(values) < 3:
     print('Not enough reduced phonemes {:d}.'.format(len(values)))
-print('Among the {:d} phonemes, {:d} are reduced.'
-      ''.format(len(values), nb_reduced))
+print('Among the {:d} phonemes, {:d} are 30ms and {:d} are 40ms.'
+      ''.format(len(values), nb_reduced_1, nb_reduced_2))
+
 
 # Train an ngram model with the list of values
 # ---------------------------------------------
@@ -153,7 +166,7 @@ for k, v in kl.get_model().items():
 windows = find_ngrams(values, w)
 
 # Estimates the distances between the model and each window
-distances = []
+distances = list()
 for i, window in enumerate(windows):
     ngram_window = find_ngrams(window, n)
     kl.set_observations(ngram_window)
@@ -199,7 +212,6 @@ if inside is True:
 # ----------------------------------------------------------------------------
 # From windows to annotations
 
-trs_out = sppasTranscription("PhonemesDensity")
 filtered_tier = trs_out.create_tier('ReductionDensity')
 filtered_tier.set_meta('density_estimation_on_tier', tier.get_name())
 filtered_tier.set_meta('density_estimation_on_file', args.i)
@@ -213,11 +225,6 @@ for t in areas:
     i = 0
     while window_begin[i] == 0 :
         i += 1
-        if i == len(window_begin):
-            break
-    if i == len(window_begin):
-        print("No density area found (i.e. only phonemes during more than 30ms.")
-        continue
     ann_idx_begin = idx_begin + i
 
     # Find the index of the last interesting annotation
@@ -225,21 +232,19 @@ for t in areas:
     i = w - 1
     while window_end[i] == 0:
         i -= 1
-        if i < 0:
-            break
-    if i < 0:
-        print("No density area found (i.e. only phonemes during more than 30ms.")
-        continue
     ann_idx_end = idx_end + i
 
     # Assign a label to the new annotation
-    max_dist = round(max(distances[idx_begin:idx_end+1]), 2)
-    if max_dist == 0:
-        print(" ERROR: max dist equal to 0...")
+    mean_dist = sum(distances[idx_begin:idx_end+1]) / float(idx_end-idx_begin)
+    mean_dist = round(mean_dist, 2)
+    if mean_dist == 0:
+        print(" ERROR: mean dist equal to 0...")
         continue
 
-    loc = tier[ann_idx_begin].get_location().copy()
-    label = sppasLabel(sppasTag(max_dist, "float"))
+    begin = tier[ann_idx_begin].get_lowest_localization().copy()
+    end = tier[ann_idx_end].get_highest_localization().copy()
+    loc = sppasLocation(sppasInterval(begin, end))
+    label = sppasLabel(sppasTag(mean_dist, "float"))
 
     filtered_tier.create_annotation(loc, label)
 
@@ -253,12 +258,6 @@ if file_output is None:
     for a in filtered_tier:
         print(a)
 else:
-
-#     t = Tier('PhonAlign30')
-#     for v,a in zip(values, tier):
-#         if v == 1:
-#             t.append(a)
-#     trs.add(t)
 
     parser.set_filename(file_output)
     parser.write(trs_out)
