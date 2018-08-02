@@ -41,8 +41,8 @@
     Management of digital audio data.
 
 """
-from sppas.src.utils.maketext import translate
-t = translate("audiodata")
+from sppas.src.utils.maketext import sppasTranslate
+t = sppasTranslate().translation("audiodata")
 
 from .audio import sppasAudioPCM
 from .channel import sppasChannel

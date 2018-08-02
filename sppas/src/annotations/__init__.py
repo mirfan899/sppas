@@ -40,9 +40,6 @@
     :summary:      SPPAS Automatic annotations.
 
 """
-from sppas.src.utils.maketext import translate
-t = translate("annotations")
-
 # from .Align import sppasAlign
 # from .Intsint import sppasIntsint
 # from .Phon import sppasPhon

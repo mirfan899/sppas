@@ -43,8 +43,8 @@
     statistics on annotated data.
 
 """
-from sppas.src.utils.maketext import translate
-t = translate("calculus")
+from sppas.src.utils.maketext import sppasTranslate
+t = sppasTranslate().translation("calculus")
 
 from .descriptivesstats import sppasDescriptiveStatistics
 from .kappa import sppasKappa

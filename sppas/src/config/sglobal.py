@@ -29,17 +29,17 @@
         ---------------------------------------------------------------------
 
     config.sglobal.py
-    ~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~
 
 """
-import os.path
+import os
 from .settings import sppasBaseSettings
 
 # ---------------------------------------------------------------------------
 
 
 class sppasGlobalSettings(sppasBaseSettings):
-    """ Representation of global non-modifiable settings of SPPAS.
+    """Representation of global non-modifiable settings of SPPAS.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -48,7 +48,9 @@ class sppasGlobalSettings(sppasBaseSettings):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self):
+        """Create the sppasGlobalSettings dictionary."""
         super(sppasGlobalSettings, self).__init__()
 
         self.__dict__ = dict(
@@ -71,7 +73,7 @@ class sppasGlobalSettings(sppasBaseSettings):
 
 
 class sppasPathSettings(sppasBaseSettings):
-    """ Representation of global non-modifiable paths of SPPAS.
+    """Representation of global non-modifiable paths of SPPAS.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -80,10 +82,13 @@ class sppasPathSettings(sppasBaseSettings):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self):
+        """Create the sppasPathSettings dictionary."""
         super(sppasPathSettings, self).__init__()
 
-        sppas_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        sppas_dir = os.path.dirname(os.path.dirname(
+            os.path.dirname(os.path.abspath(__file__))))
 
         self.__dict__ = dict(
             sppas=sppas_dir,
@@ -100,7 +105,7 @@ class sppasPathSettings(sppasBaseSettings):
 
 
 class sppasSymbolSettings(sppasBaseSettings):
-    """ Representation of global non-modifiable symbols of SPPAS.
+    """Representation of global non-modifiable symbols of SPPAS.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -110,16 +115,18 @@ class sppasSymbolSettings(sppasBaseSettings):
 
     This class defines:
 
-        - unk: the default symbol used by annotations and resources to \
+        - unk: the default symbol used by annotations and resources to
           represent unknown entries
-        - ortho: symbols used in an orthographic transcription, or after\
+        - ortho: symbols used in an orthographic transcription, or after
           a text normalization
         - phone: symbols used to represent events in grapheme to phoneme
           conversion.
         - all: ortho+phone (i.e. all known symbols)
 
     """
+
     def __init__(self):
+        """Create the sppasSymbolSettings dictionary."""
         super(sppasSymbolSettings, self).__init__()
 
         self.__dict__ = dict(
@@ -160,7 +167,7 @@ class sppasSymbolSettings(sppasBaseSettings):
 
 
 class sppasSeparatorSettings(sppasBaseSettings):
-    """ Representation of global non-modifiable separators of SPPAS.
+    """Representation of global non-modifiable separators of SPPAS.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -171,6 +178,7 @@ class sppasSeparatorSettings(sppasBaseSettings):
     """
 
     def __init__(self):
+        """Create the sppasSeparatorSettings dictionary."""
         super(sppasSeparatorSettings, self).__init__()
         self.__dict__ = dict(
             phonemes="-",    # X-SAMPA standard

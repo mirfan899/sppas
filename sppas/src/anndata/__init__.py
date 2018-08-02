@@ -41,9 +41,6 @@
     Management of transcribed data. old version.
 
 """
-from sppas.src.utils.maketext import translate
-t = translate("anndata")
-
 from .aio import aioutils
 from .aio.readwrite import sppasRW
 from .metadata import sppasMetaData

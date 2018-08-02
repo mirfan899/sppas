@@ -34,7 +34,11 @@
     Exceptions for annotations package.
 
 """
-from . import t
+from sppas.src.config import annotations_translation
+
+# -----------------------------------------------------------------------
+
+_ = annotations_translation.gettext
 
 # -----------------------------------------------------------------------
 
@@ -54,11 +58,11 @@ EMPTY_DIR_ERROR = ":ERROR 1220: "
 
 
 class AnnotationSectionConfigFileError(ValueError):
-    """ :ERROR 4014: Missing section {section_name} in the configuration file. """
+    """:ERROR 4014: Missing section {section_name} in the configuration file. """
 
     def __init__(self, section_name):
         self.parameter = SECT_CFG_FILE_ERROR + \
-                         (t.gettext(SECT_CFG_FILE_ERROR)).format(section_name=section_name)
+                         (_(SECT_CFG_FILE_ERROR)).format(section_name=section_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -67,11 +71,11 @@ class AnnotationSectionConfigFileError(ValueError):
 
 
 class AnnotationOptionError(KeyError):
-    """ :ERROR 1010: Unknown option with key {key}. """
+    """:ERROR 1010: Unknown option with key {key}. """
 
     def __init__(self, key):
         self.parameter = OPTION_KEY_ERROR + \
-                         (t.gettext(OPTION_KEY_ERROR)).format(key=key)
+                         (_(OPTION_KEY_ERROR)).format(key=key)
 
     def __str__(self):
         return repr(self.parameter)
@@ -80,11 +84,11 @@ class AnnotationOptionError(KeyError):
 
 
 class EmptyInputError(IOError):
-    """ :ERROR 1020: Empty input tier {name}. """
+    """:ERROR 1020: Empty input tier {name}. """
 
     def __init__(self, name):
         self.parameter = EMPTY_INPUT_ERROR + \
-                         (t.gettext(EMPTY_INPUT_ERROR)).format(name=name)
+                         (_(EMPTY_INPUT_ERROR)).format(name=name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -93,11 +97,11 @@ class EmptyInputError(IOError):
 
 
 class EmptyOutputError(IOError):
-    """ :ERROR 1025: Empty output result. No file created. """
+    """:ERROR 1025: Empty output result. No file created. """
 
     def __init__(self, name):
         self.parameter = EMPTY_OUTPUT_ERROR + \
-                         (t.gettext(EMPTY_OUTPUT_ERROR)).format(name=name)
+                         (_(EMPTY_OUTPUT_ERROR)).format(name=name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -106,11 +110,11 @@ class EmptyOutputError(IOError):
 
 
 class NoInputError(IOError):
-    """ :ERROR 1030: Missing input tier. Please read the documentation. """
+    """:ERROR 1030: Missing input tier. Please read the documentation. """
 
     def __init__(self):
         self.parameter = NO_INPUT_ERROR + \
-                         t.gettext(NO_INPUT_ERROR)
+                         _(NO_INPUT_ERROR)
 
     def __str__(self):
         return repr(self.parameter)
@@ -119,11 +123,15 @@ class NoInputError(IOError):
 
 
 class BadInputError(TypeError):
-    """ :ERROR 1040: Bad input tier type. Expected time-aligned intervals. """
+    """:ERROR 1040:.
+
+    Bad input tier type. Expected time-aligned intervals.
+
+    """
 
     def __init__(self):
         self.parameter = BAD_INPUT_ERROR + \
-                         t.gettext(BAD_INPUT_ERROR)
+                         _(BAD_INPUT_ERROR)
 
     def __str__(self):
         return repr(self.parameter)
@@ -132,11 +140,16 @@ class BadInputError(TypeError):
 
 
 class SizeInputsError(IOError):
-    """ :ERROR 1050: Inconsistency between the number of intervals of the input tiers. Got: {:d} and {:d}. """
+    """:ERROR 1050:.
+    
+    Inconsistency between the number of intervals of the input tiers. 
+    Got: {:d} and {:d}. 
+    
+    """
 
     def __init__(self, number1, number2):
         self.parameter = SIZE_INPUT_ERROR + \
-                         (t.gettext(SIZE_INPUT_ERROR)).format(number1, number2)
+                         (_(SIZE_INPUT_ERROR)).format(number1, number2)
 
     def __str__(self):
         return repr(self.parameter)
@@ -145,11 +158,11 @@ class SizeInputsError(IOError):
 
 
 class SmallSizeInputError(IOError):
-    """ :ERROR 1060: Not enough annotations in the input tier. At least {:d} are required. """
+    """:ERROR 1060: Not enough annotations in the input tier. At least {:d} are required. """
 
     def __init__(self, number):
         self.parameter = TOO_SMALL_INPUT_ERROR + \
-                         (t.gettext(TOO_SMALL_INPUT_ERROR)).format(number)
+                         (_(TOO_SMALL_INPUT_ERROR)).format(number)
 
     def __str__(self):
         return repr(self.parameter)
@@ -158,11 +171,14 @@ class SmallSizeInputError(IOError):
 
 
 class NoDirectoryError(IOError):
-    """ :ERROR 1210: The directory {dirname} does not exist. """
+    """:ERROR 1210:.
+    The directory {dirname} does not exist.
+
+    """
 
     def __init__(self, dirname):
         self.parameter = NO_DIR_ERROR + \
-                         (t.gettext(NO_DIR_ERROR)).format(dirname=dirname)
+                         (_(NO_DIR_ERROR)).format(dirname=dirname)
 
     def __str__(self):
         return repr(self.parameter)
@@ -171,11 +187,15 @@ class NoDirectoryError(IOError):
 
 
 class EmptyDirectoryError(IOError):
-    """ :ERROR 1220: The directory {dirname} does not contain relevant data. """
+    """:ERROR 1220:.
+
+    The directory {dirname} does not contain relevant data.
+
+    """
 
     def __init__(self, dirname):
         self.parameter = EMPTY_DIR_ERROR + \
-                         (t.gettext(EMPTY_DIR_ERROR)).format(dirname=dirname)
+                         (_(EMPTY_DIR_ERROR)).format(dirname=dirname)
 
     def __str__(self):
         return repr(self.parameter)

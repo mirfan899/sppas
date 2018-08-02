@@ -29,7 +29,7 @@
         ---------------------------------------------------------------------
 
 config: SPPAS configuration for global things.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :author:       Brigitte Bigi
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -42,6 +42,11 @@ config: SPPAS configuration for global things.
     >>> from sppas.src.config import sg, paths
     >>> sg.__encoding
     >>> paths.resources
+
+:Example:
+
+    >>> from sppas.src.config import st
+    >>>
 
 """
 import sys
@@ -58,6 +63,7 @@ from .sglobal import sppasGlobalSettings
 from .sglobal import sppasPathSettings
 from .sglobal import sppasSymbolSettings
 from .sglobal import sppasSeparatorSettings
+from .po import sppasTranslate
 
 # ---------------------------------------------------------------------------
 # Fix the global un-modifiable settings
@@ -78,11 +84,28 @@ except AttributeError:  # Python 2.7
     pass
 
 # ---------------------------------------------------------------------------
+# Fix the translation of each package
+# ---------------------------------------------------------------------------
+
+st = sppasTranslate()
+anndata_translation = st.translation("anndata")
+annotations_translation = st.translation("annotations")
+audiodata_translation = st.translation("audiodata")
+calculus_translation = st.translation("calculus")
+models_translation = st.translation("models")
+plugins_translation = st.translation("plugins")
+resources_translation = st.translation("resources")
+structs_translation = st.translation("structs")
+ui_translation = st.translation("ui")
+utils_translation = st.translation("utils")
+
+# ---------------------------------------------------------------------------
 
 __all__ = [
     "sppasBaseSettings",
     "sg",
     "paths",
     "symbols",
-    "separators"
+    "separators",
+    "st"
 ]

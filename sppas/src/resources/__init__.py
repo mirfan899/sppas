@@ -36,8 +36,8 @@
     linguistic resources like lexicons, dictionaries, etc.
 
 """
-from sppas.src.utils.maketext import translate
-t = translate("resources")
+from sppas.src.utils.maketext import sppasTranslate
+t = sppasTranslate().translation("resources")
 
 from .dictpron import sppasDictPron
 from .dictrepl import sppasDictRepl

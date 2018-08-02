@@ -29,20 +29,19 @@
 
         ---------------------------------------------------------------------
 
-    utils.maketext
-    ~~~~~~~~~~~~~~~
+    config.po.py
+    ~~~~~~~~~~~
 
 """
 import gettext
 import locale
 
-from sppas.src.config import paths
-from .makeunicode import u
+from .sglobal import sppasPathSettings
 
 # ---------------------------------------------------------------------------
 
 
-class T(object):
+class T:
     """Utility class to simulate the GNUTranslations class.
 
     :author:       Brigitte Bigi
@@ -51,16 +50,17 @@ class T(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    Convert gettext messages into unicode.
-
     """
+
     @staticmethod
     def gettext(msg):
-        return u(msg)
+        """Return msg."""
+        return msg
 
     @staticmethod
     def ugettext(msg):
-        return u(msg)
+        """Return msg."""
+        return msg
 
 # ---------------------------------------------------------------------------
 
@@ -78,9 +78,10 @@ class sppasTranslate(object):
     Python 2 and Python 3.
 
     The locale is used to set the language and English is the default.
+    The path to search a domain translation is the one of SPPAS (po folder).
 
     >>> from sppas.src.utils.maketext import sppasTranslate
-    >>> t = sppasTranslate().translate("domain")
+    >>> t = sppasTranslate().translation("domain")
     >>> my_string = t.gettext("Some string in the domain.")
 
     """
@@ -110,7 +111,6 @@ class sppasTranslate(object):
 
     # -----------------------------------------------------------------------
 
-
     def translation(self, domain):
         """Create the GNUTranslations for a given domain.
 
@@ -122,20 +122,22 @@ class sppasTranslate(object):
         """
         try:
             # Install translation for the local language + English
-            t = gettext.translation(domain, paths.po, self.lang)
-            t.install()
-            return t
+            with sppasPathSettings() as path:
+                t = gettext.translation(domain, path.po, self.lang)
+                t.install()
+                return t
 
         except:
             try:
                 # Install translation for English only
-                t = gettext.translation(domain, paths.po, ["en_US"])
-                t.install()
-                return t
+                with sppasPathSettings() as path:
+                    t = gettext.translation(domain, path.po, ["en_US"])
+                    t.install()
+                    return t
 
             except IOError:
                 pass
 
         # No language installed. The messages won't be translated;
-        # at least they are converted to unicode.
+        # at least they are simply returned.
         return T()

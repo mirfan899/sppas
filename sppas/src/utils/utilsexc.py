@@ -28,14 +28,12 @@
 
         ---------------------------------------------------------------------
 
-    src.utils.utilsexc.py
-    ~~~~~~~~~~~~~~~~~~~~~~
-
-    Exceptions for utils package.
+    utils.utilsexc.py
+    ~~~~~~~~~~~~~~~~~
 
 """
-from .maketext import translate
-t = translate("utils")
+from .maketext import sppasTranslate
+t = sppasTranslate().translation("utils")
 
 # -----------------------------------------------------------------------
 
@@ -46,15 +44,18 @@ NO_DIR_ERROR = ":ERROR 1210: "
 
 
 class UtilsDataTypeError(TypeError):
-    """ :ERROR 7010: DATA_TYPE_ERROR
+    """:ERROR 7010: DATA_TYPE_ERROR.
+
     Expected a {data_name} of type {expected_type}. Got {data_type} instead.
 
     """
+
     def __init__(self, data_name, expected_type, data_type):
         self.parameter = DATA_TYPE_ERROR + \
-                         (t.gettext(DATA_TYPE_ERROR)).format(data_name=data_name,
-                                                             expected_type=expected_type,
-                                                             data_type=data_type)
+                         (t.gettext(DATA_TYPE_ERROR)).format(
+                             data_name=data_name,
+                             expected_type=expected_type,
+                             data_type=data_type)
 
     def __str__(self):
         return repr(self.parameter)
@@ -63,11 +64,15 @@ class UtilsDataTypeError(TypeError):
 
 
 class NoDirectoryError(IOError):
-    """ :ERROR 1210: NO_DIR_ERROR
-    The directory {dirname} does not exist. """
+    """:ERROR 1210: NO_DIR_ERROR.
+
+    The directory {dirname} does not exist.
+
+    """
 
     def __init__(self, dirname):
-        self.parameter = NO_DIR_ERROR + (t.gettext(NO_DIR_ERROR)).format(dirname=dirname)
+        self.parameter = NO_DIR_ERROR + \
+                         (t.gettext(NO_DIR_ERROR)).format(dirname=dirname)
 
     def __str__(self):
         return repr(self.parameter)
