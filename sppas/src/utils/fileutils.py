@@ -29,12 +29,11 @@
 
         ---------------------------------------------------------------------
 
-    src.utils.fileutils.py
-    ~~~~~~~~~~~~~~~~~~~~~~
+    utils.fileutils.py
+    ~~~~~~~~~~~~~~~~~~~
 
-    Utility classes to manage files and directories.
-    
 """
+import uuid
 import os
 import random
 import logging
@@ -48,7 +47,7 @@ from .utilsexc import NoDirectoryError
 
 
 def setup_logging(log_level=15, filename=None):
-    """ Setup default logger to log to stderr or and possible also to a file.
+    """Setup default logger to log to stderr or and possible also to a file.
 
     :param log_level: Sets the threshold for this logger. Logging messages
     which are less severe than this value will be ignored. When NOTSET is
@@ -66,6 +65,7 @@ def setup_logging(log_level=15, filename=None):
         - NOTSET 	 0
 
     """
+
     formatmsg = "%(asctime)s [%(levelname)s] %(message)s"
     if log_level is None:
         log_level = 15
@@ -84,19 +84,20 @@ def setup_logging(log_level=15, filename=None):
         logging.getLogger().addHandler(console_handler)
 
     logging.getLogger().setLevel(log_level)
-    logging.info("Logging set up level={:d}, filename={:s}".format(log_level, filename))
+    logging.info("Logging set up level={:d}, "
+                 "filename={:s}".format(log_level, filename))
 
 # ----------------------------------------------------------------------------
 
 
 class sppasGUID(object):
-    """
+    """Utility tool to generate an id.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Utility tool to generate an id.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     This class is a manager for GUID - globally unique identifier.
 
@@ -106,73 +107,24 @@ class sppasGUID(object):
 
     """
     def __init__(self):
-        self.__guid = sppasGUID.generates()
+        self.__guid = uuid.uuid4()
 
     # ---------------------------------------------------------------------------
 
     def get(self):
-        return self.__guid
-
-    # ---------------------------------------------------------------------------
-
-    @staticmethod
-    def random_hexachar(y, lowercase=True):
-        if lowercase:
-            return ''.join(random.choice('abcdef') for x in range(y))
-        return ''.join(random.choice('ABCDEF') for x in range(y))
-
-    # ---------------------------------------------------------------------------
-
-    @staticmethod
-    def random_int(y):
-        return ''.join(str(random.randint(0, 9)) for x in range(y))
-
-    # ---------------------------------------------------------------------------
-
-    @staticmethod
-    def generates():
-        """ Generate a GUID - globally unique identifier. """
-
-        s = ''
-        s += sppasGUID.random_int(1)
-        s += sppasGUID.random_hexachar(1)
-        s += sppasGUID.random_int(3)
-        s += sppasGUID.random_hexachar(1)
-        s += sppasGUID.random_int(1)
-        s += sppasGUID.random_hexachar(1)
-        s += "-"
-        s += sppasGUID.random_int(1)
-        s += sppasGUID.random_hexachar(1)
-        s += sppasGUID.random_int(2)
-        s += "-"
-        s += sppasGUID.random_int(1)
-        s += sppasGUID.random_hexachar(1)
-        s += sppasGUID.random_int(2)
-        s += "-"
-        s += sppasGUID.random_int(1)
-        s += sppasGUID.random_hexachar(2)
-        s += sppasGUID.random_int(1)
-        s += "-"
-        s += sppasGUID.random_int(4)
-        s += sppasGUID.random_hexachar(2)
-        s += sppasGUID.random_int(1)
-        s += sppasGUID.random_hexachar(1)
-        s += sppasGUID.random_int(3)
-        s += sppasGUID.random_hexachar(1)
-
-        return s
+        return str(self.__guid)
 
 # ----------------------------------------------------------------------------
 
 
 class sppasFileUtils(object):
-    """
+    """Utility file manager for SPPAS.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Utility file manager for SPPAS.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     >>> sf = sppasFileUtils("path/myfile.txt")
     >>> print(sf.exists())
@@ -182,8 +134,9 @@ class sppasFileUtils(object):
     >>> fn = sf.get_filename() + ".txt"
 
     """
+
     def __init__(self, filename=None):
-        """ Create a sppasFileUtils instance.
+        """Create a sppasFileUtils instance.
 
         :param filename: (str) Name of the current file
 
@@ -193,14 +146,14 @@ class sppasFileUtils(object):
     # ------------------------------------------------------------------------
 
     def get_filename(self):
-        """ Returns the current filename. """
+        """Return the current filename. """
 
         return self._filename
 
     # ------------------------------------------------------------------------
 
     def set_random(self, root="sppas_tmp", add_today=True, add_pid=True):
-        """ Set randomly a basename, i.e. a filename without extension.
+        """Set randomly a basename, i.e. a filename without extension.
 
         :param root: (str) String to start the filename
         :param add_today: (bool) Add today's information to the filename
@@ -224,7 +177,8 @@ class sppasFileUtils(object):
                 filename = filename + pid + "_"
 
             # random float value
-            filename = filename + '{:06d}'.format(int(random.random() * 999999))
+            filename = filename + '{:06d}' \
+                                  ''.format(int(random.random() * 999999))
 
             # final file name is path/filename
             name = os.path.join(tempdir, filename)
@@ -235,12 +189,12 @@ class sppasFileUtils(object):
     # ------------------------------------------------------------------------
 
     def exists(self, directory=None):
-        """ Check if the file exists, or exists in a given directory.
+        """Check if the file exists, or exists in a given directory.
         Case-insensitive test on all platforms.
 
         :param directory: (str) Optional directory to test if a file exists.
         :returns: the filename (including directory) or None
-    
+
         """
         if directory is None:
             directory = os.path.dirname(self._filename)
@@ -254,7 +208,7 @@ class sppasFileUtils(object):
     # ------------------------------------------------------------------------
 
     def clear_whitespace(self):
-        """ Set filename without whitespace.
+        """Set filename without whitespace.
 
         :returns: new filename with spaces replaced by underscores.
 
@@ -266,9 +220,9 @@ class sppasFileUtils(object):
     # ------------------------------------------------------------------------
 
     def to_ascii(self):
-        """ Set filename with only US-ASCII characters.
+        """Set filename with only US-ASCII characters.
 
-        :returns: new filename with non-ASCII characters replaced by underscores.
+        :returns: new filename with non-ASCII chars replaced by underscores.
 
         """
         sp = sppasUnicode(self._filename)
@@ -278,9 +232,10 @@ class sppasFileUtils(object):
     # ------------------------------------------------------------------------
 
     def format(self):
-        """ Set filename without whitespace and with only US-ASCII characters.
+        """Set filename without whitespace and with only US-ASCII characters.
 
-        :returns: new filename with non-ASCII characters and spaces replaced by underscores.
+        :returns: new filename with non-ASCII characters and spaces\
+        replaced by underscores.
 
         """
         self.clear_whitespace()
@@ -291,20 +246,21 @@ class sppasFileUtils(object):
 
 
 class sppasDirUtils(object):
-    """
+    """Utility directory manager for SPPAS.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Utility directory manager for SPPAS.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     >>> sd = sppasDirUtils("my-path")
     >>> print(sd.get_files())
 
     """
+
     def __init__(self, dirname):
-        """ Create a sppasDirUtils instance.
+        """Create a sppasDirUtils instance.
 
         :param dirname: (str) Name of the current directory
 
@@ -314,9 +270,9 @@ class sppasDirUtils(object):
     # ------------------------------------------------------------------------
 
     def get_files(self, extension, recurs=True):
-        """ Returns the list of files of the directory.
+        """Return the list of files of the directory.
 
-        :param extension: (str) extension of files to filter the directory content
+        :param extension: (str) extension of files to filter the dir content
         :param recurs: (bool) Find files recursively
         :returns: a list of files
         :raises: IOError
@@ -334,7 +290,7 @@ class sppasDirUtils(object):
 
     @staticmethod
     def dir_entries(dir_name, extension=None, subdir=True):
-        """ Return a list of file names found in directory 'dir_name'.
+        """Return a list of file names found in directory 'dir_name'.
 
         If 'subdir' is True, recursively access subdirectories under
         'dir_name'. Additional argument, if any, is file extension to
@@ -358,6 +314,7 @@ class sppasDirUtils(object):
                         file_list.append(dirfile)
             # recursively access file names in subdirectories
             elif os.path.isdir(dirfile) is True and subdir is True:
-                file_list.extend(sppasDirUtils.dir_entries(dirfile, extension, subdir))
+                file_list.extend(
+                    sppasDirUtils.dir_entries(dirfile, extension, subdir))
 
         return file_list

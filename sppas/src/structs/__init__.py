@@ -29,29 +29,24 @@
 
         ---------------------------------------------------------------------
 
-    structs
-    ~~~~~~~
+structs: access and manage data structures used into SPPAS.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-
-    structs is a free and open source Python library to access and manage
-    data structures used into SPPAS.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 """
 from .baseoption import sppasBaseOption
 from .baseoption import sppasOption
 from .lang import sppasLangResource
 from .metainfo import sppasMetaInfo
-from .tips import sppasTips
 
-__all__ = [
+__all__ = (
     'sppasBaseOption',
     'sppasOption',
     'sppasLangResource',
     'sppasMetaInfo',
-    'sppasTips'
-]
+)

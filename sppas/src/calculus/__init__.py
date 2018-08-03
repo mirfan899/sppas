@@ -29,18 +29,14 @@
 
         ---------------------------------------------------------------------
 
-    calculus
-    ~~~~~~~~
+calculus: perform some math on data.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-
-    calculus is a free and open source Python library to perform some math
-    on data. Basically, calculus package was created to estimates descriptive
-    statistics on annotated data.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 """
 from .descriptivesstats import sppasDescriptiveStatistics
@@ -57,10 +53,7 @@ from .infotheory import sppasKullbackLeibler
 from .infotheory import sppasEntropy
 from .infotheory.utilit import find_ngrams
 
-
-# ---------------------------------
-
-__all__ = [
+__all__ = (
     "sppasDescriptiveStatistics",
     "sppasKappa",
     "squared_euclidian", "euclidian", "manathan", "minkowski", "chi_squared",
@@ -72,4 +65,4 @@ __all__ = [
     "lvariance", "lstdev", "lz", "rPVI", "nPVI",
     "ubpa",
     "sppasKullbackLeibler", "sppasEntropy", "find_ngrams"
-]
+)

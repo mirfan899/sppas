@@ -39,9 +39,10 @@ import wx
 import webbrowser
 
 from sppas.src.config import sg
-from sppas.src.structs.tips import sppasTips
+from sppas.src.ui.tips import sppasTips
 
-from sppas.src.ui.wxgui.panels.buttons import ButtonPanel, ButtonMenuPanel, ImgPanel, ButtonCreator, ButtonToolbarPanel
+from sppas.src.ui.wxgui.panels.buttons import ButtonPanel, \
+    ButtonMenuPanel, ImgPanel, ButtonCreator, ButtonToolbarPanel
 
 from sppas.src.ui.wxgui.sp_icons import ANNOTATIONS_ICON
 from sppas.src.ui.wxgui.sp_icons import COMPONENTS_ICON
@@ -71,13 +72,13 @@ from sppas.src.ui.wxgui.views.feedback import ShowFeedbackDialog
 
 
 class MainMenuPanel(wx.Panel):
-    """
+    """Main frame menu panel.
+
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     @contact:      brigitte.bigi@gmail.com
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    @summary:      Main frame menu panel.
 
     """
     def __init__(self, parent, preferences):

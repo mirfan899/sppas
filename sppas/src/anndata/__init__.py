@@ -29,16 +29,24 @@
 
         ---------------------------------------------------------------------
 
-    anndata
-    ~~~~~~~
+anndata: Manage transcribed data.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    Management of transcribed data. old version.
+anndata is a free and open source Python library to access and
+search data from annotated data. It can convert file formats like Elan’s EAF,
+Praat's TextGrid and others into a sppasTranscription() object and convert
+into any of these formats. Those objects allow unified access to linguistic
+data from a wide range sources.
+
+To get the list of extensions currently supported for reading and/or writing:
+
+>>> ext = aio.extensions
 
 """
 from .aio import aioutils
@@ -60,8 +68,7 @@ from .annlocation import sppasDisjoint
 from .filters import sppasFilters
 from .filters import sppasAnnSet
 
-
-__all__ = [
+__all__ = (
     'sppasMetaData',
     'sppasRW',
     'sppasTranscription',
@@ -80,4 +87,4 @@ __all__ = [
     'sppasFilters',
     'sppasAnnSet',
     'aioutils'
-]
+)

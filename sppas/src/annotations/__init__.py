@@ -29,24 +29,24 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations
-    ~~~~~~~~~~~~~~~~~
+annotations: SPPAS Automatic annotations.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS Automatic annotations.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 """
 # from .Align import sppasAlign
 # from .Intsint import sppasIntsint
+#
+
+# from .TextNorm import sppasTextNorm
 # from .Phon import sppasPhon
 # from .Syll import sppasSyll
 # from .TGA import sppasTGA
-# from .TextNorm import sppasTextNorm
-
 
 # ---------------------------------------------------------------------------
 # Default output extension:
@@ -64,11 +64,11 @@ OK_ID = 0
 
 # ---------------------------------------------------------------------------
 #
-# __all__ = [
+__all__ = (
 #     'sppasAlign',
 #     'sppasIntsint',
-#     'sppasPhon',
-#     'sppasSyll',
-#     'sppasTGA',
-#     'sppasTextNorm'
-# ]
+#      'sppasPhon',
+#      'sppasSyll',
+#      'sppasTGA',
+#      'sppasTextNorm'
+)

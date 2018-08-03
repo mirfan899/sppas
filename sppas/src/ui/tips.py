@@ -29,11 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.structs.tips.py
-    ~~~~~~~~~~~~~~~~~~~~
-
-    Tips is a set of short help messages that a software tool can display 
-    when it's starting. Some users find them useful...
+    structs.tips.py
+    ~~~~~~~~~~~~~~~~
 
 """
 import os.path
@@ -50,13 +47,16 @@ from sppas.src.utils.makeunicode import b
 
 
 class sppasTips(object):
-    """
+    """Manage a set of tips.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Manage a set of tips.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    Tips is a set of short help messages that a software tool can display
+    when it's starting. Some users find them useful...
 
     Tips are stored into a file with name TIPS_FILE. This file format is
     with one tip a line.
@@ -65,8 +65,9 @@ class sppasTips(object):
     >>> print(t.get_message())
 
     """
+
     def __init__(self):
-        """ Create a sppasTips instance.
+        """Create a sppasTips instance.
 
         Load the list of message tips of the software.
 
@@ -78,7 +79,8 @@ class sppasTips(object):
     # -----------------------------------------------------------------------
 
     def load_tips(self, filename=None):
-        """ Load message tips from a file.
+        """Load message tips from a file.
+
         Update the existing tips of the list (if any).
 
         :param filename: (str) Name of the file to get message tips.
@@ -100,7 +102,7 @@ class sppasTips(object):
     # -----------------------------------------------------------------------
 
     def save_tips(self, filename=None):
-        """ Save tips in a file.
+        """Save tips in a file.
 
         :param filename: (str) Name of the file to store message tips.
 
@@ -115,7 +117,7 @@ class sppasTips(object):
     # -----------------------------------------------------------------------
 
     def add_message(self, message):
-        """ Add a new message tips in the list of tips.
+        """Add a new message tips in the list of tips.
 
         :param message: (str) A help message.
 
@@ -128,7 +130,7 @@ class sppasTips(object):
     # -----------------------------------------------------------------------
 
     def get_message(self):
-        """ Return a random tips message.
+        """Return a random tips message.
 
         :returns: unicode
 
@@ -155,4 +157,5 @@ class sppasTips(object):
     # -----------------------------------------------------------------------
 
     def __len__(self):
+        """Return the number of tips."""
         return len(self._tips)

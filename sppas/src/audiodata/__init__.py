@@ -29,22 +29,20 @@
 
         ---------------------------------------------------------------------
 
-    audiodata
-    ~~~~~~~~~
+audiodata: Manage of digital audio data.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-
-    Management of digital audio data.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 """
 from .audio import sppasAudioPCM
 from .channel import sppasChannel
 
-__all__ = [
+__all__ = (
     'sppasAudioPCM',
     'sppasChannel'
-]
+)

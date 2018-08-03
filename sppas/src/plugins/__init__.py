@@ -28,29 +28,26 @@
 
         ---------------------------------------------------------------------
 
-    plugins
-    ~~~~~~~
+plugins: access and manage external programs to plug into SPPAS.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    plugins is a free and open source Python library to access and manage
-    external programs to plug into SPPAS.
-
-    >>> # Create a plugin manager (it will explore the installed plugins).
-    >>> manager = sppasPluginsManager()
-    >>> # Install a plugin
-    >>> plugin_id = manager.install(plugin_zip_filename, plugin_destination_folder_name)
-    >>> # Get a plugin
-    >>> p = manager.get_plugin(plugin_id)
-    >>> # Apply a plugin on a list of files
-    >>> message = manager.run_plugin(plugin_id, [some_filename1, some_filename2])
-    >>> print(message)
-    >>> # Delete an installed plugin
-    >>> manager.delete(plugin_id)
+>>> # Create a plugin manager (it will explore the installed plugins).
+>>> manager = sppasPluginsManager()
+>>> # Install a plugin
+>>> plugin_id = manager.install(plugin_zip_filename, plugin_destination_folder_name)
+>>> # Get a plugin
+>>> p = manager.get_plugin(plugin_id)
+>>> # Apply a plugin on a list of files
+>>> message = manager.run_plugin(plugin_id, [some_filename1, some_filename2])
+>>> print(message)
+>>> # Delete an installed plugin
+>>> manager.delete(plugin_id)
 
 """
 from .manager import sppasPluginsManager
@@ -58,9 +55,9 @@ from .param import sppasPluginParam
 from .process import sppasPluginProcess
 from .cfgparser import sppasPluginConfigParser
 
-__all__ = [
+__all__ = (
     "sppasPluginsManager",
     "sppasPluginConfigParser",
     "sppasPluginParam",
     "sppasPluginProcess"
-    ]
+)

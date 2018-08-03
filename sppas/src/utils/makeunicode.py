@@ -32,20 +32,14 @@
     src.utils.makeunicode
     ~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+makeunicode is useful for the compatibility of strings between
+Python 2.7 and Python > 3.2.
 
-    makeunicode is useful for the compatibility of strings between
-    Python 2.7 and Python > 3.2.
-
-    >>> token = "  \n Ỹ  \t\r   ỏ  "
-    >>> sp = sppasUnicode(token)
-    >>> token = sp.to_strip()
-    >>> token == u('Ỹ ỏ')
-    >>> True
+>>> token = "  \n Ỹ  \t\r   ỏ  "
+>>> sp = sppasUnicode(token)
+>>> token = sp.to_strip()
+>>> token == u('Ỹ ỏ')
+>>> True
 
 """
 from __future__ import unicode_literals
@@ -53,6 +47,7 @@ import sys
 import re
 
 from sppas.src.config import sg
+from .utilsexc import UtilsDataTypeError
 
 # ---------------------------------------------------------------------------
 
@@ -65,6 +60,12 @@ if sys.version_info < (3,):
     basestring = basestring
 
     def u(x):
+        """Convert to unicode using decode().
+
+        :param x: a string
+        :return: a unicode string
+
+        """
         # here we take care to not raise "AttributeError", like:
         # AttributeError: 'int' object has no attribute 'decode'
         s = str(x)
@@ -74,6 +75,12 @@ if sys.version_info < (3,):
             return s
 
     def b(x):
+        """Convert to byte using encode().
+
+        :param x: a unicode string
+        :return: a string
+
+        """
         s = str(x)
         try:
             return s.encode(sg.__encoding__)
@@ -88,30 +95,39 @@ else:
     basestring = str
 
     def u(x):
+        """Convert to unicode (i.e. do nothing).
+
+        :param x: a string
+        :return: a unicode string
+
+        """
         return str(x)
 
     def b(x):
+        """Convert to byte using encode().
+
+        :param x: a unicode string
+        :return: a string
+
+        """
         s = str(x)
         return s.encode(sg.__encoding__)
 
 
 # ---------------------------------------------------------------------------
 
-from .utilsexc import UtilsDataTypeError
-
-# ---------------------------------------------------------------------------
-
 
 class sppasUnicode(object):
-    """
+    """Make a string as unicode and operates on it.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Make a string as unicode and operates on it.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, entry):
         """Create a sppasUnicode instance.
 
@@ -152,7 +168,7 @@ class sppasUnicode(object):
 
     def to_strip(self):
         """Strip the string.
-        
+
         Remove also multiple whitespace, tab and CR/LF inside the string.
 
         :returns: unicode

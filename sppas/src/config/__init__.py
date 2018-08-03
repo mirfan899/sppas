@@ -37,17 +37,6 @@ config: SPPAS configuration for global things.
 :license:      GPL, v3
 :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-:Example:
-
-    >>> from sppas.src.config import sg, paths
-    >>> sg.__encoding
-    >>> paths.resources
-
-:Example:
-
-    >>> from sppas.src.config import st
-    >>>
-
 """
 import sys
 try:
@@ -107,5 +96,15 @@ __all__ = [
     "paths",
     "symbols",
     "separators",
-    "st"
+    "st",
+    "anndata_translation",
+    "annotations_translation",
+    "audiodata_translation",
+    "models_translation",
+    "plugins_translation",
+    "resources_translation",
+    "structs_translation",
+    "ui_translation",
+    "utils_translation",
+
 ]

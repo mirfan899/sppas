@@ -33,10 +33,12 @@
     ~~~~~~~~~~~
 
 """
+import sys
 import gettext
 import locale
 
 from .sglobal import sppasPathSettings
+from .sglobal import sppasGlobalSettings
 
 # ---------------------------------------------------------------------------
 
@@ -54,13 +56,21 @@ class T:
 
     @staticmethod
     def gettext(msg):
-        """Return msg."""
-        return msg
+        """Return msg in unicode."""
+        if sys.version_info >= (3, 0):
+            return msg
+        else:
+            with sppasGlobalSettings() as sg:
+                return msg.decode(sg.__encoding__)
 
     @staticmethod
     def ugettext(msg):
         """Return msg."""
-        return msg
+        if sys.version_info >= (3, 0):
+            return msg
+        else:
+            with sppasGlobalSettings() as sg:
+                return msg.decode(sg.__encoding__)
 
 # ---------------------------------------------------------------------------
 
@@ -80,9 +90,8 @@ class sppasTranslate(object):
     The locale is used to set the language and English is the default.
     The path to search a domain translation is the one of SPPAS (po folder).
 
-    >>> from sppas.src.utils.maketext import sppasTranslate
-    >>> t = sppasTranslate().translation("domain")
-    >>> my_string = t.gettext("Some string in the domain.")
+    >>> _ = sppasTranslate().translation("domain").gettext
+    >>> my_string = _("Some string in the domain.")
 
     """
 

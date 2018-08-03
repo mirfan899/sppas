@@ -29,10 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.utils.sppasType.py
+    utils.datatype.py
     ~~~~~~~~~~~~~~~~~~~~~~
-
-    Utilities to check data types.
 
 """
 import time
@@ -42,24 +40,25 @@ from .utilsexc import UtilsDataTypeError
 
 
 class sppasTime(object):
-    """
+    """Utility class to check date time.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Utility class to check date time.
 
     How SPPAS works with the date...
 
     """
+
     def __init__(self, now=None):
-        """ Create a sppasTime() instance.
+        """Create a sppasTime() instance.
 
         :param now: (str) String representing the current time, formatted
         like: '%Y-%m-%dT%H:%M:%S{:0=+3d}:{:0=2d}'
 
-        Example:
+        :Example:
 
         >>> p = sppasTime('2018-04-09T15:00:37+02:00')
         >>> p.now
@@ -72,7 +71,8 @@ class sppasTime(object):
         if now is None:
             ctz = -time.altzone if time.localtime(time.time()).tm_isdst and \
                                    time.daylight else -time.timezone
-            self.now = time.strftime('%Y-%m-%dT%H:%M:%S{:0=+3d}:{:0=2d}').format(ctz // 3600, ctz % 3600)
+            self.now = time.strftime('%Y-%m-%dT%H:%M:%S{:0=+3d}:{:0=2d}'
+                                     '').format(ctz // 3600, ctz % 3600)
         else:
             self.now = now
 
@@ -81,7 +81,8 @@ class sppasTime(object):
            '-' not in self.now or \
            ":" not in self.now or \
            '+' not in self.now:
-            raise UtilsDataTypeError("sppasTime(now)", "%Y-%m-%dT%H:%M:%S{:0=+3d}:{:0=2d}", now)
+            raise UtilsDataTypeError("sppasTime(now)",
+                                     "%Y-%m-%dT%H:%M:%S{:0=+3d}:{:0=2d}", now)
 
         try:
             self.year = self.now.split('T')[0].split('-')[0]
@@ -92,24 +93,26 @@ class sppasTime(object):
             self.sec = self.now.split('T')[1].split(':')[2].split('+')[0]
             self.gmt = self.now[-6:]
         except IndexError:
-            raise UtilsDataTypeError("sppasTime(now)", "%Y-%m-%dT%H:%M:%S{:0=+3d}:{:0=2d}", now)
+            raise UtilsDataTypeError("sppasTime(now)",
+                                     "%Y-%m-%dT%H:%M:%S{:0=+3d}:{:0=2d}", now)
 
 # ---------------------------------------------------------------------------
 
 
 class sppasType(object):
-    """
+    """Utility class to check data type.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Utility class to check data type.
 
     """
+
     @staticmethod
     def is_bool(entry):
-        """ Check if the entry is boolean.
+        """Check if the entry is boolean.
 
         :param entry: (any type)
         :returns: (bool)
@@ -121,7 +124,7 @@ class sppasType(object):
 
     @staticmethod
     def is_number(entry):
-        """ Check if the entry is numeric.
+        """Check if the entry is numeric.
 
         :param entry: (any type)
         :returns: (bool)
@@ -146,7 +149,7 @@ class sppasType(object):
 
     @staticmethod
     def is_dict(entry):
-        """ Check if the entry is of any type of dictionary.
+        """Check if the entry is of any type of dictionary.
 
         :param entry: (any type)
         :returns: (bool)

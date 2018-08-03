@@ -29,11 +29,14 @@
 
         ---------------------------------------------------------------------
 
-    resources
-    ~~~~~~~~~
+resources: access and manage linguistic resources like lexicons, etc.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    resources is a free and open source Python library to access and manage
-    linguistic resources like lexicons, dictionaries, etc.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 """
 from .dictpron import sppasDictPron
@@ -45,11 +48,11 @@ from .vocab import sppasVocabulary
 
 # ---------------------------------
 
-__all__ = [
+__all__ = (
     "sppasMapping",
     "sppasDictRepl",
     "sppasDictPron",
     "sppasPatterns",
     "sppasUnigram",
     "sppasVocabulary"
-]
+)

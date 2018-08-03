@@ -29,10 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.utils.sppasCompare.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Utilities to compare data contents.
+    utils.sppasCompare.py
+    ~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import logging
@@ -45,13 +43,13 @@ from .datatype import sppasType
 
 
 class sppasCompare(object):
-    """
+    """Utility class to compare data.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Utility class to compare data.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     >>> sc = sppasCompare()
     >>> d1 = {1:"one", 2:"two"}
@@ -65,8 +63,9 @@ class sppasCompare(object):
     >>> False
 
     """
+
     def __init__(self, verbose=False, case_sensitive=False):
-        """ Create a sppasCompare instance and set options.
+        """Create a sppasCompare instance and set options.
 
         :param verbose: (bool) Print comparison results on stdout
         :param case_sensitive: (bool) Only to compare strings
@@ -78,7 +77,7 @@ class sppasCompare(object):
     # -----------------------------------------------------------------------
 
     def set_verbose(self, v):
-        """ Print comparison results on stdout or not.
+        """Print comparison results on stdout or not.
 
         :param v: (bool) Enable or disable verbosity
 
@@ -88,9 +87,9 @@ class sppasCompare(object):
     # -----------------------------------------------------------------------
 
     def set_case_sensitive(self, v):
-        """ Compare strings with lower/upper case.
+        """Compare strings with lower/upper case.
 
-        :param v: (bool) Enable or disable case sensitive comparison of strings
+        :param v: (bool) Enable or not the case sensitive comparison of strings
 
         """
         self._case_sensitive = bool(v)
@@ -98,14 +97,13 @@ class sppasCompare(object):
     # -----------------------------------------------------------------------
 
     def equals(self, data1, data2):
-        """ Compare two data sets of any type.
+        """Compare two data sets of any type.
 
         :param data1 (any) The data to compare.
         :param data2 (any) The data to be compared with.
         :returns: (bool) whether the 2 data sets are equals or not
 
         """
-
         if data1 is None or data2 is None:
             if self._verbose:
                 logging.info("TypeError: None instead of data.")
@@ -122,7 +120,7 @@ class sppasCompare(object):
     # -----------------------------------------------------------------------
 
     def equals_lists(self, list1, list2):
-        """ Compare two lists.
+        """Compare two lists.
 
         :param list1 (list) The list to compare.
         :param list2 (list) The list to be compared with.
@@ -134,14 +132,17 @@ class sppasCompare(object):
                 logging.info("TypeError: None instead of lists.")
             return False
 
-        if type(list1) != type(list2) or type(list1) is not list or type(list2) is not list:
+        if type(list1) != type(list2) or \
+           type(list1) is not list or \
+           type(list2) is not list:
             if self._verbose is True:
-                logging.info("TypeError: Not same types (expected two lists).")
+                logging.info("TypeError: Not same types (expected 2 lists).")
             return False
 
         if len(list1) != len(list2):
             if self._verbose is True:
-                logging.info("FALSE: Not the same number of items: {0} {1}.".format(len(list1), len(list2)))
+                logging.info("FALSE: Not the same number of items: {0} {1}."
+                             "".format(len(list1), len(list2)))
             return False
 
         for item1, item2 in zip(list1, list2):
@@ -161,7 +162,7 @@ class sppasCompare(object):
     # -----------------------------------------------------------------------
 
     def equals_dictionaries(self, dict1, dict2):
-        """ Compare two dictionaries.
+        """Compare two dictionaries.
 
         :param dict1: (dict or collection) The dict to compare.
         :param dict2: (dict or collection) The dict to be compared with.
@@ -173,26 +174,33 @@ class sppasCompare(object):
                 logging.info("TypeError: None instead of lists.")
             return False
 
-        if sppasType.is_dict(dict1) is not True or sppasType.is_dict(dict2) is not True:
+        if sppasType.is_dict(dict1) is False or \
+           sppasType.is_dict(dict2) is False:
             if self._verbose is True:
-                logging.info("TypeError: Not same types (expected two dictionaries).")
+                logging.info("TypeError: "
+                             "Not same types (expected two dictionaries).")
             return False
 
         shared_keys = set(dict2.keys()) & set(dict2.keys())
 
-        if not len(shared_keys) == len(dict1.keys()) or not len(shared_keys) == len(dict2.keys()):
+        if not len(shared_keys) == len(dict1.keys()) or \
+           not len(shared_keys) == len(dict2.keys()):
             if self._verbose is True:
-                logging.info("FALSE: not shared keys: {0} vs {1}".format(dict1.keys(), dict2.keys()))
+                logging.info("FALSE: not shared keys: {0} vs {1}"
+                             "".format(dict1.keys(), dict2.keys()))
             return False
 
         for key in dict1:
 
             if sppasType.is_dict(dict1[key]) is True:
-                items_are_equals = self.equals_dictionaries(dict1[key], dict2[key])
+                items_are_equals = self.equals_dictionaries(dict1[key],
+                                                            dict2[key])
             elif type(dict1[key]) is list:
-                items_are_equals = self.equals_lists(dict1[key], dict2[key])
+                items_are_equals = self.equals_lists(dict1[key],
+                                                     dict2[key])
             else:
-                items_are_equals = self.equals_items(dict1[key], dict2[key])
+                items_are_equals = self.equals_items(dict1[key],
+                                                     dict2[key])
 
             if items_are_equals is False:
                 return False
@@ -202,7 +210,7 @@ class sppasCompare(object):
     # -----------------------------------------------------------------------
 
     def equals_items(self, item1, item2):
-        """ Compare 2 items of type string or numeric.
+        """Compare 2 items of type string or numeric.
 
         :param item1: The string or numeric to compare
         :param item2: The string or numeric to be compared with
@@ -215,7 +223,8 @@ class sppasCompare(object):
         if type(item1) is float or type(item2) is float:
             if round(item1, 4) != round(item2, 4):
                 if self._verbose is True:
-                    logging.info("Float values rounded to 4 digits are not equals: "
+                    logging.info("Float values rounded to "
+                                 "4 digits are not equals: "
                                  "{:0.4f} != {:0.4f}".format(item1, item2))
                 return False
             return True
@@ -230,7 +239,7 @@ class sppasCompare(object):
     # -----------------------------------------------------------------------
 
     def equals_strings(self, item1, item2):
-        """ Compare 2 data of type string or unicode.
+        """Compare 2 data of type string or unicode.
 
         :param item1: The string to compare
         :param item2: The string to be compared with
@@ -240,7 +249,8 @@ class sppasCompare(object):
         if isinstance(item1, (text_type, binary_type)) is False or \
            isinstance(item2, (text_type, binary_type)) is False:
             if self._verbose is True:
-                logging.info("TypeError: Not same types (expected two strings).")
+                logging.info("TypeError: Not same types "
+                             "(expected two strings).")
             return False
 
         if isinstance(item1, binary_type):

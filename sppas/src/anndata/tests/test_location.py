@@ -355,12 +355,12 @@ class TestTimeInterval(unittest.TestCase):
     def test_check_interval_bounds(self):
         """ Check if bounds form an interval. """
 
-        self.assertTrue(sppasPoint(1), sppasPoint(2))
-        self.assertTrue(sppasPoint(1, 1), sppasPoint(2, 1))
-        self.assertTrue(sppasPoint(3, 3), sppasPoint(4, 3))
+        self.assertTrue(sppasInterval(sppasPoint(1), sppasPoint(2)))
+        self.assertTrue(sppasInterval(sppasPoint(1, 1), sppasPoint(2, 1)))
+        self.assertTrue(sppasInterval(sppasPoint(3, 3), sppasPoint(4, 3)))
 
-        self.assertFalse(sppasPoint(1), sppasPoint(1))
-        self.assertFalse(sppasPoint(2), sppasPoint(1))
+        self.assertFalse(sppasInterval(sppasPoint(1), sppasPoint(1)))
+        self.assertFalse(sppasInterval(sppasPoint(2), sppasPoint(1)))
 
     # -----------------------------------------------------------------------
 

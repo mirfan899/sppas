@@ -28,20 +28,22 @@
 
         ---------------------------------------------------------------------
 
-    ui.__init__.py
-    ~~~~~~~~~~~~~~
+ui: User Interface makes SPPAS available for all users.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      User Interface.
-
-    Package to make SPPAS available for all users.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 """
-import os.path
+import os
 from sppas.src.config import paths
+from .tips import sppasTips
 
 SETTINGS_FILE = os.path.join(paths.etc, "settings.dump")
+
+__all__ = (
+    "sppasTips"
+)

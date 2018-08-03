@@ -29,19 +29,15 @@
 
         ---------------------------------------------------------------------
 
-    src.models
-    ~~~~~~~~~~~
+models: work with models (acoustic models, language models)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    models is a free and open source Python library to work with models:
-
-        - acoustic models: acm
-        - statistical language models: slm
 
 """
 from .acm.hmm import sppasHMM, HMMInterpolation
@@ -49,11 +45,11 @@ from .slm import sppasArpaIO, sppasNgramCounter, sppasNgramsModel, sppasSLM
 
 # ---------------------------------
 
-__all__ = [
+__all__ = (
     "sppasHMM",
     "HMMInterpolation",
     "sppasArpaIO",
     "sppasNgramCounter",
     "sppasNgramsModel",
     "sppasSLM"
-]
+)

@@ -29,17 +29,14 @@
 
         ---------------------------------------------------------------------
 
-    utils
-    ~~~~~~
+utils: utility functions used into SPPAS.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-
-    utils is a free and open source Python library implementing utility
-    functions used into SPPAS.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 """
 from .fileutils import sppasFileUtils
@@ -47,14 +44,12 @@ from .fileutils import sppasDirUtils
 from .compare import sppasCompare
 from .makeunicode import u, b
 from .makeunicode import sppasUnicode
-from .maketext import sppasTranslate
 
-__all__ = [
+__all__ = (
     'sppasFileUtils',
     'sppasDirUtils',
     'sppasCompare',
     'sppasUnicode',
     'u',
-    'b',
-    'sppasTranslate'
-]
+    'b'
+)
