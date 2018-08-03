@@ -29,22 +29,21 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.dag.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Implementation of a Direct Acyclic Graph.
+    annotations.dag.py
+    ~~~~~~~~~~~~~~~~~~
 
 """
 
 
 class DAG(object):
-    """ Direct Acyclic Graph.
+    """Direct Acyclic Graph.
 
     Implementation inspired from: http://www.python.org/doc/essays/graphs/
 
     """
+
     def __init__(self):
-        """ Create a new DAG instance.
+        """Create a new DAG instance.
 
         This class represents the DAG as a dictionary.
         For example:
@@ -72,19 +71,19 @@ class DAG(object):
     # -----------------------------------------------------------------------
 
     def add_node(self, node):
-        """ Add a new node (not added if already in the DAG). """
+        """Add a new node (not added if already in the DAG). """
 
         if node not in self.__graph.keys():
             self.__graph[node] = list()
 
     def add_edge(self, src, dst):
-        """ Add a new edge to a node. """
+        """Add a new edge to a node. """
 
         # TODO. Must check if no cycle...
         self.__graph[src].append(dst)
 
     def remove_node(self, node):
-        """ Remove a node. """
+        """Remove a node. """
 
         if node in self.__graph.keys():
             del self.__graph[node]
@@ -95,7 +94,7 @@ class DAG(object):
     # -----------------------------------------------------------------------
 
     def find_path(self, start, end, path=[]):
-        """ Determine a path between two nodes.
+        """Determine a path between two nodes.
 
         It takes a graph and the start and end nodes as arguments. It
         will return a list of nodes (including the start and end nodes)
@@ -115,7 +114,7 @@ class DAG(object):
         for node in self.__graph[start]:
             if node not in path:
                 new_path = self.find_path(node, end, path)
-                if len(new_path)>0:
+                if len(new_path) > 0:
                     return new_path
         return []
 
@@ -164,9 +163,11 @@ class DAG(object):
         print("Number of nodes: {:d}".format(len(self.__graph.keys())))
         for i in self.__graph.keys():
             if self.__graph[i]:
-                print("  Node {} has edge to --> {}".format(i, self.__graph[i]))
+                print("  Node {} has edge to --> {}"
+                      "".format(i, self.__graph[i]))
             else:
                 print("  Node {} has no edge ".format(i))
 
     def __len__(self):
+        """Return the length of the DAG."""
         return len(self.__graph)

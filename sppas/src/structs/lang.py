@@ -29,12 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.structs.lang.py
+    structs.lang.py
     ~~~~~~~~~~~~~~~~~~~
-
-    In most of the automatic annotations, we have to deal with language
-    resources. Here, we store information about the type of resources,
-    the path to get them, etc.
 
 """
 import os.path
@@ -48,27 +44,31 @@ from .structsexc import LangNameError
 
 # ----------------------------------------------------------------------------
 
-# iso639-3 code for an undetermined language.
+# standard iso639-3 code for an undetermined language.
 UNDETERMINED = "und"
 
 # ----------------------------------------------------------------------------
 
 
 class sppasLangResource(object):
-    """
+    """Manage information of a resource for a language.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Manage information of a resource for a language.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    In most of the automatic annotations, we have to deal with language
+    resources. Here, we store information about the type of resources,
+    the path to get them, etc.
 
     """
+
     RESOURCES_TYPES = ["file", "directory"]
 
     def __init__(self):
-        """ Create a sppasLangResource instance. """
-
+        """Create a sppasLangResource instance."""
         # All available language resources (type, path, filename, extension)
         self._rtype = ""
         self._rpath = ""
@@ -87,8 +87,7 @@ class sppasLangResource(object):
     # ------------------------------------------------------------------------
 
     def reset(self):
-        """ Set all members to their default value. """
-
+        """Set all members to their default value."""
         self._rtype = ""
         self._rpath = ""
         self._rname = ""
@@ -103,7 +102,7 @@ class sppasLangResource(object):
     # ------------------------------------------------------------------------
 
     def get_lang(self):
-        """ Returns the language name.
+        """Return the language name.
 
         Language names in SPPAS are commonly represented in iso-639-3.
         It is a code that aims to define three-letter identifiers for all
@@ -118,7 +117,7 @@ class sppasLangResource(object):
     # ------------------------------------------------------------------------
 
     def get_langlist(self):
-        """ Returns the list of available languages.
+        """Return the list of available languages.
 
         :returns: List of str
 
@@ -128,8 +127,7 @@ class sppasLangResource(object):
     # ------------------------------------------------------------------------
 
     def get_langresource(self):
-        """ Returns the resource name defined for the given language. """
-
+        """Return the resource name defined for the given language."""
         # Is there a resource available for this language?
         if self.lang in self.langlist:
             if len(self._rname) > 0:
@@ -144,7 +142,7 @@ class sppasLangResource(object):
     # ------------------------------------------------------------------------
 
     def set_type(self, resource_type):
-        """ Set the type of the resource.
+        """Set the type of the resource.
 
         :param resource_type: (str) One of "file" or "directory".
 
@@ -159,7 +157,7 @@ class sppasLangResource(object):
     # ------------------------------------------------------------------------
 
     def set_path(self, resource_path):
-        """ Fix the language resource path.
+        """Fix the language resource path.
 
         :param resource_path: (str) Relative path to find the resource.
 
@@ -176,7 +174,7 @@ class sppasLangResource(object):
     # ------------------------------------------------------------------------
 
     def set_filename(self, resource_filename):
-        """ Fix the language resource filename.
+        """Fix the language resource filename.
 
         :param resource_filename: (str) Resource filename.
 
@@ -186,7 +184,7 @@ class sppasLangResource(object):
     # ------------------------------------------------------------------------
 
     def set_extension(self, resource_extension):
-        """ Fix the language resource file extension.
+        """Fix the language resource file extension.
 
         :param resource_extension: (str) Resource filename extension.
 
@@ -196,7 +194,7 @@ class sppasLangResource(object):
     # ------------------------------------------------------------------------
 
     def set(self, rtype, rpath, rname="", rext=""):
-        """ Set resources then fix the list of available languages.
+        """Set resources then fix the list of available languages.
 
         :param rtype: (str) Resource type. One of: "file" or "directory"
         :param rpath: (str) Resource path
@@ -216,7 +214,9 @@ class sppasLangResource(object):
 
         # Fix the language resource information
         if len(self._rname) > 0:
-            self.langresource = os.path.join(paths.resources, self._rpath, self._rname)
+            self.langresource = os.path.join(paths.resources,
+                                             self._rpath,
+                                             self._rname)
         else:
             self.langresource = directory
 
@@ -239,9 +239,10 @@ class sppasLangResource(object):
     # ------------------------------------------------------------------------
 
     def set_lang(self, lang):
-        """ Set the language.
+        """Set the language.
 
-        :param lang: (str) The language must be UNDETERMINED or one of the language list.
+        :param lang: (str) The language must be UNDETERMINED
+        or one of the language list.
 
         """
         if lang.lower() != UNDETERMINED and lang not in self.langlist:

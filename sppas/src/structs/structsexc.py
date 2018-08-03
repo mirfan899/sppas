@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.structs.structsexc.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    structs.structsexc.py
+    ~~~~~~~~~~~~~~~~~~~~~~
 
 """
 from sppas.src.config import structs_translation
