@@ -194,7 +194,7 @@ class sppasTranscription(sppasMetaData):
             raise AnnDataTypeError(old_media, "sppasMedia")
 
         if old_media not in self._media:
-            raise TrsRemoveError(old_media.get_name())
+            raise TrsRemoveError(old_media.get_filename())
 
         self._media.remove(old_media)
         for tier in self._tiers:
@@ -553,7 +553,6 @@ class sppasTranscription(sppasMetaData):
 
     def get_min_loc(self):
         """Return the sppasPoint with the lowest value through all tiers."""
-
         if self.is_empty():
             return None
 
@@ -575,7 +574,6 @@ class sppasTranscription(sppasMetaData):
 
     def get_max_loc(self):
         """Return the sppasPoint with the highest value through all tiers."""
-
         if self.is_empty():
             return None
 
@@ -592,6 +590,19 @@ class sppasTranscription(sppasMetaData):
                 max_point = last_point
 
         return max_point
+
+    # -----------------------------------------------------------------------
+
+    def shift(self, delay):
+        """Shift all annotation' location to a given delay.
+
+        :param delay: (int, float) delay to shift all localizations
+        :raise: AnnDataTypeError
+
+        """
+        for tier in self._tiers:
+            for ann in tier:
+                ann.get_location().shift(delay)
 
     # -----------------------------------------------------------------------
     # Overloads

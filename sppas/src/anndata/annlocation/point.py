@@ -46,7 +46,7 @@ from .duration import sppasDuration
 
 
 class sppasPoint(sppasBaseLocalization):
-    """ Localization of a point for any numerical representation.
+    """Localization of a point for any numerical representation.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -88,11 +88,12 @@ class sppasPoint(sppasBaseLocalization):
         - x = y is false
 
     """
+
     def __init__(self, midpoint, radius=None):
-        """ Create a sppasPoint instance.
+        """Create a sppasPoint instance.
 
         :param midpoint: (float, int) midpoint value.
-        :param radius: (float, int) represents the vagueness of the point.\
+        :param radius: (float, int) represents the vagueness of the point.
         Radius must be of the same type as midpoint.
 
         """
@@ -107,7 +108,7 @@ class sppasPoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def set(self, other):
-        """ Set self members from another sppasPoint instance.
+        """Set self members from another sppasPoint instance.
 
         :param other: (sppasPoint)
 
@@ -121,34 +122,32 @@ class sppasPoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def is_point(self):
-        """ Overrides. Return True, because self represents a point. """
-
+        """Overrides. Return True, because self represents a point."""
         return True
 
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """ Return a deep copy of self. """
-
+        """Return a deep copy of self."""
         return sppasPoint(self.__midpoint, self.__radius)
 
     # -----------------------------------------------------------------------
 
     def get_midpoint(self):
-        """ Return the midpoint value. """
-
+        """Return the midpoint value."""
         return self.__midpoint
 
     # -----------------------------------------------------------------------
 
     def set_midpoint(self, midpoint):
-        """ Set the midpoint value.
+        """Set the midpoint value.
 
         In versions < 1.9.8, it was required that midpoint >= 0.
         Negative values are now accepted because some annotations are not
         properly synchronized and then some of them can be negative.
 
         :param midpoint: (float, int) is the new midpoint value.
+        :raise: AnnDataTypeError
 
         """
         if isinstance(midpoint, (int, float, text_type, binary_type)) is False:
@@ -180,17 +179,18 @@ class sppasPoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def get_radius(self):
-        """ Return the radius value (float or None). """
-
+        """Return the radius value (float or None)."""
         return self.__radius
 
     # -----------------------------------------------------------------------
 
     def set_radius(self, radius=None):
-        """ Fix the radius value, ie. the vagueness of the point.
+        """Fix the radius value, ie. the vagueness of the point.
+
         The midpoint value must be set first.
 
         :param radius: (float, int, None) the radius value
+        :raise: AnnDataTypeError, AnnDataNegValueError
 
         """
         if radius is not None:
@@ -204,7 +204,7 @@ class sppasPoint(sppasBaseLocalization):
                         raise AnnDataNegValueError(radius)
                 except TypeError:
                     raise AnnDataTypeError(radius, "float")
-            
+
             elif isinstance(radius, int):
                 try:
                     radius = int(radius)
@@ -215,41 +215,56 @@ class sppasPoint(sppasBaseLocalization):
 
             if self.__midpoint < radius:
                 radius = self.__midpoint
-    
+
         self.__radius = radius
 
     # -----------------------------------------------------------------------
 
-    @staticmethod
-    def check_types(midpoint, radius):
-        """ True only if midpoint and radius are both of the same types.
+    def shift(self, delay):
+        """Shift the point to a given delay.
 
-        :param midpoint: any kind of data
-        :param radius: any kind of data
-        :return: Boolean
+        :param delay: (int, float) delay to shift midpoint
+        :raise: AnnDataTypeError
 
         """
-        return isinstance(radius, type(midpoint))
+        if sppasPoint.check_types(self.__midpoint, delay) is False:
+            raise AnnDataTypeError(delay, str(type(self.__midpoint)))
+
+        self.__midpoint += delay
 
     # -----------------------------------------------------------------------
 
     def duration(self):
-        """ Overrides. Return the duration of the point.
+        """Overrides. Return the duration of the point.
 
         :returns: (sppasDuration) Duration and its vagueness.
 
         """
         if self.__radius is None:
             return sppasDuration(0., 0.)
-        
+
         return sppasDuration(0., 2.0*self.get_radius())
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def check_types(x, y):
+        """True only if midpoint and radius are both of the same types.
+
+        :param x: any kind of data
+        :param y: any kind of data
+        :return: Boolean
+
+        """
+        return isinstance(x, type(y))
 
     # -----------------------------------------------------------------------
 
     def __repr__(self):
         if self.__radius is None:
             return "sppasPoint: {!s:s}".format(self.__midpoint)
-        return "sppasPoint: {!s:s}, {!s:s}".format(self.__midpoint, self.__radius)
+        return "sppasPoint: {!s:s}, {!s:s}".format(self.__midpoint,
+                                                   self.__radius)
 
     # -----------------------------------------------------------------------
 
@@ -261,13 +276,15 @@ class sppasPoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __eq__(self, other):
-        """ Equal is required to use '==' between 2 sppasPoint instances or
+        """Equal is required to use '=='.
+
+        Used between 2 sppasPoint instances or
         between a sppasPoint and an other object representing time.
         This relationship takes into account the radius.
 
-        :param other: (sppasPoint, float, int) the other time point to compare with.
+        :param other: (sppasPoint, float, int) the other point to compare
 
-        """        
+        """
         if isinstance(other, sppasPoint) is True:
 
             delta = abs(self.__midpoint - other.get_midpoint())
@@ -291,10 +308,12 @@ class sppasPoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __lt__(self, other):
-        """ LowerThan is required to use '<' between 2 sppasPoint instances
+        """LowerThan is required to use '<'.
+
+        Used between 2 sppasPoint instances
         or between a sppasPoint and an other time object.
 
-        :param other: (sppasPoint, float, int) the other time point to compare with.
+        :param other: (sppasPoint, float, int) the other point to compare
 
         """
         if isinstance(other, sppasPoint) is True:
@@ -305,10 +324,12 @@ class sppasPoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __gt__(self, other):
-        """ GreaterThan is required to use '>' between 2 sppasPoint instances
+        """GreaterThan is required to use '>'.
+
+        Used between 2 sppasPoint instances
         or between a sppasPoint and an other time object.
 
-        :param other: (sppasPoint, float, int) the other time point to compare with.
+        :param other: (sppasPoint, float, int) the other point to compare
 
         """
         if isinstance(other, sppasPoint) is True:

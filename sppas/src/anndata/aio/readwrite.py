@@ -29,10 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.aio.readwrite.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Readers and writers of annotated data.
+    anndata.aio.readwrite.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import os.path
@@ -72,15 +70,18 @@ from .xra import sppasXRA
 
 
 class sppasRW(object):
-    """
+    """Main parser of annotated data.
+    
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Main parser of annotated data.
+
+    Readers and writers of annotated data.
 
     """
+    
     TRANSCRIPTION_TYPES = OrderedDict()
     TRANSCRIPTION_TYPES[sppasXRA().default_extension.lower()] = sppasXRA
     TRANSCRIPTION_TYPES[sppasTextGrid().default_extension.lower()] = sppasTextGrid
@@ -109,14 +110,13 @@ class sppasRW(object):
 
     @staticmethod
     def extensions():
-        """ Return the list of supported extensions in lower case. """
-
+        """Return the list of supported extensions in lower case."""
         return sppasRW.TRANSCRIPTION_TYPES.keys()
 
     # -----------------------------------------------------------------------
 
     def __init__(self, filename):
-        """ Create a Transcription reader-writer.
+        """Create a Transcription reader-writer.
 
         :param filename: (str)
 
@@ -126,14 +126,13 @@ class sppasRW(object):
     # -----------------------------------------------------------------------
 
     def get_filename(self):
-        """ Return the filename. """
-
+        """Return the filename."""
         return self.__filename
 
     # -----------------------------------------------------------------------
 
     def set_filename(self, filename):
-        """ Set a new filename. 
+        """Set a new filename. 
 
         :param filename: (str)
 
@@ -143,10 +142,10 @@ class sppasRW(object):
     # -----------------------------------------------------------------------
 
     def read(self, heuristic=True):
-        """ Read a transcription from a file.
+        """Read a transcription from a file.
 
-        :param heuristic: (bool) if the extension of the file is unknown,
-        use an heuristic to detect the format, then to choose the reader-writer.
+        :param heuristic: (bool) if the extension of the file is unknown, use
+        an heuristic to detect the format, then to choose the reader-writer.
         :returns: sppasTranscription reader-writer
 
         """
@@ -180,7 +179,8 @@ class sppasRW(object):
 
     @staticmethod
     def create_trs_from_extension(filename):
-        """ Return a transcription according to a given filename.
+        """Return a transcription according to a given filename.
+
         Only the extension of the filename is used.
 
         :param filename: (str)
@@ -198,7 +198,8 @@ class sppasRW(object):
 
     @staticmethod
     def create_trs_from_heuristic(filename):
-        """ Return a transcription according to a given filename.
+        """Return a transcription according to a given filename.
+
         The given file is opened and an heuristic allows to fix the format.
 
         :param filename: (str)
@@ -216,7 +217,7 @@ class sppasRW(object):
     # -----------------------------------------------------------------------
 
     def write(self, transcription):
-        """ Write a transcription into a file.
+        """Write a transcription into a file.
 
         :param transcription: (sppasTranscription)
 

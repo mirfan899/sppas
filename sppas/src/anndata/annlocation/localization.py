@@ -36,7 +36,7 @@
 
 
 class sppasBaseLocalization(object):
-    """ Represents a base class for any kind of localization.
+    """Represents a base class for any kind of localization.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -45,21 +45,21 @@ class sppasBaseLocalization(object):
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
 
     """
+
     def __init__(self):
-        """ Create a sppasLocalization instance. """
+        """Create a sppasLocalization instance."""
         pass
 
     # -----------------------------------------------------------------------
 
     def get(self):
-        """ Return myself. """
-
+        """Return myself."""
         return self
 
     # -----------------------------------------------------------------------
 
     def set(self, other):
-        """ Set self members from another localization.
+        """Set self members from another localization.
 
         :param other: (sppasBaseLocalization)
 
@@ -69,7 +69,7 @@ class sppasBaseLocalization(object):
     # -----------------------------------------------------------------------
 
     def duration(self):
-        """ Return the duration of the localization.
+        """Return the duration of the localization.
 
         Must be overridden
 
@@ -81,13 +81,13 @@ class sppasBaseLocalization(object):
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """ Return a deep copy of self. """
+        """Return a deep copy of self."""
         raise NotImplementedError
 
     # ---------------------------------------------------------------------
 
     def is_point(self):
-        """ Return True if this object is an instance of sppasPoint.
+        """Return True if this object is an instance of sppasPoint.
 
         Should be overridden.
 
@@ -97,7 +97,7 @@ class sppasBaseLocalization(object):
     # ---------------------------------------------------------------------
 
     def is_interval(self):
-        """ Return True if this object is an instance of sppasInterval.
+        """Return True if this object is an instance of sppasInterval.
 
         Should be overridden.
 
@@ -107,7 +107,7 @@ class sppasBaseLocalization(object):
     # ---------------------------------------------------------------------
 
     def is_disjoint(self):
-        """ Return True if this object is an instance of sppasDisjoint.
+        """Return True if this object is an instance of sppasDisjoint.
 
         Should be overridden.
 
@@ -117,6 +117,18 @@ class sppasBaseLocalization(object):
     # ---------------------------------------------------------------------
 
     def set_radius(self, radius):
+        """Set radius value to all points."""
+        raise NotImplementedError
+
+    # ---------------------------------------------------------------------
+
+    def shift(self, delay):
+        """Shift all the points to a given delay.
+
+        :param delay: (int, float) delay to shift points
+        :raise: AnnDataTypeError
+
+        """
         raise NotImplementedError
 
     # ---------------------------------------------------------------------
@@ -124,7 +136,7 @@ class sppasBaseLocalization(object):
     # ---------------------------------------------------------------------
 
     def __eq__(self, other):
-        """ Equal is required to use '==' between 2 localization instances.
+        """Equal is required to use '==' between 2 localization instances.
 
         Two localization instances are equals iff they are of the same
         instance and their values are equals.
@@ -137,7 +149,7 @@ class sppasBaseLocalization(object):
     # ---------------------------------------------------------------------
 
     def __lt__(self, other):
-        """ LowerThan is required to use '<' between two loc instances.
+        """LowerThan is required to use '<' between two loc instances.
 
         :param other: the other localization to compare with.
 
@@ -147,7 +159,7 @@ class sppasBaseLocalization(object):
     # ---------------------------------------------------------------------
 
     def __gt__(self, other):
-        """ GreaterThan is required to use '>' between two loc instances.
+        """GreaterThan is required to use '>' between two loc instances.
 
         :param other: the other localization to compare with.
 

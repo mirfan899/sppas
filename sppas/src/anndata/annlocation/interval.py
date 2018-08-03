@@ -46,7 +46,7 @@ from .duration import sppasDuration
 
 
 class sppasInterval(sppasBaseLocalization):
-    """ Localization of an interval between two sppasPoint instances.
+    """Localization of an interval between two sppasPoint instances.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -60,8 +60,9 @@ class sppasInterval(sppasBaseLocalization):
         - the other is representing the end of the interval.
 
     """
+
     def __init__(self, begin, end):
-        """ Create a new sppasInterval instance.
+        """Create a new sppasInterval instance.
 
         :param begin: (sppasPoint)
         :param end: (sppasPoint)
@@ -85,7 +86,7 @@ class sppasInterval(sppasBaseLocalization):
 
         # we accept some overlap
         if begin >= end:
-            logging.warning('begin >= end with ({!s:s}, {!s:s})'.format(begin, end))
+            logging.warning('begin ({!s:s} >= end {!s:s})'.format(begin, end))
 
         self.__begin = begin
         self.__end = end
@@ -93,7 +94,7 @@ class sppasInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def set(self, other):
-        """ Set self members from another sppasInterval instance.
+        """Set self members from another sppasInterval instance.
 
         :param other: (sppasInterval)
 
@@ -107,28 +108,25 @@ class sppasInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def is_interval(self):
-        """ Overrides. Return True, because self represents an interval. """
-
+        """Overrides. Return True, because self represents an interval."""
         return True
 
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """ Return a deep copy of self. """
-
+        """Return a deep copy of self."""
         return sppasInterval(self.__begin.copy(), self.__end.copy())
 
     # -----------------------------------------------------------------------
 
     def get_begin(self):
-        """ Return the begin sppasPoint instance. """
-
+        """Return the begin sppasPoint instance."""
         return self.__begin
 
     # -----------------------------------------------------------------------
 
     def set_begin(self, tp):
-        """ Set the begin of the interval to a new sppasPoint.
+        """Set the begin of the interval to a new sppasPoint.
 
         Attention: it is a reference assignment.
 
@@ -150,14 +148,13 @@ class sppasInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def get_end(self):
-        """ Return the end sppasPoint instance. """
-
+        """Return the end sppasPoint instance."""
         return self.__end
 
     # -----------------------------------------------------------------------
 
     def set_end(self, tp):
-        """ Set the end of the interval to a new sppasPoint.
+        """Set the end of the interval to a new sppasPoint.
 
         Attention: it is a reference assignment.
 
@@ -179,14 +176,13 @@ class sppasInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def is_bound(self, point):
-        """ Return True if point is the begin or the end of the interval. """
-
+        """Return True if point is the begin or the end of the interval."""
         return self.__begin == point or self.__end == point
 
     # -----------------------------------------------------------------------
 
     def combine(self, other):
-        """ Return a sppasInterval, the combination of two intervals.
+        """Return a sppasInterval, the combination of two intervals.
 
         :param other: (sppasInterval) the other interval to combine with.
 
@@ -205,7 +201,7 @@ class sppasInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def union(self, other):
-        """ Return a sppasInterval representing the union of two intervals.
+        """Return a sppasInterval representing the union of two intervals.
 
         :param other: (sppasInterval) the other interval to merge with.
 
@@ -221,14 +217,13 @@ class sppasInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def duration(self):
-        """ Overrides. Return the duration of the time interval.
+        """Overrides. Return the duration of the time interval.
 
         :returns: (sppasDuration) Duration and its vagueness.
 
         """
         # duration is the difference between the midpoints
-        value = self.__end.get_midpoint() - \
-                self.__begin.get_midpoint()
+        value = self.__end.get_midpoint() - self.__begin.get_midpoint()
 
         # vagueness of the duration is based on begin/end radius values
         vagueness = 0
@@ -242,16 +237,32 @@ class sppasInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def set_radius(self, radius):
-        """ Set a radius value to begin and end points. """
+        """Set a radius value to begin and end points."""
+        self.__begin.set_radius(radius)
+        self.__end.set_radius(radius)
 
-        self.get_begin().set_radius(radius)
-        self.get_end().set_radius(radius)
+    # -----------------------------------------------------------------------
+
+    def shift(self, delay):
+        """Shift the interval to a given delay.
+
+        :param delay: (int, float) delay to shift bounds
+        :raise: AnnDataTypeError
+
+        """
+        self.__begin.shift(delay)
+        self.__end.shift(delay)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
     def check_interval_bounds(begin, end):
+        """Check bounds of a virtual interval.
 
+        :param begin: (sppasPoint)
+        :param end: (sppasPoint)
+
+        """
         if begin.get_midpoint() >= end.get_midpoint():
             return False
 
@@ -266,7 +277,7 @@ class sppasInterval(sppasBaseLocalization):
 
     @staticmethod
     def check_types(begin, end):
-        """ True only if begin and end are both the same types of sppasPoint.
+        """True only if begin and end are both the same types of sppasPoint.
 
         :param begin: any kind of data
         :param end: any kind of data
@@ -295,12 +306,14 @@ class sppasInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __contains__(self, other):
-        """ Return True if the given data is contained in the interval.
+        """Return True if the given data is contained in the interval.
 
         :param other: (sppasInterval, sppasPoint, int, float)
 
         """
-        if isinstance(other, (sppasInterval, sppasPoint, float, int,)) is False:
+        if isinstance(other, (sppasInterval,
+                              sppasPoint,
+                              float, int)) is False:
             raise AnnDataTypeError(other,
                                    "sppasInterval, sppasPoint, float, int")
 
@@ -313,7 +326,7 @@ class sppasInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __eq__(self, other):
-        """ Equal.
+        """Equal.
 
         :param other: (sppasInterval) the other interval to compare with.
 
@@ -327,7 +340,7 @@ class sppasInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __lt__(self, other):
-        """ LowerThan.
+        """LowerThan.
 
         :param other: (sppasInterval, sppasPoint, float, int)
 
@@ -343,7 +356,7 @@ class sppasInterval(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __gt__(self, other):
-        """ GreaterThan.
+        """GreaterThan.
 
         :param other: (sppasInterval, sppasPoint, float, int)
 

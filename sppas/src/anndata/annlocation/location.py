@@ -41,7 +41,7 @@ from .localization import sppasBaseLocalization
 
 
 class sppasLocation(object):
-    """ Location of the annotations of a tier.
+    """Location of the annotations of a tier.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -55,8 +55,9 @@ class sppasLocation(object):
     readability.
 
     """
+
     def __init__(self, localization=None, score=None):
-        """ Create a new sppasLocation instance and add the entry.
+        """Create a new sppasLocation instance and add the entry.
 
         :param localization: (Localization or list of localizations)
         :param score: (float or list of float)
@@ -81,7 +82,7 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def append(self, localization, score=None):
-        """ Add a localization into the list.
+        """Add a localization into the list.
 
         :param localization: (Localization) the localization to append
         :param score: (float)
@@ -105,7 +106,7 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def remove(self, localization):
-        """ Remove a localization of the list.
+        """Remove a localization of the list.
 
         :param localization: (sppasLocalization) the loc to be removed
 
@@ -123,7 +124,7 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def get_score(self, loc):
-        """ Return the score of a localization or None if it is not in.
+        """Return the score of a localization or None if it is not in.
 
         :param loc: (sppasLocalization)
         :return: score: (float)
@@ -141,7 +142,7 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def set_score(self, loc, score):
-        """ Set a score to a given localization.
+        """Set a score to a given localization.
 
         :param loc: (sppasLocalization)
         :param score: (float)
@@ -158,7 +159,7 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def get_best(self):
-        """ Return a copy of the best Localization.
+        """Return a copy of the best Localization.
 
         :returns: (sppasLocalization) localization with the highest score.
 
@@ -178,32 +179,25 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def is_point(self):
-        """ Return True if the location is made of sppasPoint localizations. """
-
-        l = self.__localizations[0][0]
-        return l.is_point()
+        """Return True if the location is made of sppasPoint localizations."""
+        return self.__localizations[0][0].is_point()
 
     # -----------------------------------------------------------------------
 
     def is_interval(self):
-        """ Return True if the location is made of sppasInterval locs. """
-
-        l = self.__localizations[0][0]
-        return l.is_interval()
+        """Return True if the location is made of sppasInterval locs."""
+        return self.__localizations[0][0].is_interval()
 
     # -----------------------------------------------------------------------
 
     def is_disjoint(self):
-        """ Return True if the location is made of sppasDisjoint locs. """
-
-        l = self.__localizations[0][0]
-        return l.is_disjoint()
+        """Return True if the location is made of sppasDisjoint locs."""
+        return self.__localizations[0][0].is_disjoint()
 
     # -----------------------------------------------------------------------
 
     def contains(self, point):
-        """ Return True if the localization point is in the list. """
-
+        """Return True if the localization point is in the list."""
         if self.is_point():
             return any([point == l[0] for l in self.__localizations])
         else:
@@ -212,17 +206,16 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """ Return a deep copy of the location. """
-
+        """Return a deep copy of the location."""
         return copy.deepcopy(self)
 
     # -----------------------------------------------------------------------
 
     def match_duration(self, dur_functions, logic_bool="and"):
-        """ Return True if a duration matches all or any of the functions.
+        """Return True if a duration matches all or any of the functions.
 
         :param dur_functions: list of (function, value, logical_not)
-        :param logic_bool: (str) Apply a logical "and" or a logical "or" between the functions.
+        :param logic_bool: (str) Apply a logical "and" or "or"
         :returns: (bool)
 
         - function: a function in python with 2 arguments: dur/value
@@ -272,10 +265,10 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def match_localization(self, loc_functions, logic_bool="and"):
-        """ Return True if a localization matches all or any of the functions.
+        """Return True if a localization matches all or any of the functions.
 
         :param loc_functions: list of (function, value, logical_not)
-        :param logic_bool: (str) Apply a logical "and" or a logical "or" \
+        :param logic_bool: (str) Apply a logical "and" or a logical "or"
         between the functions.
         :returns: (bool)
 
@@ -325,10 +318,21 @@ class sppasLocation(object):
     # -----------------------------------------------------------------------
 
     def set_radius(self, radius):
-        """ Set a radius value to all localizations. """
-
+        """Set a radius value to all localizations."""
         for t, s in self.__localizations:
             t.set_radius(radius)
+
+    # -----------------------------------------------------------------------
+
+    def shift(self, delay):
+        """Shift the location to a given delay.
+
+        :param delay: (int, float) delay to shift all localizations
+        :raise: AnnDataTypeError
+
+        """
+        for loc, score in self.__localizations:
+            loc.shift(delay)
 
     # -----------------------------------------------------------------------
     # Overloads

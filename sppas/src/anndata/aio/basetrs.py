@@ -29,10 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.anndata.aio.basetrs.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Base object for readers and writers of annotated data.
+    anndata.aio.basetrs.py
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 from ..transcription import sppasTranscription
@@ -42,15 +40,16 @@ from ..anndataexc import AnnDataTypeError
 
 
 class sppasBaseIO(sppasTranscription):
-    """
+    """Base object for readers and writers of annotated data.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Base object for readers and writers of annotated data.
 
     """
+    
     @staticmethod
     def detect(filename):
         return False
@@ -59,7 +58,7 @@ class sppasBaseIO(sppasTranscription):
 
     @staticmethod
     def is_number(s):
-        """ Check whether a string is a number or not.
+        """Check whether a string is a number or not.
 
         :param s: (str or unicode)
         :returns: (bool)
@@ -83,7 +82,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new Transcription reader-writer instance.
+        """Initialize a new Transcription reader-writer instance.
 
         :param name: (str) A transcription name.
         :param multi_tiers: (bool) The IO supports (or not) to read and write
@@ -115,8 +114,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def multi_tiers_support(self):
-        """ Return True if this reader-writer supports to read and write
-        several tiers.
+        """Return True if it supports to read and write several tiers.
 
         :returns: boolean
 
@@ -126,7 +124,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def no_tiers_support(self):
-        """ Return True if this reader-writer supports to write no tier.
+        """Return True if it supports to write no tier.
 
         :returns: boolean
 
@@ -136,8 +134,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def metadata_support(self):
-        """ Return True if this reader-writer supports to read and write
-        metadata.
+        """Return True if it supports to read and write metadata.
 
         :returns: boolean
 
@@ -147,8 +144,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def ctrl_vocab_support(self):
-        """ Return True if this reader-writer supports to read and write
-        a controlled vocabulary.
+        """Return True if it supports to read and write a controlled vocab.
 
         :returns: boolean
 
@@ -158,8 +154,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def media_support(self):
-        """ Return True if this reader-writer supports to read and write
-        a link to a media.
+        """Return True if it supports to read and write a link to a media.
 
         :returns: boolean
 
@@ -169,8 +164,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def hierarchy_support(self):
-        """ Return True if this reader-writer supports to read and write
-        a hierarchy between tiers.
+        """Return True if it supports a hierarchy between tiers.
 
         :returns: boolean
 
@@ -180,8 +174,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def point_support(self):
-        """ Return True if this reader-writer supports to read and write
-        tiers with localizations as points.
+        """Return True if it supports tiers with localizations as points.
 
         :returns: boolean
 
@@ -191,8 +184,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def interval_support(self):
-        """ Return True if this reader-writer supports to read and write
-        tiers with localizations as intervals.
+        """Return True if it supports tiers with localizations as intervals.
 
         :returns: boolean
 
@@ -202,8 +194,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def disjoint_support(self):
-        """ Return True if this reader-writer supports to read and write
-        tiers with localizations as disjoint intervals.
+        """Return True if it supports tiers with localizations as disjoint.
 
         :returns: boolean
 
@@ -213,8 +204,9 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def alternative_localization_support(self):
-        """ Return True if this reader-writer supports to read and write
-        alternative localizations (with a score or not).
+        """Return True if it supports to alternative localizations.
+
+        If support with or without a score, it returns true.
 
         :returns: boolean
 
@@ -224,8 +216,9 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def alternative_tag_support(self):
-        """ Return True if this reader-writer supports to read and write
-        alternative tags (with a score or not).
+        """Return True if it supports alternative tags.
+
+        If support with or without a score, it returns true.
 
         :returns: boolean
 
@@ -235,8 +228,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def radius_support(self):
-        """ Return True if this reader-writer supports to read and write
-        the radius value (the vagueness or a point).
+        """Return True if it supports the radius value.
 
         :returns: boolean
 
@@ -246,8 +238,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def gaps_support(self):
-        """ Return True if this reader-writer supports gaps between
-        annotations of a tier (i.e. gaps = holes).
+        """Return True if it supports gaps between annotations of a tier.
 
         :returns: boolean
 
@@ -257,8 +248,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def overlaps_support(self):
-        """ Return True if this reader-writer supports overlaps between
-        annotations of a tier.
+        """Return True if it supports overlaps between annotations of a tier.
 
         :returns: boolean
 
@@ -270,7 +260,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def set(self, other):
-        """ Set self with other content.
+        """Set self with other content.
 
         :param other: (sppasTranscription)
 
@@ -289,7 +279,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a file and fill the Transcription.
+        """Read a file and fill the Transcription.
 
         :param filename: (str)
 
@@ -299,7 +289,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write the transcription into a file.
+        """Write the transcription into a file.
 
         :param filename: (str)
 

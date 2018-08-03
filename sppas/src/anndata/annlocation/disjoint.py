@@ -44,7 +44,7 @@ from .duration import sppasDuration
 
 
 class sppasDisjoint(sppasBaseLocalization):
-    """ Localization of a serie of intervals in time.
+    """Localization of a serie of intervals in time.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -53,8 +53,9 @@ class sppasDisjoint(sppasBaseLocalization):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, intervals=None):
-        """ Creates a new sppasDisjoint instance.
+        """Create a new sppasDisjoint instance.
 
         :param intervals: (list of sppasInterval)
 
@@ -68,7 +69,7 @@ class sppasDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def set(self, other):
-        """ Set self members from another sppasDisjoint instance.
+        """Set self members from another sppasDisjoint instance.
 
         :param other: (sppasDisjoint)
 
@@ -83,15 +84,13 @@ class sppasDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def is_disjoint(self):
-        """ Return True because self is representing a disjoint intervals. """
-
+        """Return True because self is representing a disjoint intervals."""
         return True
 
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """ Return a deep copy of self. """
-
+        """Return a deep copy of self."""
         intervals = list()
         for i in self.get_intervals():
             intervals.append(i.copy())
@@ -101,14 +100,13 @@ class sppasDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def get_begin(self):
-        """ Return the first sppasPoint instance. """
-
+        """Return the first sppasPoint instance."""
         return min(interval.get_begin() for interval in self.__intervals)
 
     # -----------------------------------------------------------------------
 
     def set_begin(self, tp):
-        """ Set the begin sppasPoint instance to new sppasPoint.
+        """Set the begin sppasPoint instance to new sppasPoint.
 
         :param tp: (sppasPoint)
 
@@ -121,14 +119,13 @@ class sppasDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def get_end(self):
-        """ Return the last sppasPoint instance. """
-
+        """Return the last sppasPoint instance."""
         return max(interval.get_end() for interval in self.__intervals)
 
     # -----------------------------------------------------------------------
 
     def set_end(self, tp):
-        """ Set the end sppasPoint instance to new sppasPoint.
+        """Set the end sppasPoint instance to new sppasPoint.
 
         :param tp: (sppasPoint)
 
@@ -141,7 +138,7 @@ class sppasDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def append_interval(self, interval):
-        """ Return the sppasInterval at the given index.
+        """Return the sppasInterval at the given index.
 
         :param interval: (sppasInterval)
 
@@ -153,7 +150,7 @@ class sppasDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def get_interval(self, index):
-        """ Return the sppasInterval at the given index.
+        """Return the sppasInterval at the given index.
 
         :param index: (int)
 
@@ -163,14 +160,13 @@ class sppasDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def get_intervals(self):
-        """ Return the list of intervals. """
-
+        """Return the list of intervals."""
         return self.__intervals
 
     # -----------------------------------------------------------------------
 
     def set_intervals(self, intervals):
-        """ Set a new list of intervals.
+        """Set a new list of intervals.
 
         :param intervals: list of sppasInterval.
 
@@ -184,9 +180,11 @@ class sppasDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def duration(self):
-        """ Return the sppasDuration.
-         Make the sum of all interval' durations. """
+        """Return the sppasDuration.
 
+        Make the sum of all interval' durations.
+
+        """
         value = sum(interval.duration().get_value()
                     for interval in self.get_intervals())
         vagueness = sum(interval.duration().get_margin()
@@ -197,17 +195,27 @@ class sppasDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def is_bound(self, point):
-        """ Return True if point is a bound of an interval. """
-
+        """Return True if point is a bound of an interval."""
         return any([i.is_bound(point) for i in self.__intervals])
 
     # -----------------------------------------------------------------------
 
     def set_radius(self, radius):
-        """ Set radius value to all points. """
-
-        for i in self.get_intervals():
+        """Set radius value to all points."""
+        for i in self.__intervals:
             i.set_radius(radius)
+
+    # -----------------------------------------------------------------------
+
+    def shift(self, delay):
+        """Shift all the intervals to a given delay.
+
+        :param delay: (int, float) delay to shift bounds
+        :raise: AnnDataTypeError
+
+        """
+        for i in self.__intervals:
+            i.shift(delay)
 
     # -----------------------------------------------------------------------
     # Overloads
@@ -220,10 +228,10 @@ class sppasDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __eq__(self, other):
-        """ Equal is required to use '==' between 2 sppasDisjoint instances.
+        """Equal is required to use '==' between 2 sppasDisjoint instances.
         Two disjoint instances are equals iff all its intervals are equals.
 
-        :param other: (sppasDisjoint) is the other time disjoint to compare with.
+        :param other: (sppasDisjoint) is the other disjoint to compare with.
 
         """
         if not isinstance(other, sppasDisjoint):
@@ -238,9 +246,9 @@ class sppasDisjoint(sppasBaseLocalization):
     # -----------------------------------------------------------------------
 
     def __lt__(self, other):
-        """ LowerThan is required to use '<' between 2 sppasDisjoint instances.
+        """LowerThan is required to use '<' between 2 sppasDisjoint instances.
 
-        :param other: (sppasDisjoint) is the other time point to compare with.
+        :param other: (sppasDisjoint) is the other disjoint to compare with.
 
         """
         if isinstance(other, (sppasPoint, float, int)):
@@ -257,7 +265,7 @@ class sppasDisjoint(sppasBaseLocalization):
         """
         GreaterThan is required to use '>' between 2 TimeDisjoint instances.
 
-        :param other: (sppasDisjoint) is the other time point to compare with.
+        :param other: (sppasDisjoint) is the other disjoint to compare with.
 
         """
         if isinstance(other, (int, float, sppasPoint)):
@@ -283,4 +291,3 @@ class sppasDisjoint(sppasBaseLocalization):
 
     def __len__(self):
         return len(self.__intervals)
-
