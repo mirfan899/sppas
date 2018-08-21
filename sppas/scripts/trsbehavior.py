@@ -33,7 +33,13 @@
     scripts.trsbehavior.py
     ~~~~~~~~~~~~~~~~~~~~~~
 
-    ... a script to annotate behavior & synchronicity of tiers of an annotated file.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:summary:      a script to annotate behavior & synchronicity of tiers
+               of an annotated file.
 
 """
 import sys
@@ -52,8 +58,11 @@ from sppas import sppasTag, sppasLabel, \
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
-                        description="... a script to annotate behavior and synchronicity of tiers of an annotated file.")
+parser = ArgumentParser(usage="{:s} -i file -o file [options]"
+                              "".format(os.path.basename(PROGRAM)),
+                        description="... a script to annotate behavior and "
+                                    "synchronicity of tiers of an annotated "
+                                    "file.")
 
 parser.add_argument("-i",
                     metavar="file",
@@ -66,7 +75,8 @@ parser.add_argument("-t",
                     action='append',
                     type=int,
                     help='A tier number (use as many -t options as wanted). '
-                         'Positive or negative value: 1=first tier, -1=last tier.')
+                         'Positive or negative value: '
+                         '1=first tier, -1=last tier.')
 
 parser.add_argument("-o",
                     metavar="file",
@@ -78,7 +88,7 @@ parser.add_argument("-d",
                     required=False,
                     default=0.04,
                     type=float,
-                    help='Framerate to create intervals (default:0.04)')
+                    help='Frame-rate to create intervals (default:0.04)')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -140,7 +150,7 @@ for i in range(start, finish):
         text = str(texts[0])
     behavior_tier.create_annotation(sppasLocation(ti),
                                     sppasLabel(sppasTag(text)))
-        
+
 # ----------------------------------------------------------------------------
 
 synchro_tier = trs_input.create_tier("Synchronicity")

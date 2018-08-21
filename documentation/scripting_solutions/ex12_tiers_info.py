@@ -60,5 +60,6 @@ for tier in trs:
     print(" * Tier: {:s}".format(tier.get_name()))
     print("    - Type: {:s}".format(tier_type))
     print("    - Number of annotations: {:d}".format(len(tier)))
-    print("    - From time: {:.4f}".format(tier.get_first_point().get_midpoint()))
-    print("    - To time: {:.4f} ".format(tier.get_last_point().get_midpoint()))
+    if len(tier) > 1:
+        print("    - From time: {:.4f}".format(tier.get_first_point().get_midpoint()))
+        print("    - To time: {:.4f} ".format(tier.get_last_point().get_midpoint()))

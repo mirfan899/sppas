@@ -41,6 +41,7 @@ utils: utility functions used into SPPAS.
 """
 from .fileutils import sppasFileUtils
 from .fileutils import sppasDirUtils
+from .fileutils import setup_logging
 from .compare import sppasCompare
 from .makeunicode import u, b
 from .makeunicode import sppasUnicode
@@ -51,5 +52,6 @@ __all__ = (
     'sppasCompare',
     'sppasUnicode',
     'u',
-    'b'
+    'b',
+    'setup_logging'
 )

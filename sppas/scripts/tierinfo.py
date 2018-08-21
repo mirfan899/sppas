@@ -33,7 +33,12 @@
     scripts.tierinfo.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    ... a script to get information about a tier of an annotated file.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:summary:      a script to get information about a tier of an annotated file.
 
 """
 import sys
@@ -44,14 +49,16 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas.src.annotationdata.aio
+from sppas import sppasRW
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM),
-                        description="... a script to get information about a tier of an annotated file.")
+parser = ArgumentParser(usage="{:s} -i file [options]"
+                              "".format(os.path.basename(PROGRAM)),
+                        description="... a script to get information about "
+                                    "a tier of an annotated file.")
 
 parser.add_argument("-i",
                     metavar="file",
@@ -71,33 +78,32 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-trs = sppas.src.annotationdata.aio.read(args.i)
+parser = sppasRW(args.i)
+trs_input = parser.read()
 
-if args.t <= 0 or args.t > trs.GetSize():
+if args.t <= 0 or args.t > len(trs_input):
     print('Error: Bad tier number.\n')
     sys.exit(1)
-tier = trs[args.t-1]
+tier = trs_input[args.t-1]
 
-if tier.IsPoint() is True:
+# Get the tier type
+tier_type = "Unknown"
+if tier.is_point() is True:
     tier_type = "Point"
-elif tier.IsInterval() is True:
+elif tier.is_interval() is True:
     tier_type = "Interval"
-elif tier.IsDisjoint() is True:
-    tier_type = "Disjoint"
-else:
-    tier_type = "Unknown"
+elif tier.is_disjoint() is True:
+    tier_type = "DisjointIntervals"
 
-nb_silence = len([a for a in tier if a.GetLabel().IsSilence()])
-nb_empty = len([a for a in tier if a.GetLabel().IsEmpty()])
-dur_silence = sum(a.GetLocation().GetValue().Duration().GetValue() for a in tier if a.GetLabel().IsSilence())
-dur_empty = sum(a.GetLocation().GetValue().Duration().GetValue() for a in tier if a.GetLabel().IsEmpty())
+print('Tier number {:d} of file {:s}:'.format(args.t, args.i))
+print(" - name: {:s}".format(tier.get_name()))
+print(" - type: {:s}".format(tier_type))
+print(" - number of annotations: {:d}".format(len(tier)))
+if len(tier) > 1:
+    print(" - from time: {:.4f}".format(tier.get_first_point().get_midpoint()))
+    print(" - to time: {:.4f} ".format(tier.get_last_point().get_midpoint()))
 
-print("Tier name: {:s}".format(tier.GetName()))
-print("Tier type: {:s}".format(tier_type))
-print("Tier size: {:d}".format(tier.GetSize()))
-print("   - Number of silences:         {:d}".format(nb_silence))
-print("   - Number of empty intervals:  {:d}".format(nb_empty))
-print("   - Number of speech intervals: {:d}".format(tier.GetSize() - (nb_empty + nb_silence)))
-print("   - silence duration: {:.3f}".format(dur_silence))
-print("   - empties duration: {:.3f}".format(dur_empty))
-print("   - speech duration:  {:.3f}".format((tier.GetEndValue() - tier.GetBeginValue()) - (dur_empty + dur_silence)))
+    loc_silences = [a.get_location() for a in tier if a.get_best_tag().is_silence()]
+    dur_silence = sum(a.get_best().duration().get_value() for a in loc_silences)
+    print(" - number of silences: {:d}".format(len(loc_silences)))
+    print(" - total silence duration: {:.3f}".format(dur_silence))

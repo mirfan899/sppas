@@ -33,12 +33,12 @@
     scripts.trsconvert.py
     ~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      a script to export annotations files based on anndata API.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:summary:      a script to export annotations files based on anndata API.
 
 """
 import sys
@@ -58,8 +58,9 @@ from sppas import sppasTranscription
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
-                        description="... a script to export annotations files.")
+parser = ArgumentParser(usage="{:s} -i file -o file [options]"
+                              "".format(os.path.basename(PROGRAM)),
+                        description="... a script to export annotated files.")
 
 parser.add_argument("-i",
                     metavar="file",
@@ -77,7 +78,8 @@ parser.add_argument("-t",
                     action='append',
                     type=int,
                     help='A tier number (use as many -t options as wanted). '
-                         'Positive or negative value: 1=first tier, -1=last tier.')
+                         'Positive or negative value: '
+                         '1=first tier, -1=last tier.')
 
 parser.add_argument("-n",
                     metavar="tiername",
@@ -108,9 +110,11 @@ trs_input = parser.read()
 end_time = time.time()
 
 if args.quiet is False:
-    print("  - elapsed time for reading: {:f} seconds".format(end_time - start_time))
+    print("  - elapsed time for reading: {:f} seconds"
+          "".format(end_time - start_time))
     pickle_string = pickle.dumps(trs_input)
-    print("  - memory usage of the transcription: {:d} bytes".format(sys.getsizeof(pickle_string)))
+    print("  - memory usage of the transcription: {:d} bytes"
+          "".format(sys.getsizeof(pickle_string)))
 
 # ----------------------------------------------------------------------------
 # Select tiers
@@ -186,5 +190,6 @@ parser.write(trs_output)
 end_time = time.time()
 
 if args.quiet is False:
-    print("  - elapsed time for writing: {:f} seconds".format(end_time - start_time))
+    print("  - elapsed time for writing: {:f} seconds"
+          "".format(end_time - start_time))
     print("Done.")

@@ -45,11 +45,10 @@ class sppasFindTier(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      SPPAS tier finder.
 
     """
-
     def __init__(self):
         pass
 
@@ -57,7 +56,7 @@ class sppasFindTier(object):
 
     @staticmethod
     def transcription(trs):
-        """ Return the tier with orthographic transcription.
+        """Return the tier with orthographic transcription.
 
         :param trs: (sppasTranscription)
         :returns: (sppasTier)
@@ -99,7 +98,7 @@ class sppasFindTier(object):
 
     @staticmethod
     def tokenization(trs, pattern=""):
-        """ Return the tier with tokenization.
+        """Return the tier with tokenization.
 
         In case of EOT, several tiers with tokens are available.
         Priority is given to faked.
@@ -148,7 +147,7 @@ class sppasFindTier(object):
 
     @staticmethod
     def phonetization(trs):
-        """ Return the tier with phonetization.
+        """Return the tier with phonetization.
 
         :param trs: (sppasTranscription)
         :returns: (sppasTier)
@@ -181,7 +180,7 @@ class sppasFindTier(object):
 
     @staticmethod
     def aligned_phones(trs):
-        """ Return the tier with time-aligned phonemes.
+        """Return the tier with time-aligned phonemes.
 
         :param trs: (sppasTranscription)
 
@@ -195,8 +194,23 @@ class sppasFindTier(object):
     # ------------------------------------------------------------------------
 
     @staticmethod
+    def aligned_tokens(trs):
+        """Return the tier with time-aligned phonemes.
+
+        :param trs: (sppasTranscription)
+
+        """
+        for tier in trs:
+            if "align" in tier.get_name().lower() and "token" in tier.get_name().lower():
+                return tier
+
+        raise NoInputError
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
     def aligned_syllables(trs):
-        """ Return the tier with time-aligned syllables.
+        """Return the tier with time-aligned syllables.
 
         :param trs: (sppasTranscription)
 
@@ -216,7 +230,7 @@ class sppasFindTier(object):
 
     @staticmethod
     def pitch_anchors(trs):
-        """ Return the tier with pitch anchors, like momel.
+        """Return the tier with pitch anchors, like momel.
 
         :param trs: (sppasTranscription)
         :returns: (sppasTier)

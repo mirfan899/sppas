@@ -30,15 +30,15 @@
 
         ---------------------------------------------------------------------
 
-    scripts.trsconvert.py
-    ~~~~~~~~~~~~~~~~~~~~~
+    scripts.trsshift.py
+    ~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      a script to shift localizations of annotations.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:summary:      a script to shift localizations of annotations.
 
 """
 import sys
@@ -127,9 +127,11 @@ if sppasRW.create_trs_from_extension(args.o).gaps_support() is False and \
             continue
         else:
             if args.d > 0:
-                loc = sppasInterval(trs_start_point, trs_input.get_min_loc().copy())
+                loc = sppasInterval(trs_start_point,
+                                    trs_input.get_min_loc().copy())
             else:
-                loc = sppasInterval(trs_input.get_max_loc().copy(), trs_end_point)
+                loc = sppasInterval(trs_input.get_max_loc().copy(),
+                                    trs_end_point)
 
         tier.create_annotation(sppasLocation(loc))
 

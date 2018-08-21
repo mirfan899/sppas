@@ -33,7 +33,12 @@
     scripts.trsconvertarff.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    ... a script to export annotations files into WEKA file format.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:summary:      a script to export annotations files into WEKA file format.
 
 """
 import sys
@@ -52,7 +57,8 @@ from sppas import sppasRW
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM),
+parser = ArgumentParser(usage="{:s} -i file [options]"
+                              "".format(os.path.basename(PROGRAM)),
                         description="... a script to export annotations files "
                                     "into WEKA file format (arff, xrff).")
 
@@ -72,22 +78,26 @@ parser.add_argument("-C",
                     required=False,
                     type=int,
                     default=10,
-                    help='Reduce the maximum number of possible tags of the class (default: 100).')
+                    help='Reduce the maximum number of possible tags of'
+                         ' the class (default: 100).')
 
 parser.add_argument("-t",
                     metavar="value",
                     required=False,
                     action='append',
                     type=int,
-                    help='An attribute tier number (use as many -t options as wanted). '
-                         'Positive or negative value: 1=first tier, -1=last tier.')
+                    help='An attribute tier number '
+                         '(use as many -t options as wanted). '
+                         'Positive or negative value: '
+                         '1=first tier, -1=last tier.')
 
 parser.add_argument("-n",
                     metavar="tiername",
                     required=False,
                     action='append',
                     type=str,
-                    help='An attribute tier name (use as many -n options as wanted).')
+                    help='An attribute tier name '
+                         '(use as many -n options as wanted).')
 
 instance_group = parser.add_mutually_exclusive_group(required=False)
 
@@ -95,7 +105,8 @@ instance_group.add_argument("-a",
                             metavar="anchor",
                             required=False,
                             type=str,
-                            help='Name of the anchor tier to create instances.')
+                            help='Name of the anchor tier '
+                                 'to create instances.')
 
 instance_group.add_argument("-s",
                             metavar="step",
@@ -108,25 +119,29 @@ parser.add_argument("-u",
                     required=False,
                     type=str,
                     default="?",
-                    help='Tag that is used into annotations for an uncertain label. (default: ?)')
+                    help='Tag that is used into annotations for '
+                         'an uncertain label. (default: ?)')
 
 parser.add_argument("-e",
                     metavar="emptytag",
                     required=False,
                     type=str,
                     default="none",
-                    help='Tag to be used for un-labelled annotations. (default: none)')
+                    help='Tag to be used for un-labelled annotations. '
+                         '(default: none)')
 
 parser.add_argument("-E",
                     metavar="emptyclasstag",
                     required=False,
                     type=str,
                     default="none",
-                    help='Tag to be used for un-labelled annotations in the class. (default: none)')
+                    help='Tag to be used for un-labelled annotations '
+                         'in the class. (default: none)')
 
 parser.add_argument("--probas",
                     action='store_true',
-                    help="Enable the conversion of annotations into distribution of probabilities.")
+                    help="Enable the conversion of annotations into "
+                         "distribution of probabilities.")
 
 parser.add_argument("--xra",
                     action='store_true',
@@ -158,9 +173,11 @@ trs = parser.read(heuristic=True)
 end_time = time.time()
 
 if args.quiet is False:
-    print("  - elapsed time for reading: {:f} seconds".format(end_time - start_time))
+    print("  - elapsed time for reading: {:f} seconds"
+          "".format(end_time - start_time))
     pickle_string = pickle.dumps(trs)
-    print("  - memory usage of the transcription: {:d} bytes".format(sys.getsizeof(pickle_string)))
+    print("  - memory usage of the transcription: {:d} bytes"
+          "".format(sys.getsizeof(pickle_string)))
 
 # ----------------------------------------------------------------------------
 # Attributes tiers
@@ -250,7 +267,8 @@ parser.write(trs)
 end_time = time.time()
 
 if args.quiet is False:
-    print("  - elapsed time for writing: {:f} seconds".format(end_time - start_time))
+    print("  - elapsed time for writing: {:f} seconds"
+          "".format(end_time - start_time))
     print("Done.")
 
 # XRA

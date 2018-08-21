@@ -33,7 +33,12 @@
     scripts.trsmerge.py
     ~~~~~~~~~~~~~~~~~~~
 
-    ... a script to merge annotation files.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:summary:      a script to merge annotation files.
 
 """
 import sys
@@ -51,7 +56,8 @@ from sppas import sppasRW
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
+parser = ArgumentParser(usage="{:s} -i file -o file [options]"
+                              "".format(os.path.basename(PROGRAM)),
                         description="... a script to merge annotation files.")
 
 parser.add_argument("-i",

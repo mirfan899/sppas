@@ -33,7 +33,13 @@
     scripts.tieraligntophon.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    ... a script to a time-aligned phonemes tier to its phonetization tier.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      brigitte.bigi@gmail.com
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:summary:      a script to a time-aligned phonemes tier to its
+phonetization tier.
 
 """
 import sys
@@ -45,14 +51,12 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas.src.annotationdata.aio
-from sppas.src.annotationdata.transcription import Transcription
-from sppas.src.annotations.searchtier import sppasSearchTier
-from sppas.src.annotationdata.tier import Tier
-from sppas.src.annotationdata.label.label import Label
-from sppas.src.annotationdata.ptime.interval import TimeInterval
-from sppas.src.annotationdata.annotation import Annotation
-from sppas.src.utils.fileutils import setup_logging
+from sppas import sppasRW
+from sppas import sppasTranscription, sppasTier
+from sppas import sppasLabel, sppasTag
+from sppas import sppasLocation, sppasInterval
+from sppas import setup_logging
+from sppas.src.annotations.searchtier import sppasFindTier
 
 # ----------------------------------------------------------------------------
 # Functions
@@ -60,37 +64,37 @@ from sppas.src.utils.fileutils import setup_logging
 
 
 def unalign(aligned_tier, ipus_separators=['#', 'dummy']):
-    """ Convert a time-aligned tier into a non-aligned tier.
+    """Convert a time-aligned tier into a non-aligned tier.
 
-    :param aligned_tier: (Tier)
+    :param aligned_tier: (sppasTier)
     :param ipus_separators: (list)
     :returns: (Tier)
     
     """
-    new_tier = Tier("Un-aligned")
-    b = aligned_tier.GetBegin()
+    new_tier = sppasTier("Un-aligned")
+    b = aligned_tier.get_first_point()
     e = b
     l = ""
     for a in aligned_tier:
-        label = a.GetLabel().GetValue()
-        if label in ipus_separators or a.GetLabel().IsEmpty() is True:
+        label = a.serialize_labels()
+        if label in ipus_separators or len(label) == 0:
             if e > b:
-                at = Annotation(TimeInterval(b, e), Label(l))
-                new_tier.Add(at)
-            new_tier.Add(a)
-            b = a.GetLocation().GetEnd()
+                loc = sppasLocation(sppasInterval(b, e))
+                new_tier.create_annotation(loc, sppasLabel(sppasTag(l)))
+            new_tier.add(a)
+            b = a.get_location().get_best().get_end()
             e = b
             l = ""
         else:
-            e = a.GetLocation().GetEnd()
+            e = a.get_location().get_best().get_end()
             label = label.replace('.', ' ')
             l += " " + label
 
     if e > b:
         a = aligned_tier[-1]
-        e = a.GetLocation().GetEnd()
-        at = Annotation(TimeInterval(b, e), Label(l))
-        new_tier.Add(at)
+        e = a.get_location().get_best().get_end()
+        loc = sppasLocation(sppasInterval(b, e))
+        new_tier.create_annotation(loc, sppasLabel(sppasTag(l)))
 
     return new_tier
     
@@ -99,8 +103,10 @@ def unalign(aligned_tier, ipus_separators=['#', 'dummy']):
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
-                        description="... a script to convert time-aligned phonemes into their phonetization.")
+parser = ArgumentParser(usage="{:s} -i file -o file [options]"
+                              "".format(os.path.basename(PROGRAM)),
+                        description="... a script to convert time-aligned "
+                                    "phonemes into their phonetization.")
 
 parser.add_argument("-i",
                     metavar="file",
@@ -133,39 +139,44 @@ else:
 # ----------------------------------------------------------------------------
 # Read
 
-trs_input = sppas.src.annotationdata.aio.read(args.i)
-trs_out = Transcription()
+logging.info("Read input: {:s}".format(args.i))
+parser = sppasRW(args.i)
+trs_input = parser.read()
+
+trs_out = sppasTranscription()
 
 # ----------------------------------------------------------------------------
 # Transform the PhonAlign tier to a Phonetization tier
 
 try:
-    align_tier = sppasSearchTier.aligned_phones(trs_input)
+    align_tier = sppasFindTier.aligned_phones(trs_input)
     logging.info("PhonAlign tier found.")
     phon_tier = unalign(align_tier)
-    phon_tier.SetName("Phones")
-    trs_out.Add(phon_tier)
+    phon_tier.set_name("Phones")
+    trs_out.append(phon_tier)
 except IOError:
-    logging.info("PhonAlign tier not found.")
+    logging.error("PhonAlign tier not found.")
 
 # ----------------------------------------------------------------------------
 # Transform the TokensAlign tier to a Tokenization tier
 
 if args.tok:
     try:
-        align_tier = sppasSearchTier.aligned_tokens(trs_input)
+        align_tier = sppasFindTier.aligned_tokens(trs_input)
         logging.info("TokensAlign tier found.")
         token_tier = unalign(align_tier)
-        token_tier.SetName("Tokens")
-        trs_out.Add(token_tier)
+        token_tier.set_name("Tokens")
+        trs_out.append(token_tier)
     except IOError:
-        logging.info("TokensAlign tier not found.")
+        logging.error("TokensAlign tier not found.")
 
 # ----------------------------------------------------------------------------
 # Write
 
 if len(trs_out) > 0:
-    sppas.src.annotationdata.aio.write(args.o, trs_out)
+    logging.info("Write output: {:s}".format(args.o))
+    parser.set_filename(args.o)
+    parser.write(trs_out)
 else:
     logging.info("No tier converted.")
     sys.exit(1)
