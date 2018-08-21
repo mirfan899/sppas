@@ -66,7 +66,7 @@ def get_extension(filename):
 
 
 def open(filename):
-    """ Open an audio file.
+    """Open an audio file.
 
     :param filename: (str) the file name (including path)
     :raise: IOError, UnicodeError, Exception
@@ -89,7 +89,7 @@ def open(filename):
 
 
 def save(filename, audio):
-    """ Write an audio file.
+    """Write an audio file.
 
     :param filename: (str) the file name (including path)
     :param audio: (sppasAudioPCM) the Audio to write.
@@ -106,7 +106,7 @@ def save(filename, audio):
 
 
 def save_fragment(filename, audio, frames):
-    """ Write a fragment of frames of an audio file.
+    """Write a fragment of frames of an audio file.
 
     :param filename: (str) the file name (including path)
     :param audio: (sppasAudioPCM) the Audio to write.

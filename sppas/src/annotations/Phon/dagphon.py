@@ -54,7 +54,7 @@ class sppasDAGPhonetizer(object):
 
     """
     def __init__(self, variants=4):
-        """ Create a sppasDAGPhonetizer instance.
+        """Create a sppasDAGPhonetizer instance.
 
         :param variants: (int) Maximum number of variants for phonetizations.
 
@@ -65,7 +65,7 @@ class sppasDAGPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def set_variants(self, v):
-        """ Fix the maximum number of variants.
+        """Fix the maximum number of variants.
 
         :param v: (int) If v is set to 0, all variants will be returned.
 
@@ -77,7 +77,7 @@ class sppasDAGPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def phon2DAG(self, pron):
-        """ Convert a phonetization into a DAG.
+        """Convert a phonetization into a DAG.
 
         :param pron:
 
@@ -124,7 +124,7 @@ class sppasDAGPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def DAG2phon(self, graph, pron_graph):
-        """ Convert a DAG into a dictionary including all pronunciation variants.
+        """Convert a DAG into a dictionary including all pronunciation variants.
 
         :param graph:
         :param pron_graph:
@@ -146,7 +146,7 @@ class sppasDAGPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def decompose(self, pron1, pron2=""):
-        """ Create a decomposed phonetization from a string as follow:
+        """Create a decomposed phonetization from a string as follow:
 
             >>> self.decompose("p1 p2|x2 p3|x3")
             >>> p1-p2-p3|p1-p2-x3|p1-x2-p3|p1-x2-x3

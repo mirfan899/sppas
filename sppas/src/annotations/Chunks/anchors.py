@@ -65,7 +65,7 @@ class AnchorTier(Tier):
 
     """
     def __init__(self, name="Anchors"):
-        """ Creates a new AnchorTier instance, with default values.
+        """Creates a new AnchorTier instance, with default values.
 
         :param name: (str) Name of the anchors tier
         
@@ -98,7 +98,7 @@ class AnchorTier(Tier):
     # ------------------------------------------------------------------------
 
     def set_duration(self, duration):
-        """ Set the duration of the tier.
+        """Set the duration of the tier.
 
         :param duration: (float) Duration in seconds.
 
@@ -112,7 +112,7 @@ class AnchorTier(Tier):
     # ------------------------------------------------------------------------
 
     def set_win_delay(self, delay):
-        """ Set the expected delay for a window.
+        """Set the expected delay for a window.
 
         :param delay: (float)
 
@@ -126,7 +126,7 @@ class AnchorTier(Tier):
     # ------------------------------------------------------------------------
 
     def set_ext_delay(self, delay):
-        """ Set the extra delay that is possible to add for a window.
+        """Set the extra delay that is possible to add for a window.
 
         :param delay: (float)
 
@@ -140,7 +140,7 @@ class AnchorTier(Tier):
     # ------------------------------------------------------------------------
 
     def set_out_delay(self, delay):
-        """ Set the minimum delay that is acceptable for a window.
+        """Set the minimum delay that is acceptable for a window.
 
         :param delay: (float)
 
@@ -156,7 +156,7 @@ class AnchorTier(Tier):
     # ------------------------------------------------------------------------
 
     def append_silences(self, channel):
-        """ Append silences as anchors.
+        """Append silences as anchors.
 
         :param channel: (sppasChannel)
 
@@ -197,7 +197,7 @@ class AnchorTier(Tier):
     # ------------------------------------------------------------------------
 
     def fix_window(self, from_time):
-        """ Return the "to_time" corresponding to a flexible-sized window.
+        """Return the "to_time" corresponding to a flexible-sized window.
         The window aims at covering the holes of the tier. If there is
         no hole after from_time, this method returns a tuple with
         from_time=to_time.
@@ -232,7 +232,7 @@ class AnchorTier(Tier):
     # ------------------------------------------------------------------------
 
     def check_holes_durations(self, duration):
-        """ Check if all holes have a duration lesser than the given one.
+        """Check if all holes have a duration lesser than the given one.
 
         :param duration: (float)
 
@@ -248,7 +248,7 @@ class AnchorTier(Tier):
     # ------------------------------------------------------------------------
 
     def check_holes_ntokens(self, ntokens):
-        """ Check if indexed-anchors make all holes lesser or equal than ntokens.
+        """Check if indexed-anchors make all holes lesser or equal than ntokens.
         The last one can't be tested.
 
         :param ntokens: (int)
@@ -272,7 +272,7 @@ class AnchorTier(Tier):
     # ------------------------------------------------------------------------
 
     def near_indexed_anchor(self, time_value, direction):
-        """ Search the nearest indexed anchor (an anchor with a positive integer).
+        """Search the nearest indexed anchor (an anchor with a positive integer).
 
         :param time_value: (float)
         :param direction: (int)
@@ -315,7 +315,7 @@ class AnchorTier(Tier):
     # ------------------------------------------------------------------------
 
     def fill_evident_holes(self):
-        """ Fill holes if we find consecutive index values in prev/next anchors. """
+        """Fill holes if we find consecutive index values in prev/next anchors."""
 
         to_add = []
 
@@ -345,7 +345,7 @@ class AnchorTier(Tier):
     # ------------------------------------------------------------------------
 
     def export(self, toklist):
-        """ Create the "Chunks" tier and return it.
+        """Create the "Chunks" tier and return it.
 
         :param toklist: Tokens used to fill the intervals.
 
@@ -508,7 +508,7 @@ class AnchorTier(Tier):
     # ------------------------------------------------------------------------
 
     def _recurs_fix_window(self, from_time, delay=4.):
-        """ Recursive method to fix a window.
+        """Recursive method to fix a window.
 
         :param from_time: (float) The point in time from which the window has to be found
         :param delay: (float) Expected duration of the window

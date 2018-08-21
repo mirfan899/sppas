@@ -95,7 +95,7 @@ class sppasNum(object):
     ZERO['por'] = u("zero")
 
     def __init__(self, lang="und"):
-        """ Create a new sppasNum instance.
+        """Create a new sppasNum instance.
 
         :param lang: (str) the language code in ISO639-3 (fra, eng, spa,
         khm, ita, ...). If lang is set to "und" (undetermined), no conversion
@@ -108,7 +108,7 @@ class sppasNum(object):
     # -------------------------------------------------------------------------
 
     def set_lang(self, lang):
-        """ Set the language.
+        """Set the language.
 
         :param lang: (str) the language code in ISO639-3.
 
@@ -120,7 +120,7 @@ class sppasNum(object):
     # -------------------------------------------------------------------------
 
     def get_lang(self):
-        """ Return the current language code. """
+        """Return the current language code."""
 
         return self._lang
 
@@ -129,7 +129,7 @@ class sppasNum(object):
     # -------------------------------------------------------------------------
 
     def zero(self):
-        """ Convert the zero number.
+        """Convert the zero number.
 
         :param number: (int) the number to convert to letters.
 
@@ -375,7 +375,7 @@ class sppasNum(object):
     # -------------------------------------------------------------------------
 
     def unite(self, number):
-        """ Convert a number from 0 to 9.
+        """Convert a number from 0 to 9.
 
         :param number: (int) the number to convert to letters.
 
@@ -772,7 +772,7 @@ class sppasNum(object):
     # -------------------------------------------------------------------------
 
     def dizaine(self, number):
-        """ Convert a number from 10 to 99.
+        """Convert a number from 10 to 99.
         
         :param number: (int)
         
@@ -953,7 +953,7 @@ class sppasNum(object):
     # -------------------------------------------------------------------------
 
     def centaine(self, number):
-        """ Convert a number from 100 to 999.
+        """Convert a number from 100 to 999.
 
         :param number: (int)
 
@@ -1150,7 +1150,7 @@ class sppasNum(object):
     # -----------------------------------------------------------------------
 
     def milliers(self, number):
-        """ Convert a number from 1000 to 9999.
+        """Convert a number from 1000 to 9999.
 
         :param number: (int)
 
@@ -1420,7 +1420,7 @@ class sppasNum(object):
     # -----------------------------------------------------------------------
 
     def convert(self, number):
-        """ Convert a number to a string. Example: 23 => twenty-three
+        """Convert a number to a string. Example: 23 => twenty-three
 
         :param number: (int) A numerical representation
         :returns: string corresponding to the given number

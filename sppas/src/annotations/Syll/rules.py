@@ -48,7 +48,7 @@ from sppas.src.utils.makeunicode import sppasUnicode
 
 
 class Rules(object):
-    """ Manager of a set of rules for syllabification.
+    """Manager of a set of rules for syllabification.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -62,7 +62,7 @@ class Rules(object):
     # -----------------------------------------------------------------------
 
     def __init__(self, filename=None):
-        """ Create a new Rules instance.
+        """Create a new Rules instance.
 
         :param filename: (str) Name of the file with the rules.
 
@@ -78,7 +78,7 @@ class Rules(object):
     # ------------------------------------------------------------------------
 
     def reset(self):
-        """ Reset the set of rules. """
+        """Reset the set of rules."""
 
         self.general = dict()  # list of general rules
         self.general["VV"] = 0
@@ -100,7 +100,7 @@ class Rules(object):
     # ------------------------------------------------------------------------
 
     def load(self, filename):
-        """ Load the rules from a file.
+        """Load the rules from a file.
 
         :param filename: (str) Name of the file with the rules.
 
@@ -134,7 +134,7 @@ class Rules(object):
     # ------------------------------------------------------------------------
 
     def get_class(self, phoneme):
-        """ Return the class identifier of the phoneme.
+        """Return the class identifier of the phoneme.
         If the phoneme is unknown, the break symbol is returned.
 
         :param phoneme: (str) A phoneme
@@ -146,7 +146,7 @@ class Rules(object):
     # ------------------------------------------------------------------------
 
     def is_exception(self, rule):
-        """ Return True if the rule is an exception rule.
+        """Return True if the rule is an exception rule.
 
         :param rule: (str)
 
@@ -156,7 +156,7 @@ class Rules(object):
     # ------------------------------------------------------------------------
 
     def get_boundary(self, phonemes):
-        """ Get the index of the syllable boundary (EXCRULES or GENRULES).
+        """Get the index of the syllable boundary (EXCRULES or GENRULES).
 
         Phonemes are separated with the symbol defined by separators.phonemes
         variable.
@@ -186,7 +186,7 @@ class Rules(object):
     # ------------------------------------------------------------------------
 
     def get_class_rules_boundary(self, classes):
-        """ Get the index of the syllable boundary (EXCRULES or GENRULES).
+        """Get the index of the syllable boundary (EXCRULES or GENRULES).
 
         :param classes: (str) The class sequence to syllabify
         :returns: (int) boundary index or -1 if it does not match any rule.
@@ -206,7 +206,7 @@ class Rules(object):
     # ------------------------------------------------------------------------
 
     def get_gap(self, phonemes):
-        """ Return the shift to apply (OTHRULES).
+        """Return the shift to apply (OTHRULES).
 
         :param phonemes: (str) Phonemes to syllabify
         :returns: (int) boundary shift

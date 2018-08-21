@@ -179,14 +179,14 @@ class SppasEdit(wx.Panel):
     # ------------------------------------------------------------------------
 
     def _set_display(self):
-        """ Set the display panel. """
+        """Set the display panel."""
 
         self._displayctrl = DisplayCtrl(self, id=-1, pos=(10, 80), size=wx.Size(400, 160), prefsIO=self._prefsIO)
         return self._displayctrl
 
 
     def _set_navigation(self):
-        """ Set all panels: transcription, media and navigate. """
+        """Set all panels: transcription, media and navigate."""
 
         sp = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -598,7 +598,7 @@ class NavigatePanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def SetNewPeriod(self, coeff, mode):
-        """ Update the drawing period. """
+        """Update the drawing period."""
 
         if self._display is None: return
 
@@ -644,7 +644,7 @@ class TrsPanel(wx.Panel):
 
     """
     def __init__(self, parent, prefsIO):
-        """ Create a new instance. """
+        """Create a new instance."""
 
         wx.Panel.__init__(self, parent, style=wx.NO_BORDER)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -676,7 +676,7 @@ class TrsPanel(wx.Panel):
     # -------------------------------------------------------------------------
 
     def onTierCheck(self, event):
-        """ Fix the list of tiers to Show/Hide. """
+        """Fix the list of tiers to Show/Hide."""
 
         if self._trsctrl is None: return
 
@@ -707,7 +707,7 @@ class TrsPanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def SetBackgroundColour(self, colour):
-        """ Change the background of the panel. """
+        """Change the background of the panel."""
 
         wx.Window.SetBackgroundColour(self, colour)
         for b in self._buttons:
@@ -734,7 +734,7 @@ class TrsPanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def SetTrs(self):
-        """ Set a new transcription. """
+        """Set a new transcription."""
 
         self._trsctrl = None
         if self._display is None: return
@@ -753,7 +753,7 @@ class TrsPanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def UnsetData(self):
-        """ Unset the current drawing. """
+        """Unset the current drawing."""
 
         if self._display is None:
             return
@@ -815,7 +815,7 @@ class MediaPanel(SndPlayer):
     # ------------------------------------------------------------------------
 
     def onNext(self, event):
-        """ Go forward in the music. """
+        """Go forward in the music."""
 
         SndPlayer.onNext(self,event)
         self.UpdateRuler()
@@ -823,7 +823,7 @@ class MediaPanel(SndPlayer):
     # ------------------------------------------------------------------------
 
     def onRewind(self, event):
-        """ Go backward in the music. """
+        """Go backward in the music."""
 
         SndPlayer.onRewind(self,event)
         self.UpdateRuler()
@@ -831,7 +831,7 @@ class MediaPanel(SndPlayer):
     # ------------------------------------------------------------------------
 
     def onPause(self, event):
-        """ Pauses the music. """
+        """Pauses the music."""
 
         SndPlayer.onPause(self,event)
         self.UpdateRuler()
@@ -839,7 +839,7 @@ class MediaPanel(SndPlayer):
     # ------------------------------------------------------------------------
 
     def onPlay(self, event):
-        """ Fix the period to play then Plays the music. """
+        """Fix the period to play then Plays the music."""
 
         if self._mediaplayer is None and self._display is None:
             return
@@ -870,7 +870,7 @@ class MediaPanel(SndPlayer):
     # ------------------------------------------------------------------------
 
     def onStop(self, event):
-        """ Stops the music and resets the play button. """
+        """Stops the music and resets the play button."""
 
         if self._mediaplayer is None:
             return
@@ -944,7 +944,7 @@ class MediaPanel(SndPlayer):
     # ------------------------------------------------------------------------
 
     def SetMedia(self):
-        """ Set a new mediaplayer. """
+        """Set a new mediaplayer."""
 
         self.onStop(None)
         self._mediaplayer = None
@@ -968,7 +968,7 @@ class MediaPanel(SndPlayer):
     # ------------------------------------------------------------------------
 
     def FileDeSelected(self):
-        """ Unset the current mediaplayer. """
+        """Unset the current mediaplayer."""
 
         if self._display is None: return
         #self._display = None

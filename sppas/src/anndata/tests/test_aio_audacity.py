@@ -80,7 +80,7 @@ class TestAudacity(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_detect(self):
-        """ Test the file format detection method. """
+        """Test the file format detection method."""
 
         for filename in os.listdir(DATA):
             f = os.path.join(DATA, filename)
@@ -92,7 +92,7 @@ class TestAudacity(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_make_point(self):
-        """ Convert data into the appropriate digit type, or not. """
+        """Convert data into the appropriate digit type, or not."""
 
         self.assertEqual(sppasPoint(3., 0.0005), sppasAudacity.make_point("3.0"))
         self.assertEqual(sppasPoint(3., 0.0005), sppasAudacity.make_point("3."))
@@ -103,7 +103,7 @@ class TestAudacity(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_metadata(self):
-        """ Test metadata. """
+        """Test metadata."""
 
         # All attributes filled
         trs_attribs = '<project xmlns="http://audacity.sourceforge.net/xml/" ' \
@@ -127,7 +127,7 @@ class TestAudacity(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_tags(self):
-        """ Test tags. """
+        """Test tags."""
 
         # not implemented method
         pass
@@ -135,7 +135,7 @@ class TestAudacity(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_labeltrack_intervals(self):
-        """ Test tier creation from a labeltrack. """
+        """Test tier creation from a labeltrack."""
 
         label = '<labeltrack name="Piste de marqueurs" numlabels="3" height="73" minimized="0" isSelected="0"> ' \
                 '<label t="0.6013583624" t1="0.8799799975" title="label1"/> ' \
@@ -155,7 +155,7 @@ class TestAudacity(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_labeltrack_points(self):
-        """ Test tier creation from a labeltrack. """
+        """Test tier creation from a labeltrack."""
 
         label = '<labeltrack name="Piste de marqueurs" numlabels="3" height="73" minimized="0" isSelected="0"> ' \
                 '<label t="0.6013583624" t1="0.6013583624" title="label1"/> ' \
@@ -175,7 +175,7 @@ class TestAudacity(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_labeltrack_mixed(self):
-        """ Test tier creation from a labeltrack. """
+        """Test tier creation from a labeltrack."""
 
         label = '<labeltrack name="Piste de marqueurs" numlabels="3" height="73" minimized="0" isSelected="0"> ' \
                 '<label t="0.6013583624" t1="0.6013583624" title="label1"/> ' \
@@ -197,7 +197,7 @@ class TestAudacity(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_wavetrack(self):
-        """ Test tier creation from a labeltrack. """
+        """Test tier creation from a labeltrack."""
 
         # not implemented method
         pass
@@ -205,7 +205,7 @@ class TestAudacity(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_timetrack(self):
-        """ Test tier creation from a labeltrack. """
+        """Test tier creation from a labeltrack."""
 
         # not implemented method
         pass
@@ -213,7 +213,7 @@ class TestAudacity(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_read(self):
-        """ Test reader of a .aup file. """
+        """Test reader of a .aup file."""
 
         trs = sppasAudacity()
         trs.read(os.path.join(DATA, "sample.aup"))

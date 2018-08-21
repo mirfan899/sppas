@@ -47,7 +47,7 @@ from .tag import sppasTag
 
 
 class sppasTagCompare(sppasBaseCompare):
-    """ Comparison methods for sppasTag.
+    """Comparison methods for sppasTag.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -68,7 +68,7 @@ class sppasTagCompare(sppasBaseCompare):
 
     """
     def __init__(self):
-        """ Create a sppasTagCompare instance. """
+        """Create a sppasTagCompare instance."""
 
         super(sppasTagCompare, self).__init__()
 
@@ -97,7 +97,7 @@ class sppasTagCompare(sppasBaseCompare):
 
     @staticmethod
     def exact(tag, text):
-        """ Test if two texts strictly contain the same characters.
+        """Test if two texts strictly contain the same characters.
 
         :param tag: (sppasTag) Tag to compare.
         :param text: (unicode) Unicode string to be compared with.
@@ -116,7 +116,7 @@ class sppasTagCompare(sppasBaseCompare):
 
     @staticmethod
     def iexact(tag, text):
-        """ Case-insensitive exact.
+        """Case-insensitive exact.
 
         :param tag: (sppasTag) Tag to compare.
         :param text: (unicode) Unicode string to be compared with.
@@ -135,7 +135,7 @@ class sppasTagCompare(sppasBaseCompare):
 
     @staticmethod
     def startswith(tag, text):
-        """ Test if first text starts with the characters of the second text.
+        """Test if first text starts with the characters of the second text.
 
         :param tag: (sppasTag) Tag to compare.
         :param text: (unicode) Unicode string to be compared with.
@@ -154,7 +154,7 @@ class sppasTagCompare(sppasBaseCompare):
 
     @staticmethod
     def istartswith(tag, text):
-        """ Case-insensitive startswith.
+        """Case-insensitive startswith.
 
         :param tag: (sppasTag) Tag to compare.
         :param text: (unicode) Unicode string to be compared with.
@@ -173,7 +173,7 @@ class sppasTagCompare(sppasBaseCompare):
 
     @staticmethod
     def endswith(tag, text):
-        """ Test if first text ends with the characters of the second text.
+        """Test if first text ends with the characters of the second text.
 
         :param tag: (sppasTag) Tag to compare.
         :param text: (unicode) Unicode string to be compared with.
@@ -192,7 +192,7 @@ class sppasTagCompare(sppasBaseCompare):
 
     @staticmethod
     def iendswith(tag, text):
-        """ Case-insensitive endswith.
+        """Case-insensitive endswith.
 
         :param tag: (sppasTag) Tag to compare.
         :param text: (unicode) Unicode string to be compared with.
@@ -211,7 +211,7 @@ class sppasTagCompare(sppasBaseCompare):
 
     @staticmethod
     def contains(tag, text):
-        """ Test if the first text contains the second text.
+        """Test if the first text contains the second text.
 
         :param tag: (sppasTag) Tag to compare.
         :param text: (unicode) Unicode string to be compared with.
@@ -230,7 +230,7 @@ class sppasTagCompare(sppasBaseCompare):
 
     @staticmethod
     def icontains(tag, text):
-        """ Case-insensitive contains.
+        """Case-insensitive contains.
 
         :param tag: (sppasTag) Tag to compare.
         :param text: (unicode) Unicode string to be compared with.
@@ -249,7 +249,7 @@ class sppasTagCompare(sppasBaseCompare):
 
     @staticmethod
     def regexp(tag, pattern):
-        """ test if text matches pattern.
+        """test if text matches pattern.
 
         :param tag: (sppasTag) Tag to compare.
         :param pattern: (unicode) Pattern to search.
@@ -269,7 +269,7 @@ class sppasTagCompare(sppasBaseCompare):
 
     @staticmethod
     def equal(tag, x):
-        """ Return True if numerical value of the tag is equal to x.
+        """Return True if numerical value of the tag is equal to x.
 
         :param tag: (sppasTag) Tag to compare.
         :param x: (int, float)
@@ -290,7 +290,7 @@ class sppasTagCompare(sppasBaseCompare):
 
     @staticmethod
     def greater(tag, x):
-        """ Return True if numerical value of the tag is greater than x.
+        """Return True if numerical value of the tag is greater than x.
 
         :param tag: (sppasTag) Tag to compare.
         :param x: (int, float)
@@ -311,7 +311,7 @@ class sppasTagCompare(sppasBaseCompare):
 
     @staticmethod
     def lower(tag, x):
-        """ Return True if numerical value of the tag is lower than x.
+        """Return True if numerical value of the tag is lower than x.
 
         :param tag: (sppasTag) Tag to compare.
         :param x: (int, float)
@@ -334,7 +334,7 @@ class sppasTagCompare(sppasBaseCompare):
 
     @staticmethod
     def bool(tag, x):
-        """ Return True if boolean value of the tag is equal to boolean x.
+        """Return True if boolean value of the tag is equal to boolean x.
 
         :param tag: (sppasTag) Tag to compare.
         :param x: (bool)

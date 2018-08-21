@@ -24,7 +24,7 @@ foreground_color = wx.Colour(250, 250, 250, alpha=wx.ALPHA_OPAQUE)
 
 
 class myButton(wx.Button):
-    """ Create my own button. Inherited from the wx.Button.
+    """Create my own button. Inherited from the wx.Button.
 
     """
     def __init__(self, parent, label, name):
@@ -37,7 +37,7 @@ class myButton(wx.Button):
 
 
 class myFrame(wx.Frame):
-    """ Create my own frame. Inherited from the wx.Frame.
+    """Create my own frame. Inherited from the wx.Frame.
 
     """
     def __init__(self):
@@ -54,7 +54,7 @@ class myFrame(wx.Frame):
 
 
 class myMenuPanel(wx.Panel):
-    """ Create my own menu panel with several action buttons.
+    """Create my own menu panel with several action buttons.
     It aims to replace the old-style menus.
 
     """
@@ -104,7 +104,7 @@ class myMenuPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnAction(self, event):
-        """ A button was clicked.
+        """A button was clicked.
         Here we just send the event to the parent.
 
         """
@@ -114,7 +114,7 @@ class myMenuPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnAbout(self, event):
-        """ Display an About Dialog. """
+        """Display an About Dialog."""
 
         # Default dialog which will have the default style... so, it won't
         # have our own colors...
@@ -126,7 +126,7 @@ class myMenuPanel(wx.Panel):
 
 
 class myActionPanel(wx.Panel):
-    """ Create my own panel with 3 action buttons: exit, open, save.
+    """Create my own panel with 3 action buttons: exit, open, save.
 
     """
     def __init__(self, parent):
@@ -155,7 +155,7 @@ class myActionPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnAction(self, event):
-        """ A button was clicked.
+        """A button was clicked.
         Here we just send the event to the parent.
 
         """
@@ -167,7 +167,7 @@ class myActionPanel(wx.Panel):
 
 
 class myFilePanel(wx.Panel):
-    """ Create my own panel to work with files.
+    """Create my own panel to work with files.
 
     """
     def __init__(self, parent):
@@ -187,7 +187,7 @@ class myFilePanel(wx.Panel):
 
 
 class myAnnotatePanel(wx.Panel):
-    """ Create my own panel to annotate files.
+    """Create my own panel to annotate files.
 
     """
     def __init__(self, parent):
@@ -207,7 +207,7 @@ class myAnnotatePanel(wx.Panel):
 
 
 class myAnalyzePanel(wx.Panel):
-    """ Create my own panel to analyze files.
+    """Create my own panel to analyze files.
 
     """
     def __init__(self, parent):
@@ -227,7 +227,7 @@ class myAnalyzePanel(wx.Panel):
 
 
 class myApp(wx.App):
-    """ Create my own Application. Inherited from the wx.App.
+    """Create my own Application. Inherited from the wx.App.
 
     """
     def __init__(self, *args, **kw):
@@ -317,7 +317,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def exit(self):
-        """ Close the frame, terminating the application. """
+        """Close the frame, terminating the application."""
 
         print("Bye bye.")
         self.GetTopWindow().Close(True)
@@ -325,7 +325,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def OnExit(self):
-        """ Optional. Override the already existing method. """
+        """Optional. Override the already existing method."""
 
         # do whatever you want here (save session, ...)
         print("OnExit method invoked")
@@ -336,7 +336,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def switch_to_panel(self, panel_name):
-        """ Switch to the expected panel. Hide the current. """
+        """Switch to the expected panel. Hide the current."""
 
         print("Requested to switch on panel: {:s}".format(panel_name))
 

@@ -86,7 +86,7 @@ class TestBaseSubtitle(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_make_point(self):
-        """ Convert data into the appropriate digit type, or not. """
+        """Convert data into the appropriate digit type, or not."""
 
         self.assertEqual(sppasPoint(3., 0.02), sppasBaseSubtitles.make_point("3.0"))
         self.assertEqual(sppasPoint(3., 0.02), sppasBaseSubtitles.make_point("3."))
@@ -97,7 +97,7 @@ class TestBaseSubtitle(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_serialize_location(self):
-        """ Test location -> timestamps. """
+        """Test location -> timestamps."""
 
         a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
         self.assertEqual(sppasSubRip._serialize_location(a1),
@@ -124,7 +124,7 @@ class TestSubRip(unittest.TestCase):
 
     """
     def test_read(self):
-        """ Test of reading a SRT sample file. """
+        """Test of reading a SRT sample file."""
 
         txt = sppasSubRip()
         txt.read(os.path.join(DATA, "sample.srt"))
@@ -143,7 +143,7 @@ class TestSubRip(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_serialize_metadata(self):
-        """ Test metadata -> position. """
+        """Test metadata -> position."""
 
         a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
         self.assertEqual(sppasSubRip._serialize_metadata(a1), "")
@@ -163,7 +163,7 @@ class TestSubViewer(unittest.TestCase):
 
     """
     def test_read(self):
-        """ Test of reading a SUB sample file. """
+        """Test of reading a SUB sample file."""
 
         txt = sppasSubViewer()
         txt.read(os.path.join(DATA, "sample.sub"))
@@ -183,7 +183,7 @@ class TestSubViewer(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_serialize_header(self):
-        """ Test metadata -> header. """
+        """Test metadata -> header."""
 
         txt = sppasSubViewer()
         header = txt._serialize_header()

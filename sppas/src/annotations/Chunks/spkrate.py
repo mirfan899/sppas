@@ -63,20 +63,20 @@ class SpeakerRate(object):
     DEFAULT_SPK_RATE = 12.
     
     def __init__(self):
-        """ Create a new SpeakerRate instance. """
+        """Create a new SpeakerRate instance."""
         
         self._spk_rate = SpeakerRate.DEFAULT_SPK_RATE
 
     # ----------------------------------------------------------------------
 
     def get_value(self):
-        """ Returns the speaking rate. """
+        """Returns the speaking rate."""
         return self._spk_rate
 
     # ----------------------------------------------------------------------
 
     def set_value(self, value):
-        """ Set the speaking rate.
+        """Set the speaking rate.
 
         :param value: (float) Speaking rate value.
 
@@ -89,7 +89,7 @@ class SpeakerRate(object):
     # ----------------------------------------------------------------------
 
     def mul(self, coef):
-        """ Multiply the speaking rate.
+        """Multiply the speaking rate.
 
         :param coef: (float) coefficient
 
@@ -100,7 +100,7 @@ class SpeakerRate(object):
     # ----------------------------------------------------------------------
 
     def div(self, coef):
-        """ Divide the speaking rate.
+        """Divide the speaking rate.
 
         :param coef: (float) coefficient
 
@@ -111,7 +111,7 @@ class SpeakerRate(object):
     # ----------------------------------------------------------------------
 
     def eval_from_duration(self, duration, ntokens):
-        """ Set the speaking rate in number of tokens per seconds.
+        """Set the speaking rate in number of tokens per seconds.
 
         :param duration: (float) Speaking time (in seconds)
         :param ntokens: (int) Number of tokens
@@ -124,7 +124,7 @@ class SpeakerRate(object):
     # ----------------------------------------------------------------------
 
     def eval_from_tracks(self, tracks_times, ntokens):
-        """ Set the speaking rate in number of tokens per seconds.
+        """Set the speaking rate in number of tokens per seconds.
 
         :param tracks_times: (List of tracks)
         :param ntokens: (int) Number of tokens
@@ -136,7 +136,7 @@ class SpeakerRate(object):
     # ----------------------------------------------------------------------
 
     def ntokens(self, duration):
-        """ Return the number of expected tokens for a given duration.
+        """Return the number of expected tokens for a given duration.
 
         :param duration: (float) Speech duration in seconds.
         :returns: (int) number of tokens
@@ -147,7 +147,7 @@ class SpeakerRate(object):
 # ----------------------------------------------------------------------
 
     def duration(self, ntokens):
-        """ Return expected duration for a given number of tokens.
+        """Return expected duration for a given number of tokens.
 
         :param ntokens: (int) Number of tokens
         :returns: (float) duration

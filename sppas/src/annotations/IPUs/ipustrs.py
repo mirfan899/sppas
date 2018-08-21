@@ -50,7 +50,7 @@ class IPUsTrs(object):
 
     """
     def __init__(self, trs):
-        """ Creates a new IPUsTrs instance.
+        """Creates a new IPUsTrs instance.
 
         :param trs: (Transcription) Input transcription from which it's
         possible to extract IPUs.
@@ -69,14 +69,14 @@ class IPUsTrs(object):
     # ------------------------------------------------------------------
 
     def get_units(self):
-        """ Return the list of the IPUs contents. """
+        """Return the list of the IPUs contents."""
         
         return self._units
 
     # ------------------------------------------------------------------
 
     def get_names(self):
-        """ Return the list of file names for IPUs. """
+        """Return the list of file names for IPUs."""
 
         return self._names
 
@@ -85,7 +85,7 @@ class IPUsTrs(object):
     # ------------------------------------------------------------------
 
     def set_transcription(self, trs):
-        """ Set a new Transcription.
+        """Set a new Transcription.
 
         :param trs: (Transcription) Input transcription from which it's
         possible to extract IPUs.
@@ -101,7 +101,7 @@ class IPUsTrs(object):
     # ------------------------------------------------------------------
 
     def extract_bounds(self):
-        """ Return bound values.
+        """Return bound values.
 
         Bound values are boolean to know if we expect a silence at start
         or end of the given transcription. It is relevant only if the
@@ -132,7 +132,7 @@ class IPUsTrs(object):
     # ------------------------------------------------------------------
 
     def extract(self):
-        """ Extract units and (if any) extract tracks and silences.
+        """Extract units and (if any) extract tracks and silences.
 
         :returns: tracks and silences, with time as seconds.
 
@@ -163,7 +163,7 @@ class IPUsTrs(object):
     # ------------------------------------------------------------------
 
     def extract_units(self):
-        """ Extract IPUs content from a non-aligned transcription file.
+        """Extract IPUs content from a non-aligned transcription file.
 
         """
         self._units = []
@@ -183,7 +183,7 @@ class IPUsTrs(object):
     # ------------------------------------------------------------------
 
     def extract_aligned(self, trstier, nametier):
-        """ Extract from a time-aligned transcription file.
+        """Extract from a time-aligned transcription file.
 
         :returns: a tuple with tracks and silences lists
 

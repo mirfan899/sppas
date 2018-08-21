@@ -62,7 +62,7 @@ NOISE_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("noi
 
 
 class TestTag(unittest.TestCase):
-    """ Represents a typed content of a label.
+    """Represents a typed content of a label.
     A sppasTag() content can be one of the following types:
 
         1. string/unicode - (str)
@@ -79,7 +79,7 @@ class TestTag(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_string_content(self):
-        """ Test the tag if the content is a unicode/string. """
+        """Test the tag if the content is a unicode/string."""
 
         text = sppasTag(" test ")
         self.assertEqual(text.get_content(), u("test"))
@@ -95,7 +95,7 @@ class TestTag(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_int_content(self):
-        """ Test the tag if the content is an integer. """
+        """Test the tag if the content is an integer."""
 
         # int value
         text = sppasTag(2, tag_type="int")
@@ -119,7 +119,7 @@ class TestTag(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_float_content(self):
-        """ Test the tag if the content is a floating point. """
+        """Test the tag if the content is a floating point."""
 
         text = sppasTag(2.10, tag_type="float")
         textstr = sppasTag("2.1")
@@ -134,7 +134,7 @@ class TestTag(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_bool_content(self):
-        """ Test the tag if the content is a boolean. """
+        """Test the tag if the content is a boolean."""
 
         text = sppasTag("1", tag_type="bool")
         textstr = sppasTag("True")
@@ -166,7 +166,7 @@ class TestTag(unittest.TestCase):
 
 
 class TestEvents(unittest.TestCase):
-    """ Events are labels with a specific text.
+    """Events are labels with a specific text.
     This is a SPPAS convention!
     Test recognized events: silences, pauses, noises, etc.
 
@@ -200,7 +200,7 @@ class TestEvents(unittest.TestCase):
 
 
 class TestTagCompare(unittest.TestCase):
-    """ Test methods to compare tags. """
+    """Test methods to compare tags."""
 
     def setUp(self):
         self.tc = sppasTagCompare()
@@ -208,7 +208,7 @@ class TestTagCompare(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_members(self):
-        """ Test methods getter. """
+        """Test methods getter."""
 
         self.assertEqual(self.tc.methods['exact'], self.tc.exact)
         self.assertEqual(self.tc.get('exact'), self.tc.exact)
@@ -240,7 +240,7 @@ class TestTagCompare(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_exact(self):
-        """ tag == text (case sensitive). """
+        """tag == text (case sensitive)."""
 
         self.assertTrue(self.tc.exact(sppasTag("abc"), u("abc")))
         self.assertFalse(self.tc.exact(sppasTag("abc"), u("ABC")))
@@ -253,7 +253,7 @@ class TestTagCompare(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_iexact(self):
-        """ tag == text (case in-sensitive). """
+        """tag == text (case in-sensitive)."""
 
         self.assertTrue(self.tc.iexact(sppasTag("abc"), u("ABC")))
         self.assertFalse(self.tc.iexact(sppasTag("abc"), u("AAA")))
@@ -266,7 +266,7 @@ class TestTagCompare(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_startswith(self):
-        """ tag startswith text (case sensitive). """
+        """tag startswith text (case sensitive)."""
 
         self.assertTrue(self.tc.startswith(sppasTag("abc"), u("a")))
         self.assertFalse(self.tc.startswith(sppasTag("abc"), u("b")))
@@ -279,7 +279,7 @@ class TestTagCompare(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_istartswith(self):
-        """ tag startswith text (case in-sensitive). """
+        """tag startswith text (case in-sensitive)."""
 
         self.assertTrue(self.tc.istartswith(sppasTag("abc"), u("A")))
         self.assertFalse(self.tc.istartswith(sppasTag("abc"), u("b")))
@@ -292,7 +292,7 @@ class TestTagCompare(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_endswith(self):
-        """ tag endswith text (case sensitive). """
+        """tag endswith text (case sensitive)."""
 
         self.assertTrue(self.tc.endswith(sppasTag("abc"), u("c")))
         self.assertFalse(self.tc.endswith(sppasTag("abc"), u("b")))
@@ -305,7 +305,7 @@ class TestTagCompare(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_iendswith(self):
-        """ tag endswith text (case in-sensitive). """
+        """tag endswith text (case in-sensitive)."""
 
         self.assertTrue(self.tc.iendswith(sppasTag("abc"), u("C")))
         self.assertFalse(self.tc.iendswith(sppasTag("abc"), u("b")))
@@ -318,7 +318,7 @@ class TestTagCompare(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_contains(self):
-        """ tag contains text (case sensitive). """
+        """tag contains text (case sensitive)."""
 
         self.assertTrue(self.tc.contains(sppasTag("abc"), u("b")))
         self.assertFalse(self.tc.contains(sppasTag("abc"), u("B")))
@@ -331,7 +331,7 @@ class TestTagCompare(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_icontains(self):
-        """ tag contains text (case in-sensitive). """
+        """tag contains text (case in-sensitive)."""
 
         self.assertTrue(self.tc.icontains(sppasTag("abc"), u("B")))
         self.assertFalse(self.tc.icontains(sppasTag("abc"), u("d")))
@@ -344,7 +344,7 @@ class TestTagCompare(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_regexp(self):
-        """ tag matches the regexp. """
+        """tag matches the regexp."""
 
         self.assertTrue(self.tc.regexp(sppasTag("abc"), "^a[a-z]"))
         self.assertFalse(self.tc.regexp(sppasTag("abc"), "d"))
@@ -369,7 +369,7 @@ class TestTagCompare(unittest.TestCase):
 
 
 class TestLabel(unittest.TestCase):
-    """ Test sppasLabel(). """
+    """Test sppasLabel()."""
 
     def test_unicode(self):
         sppasLabel(sppasTag("être"))
@@ -441,7 +441,7 @@ class TestLabel(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_match(self):
-        """ Test if a tag matches some functions. """
+        """Test if a tag matches some functions."""
 
         t = sppasTagCompare()
         l = sppasLabel(sppasTag("para"))
@@ -460,7 +460,7 @@ class TestLabel(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_serialize(self):
-        """ ... Convert the label into a string. """
+        """... Convert the label into a string."""
 
         tag = sppasTag("")
         label = sppasLabel(tag)

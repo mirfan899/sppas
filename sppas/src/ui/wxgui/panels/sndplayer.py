@@ -611,7 +611,7 @@ class SndPlayer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def onAngleChanged(self, event):
-        """ Change the volume value. """
+        """Change the volume value."""
 
         value = event.GetValue()
         self._knobtracker.SetLabel("Volume = " + str(value))
@@ -621,7 +621,7 @@ class SndPlayer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def onTimer(self, event):
-        """ Keeps the player slider updated. """
+        """Keeps the player slider updated."""
 
         if self._mediaplayer is None: return
 

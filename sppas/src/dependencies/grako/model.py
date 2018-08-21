@@ -16,7 +16,7 @@ EOLCOL = 50
 
 
 class Node(object):
-    """ Base class for model nodes
+    """Base class for model nodes
     """
 
     inline = True
@@ -171,7 +171,7 @@ class DepthFirstWalker(NodeWalker):
 
 
 class ModelBuilderSemantics(object):
-    """ Intended as a semantic action for parsing, a ModelBuilderSemantics creates
+    """Intended as a semantic action for parsing, a ModelBuilderSemantics creates
         nodes using the class name given as first parameter to a grammar
         rule, and synthesizes the class/type if it's not known.
     """

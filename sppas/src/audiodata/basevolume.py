@@ -52,7 +52,7 @@ class sppasBaseVolume(object):
 
     """
     def __init__(self, win_len=0.01):
-        """ Create a sppasBaseVolume instance. """
+        """Create a sppasBaseVolume instance."""
         
         self._volumes = []
         self._rms = 0
@@ -61,7 +61,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def get_winlen(self):
-        """ Return the windows length that was used to estimate the volume values.
+        """Return the windows length that was used to estimate the volume values.
         
         :returns: (float) Duration in seconds.
 
@@ -71,7 +71,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def volume(self):
-        """ Return the global volume value (rms).
+        """Return the global volume value (rms).
         
         :returns: (int)
 
@@ -81,7 +81,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def volume_at(self, index):
-        """ Return the value of the volume at a given index.
+        """Return the value of the volume at a given index.
         
         :returns: (int)
 
@@ -91,7 +91,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def volumes(self):
-        """ Return the list of volume values (rms).
+        """Return the list of volume values (rms).
         
         :returns: (list)
 
@@ -101,7 +101,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def len(self):
-        """ Return the number of RMS values that were estimated.
+        """Return the number of RMS values that were estimated.
         
         :returns: (int)
 
@@ -111,7 +111,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def min(self):
-        """ Returns the minimum of RMS values.
+        """Returns the minimum of RMS values.
         
         :returns: (int)
 
@@ -121,7 +121,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def max(self):
-        """ Returns the maximum of RMS values.
+        """Returns the maximum of RMS values.
         
         :returns: (int)
 
@@ -131,7 +131,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def mean(self):
-        """ Returns the mean of RMS values.
+        """Returns the mean of RMS values.
         
         :returns: (float)
 
@@ -141,7 +141,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def median(self):
-        """ Returns the median of RMS values.
+        """Returns the median of RMS values.
         
         :returns: (float)
 
@@ -151,7 +151,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def variance(self):
-        """ Returns the sample variance of RMS values.
+        """Returns the sample variance of RMS values.
         
         :returns: (int)
 
@@ -161,7 +161,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def stdev(self):
-        """ Returns the standard deviation of RMS values.
+        """Returns the standard deviation of RMS values.
         
         :returns: (int)
 
@@ -171,7 +171,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def coefvariation(self):
-        """ Returns the coefficient of variation of RMS values.
+        """Returns the coefficient of variation of RMS values.
          
         :returns: (float) coef variation given as a percentage.
 
@@ -181,7 +181,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def zscores(self):
-        """ Returns the z-scores of RMS values.
+        """Returns the z-scores of RMS values.
         The z-score determines the relative location of a data value.
         
         :returns: (list of float)

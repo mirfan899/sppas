@@ -67,7 +67,7 @@ class ListIO(object):
 
     @staticmethod
     def read(dirname):
-        """ Read a list file (start-time end-time).
+        """Read a list file (start-time end-time).
 
         :param dirname: Name of the directory with the file to read.
 
@@ -92,7 +92,7 @@ class ListIO(object):
 
     @staticmethod
     def write(dirname, units):
-        """ Write a list file (start-time end-time).
+        """Write a list file (start-time end-time).
 
         :param dirname: Name of the directory with the file to read.
         :param units: List of units to write.
@@ -122,7 +122,7 @@ class AlignIO(object):
     DELIMITERS = (" ", separators.variants, separators.phonemes)
 
     def __init__(self, mapping, model):
-        """ Creates a new AlignIO instance.
+        """Creates a new AlignIO instance.
 
         :param mapping: (Mapping) a mapping table to convert the phone set
 
@@ -143,7 +143,7 @@ class AlignIO(object):
     # ------------------------------------------------------------------------
 
     def set_aligner(self, alignername):
-        """ Fix the name of the aligner.
+        """Fix the name of the aligner.
 
         :param alignername: (str) Case-insensitive name of the aligner.
 
@@ -153,14 +153,14 @@ class AlignIO(object):
     # -----------------------------------------------------------------------
 
     def get_aligner(self):
-        """ Return the name used as identifier of the aligner. """
+        """Return the name used as identifier of the aligner."""
 
         return self.aligntrack.get_aligner()
 
     # ----------------------------------------------------------------------
 
     def set_infersp(self, infersp):
-        """ Fix the infersp option.
+        """Fix the infersp option.
 
         :param infersp (bool) If infersp is set to True, the aligner
         will add an optional short pause at the end of each token, and the
@@ -172,7 +172,7 @@ class AlignIO(object):
     # ------------------------------------------------------------------------
 
     def segment_track(self, track, diralign, segment=True):
-        """ Perform the speech segmentation of a track in a directory.
+        """Perform the speech segmentation of a track in a directory.
 
         :param track: (str - int)
         :param diralign: (str)
@@ -198,7 +198,7 @@ class AlignIO(object):
     # ------------------------------------------------------------------------
 
     def read(self, dirname):
-        """ Read time-aligned tracks in a directory and return a Transcription.
+        """Read time-aligned tracks in a directory and return a Transcription.
 
         :param dirname: (str) Input directory to get files.
         :returns: Transcription
@@ -225,7 +225,7 @@ class AlignIO(object):
     # ------------------------------------------------------------------------
 
     def split(self, inputaudio, phontier, toktier, diralign):
-        """ Write tracks of a Transcription.
+        """Write tracks of a Transcription.
 
         If the given phontier is not already time-aligned in intervals,
         an automatic track-segmenter will be applied first and the TimeAligned

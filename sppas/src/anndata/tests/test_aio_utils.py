@@ -66,7 +66,7 @@ DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 class TestUtils(unittest.TestCase):
 
     def test_load(self):
-        """ Load a file into lines. """
+        """Load a file into lines."""
 
         lines = load(os.path.join(DATA, "sample.ctm"))
         self.assertEqual(len(lines), 45)
@@ -80,7 +80,7 @@ class TestUtils(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_format_labels(self):
-        """ Convert a string into a list of labels. """
+        """Convert a string into a list of labels."""
 
         self.assertEqual([], format_labels(""))
 
@@ -99,7 +99,7 @@ class TestUtils(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_check_gaps(self):
-        """ Check if there are holes between annotations. """
+        """Check if there are holes between annotations."""
 
         tier = sppasTier("empty")
         self.assertTrue(check_gaps(tier))
@@ -107,7 +107,7 @@ class TestUtils(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_fill_gaps(self):
-        """ Return the tier in which the temporal gaps between annotations are
+        """Return the tier in which the temporal gaps between annotations are
         filled with an un-labelled annotation."""
 
         # integers
@@ -164,7 +164,7 @@ class TestUtils(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_unfill_gaps(self):
-        """ Return the tier in which un-labelled annotations are removed. """
+        """Return the tier in which un-labelled annotations are removed."""
 
         # integers
         tier = sppasTier()
@@ -195,13 +195,13 @@ class TestUtils(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_check_overlaps(self):
-        """ Check whether some annotations are overlapping or not. """
+        """Check whether some annotations are overlapping or not."""
         pass
 
     # -----------------------------------------------------------------------
 
     def test_merge_overlapping_annotations(self):
-        """ Merge overlapping annotations. The labels of 2 overlapping
+        """Merge overlapping annotations. The labels of 2 overlapping
         annotations are appended."""
 
         tier = sppasTier()

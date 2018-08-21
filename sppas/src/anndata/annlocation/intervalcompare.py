@@ -114,7 +114,7 @@ from .duration import sppasDuration
 
 
 class sppasIntervalCompare(sppasBaseCompare):
-    """ SPPAS implementation of interval'comparisons.
+    """SPPAS implementation of interval'comparisons.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -133,7 +133,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     """
     def __init__(self):
-        """ Create a sppasIntervalCompare instance.
+        """Create a sppasIntervalCompare instance.
 
         Defines the list of implemented methods.
 
@@ -179,7 +179,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def before(i1, i2, max_delay=None, **kwargs):
-        """ Return True if i1 precedes i2.
+        """Return True if i1 precedes i2.
         This is part of the Allen algebra.
 
         :param i1:  |-------|
@@ -202,7 +202,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def before_equal(i1, i2, *args):
-        """ Return True if i1 precedes i2 and the durations are equals.
+        """Return True if i1 precedes i2 and the durations are equals.
         This is part of the INDU algebra.
 
         :param i1:  |-------|
@@ -218,7 +218,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def before_greater(i1, i2, *args):
-        """ Return True if i1 precedes i2 and the duration of i1 is greater.
+        """Return True if i1 precedes i2 and the duration of i1 is greater.
         This is part of the INDU algebra.
 
         :param i1:  |-----------|
@@ -234,7 +234,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def before_lower(i1, i2, *args):
-        """ Return True if i1 precedes i2 and the duration of i1 is lower.
+        """Return True if i1 precedes i2 and the duration of i1 is lower.
         This is part of the INDU algebra.
 
         :param i1:  |-----|
@@ -250,7 +250,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def after(i1, i2, max_delay=None, **kwargs):
-        """ Return True if i1 follows i2.
+        """Return True if i1 follows i2.
         This is part of the Allen algebra.
 
         :param i1:                  |--------|
@@ -294,7 +294,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def meets(i1, i2, **kwargs):
-        """ Return True if i1 meets i2.
+        """Return True if i1 meets i2.
 
         :param i1:  |-------|
         :param i2:          |-------|
@@ -330,7 +330,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def metby(i1, i2, **kwargs):
-        """ Return True if i1 is met by i2.
+        """Return True if i1 is met by i2.
 
         :param i1:          |-------|
         :param i2:  |-------|
@@ -366,7 +366,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def overlaps(i1, i2, overlap_min=None, percent=False, **kwargs):
-        """ Return True if i1 overlaps with i2.
+        """Return True if i1 overlaps with i2.
 
         :param i1:  |-------|
         :param i2:      |------|
@@ -424,7 +424,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def overlappedby(i1, i2, overlap_min=None, percent=False, **kwargs):
-        """ Return True if i1 overlapped by i2.
+        """Return True if i1 overlapped by i2.
 
         :param i1:      |-------|
         :param i2:  |-------|
@@ -490,7 +490,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def starts(i1, i2, **kwargs):
-        """ Return True if i1 starts at the start of i2 and finishes within it.
+        """Return True if i1 starts at the start of i2 and finishes within it.
 
         :param i1:  |----|
         :param i2:  |----------|
@@ -505,7 +505,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def startedby(i1, i2, **kwargs):
-        """ Return True if i1 is started at the start of i2 interval.
+        """Return True if i1 is started at the start of i2 interval.
 
         :param i1:  |----------|
         :param i2:  |----|
@@ -520,7 +520,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def finishes(i1, i2, **kwargs):
-        """ Return True if i1 finishes the same and starts within of i2.
+        """Return True if i1 finishes the same and starts within of i2.
 
         :param i1:       |----|
         :param i2:  |---------|
@@ -535,7 +535,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def finishedby(i1, i2, **kwargs):
-        """ Return True if i1 finishes the same and starts before of i2.
+        """Return True if i1 finishes the same and starts before of i2.
 
         :param i1:  |---------|
         :param i2:       |----|
@@ -550,7 +550,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def during(i1, i2, **kwargs):
-        """ Return True if i1 is located during i2.
+        """Return True if i1 is located during i2.
 
         :param i1:      |----|
         :param i2:  |------------|
@@ -565,7 +565,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def contains(i1, i2, **kwargs):
-        """ Return True if i1 contains i2.
+        """Return True if i1 contains i2.
 
         :param i1:  |------------|
         :param i2:      |----|
@@ -580,7 +580,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def equals(i1, i2, **kwargs):
-        """ Return True if i1 equals i2.
+        """Return True if i1 equals i2.
 
         :param i1:  |-------|
         :param i2:  |-------|
@@ -597,7 +597,7 @@ class sppasIntervalCompare(sppasBaseCompare):
 
     @staticmethod
     def _unpack(localization):
-        """ Return the 2 extremities of a localization. """
+        """Return the 2 extremities of a localization."""
 
         if isinstance(localization, (sppasInterval, sppasDisjoint)):
             return localization.get_begin(), localization.get_end()

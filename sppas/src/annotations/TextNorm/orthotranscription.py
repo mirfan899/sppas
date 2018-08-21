@@ -82,7 +82,7 @@ class sppasOrthoTranscription(object):
 
     @staticmethod
     def clean_toe(entry):
-        """ Clean Enriched Orthographic Transcription.
+        """Clean Enriched Orthographic Transcription.
         The convention includes information that must be removed.
 
         :param entry: (str)
@@ -111,7 +111,7 @@ class sppasOrthoTranscription(object):
 
     @staticmethod
     def toe_spelling(entry, std=False):
-        """ Create a specific spelling from an Enriched Orthographic Transcription.
+        """Create a specific spelling from an Enriched Orthographic Transcription.
 
         :param entry: (str) the EOT string
         :param std: (bool) Standard spelling expected instead of the Faked one.
@@ -224,7 +224,7 @@ class sppasOrthoTranscription(object):
 
     @staticmethod
     def __replace(obj):
-        """ Callback for clean_toe.
+        """Callback for clean_toe.
 
         :param obj: (MatchObject)
         :returns: (str)

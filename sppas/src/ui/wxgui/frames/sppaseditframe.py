@@ -109,7 +109,7 @@ class SppasEditFrame(ComponentFrame):
     # ------------------------------------------------------------------------
 
     def _init_members(self, args):
-        """ Override.
+        """Override.
         Sets the members settings.
 
         """
@@ -123,7 +123,7 @@ class SppasEditFrame(ComponentFrame):
     # ------------------------------------------------------------------------
 
     def _append_in_menu(self):
-        """ Append new items in a menu or a new menu in the menubar. """
+        """Append new items in a menu or a new menu in the menubar."""
 
         # DISABLED SINCE SPPAS-1.8.0
 
@@ -170,7 +170,7 @@ class SppasEditFrame(ComponentFrame):
     # ------------------------------------------------------------------------
 
     def CreateClient(self, parent, prefsIO):
-        """ Override. """
+        """Override."""
 
         return SppasEditClient(parent,prefsIO)
 
@@ -518,7 +518,7 @@ class SppasEditColourSchemePanel(wx.Panel):
         self.SetSizer(vbox)
 
     def radioClick(self, event):
-        """ Set the new theme. """
+        """Set the new theme."""
         theme = all_themes.get_theme( self.radiobox.GetStringSelection() )
         self.preferences.SetTheme( theme )
 

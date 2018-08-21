@@ -104,7 +104,7 @@ class BaseClient(wx.Window):
     # ------------------------------------------------------------------------
 
     def _set_notebook(self):
-        """ Create the notebook and set images. """
+        """Create the notebook and set images."""
 
         self._notebook = wx.Notebook( self, style=wx.NB_TOP|wx.CLIP_CHILDREN|wx.NB_MULTILINE|wx.NB_NOPAGETHEME|wx.NO_BORDER )
         self._notebook.SetBackgroundColour( self._prefsIO.GetValue( 'M_BG_COLOUR' ) )
@@ -121,7 +121,7 @@ class BaseClient(wx.Window):
     # ------------------------------------------------------------------------
 
     def _LayoutFrame(self):
-        """ Layout and Refresh the frame and refresh all GDI objects.  """
+        """Layout and Refresh the frame and refresh all GDI objects.  """
 
         page = self._notebook.GetCurrentPage()
         for i in range(self._xfiles.GetSize()):
@@ -151,7 +151,7 @@ class BaseClient(wx.Window):
     # ------------------------------------------------------------------------
 
     def SetImage(self, pageidx, imgname):
-        """ Set an image to a page of the notebook. """
+        """Set an image to a page of the notebook."""
 
         if imgname in self._notebookimages.keys():
             # now put an image on the page:
@@ -213,7 +213,7 @@ class BaseClient(wx.Window):
     # ------------------------------------------------------------------------
 
     def OnNewPage(self, event):
-        """ We received an event to add an empty new page. """
+        """We received an event to add an empty new page."""
 
         self.AddEmptyPage()
 
@@ -265,7 +265,7 @@ class BaseClient(wx.Window):
     # ------------------------------------------------------------------------
 
     def OnFileWander(self, event):
-        """  A file was checked/unchecked somewhere else, then, set/unset the data. """
+        """ A file was checked/unchecked somewhere else, then, set/unset the data."""
         owner = event.GetEventObject()
         f = event.filename
         s = event.status
@@ -292,14 +292,14 @@ class BaseClient(wx.Window):
     # ------------------------------------------------------------------------
 
     def OnSize(self, event):
-        """ Called by the parent when the frame is resized and lays out the client window. """
+        """Called by the parent when the frame is resized and lays out the client window."""
 
         self._LayoutFrame()
 
     # ------------------------------------------------------------------------
 
     def OnClose(self, event):
-        """ Destroy all objects then self. """
+        """Destroy all objects then self."""
 
         for i in range(self._xfiles.GetSize()):
             #obj = self._xfiles.GetObject(i)
@@ -311,7 +311,7 @@ class BaseClient(wx.Window):
     # ------------------------------------------------------------------------
 
     def OnSettings(self, event):
-        """ Set new preferences, then apply them.  """
+        """Set new preferences, then apply them.  """
 
         self._prefsIO = event.prefsIO
 
@@ -417,7 +417,7 @@ class BaseClient(wx.Window):
     # ------------------------------------------------------------------------
 
     def UnsetData(self, f):
-        """ Remove the given file. """
+        """Remove the given file."""
 
         if not self._xfiles.Exists(f):
             logging.debug('WARNING. Try to unset an un-existing data:%s '%f)
@@ -436,7 +436,7 @@ class BaseClient(wx.Window):
     # ------------------------------------------------------------------------
 
     def DeletePage(self, page):
-        """ Delete a page of the notebook. """
+        """Delete a page of the notebook."""
 
         # Close the page ???
         unused = True
@@ -459,7 +459,7 @@ class BaseClient(wx.Window):
     # ------------------------------------------------------------------------
 
     def GetSelection(self):
-        """ Return the list of displayed files (files of this page). """
+        """Return the list of displayed files (files of this page)."""
 
         if self._notebook.GetCurrentPage() is None:
             return []
@@ -478,7 +478,7 @@ class BaseClient(wx.Window):
     # ------------------------------------------------------------------------
 
     def __getIndexPageNotebook(self, page):
-        """ Get the index of this page in the notebook. """
+        """Get the index of this page in the notebook."""
 
         idx_page = filter(lambda i: page==self._notebook.GetPage(i),range(self._notebook.GetPageCount()))
         if len( idx_page )>0:
@@ -486,7 +486,7 @@ class BaseClient(wx.Window):
         return -1
 
     def __getIndexPageXFiles(self, page):
-        """ Get the index of this page in xfiles. """
+        """Get the index of this page in xfiles."""
 
         idx_page = filter(lambda i: page==self._xfiles.GetOther(i),range(self._xfiles.GetSize()))
         if len( idx_page )>0:

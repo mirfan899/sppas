@@ -244,7 +244,7 @@ class MainActionsPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def __create_buttons(self):
-        """ Create buttons to call tools. """
+        """Create buttons to call tools."""
 
         annotateButton = ButtonPanel(self, ID_ANNOTATIONS, self._prefs, ANNOTATIONS_ICON, "Annotate", "Segment speech, normalize text, ...")
         analyzeButton = ButtonPanel(self, ID_COMPONENTS, self._prefs, COMPONENTS_ICON, "Analyze", "Statistics, data managers, ...")

@@ -210,7 +210,7 @@ def ShowInformation(parent, preferences, contentmsg, style=wx.ICON_INFORMATION):
 
 
 def DemoBaseDialog(parent, preferences=None):
-    """ A simple demonstration of SPPAS message dialogs."""
+    """A simple demonstration of SPPAS message dialogs."""
 
     def _on_yesno(evt):
         dlg = YesNoQuestion(frame, preferences, "This is the message to show.")

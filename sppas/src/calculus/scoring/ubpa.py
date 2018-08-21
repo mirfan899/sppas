@@ -59,7 +59,7 @@ def _inc(vector, idx):
 
 
 def ubpa(vector, text, fp=sys.stdout, delta_max=0.04, step=0.01):
-    """ Estimates the Unit Boundary Positioning Accuracy.
+    """Estimates the Unit Boundary Positioning Accuracy.
 
     :param vector: contains the list of the delta values.
     :param text: one of "Duration", "Position Start", ...

@@ -85,7 +85,7 @@ class sppasBaseSclite(sppasBaseText):
 
     """
     def __init__(self, name=None):
-        """ Initialize a new sppasBaseSclite instance.
+        """Initialize a new sppasBaseSclite instance.
 
         :param name: (str) This transcription name.
 
@@ -114,7 +114,7 @@ class sppasBaseSclite(sppasBaseText):
 
     @staticmethod
     def make_point(midpoint):
-        """ The localization is a time value, so always a float. """
+        """The localization is a time value, so always a float."""
         try:
             midpoint = float(midpoint)
         except ValueError:
@@ -188,7 +188,7 @@ class sppasCTM(sppasBaseSclite):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of CTM format or not.
+        """Check whether a file is of CTM format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -219,7 +219,7 @@ class sppasCTM(sppasBaseSclite):
 
     @staticmethod
     def check_line(line, line_number=0):
-        """ Check whether a line is an annotation or not.
+        """Check whether a line is an annotation or not.
 
         Raises AioLineFormatError() or ValueError() in case of a
         malformed line.
@@ -252,7 +252,7 @@ class sppasCTM(sppasBaseSclite):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new CTM instance.
+        """Initialize a new CTM instance.
 
         :param name: (str) This transcription name.
 
@@ -268,7 +268,7 @@ class sppasCTM(sppasBaseSclite):
     # -----------------------------------------------------------------------
 
     def get_tier(self, line):
-        """ Return the tier related to the given line.
+        """Return the tier related to the given line.
         Find the tier or create it.
 
         :param line: (str)
@@ -293,7 +293,7 @@ class sppasCTM(sppasBaseSclite):
 
     @staticmethod
     def get_score(line):
-        """ Return the score of the label of a given line.
+        """Return the score of the label of a given line.
 
         :param line: (str)
         :return: (float) or None if no score is given
@@ -312,7 +312,7 @@ class sppasCTM(sppasBaseSclite):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a ctm file and fill the Transcription.
+        """Read a ctm file and fill the Transcription.
         It creates a tier for each media-channel observed in the file.
 
         :param filename: (str)
@@ -324,7 +324,7 @@ class sppasCTM(sppasBaseSclite):
     # -----------------------------------------------------------------------
 
     def _parse_lines(self, lines):
-        """ Fill the transcription from the lines of the CTM file. """
+        """Fill the transcription from the lines of the CTM file."""
 
         # the number of the current alternation
         in_alt = 0
@@ -382,7 +382,7 @@ class sppasCTM(sppasBaseSclite):
 
     @staticmethod
     def _add_alt_annotations(tier, annotations):
-        """ Add the annotations into the tier.
+        """Add the annotations into the tier.
 
         :TODO: deal with annotation alternations.
 
@@ -397,7 +397,7 @@ class sppasCTM(sppasBaseSclite):
 
     @staticmethod
     def _create_annotation(begin, duration, word, score):
-        """ Return the annotation corresponding to data of a line. """
+        """Return the annotation corresponding to data of a line."""
 
         word = sppasUnicode(word).clear_whitespace()
         label = sppasLabel(sppasTag(word), score)
@@ -412,7 +412,7 @@ class sppasCTM(sppasBaseSclite):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write a transcription into a file.
+        """Write a transcription into a file.
 
         :param filename: (str)
 
@@ -450,7 +450,7 @@ class sppasCTM(sppasBaseSclite):
 
     @staticmethod
     def _serialize_annotation(ann, waveform, channel):
-        """ Convert an annotation into lines for CTM files.
+        """Convert an annotation into lines for CTM files.
 
         Empty labels are replaced by "@".
 
@@ -492,7 +492,7 @@ class sppasCTM(sppasBaseSclite):
 
     @staticmethod
     def _serialize_tag(waveform, channel, begin, duration, tag, score=None):
-        """ Convert a tag with its score into a line for CTM files. """
+        """Convert a tag with its score into a line for CTM files."""
 
         if tag.is_empty():
             tag_content = "@"
@@ -557,7 +557,7 @@ class sppasSTM(sppasBaseSclite):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of STM format or not.
+        """Check whether a file is of STM format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -588,7 +588,7 @@ class sppasSTM(sppasBaseSclite):
 
     @staticmethod
     def check_line(line, line_number=0):
-        """ Check whether a line is an annotation or not.
+        """Check whether a line is an annotation or not.
         Raises AioLineFormatError() or ValueError() in case of a
         malformed line.
 
@@ -618,7 +618,7 @@ class sppasSTM(sppasBaseSclite):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new STM instance.
+        """Initialize a new STM instance.
 
         :param name: (str) This transcription name.
 
@@ -634,7 +634,7 @@ class sppasSTM(sppasBaseSclite):
     # -----------------------------------------------------------------------
 
     def get_tier(self, line):
-        """ Return the tier related to the given line.
+        """Return the tier related to the given line.
         Find the tier or create it.
 
         :param line: (str)
@@ -659,7 +659,7 @@ class sppasSTM(sppasBaseSclite):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a ctm file and fill the Transcription.
+        """Read a ctm file and fill the Transcription.
         It creates a tier for each media-channel observed in the file.
 
         :param filename: (str)
@@ -671,7 +671,7 @@ class sppasSTM(sppasBaseSclite):
     # -----------------------------------------------------------------------
 
     def _parse_lines(self, lines):
-        """ Fill the transcription from the lines of the STM file. """
+        """Fill the transcription from the lines of the STM file."""
 
         # the current tier to fill
         tier = None
@@ -704,7 +704,7 @@ class sppasSTM(sppasBaseSclite):
 
     @staticmethod
     def _create_annotation(begin, end, utterance, tier):
-        """ Add into the tier the annotation corresponding to data of a line. """
+        """Add into the tier the annotation corresponding to data of a line."""
 
         utterance = sppasUnicode(utterance).to_strip()
         labels = format_labels(utterance)
@@ -717,7 +717,7 @@ class sppasSTM(sppasBaseSclite):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write a transcription into a file.
+        """Write a transcription into a file.
 
         :param filename: (str)
 
@@ -762,7 +762,7 @@ class sppasSTM(sppasBaseSclite):
 
     @staticmethod
     def _serialize_annotation(ann, waveform, channel, speaker):
-        """ Convert an annotation into lines for STM files.
+        """Convert an annotation into lines for STM files.
 
         Empty labels are replaced by "IGNORE_TIME_SEGMENT_IN_SCORING".
         Alternative tags are included.

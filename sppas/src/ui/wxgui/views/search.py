@@ -73,7 +73,7 @@ class SearchDialog(spBaseDialog):
 
     """
     def __init__(self, parent, preferences, trs):
-        """ Constructor.
+        """Constructor.
 
         :param parent: is the parent wx object.
         :param preferences: (Preferences)
@@ -278,7 +278,7 @@ class SearchDialog(spBaseDialog):
 
 
 class LabelPanel(wx.Panel):
-    """ A panel with the search modes. """
+    """A panel with the search modes."""
 
     def __init__(self, parent):
 
@@ -330,7 +330,7 @@ class LabelPanel(wx.Panel):
 
 
 class TierPanel(wx.Panel):
-    """ A panel with the radiolist of tiers of the given transcription. """
+    """A panel with the radiolist of tiers of the given transcription."""
 
     def __init__(self, parent, trs):
 

@@ -362,7 +362,7 @@ class SingleFilterPanel(wx.Panel):
     # ----------------------------------------------------------------------
 
     def GetSelectedData(self):
-        """Return list of the selected data defined in the notebook. """
+        """Return list of the selected data defined in the notebook."""
 
         all_data = list()
         sel_list = self.filterlist.GetFirstSelected()
@@ -377,7 +377,7 @@ class SingleFilterPanel(wx.Panel):
     # ----------------------------------------------------------------------
 
     def _add_filter(self, data):
-        """Add a filter in the list. """
+        """Add a filter in the list."""
 
         index = self.filterlist.GetItemCount()
 
@@ -555,7 +555,7 @@ class LabelString(wx.Panel):
 
 
 class LabelNumber(wx.Panel):
-    """Search into a label of type number. """
+    """Search into a label of type number."""
 
     choices = (
                (" is equal to...",     "equal"),
@@ -667,7 +667,7 @@ class TimeFilterDialog(spBaseDialog):
               )
 
     def __init__(self, parent, preferences):
-        """ Constructor. """
+        """Constructor."""
         spBaseDialog.__init__(self, parent, preferences,
                               title=" - Localization filter")
         wx.GetApp().SetAppName("locfilter")
@@ -750,7 +750,7 @@ class DurationFilterDialog(spBaseDialog):
              )
 
     def __init__(self, parent, preferences):
-        """ Constructor. """
+        """Constructor."""
         spBaseDialog.__init__(self, parent, preferences,
                               title=" - Duration Filter")
         wx.GetApp().SetAppName("durfilter")

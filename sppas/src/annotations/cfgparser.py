@@ -105,7 +105,7 @@ class sppasAnnotationConfigParser(object):
 
     """
     def __init__(self):
-        """ Creates a new instance. """
+        """Creates a new instance."""
 
         self._config = OrderedDict()
         self._resources = list()
@@ -115,7 +115,7 @@ class sppasAnnotationConfigParser(object):
     # ------------------------------------------------------------------------
 
     def reset(self):
-        """ Set all members to their default value. """
+        """Set all members to their default value."""
 
         self._config = OrderedDict()
         self._resources = list()
@@ -124,28 +124,28 @@ class sppasAnnotationConfigParser(object):
     # ------------------------------------------------------------------------
 
     def get_config(self):
-        """ Return the configuration dictionary. """
+        """Return the configuration dictionary."""
         
         return self._config
 
     # ------------------------------------------------------------------------
 
     def get_resources(self):
-        """ Return the list of language resources. """
+        """Return the list of language resources."""
         
         return self._resources
 
     # ------------------------------------------------------------------------
 
     def get_options(self):
-        """ Return the list of options. """
+        """Return the list of options."""
         
         return self._options
 
     # ------------------------------------------------------------------------
 
     def parse(self, filename):
-        """ Parse a configuration file.
+        """Parse a configuration file.
 
         :param filename: (str) Configuration file name.
 

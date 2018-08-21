@@ -96,7 +96,7 @@ class sppasTheme(object):
     # -----------------------------------------------------------------------
 
     def __init__(self):
-        """ A Theme is a dictionary.
+        """A Theme is a dictionary.
 
             - the key is a string identifying the use;
             - value is a wxOption().
@@ -108,28 +108,28 @@ class sppasTheme(object):
     # -----------------------------------------------------------------------
 
     def get_choice(self, key):
-        """ Return a value from its key. """
+        """Return a value from its key."""
 
         return self._choice.get(key, None)
 
     # -----------------------------------------------------------------------
 
     def get_choices(self):
-        """ Return the dictionary with all pairs key/value. """
+        """Return the dictionary with all pairs key/value."""
 
         return self._choice
 
     # -----------------------------------------------------------------------
 
     def get_keys(self):
-        """ Return the list of keys. """
+        """Return the list of keys."""
 
         return self._choice.keys()
 
     # -----------------------------------------------------------------------
 
     def set_default(self):
-        """ Fix a set of default settings for a Graphical User Interface. """
+        """Fix a set of default settings for a Graphical User Interface."""
 
         self._choice['M_BG_COLOUR'] = sppasWxOption('wx.Colour', sppasTheme.COLOR1_BG, "Main background color")
         self._choice['M_FG_COLOUR'] = sppasWxOption('wx.Colour', sppasTheme.COLOR1_FG, "Main foreground color")

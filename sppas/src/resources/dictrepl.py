@@ -72,7 +72,7 @@ class sppasDictRepl(object):
     # -----------------------------------------------------------------------
 
     def __init__(self, dict_filename=None, nodump=False):
-        """ Create a sppasDictRepl instance.
+        """Create a sppasDictRepl instance.
 
         :param dict_filename: (str) The dictionary file name (2 columns)
         :param nodump: (bool) Disable the creation of a dump file
@@ -105,7 +105,7 @@ class sppasDictRepl(object):
     # -----------------------------------------------------------------------
 
     def get_filename(self):
-        """ Return the name of the file from which the vocab comes from. """
+        """Return the name of the file from which the vocab comes from."""
         return self.__filename
 
     # -----------------------------------------------------------------------
@@ -113,7 +113,7 @@ class sppasDictRepl(object):
     # -----------------------------------------------------------------------
 
     def is_key(self, entry):
-        """ Return True if entry is exactly a key in the dictionary.
+        """Return True if entry is exactly a key in the dictionary.
         This method can sometimes return a different value compared to "in".
 
         >>>d = sppasMapping()
@@ -135,7 +135,7 @@ class sppasDictRepl(object):
     # -----------------------------------------------------------------------
 
     def is_value(self, entry):
-        """ Return True if entry is a value in the dictionary.
+        """Return True if entry is a value in the dictionary.
 
         :param entry: (str) Unicode string.
 
@@ -153,7 +153,7 @@ class sppasDictRepl(object):
     # -----------------------------------------------------------------------
 
     def is_value_of(self, key, entry):
-        """ Return True if entry is a value of a given key in the dictionary.
+        """Return True if entry is a value of a given key in the dictionary.
 
         :param key: (str) Unicode string.
         :param entry: (str) Unicode string.
@@ -171,7 +171,7 @@ class sppasDictRepl(object):
     # -----------------------------------------------------------------------
 
     def is_unk(self, entry):
-        """ Return True if entry is not a key in the dictionary.
+        """Return True if entry is not a key in the dictionary.
 
         :param entry: (str) Unicode string.
 
@@ -182,14 +182,14 @@ class sppasDictRepl(object):
     # -----------------------------------------------------------------------
 
     def is_empty(self):
-        """ Return True if there is no entry in the dictionary. """
+        """Return True if there is no entry in the dictionary."""
 
         return len(self._dict) == 0
 
     # -----------------------------------------------------------------------
 
     def get(self, entry, substitution=None):
-        """ Return the value of a key of the dictionary or substitution.
+        """Return the value of a key of the dictionary or substitution.
 
         :param entry: (str) A token to find in the dictionary
         :param substitution: (str) String to return if token is missing of the dict
@@ -202,14 +202,14 @@ class sppasDictRepl(object):
     # -----------------------------------------------------------------------
 
     def replace(self, key):
-        """ Return the value of a key or None if key has no replacement. """
+        """Return the value of a key or None if key has no replacement."""
 
         return self.get(key)
 
     # -----------------------------------------------------------------------
 
     def replace_reversed(self, value):
-        """ Return the key(s) of a value or an empty string if value does not exists.
+        """Return the key(s) of a value or an empty string if value does not exists.
 
         :returns: a unicode string with all keys, separated by '_'.
 
@@ -232,7 +232,7 @@ class sppasDictRepl(object):
 
     @staticmethod
     def format_token(entry):
-        """ Remove the CR/LF, tabs, multiple spaces and others... and lowerise.
+        """Remove the CR/LF, tabs, multiple spaces and others... and lowerise.
 
         :param entry: (str) a token
         :returns: formatted token
@@ -245,7 +245,7 @@ class sppasDictRepl(object):
     # -----------------------------------------------------------------------
 
     def add(self, token, repl):
-        """ Add a new key,value into the dict, or append value to the existing
+        """Add a new key,value into the dict, or append value to the existing
         one with a "|" used as separator.
 
         :param token: (str) string of the token to add
@@ -268,7 +268,7 @@ class sppasDictRepl(object):
     # -----------------------------------------------------------------------
 
     def remove(self, entry):
-        """ Remove an entry, as key or value.
+        """Remove an entry, as key or value.
 
         :param entry: (str) unicode string of the entry to remove
 
@@ -287,7 +287,7 @@ class sppasDictRepl(object):
     # -----------------------------------------------------------------------
 
     def load_from_ascii(self, filename):
-        """ Load a replacement dictionary from an ascii file.
+        """Load a replacement dictionary from an ascii file.
 
         :param filename: (str) Replacement dictionary file name
 
@@ -318,7 +318,7 @@ class sppasDictRepl(object):
     # -----------------------------------------------------------------------
 
     def save_as_ascii(self, filename):
-        """ Save the replacement dictionary.
+        """Save the replacement dictionary.
 
         :param filename: (str)
         :returns: (bool)

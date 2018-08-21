@@ -70,7 +70,7 @@ questions.
 
 
 def before(x1, x2, y1, y2):
-    """ Allen's interval algebra.
+    """Allen's interval algebra.
         Return True if X precedes Y.
         X  |-------|
         Y                |-------|
@@ -79,7 +79,7 @@ def before(x1, x2, y1, y2):
 
 
 def after(x1, x2, y1, y2):
-    """ Allen's interval algebra.
+    """Allen's interval algebra.
         Return True if X follows Y.
         X               |--------|
         Y |-------|
@@ -88,7 +88,7 @@ def after(x1, x2, y1, y2):
 
 
 def meets(x1, x2, y1, y2):
-    """ Allen's interval algebra.
+    """Allen's interval algebra.
         Return True if X meets Y.
         X  |-------|
         Y          |-------|
@@ -97,7 +97,7 @@ def meets(x1, x2, y1, y2):
 
 
 def metby(x1, x2, y1, y2):
-    """ Allen's interval algebra.
+    """Allen's interval algebra.
         Return True if X is met by Y.
         X         |-------|
         Y |-------|
@@ -106,7 +106,7 @@ def metby(x1, x2, y1, y2):
 
 
 def overlaps(x1, x2, y1, y2):
-    """ Allen's interval algebra.
+    """Allen's interval algebra.
         Return True if X overlaps with Y.
         X |-------|
         Y     |------|
@@ -115,7 +115,7 @@ def overlaps(x1, x2, y1, y2):
 
 
 def overlappedby(x1, x2, y1, y2):
-    """ Allen's interval algebra.
+    """Allen's interval algebra.
         Return True if X overlapped by Y.
         X      |-------|
         Y |-------|
@@ -124,7 +124,7 @@ def overlappedby(x1, x2, y1, y2):
 
 
 def starts(x1, x2, y1, y2):
-    """ Allen's interval algebra.
+    """Allen's interval algebra.
         Return True if X starts at the start of Y and finishes within it.
         X |----|
         Y |---------|
@@ -133,7 +133,7 @@ def starts(x1, x2, y1, y2):
 
 
 def startedby(x1, x2, y1, y2):
-    """ Allen's interval algebra.
+    """Allen's interval algebra.
         Return True if X is started at the start of Y interval.
         X |--------|
         Y |----|
@@ -142,7 +142,7 @@ def startedby(x1, x2, y1, y2):
 
 
 def finishes(x1, x2, y1, y2):
-    """ Allen's interval algebra.
+    """Allen's interval algebra.
         Return True if X finishes at the y2 and within of Y.
         X     |----|
         Y |--------|
@@ -151,7 +151,7 @@ def finishes(x1, x2, y1, y2):
 
 
 def finishedby(x1, x2, y1, y2):
-    """ Allen's interval algebra.
+    """Allen's interval algebra.
         Return True if X finished at the y2 of Y.
         X  |--------|
         Y      |----|
@@ -160,7 +160,7 @@ def finishedby(x1, x2, y1, y2):
 
 
 def during(x1, x2, y1, y2):
-    """ Allen's interval algebra.
+    """Allen's interval algebra.
         Return True if X is located during Y.
         X     |----|
         Y |------------|
@@ -169,7 +169,7 @@ def during(x1, x2, y1, y2):
 
 
 def contains(x1, x2, y1, y2):
-    """ Allen's interval algebra.
+    """Allen's interval algebra.
         Return True if X contains Y.
         X  |------------|
         Y      |----|
@@ -178,7 +178,7 @@ def contains(x1, x2, y1, y2):
 
 
 def equals(x1, x2, y1, y2):
-    """ Allen's interval algebra.
+    """Allen's interval algebra.
         Return True if X equals Y.
         X |-------|
         Y |-------|
@@ -314,7 +314,7 @@ def ge(x1, x2, y1, y2):
 #---------------------------------------------------------------
 
 def split(x, y):
-    """ x,y (Annotation) """
+    """x,y (Annotation) """
     if x.GetLocation().IsPoint():
         x1 = x.GetLocation().GetPoint()
         x2 = x.GetLocation().GetPoint()

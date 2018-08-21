@@ -176,7 +176,7 @@ class RadiusChooser( wx.Dialog ):
     # -------------------------------------------------------------------------
 
     def GetValue(self):
-        """ Return the new radius value. """
+        """Return the new radius value."""
 
         return self.field.GetValue()
 

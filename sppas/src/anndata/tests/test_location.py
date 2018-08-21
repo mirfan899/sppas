@@ -353,7 +353,7 @@ class TestTimeInterval(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_check_interval_bounds(self):
-        """ Check if bounds form an interval. """
+        """Check if bounds form an interval."""
 
         self.assertTrue(sppasInterval(sppasPoint(1), sppasPoint(2)))
         self.assertTrue(sppasInterval(sppasPoint(1, 1), sppasPoint(2, 1)))
@@ -857,7 +857,7 @@ class TestLocalizationCompare(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_members(self):
-        """ Test methods getter. """
+        """Test methods getter."""
 
         self.assertEqual(self.lc.methods['rangefrom'], self.lc.rangefrom)
         self.assertEqual(self.lc.get('rangefrom'), self.lc.rangefrom)
@@ -868,7 +868,7 @@ class TestLocalizationCompare(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_rangefrom(self):
-        """ localization <= x. """
+        """localization <= x."""
 
         self.assertTrue(self.lc.rangefrom(sppasPoint(1., 0.02), 1.01))
         self.assertTrue(self.lc.rangefrom(sppasPoint(1., 0.02), 0.5))

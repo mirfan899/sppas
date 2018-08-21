@@ -52,7 +52,7 @@ except:
 
 
 class TerminalController(object):
-    """ A class that can be used to portably generate formatted output to a
+    """A class that can be used to portably generate formatted output to a
     terminal. `TerminalController` defines a set of instance variables whose
     values are initialized to the control sequence necessary to perform a
     given action.  These can be simply included in normal output to the
@@ -126,7 +126,7 @@ class TerminalController(object):
     _ANSICOLORS = "BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE".split()
 
     def __init__(self, term_stream=sys.stdout):
-        """ Create a `TerminalController` and initialize its attributes
+        """Create a `TerminalController` and initialize its attributes
         with appropriate values for the current terminal.
         `term_stream` is the stream that will be used for terminal
         output; if this stream is not a tty, then the terminal is
@@ -182,7 +182,7 @@ class TerminalController(object):
     # -----------------------------------------------------------------------
 
     def render(self, template):
-        """ Replace each $-substitutions in the given template string
+        """Replace each $-substitutions in the given template string
         with the corresponding terminal control string (if it's defined)
         or '' (if it's not).
         """

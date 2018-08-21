@@ -53,10 +53,10 @@ from sppas.src.config import symbols
 
 
 class LemmaDict(object):
-    """ Perform a simple dictionary-based lemmatization. """
+    """Perform a simple dictionary-based lemmatization."""
 
     def __init__(self):
-        """ Create a new LemmaDict instance. """
+        """Create a new LemmaDict instance."""
         
         # Load the dictionary:
         self.lemdict = dict()
@@ -64,7 +64,7 @@ class LemmaDict(object):
     # ------------------------------------------------------------------
 
     def load(self, dictfilename):
-        """ Load a dictionary with "token occurrence lemma" as columns.
+        """Load a dictionary with "token occurrence lemma" as columns.
 
         :param dictfilename: the dictionary file name.
 
@@ -100,7 +100,7 @@ class LemmaDict(object):
     # ------------------------------------------------------------------
 
     def __get(self, entry):
-        """ Return the lemmatization of an entry in the dictionary or "UNK".
+        """Return the lemmatization of an entry in the dictionary or "UNK".
             Parameters:  None
             Return:      int
             Exception:   None
@@ -110,7 +110,7 @@ class LemmaDict(object):
     # ------------------------------------------------------------------
 
     def is_unk(self, entry):
-        """ Return True if entry is unknown (not in the dictionary).
+        """Return True if entry is unknown (not in the dictionary).
             Parameters:
                 - entry is a string
             Return:      Boolean
@@ -120,7 +120,7 @@ class LemmaDict(object):
     # ------------------------------------------------------------------
 
     def get_lem(self, entry):
-        """ Return the lemmatization of an entry.
+        """Return the lemmatization of an entry.
             Parameters:
                 - entry is the string to lemmatize
             Return:      A string with the lemmatization
@@ -162,7 +162,7 @@ class LemmaDict(object):
     # ------------------------------------------------------------------
 
     def __lower(self,entry):
-        """ Lower a string.
+        """Lower a string.
             TO DO TO DO from a dictionary for accentuated upper chars.
         """
         __str = entry.lower()
@@ -176,7 +176,7 @@ class LemmaDict(object):
     # ------------------------------------------------------------------
 
     def __clean(self,entry):
-        """ Clean a string by removing tabs, CR/LF, and some punctuation.
+        """Clean a string by removing tabs, CR/LF, and some punctuation.
             Parameters:
                 - entry is the string to clean
             Return:      A string without special chars
@@ -194,7 +194,7 @@ class LemmaDict(object):
     # ------------------------------------------------------------------
 
     def lemmatize(self, unit, unk=False):
-        """ Return the lemmatization of an utterrance.
+        """Return the lemmatization of an utterrance.
             Words in the utterrance are separated by spaces.
             Parameters:
                 - unit is the utterrance to lemmatize

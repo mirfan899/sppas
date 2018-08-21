@@ -61,7 +61,7 @@ DICT_TEST_XML = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data",
 
 
 class TestDictPron(unittest.TestCase):
-    """ Test of sppasDictPron class. """
+    """Test of sppasDictPron class."""
 
     def test_init(self):
         d = sppasDictPron()
@@ -117,7 +117,7 @@ class TestDictPron(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_load_save(self):
-        """ Load/Save an HTK-ASCII pronunciation dictionary. """
+        """Load/Save an HTK-ASCII pronunciation dictionary."""
 
         d = sppasDictPron(DICT_TEST_OK, nodump=True)
         d.save_as_ascii(DICT_TEST + ".copy")
@@ -129,7 +129,7 @@ class TestDictPron(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_load_xml(self):
-        """ Load a pronunciation dictionary from a RALF dic file (xml). """
+        """Load a pronunciation dictionary from a RALF dic file (xml)."""
 
         d = sppasDictPron(DICT_TEST_XML)
         self.assertGreater(len(d), 7500)
@@ -139,7 +139,7 @@ class TestDictPron(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_ipa_to_sampa(self):
-        """ Convert a string in IPA to SAMPA. """
+        """Convert a string in IPA to SAMPA."""
 
         conv = dict()
         conv[u('ɑ')] = 'A'
@@ -163,7 +163,7 @@ class TestDictPron(unittest.TestCase):
 
 
 class TestUnigram(unittest.TestCase):
-    """ Test of sppasUnigram. """
+    """Test of sppasUnigram."""
 
     def test_unigram(self):
         gram = sppasUnigram()
@@ -183,7 +183,7 @@ class TestUnigram(unittest.TestCase):
 
 
 class TestDictRepl(unittest.TestCase):
-    """ Test of sppasDictRepl. """
+    """Test of sppasDictRepl."""
 
     def setUp(self):
         self.replfile = os.path.join(paths.resources, "repl", "fra.repl")
@@ -288,7 +288,7 @@ class TestDictRepl(unittest.TestCase):
 
 
 class TestMapping(unittest.TestCase):
-    """ Test of sppasMapping. """
+    """Test of sppasMapping."""
 
     def setUp(self):
         self.replfile = os.path.join(paths.resources, "models", "models-fra", "monophones.repl")

@@ -59,7 +59,7 @@ class TranscriptionCtrl(spControl):
                  pos=wx.DefaultPosition,
                  size=wx.DefaultSize,
                  trs=None):
-        """ Constructor.
+        """Constructor.
 
         Non-wxPython related parameter:
         :param trs: (Transcription) the object to display (see sppas.annodationdata)
@@ -116,7 +116,7 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def GetBegin(self):
-        """ Override. Return the begin time value of the Transcription(). """
+        """Override. Return the begin time value of the Transcription()."""
 
         if self._trs is not None:
             return self._trs.get_min_loc().get_midpoint()
@@ -125,7 +125,7 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def GetEnd(self):
-        """ Override. Return the end time value of the Transcription(). """
+        """Override. Return the end time value of the Transcription()."""
         
         if self._trs is not None:
             return self._trs.get_max_loc().get_midpoint()
@@ -134,7 +134,7 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def GetTranscription(self):
-        """ Return the Transcription(). """
+        """Return the Transcription()."""
         
         if self._trs is not None:
             return self._trs
@@ -143,7 +143,7 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def SetTranscription(self, trs):
-        """ Set a new Transcription. """
+        """Set a new Transcription."""
         
         self.__set(trs)
 
@@ -179,7 +179,7 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def SetTextAlign(self, value):
-        """ Fix the position of the text of an annotation.
+        """Fix the position of the text of an annotation.
 
         :param value: one of wx.ALIGN_LEFT, wx.ALIGN_CENTRE or wx.ALIGN_RIGHT
 
@@ -192,7 +192,7 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def SetTierBackgroundColour(self, value):
-        """ Fix the background color of all tiers.
+        """Fix the background color of all tiers.
 
         :param value: (wx.Colour)
 
@@ -210,7 +210,7 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def SetPointColour(self, color):
-        """ Set a new foreground color.
+        """Set a new foreground color.
 
         :param color: (wx.Colour)
 
@@ -223,7 +223,7 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def SetBackgroundColour(self, colour):
-        """ Sets the TranscriptionCtrl background color.
+        """Sets the TranscriptionCtrl background color.
         Ask to redraw only if color has changed.
 
         :param colour: (wx.Colour)
@@ -236,7 +236,7 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def SetHandlesColour(self, colour):
-        """ Sets the TranscriptionCtrl handles color.
+        """Sets the TranscriptionCtrl handles color.
         Ask to redraw only if color has changed.
 
         :param colour: (wx.Colour)
@@ -247,7 +247,7 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def SetTextColour(self, colour):
-        """ Sets the TranscriptionCtrl text color.
+        """Sets the TranscriptionCtrl text color.
         Ask to redraw only if color has changed.
 
         :param colour: (wx.Colour)
@@ -275,7 +275,7 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def SetPanePosition(self, value):
-        """ Override. Fix the position of the information pane for tiers.
+        """Override. Fix the position of the information pane for tiers.
 
         :param value: is one of wx.ALIGN_LEFT, wx.ALIGN_CENTRE or wx.ALIGN_RIGHT.
 
@@ -301,7 +301,7 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def OnMouseEvents(self, event):
-        """ Handles the wx.EVT_MOUSE_EVENTS event for this Ctrl. """
+        """Handles the wx.EVT_MOUSE_EVENTS event for this Ctrl."""
 
         if event.Moving():
             wx.PostEvent(self.GetParent().GetEventHandler(), event)
@@ -311,7 +311,7 @@ class TranscriptionCtrl(spControl):
     # ------------------------------------------------------------------------
 
     def OnTierSelected(self, event):
-        """ A tier was selected. """
+        """A tier was selected."""
 
         return
         # Which tier was selected?
@@ -323,7 +323,7 @@ class TranscriptionCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def DrawPane(self, dc, x, y, w, h):
-        """ Do not draw anything (each tier draw its own pane). """
+        """Do not draw anything (each tier draw its own pane)."""
         pass
 
     # -----------------------------------------------------------------------

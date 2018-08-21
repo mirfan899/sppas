@@ -68,7 +68,7 @@ class TimeGroupAnalysis(sppasDescriptiveStatistics):
 
     """
     def __init__(self, dict_items):
-        """ TGA - The Time Group Analyzer
+        """TGA - The Time Group Analyzer
 
         :param dict_items: (dict) a dict of a list of durations.
 
@@ -80,7 +80,7 @@ class TimeGroupAnalysis(sppasDescriptiveStatistics):
     # -----------------------------------------------------------------------
 
     def rPVI(self):
-        """ Estimates the Raw Pairwise Variability Index of data values.
+        """Estimates the Raw Pairwise Variability Index of data values.
 
         :returns: (dict) a dictionary of (key, nPVI) of float values
 
@@ -90,7 +90,7 @@ class TimeGroupAnalysis(sppasDescriptiveStatistics):
     # -----------------------------------------------------------------------
 
     def nPVI(self):
-        """ Estimates the Normalized Pairwise Variability Index of data values.
+        """Estimates the Normalized Pairwise Variability Index of data values.
 
         :returns: (dict) a dictionary of (key, nPVI) of float values
 
@@ -100,7 +100,7 @@ class TimeGroupAnalysis(sppasDescriptiveStatistics):
     # -----------------------------------------------------------------------
 
     def intercept_slope_original(self):
-        """ Estimates the intercept like the original TGA of data values.
+        """Estimates the intercept like the original TGA of data values.
 
         Create the list of points (x,y) of each TG where:
             - x is the position
@@ -119,7 +119,7 @@ class TimeGroupAnalysis(sppasDescriptiveStatistics):
     # -----------------------------------------------------------------------
 
     def intercept_slope(self):
-        """ Estimates the intercept like AnnotationPro of data values.
+        """Estimates the intercept like AnnotationPro of data values.
 
         Create the list of points (x,y) of each TG where:
             - x is the timestamps

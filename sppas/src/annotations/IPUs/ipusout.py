@@ -61,7 +61,7 @@ class IPUsOut(object):
 
     """
     def __init__(self, tracks):
-        """ Creates a new IPUsOut instance.
+        """Creates a new IPUsOut instance.
 
         :param tracks: (List of tuples)
 
@@ -77,7 +77,7 @@ class IPUsOut(object):
 
     @staticmethod
     def check_tracks(tracks):
-        """ Checks if the given list of tracks is okay.
+        """Checks if the given list of tracks is okay.
         Raise exception if error.
 
         :param tracks: List of tuples (from_pos,to_pos)
@@ -88,7 +88,7 @@ class IPUsOut(object):
     # ------------------------------------------------------------------
 
     def set_tracks(self, tracks):
-        """ Set a new list of tracks.
+        """Set a new list of tracks.
 
         :param tracks: List of tuples (from_pos,to_pos)
 
@@ -103,7 +103,7 @@ class IPUsOut(object):
     # ------------------------------------------------------------------
 
     def tracks2transcription(self, ipustrs, ipusaudio, add_ipu_idx=False):
-        """ Create a Transcription object from tracks.
+        """Create a Transcription object from tracks.
 
         :param ipustrs: (IPUsTrs)
         :param ipusaudio: (IPUsAudio)
@@ -204,7 +204,7 @@ class IPUsOut(object):
     # ------------------------------------------------------------------
 
     def write_list(self, filename, ipustrs, ipusaudio):
-        """ Write the list of tracks: from_time to_time (in seconds).
+        """Write the list of tracks: from_time to_time (in seconds).
         Last line is the audio file duration.
 
         :param filename: (str) Name of the file to write the list
@@ -237,7 +237,7 @@ class IPUsOut(object):
     # ------------------------------------------------------------------
 
     def write_tracks(self, ipustrs, ipusaudio, output, extension_trs, extension_audio):
-        """ Write tracks in an output directory.
+        """Write tracks in an output directory.
         Print only errors in a log file.
 
         :param ipustrs: (IPUsTrs)
@@ -259,7 +259,7 @@ class IPUsOut(object):
     # ------------------------------------------------------------------
 
     def write_text_tracks(self, ipustrs, ipusaudio, output, extension):
-        """ Write the units in track files.
+        """Write the units in track files.
 
         :param ipustrs: (IPUsTrs)
         :param ipusaudio: (IPUsAudio)
@@ -299,7 +299,7 @@ class IPUsOut(object):
     # ------------------------------------------------------------------
 
     def write_audio_tracks(self, ipustrs, ipusaudio, output, extension):
-        """ Write the audio in track files.
+        """Write the audio in track files.
 
         :param ipustrs: (IPUsTrs)
         :param ipusaudio: (IPUsAudio)

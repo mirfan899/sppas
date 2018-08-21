@@ -55,7 +55,7 @@ class annotationParam(object):
     
     """
     def __init__(self, filename=None):
-        """ Creates a new annotationParam instance.
+        """Creates a new annotationParam instance.
 
         :param filename: (str) Annotation configuration file
         
@@ -83,7 +83,7 @@ class annotationParam(object):
     # ------------------------------------------------------------------------
 
     def parse(self, filename):
-        """ Parse a configuration file to fill members. 
+        """Parse a configuration file to fill members.
         
         :param filename: (str) Annotation configuration file
 
@@ -103,7 +103,7 @@ class annotationParam(object):
     # ------------------------------------------------------------------------
 
     def set_activate(self, activate):
-        """ Enable or disable the annotation only if this annotation is valid. 
+        """Enable or disable the annotation only if this annotation is valid.
         
         :param activate: (bool) 
         :returns: (bool) enabled or disabled
@@ -117,7 +117,7 @@ class annotationParam(object):
     # ------------------------------------------------------------------------
 
     def set_lang(self, lang):
-        """ Set the language of the annotation only if this latter is accepted. 
+        """Set the language of the annotation only if this latter is accepted.
 
         :param lang: (str) Language to fix for the annotation
         :returns: (bool) 
@@ -137,35 +137,35 @@ class annotationParam(object):
     # ------------------------------------------------------------------------
 
     def get_key(self):
-        """ Return the identifier of the annotation (str). """
+        """Return the identifier of the annotation (str)."""
 
         return self.__key
 
     # ------------------------------------------------------------------------
 
     def get_name(self):
-        """ Return the name of the annotation (str). """
+        """Return the name of the annotation (str)."""
 
         return self.__name
 
     # ------------------------------------------------------------------------
 
     def get_descr(self):
-        """ Return the description of the annotation (str). """
+        """Return the description of the annotation (str)."""
 
         return self.__descr
 
     # ------------------------------------------------------------------------
 
     def get_activate(self):
-        """ Return the activation status of the annotation (bool). """
+        """Return the activation status of the annotation (bool)."""
 
         return self.__enabled
 
     # ------------------------------------------------------------------------
 
     def get_lang(self):
-        """ Return the language defined for the annotation (str) or an empty string. """
+        """Return the language defined for the annotation (str) or an empty string."""
 
         if len(self.__langres) > 0:
             return self.__langres[0].get_lang()
@@ -174,7 +174,7 @@ class annotationParam(object):
     # ------------------------------------------------------------------------
 
     def get_langlist(self):
-        """ Return the list of available languages for the annotation (list of str). """
+        """Return the list of available languages for the annotation (list of str)."""
 
         if len(self.__langres) > 0:
             return self.__langres[0].get_langlist()
@@ -183,7 +183,7 @@ class annotationParam(object):
     # ------------------------------------------------------------------------
 
     def get_langresource(self):
-        """ Return the list of language resources related to the annotation (list of sppasLang). """
+        """Return the list of language resources related to the annotation (list of sppasLang)."""
 
         if len(self.__langres) > 0:
             return self.__langres[0].get_langresource()
@@ -192,21 +192,21 @@ class annotationParam(object):
     # ------------------------------------------------------------------------
 
     def get_options(self):
-        """ Return the list of options of the annotation. """
+        """Return the list of options of the annotation."""
 
         return self.__options
 
     # ------------------------------------------------------------------------
 
     def get_option(self, step):
-        """ Return the step-th option. """
+        """Return the step-th option."""
 
         return self.__options[step]
 
     # ------------------------------------------------------------------------
 
     def get_option_by_key(self, key):
-        """ Return an option from its key. """
+        """Return an option from its key."""
 
         for opt in self.__options:
             if key == opt.get_key():
@@ -226,7 +226,7 @@ class sppasParam(object):
 
     """
     def __init__(self):
-        """ Creates a new sppasParam instance with default values. """
+        """Creates a new sppasParam instance with default values."""
 
         # Internal variables
         self.continuer = False
@@ -245,7 +245,7 @@ class sppasParam(object):
     # ------------------------------------------------------------------------
 
     def parse_config_file(self):
-        """ Parse the sppas.conf file to get the list of annotations. """
+        """Parse the sppas.conf file to get the list of annotations."""
 
         with open(os.path.join(paths.etc, "sppas.conf"), "r") as fp:
             lines = fp.readlines()
@@ -358,7 +358,7 @@ class sppasParam(object):
     # ------------------------------------------------------------------------
 
     def get_continue(self):
-        """ Ask to continue SPPAS or not!
+        """Ask to continue SPPAS or not!
 
         :returns: (bool)
 

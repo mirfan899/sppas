@@ -50,7 +50,7 @@ class sppasChannelFormatter(object):
 
     """
     def __init__(self, channel):
-        """ Create a sppasChannelFormatter instance.
+        """Create a sppasChannelFormatter instance.
 
         :param channel: (sppasChannel) The channel to work on.
 
@@ -64,14 +64,14 @@ class sppasChannelFormatter(object):
     # -----------------------------------------------------------------------
 
     def get_channel(self):
-        """ Return the sppasChannel. """
+        """Return the sppasChannel."""
 
         return self._channel
 
     # -----------------------------------------------------------------------
 
     def get_framerate(self):
-        """ Return the expected frame rate for the channel.
+        """Return the expected frame rate for the channel.
         Notice that while convert is not applied, it can be different of the
         current one of the channel.
 
@@ -83,7 +83,7 @@ class sppasChannelFormatter(object):
     # -----------------------------------------------------------------------
 
     def get_sampwidth(self):
-        """ Return the expected sample width for the channel.
+        """Return the expected sample width for the channel.
         Notice that while convert is not applied, it can be different of the
         current one  of the channel.
 
@@ -97,7 +97,7 @@ class sppasChannelFormatter(object):
     # -----------------------------------------------------------------------
 
     def set_framerate(self, framerate):
-        """ Fix the expected frame rate for the channel.
+        """Fix the expected frame rate for the channel.
         Notice that while convert is not applied, it can be different of the
         current one  of the channel.
 
@@ -109,7 +109,7 @@ class sppasChannelFormatter(object):
     # -----------------------------------------------------------------------
 
     def set_sampwidth(self, sampwidth):
-        """ Fix the expected sample width for the channel.
+        """Fix the expected sample width for the channel.
         Notice that while convert is not applied, it can be different of the
         current one  of the channel.
 
@@ -121,7 +121,7 @@ class sppasChannelFormatter(object):
     # -----------------------------------------------------------------------
 
     def convert(self):
-        """ Convert the channel.
+        """Convert the channel.
         Convert to the expected (already) given sample width and frame rate.
 
         """
@@ -137,7 +137,7 @@ class sppasChannelFormatter(object):
     # -----------------------------------------------------------------------
 
     def bias(self, bias_value):
-        """ Convert the channel with a bias added to each frame.
+        """Convert the channel with a bias added to each frame.
         Samples wrap around in case of overflow.
 
         :param bias_value: (int) the value to bias the frames
@@ -156,7 +156,7 @@ class sppasChannelFormatter(object):
     # -----------------------------------------------------------------------
 
     def mul(self, factor):
-        """ Convert the channel.
+        """Convert the channel.
         All frames in the original channel are multiplied by the floating-
         point value factor.
         Samples are truncated in case of overflow.
@@ -177,7 +177,7 @@ class sppasChannelFormatter(object):
     # ----------------------------------------------------------------------
 
     def remove_offset(self):
-        """ Convert the channel by removing the offset in the channel. """
+        """Convert the channel by removing the offset in the channel."""
 
         new_channel = sppasChannel()
         new_channel.set_sampwidth(self._sampwidth)
@@ -191,7 +191,7 @@ class sppasChannelFormatter(object):
     # ----------------------------------------------------------------------
 
     def sync(self, channel):
-        """ Convert the channel with the parameters from the channel put in input.
+        """Convert the channel with the parameters from the channel put in input.
 
         :param channel: (sppasChannel) the channel used as a model
 
@@ -206,7 +206,7 @@ class sppasChannelFormatter(object):
     # ----------------------------------------------------------------------
 
     def remove_frames(self, begin, end):
-        """ Convert the channel by removing frames.
+        """Convert the channel by removing frames.
 
         :param begin: (int) the position of the beginning of the frames to remove
         :param end: (int) the position of the end of the frames to remove
@@ -226,7 +226,7 @@ class sppasChannelFormatter(object):
     # ----------------------------------------------------------------------
 
     def add_frames(self, frames, position):
-        """ Convert the channel by adding frames.
+        """Convert the channel by adding frames.
 
         :param frames: (str)
         :param position: (int) the position where the frames will be inserted
@@ -244,7 +244,7 @@ class sppasChannelFormatter(object):
     # ----------------------------------------------------------------------
 
     def append_frames(self, frames):
-        """ Convert the channel by appending frames.
+        """Convert the channel by appending frames.
 
         :param frames: (str) the frames to append
 
@@ -262,7 +262,7 @@ class sppasChannelFormatter(object):
     # ----------------------------------------------------------------------
 
     def __convert_frames(self, frames):
-        """ Convert frames to the expected sample width and frame rate.
+        """Convert frames to the expected sample width and frame rate.
 
         :param frames: (str) the frames to convert
 

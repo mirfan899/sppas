@@ -133,7 +133,7 @@ class ComponentFrame(wx.Frame):
     # ------------------------------------------------------------------------
 
     def _init_members(self, args):
-        """ Sets the members settings with default values. """
+        """Sets the members settings with default values."""
 
         if "prefs" in args.keys():
             self._prefsIO = args["prefs"]
@@ -151,7 +151,7 @@ class ComponentFrame(wx.Frame):
     # ------------------------------------------------------------------------
 
     def _init_infos(self, args):
-        """  Set the title and the icon. """
+        """ Set the title and the icon."""
 
         # Set title
         _app = DEFAULT_APP_NAME
@@ -177,7 +177,7 @@ class ComponentFrame(wx.Frame):
     # ------------------------------------------------------------------------
 
     def _create_content(self):
-        """ Organize all sub-panels into a main panel and return it. """
+        """Organize all sub-panels into a main panel and return it."""
 
         mainpanel = wx.Panel(self, -1,  style=wx.NO_BORDER)
         mainpanel.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
@@ -202,7 +202,7 @@ class ComponentFrame(wx.Frame):
     # ------------------------------------------------------------------------
 
     def _create_menu(self, parent):
-        """ Create the default menu and append new items. """
+        """Create the default menu and append new items."""
 
         menu = MainMenuPanel(parent,  self._prefsIO)
         menu.AddSpacer()
@@ -214,7 +214,7 @@ class ComponentFrame(wx.Frame):
     # ------------------------------------------------------------------------
 
     def _create_toolbar(self, parent):
-        """ Creates the default toolbar. """
+        """Creates the default toolbar."""
 
         toolbar = MainToolbarPanel(parent, self._prefsIO)
         toolbar.AddButton(wx.ID_ADD, ADD_FILE_ICON, "Add files", tooltip="Add files into the list.")
@@ -227,7 +227,7 @@ class ComponentFrame(wx.Frame):
     # ------------------------------------------------------------------------
 
     def _create_splitter(self, parent):
-        """ Create the main panel content. """
+        """Create the main panel content."""
 
         splitpanel = SplitterPanel(parent, proportion=0.25)
         splitpanel.SetBackgroundColour(self._prefsIO.GetValue('M_BGM_COLOUR'))
@@ -247,7 +247,7 @@ class ComponentFrame(wx.Frame):
     # ------------------------------------------------------------------------
 
     def _LayoutFrame(self):
-        """ Lays out the frame. """
+        """Lays out the frame."""
 
         wx.LayoutAlgorithm().LayoutFrame(self, self._mainpanel)
         self._clientpanel.SendSizeEvent()
@@ -339,7 +339,7 @@ class ComponentFrame(wx.Frame):
     # ------------------------------------------------------------------------
 
     def OnExitApp(self, event):
-        """ Destroys the main frame which quits the wxPython application. """
+        """Destroys the main frame which quits the wxPython application."""
 
         response = ShowYesNoQuestion(self, self._prefsIO, "Are you sure you want to quit?")
         if response == wx.ID_YES:
@@ -353,7 +353,7 @@ class ComponentFrame(wx.Frame):
     # ------------------------------------------------------------------------
 
     def OnClose(self, event):
-        """ Close properly the client then exit. """
+        """Close properly the client then exit."""
 
         closeEvent = wx.CloseEvent(wx.wxEVT_CLOSE_WINDOW, self.GetId())
         closeEvent.SetEventObject(self)
@@ -365,7 +365,7 @@ class ComponentFrame(wx.Frame):
     # ------------------------------------------------------------------------
 
     def OnAdd(self, event):
-        """ Received an event to add new files. """
+        """Received an event to add new files."""
 
         if self._fmtype == "DATAFILES":
             self.AddFiles(filedialogs.OpenAnnotationFiles())
@@ -379,7 +379,7 @@ class ComponentFrame(wx.Frame):
     # ------------------------------------------------------------------------
 
     def OnRemove(self, event):
-        """ Received an event to close files. """
+        """Received an event to close files."""
 
         evt = FileWanderEvent(filename=None,status=False)
         evt.SetEventObject(self)
@@ -390,7 +390,7 @@ class ComponentFrame(wx.Frame):
     # -------------------------------------------------------------------------
 
     def OnNewTab(self, event):
-        """ Add a page in the client. """
+        """Add a page in the client."""
 
         evt = NotebookNewPageEvent()
         evt.SetEventObject(self)
@@ -399,7 +399,7 @@ class ComponentFrame(wx.Frame):
     # -------------------------------------------------------------------------
 
     def OnCloseTab(self, event):
-        """ Close a page in the client. """
+        """Close a page in the client."""
 
         evt = NotebookClosePageEvent()
         evt.SetEventObject(self)
@@ -408,14 +408,14 @@ class ComponentFrame(wx.Frame):
     # -------------------------------------------------------------------------
 
     def OnFileAdded(self, event):
-        """ Add a file of the file manager. """
+        """Add a file of the file manager."""
 
         self.AddFiles([event.filename])
 
     # -------------------------------------------------------------------------
 
     def OnFileClosed(self, event):
-        """ Remove of the file manager. """
+        """Remove of the file manager."""
 
         # Get the list of closed files and remove them of the file manager
         files = event.filenames
@@ -431,7 +431,7 @@ class ComponentFrame(wx.Frame):
     # -------------------------------------------------------------------------
 
     def OnHelp(self, evt):
-        """ Open the help frame. """
+        """Open the help frame."""
 
         ShowInformation(self, self._prefsIO,
                         "The documentation is available online and "
@@ -440,7 +440,7 @@ class ComponentFrame(wx.Frame):
     # ------------------------------------------------------------------------
 
     def OnSettings(self, event):
-        """ Open the Settings box. """
+        """Open the Settings box."""
 
         import copy
         p = copy.deepcopy(self._prefsIO)
@@ -481,7 +481,7 @@ class ComponentFrame(wx.Frame):
     # ------------------------------------------------------------------------
 
     def OnFileWander(self, event):
-        """ We received an event: a file was added/removed. """
+        """We received an event: a file was added/removed."""
 
         owner = event.GetEventObject()
         f = event.filename
@@ -500,7 +500,7 @@ class ComponentFrame(wx.Frame):
     # -------------------------------------------------------------------------
 
     def SetPrefs(self, prefs):
-        """ Fix new preferences. """
+        """Fix new preferences."""
 
         self._prefsIO = prefs
         self.toolbar.SetPrefs(self._prefsIO)

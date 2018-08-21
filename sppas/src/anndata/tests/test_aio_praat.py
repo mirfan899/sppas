@@ -92,7 +92,7 @@ class TestBasePraat(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_make_point(self):
-        """ Convert data into the appropriate digit type, or not. """
+        """Convert data into the appropriate digit type, or not."""
 
         self.assertEqual(sppasPoint(3., 0.005), sppasBasePraat.make_point("3.0"))
         self.assertEqual(sppasPoint(3., 0.005), sppasBasePraat.make_point("3."))
@@ -105,7 +105,7 @@ class TestBasePraat(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_parse_int(self):
-        """ Parse an integer value from a line of a Praat formatted file. """
+        """Parse an integer value from a line of a Praat formatted file."""
 
         # long textgrid
         value = sppasBasePraat._parse_int("size = 1")
@@ -130,7 +130,7 @@ class TestBasePraat(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_parse_float(self):
-        """ Parse a float value from a line of a Praat formatted file. """
+        """Parse a float value from a line of a Praat formatted file."""
 
         # long textgrid
         value = sppasBasePraat._parse_float("xmax = 21.3471")
@@ -152,7 +152,7 @@ class TestBasePraat(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_parse_string(self):
-        """ Parse a float value from a line of a Praat formatted file. """
+        """Parse a float value from a line of a Praat formatted file."""
 
         # long standard
         text = sppasBasePraat._parse_string('class = "IntervalTier"\n')
@@ -205,7 +205,7 @@ class TestBasePraat(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_serialize_header(self):
-        """ Serialize the header of a Praat file. """
+        """Serialize the header of a Praat file."""
 
         header = sppasBasePraat._serialize_header("TextGrid", 0., 10.).split("\n")
         self.assertEqual(len(header), 6)
@@ -217,7 +217,7 @@ class TestBasePraat(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_serialize_label_text(self):
-        """ Convert a label into a text string. """
+        """Convert a label into a text string."""
 
         a = sppasAnnotation(sppasLocation(sppasPoint(1)), sppasLabel(sppasTag("")))
         line = sppasBasePraat._serialize_labels_text(a)
@@ -243,7 +243,7 @@ class TestBasePraat(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_serialize_label_value(self):
-        """ Convert a label with a numerical value into a string. """
+        """Convert a label with a numerical value into a string."""
 
         with self.assertRaises(IOError):
             sppasBasePraat._serialize_labels_value([sppasLabel(sppasTag(""))])
@@ -279,7 +279,7 @@ class TestTextGrid(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_detect(self):
-        """ Test the file format detection method. """
+        """Test the file format detection method."""
 
         for filename in os.listdir(DATA):
             f = os.path.join(DATA, filename)
@@ -293,7 +293,7 @@ class TestTextGrid(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_tier_long(self):
-        """ Test the read of a tier. """
+        """Test the read of a tier."""
 
         tier_content = 'item [1]:\n'\
                        '  class = "IntervalTier"\n'\
@@ -345,7 +345,7 @@ class TestTextGrid(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_tier_short(self):
-        """ Test the parsing of a tier. """
+        """Test the parsing of a tier."""
 
         tier_content = '"IntervalTier"\n'\
                        '"transcription"\n'\
@@ -388,7 +388,7 @@ class TestTextGrid(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_annotation_long(self):
-        """ Test the parsing of an annotation. """
+        """Test the parsing of an annotation."""
 
         ann_content = '    xmin = 0.0\n' \
                       '    xmax = 2.4971007546\n' \
@@ -431,7 +431,7 @@ class TestTextGrid(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_annotation_short(self):
-        """ Test the parsing of an annotation. """
+        """Test the parsing of an annotation."""
 
         ann_content = '0.0\n' \
                       '2.4971007546\n' \
@@ -463,7 +463,7 @@ class TestTextGrid(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_localization_long(self):
-        """ Test parse_localization of a long TextGrid. """
+        """Test parse_localization of a long TextGrid."""
 
         # interval
         ann_content = '    xmin = 0.0\n' \
@@ -488,7 +488,7 @@ class TestTextGrid(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_localization_short(self):
-        """ Test parse_localization of a long TextGrid. """
+        """Test parse_localization of a long TextGrid."""
 
         # interval
         ann_content = '0.0\n' \
@@ -513,7 +513,7 @@ class TestTextGrid(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_text_short(self):
-        """ Test text parser. """
+        """Test text parser."""
 
         # standard tag
         ann_content = '0.0\n' \
@@ -551,7 +551,7 @@ class TestTextGrid(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_text_long(self):
-        """ Test text parser. """
+        """Test text parser."""
 
         # standard tag
         ann_content = '\t\txmin = 0.0\n' \
@@ -608,7 +608,7 @@ class TestTextGrid(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_serialize_textgrid_header(self):
-        """ Create a string with the header of the textgrid. """
+        """Create a string with the header of the textgrid."""
 
         header = sppasTextGrid._serialize_textgrid_header(xmin=0.,
                                                           xmax=10.,
@@ -626,7 +626,7 @@ class TestTextGrid(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_serialize_tier_header(self):
-        """ Create the string with the header for a new tier. """
+        """Create the string with the header for a new tier."""
 
         tier = sppasTier('toto')
         with self.assertRaises(AioEmptyTierError):
@@ -658,7 +658,7 @@ class TestTextGrid(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_serialize_point_annotation(self):
-        """ Converts an annotation consisting of points to the TextGrid format. """
+        """Converts an annotation consisting of points to the TextGrid format."""
 
         ann = sppasAnnotation(sppasLocation(sppasPoint(0.881936360608634579)))
         ann_content = sppasTextGrid._serialize_point_annotation(ann, 3)
@@ -706,7 +706,7 @@ class TestNumerical(unittest.TestCase):
 class TestPitchTier(unittest.TestCase):
 
     def test_detect(self):
-        """ Test the file format detection method. """
+        """Test the file format detection method."""
 
         for filename in os.listdir(DATA):
             f = os.path.join(DATA, filename)

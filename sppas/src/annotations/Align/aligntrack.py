@@ -78,7 +78,7 @@ class AlignTrack(object):
 
     """
     def __init__(self, model, alignername=DEFAULT_ALIGNER):
-        """ Create a AlignTrack instance.
+        """Create a AlignTrack instance.
 
         :param model: (str) Name of the directory of the acoustic model.
         It is expected to contain at least a file with name "hmmdefs".
@@ -109,7 +109,7 @@ class AlignTrack(object):
     # ------------------------------------------------------------------------
 
     def set_model(self, model):
-        """ Fix an acoustic model to perform time-alignment.
+        """Fix an acoustic model to perform time-alignment.
 
         :param model: (str) Name of the directory of the acoustic model.
 
@@ -120,7 +120,7 @@ class AlignTrack(object):
     # ----------------------------------------------------------------------
 
     def set_aligner(self, alignername):
-        """ Fix the name of the aligner, one of aligners.ALIGNERS_TYPES.
+        """Fix the name of the aligner, one of aligners.ALIGNERS_TYPES.
 
         :param alignername: (str) Case-insensitive name of an aligner system.
 
@@ -132,7 +132,7 @@ class AlignTrack(object):
     # ----------------------------------------------------------------------
 
     def set_infersp(self, infersp):
-        """ Fix the automatic inference of short pauses.
+        """Fix the automatic inference of short pauses.
 
         :param infersp: (bool) If infersp is set to True, a short pause is
         added at the end of each token, and the automatic aligner will infer
@@ -145,35 +145,35 @@ class AlignTrack(object):
     # ----------------------------------------------------------------------
 
     def get_aligner(self):
-        """ Return the aligner name identifier. """
+        """Return the aligner name identifier."""
 
         return self._alignerid
 
     # ----------------------------------------------------------------------
 
     def get_aligner_ext(self):
-        """ Return the output file extension the aligner will use. """
+        """Return the output file extension the aligner will use."""
 
         return self._aligner.get_outext()
 
     # ----------------------------------------------------------------------
 
     def set_aligner_ext(self, ext):
-        """ Fix the output file extension the aligner will use. """
+        """Fix the output file extension the aligner will use."""
 
         self._aligner.set_outext(ext)
 
     # ----------------------------------------------------------------------
 
     def get_model(self):
-        """ Return the model directory name. """
+        """Return the model directory name."""
 
         return self._modeldir
 
     # ------------------------------------------------------------------------
 
     def segmenter(self, audio_filename, phonname, tokenname, alignname):
-        """ Call an aligner to perform speech segmentation and manage errors.
+        """Call an aligner to perform speech segmentation and manage errors.
 
         :param audio_filename: (str) the audio file name of an IPU
         :param phonname: (str) the file name with the phonetization
@@ -219,7 +219,7 @@ class AlignTrack(object):
     # ------------------------------------------------------------------------
 
     def _instantiate_aligner(self):
-        """ Instantiate self._aligner to the appropriate Aligner system. """
+        """Instantiate self._aligner to the appropriate Aligner system."""
 
         self._aligner = aligners_instantiate(self._modeldir, self._alignerid)
         self._aligner.set_infersp(self._infersp)
@@ -227,7 +227,7 @@ class AlignTrack(object):
     # ------------------------------------------------------------------------
 
     def _readline(self, filename):
-        """ Read the first line of filename, and return it as a unicode formatted string. """
+        """Read the first line of filename, and return it as a unicode formatted string."""
 
         line = ""
         try:

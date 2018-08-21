@@ -41,7 +41,7 @@ from .tag import sppasTag
 
 
 class sppasLabel(object):
-    """ Represents the content of an annotation.
+    """Represents the content of an annotation.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -60,7 +60,7 @@ class sppasLabel(object):
 
     """
     def __init__(self, tag, score=None):
-        """ Creates a new sppasLabel instance.
+        """Creates a new sppasLabel instance.
 
         :param tag: (sppasTag or list of sppasTag)
         :param score: (float or list of float)
@@ -84,7 +84,7 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def append_content(self, content, data_type="str", score=None):
-        """ Add a text into the list.
+        """Add a text into the list.
 
         :param content: (str)
         :param data_type: (str): The type of this text content.\ 
@@ -98,7 +98,7 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def append(self, tag, score=None):
-        """ Add a sppasTag into the list.
+        """Add a sppasTag into the list.
 
         :param tag: (sppasTag)
         :param score: (float)
@@ -120,7 +120,7 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def remove(self, tag):
-        """ Remove a tag of the list.
+        """Remove a tag of the list.
 
         :param tag: (sppasTag) the tag to be removed of the list.
 
@@ -139,7 +139,7 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def get_score(self, tag):
-        """ Return the score of a tag or None if tag is not in the label.
+        """Return the score of a tag or None if tag is not in the label.
 
         :param tag: (sppasTag)
         :return: score: (float)
@@ -158,7 +158,7 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def set_score(self, tag, score):
-        """ Set a score to a given tag.
+        """Set a score to a given tag.
 
         :param tag: (sppasTag)
         :param score: (float)
@@ -175,7 +175,7 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def get_best(self):
-        """ Return the best sppasTag, i.e. the one with the better score.
+        """Return the best sppasTag, i.e. the one with the better score.
 
         :returns: (sppasTag or None)
 
@@ -198,7 +198,7 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def get_type(self):
-        """ Return the type of the tags content. """
+        """Return the type of the tags content."""
 
         if self.__tags is None:
             return "str"
@@ -208,7 +208,7 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def is_tagged(self):
-        """ Return False if no tag is set. """
+        """Return False if no tag is set."""
 
         if self.__tags is None:
             return False
@@ -220,7 +220,7 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def is_string(self):
-        """ Return True if tags are string or unicode.
+        """Return True if tags are string or unicode.
 
         Return False if no tag is set.
 
@@ -232,7 +232,7 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def is_float(self):
-        """ Return True if tags are of type "float".
+        """Return True if tags are of type "float".
 
         Return False if no tag is set.
 
@@ -244,7 +244,7 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def is_int(self):
-        """ Return True if tags are of type "int".
+        """Return True if tags are of type "int".
 
         Return False if no tag is set.
 
@@ -256,7 +256,7 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def is_bool(self):
-        """ Return True if tags are of type "bool".
+        """Return True if tags are of type "bool".
 
         Return False if no tag is set.
 
@@ -268,14 +268,14 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """ Return a deep copy of the label. """
+        """Return a deep copy of the label."""
 
         return copy.deepcopy(self)
 
     # -----------------------------------------------------------------------
 
     def match(self, tag_functions, logic_bool="and"):
-        """ Return True if a tag matches all or any of the functions.
+        """Return True if a tag matches all or any of the functions.
 
         :param tag_functions: list of (function, value, logical_not)
         :param logic_bool: (str) Apply a logical "and" or a logical "or" \
@@ -324,7 +324,7 @@ class sppasLabel(object):
     # WILL BE DEPRECATED (when filter will be finished)
     # USED ONLY BY "SEARCH" METHOD IN TIERS.
     def contains(self, tag, search_function='exact'):
-        """ Return True if the label contains a given tag.
+        """Return True if the label contains a given tag.
 
         * * *   WILL BE DEPRECATED (when filter will be finished)  * * *
 
@@ -393,7 +393,7 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def serialize(self, empty="", alt=True):
-        """ Convert the label into a string, include or not alternative tags.
+        """Convert the label into a string, include or not alternative tags.
 
         Use the "{ | }" system to serialize the alternative tags.
         Scores of the tags are not returned.

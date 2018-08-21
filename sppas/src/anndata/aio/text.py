@@ -73,7 +73,7 @@ class sppasBaseText(sppasBaseIO):
 
     """
     def __init__(self, name=None):
-        """ Initialize a new sppasBaseText instance.
+        """Initialize a new sppasBaseText instance.
 
         :param name: (str) This transcription name.
 
@@ -101,7 +101,7 @@ class sppasBaseText(sppasBaseIO):
 
     @staticmethod
     def make_point(data):
-        """ Convert data into the appropriate sppasPoint().
+        """Convert data into the appropriate sppasPoint().
 
         No radius is fixed if data is an integer.
         A default radius of 0.001 seconds if data is a float.
@@ -123,7 +123,7 @@ class sppasBaseText(sppasBaseIO):
 
     @staticmethod
     def is_comment(line):
-        """ Check if the line is a comment, ie starts with ';;'.
+        """Check if the line is a comment, ie starts with ';;'.
 
         :param line: (str/unicode)
         :returns: boolean
@@ -138,7 +138,7 @@ class sppasBaseText(sppasBaseIO):
 
     @staticmethod
     def format_quotation_marks(text):
-        """ Remove initial and final quotation mark.
+        """Remove initial and final quotation mark.
 
         :param text: (str/unicode) Text to clean
         :returns: (unicode) the text without initial and final quotation mark.
@@ -156,7 +156,7 @@ class sppasBaseText(sppasBaseIO):
 
     @staticmethod
     def split_lines(lines, separator=" "):
-        """ Split the lines with the given separator.
+        """Split the lines with the given separator.
 
         :param lines: (list) List of lines
         :param separator: (char) a character used to separate columns of the lines
@@ -192,7 +192,7 @@ class sppasBaseText(sppasBaseIO):
 
     @staticmethod
     def _parse_comment(comment, meta_object):
-        """ Parse a comment and eventually fill metadata.
+        """Parse a comment and eventually fill metadata.
 
         :param comment: (str) A line of a file
         :param meta_object: (sppasMeta)
@@ -211,7 +211,7 @@ class sppasBaseText(sppasBaseIO):
 
     @staticmethod
     def fix_location(content_begin, content_end):
-        """ Fix the location from the content of the data.
+        """Fix the location from the content of the data.
 
         :param content_begin: (str) The content of a column representing
         the begin of a localization.
@@ -249,7 +249,7 @@ class sppasBaseText(sppasBaseIO):
 
     @staticmethod
     def serialize_header(filename, meta_object):
-        """ Create a comment with the metadata to be written.
+        """Create a comment with the metadata to be written.
 
         :param filename: (str) Name of the file to serialize.
         :param meta_object: (sppasMeta)
@@ -270,7 +270,7 @@ class sppasBaseText(sppasBaseIO):
 
     @staticmethod
     def serialize_header_software():
-        """ Serialize the header of a file with SPPAS information. """
+        """Serialize the header of a file with SPPAS information."""
 
         comment = ";; \n"
         comment += ";; software_name={:s}\n".format(sg.__name__)
@@ -289,7 +289,7 @@ class sppasBaseText(sppasBaseIO):
 
     @staticmethod
     def serialize_metadata(meta_object):
-        """ Serialize the metadata of an object in a multi-lines comment. """
+        """Serialize the metadata of an object in a multi-lines comment."""
 
         meta_keys = ["file_write_date", "file_writer", "file_name", "file_path", "file_ext"]
         comment = ""
@@ -303,7 +303,7 @@ class sppasBaseText(sppasBaseIO):
 
     @staticmethod
     def create_media(media_url, meta_object):
-        """ Return the media of the given name (create it if necessary).
+        """Return the media of the given name (create it if necessary).
 
         :param media_url: (str) Name (url) of the media to search/create
         :param meta_object: (sppasTranscription)
@@ -330,7 +330,7 @@ class sppasBaseText(sppasBaseIO):
 
     @staticmethod
     def get_lines_columns(lines):
-        """ Column-delimited? Search for the relevant separator.
+        """Column-delimited? Search for the relevant separator.
 
         :param lines: (list of str)
         :returns: lines (list) of columns (list of str)
@@ -396,7 +396,7 @@ class sppasRawText(sppasBaseText):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasRawText instance.
+        """Initialize a new sppasRawText instance.
 
         :param name: (str) This transcription name.
 
@@ -412,7 +412,7 @@ class sppasRawText(sppasBaseText):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a raw file and fill the Transcription.
+        """Read a raw file and fill the Transcription.
 
         The file can be a simple raw text (without location information).
         It can also be a column-based (table-style) file, so that each
@@ -428,7 +428,7 @@ class sppasRawText(sppasBaseText):
     # -----------------------------------------------------------------------
 
     def _parse_lines(self, lines):
-        """ Fill the transcription from the lines of the TXT file. """
+        """Fill the transcription from the lines of the TXT file."""
 
         columns = sppasBaseText.get_lines_columns(lines)
 
@@ -445,7 +445,7 @@ class sppasRawText(sppasBaseText):
     # -----------------------------------------------------------------------
 
     def __format_raw_lines(self, lines):
-        """ Format lines of a raw text.
+        """Format lines of a raw text.
 
         - Each 'CR/LF' is a unit separator, NOT added into the transcription.
         - Each '#' is a unit separator, added as a silence mark into the
@@ -488,7 +488,7 @@ class sppasRawText(sppasBaseText):
 
     @staticmethod
     def _create_annotation(tier, rank, utterance):
-        """ Add the annotation corresponding to data of a line. """
+        """Add the annotation corresponding to data of a line."""
 
         labels = format_labels(utterance)
         location = sppasLocation(sppasPoint(rank))
@@ -497,7 +497,7 @@ class sppasRawText(sppasBaseText):
     # -----------------------------------------------------------------------
 
     def __format_columns(self, columns):
-        """ Format columns of a column-based text.
+        """Format columns of a column-based text.
 
         :param columns: (list) List of columns (list).
 
@@ -533,7 +533,7 @@ class sppasRawText(sppasBaseText):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write a RawText file.
+        """Write a RawText file.
 
         Labels are preserved, ie. separated by whitespace and alternative tags included.
 
@@ -589,7 +589,7 @@ class sppasCSV(sppasBaseText):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of CSV format or not.
+        """Check whether a file is of CSV format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -612,7 +612,7 @@ class sppasCSV(sppasBaseText):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new CSV instance.
+        """Initialize a new CSV instance.
 
         :param name: (str) This transcription name.
 
@@ -628,7 +628,7 @@ class sppasCSV(sppasBaseText):
     # -----------------------------------------------------------------------
 
     def read(self, filename, signed=True):
-        """ Read a CSV file.
+        """Read a CSV file.
 
         :param filename: (str)
         :param separator: (char)
@@ -647,7 +647,7 @@ class sppasCSV(sppasBaseText):
     # -----------------------------------------------------------------------
 
     def format_columns_lines(self, lines):
-        """ Append lines content into self.
+        """Append lines content into self.
         The algorithm doesn't suppose that the file is sorted by tiers
 
         :param lines: (list)
@@ -704,7 +704,7 @@ class sppasCSV(sppasBaseText):
     # -----------------------------------------------------------------------
 
     def write(self, filename, signed=True):
-        """ Write a CSV file.
+        """Write a CSV file.
 
         :param filename: (str)
         :param signed: (bool) Indicate if the encoding is UTF-8 signed.

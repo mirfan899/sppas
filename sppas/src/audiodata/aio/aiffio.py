@@ -57,14 +57,14 @@ class AiffIO(sppasAudioPCM):
 
     """
     def __init__(self):
-        """ Constructor. """
+        """Constructor."""
 
         sppasAudioPCM.__init__(self)
 
     # ------------------------------------------------------------------------
 
     def open(self, filename):
-        """ Get an audio from an Audio Interchange File Format file.
+        """Get an audio from an Audio Interchange File Format file.
 
         :param filename: (str) input file name.
 
@@ -82,7 +82,7 @@ class AiffIO(sppasAudioPCM):
     # ----------------------------------------------------------------------
 
     def read_frames(self, nframes):
-        """ Specific frame reader for aiff files.
+        """Specific frame reader for aiff files.
 
         AIFF data is in big endian and we need little endian.
 
@@ -109,7 +109,7 @@ class AiffIO(sppasAudioPCM):
 
     @staticmethod
     def _write_frames(fp, data):
-        """ Specific writer for aiff files.
+        """Specific writer for aiff files.
 
         Data is in little endian and aiff files need big endian.
 
@@ -131,7 +131,7 @@ class AiffIO(sppasAudioPCM):
     # ----------------------------------------------------------------------
 
     def save(self, filename):
-        """ Write an audio content as a Audio Interchange File Format file.
+        """Write an audio content as a Audio Interchange File Format file.
 
         :param filename: (str) output filename.
 
@@ -177,7 +177,7 @@ class AiffIO(sppasAudioPCM):
     # -----------------------------------------------------------------------
 
     def save_fragment(self, filename, frames):
-        """ Write an audio content as a Audio Interchange File Format file.
+        """Write an audio content as a Audio Interchange File Format file.
 
         :param filename (str) output filename.
         :param frames (str) the frames to write

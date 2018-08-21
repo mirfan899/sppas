@@ -82,7 +82,7 @@ class IPUscribeFrame(ComponentFrame):
     # ------------------------------------------------------------------------
 
     def _add_accelerator(self):
-        """ Set the accelerator table. """
+        """Set the accelerator table."""
 
         # Save with CTRL+S
         accelS = wx.AcceleratorEntry(wx.ACCEL_CTRL, ord('S'), wx.ID_SAVE)
@@ -99,7 +99,7 @@ class IPUscribeFrame(ComponentFrame):
     # ------------------------------------------------------------------------
 
     def CreateClient(self, parent, prefsIO):
-        """ Override. """
+        """Override."""
 
         return IPUscribeClient(parent,prefsIO)
 

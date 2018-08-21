@@ -59,7 +59,7 @@ import math
 
 
 def slope(p1, p2):
-    """ Estimates the slope between 2 points.
+    """Estimates the slope between 2 points.
 
     :param p1: (tuple) first point as (x1, y1)
     :param p2: (tuple) second point as (x2, y2)
@@ -88,7 +88,7 @@ def slope(p1, p2):
 
 
 def intercept(p1, p2):
-    """ Estimates the intercept between 2 points.
+    """Estimates the intercept between 2 points.
 
     :param p1: (tuple) first point as (x1, y1)
     :param p2: (tuple) second point as (x2, y2)
@@ -104,7 +104,7 @@ def intercept(p1, p2):
 
 
 def slope_intercept(p1, p2):
-    """ Returns the slope and the intercept.
+    """Returns the slope and the intercept.
 
     :param p1: (tuple) first point as (x1, y1)
     :param p2: (tuple) second point as (x2, y2)
@@ -120,7 +120,7 @@ def slope_intercept(p1, p2):
 
 
 def linear_fct(x, a, b):
-    """ Return f(x) of the linear function f(x) = ax + b.
+    """Return f(x) of the linear function f(x) = ax + b.
 
     :param x: (float) X-coord
     :param a: (float) slope
@@ -136,7 +136,7 @@ def linear_fct(x, a, b):
 
 
 def linear_values(delta, p1, p2):
-    """ Estimates the values between 2 points, step-by-step.
+    """Estimates the values between 2 points, step-by-step.
 
     Two different points p1=(x1,y1) and p2=(x2,y2) determine a line. It is
     enough to substitute two different values for 'x' in the linear function

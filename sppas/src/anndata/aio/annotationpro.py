@@ -60,7 +60,7 @@ from .aioutils import format_labels
 
 
 def pick_random_color(v1=0, v2=255):
-    """ Return a random RGB color. """
+    """Return a random RGB color."""
 
     c = [random.uniform(v1, v2) for _ in range(5)]
     random.shuffle(c)
@@ -68,7 +68,7 @@ def pick_random_color(v1=0, v2=255):
 
 
 def rgb_to_color(r, g, b):
-    """ Convert a RGB color into ANTX decimal color. """
+    """Convert a RGB color into ANTX decimal color."""
 
     r = int(r)
     g = int(g)
@@ -82,7 +82,7 @@ def rgb_to_color(r, g, b):
 
 
 def color_to_rgb(color):
-    """ Convert an ANTX decimal color into RGB. """
+    """Convert an ANTX decimal color into RGB."""
 
     hexa = hex((color-1)*-1)
     l = ['0']*6
@@ -99,7 +99,7 @@ def color_to_rgb(color):
 
 
 class sppasANTX(sppasBaseIO):
-    """ AnnotationPro ANTX reader and writer.
+    """AnnotationPro ANTX reader and writer.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -112,7 +112,7 @@ class sppasANTX(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of ANTX format or not.
+        """Check whether a file is of ANTX format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -134,7 +134,7 @@ class sppasANTX(sppasBaseIO):
 
     @staticmethod
     def make_point(midpoint, sample_rate=44100):
-        """ The localization is a frame value, so an integer. """
+        """The localization is a frame value, so an integer."""
 
         try:
             midpoint = int(midpoint)
@@ -147,7 +147,7 @@ class sppasANTX(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasANTX instance.
+        """Initialize a new sppasANTX instance.
 
         :param name: (str) This transcription name.
 
@@ -189,7 +189,7 @@ class sppasANTX(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read an ANTX file and fill the Transcription.
+        """Read an ANTX file and fill the Transcription.
 
         :param filename: (str)
 
@@ -217,7 +217,7 @@ class sppasANTX(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_configuration(self, configuration_root, uri=""):
-        """ Get the elements 'Configuration'.
+        """Get the elements 'Configuration'.
         Fill metadata of the sppasANTX instance.
 
         :param configuration_root: (ET) Configuration root.
@@ -237,7 +237,7 @@ class sppasANTX(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_audiofile(self, audio_root, uri=""):
-        """ Get the elements 'AudioFile'.
+        """Get the elements 'AudioFile'.
         Create a sppasMedia instance and add it.
 
         :param audio_root: (ET) AudioFile root.
@@ -263,7 +263,7 @@ class sppasANTX(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_layer(self, tier_root, uri=''):
-        """ Get the elements 'Layer'.
+        """Get the elements 'Layer'.
 
         :param tier_root: (ET) Layer root.
         :param uri: (str)
@@ -276,7 +276,7 @@ class sppasANTX(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_segment(self, annotation_root, uri=""):
-        """ Get the elements 'Segment'.
+        """Get the elements 'Segment'.
 
         :param annotation_root: (ET) Segment root.
         :param uri: (str)
@@ -332,7 +332,7 @@ class sppasANTX(sppasBaseIO):
     # ----------------------------------------------------------------------
 
     def elt_to_meta(self, root, meta_object, uri, exclude_list=[]):
-        """ Add nodes of root in meta_object. """
+        """Add nodes of root in meta_object."""
 
         self._map_meta.set_reverse(False)
         for node in root:
@@ -352,7 +352,7 @@ class sppasANTX(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write an Antx file.
+        """Write an Antx file.
 
         :param filename:
 
@@ -401,7 +401,7 @@ class sppasANTX(sppasBaseIO):
 
     @staticmethod
     def _format_media(root, media):
-        """ Add 'AudioFile' into the ElementTree.
+        """Add 'AudioFile' into the ElementTree.
 
         :param root: (ElementTree)
         :param media: (sppasMedia)
@@ -428,7 +428,7 @@ class sppasANTX(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_configuration(self, root):
-        """ Add 'Configuration' into the ElementTree. """
+        """Add 'Configuration' into the ElementTree."""
 
         self._map_meta.set_reverse(True)
         now = datetime.now().strftime("%Y-%M-%d %H:%M")
@@ -464,7 +464,7 @@ class sppasANTX(sppasBaseIO):
 
     @staticmethod
     def _add_configuration(root, key, value):
-        """ Add a new 'Configuration' key/value element in root. """
+        """Add a new 'Configuration' key/value element in root."""
 
         conf_root = ET.SubElement(root, 'Configuration')
         child_key = ET.SubElement(conf_root, 'Key')
@@ -476,7 +476,7 @@ class sppasANTX(sppasBaseIO):
 
     @staticmethod
     def _format_tier(root, tier):
-        """ Add 'Layer' and its content into the ElementTree. """
+        """Add 'Layer' and its content into the ElementTree."""
 
         tier_root = ET.SubElement(root, 'Layer')
 
@@ -538,7 +538,7 @@ class sppasANTX(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_segment(self, root, tier, ann):
-        """ Add 'Segment' into the ElementTree. """
+        """Add 'Segment' into the ElementTree."""
 
         segment_root = ET.SubElement(root, 'Segment')
         is_point = tier.is_point()
@@ -605,7 +605,7 @@ class sppasANTX(sppasBaseIO):
 
     @staticmethod
     def indent(elem, level=0):
-        """ Pretty indent of an ElementTree.
+        """Pretty indent of an ElementTree.
 
         http://effbot.org/zone/element-lib.htm#prettyprint
 
@@ -631,7 +631,7 @@ class sppasANTX(sppasBaseIO):
 
 
 class sppasANT(sppasBaseIO):
-    """ AnnotationPro ANT reader and writer.
+    """AnnotationPro ANT reader and writer.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -644,7 +644,7 @@ class sppasANT(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of ANT format or not.
+        """Check whether a file is of ANT format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -658,7 +658,7 @@ class sppasANT(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasANT instance.
+        """Initialize a new sppasANT instance.
 
         :param name: (str) This transcription name.
 
@@ -687,7 +687,7 @@ class sppasANT(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read an ANT file and fill the Transcription.
+        """Read an ANT file and fill the Transcription.
 
         :param filename: (str)
 
@@ -705,7 +705,7 @@ class sppasANT(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write an Ant file.
+        """Write an Ant file.
 
         :param filename: (str)
 

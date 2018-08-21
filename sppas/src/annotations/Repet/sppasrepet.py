@@ -75,7 +75,7 @@ class sppasRepet(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def __init__(self, resource_file="", logfile=None):
-        """ Create a new sppasRepetition instance.
+        """Create a new sppasRepetition instance.
 
         :param resource_file: Either the lemma dictionary or the list of stop-words.
 
@@ -132,7 +132,7 @@ class sppasRepet(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def fix_options(self, options):
-        """ Fix all options.
+        """Fix all options.
 
         :param options: list of sppasOption instances
 
@@ -161,7 +161,7 @@ class sppasRepet(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_use_lemmatize(self, use_lemmatize):
-        """ Fix the use_lemmatize option.
+        """Fix the use_lemmatize option.
 
         If use_lemmatize is set to True, sppasRepetition() will lemmatize the
         input before the repetition automatic detection.
@@ -174,7 +174,7 @@ class sppasRepet(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def set_use_stopwords(self, use_stopwords):
-        """ Fix the use_stopwords option.
+        """Fix the use_stopwords option.
 
         If use_stopwords is set to True, sppasRepetition() will add specific
         stopwords to the stopwords list (deducted from the input text).
@@ -187,7 +187,7 @@ class sppasRepet(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def set_span(self, span):
-        """ Fix the span option.
+        """Fix the span option.
         Span is the maximum number of IPUs to find repetitions.
 
         :param span: (int)
@@ -202,7 +202,7 @@ class sppasRepet(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def set_alpha(self, alpha):
-        """ Fix the alpha option.
+        """Fix the alpha option.
 
         :param alpha: (float)
 
@@ -218,7 +218,7 @@ class sppasRepet(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def lemmatize(self, tokens_tier):
-        """ Lemmatize a tier.
+        """Lemmatize a tier.
 
         :param tokens_tier: (Tier) A tier with aligned tokens.
         :returns: Tier with aligned lemmatization
@@ -241,7 +241,7 @@ class sppasRepet(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def get_stop_list(self, tier=None):
-        """ Return the expected list of stop-words.
+        """Return the expected list of stop-words.
         It is either:
 
             - the loaded list or,
@@ -289,7 +289,7 @@ class sppasRepet(sppasBaseAnnotation):
     # ------------------------------------------------------------------
 
     def self_detection(self, tier):
-        """ Self-Repetition detection.
+        """Self-Repetition detection.
 
         :param tier: (Tier)
 
@@ -336,7 +336,7 @@ class sppasRepet(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def other_detection(self, inputtier1, inputtier2):
-        """ Other-Repetition detection.
+        """Other-Repetition detection.
 
         :param inputtier1: (Tier)
         :param inputtier2: (Tier)
@@ -411,7 +411,7 @@ class sppasRepet(sppasBaseAnnotation):
     # ------------------------------------------------------------------
 
     def run(self, input_filename1, input_filename2, output_filename):
-        """ Run the Repetition Automatic Detection annotation.
+        """Run the Repetition Automatic Detection annotation.
 
         :param input_filename1: Name of the file with aligned tokens of spkeaker 1 (the source)
         :param input_filename2: Name of the file with aligned tokens of spkeaker 2 (the echo) if OR, or None for SR
@@ -468,7 +468,7 @@ class sppasRepet(sppasBaseAnnotation):
 
     @staticmethod
     def find_next_break(tier, start, span):
-        """ Return the index of the next interval representing a break.
+        """Return the index of the next interval representing a break.
         It depends on the 'span' value.
 
         :param tier: (Tier)
@@ -489,7 +489,7 @@ class sppasRepet(sppasBaseAnnotation):
 
     @staticmethod
     def __add_repetition(repetition, spk1_tier, spk2_tier, start_spk1, start_spk2, src_tier, echo_tier):
-        """ Add a repetition - source and echos - in tiers.
+        """Add a repetition - source and echos - in tiers.
 
         :param repetition: (DataRepetition)
         :param spk1_tier: (Tier) The tier of speaker 1 (to detect sources)

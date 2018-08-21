@@ -97,7 +97,7 @@ class DataRoamerClient(BaseClient):
     # ------------------------------------------------------------------------
 
     def _update_members(self):
-        """ Update members. """
+        """Update members."""
         
         self._multiplefiles = True
 
@@ -112,7 +112,7 @@ class DataRoamerClient(BaseClient):
     # ------------------------------------------------------------------------
 
     def New(self):
-        """ Add a new file into the current page. """
+        """Add a new file into the current page."""
         
         # Ask for the new file name
         filename = filedialogs.SaveAsAnnotationFile()
@@ -127,7 +127,7 @@ class DataRoamerClient(BaseClient):
     # ------------------------------------------------------------------------
 
     def Save(self):
-        """ Save the current file(s). """
+        """Save the current file(s)."""
         
         page = self._notebook.GetCurrentPage()
         for i in range(self._xfiles.GetSize()):
@@ -138,7 +138,7 @@ class DataRoamerClient(BaseClient):
     # ------------------------------------------------------------------------
 
     def SaveAs(self):
-        """ Save the current file(s). """
+        """Save the current file(s)."""
         
         page = self._notebook.GetCurrentPage()
         for i in range(self._xfiles.GetSize()):
@@ -149,7 +149,7 @@ class DataRoamerClient(BaseClient):
     # ------------------------------------------------------------------------
 
     def SaveAll(self):
-        """ Save all files of a page. """
+        """Save all files of a page."""
         
         for i in range(self._xfiles.GetSize()):
             o = self._xfiles.GetObject(i)
@@ -202,7 +202,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def _create_toolbar(self):
-        """ Creates a toolbar panel. """
+        """Creates a toolbar panel."""
 
         toolbar = MainToolbarPanel(self, self._prefsIO)
 
@@ -262,7 +262,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def _create_content(self):
-        """ Create the panel with files content. """
+        """Create the panel with files content."""
 
         panel = scrolled.ScrolledPanel(self, -1)
         self._trssizer = wx.BoxSizer(wx.VERTICAL)
@@ -277,7 +277,7 @@ class DataRoamer(wx.Panel):
     # ------------------------------------------------------------------------
 
     def ProcessEvent(self, event):
-        """ Processes an event.
+        """Processes an event.
 
         Processes an event, searching event tables and calling zero or more
         suitable event handler function(s). Note that the ProcessEvent
@@ -327,7 +327,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def OnFileWander(self, event):
-        """ A file was checked/unchecked somewhere else, then set/unset the data.
+        """A file was checked/unchecked somewhere else, then set/unset the data.
 
         :param event: (wx.Event)
 
@@ -353,7 +353,7 @@ class DataRoamer(wx.Panel):
     # ------------------------------------------------------------------------
 
     def OnPanelSelection(self, event):
-        """ Change the current selection (the transcription file that was clicked on). """
+        """Change the current selection (the transcription file that was clicked on)."""
 
         sel = event.panel
 
@@ -372,7 +372,7 @@ class DataRoamer(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Rename(self):
-        """ Rename a tier. """
+        """Rename a tier."""
 
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -382,7 +382,7 @@ class DataRoamer(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Delete(self):
-        """ Delete a tier. """
+        """Delete a tier."""
 
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -392,7 +392,7 @@ class DataRoamer(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Cut(self):
-        """ Cut a tier. """
+        """Cut a tier."""
 
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -402,7 +402,7 @@ class DataRoamer(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Copy(self):
-        """ Copy a tier. """
+        """Copy a tier."""
 
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -412,7 +412,7 @@ class DataRoamer(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Paste(self):
-        """ Paste a tier. """
+        """Paste a tier."""
 
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -422,7 +422,7 @@ class DataRoamer(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Duplicate(self):
-        """ Duplicate a tier. """
+        """Duplicate a tier."""
 
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -432,7 +432,7 @@ class DataRoamer(wx.Panel):
     # -----------------------------------------------------------------------
 
     def MoveUp(self):
-        """ Move up a tier. """
+        """Move up a tier."""
 
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -442,7 +442,7 @@ class DataRoamer(wx.Panel):
     # -----------------------------------------------------------------------
 
     def MoveDown(self):
-        """ Move down a tier. """
+        """Move down a tier."""
 
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -452,7 +452,7 @@ class DataRoamer(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Preview(self):
-        """ Open a frame to view a tier. """
+        """Open a frame to view a tier."""
 
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -462,7 +462,7 @@ class DataRoamer(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Radius(self):
-        """ Change radius value of all TimePoint instances of the tier. """
+        """Change radius value of all TimePoint instances of the tier."""
 
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -474,7 +474,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def Save(self):
-        """ Save the selected file. """
+        """Save the selected file."""
 
         if self._selection is None:
             ShowInformation(self,
@@ -492,7 +492,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SaveAs(self):
-        """ Save as... the selected file. """
+        """Save as... the selected file."""
 
         if self._selection is None:
             ShowInformation(self,
@@ -541,7 +541,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SaveAll(self):
-        """ Save all files. """
+        """Save all files."""
 
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -552,7 +552,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def OnSettings(self, event):
-        """ Set new preferences, then apply them. """
+        """Set new preferences, then apply them."""
 
         self._prefsIO = event.prefsIO
 
@@ -571,7 +571,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetFont(self, font):
-        """ Change font of all texts. """
+        """Change font of all texts."""
 
         wx.Window.SetFont(self, font)
         # Apply to all panels
@@ -582,7 +582,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetBackgroundColour(self, color):
-        """ Change background of all texts. """
+        """Change background of all texts."""
 
         wx.Window.SetBackgroundColour(self,color)
         # Apply as background on all panels
@@ -593,7 +593,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetForegroundColour(self, color):
-        """ Change foreground of all texts. """
+        """Change foreground of all texts."""
 
         wx.Window.SetForegroundColour(self, color)
         # Apply as foreground on all panels
@@ -606,7 +606,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetData(self, filename):
-        """ Add a file. """
+        """Add a file."""
 
         # Do not add an already loaded file
         if self._filetrs.Exists(filename):
@@ -637,7 +637,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def UnsetData(self, f):
-        """ Remove the given file. """
+        """Remove the given file."""
 
         if self._filetrs.Exists(f):
             i = self._filetrs.GetIndex(f)
@@ -660,7 +660,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def UnsetAllData(self):
-        """ Clean information and destroy all data. """
+        """Clean information and destroy all data."""
 
         self._filetrs.RemoveAll()
         self._trssizer.DeleteWindows()
@@ -671,7 +671,7 @@ class DataRoamer(wx.Panel):
     # ----------------------------------------------------------------------
 
     def GetSelection(self):
-        """ Return the current selection (the panel TrsList witch is selected). """
+        """Return the current selection (the panel TrsList witch is selected)."""
 
         return self._selection
 

@@ -51,7 +51,7 @@ from ..annlabel.tag import sppasTag
 
 
 class TestCtrlVocab(unittest.TestCase):
-    """ A controlled Vocabulary is a set of tags. """
+    """A controlled Vocabulary is a set of tags."""
 
     def setUp(self):
         pass

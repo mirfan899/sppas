@@ -65,7 +65,7 @@ class Rules(object):
 
     """
     def __init__(self, stop_list=None):
-        """ Creates a Rules instance.
+        """Creates a Rules instance.
 
         :param stop_list: (sppasVocabulary) List of un-relevant tokens.
 
@@ -81,7 +81,7 @@ class Rules(object):
     # -----------------------------------------------------------------------
 
     def is_relevant_token(self, token):
-        """ Ask for the token of a speaker to be relevant or not.
+        """Ask for the token of a speaker to be relevant or not.
         A token is considered as relevant if:
 
             1. It is not a silence, a pause, a laugh, dummy or a noise;
@@ -100,7 +100,7 @@ class Rules(object):
     # -----------------------------------------------------------------------
 
     def count_relevant_tokens(self, start, end, speaker):
-        """ Estimates the number of relevant tokens between start and end (included).
+        """Estimates the number of relevant tokens between start and end (included).
 
         :param start: (int)
         :param end: (int)
@@ -120,7 +120,7 @@ class Rules(object):
     # -----------------------------------------------------------------------
 
     def apply_rules_one_token(self, current, speaker):
-        """ Apply rules to decide whether if ONE token is a self-repetition
+        """Apply rules to decide whether if ONE token is a self-repetition
         or not.
 
         Rules are:
@@ -149,7 +149,7 @@ class Rules(object):
     # -----------------------------------------------------------------------
 
     def apply_rules_syntagme(self, start, end, speaker1):
-        """ Apply rule 1 to decide if selection is a repetition or not.
+        """Apply rule 1 to decide if selection is a repetition or not.
 
         Rule 1: The selection of tokens of speaker 1 must contain at least
         one relevant token for speaker 2.
@@ -165,7 +165,7 @@ class Rules(object):
     # -----------------------------------------------------------------------
 
     def apply_rules_strict(self, start, end, speaker1, speaker2):
-        """ Apply rule 2 to decide if selection is a repetition or not.
+        """Apply rule 2 to decide if selection is a repetition or not.
 
         Rule 2: The selection is a repetition if it respect at least one of
         the following criteria:

@@ -71,19 +71,19 @@ class DAG(object):
     # -----------------------------------------------------------------------
 
     def add_node(self, node):
-        """Add a new node (not added if already in the DAG). """
+        """Add a new node (not added if already in the DAG)."""
 
         if node not in self.__graph.keys():
             self.__graph[node] = list()
 
     def add_edge(self, src, dst):
-        """Add a new edge to a node. """
+        """Add a new edge to a node."""
 
         # TODO. Must check if no cycle...
         self.__graph[src].append(dst)
 
     def remove_node(self, node):
-        """Remove a node. """
+        """Remove a node."""
 
         if node in self.__graph.keys():
             del self.__graph[node]

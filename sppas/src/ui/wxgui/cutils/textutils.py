@@ -50,7 +50,7 @@ import wx
 
 
 class BasicTextValidator(wx.PyValidator):
-    """ Check if the TextCtrl contains characters. """
+    """Check if the TextCtrl contains characters."""
 
     def __init__(self):
         wx.PyValidator.__init__(self)
@@ -74,7 +74,7 @@ class BasicTextValidator(wx.PyValidator):
 
 
 class TextValidator(wx.PyValidator):
-    """ Check if the TextCtrl contains characters. """
+    """Check if the TextCtrl contains characters."""
 
     def __init__(self):
         wx.PyValidator.__init__(self)
@@ -107,7 +107,7 @@ class TextValidator(wx.PyValidator):
 
 
 class TextAsNumericValidator(wx.PyValidator):
-    """ Check if the TextCtrl contains a numeric value. """
+    """Check if the TextCtrl contains a numeric value."""
 
     def __init__(self):
         wx.PyValidator.__init__(self)
@@ -146,7 +146,7 @@ class TextAsNumericValidator(wx.PyValidator):
 
 
 class TextAsPercentageValidator(wx.PyValidator):
-    """ Check if the TextCtrl a percentage value. """
+    """Check if the TextCtrl a percentage value."""
 
     def __init__(self):
         wx.PyValidator.__init__(self)

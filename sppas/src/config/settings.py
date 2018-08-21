@@ -38,7 +38,7 @@ import json
 
 
 class sppasBaseSettings(object):
-    """ Base class to manage any kind of settings, represented in a dictionary.
+    """Base class to manage any kind of settings, represented in a dictionary.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -54,7 +54,7 @@ class sppasBaseSettings(object):
 
     """
     def __init__(self):
-        """ Create the dictionary of settings. """
+        """Create the dictionary of settings."""
 
         self.__dict__ = dict()
 
@@ -62,14 +62,14 @@ class sppasBaseSettings(object):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        """ to be overridden. """
+        """to be overridden."""
         pass
 
 # ---------------------------------------------------------------------------
 
 
 class sppasBaseModifiableSettings(sppasBaseSettings):
-    """ A dictionary of settings stored in a file.
+    """A dictionary of settings stored in a file.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -81,7 +81,7 @@ class sppasBaseModifiableSettings(sppasBaseSettings):
 
     """
     def __init__(self, _config_location):
-        """ Create the dictionary. """
+        """Create the dictionary."""
         super(sppasBaseModifiableSettings, self).__init__()
 
         self.__dict__ = json.load(open(_config_location))

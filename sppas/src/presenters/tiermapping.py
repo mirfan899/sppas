@@ -55,7 +55,7 @@ class TierMapping(sppasMapping):
 
     """
     def __init__(self, dict_name=None):
-        """ Create a TierMapping instance.
+        """Create a TierMapping instance.
 
         :param dict_name: (str) The mapping dictionary.
 
@@ -66,7 +66,7 @@ class TierMapping(sppasMapping):
     # ------------------------------------------------------------------
 
     def set_delimiters(self, delimit_list):
-        """ Fix the list of characters used as symbol delimiters.
+        """Fix the list of characters used as symbol delimiters.
 
         If delimit_list is an empty list, the mapping system will map with a
         longest matching algorithm.
@@ -84,7 +84,7 @@ class TierMapping(sppasMapping):
     # ------------------------------------------------------------------
 
     def map_tier(self, tier):
-        """ Run the TierMapping process on an input tier.
+        """Run the TierMapping process on an input tier.
 
         :param tier: (Tier) The tier instance to map label symbols.
         :returns: a new tier, with the same name as the given tier

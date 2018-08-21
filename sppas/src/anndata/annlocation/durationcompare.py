@@ -54,7 +54,7 @@ class sppasDurationCompare(sppasBaseCompare):
 
     """
     def __init__(self):
-        """ Create a sppasDurationCompare instance. """
+        """Create a sppasDurationCompare instance."""
 
         super(sppasDurationCompare, self).__init__()
 
@@ -69,7 +69,7 @@ class sppasDurationCompare(sppasBaseCompare):
 
     @staticmethod
     def eq(duration, x):
-        """ Return True if duration is equal to x.
+        """Return True if duration is equal to x.
 
         :param duration: (sppasDuration)
         :param x: (int, float)
@@ -88,7 +88,7 @@ class sppasDurationCompare(sppasBaseCompare):
 
     @staticmethod
     def ne(duration, x):
-        """ Return True if duration is different to x.
+        """Return True if duration is different to x.
 
         :param duration: (sppasDuration)
         :param x: (int, float)
@@ -107,7 +107,7 @@ class sppasDurationCompare(sppasBaseCompare):
 
     @staticmethod
     def gt(duration, x):
-        """ Return True if duration is greater than x.
+        """Return True if duration is greater than x.
 
         :param duration: (sppasDuration)
         :param x: (int, float)
@@ -126,7 +126,7 @@ class sppasDurationCompare(sppasBaseCompare):
 
     @staticmethod
     def lt(duration, x):
-        """ Return True if duration is lower than x.
+        """Return True if duration is lower than x.
 
         :param duration: (sppasDuration)
         :param x: (int, float)
@@ -144,7 +144,7 @@ class sppasDurationCompare(sppasBaseCompare):
 
     @staticmethod
     def ge(duration, x):
-        """ Return True if duration is greater or equal than x.
+        """Return True if duration is greater or equal than x.
 
         :param duration: (sppasDuration)
         :param x: (int, float)
@@ -163,7 +163,7 @@ class sppasDurationCompare(sppasBaseCompare):
 
     @staticmethod
     def le(duration, x):
-        """ Return True if duration is lower or equal than x.
+        """Return True if duration is lower or equal than x.
 
         :param duration: (sppasDuration)
         :param x: (int, float)

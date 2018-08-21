@@ -74,9 +74,9 @@ wxKC_EVENT_ANGLE_CHANGING = wx.NewEventType()
 wxKC_EVENT_ANGLE_CHANGED = wx.NewEventType()
 
 KC_EVENT_ANGLE_CHANGING = wx.PyEventBinder(wxKC_EVENT_ANGLE_CHANGING, 1)
-""" Notify the client that the knob is changing its value."""
+"""Notify the client that the knob is changing its value."""
 KC_EVENT_ANGLE_CHANGED = wx.PyEventBinder(wxKC_EVENT_ANGLE_CHANGED, 1)
-""" Notify the client that the knob has changed its value."""
+"""Notify the client that the knob has changed its value."""
 
 # ---------------------------------------------------------------------------- #
 # Class KnobCtrlEvent
@@ -89,31 +89,31 @@ class KnobCtrlEvent(wx.PyCommandEvent):
     """
 
     def __init__(self, eventType, id=1):
-        """ Default class constructor. """
+        """Default class constructor."""
 
         wx.PyCommandEvent.__init__(self, eventType, id)
 
 
     def SetOldValue(self, oldValue):
-        """ Sets the old KnobCtrl value for this event. """
+        """Sets the old KnobCtrl value for this event."""
 
         self._oldValue = oldValue
 
 
     def GetOldValue(self):
-        """ Returns the old KnobCtrl value for this event. """
+        """Returns the old KnobCtrl value for this event."""
 
         return self._oldValue
 
 
     def SetValue(self, value):
-        """ Sets the new KnobCtrl value for this event. """
+        """Sets the new KnobCtrl value for this event."""
 
         self._value = value
 
 
     def GetValue(self):
-        """ Returns the new KnobCtrl value for this event. """
+        """Returns the new KnobCtrl value for this event."""
 
         return self._value
 
@@ -284,7 +284,7 @@ class KnobCtrl(BufferedWindow):
 
         
     def OnMouseEvents(self, event):
-        """ Handles all the wx.EVT_MOUSE_EVENTS for KnobCtrl. """
+        """Handles all the wx.EVT_MOUSE_EVENTS for KnobCtrl."""
 
         if self._state == 0 and event.Entering():
             self._state = 1 
@@ -318,25 +318,25 @@ class KnobCtrl(BufferedWindow):
 
 
     def GetMinValue(self):
-        """ Returns the minimum value for KnobCtrl. """
+        """Returns the minimum value for KnobCtrl."""
 
         return self._minvalue
 
 
     def GetMaxValue(self):
-        """ Returns the maximum value for KnobCtrl. """
+        """Returns the maximum value for KnobCtrl."""
 
         return self._maxvalue
 
 
     def GetKnobRadius(self):
-        """ Returns the knob radius. """
+        """Returns the knob radius."""
 
         return self._knobradius
 
 
     def SetKnobRadius(self, radius):
-        """ Sets the knob radius. """
+        """Sets the knob radius."""
 
         if radius <= 0:
             return
@@ -346,59 +346,59 @@ class KnobCtrl(BufferedWindow):
 
         
     def GetTags(self):
-        """ Returns the KnobCtrl tags. """
+        """Returns the KnobCtrl tags."""
 
         return self._tags        
 
 
     def SetTagsColour(self, colour):
-        """ Sets the tags colour. """
+        """Sets the tags colour."""
 
         self._tagscolour = colour
         self.UpdateDrawing()
 
 
     def GetTagsColour(self):
-        """ Returns the tags colour. """
+        """Returns the tags colour."""
 
         return self._tagscolour        
 
 
     def SetBoundingColour(self, colour):
-        """ Sets the  bounding circle colour. """
+        """Sets the  bounding circle colour."""
 
         self._boundingcolour = colour
         self.UpdateDrawing()
 
 
     def GetBoundingColour(self):
-        """ Returns the bounding circle colour. """
+        """Returns the bounding circle colour."""
 
         return self._boundingcolour
 
 
     def SetFirstGradientColour(self, colour):
-        """ Sets the first gradient colour for shading. """
+        """Sets the first gradient colour for shading."""
 
         self._startcolour = colour
         self.UpdateDrawing()
 
 
     def GetFirstGradientColour(self):
-        """ Returns the first gradient colour for shading. """
+        """Returns the first gradient colour for shading."""
 
         return self._startcolour
 
     
     def SetSecondGradientColour(self, colour):
-        """ Sets the second gradient colour for shading. """
+        """Sets the second gradient colour for shading."""
 
         self._endcolour = colour
         self.UpdateDrawing()
 
 
     def GetSecondGradientColour(self):
-        """ Returns the second gradient colour for shading. """
+        """Returns the second gradient colour for shading."""
 
         return self._endcolour
 
@@ -445,7 +445,7 @@ class KnobCtrl(BufferedWindow):
 
 
     def DrawTags(self, dc, size):
-        """ Draws the tags. """
+        """Draws the tags."""
 
         deltarange = abs(self._tags[-1] - self._tags[0])
         deltaangle = self._angleend - self._anglestart
@@ -492,7 +492,7 @@ class KnobCtrl(BufferedWindow):
                 
 
     def DrawDiagonalGradient(self, dc, size):
-        """ Draw a shding of diagonal gradient to KnobCtrl. """
+        """Draw a shding of diagonal gradient to KnobCtrl."""
 
         col1 = self._startcolour
         col2 = self._endcolour
@@ -529,7 +529,7 @@ class KnobCtrl(BufferedWindow):
 
 
     def OffsetColor(self, color, offset):
-        """ Used internally. """
+        """Used internally."""
 
         byRed = 0
         byGreen = 0
@@ -575,7 +575,7 @@ class KnobCtrl(BufferedWindow):
 
 
     def DrawInsetCircle(self, dc, pencolour):
-        """ Draws the small knob. """
+        """Draws the small knob."""
 
         self._knobcenter = self.CircleCoords(self._minradius*0.8, self.GetTrackPosition(),
                                              self.Width/2, self.Height/2)
@@ -596,7 +596,7 @@ class KnobCtrl(BufferedWindow):
 
 
     def DrawBoundingCircle(self, dc, size):
-        """ Draws the KnobCtrl bounding circle. """
+        """Draws the KnobCtrl bounding circle."""
 
         radius = 0.9*min(size.x, size.y)/2
         dc.SetBrush(wx.TRANSPARENT_BRUSH)
@@ -605,7 +605,7 @@ class KnobCtrl(BufferedWindow):
         
     
     def CircleCoords(self, radius, angle, centerX, centerY):
-        """ Used internally. """
+        """Used internally."""
         
         x = radius*math.cos(angle) + centerX
         y = radius*math.sin(angle) + centerY
@@ -614,7 +614,7 @@ class KnobCtrl(BufferedWindow):
 
 
     def SetTrackPosition(self):
-        """ Used internally. """
+        """Used internally."""
 
         width, height = self.GetSize()
         
@@ -655,7 +655,7 @@ class KnobCtrl(BufferedWindow):
 
 
     def SetValue(self, val):
-        """ Sets programmatically the value of KnobCtrl, without sending events. """
+        """Sets programmatically the value of KnobCtrl, without sending events."""
 
         if val < self._minvalue or val > self._maxvalue:
             return
@@ -677,19 +677,19 @@ class KnobCtrl(BufferedWindow):
 
 
     def GetValue(self):
-        """ Returns the value of KnobCtrl. """
+        """Returns the value of KnobCtrl."""
 
         return self._trackposition
 
 
     def GetTrackPosition(self):
-        """ Used internally. """
+        """Used internally."""
         
         return self._old_ang - math.pi
 
 
     def GetAngleFromCoord(self, cx, cy):
-        """ Used internally. """
+        """Used internally."""
 
         width, height = self.GetSize()
         

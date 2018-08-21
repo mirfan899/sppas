@@ -95,7 +95,7 @@ class Intsint(object):
     # -------------------------------------------------------------------
 
     def __init__(self):
-        """ Create a new Intsint instance. """
+        """Create a new Intsint instance."""
 
         self.best_intsint = None
         self.best_estimate = None
@@ -119,7 +119,7 @@ class Intsint(object):
     # -------------------------------------------------------------------
 
     def reset(self):
-        """ Fix all member to their initial value. """
+        """Fix all member to their initial value."""
         
         self.best_intsint = None
         self.best_estimate = None
@@ -143,7 +143,7 @@ class Intsint(object):
     # -------------------------------------------------------------------
 
     def adjust_f0(self, f0):
-        """ Return F0 value within self range of values.
+        """Return F0 value within self range of values.
 
         :param f0: (float) Input pitch value.
         :returns: (float) Normalized pitch value.
@@ -160,7 +160,7 @@ class Intsint(object):
     # -------------------------------------------------------------------
 
     def init(self, momel_anchors):
-        """ Initialize INTSINT attributes from a list of targets.
+        """Initialize INTSINT attributes from a list of targets.
 
         :param momel_anchors: (list of tuple) List of time (in seconds) and target (Hz).
 
@@ -184,7 +184,7 @@ class Intsint(object):
     # -------------------------------------------------------------------
 
     def optimise(self, mid, _range):
-        """ Fix tones.
+        """Fix tones.
 
         :param mid:
         :param _range:
@@ -248,7 +248,7 @@ class Intsint(object):
     # -------------------------------------------------------------------
 
     def estimate(self, tone, last_anchor):
-        """ Estimates f0 from current tone and last target.
+        """Estimates f0 from current tone and last target.
 
         :param tone:
         :param last_anchor:
@@ -277,7 +277,7 @@ class Intsint(object):
     # -------------------------------------------------------------------
 
     def recode(self):
-        """ Recode within the parameters space.
+        """Recode within the parameters space.
         mean +/- 50 Hz for key and [0.5..2.5 octaves] for range.
 
         """
@@ -295,7 +295,7 @@ class Intsint(object):
     # -------------------------------------------------------------------
 
     def annotate(self, momel_anchors):
-        """ Provide optimal INTSINT coding for sequence of target points.
+        """Provide optimal INTSINT coding for sequence of target points.
 
         :param momel_anchors: (list of tuple) List of time (in seconds) and target (Hz).
 

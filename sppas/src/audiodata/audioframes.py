@@ -54,7 +54,7 @@ class sppasAudioFrames(object):
 
     """
     def __init__(self, frames="", sampwidth=2, nchannels=1):
-        """ Create an sppasAudioFrames instance.
+        """Create an sppasAudioFrames instance.
 
         :param frames: (str) input frames.
         :param sampwidth: (int) sample width of the frames.
@@ -77,7 +77,7 @@ class sppasAudioFrames(object):
     # -----------------------------------------------------------------------
 
     def resample(self, rate, new_rate=16000):
-        """ Return re-sampled frames.
+        """Return re-sampled frames.
 
         :param rate: (int) current frame rate of the frames
         :param new_rate: (int) new frame rate of the frames
@@ -89,7 +89,7 @@ class sppasAudioFrames(object):
     # -----------------------------------------------------------------------
 
     def change_sampwidth(self, new_sampwidth):
-        """ Return frames with the given number of bytes.
+        """Return frames with the given number of bytes.
 
         :param new_sampwidth: (int) new sample width of the frames.
             (1 for 8 bits, 2 for 16 bits, 4 for 32 bits)
@@ -103,7 +103,7 @@ class sppasAudioFrames(object):
     # -----------------------------------------------------------------------
 
     def bias(self, value):
-        """ Return frames that is the original fragment with a bias added to each sample.
+        """Return frames that is the original fragment with a bias added to each sample.
         Samples wrap around in case of overflow.
 
         :param value: (int) the bias which will be applied to each sample.
@@ -116,7 +116,7 @@ class sppasAudioFrames(object):
     # -----------------------------------------------------------------------
 
     def mul(self, factor):
-        """ Return frames for which all samples are multiplied by factor.
+        """Return frames for which all samples are multiplied by factor.
         Samples are truncated in case of overflow.
 
         :param factor: (int) the factor which will be applied to each sample.
@@ -128,7 +128,7 @@ class sppasAudioFrames(object):
     # -----------------------------------------------------------------------
 
     def cross(self):
-        """ Return the number of zero crossings in frames.
+        """Return the number of zero crossings in frames.
 
         :returns: number of zero crossing
 
@@ -138,7 +138,7 @@ class sppasAudioFrames(object):
     # -----------------------------------------------------------------------
 
     def minmax(self):
-        """ Return the (minimum,maximum) of the values of all frames.
+        """Return the (minimum,maximum) of the values of all frames.
 
         :returns (min,max)
 
@@ -148,28 +148,28 @@ class sppasAudioFrames(object):
     # -----------------------------------------------------------------------
 
     def min(self):
-        """ Return the minimum of the values of all frames. """
+        """Return the minimum of the values of all frames."""
 
         return audioop.minmax(self._frames, self._sampwidth)[0]
 
     # -----------------------------------------------------------------------
 
     def max(self):
-        """ Return the maximum of the values of all frames. """
+        """Return the maximum of the values of all frames."""
 
         return audioop.minmax(self._frames, self._sampwidth)[1]
 
     # -----------------------------------------------------------------------
 
     def avg(self):
-        """ Return the average of all the frames. """
+        """Return the average of all the frames."""
 
         return audioop.avg(self._frames, self._sampwidth)
 
     # -----------------------------------------------------------------------
 
     def rms(self):
-        """ Return the root mean square of the frames. """
+        """Return the root mean square of the frames."""
 
         if self._nchannels == 1:
             return audioop.rms(self._frames, self._sampwidth)
@@ -187,7 +187,7 @@ class sppasAudioFrames(object):
     # -----------------------------------------------------------------------
 
     def clipping_rate(self, factor):
-        """ Return the clipping rate of the frames.
+        """Return the clipping rate of the frames.
 
         :param factor: (float) An interval to be more precise on clipping rate.
         It will consider that all frames outside the interval are clipped.
@@ -217,7 +217,7 @@ class sppasAudioFrames(object):
 
     @staticmethod
     def get_maxval(size, signed=True):
-        """ Return the max value for a given sampwidth.
+        """Return the max value for a given sampwidth.
 
         :param size: (int) the sampwidth
         :param signed: (bool) if the values will be signed or not
@@ -241,7 +241,7 @@ class sppasAudioFrames(object):
 
     @staticmethod
     def get_minval(size, signed=True):
-        """ Return the min value for a given sampwidth.
+        """Return the min value for a given sampwidth.
 
         :param size: (int) the sampwidth
         :param signed: (bool) if the values will be signed or not

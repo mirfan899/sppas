@@ -100,7 +100,7 @@ def has_bound(tier, bound):
 
 
 def align2phon(aligntier, separators=symbols.all):
-    """ Return the phonetization of a time-aligned tier.
+    """Return the phonetization of a time-aligned tier.
 
     :param aligntier: (sppasTier)
     :param separators: (list)

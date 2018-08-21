@@ -74,7 +74,7 @@ class sppasAnnotationsManager(Thread):
 
     """
     def __init__(self, parameters):
-        """ Create a new sppasAnnotationsManager instance.
+        """Create a new sppasAnnotationsManager instance.
         Initialize a Thread.
 
         :param parameters: (sppasParam) SPPAS parameters, i.e. config of annotations
@@ -93,7 +93,7 @@ class sppasAnnotationsManager(Thread):
     # ------------------------------------------------------------------------
 
     def fix_options(self, options):
-        """ Fix all options.
+        """Fix all options.
 
         Available options are:
 
@@ -113,7 +113,7 @@ class sppasAnnotationsManager(Thread):
     # -----------------------------------------------------------------------
 
     def set_do_merge(self, do_merge):
-        """ Fix the domerge option.
+        """Fix the domerge option.
         If do merge is set to True, a merged TextGrid file is created.
 
         :param do_merge: (bool)
@@ -126,7 +126,7 @@ class sppasAnnotationsManager(Thread):
     # -----------------------------------------------------------------------
 
     def set_filelist(self, extension, not_ext=[], not_start=[]):
-        """ Create a list of file names from the parameter inputs.
+        """Create a list of file names from the parameter inputs.
 
         :param extension: (str) expected file extension
         :param not_ext: (str) list of extensions of files that must not be treated
@@ -181,7 +181,7 @@ class sppasAnnotationsManager(Thread):
     # ------------------------------------------------------------------------
 
     def _get_filename(self, filename, extensions):
-        """ Return a filename corresponding to one of extensions.
+        """Return a filename corresponding to one of extensions.
 
         :param filename: input file name
         :param extensions: the list of expected extension
@@ -277,7 +277,7 @@ class sppasAnnotationsManager(Thread):
     # ------------------------------------------------------------------------
 
     def run_intsint(self, stepidx):
-        """ Execute the SPPAS implementation of Intsint.
+        """Execute the SPPAS implementation of Intsint.
 
         :param stepidx: index of this annotations in the parameters
         :returns: number of files processed successfully
@@ -836,7 +836,7 @@ class sppasAnnotationsManager(Thread):
     # ------------------------------------------------------------------------
 
     def run_tga(self, stepidx):
-        """ Execute the SPPAS TGA. """
+        """Execute the SPPAS TGA."""
 
         # Initializations
         step = self.parameters.get_step(stepidx)

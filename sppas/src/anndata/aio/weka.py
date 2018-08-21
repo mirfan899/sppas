@@ -100,7 +100,7 @@ class sppasWEKA(sppasBaseIO):
 
     """
     def __init__(self, name=None):
-        """ Initialize a new sppasWEKA instance.
+        """Initialize a new sppasWEKA instance.
 
         :param name: (str) This transcription name.
 
@@ -136,14 +136,14 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def get_max_class_tags(self):
-        """ Return the maximum number of tags for the class. """
+        """Return the maximum number of tags for the class."""
 
         return self._max_class_tags
 
     # -----------------------------------------------------------------
 
     def set_max_class_tags(self, nb_tags):
-        """ Set the maximum number of tags for a class.
+        """Set the maximum number of tags for a class.
 
         :param nb_tags: (int) Size of the controlled vocabulary of the
         class tier
@@ -156,7 +156,7 @@ class sppasWEKA(sppasBaseIO):
 
     @staticmethod
     def check_max_class_tags(nb_tags):
-        """ Check the maximum number of tags for the class.
+        """Check the maximum number of tags for the class.
 
         :param nb_tags: (int) Size of the controlled vocabulary of the
         class tier
@@ -172,7 +172,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def set_max_attributes_tags(self, nb_tags):
-        """ Set the maximum number of tags for an attribute.
+        """Set the maximum number of tags for an attribute.
         Instead, the program won't list the attribute and will use 'STRING'.
 
         :param nb_tags: (int) Size of the controlled vocabulary of the
@@ -186,7 +186,7 @@ class sppasWEKA(sppasBaseIO):
 
     @staticmethod
     def check_max_attributes_tags(nb_tags):
-        """ Check the maximum number of tags for an attribute.
+        """Check the maximum number of tags for an attribute.
 
         :param nb_tags: (int) Size of the controlled vocabulary of the
         attribute tier
@@ -202,7 +202,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def set_empty_annotation_tag(self, tag_str):
-        """ Fix the annotation string that will be used to replace
+        """Fix the annotation string that will be used to replace
         empty annotations.
 
         :param tag_str: (str)
@@ -217,7 +217,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def set_empty_annotation_class_tag(self, tag_str=None):
-        """ Fix the annotation string that will be used to replace
+        """Fix the annotation string that will be used to replace
         empty annotations in the class tier.
 
         :param tag_str: (str or None) None is used to NOT fill
@@ -236,7 +236,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def set_uncertain_annotation_tag(self, tag_str):
-        """ Fix the annotation string that is used in the annotations to
+        """Fix the annotation string that is used in the annotations to
         mention an uncertain label.
 
         :param tag_str: (str)
@@ -253,7 +253,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def check_metadata(self):
-        """ Check the metadata and fix the variable members. """
+        """Check the metadata and fix the variable members."""
 
         if self.is_meta_key("weka_max_class_tags") is True:
             self.set_max_class_tags(
@@ -278,7 +278,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def validate_annotations(self):
-        """ Prepare data to be compatible with the expected format.
+        """Prepare data to be compatible with the expected format.
 
         - Convert tier names
         - Delete the existing controlled vocabularies
@@ -353,7 +353,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def validate(self):
-        """ Check the tiers.
+        """Check the tiers.
 
          Verify if everything is ok:
 
@@ -408,7 +408,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def _create_ctrl_vocab(self):
-        """ Fix the controlled vocabularies of attribute tiers. """
+        """Fix the controlled vocabularies of attribute tiers."""
 
         for tier in self:
             if tier.is_meta_key("weka_attribute") or tier.is_meta_key("weka_class"):
@@ -418,7 +418,7 @@ class sppasWEKA(sppasBaseIO):
 
     @staticmethod
     def _tier_is_attribute(tier):
-        """ Check if a tier is an attribute for the classification.
+        """Check if a tier is an attribute for the classification.
 
         :param tier: (sppasTier)
         :returns: (is attribute, is numeric)
@@ -438,7 +438,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def _get_class_tier(self):
-        """ Return the tier which is the class or None. """
+        """Return the tier which is the class or None."""
 
         for tier in self:
             if tier.is_meta_key("weka_class"):
@@ -449,7 +449,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def _get_anchor_tier(self):
-        """ Return the tier which will be used to create the instances or None. """
+        """Return the tier which will be used to create the instances or None."""
 
         for tier in self:
             if tier.is_meta_key("weka_instance_anchor"):
@@ -460,7 +460,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def _get_labels(self, localization, tier):
-        """ Return the list of sppasLabel() at the given time in the given tier.
+        """Return the list of sppasLabel() at the given time in the given tier.
         Return the empty label if no label was assigned at the given time.
 
         :param localization: (sppasPoint)
@@ -505,7 +505,7 @@ class sppasWEKA(sppasBaseIO):
                                          end_time,
                                          time_step=None,
                                          anchor_tier=None):
-        """ Fix all the possible time-points of the instances.
+        """Fix all the possible time-points of the instances.
 
         If an anchor tier is given, only labelled annotations are used
         to create the instances.
@@ -556,7 +556,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def _fix_instance_steps(self):
-        """ Fix the time-points to create the instances and the
+        """Fix the time-points to create the instances and the
         tag of the class to predict by the classification system.
 
         The instances are created only for the labelled annotations of
@@ -603,7 +603,7 @@ class sppasWEKA(sppasBaseIO):
 
     @staticmethod
     def _scores_to_probas(tags):
-        """ Convert scores of a set of tags to probas. """
+        """Convert scores of a set of tags to probas."""
 
         if len(tags) == 0:
             return False
@@ -641,7 +641,7 @@ class sppasWEKA(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def _fix_data_instance(self, point):
-        """ Fix the data content of an instance.
+        """Fix the data content of an instance.
 
         Create the instance at the given point with annotations of all
         attribute tiers, followed by the class.
@@ -759,7 +759,7 @@ class sppasARFF(sppasWEKA):
     # -----------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasARFF instance.
+        """Initialize a new sppasARFF instance.
 
         :param name: (str) This transcription name.
 
@@ -774,7 +774,7 @@ class sppasARFF(sppasWEKA):
     # -----------------------------------------------------------------
 
     def write(self, filename):
-        """ Write a RawText file.
+        """Write a RawText file.
 
         :param filename: (str)
 
@@ -808,7 +808,7 @@ class sppasARFF(sppasWEKA):
 
     @staticmethod
     def _serialize_header():
-        """ Returns a standard header in comments. """
+        """Returns a standard header in comments."""
 
         content = "% creator: {:s}\n".format(sg.__name__)
         content += "% version: {:s}\n".format(sg.__version__)
@@ -821,7 +821,7 @@ class sppasARFF(sppasWEKA):
     # -----------------------------------------------------------------
 
     def _serialize_metadata(self):
-        """ Serialize metadata in comments. """
+        """Serialize metadata in comments."""
 
         content = ""
         for key in self.get_meta_keys():
@@ -834,7 +834,7 @@ class sppasARFF(sppasWEKA):
     # -----------------------------------------------------------------
 
     def _serialize_relation(self):
-        """ Serialize the relation of the ARFF file. """
+        """Serialize the relation of the ARFF file."""
 
         content = "@RELATION {:s}\n".format(self.get_name())
         content += "\n"
@@ -844,7 +844,7 @@ class sppasARFF(sppasWEKA):
 
     @staticmethod
     def _serialize_attributes_ctrl_vocab(tier, is_class=False):
-        """ Serialize the controlled vocabulary in an attribute set.
+        """Serialize the controlled vocabulary in an attribute set.
 
         :param tier: (sppasTier)
 
@@ -870,7 +870,7 @@ class sppasARFF(sppasWEKA):
     # -----------------------------------------------------------------
 
     def _serialize_attributes(self):
-        """ Write the attributes of the ARFF file.
+        """Write the attributes of the ARFF file.
         Attributes are corresponding to the controlled vocabulary.
         They are the list of possible tags of the annotations, except
         for the numerical ones.
@@ -907,7 +907,7 @@ class sppasARFF(sppasWEKA):
     # -----------------------------------------------------------------
 
     def _write_data(self, fp):
-        """ Write the data content of the ARFF file.
+        """Write the data content of the ARFF file.
         Data are the tags of the annotations or distributions of
         probabilities.
 
@@ -983,7 +983,7 @@ class sppasXRFF(sppasWEKA):
     # -----------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasXRFF instance.
+        """Initialize a new sppasXRFF instance.
 
         :param name: (str) This transcription name.
 
@@ -999,7 +999,7 @@ class sppasXRFF(sppasWEKA):
     # -----------------------------------------------------------------
 
     def write(self, filename):
-        """ Write a XRFF file.
+        """Write a XRFF file.
 
         :param filename: (str)
 
@@ -1039,7 +1039,7 @@ class sppasXRFF(sppasWEKA):
 
     @staticmethod
     def _write_attribute_ctrl_vocab(tier, fp, is_class=False):
-        """ Write the controlled vocabulary in an attribute set.
+        """Write the controlled vocabulary in an attribute set.
 
         :param tier: (sppasTier)
         :param fp: FileDescription
@@ -1059,7 +1059,7 @@ class sppasXRFF(sppasWEKA):
     # -----------------------------------------------------------------
 
     def _write_attributes(self, fp):
-        """ Write the attributes of the ARFF file.
+        """Write the attributes of the ARFF file.
         Attributes are corresponding to the controlled vocabulary.
         They are the list of possible tags of the annotations, except
         for the numerical ones.
@@ -1106,7 +1106,7 @@ class sppasXRFF(sppasWEKA):
     # -----------------------------------------------------------------
 
     def _write_instances(self, fp):
-        """ Write the data content of the XRFF file.
+        """Write the data content of the XRFF file.
         Data are the tags of the annotations or distributions of
         probabilities.
 

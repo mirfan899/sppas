@@ -41,7 +41,7 @@ import codecs
 
 
 def writecsv(filename, rows, separator="\t", encoding="utf-8-sig"):
-    """ Write the rows to the file.
+    """Write the rows to the file.
     Args:
         filename (string):
         rows (list):

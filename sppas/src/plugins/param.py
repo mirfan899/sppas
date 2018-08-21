@@ -67,7 +67,7 @@ class sppasPluginParam(object):
 
     """
     def __init__(self, directory, config_file):
-        """ Creates a new sppasPluginParam instance.
+        """Creates a new sppasPluginParam instance.
 
         :param directory: (str) the directory where to find the plugin
         :param config_file: (str) the file name of the plugin configuration
@@ -98,7 +98,7 @@ class sppasPluginParam(object):
     # ------------------------------------------------------------------------
 
     def reset(self):
-        """ Reset all members to their default value. """
+        """Reset all members to their default value."""
 
         self._key = None
         self._name = ""
@@ -111,7 +111,7 @@ class sppasPluginParam(object):
     # ------------------------------------------------------------------------
 
     def parse(self):
-        """ Parse the configuration file of the plugin.  """
+        """Parse the configuration file of the plugin.  """
 
         self.reset()
         filename = os.path.join(self._directory, self._cfgfile)
@@ -136,7 +136,7 @@ class sppasPluginParam(object):
     # ------------------------------------------------------------------------
 
     def save(self):
-        """ Save the configuration file.
+        """Save the configuration file.
         Copy the old one into a backup file.
 
         """
@@ -148,48 +148,48 @@ class sppasPluginParam(object):
     # ------------------------------------------------------------------------
 
     def get_directory(self):
-        """ Get the directory name of the plugin. """
+        """Get the directory name of the plugin."""
         return self._directory
 
     # ------------------------------------------------------------------------
 
     def get_key(self):
-        """ Get the identifier of the plugin. """
+        """Get the identifier of the plugin."""
         return self._key
 
     def get_name(self):
-        """ Get the name of the plugin. """
+        """Get the name of the plugin."""
         return self._name
 
     def get_descr(self):
-        """ Get the short description of the plugin. """
+        """Get the short description of the plugin."""
         return self._descr
 
     def get_icon(self):
-        """ Get the icon file name of the plugin. """
+        """Get the icon file name of the plugin."""
         return self._icon
 
     # ------------------------------------------------------------------------
 
     def get_command(self):
-        """ Get the appropriate command to execute the plugin. """
+        """Get the appropriate command to execute the plugin."""
         return self._command
 
     # ------------------------------------------------------------------------
 
     def get_option_from_key(self, key):
-        """ Get an option from its key. """
+        """Get an option from its key."""
         for option in self._options.values():
             if option.get_key() == key:
                 return option
         raise OptionKeyError(key)
 
     def get_options(self):
-        """ Get all the options. """
+        """Get all the options."""
         return self._options
 
     def set_options(self, options_dict):
-        """ Fix the options. """
+        """Fix the options."""
         self._options = options_dict
 
     # ------------------------------------------------------------------------
@@ -198,7 +198,7 @@ class sppasPluginParam(object):
 
     @staticmethod
     def __get_command(commands):
-        """ Returns the appropriate command from a list of available ones. """
+        """Returns the appropriate command from a list of available ones."""
 
         _system = platform.system().lower()
 
@@ -217,7 +217,7 @@ class sppasPluginParam(object):
 
     @staticmethod
     def __check_command(command):
-        """ Returns True if command exists.
+        """Returns True if command exists.
         Test only the main command (i.e. the first string, without args).
 
         """

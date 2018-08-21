@@ -90,7 +90,7 @@ class sppasAudioPCM(object):
 
     """
     def __init__(self):
-        """ Creates a new sppasAudioPCM instance. """
+        """Creates a new sppasAudioPCM instance."""
 
         super(sppasAudioPCM, self).__init__()
 
@@ -103,7 +103,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def set(self, other):
-        """ Set a new sppasAudioPCM() instance.
+        """Set a new sppasAudioPCM() instance.
 
         It can be set either with an audio file pointer, or a list of
         channels or both.
@@ -117,7 +117,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def get_channels(self):
-        """ Return the list of uploaded channels.
+        """Return the list of uploaded channels.
 
         :returns: (list) channels
 
@@ -127,7 +127,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def get_audiofp(self):
-        """ Return the audio file pointer.
+        """Return the audio file pointer.
 
         :returns: audio file pointer
 
@@ -139,7 +139,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def remove_channel(self, channel):
-        """ Remove a channel from the list of uploaded channels.
+        """Remove a channel from the list of uploaded channels.
 
         :param channel: (sppasChannel) the channel to remove
 
@@ -149,7 +149,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def pop_channel(self, idx):
-        """ Pop a channel at the position given from the list of uploaded channels.
+        """Pop a channel at the position given from the list of uploaded channels.
 
         :param idx: (int) the index of the channel to remove
 
@@ -160,7 +160,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def insert_channel(self, idx, channel):
-        """ Insert a channel at the position given in the list of uploaded channels.
+        """Insert a channel at the position given in the list of uploaded channels.
 
         :param idx: (int) the index where the channel has to be inserted
         :param channel: (sppasChannel) the channel to insert
@@ -172,7 +172,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def get_channel(self, idx):
-        """ Get an uploaded channel.
+        """Get an uploaded channel.
 
         :param idx: (int) the index of the channel to return
         :returns: (sppasChannel)
@@ -184,7 +184,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def append_channel(self, channel):
-        """ Append a channel to the list of uploaded channels.
+        """Append a channel to the list of uploaded channels.
 
         :param channel: (sppasChannel) the channel to append
         :returns: index of the channel
@@ -196,7 +196,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def extract_channel(self, index=0):
-        """ Extract a channel from the Audio File Pointer,
+        """Extract a channel from the Audio File Pointer,
          and append it into the list of channels.
 
         Frames are stored into a sppasChannel() instance.
@@ -239,7 +239,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def extract_channels(self):
-        """ Extract all channels from the Audio File Pointer,
+        """Extract all channels from the Audio File Pointer,
          and append them to the list of channels.
 
         """
@@ -266,7 +266,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def read(self):
-        """ Read all frames of the audio file.
+        """Read all frames of the audio file.
 
         :returns: (str) frames
 
@@ -276,7 +276,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def read_frames(self, nframes):
-        """ Read n frames from the audio file.
+        """Read n frames from the audio file.
 
         :param nframes: (int) the number of frames to read
         :returns: (str) frames
@@ -290,7 +290,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def read_samples(self, nframes):
-        """ Read the samples from the audio file.
+        """Read the samples from the audio file.
 
         :param nframes: (int) the number of frames to read
         :returns: (list of list) list of samples of each channel
@@ -308,7 +308,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def get_sampwidth(self):
-        """ Return the sample width of the Audio File Pointer.
+        """Return the sample width of the Audio File Pointer.
 
         :returns: (int) sample width of the audio file
 
@@ -324,7 +324,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def get_framerate(self):
-        """ Return the frame rate of the Audio File Pointer.
+        """Return the frame rate of the Audio File Pointer.
 
         :returns: (int) frame rate of the audio file
 
@@ -340,7 +340,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def get_nframes(self):
-        """ Return the number of frames of the Audio File Pointer.
+        """Return the number of frames of the Audio File Pointer.
 
         :returns: (int) number of frames of the audio file
 
@@ -356,7 +356,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def get_nchannels(self):
-        """ Return the number of channels of the Audio File Pointer.
+        """Return the number of channels of the Audio File Pointer.
 
         :returns: (int) number of channels of the audio file
 
@@ -372,7 +372,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def get_duration(self):
-        """ Return the duration of the Audio File Pointer.
+        """Return the duration of the Audio File Pointer.
 
         :returns: (float) duration of the audio file (in seconds)
 
@@ -388,7 +388,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def rms(self):
-        """ Return the root mean square of the whole file.
+        """Return the root mean square of the whole file.
 
         :returns: (int) rms of the audio file
 
@@ -403,7 +403,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def clipping_rate(self, factor):
-        """ Return the clipping rate of the frames.
+        """Return the clipping rate of the frames.
 
         :param factor: (float) An interval to be more precise on clipping rate.
         It will consider that all frames outside the interval are clipped.
@@ -423,7 +423,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def seek(self, pos):
-        """ Fix the reader pointer position.
+        """Fix the reader pointer position.
 
         :param pos: (int) the position to set.
 
@@ -436,7 +436,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def tell(self):
-        """ Get the reader pointer position.
+        """Get the reader pointer position.
 
         :returns: (int) the current position
 
@@ -449,7 +449,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def rewind(self):
-        """ Set reader position at the beginning of the file. """
+        """Set reader position at the beginning of the file."""
 
         if self._audio_fp is None:
             raise AudioError
@@ -461,7 +461,7 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def verify_channels(self):
-        """ Check that the uploaded channels have the same parameters.
+        """Check that the uploaded channels have the same parameters.
 
         Check the frame rate, sample width and number of frames.
 
@@ -484,28 +484,28 @@ class sppasAudioPCM(object):
     # ------------------------------------------------------------------------
 
     def open(self, filename):
-        """ Open an audio file. """
+        """Open an audio file."""
         name = self.__class__.__name__
         raise NotImplementedError("%s does not support open()." % name)
 
     # ------------------------------------------------------------------------
 
     def save(self, filename):
-        """ Save an audio file. """
+        """Save an audio file."""
         name = self.__class__.__name__
         raise NotImplementedError("%s does not support save()." % name)
 
     # ------------------------------------------------------------------------
 
     def save_fragments(self, filename):
-        """ Save a fragment of an audio file. """
+        """Save a fragment of an audio file."""
         name = self.__class__.__name__
         raise NotImplementedError("%s does not support save_fragments()." % name)
 
     # ------------------------------------------------------------------------
 
     def close(self):
-        """ Close the audio file. """
+        """Close the audio file."""
 
         if self._audio_fp is None:
             raise AudioError

@@ -3,7 +3,7 @@ from random import randrange
 
 
 def quicksortcib(ciblist):
-    """ Implement quicksort (ie "partition-exchange" sort).
+    """Implement quicksort (ie "partition-exchange" sort).
         that makes on average, O(n log n) comparisons to sort n items.
         This solution benefits from "list comprehensions", which keeps
         the syntax concise and easy to read.

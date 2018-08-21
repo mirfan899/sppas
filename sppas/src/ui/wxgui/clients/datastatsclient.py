@@ -92,7 +92,7 @@ class DataStatsClient(BaseClient):
     # ------------------------------------------------------------------------
 
     def _update_members(self):
-        """ Update members. """
+        """Update members."""
 
         self._multiplefiles = True
 
@@ -148,7 +148,7 @@ class DataStats(wx.Panel):
     # ----------------------------------------------------------------------
 
     def _create_toolbar(self):
-        """ Creates a toolbar panel. """
+        """Creates a toolbar panel."""
 
         toolbar = MainToolbarPanel(self, self._prefsIO)
 
@@ -164,7 +164,7 @@ class DataStats(wx.Panel):
     # -------------------------------------------------------------------------
 
     def _create_content(self):
-        """ Create the panel with files content. """
+        """Create the panel with files content."""
 
         panel = scrolled.ScrolledPanel(self, -1)
         self._trssizer = wx.BoxSizer(wx.VERTICAL)
@@ -237,7 +237,7 @@ class DataStats(wx.Panel):
     # ------------------------------------------------------------------------
 
     def OnPanelSelection(self, event):
-        """ Change the current selection (the transcription file that was clicked on). """
+        """Change the current selection (the transcription file that was clicked on)."""
         self._selection = event.panel
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -251,7 +251,7 @@ class DataStats(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Check(self):
-        """ Choose tiers to check. """
+        """Choose tiers to check."""
 
         nb = 0
         dlg = wx.TextEntryDialog(self, 'What is the name of tier(s) to check?', 'Tier checker', '')
@@ -271,7 +271,7 @@ class DataStats(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Uncheck(self):
-        """ Un-check all tiers in all files. """
+        """Un-check all tiers in all files."""
 
         for i in range(self._filetrs.GetSize()):
             p = self._filetrs.GetObject(i)
@@ -280,7 +280,7 @@ class DataStats(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Preview(self):
-        """ Open a frame to view a tier. """
+        """Open a frame to view a tier."""
 
         # Show the tier which is checked in the selected files
         nb = self._get_nbselectedtiers(inselection=True)
@@ -302,7 +302,7 @@ class DataStats(wx.Panel):
     # ----------------------------------------------------------------------
 
     def DescriptivesStats(self):
-        """ Descriptives Statistics ."""
+        """Descriptives Statistics ."""
         
         nb = self._get_nbselectedtiers(inselection=False)
         if nb > 0:
@@ -317,7 +317,7 @@ class DataStats(wx.Panel):
     # ----------------------------------------------------------------------
 
     def OnSettings(self, event):
-        """ Set new preferences, then apply them. """
+        """Set new preferences, then apply them."""
 
         self._prefsIO = event.prefsIO
 
@@ -336,7 +336,7 @@ class DataStats(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetFont(self, font):
-        """ Change font of all texts. """
+        """Change font of all texts."""
 
         wx.Window.SetFont(self,font)
         for i in range(self._filetrs.GetSize()):
@@ -346,7 +346,7 @@ class DataStats(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetBackgroundColour(self, color):
-        """ Change background of all texts. """
+        """Change background of all texts."""
 
         wx.Window.SetBackgroundColour(self,color)
         for i in range(self._filetrs.GetSize()):
@@ -356,7 +356,7 @@ class DataStats(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetForegroundColour(self, color):
-        """ Change foreground of all texts. """
+        """Change foreground of all texts."""
 
         wx.Window.SetForegroundColour(self,color)
         for i in range(self._filetrs.GetSize()):
@@ -368,7 +368,7 @@ class DataStats(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetData(self, filename):
-        """ Add a file. """
+        """Add a file."""
 
         # Do not add an existing file
         if self._filetrs.Exists(filename):
@@ -400,7 +400,7 @@ class DataStats(wx.Panel):
     # ----------------------------------------------------------------------
 
     def UnsetData(self, f):
-        """ Remove the given file. """
+        """Remove the given file."""
 
         if self._filetrs.Exists(f):
             i = self._filetrs.GetIndex(f)
@@ -422,7 +422,7 @@ class DataStats(wx.Panel):
     # ----------------------------------------------------------------------
 
     def UnsetAllData(self):
-        """ Clean information and destroy all data. """
+        """Clean information and destroy all data."""
 
         self._filetrs.RemoveAll()
         self._trssizer.DeleteWindows()
@@ -435,7 +435,7 @@ class DataStats(wx.Panel):
     # -----------------------------------------------------------------------
 
     def _get_tiernames(self):
-        """ Create a list of selected tier names, and the whole list of tier names."""
+        """Create a list of selected tier names, and the whole list of tier names."""
 
         tiersX = []
         tiersY = []
@@ -456,7 +456,7 @@ class DataStats(wx.Panel):
     # -----------------------------------------------------------------------
 
     def _get_selectedtiers(self):
-        """ Create a list of selected tiers for each file. """
+        """Create a list of selected tiers for each file."""
 
         data = {}
         for i in range(self._filetrs.GetSize()):
@@ -474,7 +474,7 @@ class DataStats(wx.Panel):
     # -----------------------------------------------------------------------
 
     def _get_nbselectedtiers(self, inselection=False):
-        """ Get the number of selected tiers. """
+        """Get the number of selected tiers."""
 
         nb = 0
         for i in range(self._filetrs.GetSize()):

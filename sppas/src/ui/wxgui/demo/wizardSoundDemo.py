@@ -70,7 +70,7 @@ class WizardSoundDemo( wx.wizard.Wizard ):
 
 
 class WelcomePage(wx.wizard.WizardPageSimple):
-    """ Welcome to the Demo. """
+    """Welcome to the Demo."""
 
     def __init__(self, parent, title):
         """
@@ -89,7 +89,7 @@ class WelcomePage(wx.wizard.WizardPageSimple):
 #----------------------------------------------------------------------
 
 class SorryPage(wx.wizard.WizardPageSimple):
-    """ Welcome to the Demo. """
+    """Welcome to the Demo."""
 
     def __init__(self, parent, title):
         """

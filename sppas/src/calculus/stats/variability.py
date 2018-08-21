@@ -60,7 +60,7 @@ from .central import fsum
 
 
 def lunbiasedvariance(items):
-    """ Calculates the unbiased sample variance of the data values, for a sample.
+    """Calculates the unbiased sample variance of the data values, for a sample.
     It means that the estimation is using N-1 for the denominator.
 
 
@@ -80,7 +80,7 @@ def lunbiasedvariance(items):
 
 
 def lvariance(items):
-    """ Calculates the variance of the data values, for a population.
+    """Calculates the variance of the data values, for a population.
     It means that the estimation is using N for the denominator.
 
     The variance is a measure of dispersion near the mean.
@@ -99,7 +99,7 @@ def lvariance(items):
 
 
 def lunbiasedstdev(items):
-    """ Calculates the standard deviation of the data values, for a sample.
+    """Calculates the standard deviation of the data values, for a sample.
 
     The standard deviation is the positive square root of the variance.
 
@@ -116,7 +116,7 @@ def lunbiasedstdev(items):
 
 
 def lstdev(items):
-    """ Calculates the standard deviation of the data values, for a population.
+    """Calculates the standard deviation of the data values, for a population.
 
     The standard deviation is the positive square root of the variance.
 
@@ -133,7 +133,7 @@ def lstdev(items):
 
 
 def lsterr(items):
-    """ Calculates the standard error of the data values.
+    """Calculates the standard error of the data values.
 
     :param items: (list) list of data values
     :returns: (float)
@@ -145,7 +145,7 @@ def lsterr(items):
 
 
 def lz(items, score):
-    """ Calculates the z-score for a given input score,
+    """Calculates the z-score for a given input score,
     given that score and the data values from which that score came.
 
     The z-score determines the relative location of a data value.
@@ -164,7 +164,7 @@ def lz(items, score):
 
 
 def lzs(items):
-    """ Calculates a list of z-scores, one for each score in the data values.
+    """Calculates a list of z-scores, one for each score in the data values.
 
     :param items: (list) list of data values
     :returns: (list)
@@ -176,7 +176,7 @@ def lzs(items):
 
 
 def rPVI(items):
-    """ Calculates the Raw Pairwise Variability Index.
+    """Calculates the Raw Pairwise Variability Index.
 
     :param items: (list) list of data values
     :returns: (float)
@@ -193,7 +193,7 @@ def rPVI(items):
 
 
 def nPVI(items):
-    """ Calculates the Normalized Pairwise Variability Index.
+    """Calculates the Normalized Pairwise Variability Index.
 
     :param items: (list) list of data values
     :returns: (float)

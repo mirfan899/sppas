@@ -60,7 +60,7 @@ class sppasMapping(sppasDictRepl):
 
     """
     def __init__(self, dict_name=None):
-        """ Create a new sppasMapping instance.
+        """Create a new sppasMapping instance.
 
         :param dict_name: (str) is the file name with the mapping data (2 columns)
 
@@ -74,7 +74,7 @@ class sppasMapping(sppasDictRepl):
     # -----------------------------------------------------------------------
 
     def get_reverse(self):
-        """ Return the boolean value of reverse member. """
+        """Return the boolean value of reverse member."""
 
         return self._reverse
 
@@ -83,7 +83,7 @@ class sppasMapping(sppasDictRepl):
     # -----------------------------------------------------------------------
 
     def set_keep_miss(self, keep_miss):
-        """ Fix the keep_miss option.
+        """Fix the keep_miss option.
 
         :param keep_miss: (bool) If keep_miss is set to True, each missing
         entry is kept without change; instead each missing entry is replaced
@@ -95,7 +95,7 @@ class sppasMapping(sppasDictRepl):
     # -----------------------------------------------------------------------
 
     def set_reverse(self, reverse):
-        """ Fix the reverse option.
+        """Fix the reverse option.
 
         :param reverse: (bool) If replace is set to True, the mapping will
         replace value by key instead of replacing key by value.
@@ -106,7 +106,7 @@ class sppasMapping(sppasDictRepl):
     # -----------------------------------------------------------------------
 
     def set_miss_symbol(self, symbol):
-        """ Fix the symbol to be used if keep_miss is False.
+        """Fix the symbol to be used if keep_miss is False.
 
         :param symbol: (str) US-ASCII symbol to be used in case of a symbol
         is missing of the mapping table.
@@ -119,7 +119,7 @@ class sppasMapping(sppasDictRepl):
     # -----------------------------------------------------------------------
 
     def map_entry(self, entry):
-        """ Map an entry (a key or a value).
+        """Map an entry (a key or a value).
 
         :param entry: (str) is the input string to map
         :returns: mapped entry is a string
@@ -144,7 +144,7 @@ class sppasMapping(sppasDictRepl):
     # -----------------------------------------------------------------------
 
     def map(self, mstr, delimiters=DEFAULT_SEP):
-        """ Run the Mapping process on an input string.
+        """Run the Mapping process on an input string.
 
         :param mstr: is the input string to map
         :param delimiters: (list) list of character delimiters. Default is:

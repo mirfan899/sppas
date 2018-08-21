@@ -53,7 +53,7 @@ class sppasTiedList(object):
 
     """
     def __init__(self):
-        """ Create a sppasTiedList instance. """
+        """Create a sppasTiedList instance."""
 
         self.observed = list()
         self.tied = dict()
@@ -61,7 +61,7 @@ class sppasTiedList(object):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a tiedlist from a file and set it.
+        """Read a tiedlist from a file and set it.
 
         :param filename: (str)
 
@@ -83,7 +83,7 @@ class sppasTiedList(object):
     # -----------------------------------------------------------------------
 
     def save(self, filename):
-        """ Save the tiedlist into a file.
+        """Save the tiedlist into a file.
 
         :param filename: Name of the file of the tiedlist
 
@@ -99,14 +99,14 @@ class sppasTiedList(object):
     # -----------------------------------------------------------------------
 
     def is_empty(self):
-        """ Return True if the sppasTiedList() is empty. """
+        """Return True if the sppasTiedList() is empty."""
 
         return len(self.observed) == 0 and len(self.tied) == 0
 
     # -----------------------------------------------------------------------
 
     def is_observed(self, entry):
-        """ Return True if entry is really observed (not tied!).
+        """Return True if entry is really observed (not tied!).
 
         :param entry: (str) triphone/biphone/monophone
 
@@ -116,7 +116,7 @@ class sppasTiedList(object):
     # -----------------------------------------------------------------------
 
     def is_tied(self, entry):
-        """ Return True if entry is tied.
+        """Return True if entry is tied.
 
         :param entry: (str) a triphone/biphone/monophone
 
@@ -126,7 +126,7 @@ class sppasTiedList(object):
     # -----------------------------------------------------------------------
 
     def add_tied(self, tied, observed=None):
-        """ Add an entry into the tiedlist.
+        """Add an entry into the tiedlist.
         If observed is None, an heuristic will assign one.
 
         :param tied: (str) the biphone/triphone to add,
@@ -152,7 +152,7 @@ class sppasTiedList(object):
     # -----------------------------------------------------------------------
 
     def add_observed(self, entry):
-        """ Add an observed entry.
+        """Add an observed entry.
 
         :param entry: (str)
         :returns: bool
@@ -166,7 +166,7 @@ class sppasTiedList(object):
     # -----------------------------------------------------------------------
 
     def merge(self, other):
-        """ Merge self with another tiedlist.
+        """Merge self with another tiedlist.
 
         :param other: (sppasTiedList)
 
@@ -184,7 +184,7 @@ class sppasTiedList(object):
     # -----------------------------------------------------------------------
 
     def remove(self, entry, propagate=False):
-        """ Remove an entry of the list of observed or tied entries.
+        """Remove an entry of the list of observed or tied entries.
 
         :param entry: (str) the entry to be removed
         :param propagate: (bool) if entry is an observed item, remove all tied
@@ -206,7 +206,7 @@ class sppasTiedList(object):
     # -----------------------------------------------------------------------
 
     def __find(self, tied):
-        """ Find which observed model will match to tie the given entry.
+        """Find which observed model will match to tie the given entry.
 
         :param tied: (str) the model to be tied
         :returns: the observed model to tie with.
@@ -235,7 +235,7 @@ class sppasTiedList(object):
     # -----------------------------------------------------------------------
 
     def __add_triphone(self, entry):
-        """ Add an observed model to tie with the given entry.
+        """Add an observed model to tie with the given entry.
 
         :param entry: (str) the model to be tied
         :returns: (bool)
@@ -259,7 +259,7 @@ class sppasTiedList(object):
     # -----------------------------------------------------------------------
 
     def __add_biphone(self, entry):
-        """ Add an observed model to tie with the given entry.
+        """Add an observed model to tie with the given entry.
 
         :param entry: (str) the model to be tied
         :returns: (bool)

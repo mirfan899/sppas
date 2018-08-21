@@ -85,7 +85,7 @@ class sppasTDF(sppasBaseText):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of TDF format or not.
+        """Check whether a file is of TDF format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -117,7 +117,7 @@ class sppasTDF(sppasBaseText):
 
     @staticmethod
     def make_point(midpoint):
-        """ The localization is a time value, so always a float. """
+        """The localization is a time value, so always a float."""
 
         try:
             midpoint = float(midpoint)
@@ -129,7 +129,7 @@ class sppasTDF(sppasBaseText):
     # -----------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasTDF instance.
+        """Initialize a new sppasTDF instance.
 
         :param name: (str) This transcription name.
 
@@ -159,7 +159,7 @@ class sppasTDF(sppasBaseText):
     # -----------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a raw file and fill the Transcription.
+        """Read a raw file and fill the Transcription.
         It creates a tier for each speaker-channel observed in the file.
 
         :param filename: (str)
@@ -177,7 +177,7 @@ class sppasTDF(sppasBaseText):
     # -----------------------------------------------------------------
 
     def _extract_lines(self, first_line, lines):
-        """ Extract the content of the TDF file.
+        """Extract the content of the TDF file.
 
         :param first_line: The first line of the TDF file (name of the columns)
         :param lines: the content of the file

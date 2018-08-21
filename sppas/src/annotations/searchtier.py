@@ -267,7 +267,7 @@ class sppasSearchTier(object):
 
     @staticmethod
     def transcription(trs):
-        """ Return the tier with orthographic transcription.
+        """Return the tier with orthographic transcription.
 
         :param trs: (Transcription)
         :returns: (tier)
@@ -297,7 +297,7 @@ class sppasSearchTier(object):
 
     @staticmethod
     def phonetization(trs):
-        """ Return the tier with phonetization.
+        """Return the tier with phonetization.
 
         :param trs: (Transcription)
 
@@ -324,7 +324,7 @@ class sppasSearchTier(object):
 
     @staticmethod
     def tokenization(trs, pattern=""):
-        """ Return the tier with tokenization.
+        """Return the tier with tokenization.
 
         In case of EOT, several tiers with tokens are available.
         Priority is given to faked.
@@ -371,7 +371,7 @@ class sppasSearchTier(object):
 
     @staticmethod
     def aligned_phones(trs):
-        """ Return the tier with time-aligned phonemes.
+        """Return the tier with time-aligned phonemes.
 
         :param trs: (Transcription)
 
@@ -390,7 +390,7 @@ class sppasSearchTier(object):
 
     @staticmethod
     def aligned_tokens(trs):
-        """ Return the tier with time-aligned tokens.
+        """Return the tier with time-aligned tokens.
 
         :param trs: (Transcription)
         :returns: Tier
@@ -406,7 +406,7 @@ class sppasSearchTier(object):
 
     @staticmethod
     def pitch_anchors(trs):
-        """ Return the tier with pitch anchors, like momel.
+        """Return the tier with pitch anchors, like momel.
 
         :param trs: (Transcription)
         :returns: Tier

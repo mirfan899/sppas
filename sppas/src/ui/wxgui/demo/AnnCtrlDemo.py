@@ -101,7 +101,7 @@ class AnnCtrlDemo(wx.Window):
 
 
     def repaint1(self, event):
-        """ Color. """
+        """Color."""
         (a,b,c) = random.sample(range(160,250),  3)
         (q,r,s) = random.sample(range(0,150),  3)
         for ann in self._anns:
@@ -109,7 +109,7 @@ class AnnCtrlDemo(wx.Window):
             ann.Refresh()
 
     def repaint2(self, event):
-        """ Move. """
+        """Move."""
         y1 = random.sample(range(70,120), 2)[0]
         for ann in self._anns:
             x,y=ann.GetPosition()
@@ -117,14 +117,14 @@ class AnnCtrlDemo(wx.Window):
         self.GetTopLevelParent().GetStatusBar().SetStatusText('Annotations re-sized: %d'%y1)
 
     def repaint3(self, event):
-        """ Size. """
+        """Size."""
         h1 = random.sample(range(20,60),  2)[0]
         for a in self._anns:
             a.MoveWindow(pos=a.GetPosition(), size=wx.Size(a.GetSize().width,h1))
         self.GetTopLevelParent().GetStatusBar().SetStatusText('Annotations re-sized: %d'%h1)
 
     def repaint4(self, event):
-        """ Font. """
+        """Font."""
         data = wx.FontData()
         dlg = wx.FontDialog(self, data)
         if dlg.ShowModal() == wx.ID_OK:

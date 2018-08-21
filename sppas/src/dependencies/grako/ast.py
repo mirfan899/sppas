@@ -21,7 +21,7 @@ class AST(dict):
 
     @property
     def parseinfo(self):
-        """ Make the special attribute `_parseinfo` be available
+        """Make the special attribute `_parseinfo` be available
             as a property without an underscore in the name.
             This patch helps with backwards compatibility.
         """

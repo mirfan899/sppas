@@ -48,7 +48,7 @@ from ..media import sppasMedia
 
 
 class TestMedia(unittest.TestCase):
-    """ Generic representation of a media file.
+    """Generic representation of a media file.
     The audio file is not loaded.
 
     """

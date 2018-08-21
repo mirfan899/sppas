@@ -927,7 +927,7 @@ class spControl(wx.Window):
     # -------------------------------------------------------------------------
 
     def __initializeMembers(self):
-        """ Initialize all members. """
+        """Initialize all members."""
 
         # Fix a default font
         self._font = wx.Font(FONT_SIZE_MIN, wx.SWISS, wx.NORMAL, wx.BOLD)
@@ -959,7 +959,7 @@ class spControl(wx.Window):
     # -------------------------------------------------------------------------
 
     def __initializeColours(self):
-        """ Create the pens and brush with default colors. """
+        """Create the pens and brush with default colors."""
 
         self._bgcolor    = BG_COLOUR
         self._bgpen      = wx.Pen(BG_COLOUR, 1, wx.SOLID)
@@ -979,7 +979,7 @@ class spControl(wx.Window):
     # -------------------------------------------------------------------------
 
     def __initializeSize(self, size):
-        """ Initialize the size. """
+        """Initialize the size."""
 
         self.SetMinSize(wx.Size(MIN_W,MIN_H))
         self.SetSize(size)
@@ -1002,7 +1002,7 @@ class Margins:
     """
 
     def __init__(self, margin=0):
-        """ Create a new Margins() instance with default values.
+        """Create a new Margins() instance with default values.
             Parameters:
               - margin (int) margin value set to Top, Bottom, Left and Right.
         """

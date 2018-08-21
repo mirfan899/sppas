@@ -51,7 +51,7 @@ class Repetitions(DataRepetition):
 
     """
     def __init__(self, stop_list=None):
-        """ Create a new Repetitions instance.
+        """Create a new Repetitions instance.
 
         :param stop_list: (Vocabulary) List of un-relevant tokens.
 
@@ -64,7 +64,7 @@ class Repetitions(DataRepetition):
     # -----------------------------------------------------------------------
 
     def detect(self, speaker1, limit=10, speaker2=None):
-        """ Detect repetitions in tokens.
+        """Detect repetitions in tokens.
         Detect self-repetitions if speaker2 is None and other-repetitions if
         speaker2 is set.
 
@@ -98,7 +98,7 @@ class Repetitions(DataRepetition):
     # ------------------------------------------------------------------
 
     def get_longest(self, current1, speaker1, speaker2=None):
-        """ Return the index of the last token of the longest repeated
+        """Return the index of the last token of the longest repeated
         string, or -1.
 
         For self-repetitions, current2 must be None, speaker2 is ignored.
@@ -137,7 +137,7 @@ class Repetitions(DataRepetition):
     # ------------------------------------------------------------------
 
     def select_self_repetition(self, start, end, speaker1):
-        """ Append (or not) a self-repetition.
+        """Append (or not) a self-repetition.
 
         :param start: (int) start index of the entry of the source (speaker1)
         :param end: (int) end index of the entry of the source (speaker1)
@@ -165,7 +165,7 @@ class Repetitions(DataRepetition):
     # ------------------------------------------------------------------
 
     def select_other_repetition(self, start, end, speaker1, speaker2):
-        """ Append (or not) an other-repetition.
+        """Append (or not) an other-repetition.
 
         :param start: (int) start index of the entry of the source (speaker1)
         :param end: (int) end index of the entry of the source (speaker1)
@@ -191,7 +191,7 @@ class Repetitions(DataRepetition):
     # ------------------------------------------------------------------
 
     def find_echos(self, start, end, speaker1, speaker2=None):
-        """ Find all echos of a source.
+        """Find all echos of a source.
         
         :param start: (int) start index of the entry of the source (speaker1)
         :param end: (int) end index of the entry of the source (speaker1)
@@ -235,7 +235,7 @@ class Repetitions(DataRepetition):
 
     @staticmethod
     def __get_longest_repeated(start, repeats):
-        """ Select the longest echo from start position in repeats. """
+        """Select the longest echo from start position in repeats."""
 
         path_repeats = []
         for i in range(len(repeats[start])):

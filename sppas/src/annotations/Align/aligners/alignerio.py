@@ -59,13 +59,13 @@ class AlignerIO(object):
     # ------------------------------------------------------------------------
 
     def __init__(self):
-        """ Creates a new AlignerIO instance. """
+        """Creates a new AlignerIO instance."""
         pass
 
     # ------------------------------------------------------------------------
 
     def read_aligned(self, basename):
-        """ Find an aligned file and read it.
+        """Find an aligned file and read it.
 
         :param basename: (str) Track file name without extension
         :returns: Two lists of tuples with phones and words
@@ -91,7 +91,7 @@ class AlignerIO(object):
     # ------------------------------------------------------------------
 
     def read_palign(self, filename):
-        """ Read an alignment file in the standard format of Julius CSR engine.
+        """Read an alignment file in the standard format of Julius CSR engine.
 
         :param filename: (str) The input file name.
         :returns: Two lists of tuples:
@@ -212,7 +212,7 @@ class AlignerIO(object):
     # ------------------------------------------------------------------
 
     def read_walign(self, filename):
-        """ Read an alignment file in the standard format of Julius CSR engine.
+        """Read an alignment file in the standard format of Julius CSR engine.
 
         :param filename: (str) The input file name.
         :returns: Two lists of tuples:
@@ -284,7 +284,7 @@ class AlignerIO(object):
     # ------------------------------------------------------------------
 
     def read_mlf(self, filename):
-        """ Read an alignment file (a mlf file).
+        """Read an alignment file (a mlf file).
 
         :param filename: is the input file (a HVite mlf output file).
 
@@ -361,7 +361,7 @@ class AlignerIO(object):
     # ------------------------------------------------------------------
 
     def write_palign(self, phoneslist, tokenslist, alignments, outputfilename):
-        """ Write an alignment output file.
+        """Write an alignment output file.
 
         :param phoneslist: (list) List with the phonetization of each token
         :param tokenslist: (list) List with each token

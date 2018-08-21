@@ -88,7 +88,7 @@ class sppasBasePraat(sppasBaseIO):
     """
     @staticmethod
     def make_point(midpoint, radius=0.0005):
-        """ The localization is a time value, so a float.
+        """The localization is a time value, so a float.
 
         :param midpoint: (float, str, int) a time value (in seconds).
         :param radius: (float): vagueness (in seconds)
@@ -106,7 +106,7 @@ class sppasBasePraat(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new Praat instance.
+        """Initialize a new Praat instance.
 
         :param name: (str) This transcription name.
 
@@ -134,7 +134,7 @@ class sppasBasePraat(sppasBaseIO):
 
     @staticmethod
     def _parse_int(line, line_number=0):
-        """ Parse an integer value from a line of a Praat formatted file.
+        """Parse an integer value from a line of a Praat formatted file.
 
         >>> sppasBasePraat._parse_int("intervals: size = 23")
         >>> 23
@@ -155,7 +155,7 @@ class sppasBasePraat(sppasBaseIO):
 
     @staticmethod
     def _parse_float(line, line_number=0):
-        """ Parse a floating point value from a line of a Praat formatted file.
+        """Parse a floating point value from a line of a Praat formatted file.
 
         >>> sppasBasePraat._parse_float("xmin = 11.9485310906")
         >>> 11.9485310906
@@ -176,7 +176,7 @@ class sppasBasePraat(sppasBaseIO):
 
     @staticmethod
     def _parse_string(text):
-        """ Parse a text from one or more lines of a Praat formatted file.
+        """Parse a text from one or more lines of a Praat formatted file.
 
         :param text: (str or list of str)
         :returns: (str)
@@ -201,7 +201,7 @@ class sppasBasePraat(sppasBaseIO):
 
     @staticmethod
     def _serialize_header(file_class, xmin, xmax):
-        """ Serialize the header of a Praat file.
+        """Serialize the header of a Praat file.
 
         :param file_class: (str) Objects class in this file
         :param xmin: (float) Start time
@@ -220,7 +220,7 @@ class sppasBasePraat(sppasBaseIO):
 
     @staticmethod
     def _serialize_labels_text(annotation):
-        """ Convert the annotation labels into a string. """
+        """Convert the annotation labels into a string."""
 
         text = annotation.serialize_labels(separator="\n", empty="", alt=True)
 
@@ -239,7 +239,7 @@ class sppasBasePraat(sppasBaseIO):
 
     @staticmethod
     def _serialize_labels_value(labels):
-        """ Convert a label with a numerical value into a string. """
+        """Convert a label with a numerical value into a string."""
 
         if len(labels) == 0:
             TagValueError('empty label')
@@ -297,7 +297,7 @@ class sppasTextGrid(sppasBasePraat):
 
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of TextGrid format or not.
+        """Check whether a file is of TextGrid format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -323,7 +323,7 @@ class sppasTextGrid(sppasBasePraat):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasTextGrid instance.
+        """Initialize a new sppasTextGrid instance.
 
         :param name: (str) This transcription name.
 
@@ -339,7 +339,7 @@ class sppasTextGrid(sppasBasePraat):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a TextGrid file.
+        """Read a TextGrid file.
 
         :param filename: is the input file name, ending by ".TextGrid"
 
@@ -377,7 +377,7 @@ class sppasTextGrid(sppasBasePraat):
     # -----------------------------------------------------------------------
 
     def _parse_tier(self, lines, start_line, is_long):
-        """ Parse a tier from the content of a TextGrid file.
+        """Parse a tier from the content of a TextGrid file.
 
         :param lines: the contents of the file.
         :param start_line: index in lines when the tier content starts.
@@ -417,7 +417,7 @@ class sppasTextGrid(sppasBasePraat):
 
     @staticmethod
     def _parse_annotation(lines, start_line, is_interval):
-        """ Read an annotation from an IntervalTier in the contents of a TextGrid file.
+        """Read an annotation from an IntervalTier in the contents of a TextGrid file.
 
         :param lines: (list) the contents of the file.
         :param start_line: (int) index in lines when the tier content starts.
@@ -444,7 +444,7 @@ class sppasTextGrid(sppasBasePraat):
 
     @staticmethod
     def _parse_localization(lines, start_line, is_interval):
-        """ Parse the localization (point or interval).  """
+        """Parse the localization (point or interval).  """
 
         midpoint = sppasBasePraat._parse_float(lines[start_line], start_line+1)
         start_line += 1
@@ -464,7 +464,7 @@ class sppasTextGrid(sppasBasePraat):
 
     @staticmethod
     def _parse_text(lines, start_line):
-        """ Parse the text entry. Returns a list of sppasLabel().
+        """Parse the text entry. Returns a list of sppasLabel().
 
         text can be on several lines.
         we save each line in an individual label.
@@ -493,7 +493,7 @@ class sppasTextGrid(sppasBasePraat):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write a TextGrid file.
+        """Write a TextGrid file.
 
         :param filename: (str)
 
@@ -554,7 +554,7 @@ class sppasTextGrid(sppasBasePraat):
 
     @staticmethod
     def _serialize_textgrid_header(xmin, xmax, size):
-        """ Create a string with the header of the textgrid. """
+        """Create a string with the header of the textgrid."""
 
         content = sppasBasePraat._serialize_header("TextGrid", xmin, xmax)
         content += 'tiers? <exists>\n'
@@ -566,7 +566,7 @@ class sppasTextGrid(sppasBasePraat):
 
     @staticmethod
     def _serialize_tier_header(tier, tier_number):
-        """ Create the string with the header for a new tier. """
+        """Create the string with the header for a new tier."""
 
         if len(tier) == 0:
             raise AioEmptyTierError("TextGrid", tier.get_name())
@@ -583,7 +583,7 @@ class sppasTextGrid(sppasBasePraat):
 
     @staticmethod
     def _serialize_interval_annotation(annotation, number):
-        """ Converts an annotation consisting of intervals to the TextGrid format.
+        """Converts an annotation consisting of intervals to the TextGrid format.
 
         A time value can be written with a maximum of 18 digits, like in Praat.
 
@@ -602,7 +602,7 @@ class sppasTextGrid(sppasBasePraat):
 
     @staticmethod
     def _serialize_point_annotation(annotation, number):
-        """ Converts an annotation consisting of points to the TextGrid format.
+        """Converts an annotation consisting of points to the TextGrid format.
 
         :param annotation: (sppasAnnotation)
         :param number: (int) the index of the annotation in the tier + 1.
@@ -634,7 +634,7 @@ class sppasBaseNumericalTier(sppasBasePraat):
 
     """
     def __init__(self, name=None):
-        """ Initialize a new sppasBaseNumericalTier instance.
+        """Initialize a new sppasBaseNumericalTier instance.
 
         :param name: (str) This transcription name.
 
@@ -660,7 +660,7 @@ class sppasBaseNumericalTier(sppasBasePraat):
     # -----------------------------------------------------------------------
 
     def _read(self, filename):
-        """ Read a file of any numerical file type.
+        """Read a file of any numerical file type.
 
         :param filename: (str) the input file name
 
@@ -705,7 +705,7 @@ class sppasBaseNumericalTier(sppasBasePraat):
     # -----------------------------------------------------------------------
 
     def _write(self, filename, file_type):
-        """ Write a file of the given file type.
+        """Write a file of the given file type.
 
         :param filename: (str)
         :param file_type: (str) Name of the file type (PitchTier, IntensityTier...)
@@ -767,7 +767,7 @@ class sppasPitchTier(sppasBaseNumericalTier):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of PitchTier format or not.
+        """Check whether a file is of PitchTier format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -787,7 +787,7 @@ class sppasPitchTier(sppasBaseNumericalTier):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasPitchTier instance.
+        """Initialize a new sppasPitchTier instance.
 
         :param name: (str) This transcription name.
 
@@ -801,7 +801,7 @@ class sppasPitchTier(sppasBaseNumericalTier):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a PitchTier file.
+        """Read a PitchTier file.
 
         :param filename: (str) the input file name
 
@@ -811,7 +811,7 @@ class sppasPitchTier(sppasBaseNumericalTier):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write a PitchTier file.
+        """Write a PitchTier file.
 
         :param filename: (str)
 
@@ -833,7 +833,7 @@ class sppasIntensityTier(sppasPitchTier):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of IntensityTier format or not.
+        """Check whether a file is of IntensityTier format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -853,7 +853,7 @@ class sppasIntensityTier(sppasPitchTier):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasIntensityTier instance.
+        """Initialize a new sppasIntensityTier instance.
 
         :param name: (str) This transcription name.
 
@@ -867,7 +867,7 @@ class sppasIntensityTier(sppasPitchTier):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a IntensityTier file.
+        """Read a IntensityTier file.
 
         :param filename: (str) the input file name
 
@@ -877,7 +877,7 @@ class sppasIntensityTier(sppasPitchTier):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write a IntensityTier file.
+        """Write a IntensityTier file.
 
         :param filename: (str)
 

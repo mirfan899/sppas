@@ -61,7 +61,7 @@ class sppasMomel(sppasBaseAnnotation):
 
     """
     def __init__(self, logfile=None):
-        """ Create a new sppasMomel instance.
+        """Create a new sppasMomel instance.
 
         :param logfile: (sppasLog)
 
@@ -76,7 +76,7 @@ class sppasMomel(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def fix_options(self, options):
-        """ Fix all options. Available options are:
+        """Fix all options. Available options are:
 
             - lfen1
             - hzinf
@@ -133,7 +133,7 @@ class sppasMomel(sppasBaseAnnotation):
 
     @staticmethod
     def set_pitch(input_filename):
-        """ Load pitch values from a file.
+        """Load pitch values from a file.
 
         :returns: A list of pitch values (one value each 10 ms).
 
@@ -155,7 +155,7 @@ class sppasMomel(sppasBaseAnnotation):
             output.write("\n")
 
     def print_targets(self, targets, output_filename=None, trs=None):
-        """ Print the set of selected targets.
+        """Print the set of selected targets.
 
         :param targets:
         :param output_filename: (str)

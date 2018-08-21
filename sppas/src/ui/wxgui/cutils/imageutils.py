@@ -60,7 +60,7 @@ from sppas.src.ui.wxgui.sp_icons import UNCHECKED_ICON, DISABLED_ICON, RADIOUNCH
 
 
 def TakeScreenShot(rect, client_x=0, client_y=0):
-    """ Takes a screenshot of the given pos & size (rect). """
+    """Takes a screenshot of the given pos & size (rect)."""
 
     # adjust widths for Linux
     if sys.platform == 'linux2':
@@ -104,7 +104,7 @@ def TakeScreenShot(rect, client_x=0, client_y=0):
 
 
 def CreateCursorFromXPMData( xpmdata, hotspot ):
-    """ Return a wx.Cursor from a vectorized image. """
+    """Return a wx.Cursor from a vectorized image."""
 
     # get cursor image
     bmp   = wx.BitmapFromXPMData( xpmdata )
@@ -122,7 +122,7 @@ def CreateCursorFromXPMData( xpmdata, hotspot ):
 
 
 def ScaleBitmap(bitmap, width, height):
-    """ Scale the bitmap image. """
+    """Scale the bitmap image."""
 
     image = wx.ImageFromBitmap(bitmap)
     image = image.Scale(width, height, wx.IMAGE_QUALITY_HIGH)
@@ -132,7 +132,7 @@ def ScaleBitmap(bitmap, width, height):
 
 
 def ScaleImage(img, width, height):
-    """ Scale the image. """
+    """Scale the image."""
 
     return img.Scale(width, height, wx.IMAGE_QUALITY_HIGH)
 
@@ -140,7 +140,7 @@ def ScaleImage(img, width, height):
 
 
 def RotateImage(bmp):
-    """ Rotates the bitmap. """
+    """Rotates the bitmap."""
 
     w,h = bmp.GetWidth(), bmp.GetHeight()
     wcenter = int(w/2)

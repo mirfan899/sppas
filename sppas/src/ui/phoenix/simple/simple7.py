@@ -24,7 +24,7 @@ foreground_color = wx.Colour(250, 250, 250, alpha=wx.ALPHA_OPAQUE)
 
 
 class myFrame(wx.Frame):
-    """ Create my own frame. Inherited from the wx.Frame.
+    """Create my own frame. Inherited from the wx.Frame.
 
     """
     def __init__(self):
@@ -41,7 +41,7 @@ class myFrame(wx.Frame):
 
 
 class myMenuPanel(wx.Panel):
-    """ Create my own menu panel with several action buttons.
+    """Create my own menu panel with several action buttons.
     It aims to replace the old-style menus.
 
     """
@@ -99,7 +99,7 @@ class myMenuPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnAction(self, event):
-        """ A button was clicked.
+        """A button was clicked.
         Here we just send the event to the parent.
 
         """
@@ -119,7 +119,7 @@ class myMenuPanel(wx.Panel):
 
 
 class myActionPanel(wx.Panel):
-    """ Create my own panel with 3 action buttons: exit, open, save.
+    """Create my own panel with 3 action buttons: exit, open, save.
 
     """
     def __init__(self, parent):
@@ -156,7 +156,7 @@ class myActionPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnAction(self, event):
-        """ A button was clicked.
+        """A button was clicked.
         Here we just send the event to the parent.
 
         """
@@ -168,7 +168,7 @@ class myActionPanel(wx.Panel):
 
 
 class myApp(wx.App):
-    """ Create my own Application. Inherited from the wx.App.
+    """Create my own Application. Inherited from the wx.App.
 
     """
     def __init__(self, *args, **kw):
@@ -250,7 +250,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def exit(self):
-        """ Close the frame, terminating the application. """
+        """Close the frame, terminating the application."""
 
         print("Bye bye.")
         self.GetTopWindow().Close(True)
@@ -258,7 +258,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def OnExit(self):
-        """ Optional. Override the already existing method. """
+        """Optional. Override the already existing method."""
 
         # do whatever you want here (save session, ...)
         print("OnExit method invoked")

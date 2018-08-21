@@ -90,7 +90,7 @@ class WizardDisplayDemo( wx.wizard.Wizard ):
 
 
 class WelcomePage(wx.wizard.WizardPageSimple):
-    """ Welcome to the Demo. """
+    """Welcome to the Demo."""
 
     def __init__(self, parent, title):
         """
@@ -110,7 +110,7 @@ class WelcomePage(wx.wizard.WizardPageSimple):
 
 
 class PointPage(wx.wizard.WizardPageSimple):
-    """ TimePoint Demo. """
+    """TimePoint Demo."""
 
     def __init__(self, parent, title):
         """
@@ -127,7 +127,7 @@ class PointPage(wx.wizard.WizardPageSimple):
 
 
 class LabelPage(wx.wizard.WizardPageSimple):
-    """ Label Demo. """
+    """Label Demo."""
 
     def __init__(self, parent, title):
         """
@@ -144,7 +144,7 @@ class LabelPage(wx.wizard.WizardPageSimple):
 
 
 class TierPage(wx.wizard.WizardPageSimple):
-    """ Tier Demo. """
+    """Tier Demo."""
 
     def __init__(self, parent, title):
         """
@@ -161,7 +161,7 @@ class TierPage(wx.wizard.WizardPageSimple):
 
 
 class TrsPage(wx.wizard.WizardPageSimple):
-    """ Trs Demo. """
+    """Trs Demo."""
 
     def __init__(self, parent, title):
         """
@@ -178,7 +178,7 @@ class TrsPage(wx.wizard.WizardPageSimple):
 
 
 class WavePage(wx.wizard.WizardPageSimple):
-    """ Wave Demo. """
+    """Wave Demo."""
 
     def __init__(self, parent, title):
         """
@@ -196,7 +196,7 @@ class WavePage(wx.wizard.WizardPageSimple):
 
 
 class RulerPage(wx.wizard.WizardPageSimple):
-    """ Ruler Demo. """
+    """Ruler Demo."""
 
     def __init__(self, parent, title):
         """
@@ -214,7 +214,7 @@ class RulerPage(wx.wizard.WizardPageSimple):
 
 
 class DisplayPage(wx.wizard.WizardPageSimple):
-    """ Display Demo. """
+    """Display Demo."""
 
     def __init__(self, parent, title):
         """

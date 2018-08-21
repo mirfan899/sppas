@@ -111,7 +111,7 @@ class TestAudioUtils(unittest.TestCase):
         self.assertEqual(f3, f3c)
 
     def test_db(self):
-        """ Test amp2db. """
+        """Test amp2db."""
         self.assertEqual(70, sppasAudioConverter().amp2db(3162))
         self.assertEqual(46.02, sppasAudioConverter().amp2db(200))
         self.assertEqual(40, sppasAudioConverter().amp2db(100))
@@ -120,7 +120,7 @@ class TestAudioUtils(unittest.TestCase):
         self.assertEqual(0., sppasAudioConverter().amp2db(2))
 
     def test_mel(self):
-        """ Test hz2mel/mel2hz. """
+        """Test hz2mel/mel2hz."""
         hz = 200
         mel = sppasAudioConverter().hz2mel(hz)
         rehz = sppasAudioConverter().mel2hz(mel)

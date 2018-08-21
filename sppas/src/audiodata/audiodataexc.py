@@ -56,7 +56,7 @@ FRAMERATE_ERROR = ":ERROR 2080: "
 
 
 class AudioError(Exception):
-    """ :ERROR 2000: No audio file is defined. """
+    """:ERROR 2000: No audio file is defined."""
 
     def __init__(self):
         self.parameter = AUDIO_ERROR + (_(AUDIO_ERROR))
@@ -68,7 +68,7 @@ class AudioError(Exception):
 
 
 class AudioTypeError(TypeError):
-    """ :ERROR 2005: Audio type error: not supported file format {extension}. """
+    """:ERROR 2005: Audio type error: not supported file format {extension}."""
 
     def __init__(self, extension):
         self.parameter = AUDIO_TYPE_ERROR + \
@@ -82,7 +82,7 @@ class AudioTypeError(TypeError):
 
 
 class AudioIOError(IOError):
-    """ :ERROR 2010: Opening, reading or writing error. """
+    """:ERROR 2010: Opening, reading or writing error."""
 
     def __init__(self, message="", filename=""):
         self.parameter = IO_ERROR + \
@@ -95,7 +95,7 @@ class AudioIOError(IOError):
 
 
 class AudioDataError(Exception):
-    """ :ERROR 2015: No data or corrupted data in the audio file {filename}. """
+    """:ERROR 2015: No data or corrupted data in the audio file {filename}."""
 
     def __init__(self, filename=""):
         self.parameter = DATA_ERROR + \
@@ -108,7 +108,7 @@ class AudioDataError(Exception):
 
 
 class ChannelIndexError(ValueError):
-    """ :ERROR 2020: {number} is not a right index of channel. """
+    """:ERROR 2020: {number} is not a right index of channel."""
 
     def __init__(self, index):
         index = int(index)
@@ -121,7 +121,7 @@ class ChannelIndexError(ValueError):
 
 
 class IntervalError(ValueError):
-    """ :ERROR 2025: From {value1} to {value2} is not a proper interval. """
+    """:ERROR 2025: From {value1} to {value2} is not a proper interval."""
 
     def __init__(self, value1, value2):
         value1 = int(value1)
@@ -136,7 +136,7 @@ class IntervalError(ValueError):
 
 
 class ChannelError(Exception):
-    """ :ERROR 2050: No channel defined. """
+    """:ERROR 2050: No channel defined."""
 
     def __init__(self):
         self.parameter = CHANNEL_ERROR + (_(CHANNEL_ERROR))
@@ -148,7 +148,7 @@ class ChannelError(Exception):
 
 
 class MixChannelError(ValueError):
-    """ :ERROR 2060: Channels have not the same sample width.
+    """:ERROR 2060: Channels have not the same sample width.
         :ERROR 2061: Channels have not the same frame rate.
         :ERROR 2062: Channels have not the same number of frames.
 
@@ -171,7 +171,7 @@ class MixChannelError(ValueError):
 
 
 class SampleWidthError(ValueError):
-    """ :ERROR 2070: Invalid sample width {value}. """
+    """:ERROR 2070: Invalid sample width {value}."""
 
     def __init__(self, value):
         value = int(value)
@@ -184,7 +184,7 @@ class SampleWidthError(ValueError):
 
 
 class FrameRateError(ValueError):
-    """ :ERROR 2080: Invalid framerate {value}. """
+    """:ERROR 2080: Invalid framerate {value}."""
 
     def __init__(self, value):
         value = int(value)

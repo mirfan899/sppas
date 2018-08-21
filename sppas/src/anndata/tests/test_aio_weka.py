@@ -127,7 +127,7 @@ class TestWEKA(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_check_metadata(self):
-        """ Check the metadata and fix the variable members. """
+        """Check the metadata and fix the variable members."""
 
         weka = sppasWEKA()
         t = sppasTranscription()
@@ -165,7 +165,7 @@ class TestWEKA(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_validate_annotations(self):
-        """ Prepare data to be compatible. """
+        """Prepare data to be compatible."""
 
         weka = sppasWEKA()
         t = sppasTranscription()
@@ -177,7 +177,7 @@ class TestWEKA(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_validate(self):
-        """ Check the tiers to verify if everything is ok. """
+        """Check the tiers to verify if everything is ok."""
 
         weka = sppasWEKA()
         t = sppasTranscription()
@@ -221,7 +221,7 @@ class TestWEKA(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_tier_is_attribute(self):
-        """ Check if a tier is an attribute for the classification. """
+        """Check if a tier is an attribute for the classification."""
 
         t = sppasTranscription()
         tier1 = t.create_tier(name="tier1")
@@ -240,7 +240,7 @@ class TestWEKA(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_get_class_tier(self):
-        """ Return the tier which is the class. """
+        """Return the tier which is the class."""
 
         weka = sppasWEKA()
         t = sppasTranscription()
@@ -253,7 +253,7 @@ class TestWEKA(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_get_anchor_tier(self):
-        """ Return the tier which will be used to create the instances. """
+        """Return the tier which will be used to create the instances."""
 
         weka = sppasWEKA()
         t = sppasTranscription()
@@ -266,7 +266,7 @@ class TestWEKA(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_get_labels(self):
-        """ Return the sppasLabel() at the given time in the given tier.
+        """Return the sppasLabel() at the given time in the given tier.
             Return the empty label if no label was assigned at the given time.
 
         """
@@ -306,7 +306,7 @@ class TestWEKA(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_fix_all_possible_instance_steps(self):
-        """ Fix all the possible time-points of the instances. """
+        """Fix all the possible time-points of the instances."""
 
         t = sppasTranscription()
         tier = t.create_tier(name="tier")
@@ -329,7 +329,7 @@ class TestWEKA(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_fix_instance_steps(self):
-        """ Fix the time-points to create the instances and the
+        """Fix the time-points to create the instances and the
             tag of the class to predict by the classification system.
         """
 
@@ -362,7 +362,7 @@ class TestWEKA(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_scores_to_probas(self):
-        """ Convert scores of a set of tags to probas. """
+        """Convert scores of a set of tags to probas."""
 
         self.assertFalse(sppasWEKA._scores_to_probas([]))
 
@@ -413,7 +413,7 @@ class TestWEKA(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_fix_data_instance(self):
-        """ Fix the data content of an instance. """
+        """Fix the data content of an instance."""
 
         weka = sppasWEKA()
         t = sppasTranscription()
@@ -488,7 +488,7 @@ class TestFileFormats(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_write_header(self):
-        """ Write the creator, etc. in the header of an ARFF file. """
+        """Write the creator, etc. in the header of an ARFF file."""
 
         lines = sppasARFF._serialize_header()
         self.assertEqual(len(lines.split("\n")), 7)
@@ -501,7 +501,7 @@ class TestFileFormats(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_write_meta(self):
-        """ Write the metadata of the Transcription object
+        """Write the metadata of the Transcription object
         in the header of an ARFF file.
 
         """
@@ -519,7 +519,7 @@ class TestFileFormats(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_write_relation(self):
-        """ Write the name of the relation. """
+        """Write the name of the relation."""
 
         # test ARFF
         arff = sppasARFF()
@@ -532,7 +532,7 @@ class TestFileFormats(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_write_attributes(self):
-        """ Write the list of attributes. """
+        """Write the list of attributes."""
 
         # test ARFF
         arff = sppasARFF()
@@ -554,7 +554,7 @@ class TestFileFormats(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_write_data(self):
-        """ Write the list of attributes. """
+        """Write the list of attributes."""
 
         t = sppasTranscription()
         tier1 = t.create_tier(name="tier1")

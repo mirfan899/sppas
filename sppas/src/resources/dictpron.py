@@ -50,7 +50,7 @@ from .resourcesexc import FileIOError, FileUnicodeError, FileFormatError
 
 
 class sppasDictPron(object):
-    """ Pronunciation dictionary manager.
+    """Pronunciation dictionary manager.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -90,7 +90,7 @@ class sppasDictPron(object):
 
     """
     def __init__(self, dict_filename=None, nodump=False):
-        """ Create a sppasDictPron instance.
+        """Create a sppasDictPron instance.
 
         :param dict_filename: (str) Name of the file of the pronunciation dictionary
         :param nodump: (bool) Create or not a dump file.
@@ -131,20 +131,20 @@ class sppasDictPron(object):
     # -----------------------------------------------------------------------
 
     def get_filename(self):
-        """ Return the name of the file from which the dict comes from. """
+        """Return the name of the file from which the dict comes from."""
         return self._filename
 
     # -----------------------------------------------------------------------
 
     def get_unkstamp(self):
-        """ Returns the unknown words stamp. """
+        """Returns the unknown words stamp."""
 
         return symbols.unk
 
     # -----------------------------------------------------------------------
 
     def get(self, entry, substitution=symbols.unk):
-        """ Return the pronunciations of an entry in the dictionary.
+        """Return the pronunciations of an entry in the dictionary.
 
         :param entry: (str) A token to find in the dictionary
         :param substitution: (str) String to return if token is missing of the dict
@@ -157,7 +157,7 @@ class sppasDictPron(object):
     # -----------------------------------------------------------------------
 
     def get_pron(self, entry):
-        """ Return the pronunciations of an entry in the dictionary.
+        """Return the pronunciations of an entry in the dictionary.
 
         :param entry: (str) A token to find in the dictionary
         :returns: unicode of the pronunciations or the unknown stamp.
@@ -169,7 +169,7 @@ class sppasDictPron(object):
     # -----------------------------------------------------------------------
 
     def is_unk(self, entry):
-        """ Return True if an entry is unknown (not in the dictionary).
+        """Return True if an entry is unknown (not in the dictionary).
 
         :param entry: (str) A token to find in the dictionary
         :returns: bool
@@ -180,7 +180,7 @@ class sppasDictPron(object):
     # -----------------------------------------------------------------------
 
     def is_pron_of(self, entry, pron):
-        """ Return True if pron is a pronunciation of entry.
+        """Return True if pron is a pronunciation of entry.
         Phonemes of pron are separated by "-".
 
         :param entry: (str) A unicode token to find in the dictionary
@@ -200,7 +200,7 @@ class sppasDictPron(object):
 
     @staticmethod
     def format_token(entry):
-        """ Remove the CR/LF, tabs, multiple spaces and others... and lowerise.
+        """Remove the CR/LF, tabs, multiple spaces and others... and lowerise.
 
         :param entry: (str) a token
         :returns: formatted token
@@ -214,7 +214,7 @@ class sppasDictPron(object):
     # -----------------------------------------------------------------------
 
     def add_pron(self, token, pron):
-        """ Add a token/pron to the dict.
+        """Add a token/pron to the dict.
 
         :param token: (str) Unicode string of the token to add
         :param pron: (str) A pronunciation in which the phonemes are separated by whitespace
@@ -244,7 +244,7 @@ class sppasDictPron(object):
     # -----------------------------------------------------------------------
 
     def map_phones(self, map_table):
-        """ Create a new dictionary by changing the phoneme strings,
+        """Create a new dictionary by changing the phoneme strings,
         depending on a mapping table.
 
         :param map_table: (Mapping) A mapping table
@@ -265,7 +265,7 @@ class sppasDictPron(object):
     # -----------------------------------------------------------------------
 
     def load(self, filename):
-        """ Load a pronunciation dictionary.
+        """Load a pronunciation dictionary.
 
         :param filename: (str) Pronunciation dictionary file name
 
@@ -288,7 +288,7 @@ class sppasDictPron(object):
     # -----------------------------------------------------------------------
 
     def load_from_ascii(self, filename):
-        """ Load a pronunciation dictionary from an HTK-ASCII file.
+        """Load a pronunciation dictionary from an HTK-ASCII file.
 
         :param filename: (str) Pronunciation dictionary file name
 
@@ -332,7 +332,7 @@ class sppasDictPron(object):
     # -----------------------------------------------------------------------
 
     def save_as_ascii(self, filename, with_variant_nb=True, with_filled_brackets=True):
-        """ Save the pronunciation dictionary in HTK-ASCII format.
+        """Save the pronunciation dictionary in HTK-ASCII format.
 
         :param filename: (str) Dictionary file name
         :param with_variant_nb: (bool) Write the variant number or not
@@ -365,7 +365,7 @@ class sppasDictPron(object):
     # ------------------------------------------------------------------------
 
     def load_from_pls(self, filename):
-        """ Load a pronunciation dictionary from a pls file (xml).
+        """Load a pronunciation dictionary from a pls file (xml).
 
         xmlns="http://www.w3.org/2005/01/pronunciation-lexicon
 
@@ -415,7 +415,7 @@ class sppasDictPron(object):
 
     @staticmethod
     def load_sampa_ipa():
-        """ Load the sampa-ipa conversion file. Return it as a dict(). """
+        """Load the sampa-ipa conversion file. Return it as a dict()."""
 
         conversion = dict()
         ipa_sampa_mapfile = os.path.join(paths.resources, "dict", "sampa-ipa.txt")
@@ -433,7 +433,7 @@ class sppasDictPron(object):
 
     @staticmethod
     def ipa_to_sampa(conversion, ipa_entry):
-        """ Convert a string in IPA to SAMPA.
+        """Convert a string in IPA to SAMPA.
 
         :param conversion: (dict)
         :param ipa_entry: (str)

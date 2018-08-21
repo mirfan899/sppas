@@ -61,7 +61,7 @@ class IPUsAudio(object):
     DEFAULT_VOL_THRESHOLD = 0
 
     def __init__(self, channel):
-        """ Creates a new IPUsAudio instance.
+        """Creates a new IPUsAudio instance.
 
         :param channel: (audiodata.Channel)
         
@@ -86,7 +86,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def get_track_data(self, tracks):
-        """ Return the audio data of tracks. 
+        """Return the audio data of tracks. 
         
         :param tracks: List of tracks. A track is a tuple (start, end).
         :returns: List of audio data
@@ -97,14 +97,14 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def get_channel(self):
-        """ Return the channel. """
+        """Return the channel."""
         
         return self._channel_sil.get_channel()
 
     # ------------------------------------------------------------------
 
     def set_channel(self, channel):
-        """ Set a new Channel.
+        """Set a new Channel.
 
         :param channel: (audiodata.Channel)
         
@@ -117,7 +117,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def reset_silences(self):
-        """ Reset the list of silences. """
+        """Reset the list of silences."""
         
         if self._channel_sil is not None:
             self._channel_sil.reset_silences()
@@ -125,7 +125,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def set_silences(self, silences):
-        """ Fix the list of silences.
+        """Fix the list of silences.
 
         :param silences: List of tuples (from_pos, to_pos)
 
@@ -138,19 +138,19 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def get_win_length(self):
-        """ Return the windows length used to estimate the RMS. """
+        """Return the windows length used to estimate the RMS."""
         return self._win_length
 
     def get_vol_threshold(self):
-        """ Return the volume threshold used to find silences vs tracks. """
+        """Return the volume threshold used to find silences vs tracks."""
         return self._vol_threshold
 
     def get_min_sil_dur(self):
-        """ Return the minimum duration of a silence. """
+        """Return the minimum duration of a silence."""
         return self._min_sil_dur
 
     def get_min_ipu_dur(self):
-        """ Return the minimum duration of a track. """
+        """Return the minimum duration of a track."""
         return self._min_ipu_dur
 
     # ------------------------------------------------------------------
@@ -158,7 +158,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def set_vol_threshold(self, vol_threshold):
-        """ Fix the default minimum volume value to find silences.
+        """Fix the default minimum volume value to find silences.
 
         :param vol_threshold: (int) RMS value
 
@@ -174,7 +174,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def set_min_silence(self, min_sil_dur):
-        """ Fix the default minimum duration of a silence.
+        """Fix the default minimum duration of a silence.
 
         :param min_sil_dur: (float) Duration in seconds.
 
@@ -186,7 +186,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def set_min_speech(self, min_ipu_dur):
-        """ Fix the default minimum duration of an IPU.
+        """Fix the default minimum duration of an IPU.
 
         :param min_ipu_dur: (float) Duration in seconds.
 
@@ -198,7 +198,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def set_vol_win_length(self, win_length):
-        """ Fix the default windows length for RMS estimations.
+        """Fix the default windows length for RMS estimations.
 
         :param win_length: (float) Duration in seconds.
 
@@ -208,7 +208,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def set_shift(self, s):
-        """ Fix the default minimum boundary shift value for start and end.
+        """Fix the default minimum boundary shift value for start and end.
 
         :param s: (float) Duration in seconds.
 
@@ -219,7 +219,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def set_shift_start(self, s):
-        """ Fix the default minimum boundary shift value.
+        """Fix the default minimum boundary shift value.
 
         :param s: (float) Duration in seconds.
 
@@ -231,7 +231,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def set_shift_end(self, s):
-        """ Fix the default minimum boundary shift value.
+        """Fix the default minimum boundary shift value.
 
         :param s: (float) Duration in seconds.
 
@@ -243,7 +243,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def min_channel_duration(self):
-        """ Return the minimum duration we expect for a channel. """
+        """Return the minimum duration we expect for a channel."""
 
         d = max(self._min_sil_dur, self._min_ipu_dur)
         return d + self._shift_start + self._shift_end
@@ -251,7 +251,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def set_bound_start(self, expect_sil=False):
-        """ Set if it is expected (or not) to find a silence at the
+        """Set if it is expected (or not) to find a silence at the
         beginning of the channel.
 
         :param expect_sil: (bool)
@@ -262,7 +262,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def set_bound_end(self, expect_sil=False):
-        """ Set if it is expected (or not) to find a silence at the end
+        """Set if it is expected (or not) to find a silence at the end
         of the channel.
 
         :param expect_sil: (bool)
@@ -275,7 +275,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def extract_tracks(self, min_ipu_dur=None, shift_start=None, shift_end=None):
-        """ Return a list of tuples (from_pos,to_pos) of tracks.
+        """Return a list of tuples (from_pos,to_pos) of tracks.
         The tracks are found from the current list of silences.
 
         :param min_ipu_dur: (float) The minimum duration for a track (in seconds)
@@ -299,7 +299,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def search_tracks(self, volume):
-        """ Search the tracks if the given volume is used as threshold.
+        """Search the tracks if the given volume is used as threshold.
 
         :param volume: (int) RMS threshold value (0=auto)
         :returns: (list of tuples) Return a list of tuples (from_pos,to_pos) of the tracks.
@@ -315,7 +315,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def check_boundaries(self, tracks):
-        """ Check if silences at start and end are as expected.
+        """Check if silences at start and end are as expected.
 
         :param tracks:
         :returns: (bool)
@@ -347,7 +347,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def split_into_vol(self, nb_tracks):
-        """ Try various volume values to estimate silences then get the
+        """Try various volume values to estimate silences then get the
         expected number of tracks.
 
         :param nb_tracks: (int) the expected number of tracks
@@ -403,7 +403,7 @@ class IPUsAudio(object):
     # ------------------------------------------------------------------
 
     def split_into(self, nb_tracks=0):
-        """ Try various volume values, pause durations and silence
+        """Try various volume values, pause durations and silence
         duration to get silences.
 
         :param nb_tracks: (int) the expected number of IPUs. 0=auto.

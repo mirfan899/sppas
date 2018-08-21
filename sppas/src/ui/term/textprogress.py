@@ -69,7 +69,7 @@ class ProcessProgressTerminal(object):
 
     """
     def __init__(self):
-        """ Create a ProcessProgressTerminal instance. """
+        """Create a ProcessProgressTerminal instance."""
 
         try:
             self._term = TerminalController()
@@ -91,7 +91,7 @@ class ProcessProgressTerminal(object):
     # ------------------------------------------------------------------
 
     def update(self, percent, message):
-        """ Update the progress.
+        """Update the progress.
 
         :param message: (str) progress bar value (default: 0)
         :param percent: (float) progress bar text  (default: None)
@@ -113,7 +113,7 @@ class ProcessProgressTerminal(object):
     # ------------------------------------------------------------------
 
     def clear(self):
-        """ Clear. """
+        """Clear."""
 
         if not self._cleared:
             if self._term:
@@ -127,7 +127,7 @@ class ProcessProgressTerminal(object):
     # ------------------------------------------------------------------
 
     def set_fraction(self, percent):
-        """ Set a new progress value.
+        """Set a new progress value.
 
         :param percent: (float) new progress value
 
@@ -137,7 +137,7 @@ class ProcessProgressTerminal(object):
     # ------------------------------------------------------------------
 
     def set_text(self, text):
-        """ Set a new progress message text.
+        """Set a new progress message text.
 
         :param text: (str) new progress text
 
@@ -147,7 +147,7 @@ class ProcessProgressTerminal(object):
     # ------------------------------------------------------------------
 
     def set_header(self, header):
-        """ Set a new progress header text.
+        """Set a new progress header text.
 
         :param header: (str) new progress header text.
 
@@ -162,7 +162,7 @@ class ProcessProgressTerminal(object):
     # ------------------------------------------------------------------
 
     def set_new(self):
-        """ Initialize a new progress line. """
+        """Initialize a new progress line."""
 
         sys.stdout.write('\n')
         self.clear()

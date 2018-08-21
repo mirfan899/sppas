@@ -52,7 +52,7 @@ class sppasAudioVolume(sppasBaseVolume):
 
     """
     def __init__(self, audio, win_len=0.01):
-        """ Create a sppasAudioVolume instance.
+        """Create a sppasAudioVolume instance.
 
         :param audio: (sppasAudioPCM) The audio to work on.
         :param win_len: (float) Window length to estimate the volume.

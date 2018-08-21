@@ -54,7 +54,7 @@ def random_vectors(size):
 class TestGeometryLinearFct(unittest.TestCase):
 
     def test_slope_intercept(self):
-        """ Returns the slope and the intercept. """
+        """Returns the slope and the intercept."""
 
         a, b = slope_intercept(p1=(1, 1), p2=(3, 3))
         self.assertEqual(a, 1.)
@@ -77,7 +77,7 @@ class TestGeometryLinearFct(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_linear_fct(self):
-        """ Return f(x) of the linear function f(x) = ax + b. """
+        """Return f(x) of the linear function f(x) = ax + b."""
 
         y = linear_fct(2, 1., 0.)
         self.assertEqual(y, 2.)
@@ -88,7 +88,7 @@ class TestGeometryLinearFct(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_linear_values(self):
-        """ Estimates the values between 2 points, step-by-step. """
+        """Estimates the values between 2 points, step-by-step."""
 
         y_values = linear_values(2, p1=(2, 2), p2=(8., 8.))
         self.assertEqual(len(y_values), 4)

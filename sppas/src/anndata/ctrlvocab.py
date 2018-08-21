@@ -62,7 +62,7 @@ class sppasCtrlVocab(sppasMetaData):
     """
 
     def __init__(self, name, description=""):
-        """ Creates a new sppasCtrlVocab instance.
+        """Creates a new sppasCtrlVocab instance.
 
         :param name: (str) Identifier name of the controlled vocabulary
         :param description: (str)

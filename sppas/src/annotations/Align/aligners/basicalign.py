@@ -60,7 +60,7 @@ class BasicAligner(BaseAligner):
 
     """
     def __init__(self, modeldir):
-        """ Create a BasicAligner instance.
+        """Create a BasicAligner instance.
 
         This class allows to align one inter-pausal unit with the same
         duration for each phoneme. It selects the shortest in case of variants.
@@ -74,7 +74,7 @@ class BasicAligner(BaseAligner):
     # -----------------------------------------------------------------------
 
     def set_outext(self, ext):
-        """ Set the extension for output files.
+        """Set the extension for output files.
 
         :param ext: (str)
 
@@ -88,7 +88,7 @@ class BasicAligner(BaseAligner):
     # -----------------------------------------------------------------------
 
     def run_alignment(self, inputwav, outputalign):
-        """ Perform the speech segmentation.
+        """Perform the speech segmentation.
         Assign the same duration to each phoneme.
 
         :param inputwav: (str or float) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits; or its duration
@@ -113,7 +113,7 @@ class BasicAligner(BaseAligner):
     # ------------------------------------------------------------------------
 
     def run_basic(self, duration, outputalign=None):
-        """ Perform the speech segmentation.
+        """Perform the speech segmentation.
         Assign the same duration to each phoneme.
 
         :param duration: (float) the duration of the audio input
@@ -146,7 +146,7 @@ class BasicAligner(BaseAligner):
     # ------------------------------------------------------------------------
 
     def gen_alignment(self, phonetization, tokenization, phoneslist, phonesdur, outputalign=None):
-        """ Write an alignment in an output file.
+        """Write an alignment in an output file.
 
         :param phonetization: (list) phonetization of each token
         :param tokenization: (list) each token
@@ -180,7 +180,7 @@ class BasicAligner(BaseAligner):
 
     @staticmethod
     def select_shortest(pron):
-        """ Return the first of the shortest pronunciations of an entry.
+        """Return the first of the shortest pronunciations of an entry.
 
         :param pron: (str) The phonetization of a token
         :returns: (str) pronunciation

@@ -68,7 +68,7 @@ class sppasAudacity(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of AUP format or not.
+        """Check whether a file is of AUP format or not.
         AUP files are encoded in UTF-8 without BOM.
 
         :param filename: (str) Name of the file to check.
@@ -91,7 +91,7 @@ class sppasAudacity(sppasBaseIO):
 
     @staticmethod
     def make_point(midpoint):
-        """ The localization is a time value, so a float. """
+        """The localization is a time value, so a float."""
 
         try:
             midpoint = float(midpoint)
@@ -103,7 +103,7 @@ class sppasAudacity(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasAudacity instance.
+        """Initialize a new sppasAudacity instance.
 
         :param name: (str) This transcription name.
 
@@ -132,7 +132,7 @@ class sppasAudacity(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read an AUP file and fill the Transcription.
+        """Read an AUP file and fill the Transcription.
 
         <!ELEMENT project (tags, (wavetrack | labeltrack | timetrack)*)>
 
@@ -170,7 +170,7 @@ class sppasAudacity(sppasBaseIO):
 
     @staticmethod
     def normalize(name):
-        """ Provide namespaces in element names.
+        """Provide namespaces in element names.
 
         Example:
             <Element '{http://audacity.sourceforge.net/xml/}simpleblockfile' at 0x03270230>
@@ -308,7 +308,7 @@ class sppasAudacity(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_wavetrack(self, wave_root):
-        """ Not implemented.
+        """Not implemented.
 
         <!ELEMENT wavetrack (waveclip*)>
 
@@ -320,7 +320,7 @@ class sppasAudacity(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_timetrack(self, time_root):
-        """ Not implemented.
+        """Not implemented.
 
         <!ELEMENT timetrack (envelope)>
         <!ATTLIST timetrack name CDATA #REQUIRED>

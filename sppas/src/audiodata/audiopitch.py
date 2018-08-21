@@ -47,7 +47,7 @@ class AudioPitch(object):
 
     """
     def __init__(self, delta=0.01):
-        """ Create a new AudioPitch instance. """
+        """Create a new AudioPitch instance."""
 
         self.pitch = []
         self.delta = delta
@@ -55,7 +55,7 @@ class AudioPitch(object):
     # ------------------------------------------------------------------
 
     def get_pitch(self, time):
-        """ Return the pitch value at a given time.
+        """Return the pitch value at a given time.
 
         :param time: a float value representing the time in seconds.
         :returns: float
@@ -70,21 +70,21 @@ class AudioPitch(object):
     # ------------------------------------------------------------------
 
     def get_pitch_list(self):
-        """ Return pitch values. """
+        """Return pitch values."""
 
         return self.pitch
 
     # ------------------------------------------------------------------
 
     def get_pitch_delta(self):
-        """ Return the delta time used to estimate pitch. """
+        """Return the delta time used to estimate pitch."""
 
         return self.delta
 
     # ------------------------------------------------------------------
 
     def eval_pitch(self, filename):
-        """ WILL evaluate pitch values...
+        """WILL evaluate pitch values...
 
         """
         raise NotImplementedError

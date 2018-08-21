@@ -467,7 +467,7 @@ class AnnotationCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def _drawPoint(self, point, x,y, w,h):
-        """ Display a point. """
+        """Display a point."""
         #logging.debug(' ...draw point: x=%d, w=%d'%(x,w))
         sw = self.GetSize().width
         # Do not draw if point is outsite the available area!
@@ -480,7 +480,7 @@ class AnnotationCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def __initializeColours(self):
-        """ Create the pens and brush with default colors. """
+        """Create the pens and brush with default colors."""
 
         self.SetBackgroundColour(self.GetParent().GetBackgroundColour())
         self._penbordercolor = wx.Pen(wx.RED, 2, wx.SOLID)
@@ -488,7 +488,7 @@ class AnnotationCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def __initialSize(self, size):
-        """ Initialize the size. """
+        """Initialize the size."""
 
         self.SetMinSize(wx.Size(MIN_W, MIN_H))
         if size:
@@ -630,14 +630,14 @@ class BorderCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def __initializeColours(self):
-        """ Create the pens and brush with default colors. """
+        """Create the pens and brush with default colors."""
 
         self._penbordercolor = wx.Pen(wx.RED, 2, wx.SOLID)
 
     # ------------------------------------------------------------------------
 
     def __initialSize(self, size):
-        """ Initialize the size. """
+        """Initialize the size."""
 
         mins = BORDER_WIDTH * 2
 

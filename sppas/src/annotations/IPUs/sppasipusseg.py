@@ -66,7 +66,7 @@ class sppasIPUseg(sppasBaseAnnotation):
 
     """
     def __init__(self, logfile=None):
-        """ Create a sppasIPUseg instance.
+        """Create a sppasIPUseg instance.
 
         :param logfile: (sppasLog) a log system used to communicate
         messages to the user.
@@ -85,7 +85,7 @@ class sppasIPUseg(sppasBaseAnnotation):
     # ------------------------------------------------------------------
 
     def reset(self):
-        """ Set default values. """
+        """Set default values."""
 
         self.ipusaudio.set_channel(None)
         self.ipustrs.set_transcription(None)
@@ -95,7 +95,7 @@ class sppasIPUseg(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def fix_options(self, options):
-        """ Fix all options. Available options are:
+        """Fix all options. Available options are:
 
             - shift
             - shift_start
@@ -146,7 +146,7 @@ class sppasIPUseg(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def set_dirtracks(self, value):
-        """ Fix the "dirtracks" option.
+        """Fix the "dirtracks" option.
 
         :param value: (bool)
 
@@ -156,7 +156,7 @@ class sppasIPUseg(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def set_save_as_trs(self, value):
-        """ Fix the "save as transcription" option.
+        """Fix the "save as transcription" option.
 
         :param value: (bool)
 
@@ -166,7 +166,7 @@ class sppasIPUseg(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def set_addipuidx(self, value):
-        """ Fix the "add IPU index in the transcription output" option.
+        """Fix the "add IPU index in the transcription output" option.
 
         :param value: (bool)
 
@@ -177,7 +177,7 @@ class sppasIPUseg(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def get_transcription(self, input_filename, tier_idx=None):
-        """ Extract transcription from a file, either time-aligned or not.
+        """Extract transcription from a file, either time-aligned or not.
 
         If input is a simple text file, it must be formatted like:
             - each line is supposed to be at least one unit;
@@ -234,7 +234,7 @@ class sppasIPUseg(sppasBaseAnnotation):
     # ------------------------------------------------------------------
 
     def split(self, nbipus=0):
-        """ Blind or controlled speech/silence segmentation.
+        """Blind or controlled speech/silence segmentation.
 
         :param nbipus: (int) Expected number of IPUs. 0=automatic.
 
@@ -262,7 +262,7 @@ class sppasIPUseg(sppasBaseAnnotation):
     # ------------------------------------------------------------------
 
     def run(self, audiofile, trsinputfile=None, trstieridx=None, ntracks=None, diroutput=None, tracksext=None, trsoutput=None):
-        """ Perform an IPU segmentation from an audio file.
+        """Perform an IPU segmentation from an audio file.
 
         :param audiofile: (str) the speech audio input file name
         :param trsinputfile: (str) the transcription file name (or 'None')

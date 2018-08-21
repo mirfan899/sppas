@@ -90,7 +90,7 @@ class DataRoamerFrame(ComponentFrame):
     # ------------------------------------------------------------------------
 
     def _add_accelerator(self):
-        """ Set the accelerator table. """
+        """Set the accelerator table."""
 
         # New with CTRL+N
         accelN = wx.AcceleratorEntry(wx.ACCEL_CTRL, ord('N'), NEW_ID)
@@ -110,7 +110,7 @@ class DataRoamerFrame(ComponentFrame):
     # ------------------------------------------------------------------------
 
     def CreateClient(self, parent, prefsIO):
-        """ Override. """
+        """Override."""
 
         return DataRoamerClient(parent, prefsIO)
 

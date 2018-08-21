@@ -53,7 +53,7 @@ class sppasModelMixer(object):
 
     """
     def __init__(self):
-        """ Create a sppasModelMixer instance. """
+        """Create a sppasModelMixer instance."""
         
         self._model1 = None
         self._model2 = None
@@ -62,7 +62,7 @@ class sppasModelMixer(object):
     # ------------------------------------------------------------------------
 
     def read(self, model_text_dir, model_spk_dir):
-        """ Read the acoustic models from their directories.
+        """Read the acoustic models from their directories.
 
         :param model_text_dir: (str)
         :param model_spk_dir: (str)
@@ -81,7 +81,7 @@ class sppasModelMixer(object):
     # ------------------------------------------------------------------------
 
     def set_models(self, model_text, model_spk):
-        """ Fix the acoustic models.
+        """Fix the acoustic models.
 
         :param model_text: (sppasAcModel)
         :param model_spk: (sppasAcModel)
@@ -105,7 +105,7 @@ class sppasModelMixer(object):
     # ------------------------------------------------------------------------
 
     def mix(self, outputdir, format="hmmdefs", gamma=1.):
-        """ Mix the acoustic model of the text with the one of the mother language
+        """Mix the acoustic model of the text with the one of the mother language
         of the speaker reading such text.
 
         All new phones are added and the shared ones are combined using a

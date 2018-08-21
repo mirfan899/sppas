@@ -59,7 +59,7 @@ from ..calculusexc import EmptyError, ProbabilityError
 
 
 def freq(mylist, item):
-    """ Return the relative frequency of an item of a list.
+    """Return the relative frequency of an item of a list.
 
     :param mylist: (list) list of elements
     :param item: (any) an element of the list (or not!)
@@ -72,7 +72,7 @@ def freq(mylist, item):
 
 
 def percent(mylist, item):
-    """ Return the percentage of an item of a list.
+    """Return the percentage of an item of a list.
 
     :param mylist: (list) list of elements
     :param item: (any) an element of the list (or not!)
@@ -85,7 +85,7 @@ def percent(mylist, item):
 
 
 def percentile(mylist, p=(25, 50, 75), sort=True):
-    """ Returns the pth percentile of an unsorted or sorted numeric list.
+    """Returns the pth percentile of an unsorted or sorted numeric list.
 
     This is equivalent to calling quantile(mylist, p/100.0).
 
@@ -115,7 +115,7 @@ def percentile(mylist, p=(25, 50, 75), sort=True):
 
 
 def quantile(mylist, q=(0.25, 0.5, 0.75), sort=True):
-    """ Returns the qth quantile of an unsorted or sorted numeric list.
+    """Returns the qth quantile of an unsorted or sorted numeric list.
 
      Calculates a rank n as q(N+1), where N is the number of items in mylist,
      then splits n into its integer component k and decimal component d.
@@ -173,7 +173,7 @@ def quantile(mylist, q=(0.25, 0.5, 0.75), sort=True):
 
 
 def hapax(mydict):
-    """ Return a list of hapax.
+    """Return a list of hapax.
 
     :param mydict: (dict)
     :returns: list of keys for which value = 1
@@ -185,7 +185,7 @@ def hapax(mydict):
 
 
 def occranks(mydict):
-    """ Return a dictionary with key=occurrence, value=rank.
+    """Return a dictionary with key=occurrence, value=rank.
 
     :param mydict: (dict)
     :returns: dict
@@ -211,7 +211,7 @@ def occranks(mydict):
 
 
 def ranks(counter):
-    """ Return a dictionary with key=token, value=rank.
+    """Return a dictionary with key=token, value=rank.
 
     :param counter: (collections.Counter)
     :returns: dict
@@ -229,7 +229,7 @@ def ranks(counter):
 
 
 def zipf(dict_ranks, item):
-    """ Return the Zipf Law value of an item.
+    """Return the Zipf Law value of an item.
     Zipf's law states that given some corpus of natural language utterances,
     the frequency of any word is inversely proportional to its rank in the
     frequency table. Thus the most frequent word will occur approximately
@@ -250,7 +250,7 @@ def zipf(dict_ranks, item):
 
 
 def tfidf(documents, item):
-    """ Return the tf.idf of an item.
+    """Return the tf.idf of an item.
     Term frequency–inverse document frequency, is a numerical statistic
     that is intended to reflect how important a word is to a document in a
     collection or corpus. The tf.idf value increases proportionally to the

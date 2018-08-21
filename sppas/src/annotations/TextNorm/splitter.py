@@ -61,7 +61,7 @@ class sppasSimpleSplitter(object):
 
     """
     def __init__(self, lang, dict_replace=None, speech=True):
-        """ Creates a sppasSimpleSplitter.
+        """Creates a sppasSimpleSplitter.
 
         :param lang: the language code in iso639-3.
         :param dict_replace: Replacement dictionary
@@ -78,7 +78,7 @@ class sppasSimpleSplitter(object):
     # ------------------------------------------------------------------
 
     def split_characters(self, utt):
-        """ Split an utterance by characters.
+        """Split an utterance by characters.
 
         :param utt: (str) the utterance (a transcription, a sentence, ...) in utf-8
         :returns: A string (split character by character, using whitespace)
@@ -102,7 +102,7 @@ class sppasSimpleSplitter(object):
     # ------------------------------------------------------------------
 
     def split(self, utt):
-        """ Split an utterance using whitespace.
+        """Split an utterance using whitespace.
         If the language is character-based, split each character.
 
         :param utt: (str) an utterance of a transcription, a sentence, ...

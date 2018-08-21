@@ -52,7 +52,7 @@ class ProcessProgressDialog(spBaseDialog):
 
     """
     def __init__(self, parent, preferences, header_text="Processing..."):
-        """ Constructor.
+        """Constructor.
         
         :param parent: (wx.Window)
         :param preferences: (Preferences)
@@ -93,7 +93,7 @@ class ProcessProgressDialog(spBaseDialog):
     # ------------------------------------------------------------------------
 
     def set_new(self, label="", text="", fraction=0.):
-        """ Initialize a new progress box.
+        """Initialize a new progress box.
 
         :param label:    progress box label (default: None)
         :param text:     progress bar text  (default: None)
@@ -109,7 +109,7 @@ class ProcessProgressDialog(spBaseDialog):
     # ------------------------------------------------------------------------
 
     def set_fraction(self, fraction):
-        """ Set a new progress value to the progress bar.
+        """Set a new progress value to the progress bar.
 
         :param fraction: new progress value
 
@@ -125,7 +125,7 @@ class ProcessProgressDialog(spBaseDialog):
     # ------------------------------------------------------------------------
 
     def set_text(self, text):
-        """ Set a new progress text to the progress bar.
+        """Set a new progress text to the progress bar.
 
         :param text: new progress text
 
@@ -137,7 +137,7 @@ class ProcessProgressDialog(spBaseDialog):
     # ------------------------------------------------------------------------
 
     def set_header(self, label):
-        """ Set a new progress label to the progress box.
+        """Set a new progress label to the progress box.
 
         :param label: new progress label
 
@@ -149,7 +149,7 @@ class ProcessProgressDialog(spBaseDialog):
     # ------------------------------------------------------------------------
 
     def update(self, fraction, text):
-        """ Update the progress box.
+        """Update the progress box.
 
         :param text:     progress bar text  (default: None)
         :param fraction: progress bar value (default: 0)
@@ -163,7 +163,7 @@ class ProcessProgressDialog(spBaseDialog):
     # ------------------------------------------------------------------------
 
     def close(self):
-        """ Close the progress box. """
+        """Close the progress box."""
 
         self.Destroy()
 

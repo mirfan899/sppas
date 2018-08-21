@@ -16,7 +16,7 @@ class BaseLexer(object):
 
 
 class OrthoEventsLexer(BaseLexer):
-    """Simple lexer to highlight some events in a transcription. """
+    """Simple lexer to highlight some events in a transcription."""
     
     # Define some style IDs
     STC_STYLE_ORTHO_DEFAULT, \

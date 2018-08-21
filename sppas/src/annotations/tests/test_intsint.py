@@ -50,7 +50,7 @@ from ..Intsint import Intsint, sppasIntsint
 
 
 class TestIntsint(unittest.TestCase):
-    """ Test of the class Intsint. """
+    """Test of the class Intsint."""
 
     def setUp(self):
         self.anchors = [(0.1, 240), (0.4, 340), (0.6, 240), (0.7, 286)]

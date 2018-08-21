@@ -44,7 +44,7 @@ from sppas.src.utils.fileutils import sppasFileUtils
 
 
 def fix_audioinput(inputaudioname):
-    """ Fix the audio file name that will be used.
+    """Fix the audio file name that will be used.
     An only-ascii-based file name without whitespace is set if the
     current audio file name does not fit in these requirements.
 
@@ -62,7 +62,7 @@ def fix_audioinput(inputaudioname):
 
 
 def fix_workingdir(inputaudio=""):
-    """ Fix the working directory to store temporarily the data.
+    """Fix the working directory to store temporarily the data.
 
     :param inputaudio: (str) Audio file name
 

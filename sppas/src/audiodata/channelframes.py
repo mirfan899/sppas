@@ -48,7 +48,7 @@ class sppasChannelFrames(object):
 
     """
     def __init__(self, frames=""):
-        """ Create a sppasChannelFrames instance.
+        """Create a sppasChannelFrames instance.
 
         :param frames: (str) Frames that must be MONO ONLY.
 
@@ -58,7 +58,7 @@ class sppasChannelFrames(object):
     # -----------------------------------------------------------------------
 
     def get_frames(self):
-        """ Return the frames
+        """Return the frames
 
         :returns: (str) the frames
 
@@ -68,7 +68,7 @@ class sppasChannelFrames(object):
     # ----------------------------------------------------------------------------
 
     def set_frames(self, frames):
-        """ Set the frames.
+        """Set the frames.
 
         :param frames: (str) the frames to set
 
@@ -78,7 +78,7 @@ class sppasChannelFrames(object):
     # ----------------------------------------------------------------------------
 
     def append_silence(self, nframes):
-        """ Create n frames of silence and append it to the frames.
+        """Create n frames of silence and append it to the frames.
 
         :param nframes: (int) the number of frames of silence to append
 
@@ -93,7 +93,7 @@ class sppasChannelFrames(object):
     # ----------------------------------------------------------------------------
 
     def prepend_silence(self, nframes):
-        """ Create n frames of silence and prepend it to the frames.
+        """Create n frames of silence and prepend it to the frames.
 
         :param nframes: (int) the number of frames of silence to append
 
@@ -108,7 +108,7 @@ class sppasChannelFrames(object):
     # ----------------------------------------------------------------------------
 
     def resample(self, sampwidth, rate, newrate):
-        """ Resample the frames with a new frame rate.
+        """Resample the frames with a new frame rate.
 
         :param sampwidth: (int) sample width of the frames.
         :param rate: (int) current frame rate of the frames
@@ -121,7 +121,7 @@ class sppasChannelFrames(object):
     # ----------------------------------------------------------------------------
 
     def change_sampwidth(self, sampwidth, newsampwidth):
-        """ Change the number of bytes used to encode the frames.
+        """Change the number of bytes used to encode the frames.
 
         :param sampwidth: (int) current sample width of the frames.
         (1 for 8 bits, 2 for 16 bits, 4 for 32 bits)

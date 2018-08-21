@@ -55,7 +55,7 @@ class Preferences(object):
 
     """
     def __init__(self, theme=None):
-        """ Creates a dict of sppasWxOption() instances, with option id as key. """
+        """Creates a dict of sppasWxOption() instances, with option id as key."""
 
         self._prefs = {}
 
@@ -70,14 +70,14 @@ class Preferences(object):
     # ------------------------------------------------------------------------
 
     def GetValue(self, key):
-        """ Return the typed-value of the given key. """
+        """Return the typed-value of the given key."""
 
         return self._prefs[key].get_value()
 
     # ------------------------------------------------------------------------
 
     def SetValue(self, key, t=None, v=None, text=''):
-        """ Set a new couple key/(type,typed-value,text). """
+        """Set a new couple key/(type,typed-value,text)."""
 
         if key not in self._prefs:
             self._prefs[key] = sppasWxOption(t, v, text)
@@ -87,21 +87,21 @@ class Preferences(object):
     # ------------------------------------------------------------------------
 
     def SetOption(self, key, option):
-        """ Set a new couple key/Option. """
+        """Set a new couple key/Option."""
 
         self._prefs[key] = option
 
     # ------------------------------------------------------------------------
 
     def GetTheme(self):
-        """ Return the the current theme. """
+        """Return the the current theme."""
 
         return self._prefs.get('THEME', None)
 
     # ------------------------------------------------------------------------
 
     def SetTheme(self, theme):
-        """ Set a new theme. """
+        """Set a new theme."""
 
         self._prefs['THEME'] = theme
         for key in theme.get_keys():
@@ -123,7 +123,7 @@ class Preferences_IO(Preferences):
 
     """
     def __init__(self, filename=None):
-        """ Create a new dictionary of preferences. """
+        """Create a new dictionary of preferences."""
 
         Preferences.__init__(self)
         self._filename = filename
@@ -131,7 +131,7 @@ class Preferences_IO(Preferences):
     # ------------------------------------------------------------------------
 
     def HasFilename(self):
-        """ Return True is a file name was defined. """
+        """Return True is a file name was defined."""
 
         if self._filename is None:
             return False
@@ -140,7 +140,7 @@ class Preferences_IO(Preferences):
     # ------------------------------------------------------------------------
 
     def Read(self):
-        """ Read user preferences from a file.
+        """Read user preferences from a file.
         Return True if preferences have been read.
 
         :returns: boolean
@@ -158,7 +158,7 @@ class Preferences_IO(Preferences):
     # ------------------------------------------------------------------------
 
     def Write(self):
-        """ Save user preferences into a file.
+        """Save user preferences into a file.
         Return True if preferences have been saved.
 
         :returns: boolean
@@ -178,7 +178,7 @@ class Preferences_IO(Preferences):
     # ------------------------------------------------------------------------
 
     def Copy(self):
-        """ Return a deep copy of self.
+        """Return a deep copy of self.
 
         :returns: (Preferences_IO)
 

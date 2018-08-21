@@ -444,7 +444,7 @@ class PointCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def OnResize(self, event):
-        """Respond to mouse events: dragging. """
+        """Respond to mouse events: dragging."""
 
         x, y = self.GetPosition()    # absolute
         ex, ey = event.GetPosition() # relative
@@ -522,7 +522,7 @@ class PointCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def __initializeColours(self):
-        """ Create the pens and brush with default colors. """
+        """Create the pens and brush with default colors."""
 
         self._highlight = False
         self._colourmidpoint = COLOUR_MID
@@ -534,7 +534,7 @@ class PointCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def __initializeCursors(self):
-        """ Create new cursors to be used while Moving or Resizing. """
+        """Create new cursors to be used while Moving or Resizing."""
 
         # Cursor while moving
         self._cursormove = imageutils.CreateCursorFromXPMData(cursor_move, 8)
@@ -545,7 +545,7 @@ class PointCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def __initialSize(self, size):
-        """ Initialize the size. """
+        """Initialize the size."""
 
         self.SetMinSize(wx.Size(MIN_W, MIN_H))
         if size:
@@ -559,7 +559,7 @@ class PointCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def __tooltip(self):
-        """ Set a tooltip string indicating the midpoint and the radius values. """
+        """Set a tooltip string indicating the midpoint and the radius values."""
 
         if self._point is not None:
             if self._point.get_radius() is not None:

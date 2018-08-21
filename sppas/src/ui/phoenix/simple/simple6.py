@@ -1,5 +1,5 @@
 import wx
-""" 
+"""
 
 Add an action panel to... perform actions.
 
@@ -17,7 +17,7 @@ foreground_color = wx.Colour(250, 250, 250, alpha=wx.ALPHA_OPAQUE)
 
 
 class myFrame(wx.Frame):
-    """ Create my own frame. Inherited from the wx.Frame.
+    """Create my own frame. Inherited from the wx.Frame.
 
     """
     def __init__(self):
@@ -33,7 +33,7 @@ class myFrame(wx.Frame):
 
 
 class myActionPanel(wx.Panel):
-    """ Create my own panel with 3 action buttons: exit, open, save.
+    """Create my own panel with 3 action buttons: exit, open, save.
 
     """
     def __init__(self, parent):
@@ -70,7 +70,7 @@ class myActionPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnAction(self, event):
-        """ A button was clicked.
+        """A button was clicked.
         Here we just send the event to the parent.
 
         """
@@ -140,7 +140,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def process_event(self, event):
-        """ Process any kind of event. """
+        """Process any kind of event."""
 
         event_name = event.GetEventObject().GetName()
         event_id = event.GetEventObject().GetId()
@@ -158,7 +158,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def exit(self):
-        """ Close the frame, terminating the application. """
+        """Close the frame, terminating the application."""
 
         print("Bye bye.")
         self.GetTopWindow().Close(True)
@@ -166,7 +166,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def OnExit(self):
-        """ Optional. Override the already existing method. """
+        """Optional. Override the already existing method."""
 
         # do whatever you want here (save session, ...)
         print("OnExit method invoked")

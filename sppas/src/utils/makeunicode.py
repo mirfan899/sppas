@@ -51,7 +51,7 @@ from .utilsexc import UtilsDataTypeError
 
 # ---------------------------------------------------------------------------
 
-"""Unicode conversion for Python 2.7. """
+"""Unicode conversion for Python 2.7."""
 
 if sys.version_info < (3,):
 

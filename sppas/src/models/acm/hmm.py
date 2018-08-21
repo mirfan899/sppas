@@ -75,7 +75,7 @@ class sppasHMM(object):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=DEFAULT_NAME):
-        """ Create a sppasHMM instance.
+        """Create a sppasHMM instance.
         The model includes a default name and an empty definition.
 
         :param name: (str) Name of the HMM (usually the phoneme in SAMPA)
@@ -88,7 +88,7 @@ class sppasHMM(object):
     # -----------------------------------------------------------------------
 
     def set(self, name, definition):
-        """ Set the model.
+        """Set the model.
 
         :param name: (str) Name of the HMM
         :param definition: (OrderedDict) Definition of the HMM (states and transitions)
@@ -100,14 +100,14 @@ class sppasHMM(object):
     # -----------------------------------------------------------------------
 
     def get_name(self):
-        """ Return the name (str) of the model. """
+        """Return the name (str) of the model."""
 
         return self.__name
 
     # -----------------------------------------------------------------------
 
     def set_name(self, name):
-        """ Set the name of the model.
+        """Set the name of the model.
 
         :param name: (str) Name of the HMM.
         :raises: ModelsDataTypeError
@@ -125,14 +125,14 @@ class sppasHMM(object):
     # -----------------------------------------------------------------------
 
     def get_definition(self):
-        """ Return the definition (OrderedDict) of the model. """
+        """Return the definition (OrderedDict) of the model."""
 
         return self._definition
 
     # -----------------------------------------------------------------------
 
     def set_default_definition(self):
-        """ Set an empty definition. """
+        """Set an empty definition."""
 
         self._definition = collections.OrderedDict()
         self._definition['state_count'] = 0
@@ -142,7 +142,7 @@ class sppasHMM(object):
     # -----------------------------------------------------------------------
 
     def set_definition(self, definition):
-        """ Set the definition of the model.
+        """Set the definition of the model.
 
         :param definition: (OrderedDict) Definition of the HMM (states and transitions)
         :raises: ModelsDataTypeError
@@ -158,7 +158,7 @@ class sppasHMM(object):
     # -----------------------------------------------------------------------
 
     def create(self, states, transition, name=None):
-        """ Create the hmm and set it.
+        """Create the hmm and set it.
 
         :param states: (OrderedDict)
         :param transition: (OrderedDict)
@@ -182,7 +182,7 @@ class sppasHMM(object):
     # -----------------------------------------------------------------------
 
     def create_proto(self, proto_size, nb_mix=1):
-        """ Create the 5-states HMM `proto` and set it.
+        """Create the 5-states HMM `proto` and set it.
 
         :param proto_size: (int) Number of mean and variance values.
         It's commonly either 25 or 39, it depends on the MFCC parameters.
@@ -213,7 +213,7 @@ class sppasHMM(object):
     # -----------------------------------------------------------------------
 
     def create_sp(self):
-        """ Create the 3-states HMM `sp` and set it.
+        """Create the 3-states HMM `sp` and set it.
 
         The `sp` model is based on a 3-state HMM with string "silst" as state 2,
         and a 3x3 transition matrix as follow:
@@ -239,7 +239,7 @@ class sppasHMM(object):
     # -----------------------------------------------------------------------
 
     def get_state(self, index):
-        """ Return the state of a given index or None if index is not found.
+        """Return the state of a given index or None if index is not found.
 
         :param index: (int) State index (commonly between 1 and 5)
         :returns: collections.OrderedDict or None
@@ -255,7 +255,7 @@ class sppasHMM(object):
     # -----------------------------------------------------------------------
 
     def get_vecsize(self):
-        """ Return the number of means and variance of each state.
+        """Return the number of means and variance of each state.
         If state is pointing to a macro, 0 is returned.
 
         """
@@ -270,7 +270,7 @@ class sppasHMM(object):
     # -----------------------------------------------------------------------
 
     def static_linear_interpolation(self, hmm, gamma):
-        """ Static Linear Interpolation.
+        """Static Linear Interpolation.
         This is perhaps one of the most straightforward manner to combine models.
         This is an efficient way for merging the GMMs of the component models.
 
@@ -304,7 +304,7 @@ class sppasHMM(object):
 
     @staticmethod
     def create_transition(state_stay_probabilities=(0.6, 0.6, 0.7)):
-        """ Create and return a transition matrix.
+        """Create and return a transition matrix.
 
         :param state_stay_probabilities: (list) Center transition probabilities
         :returns: collections.OrderedDict()
@@ -325,7 +325,7 @@ class sppasHMM(object):
 
     @staticmethod
     def create_gmm(means, variances, gconsts=None, weights=None):
-        """ Create and return a GMM.
+        """Create and return a GMM.
 
         :returns: collections.OrderedDict()
 
@@ -365,7 +365,7 @@ class sppasHMM(object):
 
     @staticmethod
     def create_default():
-        """ Create a default ordered dictionary, used for states.
+        """Create a default ordered dictionary, used for states.
 
         :returns: collections.OrderedDict()
 
@@ -376,7 +376,7 @@ class sppasHMM(object):
 
     @staticmethod
     def create_vector(vector):
-        """ Create a default vector.
+        """Create a default vector.
 
         :returns: collections.OrderedDict()
 
@@ -390,7 +390,7 @@ class sppasHMM(object):
 
     @staticmethod
     def create_square_matrix(matrix):
-        """ Create a default matrix.
+        """Create a default matrix.
 
         :returns: collections.OrderedDict()
 
@@ -436,7 +436,7 @@ class HMMInterpolation(object):
 
     @staticmethod
     def linear_states(states, coefficients):
-        """ Linear interpolation of a set of states.
+        """Linear interpolation of a set of states.
 
         :param states: (OrderedDict)
         :param coefficients: List of coefficients (must sum to 1.)
@@ -464,7 +464,7 @@ class HMMInterpolation(object):
 
     @staticmethod
     def linear_transitions(transitions, coefficients):
-        """ Linear interpolation of a set of transitions.
+        """Linear interpolation of a set of transitions.
 
         :param transitions: (OrderedDict): with key='dim' and key='matrix'
         :param coefficients: List of coefficients (must sum to 1.)
@@ -489,7 +489,7 @@ class HMMInterpolation(object):
 
     @staticmethod
     def linear_interpolate_values(values, gammas):
-        """ Interpolate linearly values with gamma coefficients.
+        """Interpolate linearly values with gamma coefficients.
 
         :param values: List of values
         :param gammas: List of coefficients (must sum to 1.)
@@ -502,7 +502,7 @@ class HMMInterpolation(object):
 
     @staticmethod
     def linear_interpolate_vectors(vectors, gammas):
-        """ Interpolate linearly vectors with gamma coefficients.
+        """Interpolate linearly vectors with gamma coefficients.
 
         :param vectors: List of vectors
         :param gammas: List of coefficients (must sum to 1.)
@@ -518,7 +518,7 @@ class HMMInterpolation(object):
 
     @staticmethod
     def linear_interpolate_matrix(matrices, gammas):
-        """ Interpolate linearly matrix with gamma coefficients.
+        """Interpolate linearly matrix with gamma coefficients.
 
         :param matrices: List of matrix
         :param gammas: List of coefficients (must sum to 1.)
@@ -534,7 +534,7 @@ class HMMInterpolation(object):
 
     @staticmethod
     def linear_interpolate_transitions(transitions, gammas):
-        """ Linear interpolation of a set of transitions, of an hmm.
+        """Linear interpolation of a set of transitions, of an hmm.
 
         :param transitions: (OrderedDict): with key='dim' and key='matrix'
         :param gammas: List of coefficients (must sum to 1.)
@@ -560,7 +560,7 @@ class HMMInterpolation(object):
 
     @staticmethod
     def linear_interpolate_states(states, gammas):
-        """ Linear interpolation of a set of states, of one index only.
+        """Linear interpolation of a set of states, of one index only.
 
         :param states: (OrderedDict)
         :param gammas: List of coefficients (must sum to 1.)
@@ -596,7 +596,7 @@ class HMMInterpolation(object):
 
     @staticmethod
     def linear_interpolate_streams(streams, gammas):
-        """ Linear interpolation of a set of streams, of one state only.
+        """Linear interpolation of a set of streams, of one state only.
 
         :param streams: (OrderedDict)
         :param gammas: List of coefficients (must sum to 1.)
@@ -618,7 +618,7 @@ class HMMInterpolation(object):
 
     @staticmethod
     def linear_interpolate_mixtures(mixtures, gammas):
-        """ Linear interpolation of a set of mixtures, of one stream only.
+        """Linear interpolation of a set of mixtures, of one stream only.
 
         :param mixtures: (OrderedDict)
         :param gammas: List of coefficients (must sum to 1.)

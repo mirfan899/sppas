@@ -122,7 +122,7 @@ class FiletreePanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def _create_toolbar(self):
-        """ Simulate the creation of a toolbar. """
+        """Simulate the creation of a toolbar."""
 
         toolbar = MainToolbarPanel(self, self._prefsIO)
         toolbar.AddButton(wx.ID_ADD, ADD_FILE_ICON, "Add files", tooltip="Add files into the list.")
@@ -136,7 +136,7 @@ class FiletreePanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def _create_filestree(self):
-        """ Create the tree to store file names. """
+        """Create the tree to store file names."""
 
         t = wx.TreeCtrl(self, 1, wx.DefaultPosition, (-1, -1), 
                         style=wx.TR_MULTIPLE | wx.TR_HIDE_ROOT | wx.TR_HAS_BUTTONS | wx.NO_BORDER)
@@ -195,7 +195,7 @@ class FiletreePanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def OnKeyPress(self, event):
-        """ Respond to a keypress event. """
+        """Respond to a keypress event."""
 
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_F5:
@@ -206,7 +206,7 @@ class FiletreePanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def _add_file(self):
-        """ Add one or more file(s). """
+        """Add one or more file(s)."""
 
         files = OpenSoundFiles()
         for f in files:
@@ -215,7 +215,7 @@ class FiletreePanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def _add_dir(self):
-        """ Add the content of a directory. """
+        """Add the content of a directory."""
 
         dlg = wx.DirDialog(self, message="Choose a directory:", defaultPath=os.getcwd())
         self.paths = []
@@ -226,7 +226,7 @@ class FiletreePanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def _delete(self):
-        """ Delete selected files from the file system and remove of the tree. """
+        """Delete selected files from the file system and remove of the tree."""
 
         selection = self.GetSelected()
         str_list = ""
@@ -270,7 +270,7 @@ class FiletreePanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def _export(self):
-        """ Export multiple files, i.e. propose to change the extension. Nothing else. """
+        """Export multiple files, i.e. propose to change the extension. Nothing else."""
 
         # Some selection?
         files = self.GetSelected()
@@ -317,7 +317,7 @@ class FiletreePanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def _copy(self):
-        """ Export selected files. """
+        """Export selected files."""
 
         # Some files to save???
         files = self.GetSelected()
@@ -350,7 +350,7 @@ class FiletreePanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def SetPrefs(self, prefs):
-        """ Fix new preferences. """
+        """Fix new preferences."""
 
         self._prefsIO = prefs
         self.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
@@ -369,7 +369,7 @@ class FiletreePanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def RefreshTree(self, filelist=[]):
-        """ Refresh the tree, and optionally add new files. """
+        """Refresh the tree, and optionally add new files."""
 
         logging.debug('FLP Refresh tree:')
         if len(filelist) == 0:
@@ -394,7 +394,7 @@ class FiletreePanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def GetSelected(self, extension=""):
-        """ Return a list containing the filepath of each selected regular
+        """Return a list containing the filepath of each selected regular
         file (not folders) from the tree.
         Selecting a folder item equals to select all its items.
 
@@ -446,7 +446,7 @@ class FiletreePanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def _append_file(self, filename):
-        """ Add the file to the tree if it is not already in it.
+        """Add the file to the tree if it is not already in it.
 
         :param filename:
 
@@ -478,7 +478,7 @@ class FiletreePanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def _append_dir(self, txt):
-        """ Add the directory as item of the tree. """
+        """Add the directory as item of the tree."""
 
         # files contains all the files in the appended dir
         files = os.listdir(txt)
@@ -551,7 +551,7 @@ class FiletreePanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def _add_item(self, parent, son, isdir=False):
-        """ Add an item 'son' of type 'type' to the node 'parent'
+        """Add an item 'son' of type 'type' to the node 'parent'
 
         :param son: is text of the item to be added
         :param parent: is the node to which the item will be added
@@ -646,7 +646,7 @@ class FiletreePanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def _add_related_files(self, file_path):
-        """ Add all the files and directories with the same name and
+        """Add all the files and directories with the same name and
         in the same directory as the file in parameters.
 
         """
@@ -680,7 +680,7 @@ class FiletreePanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def _get_item_by_label(self, search_text, root_item):
-        """ Search the item that as 'search_text' as text and returns it.
+        """Search the item that as 'search_text' as text and returns it.
         If not found, return a new wx.TreeItemId()
 
         """
@@ -701,7 +701,7 @@ class FiletreePanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def _get_all_dirs(self, root_item):
-        """ Return all the paths of the directories in the tree. """
+        """Return all the paths of the directories in the tree."""
 
         all_dirs = []
         item, cookie = self._filestree.GetFirstChild(root_item)
@@ -732,7 +732,7 @@ class FiletreePanel(wx.Panel):
     # ------------------------------------------------------------------------
 
     def _get_all_filepaths(self, dir, pathlist=[], extension=""):
-        """ Return a list containing the filepath of each regular file
+        """Return a list containing the filepath of each regular file
         (not folders) from the tree.
         """
         dirname = self._filestree.GetItemText(dir)

@@ -60,7 +60,7 @@ DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 
 class TestTGA(unittest.TestCase):
-    """ Test of the class TimeGroupAnalysis.
+    """Test of the class TimeGroupAnalysis.
 
     """
     def setUp(self):

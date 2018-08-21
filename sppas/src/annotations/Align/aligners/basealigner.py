@@ -56,7 +56,7 @@ class BaseAligner(object):
 
     """
     def __init__(self, modeldir):
-        """ Creates a BaseAligner instance.
+        """Creates a BaseAligner instance.
 
         :param modeldir: (str) the acoustic model directory name
 
@@ -75,7 +75,7 @@ class BaseAligner(object):
     # -----------------------------------------------------------------------
 
     def get_outext(self):
-        """ Return the extension for output files.
+        """Return the extension for output files.
 
         :returns: str
 
@@ -85,7 +85,7 @@ class BaseAligner(object):
     # -----------------------------------------------------------------------
 
     def set_outext(self, ext):
-        """ Set the extension for output files.
+        """Set the extension for output files.
 
         :param ext:
 
@@ -95,7 +95,7 @@ class BaseAligner(object):
     # -----------------------------------------------------------------------
 
     def get_infersp(self):
-        """ Return the infersp option value.
+        """Return the infersp option value.
 
         :returns: (bool)
 
@@ -105,7 +105,7 @@ class BaseAligner(object):
     # -----------------------------------------------------------------------
 
     def set_infersp(self, infersp):
-        """ Fix the infersp option.
+        """Fix the infersp option.
 
         :param infersp: (bool) If infersp is set to True, the system will
         add a short pause at the end of each token, and the automatic aligner
@@ -120,7 +120,7 @@ class BaseAligner(object):
     # -----------------------------------------------------------------------
 
     def add_tiedlist(self, entries):
-        """ Add missing triphones/biphones in the tiedlist of the model.
+        """Add missing triphones/biphones in the tiedlist of the model.
 
         :param entries: (list) List of missing entries into the tiedlist.
 
@@ -150,7 +150,7 @@ class BaseAligner(object):
     # ------------------------------------------------------------------------
 
     def set_phones(self, phones):
-        """ Fix the pronunciations of each token.
+        """Fix the pronunciations of each token.
 
         :param phones: (str) Phonetization
 
@@ -161,7 +161,7 @@ class BaseAligner(object):
     # ------------------------------------------------------------------------
 
     def set_tokens(self, tokens):
-        """ Fix the tokens.
+        """Fix the tokens.
 
         :param tokens: (str) Tokenization
 
@@ -172,7 +172,7 @@ class BaseAligner(object):
     # -----------------------------------------------------------------------
 
     def check_data(self):
-        """ Check the given data to be aligned (phones and tokens).
+        """Check the given data to be aligned (phones and tokens).
 
         :returns: A warning message, or an empty string if check is OK.
 
@@ -195,7 +195,7 @@ class BaseAligner(object):
     # -----------------------------------------------------------------------
 
     def run_alignment(self, inputwav, outputalign):
-        """ Execute an external program to perform forced-alignment.
+        """Execute an external program to perform forced-alignment.
         It is expected that the alignment is performed on a file with a size
         less or equal to a sentence (sentence/IPUs/segment/utterance).
 

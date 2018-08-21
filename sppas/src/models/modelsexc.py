@@ -55,7 +55,7 @@ ARPA_FILE_ERROR = ":ERROR 7210: "
 
 
 class ModelsDataTypeError(TypeError):
-    """ :ERROR 7010: DATATYPE_ERROR
+    """:ERROR 7010: DATATYPE_ERROR
     Expected a {data_name} of type {expected_type}. Got {data_type} instead.
 
     """
@@ -72,7 +72,7 @@ class ModelsDataTypeError(TypeError):
 
 
 class MioEncodingError(UnicodeDecodeError):
-    """ :ERROR 7500: MIO_ENCODING_ERROR
+    """:ERROR 7500: MIO_ENCODING_ERROR
     The file {!s:s} contains non UTF-8 characters: {:s}.
 
     """
@@ -87,7 +87,7 @@ class MioEncodingError(UnicodeDecodeError):
 
 
 class MioFileFormatError(IOError):
-    """ :ERROR 7505: MIO_FILE_EXTENSION_ERROR
+    """:ERROR 7505: MIO_FILE_EXTENSION_ERROR
     Fail formats: unrecognized file format {!s:s}.
 
     """
@@ -102,7 +102,7 @@ class MioFileFormatError(IOError):
 
 
 class MioFileError(IOError):
-    """ :ERROR 7515: MIO_FILE_ERROR
+    """:ERROR 7515: MIO_FILE_ERROR
     No model found or empty model in {!s:s}.
 
     """
@@ -117,7 +117,7 @@ class MioFileError(IOError):
 
 
 class MioFolderError(IOError):
-    """ :ERROR 7510: MIO_FOLDER_ERROR
+    """:ERROR 7510: MIO_FOLDER_ERROR
     Fail formats: the folder {!s:s} does not contain a known model.
 
     """
@@ -132,7 +132,7 @@ class MioFolderError(IOError):
 
 
 class NgramOrderValueError(ValueError):
-    """ :ERROR 7110: NGRAM_ORDER_VALUE_ERROR
+    """:ERROR 7110: NGRAM_ORDER_VALUE_ERROR
     Expected an ngram order value between {min_value} and {max_value}. Got {got_value} instead.
 
     """
@@ -149,7 +149,7 @@ class NgramOrderValueError(ValueError):
 
 
 class NgramCountValueError(ValueError):
-    """ :ERROR 7120: NGRAM_COUNT_VALUE_ERROR
+    """:ERROR 7120: NGRAM_COUNT_VALUE_ERROR
     Expected a minimum count value of {min_value}. Got {got_value} instead.
 
     """
@@ -165,7 +165,7 @@ class NgramCountValueError(ValueError):
 
 
 class NgramMethodNameError(NameError):
-    """ :ERROR 7130: NGRAM_METHOD_NAME_ERROR
+    """:ERROR 7130: NGRAM_METHOD_NAME_ERROR
     Expected a known name of the method. Got {got_name} instead.
     """
     def __init__(self, got_name):
@@ -179,7 +179,7 @@ class NgramMethodNameError(NameError):
 
 
 class ArpaFileError(IOError):
-    """ :ERROR 7210: ARPA_FILE_ERROR
+    """:ERROR 7210: ARPA_FILE_ERROR
     Expected a standard arpa file. Error with line: {line}.
     """
     def __init__(self, line):

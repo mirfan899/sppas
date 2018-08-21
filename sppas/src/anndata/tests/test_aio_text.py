@@ -81,7 +81,7 @@ class TestBaseText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_make_point(self):
-        """ Convert data into the appropriate digit type, or not. """
+        """Convert data into the appropriate digit type, or not."""
 
         self.assertEqual(sppasPoint(3., 0.001), sppasBaseText.make_point("3.0"))
         self.assertEqual(sppasPoint(3., 0.001), sppasBaseText.make_point("3."))
@@ -92,7 +92,7 @@ class TestBaseText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_format_quotation_marks(self):
-        """ Remove initial and final quotation mark. """
+        """Remove initial and final quotation mark."""
 
         self.assertEqual("ab", sppasBaseText.format_quotation_marks("ab"))
         self.assertEqual("ab", sppasBaseText.format_quotation_marks('"ab"'))
@@ -104,7 +104,7 @@ class TestBaseText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_split_lines(self):
-        """ Split the lines with the given separator. """
+        """Split the lines with the given separator."""
 
         self.assertEqual(list(), sppasBaseText.split_lines(list()))
         self.assertEqual([['a']], sppasBaseText.split_lines(['a']))
@@ -138,7 +138,7 @@ class TestBaseText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_location(self):
-        """ Fix the location from the content of the data. """
+        """Fix the location from the content of the data."""
 
         # Point/Interval (int)
         self.assertEqual(sppasLocation(sppasPoint(3)), sppasBaseText.fix_location("3", "3"))
@@ -163,7 +163,7 @@ class TestBaseText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_is_comment(self):
-        """ Check if the line is a comment. """
+        """Check if the line is a comment."""
 
         self.assertTrue(sppasBaseText.is_comment(";;"))
         self.assertTrue(sppasBaseText.is_comment(";; comment"))
@@ -174,7 +174,7 @@ class TestBaseText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_create_media(self):
-        """ Return the media of the given name (create it if necessary)."""
+        """Return the media of the given name (create it if necessary)."""
 
         trs = sppasBaseText()
         self.assertEqual(len(trs.get_media_list()), 0)
@@ -191,7 +191,7 @@ class TestBaseText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_parse_comment(self):
-        """ Parse a comment and eventually fill metadata. """
+        """Parse a comment and eventually fill metadata."""
 
         ctm = sppasRawText()
         line = ";; this is a simple comment."
@@ -210,7 +210,7 @@ class TestBaseText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_serialize_header(self):
-        """ Create a comment with the metadata to be written. """
+        """Create a comment with the metadata to be written."""
 
         ctm = sppasRawText()
         lines = sppasBaseText.serialize_header("sample.ctm", ctm)
@@ -224,7 +224,7 @@ class TestBaseText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_serialize_header_software(self):
-        """ Create a comment with the metadata to be written. """
+        """Create a comment with the metadata to be written."""
 
         header = sppasBaseText.serialize_header_software().split("\n")
         self.assertEqual(len(header), 9)
@@ -234,7 +234,7 @@ class TestBaseText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_serialize_metadata_private(self):
-        """ Serialize the metadata of an object in a multi-lines comment. """
+        """Serialize the metadata of an object in a multi-lines comment."""
 
         ctm = sppasRawText()
         ctm.set_meta("meta_key", "meta_value")
@@ -273,7 +273,7 @@ class TestRawText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_read1(self):
-        """ Simple transcription, one utterance a line. """
+        """Simple transcription, one utterance a line."""
 
         txt = sppasRawText()
         txt.read(os.path.join(DATA, "sample-irish-1.txt"))
@@ -283,7 +283,7 @@ class TestRawText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_read2(self):
-        """ Column-based transcription. """
+        """Column-based transcription."""
 
         txt = sppasRawText()
         txt.read(os.path.join(DATA, "sample-irish-2.txt"))
@@ -296,7 +296,7 @@ class TestRawText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_read3(self):
-        """ Column-based transcription. """
+        """Column-based transcription."""
 
         txt = sppasRawText()
         txt.read(os.path.join(DATA, "sample.txt"))
@@ -317,7 +317,7 @@ class TestCSVText(unittest.TestCase):
 
     """
     def test_detect(self):
-        """ Test the file format detection method. """
+        """Test the file format detection method."""
 
         for filename in os.listdir(DATA):
             f = os.path.join(DATA, filename)
@@ -348,7 +348,7 @@ class TestCSVText(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_format_lines(self):
-        """ Append lines content into self. """
+        """Append lines content into self."""
 
         csv = sppasCSV()
         lines = list()

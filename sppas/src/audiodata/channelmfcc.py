@@ -54,7 +54,7 @@ import subprocess
 
 
 def test_command(command):
-    """ Test if a command is available.
+    """Test if a command is available.
 
     :param command: (str) The command to execute as a sub-process.
 
@@ -81,7 +81,7 @@ class sppasChannelMFCC(object):
 
     """
     def __init__(self, channel=None):
-        """ Create a sppasChannelMFCC instance.
+        """Create a sppasChannelMFCC instance.
 
         :param channel: (sppasChannel) The channel to work on. Currently not used...!!!
 
@@ -91,7 +91,7 @@ class sppasChannelMFCC(object):
     # ----------------------------------------------------------------------
 
     def hcopy(self, wavconfigfile, scpfile):
-        """ Create MFCC files from features described in the config file.
+        """Create MFCC files from features described in the config file.
         Requires HCopy to be installed.
 
         :param wavconfigfile: (str)
@@ -113,6 +113,6 @@ class sppasChannelMFCC(object):
     # ----------------------------------------------------------------------
 
     def evaluate(self, features):
-        """ Evaluate MFCC of the given channel. """
+        """Evaluate MFCC of the given channel."""
 
         raise NotImplementedError

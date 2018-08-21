@@ -71,13 +71,13 @@ class sppasDuration(object):
     # -----------------------------------------------------------------------
 
     def get(self):
-        """ Return myself. """
+        """Return myself."""
         return self
 
     # -----------------------------------------------------------------------
 
     def set(self, other):
-        """ Set the value/vagueness of another sppasDuration instance.
+        """Set the value/vagueness of another sppasDuration instance.
 
         :param other: (sppasDuration)
 
@@ -91,14 +91,14 @@ class sppasDuration(object):
     # -----------------------------------------------------------------------
 
     def get_value(self):
-        """ Return the duration value (float)."""
+        """Return the duration value (float)."""
 
         return self.__value
 
     # -----------------------------------------------------------------------
 
     def set_value(self, value):
-        """ Set the duration to a new value.
+        """Set the duration to a new value.
 
         :param value: (float) the new duration value.
 
@@ -114,14 +114,14 @@ class sppasDuration(object):
     # -----------------------------------------------------------------------
 
     def get_margin(self):
-        """ Return the vagueness of the duration (float). """
+        """Return the vagueness of the duration (float)."""
 
         return self.__margin
 
     # -----------------------------------------------------------------------
 
     def set_margin(self, vagueness):
-        """ Fix the vagueness margin of the duration.
+        """Fix the vagueness margin of the duration.
 
         :param vagueness: (float) the duration margin.
 
@@ -137,7 +137,7 @@ class sppasDuration(object):
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """ Return a deep copy of self. """
+        """Return a deep copy of self."""
 
         t = self.__value
         r = self.__margin
@@ -162,7 +162,7 @@ class sppasDuration(object):
     # -----------------------------------------------------------------------
 
     def __eq__(self, other):
-        """ Equal is required to use '==' between 2 sppasDuration instances or
+        """Equal is required to use '==' between 2 sppasDuration instances or
         between a sppasDuration and an other object representing time.
         This relationship takes into account the vagueness.
 
@@ -185,7 +185,7 @@ class sppasDuration(object):
     # -----------------------------------------------------------------------
 
     def __lt__(self, other):
-        """ LowerThan is required to use '<' between 2 sppasDuration instances
+        """LowerThan is required to use '<' between 2 sppasDuration instances
         or between a sppasDuration and an other time object.
 
         :param other: (Duration, float, int) is the other duration to compare with.
@@ -199,7 +199,7 @@ class sppasDuration(object):
     # -----------------------------------------------------------------------
 
     def __gt__(self, other):
-        """ GreaterThan is required to use '>' between 2 Duration instances
+        """GreaterThan is required to use '>' between 2 Duration instances
         or between a Duration and an other time object.
 
         :param other: (Duration, float, int) is the other duration to compare with.
@@ -213,20 +213,20 @@ class sppasDuration(object):
     # ------------------------------------------------------------------------
 
     def __ne__(self, other):
-        """ Not equals. """
+        """Not equals."""
 
         return not (self == other)
 
     # ------------------------------------------------------------------------
 
     def __le__(self, other):
-        """ Lesser or equal. """
+        """Lesser or equal."""
 
         return (self < other) or (self == other)
 
     # ------------------------------------------------------------------------
 
     def __ge__(self, other):
-        """ Greater or equal. """
+        """Greater or equal."""
 
         return (self > other) or (self == other)

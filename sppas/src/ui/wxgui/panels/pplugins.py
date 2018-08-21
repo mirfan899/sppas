@@ -114,7 +114,7 @@ class PluginsPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def _create_toolbar(self):
-        """ Creates a toolbar panel. """
+        """Creates a toolbar panel."""
 
         activated = True
         if self._manager is None:
@@ -155,7 +155,7 @@ class PluginsPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Import(self):
-        """ Import and install a plugin. """
+        """Import and install a plugin."""
 
         filename = OpenSpecificFiles("Plugin archive", ['zip', "*.zip", "*.[zZ][iI][pP]"])
         if len(filename) > 0:
@@ -182,7 +182,7 @@ class PluginsPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def Remove(self):
-        """ Remove and delete a plugin. """
+        """Remove and delete a plugin."""
 
         try:
             plugin_id = self._plugins_panel.Remove()
@@ -200,7 +200,7 @@ class PluginsPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnApply(self, event):
-        """ A plugin was clicked: Apply it on a set of files.
+        """A plugin was clicked: Apply it on a set of files.
 
         :param event: (PluginApplyEvent) Event indicating the identifier of
         the plugin to apply.
@@ -259,7 +259,7 @@ class PluginsPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnReadme(self, event):
-        """ A plugin was clicked: Display the README.txt file content.
+        """A plugin was clicked: Display the README.txt file content.
 
         :param event: (PluginReadmeEvent) Event indicating the identifier of
         the plugin to read.
@@ -283,7 +283,7 @@ class PluginsListPanel(wx.lib.scrolledpanel.ScrolledPanel):
 
     """
     def __init__(self, parent, preferences):
-        """ Constructor.
+        """Constructor.
 
         :param parent:
         :param preferences:
@@ -306,7 +306,7 @@ class PluginsListPanel(wx.lib.scrolledpanel.ScrolledPanel):
     # -----------------------------------------------------------------------
 
     def Append(self, plugin):
-        """ Append a plugin into the panel.
+        """Append a plugin into the panel.
 
         :param plugin (sppasPluginParam) The plugin to append
 
@@ -364,7 +364,7 @@ class PluginsListPanel(wx.lib.scrolledpanel.ScrolledPanel):
     # -----------------------------------------------------------------------
 
     def Remove(self):
-        """ Ask for the plugin to be removed, remove of the list.
+        """Ask for the plugin to be removed, remove of the list.
 
         :returns: plugin identifier of the plugin to be deleted.
 
@@ -391,7 +391,7 @@ class PluginsListPanel(wx.lib.scrolledpanel.ScrolledPanel):
     # -----------------------------------------------------------------------
 
     def OnButtonClick(self, evt):
-        """ A plugin has been clicked: send the plugin identifier to the parent.
+        """A plugin has been clicked: send the plugin identifier to the parent.
 
         :param evt: (wx event)
 
@@ -409,7 +409,7 @@ class PluginsListPanel(wx.lib.scrolledpanel.ScrolledPanel):
     # ------------------------------------------------------------------------
 
     def OnReadme(self, evt):
-        """ The About text was clicked.
+        """The About text was clicked.
         Send the information to the parent.
 
         """
@@ -426,7 +426,7 @@ class PluginsListPanel(wx.lib.scrolledpanel.ScrolledPanel):
     # ------------------------------------------------------------------------
 
     def __apply_preferences(self, wx_object):
-        """ Set font, background color and foreground color to an object. """
+        """Set font, background color and foreground color to an object."""
 
         wx_object.SetFont(self._preferences.GetValue('M_FONT'))
         wx_object.SetForegroundColour(self._preferences.GetValue('M_FG_COLOUR'))

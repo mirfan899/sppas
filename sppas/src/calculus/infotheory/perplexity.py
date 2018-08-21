@@ -94,7 +94,7 @@ class Perplexity(object):
     DEFAULT_EPSILON = 0.000001
 
     def __init__(self, model, ngram=1):
-        """ Creates a Perplexity instance with a list of symbols.
+        """Creates a Perplexity instance with a list of symbols.
 
         :param model: (dict) a dictionary with key=item, value=probability
         :param ngram: (int) the n value, in the range 1..8
@@ -110,7 +110,7 @@ class Perplexity(object):
     # -----------------------------------------------------------------------
 
     def set_epsilon(self, eps=0.):
-        """ Set a value for epsilon.
+        """Set a value for epsilon.
         
         This value must be significantly lower than the minimum value in the
         model.
@@ -137,7 +137,7 @@ class Perplexity(object):
     # -----------------------------------------------------------------------
 
     def set_model(self, model):
-        """ Set the probability distribution to the model.
+        """Set the probability distribution to the model.
         Notice that the epsilon value is re-assigned.
 
         :param model: (dict) Dictionary with symbols as keys and values as probabilities.
@@ -161,7 +161,7 @@ class Perplexity(object):
     # -----------------------------------------------------------------------
 
     def set_ngram(self, n):
-        """ Set the n value of n-grams.
+        """Set the n value of n-grams.
 
         :param n: (int) Value ranging from 1 to MAX_GRAM
 
@@ -175,7 +175,7 @@ class Perplexity(object):
     # -----------------------------------------------------------------------
 
     def eval_pp(self, symbols):
-        """ Estimates the perplexity of a list of symbols.
+        """Estimates the perplexity of a list of symbols.
 
         :returns: float value
 

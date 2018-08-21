@@ -111,7 +111,7 @@ class Transcription(MetaObject):
     # ------------------------------------------------------------------------
 
     def SetFromAnnData(self, trs):
-        """ Set the transcription from anndata.sppasTranscription() object.
+        """Set the transcription from anndata.sppasTranscription() object.
 
         @param trs: sppasTranscription.
 
@@ -175,7 +175,7 @@ class Transcription(MetaObject):
     # ------------------------------------------------------------------------
 
     def ExportToAnnData(self):
-        """ Export this transcription to anndata.sppasTranscription(). """
+        """Export this transcription to anndata.sppasTranscription()."""
 
         trs = anndata.sppasTranscription(self.__name)
 

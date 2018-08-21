@@ -61,7 +61,7 @@ class sppasBaseSubtitles(sppasBaseIO):
 
     """
     def __init__(self, name=None):
-        """ Initialize a new sppasBaseSubtitles instance.
+        """Initialize a new sppasBaseSubtitles instance.
 
         :param name: (str) This transcription name.
 
@@ -90,7 +90,7 @@ class sppasBaseSubtitles(sppasBaseIO):
 
     @staticmethod
     def _parse_time(time_string):
-        """ Convert a time in "%H:%M:%S,%m" format into seconds. """
+        """Convert a time in "%H:%M:%S,%m" format into seconds."""
 
         time_string = time_string.strip()
         dt = (datetime.datetime.strptime(time_string, '%H:%M:%S,%f') -
@@ -101,7 +101,7 @@ class sppasBaseSubtitles(sppasBaseIO):
 
     @staticmethod
     def _format_time(second_count):
-        """ Convert a time in seconds into "%H:%M:%S" format. """
+        """Convert a time in seconds into "%H:%M:%S" format."""
 
         dt = datetime.datetime.utcfromtimestamp(second_count)
         return dt.strftime('%H:%M:%S,%f')[:-3]
@@ -110,7 +110,7 @@ class sppasBaseSubtitles(sppasBaseIO):
 
     @staticmethod
     def make_point(midpoint):
-        """ In subtitles, the localization is a time value, so a float. """
+        """In subtitles, the localization is a time value, so a float."""
 
         try:
             midpoint = float(midpoint)
@@ -122,7 +122,7 @@ class sppasBaseSubtitles(sppasBaseIO):
 
     @staticmethod
     def _format_text(text):
-        """ Remove HTML tags, etc. """
+        """Remove HTML tags, etc."""
 
         text = text.replace('<b>', '')
         text = text.replace('<B>', '')
@@ -152,7 +152,7 @@ class sppasBaseSubtitles(sppasBaseIO):
 
     @staticmethod
     def _serialize_location(ann):
-        """ Extract location to serialize the timestamps. """
+        """Extract location to serialize the timestamps."""
 
         if ann.location_is_point() is False:
             begin = sppasBaseSubtitles._format_time(
@@ -198,7 +198,7 @@ class sppasSubRip(sppasBaseSubtitles):
 
     """
     def __init__(self, name=None):
-        """ Initialize a new sppasSubRip instance.
+        """Initialize a new sppasSubRip instance.
 
         :param name: (str) This transcription name.
 
@@ -212,7 +212,7 @@ class sppasSubRip(sppasBaseSubtitles):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a SRT file and fill the Transcription.
+        """Read a SRT file and fill the Transcription.
 
         :param filename: (str)
 
@@ -243,7 +243,7 @@ class sppasSubRip(sppasBaseSubtitles):
 
     @staticmethod
     def _parse_subtitle(lines):
-        """ Parse a single subtitle.
+        """Parse a single subtitle.
 
         The subtitle can be written on several lines. In this case, one sppasLabel()
         is created for each line.
@@ -284,7 +284,7 @@ class sppasSubRip(sppasBaseSubtitles):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write a transcription into a file.
+        """Write a transcription into a file.
 
         :param filename: (str)
 
@@ -328,7 +328,7 @@ class sppasSubRip(sppasBaseSubtitles):
 
     @staticmethod
     def _serialize_metadata(ann):
-        """ Extract metadata to serialize the position on screen. """
+        """Extract metadata to serialize the position on screen."""
 
         text = ""
         if ann.is_meta_key("position_pixel_X1"):
@@ -360,7 +360,7 @@ class sppasSubViewer(sppasBaseSubtitles):
 
     """
     def __init__(self, name=None):
-        """ Initialize a new sppasBaseSubtitles instance.
+        """Initialize a new sppasBaseSubtitles instance.
 
         :param name: (str) This transcription name.
 
@@ -374,7 +374,7 @@ class sppasSubViewer(sppasBaseSubtitles):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a SUB file and fill the Transcription.
+        """Read a SUB file and fill the Transcription.
 
         :param filename: (str)
 
@@ -407,7 +407,7 @@ class sppasSubViewer(sppasBaseSubtitles):
     # -----------------------------------------------------------------------
 
     def _parse_header(self, lines):
-        """ Parse the header lines to get metadata.
+        """Parse the header lines to get metadata.
 
         [INFORMATION]
         [TITLE]SubViewer file example
@@ -439,7 +439,7 @@ class sppasSubViewer(sppasBaseSubtitles):
 
     @staticmethod
     def _parse_subtitle(lines):
-        """ Parse a single subtitle.
+        """Parse a single subtitle.
 
         :param lines: (list) the lines of a subtitle (index, timestamps, label)
 
@@ -465,7 +465,7 @@ class sppasSubViewer(sppasBaseSubtitles):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write a transcription into a file.
+        """Write a transcription into a file.
 
         :param filename: (str)
 
@@ -504,7 +504,7 @@ class sppasSubViewer(sppasBaseSubtitles):
     # -----------------------------------------------------------------------
 
     def _serialize_header(self):
-        """ Convert metadata into an header.
+        """Convert metadata into an header.
 
         [INFORMATION]
         [TITLE]SubViewer file example

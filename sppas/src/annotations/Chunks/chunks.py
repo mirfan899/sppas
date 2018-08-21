@@ -65,7 +65,7 @@ SIL_PHON = list(symbols.phone.keys())[list(symbols.phone.values()).index("silenc
 
 
 class Chunks(object):
-    """ Write tokenized-phonetized segments from Tiers.
+    """Write tokenized-phonetized segments from Tiers.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -75,7 +75,7 @@ class Chunks(object):
 
     """
     def __init__(self, model):
-        """ Creates a Chunks instance.
+        """Creates a Chunks instance.
         
         :param model: Acoustic model
 
@@ -171,7 +171,7 @@ class Chunks(object):
     # ------------------------------------------------------------------------
 
     def create_chunks(self, inputaudio, phontier, toktier, diralign):
-        """ Create time-aligned tiers from raw intput tiers.
+        """Create time-aligned tiers from raw intput tiers.
 
         :param inputaudio: (str) Name of the audio file
         :param phontier: (Tier) the tier with phonetization
@@ -249,7 +249,7 @@ class Chunks(object):
 
     @staticmethod
     def _append_tier(tier, trs):
-        """ Append a copy of Tier in trs.
+        """Append a copy of Tier in trs.
 
         """
         copy_tier = Tier("Anchors-"+str(tier.GetSize()))
@@ -265,7 +265,7 @@ class Chunks(object):
     # ------------------------------------------------------------------------
 
     def _asr(self, toklist, pronlist, anchor_tier, channel, diralign, N):
-        """ Windowing on the audio to perform ASR and find anchors.
+        """Windowing on the audio to perform ASR and find anchors.
 
         """
         # init
@@ -328,7 +328,7 @@ class Chunks(object):
     # ------------------------------------------------------------------------
 
     def _fix_trans_interval(self, from_time, to_time, toklist, anchor_tier):
-        """ Fix the window on the transcript.
+        """Fix the window on the transcript.
 
         """
         # previous and following anchors
@@ -451,7 +451,7 @@ class Chunks(object):
 
     @staticmethod
     def _fix_matchings_list(ref, hyp, N):
-        """ Create the list of matches between ref and hyp.
+        """Create the list of matches between ref and hyp.
 
         """
         pattern = sppasPatterns()
@@ -498,7 +498,7 @@ class Chunks(object):
 
     @staticmethod
     def _add_anchors(anchorlist, anchor_tier):
-        """ Add anchors in the anchor tier
+        """Add anchors in the anchor tier
 
         """
         if len(anchorlist) == 0:
@@ -566,7 +566,7 @@ class Chunks(object):
     # ------------------------------------------------------------------------
 
     def _tier2raw(self, tier, mapp=False):
-        """ Return all interval contents into a single string.
+        """Return all interval contents into a single string.
 
         """
         # Map phonemes from SAMPA to the expected ones.

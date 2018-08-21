@@ -8,11 +8,11 @@ Create my own App.
 
 
 class myApp(wx.App):
-    """ Create my own Application. Inherited from the wx.App.
+    """Create my own Application. Inherited from the wx.App.
 
     """
     def __init__(self):
-        """ Create a customized application.
+        """Create a customized application.
 
         This app is using the following parameters:
 

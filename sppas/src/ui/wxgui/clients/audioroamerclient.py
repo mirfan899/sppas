@@ -332,7 +332,7 @@ class AudioRoamer(wx.Panel):
 
     """
     def __init__(self, parent, preferences):
-        """ Create a new AudioRoamer instance.
+        """Create a new AudioRoamer instance.
 
         :param parent (wxWindow)
         :param preferences (Preferences)
@@ -513,7 +513,7 @@ class AudioRoamerPanel(wx.Panel):
                    }
 
     def __init__(self, parent, preferences, channel):
-        """ Create a new AudioRoamerPanel instance.
+        """Create a new AudioRoamerPanel instance.
 
         :param parent: (wxWindow)
         :param preferences: (structs.Preferences)
@@ -546,7 +546,7 @@ class AudioRoamerPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def _create_content(self):
-        """ Create the main sizer, add content then return it. """
+        """Create the main sizer, add content then return it."""
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -567,7 +567,7 @@ class AudioRoamerPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def _create_content_infos(self):
-        """ GUI design for amplitude and volume information. """
+        """GUI design for amplitude and volume information."""
 
         gbs = wx.GridBagSizer(10, 2)
 
@@ -616,7 +616,7 @@ class AudioRoamerPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def _create_content_clipping(self):
-        """ GUI design for clipping information. """
+        """GUI design for clipping information."""
 
         gbs = wx.GridBagSizer(11, 2)
 
@@ -634,7 +634,7 @@ class AudioRoamerPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def _create_content_ipus(self):
-        """ GUI design for information about an IPUs segmentation... """
+        """GUI design for information about an IPUs segmentation..."""
 
         gbs = wx.GridBagSizer(9, 2)
 
@@ -666,7 +666,7 @@ class AudioRoamerPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnModif(self, evt):
-        """ Callback on a modifiable object: adapt foreground color.
+        """Callback on a modifiable object: adapt foreground color.
 
         :param evt: (wx.event)
 
@@ -691,7 +691,7 @@ class AudioRoamerPanel(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetPreferences(self, prefs):
-        """ Set new preferences. Refresh GUI.
+        """Set new preferences. Refresh GUI.
 
         :param prefs: (structs.Preferences)
 
@@ -705,7 +705,7 @@ class AudioRoamerPanel(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetFont(self, font):
-        """ Change font of all wx texts.
+        """Change font of all wx texts.
 
         :param font: (wx.Font)
 
@@ -729,7 +729,7 @@ class AudioRoamerPanel(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetBackgroundColour(self, color):
-        """ Change background of all texts.
+        """Change background of all texts.
 
         :param color: (wx.Color)
 
@@ -743,7 +743,7 @@ class AudioRoamerPanel(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetForegroundColour(self, color):
-        """ Change foreground of all texts.
+        """Change foreground of all texts.
 
         :param color: (wx.Color)
 
@@ -759,7 +759,7 @@ class AudioRoamerPanel(wx.Panel):
     # ----------------------------------------------------------------------
 
     def ShowInfo(self):
-        """ Estimate all values then display the information. """
+        """Estimate all values then display the information."""
 
         # we never estimated values. we have to do it!
         if self._cv is None:
@@ -810,7 +810,7 @@ class AudioRoamerPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def SetChannel(self, new_channel):
-        """ Set a new channel, estimates the values to be displayed.
+        """Set a new channel, estimates the values to be displayed.
 
         :param new_channel: (sppasChannel)
 
@@ -838,7 +838,7 @@ class AudioRoamerPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def ApplyChanges(self, from_time=None, to_time=None):
-        """ Return a channel with changed applied.
+        """Return a channel with changed applied.
 
         :param from_time: (float)
         :param to_time: (float)
@@ -891,7 +891,7 @@ class AudioRoamerPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def SaveChannel(self, parent_filename, period=False):
-        """ Save the channel in an audio file.
+        """Save the channel in an audio file.
 
         :param parent_filename: (str)
         :param period: (bool) Save a portion of the channel only
@@ -953,7 +953,7 @@ class AudioRoamerPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def SaveInfos(self, parent_filename):
-        """ Ask for a filename then save all displayed information.
+        """Ask for a filename then save all displayed information.
 
         :param parent_filename: (str)
 
@@ -1021,7 +1021,7 @@ class AudioRoamerPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def __add_info(self, parent, gbs, key, row):
-        """ Private method to add an info into the GridBagSizer. """
+        """Private method to add an info into the GridBagSizer."""
         static_tx = wx.StaticText(parent, -1, AudioRoamerPanel.INFO_LABELS[key][0])
         gbs.Add(static_tx, (row, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=2)
         tx = wx.TextCtrl(parent, -1, AudioRoamerPanel.INFO_LABELS[key][1], style=wx.TE_READONLY)
@@ -1030,7 +1030,7 @@ class AudioRoamerPanel(wx.Panel):
         self._wxobj[key] = (static_tx,tx)
 
     def __add_clip(self, parent, gbs, i):
-        """ Private method to add a clipping value in a GridBagSizer. """
+        """Private method to add a clipping value in a GridBagSizer."""
         static_tx = wx.StaticText(parent, -1, "  factor "+str(float(i)/10.)+": ")
         gbs.Add(static_tx, (i, 0), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=2)
         tx = wx.TextCtrl(parent, -1, " ... ", style=wx.TE_READONLY|wx.TE_RIGHT)
@@ -1047,7 +1047,7 @@ class AudioRoamerPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def __section(self, title):
-        """ Private method to make to look like a title. """
+        """Private method to make to look like a title."""
         text  = self.__newline()
         text += self.__separator()
         text += self.__line(title)
@@ -1056,25 +1056,25 @@ class AudioRoamerPanel(wx.Panel):
         return text
 
     def __line(self, msg):
-        """ Private method to make a text as a simple line. """
+        """Private method to make a text as a simple line."""
         text  = msg.strip()
         text += self.__newline()
         return text
 
     def __item(self, msg):
-        """ Private method to make a text as a simple item. """
+        """Private method to make a text as a simple item."""
         text  = "  - "
         text += self.__line(msg)
         return text
 
     def __newline(self):
-        """ Private method to return a new empty line. """
+        """Private method to return a new empty line."""
         if wx.Platform == '__WXMAC__' or wx.Platform == '__WXGTK__':
             return "\n"
         return "\r\n"
 
     def __separator(self):
-        """ Private method to return a separator line. """
+        """Private method to return a separator line."""
         text  = "-----------------------------------------------------------------"
         text += self.__newline()
         return text

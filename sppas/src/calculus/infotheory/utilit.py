@@ -52,7 +52,7 @@ MAX_NGRAM = 8
 
 
 def find_ngrams(symbols, ngram):
-    """ Return a list of n-grams from a list of symbols.
+    """Return a list of n-grams from a list of symbols.
 
     :param symbols: (list)
     :param ngram: (int) n value for the ngrams
@@ -71,7 +71,7 @@ def find_ngrams(symbols, ngram):
 
 
 def symbols_to_items(symbols, ngram):
-    """ Convert a list of symbols into a dictionary of items.
+    """Convert a list of symbols into a dictionary of items.
 
     Example:
 

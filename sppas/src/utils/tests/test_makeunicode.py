@@ -162,7 +162,7 @@ LowerDict['Ỹ'] = u('ỹ')
 
 
 class TestMethods(unittest.TestCase):
-    """ Test u and b methods. """
+    """Test u and b methods."""
 
     def test_u(self):
         if sys.version_info < (3,):
@@ -200,7 +200,7 @@ class TestMethods(unittest.TestCase):
 
 
 class TestMakeUnicode(unittest.TestCase):
-    """ Make a string as unicode and operates on it. """
+    """Make a string as unicode and operates on it."""
 
     def test_init(self):
         sppasUnicode("")

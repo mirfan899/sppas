@@ -60,7 +60,7 @@ class HviteAligner(BaseAligner):
 
     """
     def __init__(self, modeldir):
-        """ Create a HViteAligner instance.
+        """Create a HViteAligner instance.
 
         This class allows to align one inter-pausal unit with with the
         external segmentation tool HVite.
@@ -81,7 +81,7 @@ class HviteAligner(BaseAligner):
     # -----------------------------------------------------------------------
 
     def set_outext(self, ext):
-        """ Set the extension for output files.
+        """Set the extension for output files.
 
         :param ext: (str)
 
@@ -95,7 +95,7 @@ class HviteAligner(BaseAligner):
     # -----------------------------------------------------------------------
 
     def gen_dependencies(self, grammarname, dictname):
-        """ Generate the dependencies (grammar, dictionary) for HVite.
+        """Generate the dependencies (grammar, dictionary) for HVite.
 
         :param grammarname: (str) the file name of the tokens
         :param dictname: (str) the dictionary file name
@@ -122,7 +122,7 @@ class HviteAligner(BaseAligner):
     # -----------------------------------------------------------------------
 
     def run_hvite(self, inputwav, outputalign):
-        """ Perform the speech segmentation.
+        """Perform the speech segmentation.
         Call the system command `HVite`.
 
         :param inputwav: (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
@@ -200,7 +200,7 @@ class HviteAligner(BaseAligner):
     # -----------------------------------------------------------------------
 
     def run_alignment(self, inputwav, outputalign):
-        """ Execute the external program `HVite` to align.
+        """Execute the external program `HVite` to align.
 
         :param inputwav: (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
         :param outputalign: (str) the output file name

@@ -79,7 +79,7 @@ ALIGNERS_EXT_OUT = {
 
 
 def aligner_names():
-    """ Return the list of aligner names. """
+    """Return the list of aligner names."""
 
     return ALIGNERS_TYPES.keys()
 
@@ -87,7 +87,7 @@ def aligner_names():
 
 
 def check(alignername):
-    """ Check whether the aligner name is known or not.
+    """Check whether the aligner name is known or not.
 
     :param alignername: (str) Name of the aligner. Expect one of the ALIGNERS list.
     :returns: formatted alignername
@@ -103,7 +103,7 @@ def check(alignername):
 
 
 def instantiate(modeldir, alignername=DEFAULT_ALIGNER):
-    """ Instantiate an aligner to the appropriate Aligner system from its name.
+    """Instantiate an aligner to the appropriate Aligner system from its name.
     If an error occurred, the basic aligner is returned.
 
     :param alignername: (str) Name of the aligner. Expect one of the ALIGNERS list.

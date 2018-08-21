@@ -72,7 +72,7 @@ class sppasDescriptiveStatistics(object):
 
     """
     def __init__(self, dict_items):
-        """ Descriptive statistics.
+        """Descriptive statistics.
 
         :param dict_items: a dict of tuples (key, [values])
 
@@ -82,7 +82,7 @@ class sppasDescriptiveStatistics(object):
     # -----------------------------------------------------------------------
 
     def len(self):
-        """ Estimates the number of occurrences of data values.
+        """Estimates the number of occurrences of data values.
 
         :returns: (dict) a dictionary of tuples (key, len)
 
@@ -92,7 +92,7 @@ class sppasDescriptiveStatistics(object):
     # -----------------------------------------------------------------------
 
     def total(self):
-        """ Estimates the sum of data values.
+        """Estimates the sum of data values.
 
         :returns: (dict) a dictionary of tuples (key, total) of float values
 
@@ -102,7 +102,7 @@ class sppasDescriptiveStatistics(object):
     # -----------------------------------------------------------------------
 
     def min(self):
-        """ Estimates the minimum of data values.
+        """Estimates the minimum of data values.
 
         :returns: (dict) a dictionary of (key, min) of float values
 
@@ -112,7 +112,7 @@ class sppasDescriptiveStatistics(object):
     # -----------------------------------------------------------------------
 
     def max(self):
-        """ Estimates the maximum of data values.
+        """Estimates the maximum of data values.
 
         :returns: (dict) a dictionary of (key, max) of float values
 
@@ -122,7 +122,7 @@ class sppasDescriptiveStatistics(object):
     # -----------------------------------------------------------------------
 
     def mean(self):
-        """ Estimates the arithmetic mean of data values.
+        """Estimates the arithmetic mean of data values.
 
         :returns: (dict) a dictionary of (key, mean) of float values
 
@@ -132,7 +132,7 @@ class sppasDescriptiveStatistics(object):
     # -----------------------------------------------------------------------
 
     def median(self):
-        """ Estimates the 'middle' score of the data values.
+        """Estimates the 'middle' score of the data values.
 
         :returns: (dict) a dictionary of (key, mean) of float values
 
@@ -142,7 +142,7 @@ class sppasDescriptiveStatistics(object):
     # -----------------------------------------------------------------------
 
     def variance(self):
-        """ Estimates the unbiased sample variance of data values.
+        """Estimates the unbiased sample variance of data values.
 
         :returns: (dict) a dictionary of (key, variance) of float values
 
@@ -152,7 +152,7 @@ class sppasDescriptiveStatistics(object):
     # -----------------------------------------------------------------------
 
     def stdev(self):
-        """ Estimates the standard deviation of data values.
+        """Estimates the standard deviation of data values.
 
         :returns: (dict) a dictionary of (key, stddev) of float values
 
@@ -162,7 +162,7 @@ class sppasDescriptiveStatistics(object):
     # -----------------------------------------------------------------------
 
     def coefvariation(self):
-        """ Estimates the coefficient of variation of data values (given as a percentage).
+        """Estimates the coefficient of variation of data values (given as a percentage).
 
         :returns: (dict) a dictionary of (key, coefvariation) of float values
 
@@ -172,7 +172,7 @@ class sppasDescriptiveStatistics(object):
     # -----------------------------------------------------------------------
 
     def zscore(self):
-        """ Estimates the z-scores of data values.
+        """Estimates the z-scores of data values.
         The z-score determines the relative location of a data value.
 
         :returns: (dict) a dictionary of (key, [z-scores]) of float values

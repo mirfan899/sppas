@@ -53,7 +53,7 @@ class sppasChannelMixer(object):
 
     """
     def __init__(self):
-        """ Create a ChannelMixer instance. """
+        """Create a ChannelMixer instance."""
         
         self._channels = []
         self._factors = []
@@ -61,7 +61,7 @@ class sppasChannelMixer(object):
     # -----------------------------------------------------------------------
 
     def get_channel(self, idx):
-        """ Return the channel of a given index.
+        """Return the channel of a given index.
 
         :param idx: (int) the index of the channel to return
         :returns: (sppasChannel)
@@ -72,7 +72,7 @@ class sppasChannelMixer(object):
     # -----------------------------------------------------------------------
 
     def append_channel(self, channel, factor=1):
-        """ Append a channel and the corresponding factor for a mix.
+        """Append a channel and the corresponding factor for a mix.
 
         :param channel: (Channel object) the channel to append
         :param factor: (float) the factor associated to the channel
@@ -84,7 +84,7 @@ class sppasChannelMixer(object):
     # -----------------------------------------------------------------------
 
     def check_channels(self):
-        """ Checking the conformity of the channels. """
+        """Checking the conformity of the channels."""
 
         if len(self._channels) == 0:
             raise MixChannelError
@@ -108,7 +108,7 @@ class sppasChannelMixer(object):
 
     @staticmethod
     def _sample_calculator(channels, pos, sampwidth, factors, attenuator):
-        """ Return the sample value, applying a factor and an attenuator.
+        """Return the sample value, applying a factor and an attenuator.
 
         :param channels: (Channel[]) the list of channels
         :param pos: (int) the position of the sample to calculate
@@ -144,7 +144,7 @@ class sppasChannelMixer(object):
     # -----------------------------------------------------------------------
 
     def mix(self, attenuator=1):
-        """ Mix the channels of the list in one.
+        """Mix the channels of the list in one.
 
         :param attenuator: (float) the factor to apply to each sample calculated
         :returns: the result Channel
@@ -174,7 +174,7 @@ class sppasChannelMixer(object):
     # -----------------------------------------------------------------------
 
     def get_minmax(self):
-        """ Return a tuple with the minimum and the maximum samples values.
+        """Return a tuple with the minimum and the maximum samples values.
 
         :returns: the tuple (minvalue, maxvalue)
 
@@ -197,7 +197,7 @@ class sppasChannelMixer(object):
     # -----------------------------------------------------------------------
 
     def norm_length(self):
-        """ Normalize the number of frames of all the channels,
+        """Normalize the number of frames of all the channels,
         by appending silence at the end.
 
         """

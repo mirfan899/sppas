@@ -96,7 +96,7 @@ class TestMIO(unittest.TestCase):
             self._test_load_save(folder)
 
     def _test_load_save(self, folder):
-        """ Test to read and write an acoustic model of the given directory. """
+        """Test to read and write an acoustic model of the given directory."""
         # Read the acoustic model (monophone)
         parser = sppasACMRW(folder)
         acmodel = parser.read()

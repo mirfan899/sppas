@@ -60,7 +60,7 @@ class sppasAudioFactory(object):
 
     @staticmethod
     def new_audio_pcm(audio_type):
-        """ Return a new sppasAudioPCM according to the format.
+        """Return a new sppasAudioPCM according to the format.
 
         :param audio_type: (str) a file extension.
         :returns: sppasAudioPCM

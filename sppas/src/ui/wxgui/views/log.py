@@ -64,7 +64,7 @@ class LogDialog(spBaseDialog):
 
     """
     def __init__(self, parent, preferences, filename):
-        """ Dialog constructor.
+        """Dialog constructor.
 
         :param parent: is the parent wx object.
         :param preferences: (Preferences)

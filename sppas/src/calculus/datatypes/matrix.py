@@ -37,7 +37,7 @@
 
 """
 class Matrix(object):
-     """ Simple matrix data type.
+     """Simple matrix data type.
 
      Of course there are much more advanced matrix data types for Python (for
      instance, the C{ndarray} data type of Numeric Python) and this implementation
@@ -47,7 +47,7 @@ class Matrix(object):
      matrices and so on).
      """
      def __init__(self, data=None):
-         """ Initializes a matrix.
+         """Initializes a matrix.
 
          @param data: the elements of the matrix as a list of lists, or C{None} to
          create a 0x0 matrix.
@@ -211,7 +211,7 @@ class Matrix(object):
          return self
 
      def __ne__(self, other):
-          """Checks whether a given matrix is not equal to another one. """
+          """Checks whether a given matrix is not equal to another one."""
          return not self == other
 
      def __setitem__(self, i, value):

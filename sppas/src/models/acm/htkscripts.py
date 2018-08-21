@@ -55,7 +55,7 @@ class sppasHtkScripts(object):
 
     """
     def __init__(self):
-        """ Create a sppasHtkScripts instance. """
+        """Create a sppasHtkScripts instance."""
         
         self.configfile = ""
         self.globalfile = ""
@@ -68,7 +68,7 @@ class sppasHtkScripts(object):
     # -----------------------------------------------------------------------
 
     def write_all(self, dirname):
-        """ Write all scripts at once, with their default name, in the given
+        """Write all scripts at once, with their default name, in the given
         directory.
 
         :param dirname: (str) a directory name (existing or to be created).
@@ -87,7 +87,7 @@ class sppasHtkScripts(object):
     # -----------------------------------------------------------------------
 
     def write_global_ded(self, filename):
-        """ Write the htk script `global.ded`.
+        """Write the htk script `global.ded`.
 
         :param filename: (str) Name of the script file.
 
@@ -105,7 +105,7 @@ class sppasHtkScripts(object):
     # -----------------------------------------------------------------------
 
     def write_mkphones0_led(self, filename):
-        """ Write the htk script `mkphones0.led`.
+        """Write the htk script `mkphones0.led`.
 
         :param filename: (str) Name of the script file.
 
@@ -123,7 +123,7 @@ class sppasHtkScripts(object):
     # -----------------------------------------------------------------------
 
     def write_mkphones1_led(self, filename):
-        """ Write the htk script `mkphones1.led`.
+        """Write the htk script `mkphones1.led`.
 
         :param filename: (str) Name of the script file.
 
@@ -140,7 +140,7 @@ class sppasHtkScripts(object):
     # -----------------------------------------------------------------------
 
     def write_mktri_led(self, filename):
-        """ Write the htk script `mktri.led`.
+        """Write the htk script `mktri.led`.
 
         :param filename: (str) Name of the script file.
 
@@ -158,7 +158,7 @@ class sppasHtkScripts(object):
     # -----------------------------------------------------------------------
 
     def write_maketriphones_ded(self, filename):
-        """ Write the htk script `maketriphones.ded`.
+        """Write the htk script `maketriphones.ded`.
 
         :param filename: (str) Name of the script file.
 
@@ -176,7 +176,7 @@ class sppasHtkScripts(object):
     # -----------------------------------------------------------------------
 
     def write_sil_hed(self, filename):
-        """ Write the htk script `sil.hed`.
+        """Write the htk script `sil.hed`.
 
         :param filename: (str) Name of the script file.
 

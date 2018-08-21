@@ -79,7 +79,7 @@ class TestTDF(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_make_point(self):
-        """ Convert data into the appropriate digit type, or not. """
+        """Convert data into the appropriate digit type, or not."""
 
         self.assertEqual(sppasPoint(3., 0.005), sppasTDF.make_point("3.0"))
         self.assertEqual(sppasPoint(3., 0.005), sppasTDF.make_point("3"))
@@ -89,7 +89,7 @@ class TestTDF(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_read(self):
-        """ Read a TDF file. """
+        """Read a TDF file."""
 
         sample = os.path.join(DATA, "sample-irish.tdf")
         tdf = sppasTDF()

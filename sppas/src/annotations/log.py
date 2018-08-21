@@ -89,7 +89,7 @@ class sppasLog(object):
     # ----------------------------------------------------------------------
 
     def __init__(self, parameters):
-        """ Create a sppasLog instance and open an output stream to NULL.
+        """Create a sppasLog instance and open an output stream to NULL.
 
         :param parameters: (sppasParam)
 
@@ -102,14 +102,14 @@ class sppasLog(object):
     # ----------------------------------------------------------------------
 
     def close(self):
-        """ Close the current output stream. """
+        """Close the current output stream."""
         
         self.logfp.close()
 
     # ----------------------------------------------------------------------
 
     def create(self, filename):
-        """ Create and open a new output stream.
+        """Create and open a new output stream.
         
         :param filename: (str) Output filename
         
@@ -124,7 +124,7 @@ class sppasLog(object):
     # ----------------------------------------------------------------------
 
     def open(self, filename):
-        """ Open an existing file and set the output stream.
+        """Open an existing file and set the output stream.
         
         :param filename: (str) Output filename
         
@@ -141,7 +141,7 @@ class sppasLog(object):
     # ----------------------------------------------------------------------
 
     def print_step(self, step_number):
-        """ Print a step name in the output stream from its number.
+        """Print a step name in the output stream from its number.
 
         :param step_number: (1..N) Number of an annotation defined in a sppasParam instance.
 
@@ -158,7 +158,7 @@ class sppasLog(object):
     # ----------------------------------------------------------------------
 
     def print_message(self, message, indent=0, status=None):
-        """ Print a message at the end of the current output stream.
+        """Print a message at the end of the current output stream.
 
         :param  message: (str) text to print
         :param  indent: (int) is the number of indentation to apply to the message
@@ -178,7 +178,7 @@ class sppasLog(object):
     # ----------------------------------------------------------------------
 
     def print_raw_text(self, text):
-        """ Print a text at the end of the output stream.
+        """Print a text at the end of the output stream.
 
         :param text: (str) text to print
 
@@ -192,7 +192,7 @@ class sppasLog(object):
     # ----------------------------------------------------------------------
 
     def print_newline(self):
-        """ Print a carriage return in the output stream. """
+        """Print a carriage return in the output stream."""
 
         try:
             self.logfp.write('\n')
@@ -202,7 +202,7 @@ class sppasLog(object):
     # ----------------------------------------------------------------------
 
     def print_separator(self):
-        """ Print a line in the output stream. """
+        """Print a line in the output stream."""
 
         try:
             self.logfp.write('-'*78)
@@ -213,7 +213,7 @@ class sppasLog(object):
     # ----------------------------------------------------------------------
 
     def print_stat(self, step_number, value=None):
-        """ Print the statistics values in the output stream for a given step.
+        """Print the statistics values in the output stream for a given step.
 
         :param step_number: (1..N)
         :param value: (str) A statistic value. Instead, print the status (enabled or disabled).
@@ -232,7 +232,7 @@ class sppasLog(object):
     # ----------------------------------------------------------------------
 
     def print_item(self, main_info, second_info=None):
-        """ Print an item in the output stream.
+        """Print an item in the output stream.
 
         :param main_info: (str) Main information to print
         :param second_info: (str) A secondary info to print
@@ -252,7 +252,7 @@ class sppasLog(object):
     # ----------------------------------------------------------------------
 
     def print_header(self):
-        """ Print the parameters information in the output stream. """
+        """Print the parameters information in the output stream."""
 
         self.logfp.seek(0, 2)  # write at the end of the file
         self.print_message(sg.__name__ + ' ' +
@@ -269,7 +269,7 @@ class sppasLog(object):
     # ----------------------------------------------------------------------
 
     def print_annotations_header(self):
-        """ Print the parameters information in the output stream. """
+        """Print the parameters information in the output stream."""
 
         self.print_message(' '*24 + MSG_REPORT)
         self.print_newline()
@@ -303,7 +303,7 @@ class sppasLog(object):
 
     @staticmethod
     def get_status_text(status_id):
-        """ Return a status text from a status identifier.
+        """Return a status text from a status identifier.
 
         :param status_id: (int)
 
@@ -334,7 +334,7 @@ class sppasLog(object):
 
     @staticmethod
     def get_indent_text(number):
-        """ Return a string representing some indentation.
+        """Return a string representing some indentation.
 
         :param number: (int) A positive integer.
 

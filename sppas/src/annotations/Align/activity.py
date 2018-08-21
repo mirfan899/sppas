@@ -47,7 +47,7 @@ from ..searchtier import sppasSearchTier
 
 
 class sppasActivity(object):
-    """ Create an activity tier from time-aligned tokens.
+    """Create an activity tier from time-aligned tokens.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -57,7 +57,7 @@ class sppasActivity(object):
 
     """
     def __init__(self):
-        """ Create a sppasActivity instance with the default symbols. """
+        """Create a sppasActivity instance with the default symbols."""
 
         self._activities = dict()
         self.set_activities()
@@ -65,7 +65,7 @@ class sppasActivity(object):
     # -----------------------------------------------------------------------
 
     def set_activities(self, activities=symbols.all):
-        """ Fix the dictionary of possible non-speech activities.
+        """Fix the dictionary of possible non-speech activities.
 
         :param activities: (dict) A dictionary of activities.
         The key is the token; the value is the name of the activity.
@@ -81,7 +81,7 @@ class sppasActivity(object):
     # -----------------------------------------------------------------------
 
     def append_activity(self, token, activity):
-        """ Append a new activity.
+        """Append a new activity.
 
         :param token: (str) The token of the tier TokensAlign
         :param activity: (str) Name of the activity
@@ -99,7 +99,7 @@ class sppasActivity(object):
     # -----------------------------------------------------------------------
 
     def get_tier(self, trs):
-        """ Create and return the activity tier.
+        """Create and return the activity tier.
 
         :param trs: (Transcription) a Transcription containing a tier
         with exactly the name 'TokensAlign'.

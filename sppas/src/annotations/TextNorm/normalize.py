@@ -51,7 +51,7 @@ from .splitter import sppasSimpleSplitter
 
 
 class DictReplUTF8(sppasDictRepl):
-    """ Replacement dictionary of UTF8 characters that caused problems.
+    """Replacement dictionary of UTF8 characters that caused problems.
 
     This is a hack to match with our dictionaries...
 
@@ -87,7 +87,7 @@ class TextNormalizer(object):
 
     """
     def __init__(self, vocab=None, lang="und"):
-        """ Create a TextNormalizer instance.
+        """Create a TextNormalizer instance.
 
         :param vocab: (sppasVocabulary)
         :param lang: the language code in iso639-3.
@@ -115,7 +115,7 @@ class TextNormalizer(object):
     # ------------------------------------------------------------------
 
     def set_delim(self, delim):
-        """ Set the delimiter, used to separate tokens.
+        """Set the delimiter, used to separate tokens.
 
         :param delim: (str) a unicode character.
 
@@ -125,7 +125,7 @@ class TextNormalizer(object):
     # -------------------------------------------------------------------------
 
     def set_vocab(self, vocab):
-        """ Set the lexicon.
+        """Set the lexicon.
 
         :param vocab: (sppasVocabulary).
 
@@ -137,7 +137,7 @@ class TextNormalizer(object):
     # -------------------------------------------------------------------------
 
     def set_repl(self, repl):
-        """ Set the dictionary of replacements.
+        """Set the dictionary of replacements.
 
         :param repl: (sppasDictRepl)
 
@@ -149,7 +149,7 @@ class TextNormalizer(object):
     # -------------------------------------------------------------------------
 
     def set_punct(self, punct):
-        """ Set the list of punctuation.
+        """Set the list of punctuation.
 
         :param punct: (sppasVocabulary)
 
@@ -161,7 +161,7 @@ class TextNormalizer(object):
     # -------------------------------------------------------------------------
 
     def set_lang(self, lang):
-        """ Set the language.
+        """Set the language.
 
         :param lang: (str) the language code in iso639-3 (fra, eng, vie, cmn...).
 
@@ -173,7 +173,7 @@ class TextNormalizer(object):
     # -------------------------------------------------------------------------
 
     def replace(self, utt):
-        """ Examine tokens and performs some replacements.
+        """Examine tokens and performs some replacements.
         A dictionary with symbols contains the replacements to operate.
 
         :param utt: (list) the utterance
@@ -199,7 +199,7 @@ class TextNormalizer(object):
     # ------------------------------------------------------------------
 
     def tokenize(self, utt):
-        """ Tokenize is the text segmentation, ie segment into tokens.
+        """Tokenize is the text segmentation, ie segment into tokens.
 
         :param utt: (list)
         :returns: (list)
@@ -226,7 +226,7 @@ class TextNormalizer(object):
     # ------------------------------------------------------------------
 
     def numbers(self, utt):
-        """ Convert numbers to their written form.
+        """Convert numbers to their written form.
 
         :param utt: (list)
         :returns: (list)
@@ -246,7 +246,7 @@ class TextNormalizer(object):
     # ------------------------------------------------------------------
 
     def lower(self, utt):
-        """ Lower a list of strings.
+        """Lower a list of strings.
 
         :param utt: (list)
 
@@ -264,7 +264,7 @@ class TextNormalizer(object):
     # ------------------------------------------------------------------
 
     def remove(self, utt, wlist):
-        """ Remove data of an utterance if included in a dictionary.
+        """Remove data of an utterance if included in a dictionary.
         Only used to remove punctuation.
 
         :param utt: (list)
@@ -284,7 +284,7 @@ class TextNormalizer(object):
     # ------------------------------------------------------------------
 
     def normalize(self, entry, actions=[]):
-        """ Tokenize an utterance.
+        """Tokenize an utterance.
 
         :param entry: (str) the string to normalize
         :param actions: (list) the modules/options to enable.
@@ -363,7 +363,7 @@ class TextNormalizer(object):
 
     @staticmethod
     def variants(utt):
-        """ Convert strings that are variants in the utterance.
+        """Convert strings that are variants in the utterance.
 
         :param utt: (list)
 

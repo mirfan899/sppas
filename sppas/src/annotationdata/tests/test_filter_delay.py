@@ -86,7 +86,7 @@ class TestDelay(unittest.TestCase):
 
 
 class TestIntervalsDelay(unittest.TestCase):
-    """ Test delays between 2 intervals/annotation. """
+    """Test delays between 2 intervals/annotation."""
 
     # some usefull values
     PERCENTs = {'start': 0, 'end': 1, 'middle': 0.5, '25%': 0.25, '75%': 0.75, '50%': 50. / 100, '100%': 1.}

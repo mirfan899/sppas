@@ -60,7 +60,7 @@ class Pitch(Transcription):
     def __add_points_affine(self, array, delta,
                             time1, pitch1,
                             time2, pitch2):
-        """ add_points_affine
+        """add_points_affine
             Definition:
             On appelle fonction affine la relation qui,
             à tout nombre x, associe le nombre y tel que :

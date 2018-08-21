@@ -13,7 +13,7 @@ from sppas.src.dependencies.grako.util import indent, isiter, strtype, trim, ust
 
 
 def render(item, join='', **fields):
-    """ Render the given item
+    """Render the given item
     """
     if item is None:
         return ''
@@ -64,7 +64,7 @@ class RenderingFormatter(string.Formatter):
 
 
 class Renderer(object):
-    """ Renders the fileds in the current object using a template
+    """Renders the fileds in the current object using a template
         provided statically, on the constructor, or as a parameter
         to render().
 
@@ -97,7 +97,7 @@ class Renderer(object):
         self._formatter = value
 
     def rend(self, item, join='', **fields):
-        """ A shortcut for self._formatter.render()
+        """A shortcut for self._formatter.render()
         """
         return self._formatter.render(item, join=join, **fields)
 
@@ -108,7 +108,7 @@ class Renderer(object):
         return trim(self.rend(item), tabwidth=tabwidth)
 
     def render_fields(self, fields):
-        """ Pre-render fields before rendering the template.
+        """Pre-render fields before rendering the template.
         """
         pass
 

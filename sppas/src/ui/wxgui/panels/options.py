@@ -119,7 +119,7 @@ class sppasOptionsPanel(wx.lib.scrolledpanel.ScrolledPanel):
     # ------------------------------------------------------------------------
 
     def __apply_preferences(self, wx_object):
-        """ Set font, background color and foreground color to an object. """
+        """Set font, background color and foreground color to an object."""
 
         font = self._preferences.GetValue('M_FONT')
         wx_object.SetFont(font)

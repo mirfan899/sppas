@@ -65,7 +65,7 @@ MSG_NO_TIER = (_(":INFO 1264: "))
 
 
 class sppasSyll(sppasBaseAnnotation):
-    """ SPPAS integration of the automatic syllabification annotation.
+    """SPPAS integration of the automatic syllabification annotation.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -75,7 +75,7 @@ class sppasSyll(sppasBaseAnnotation):
 
     """
     def __init__(self, config_filename, logfile=None):
-        """ Create a new sppasSyll instance.
+        """Create a new sppasSyll instance.
 
         :param config_filename: Name of the configuration file with the rules
         :param logfile: (sppasLog)
@@ -97,7 +97,7 @@ class sppasSyll(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def fix_options(self, options):
-        """ Fix all options. Available options are:
+        """Fix all options. Available options are:
 
             - usesintervals
             - usesphons
@@ -129,7 +129,7 @@ class sppasSyll(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def set_usesintervals(self, mode):
-        """ Fix the usesintervals option.
+        """Fix the usesintervals option.
 
         :param mode: (bool) If mode is set to True, the syllabification operates
         inside specific (given) intervals.
@@ -140,7 +140,7 @@ class sppasSyll(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def set_usesphons(self, mode):
-        """ Fix the usesphons option.
+        """Fix the usesphons option.
 
         :param mode: (str) If mode is set to True, the syllabification operates
         by using only tier with phonemes.
@@ -151,7 +151,7 @@ class sppasSyll(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def set_create_tier_classes(self, create=True):
-        """ Fix the createclasses option.
+        """Fix the createclasses option.
 
         :param create: (bool)
 
@@ -161,7 +161,7 @@ class sppasSyll(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def set_tiername(self, tier_name):
-        """ Fix the tiername option.
+        """Fix the tiername option.
 
         :param tier_name: (str)
 
@@ -173,7 +173,7 @@ class sppasSyll(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def convert(self, phonemes, intervals=None):
-        """ Syllabify labels of a time-aligned phones tier.
+        """Syllabify labels of a time-aligned phones tier.
 
         :param phonemes: (sppasTier) time-aligned phonemes tier
         :param intervals: (sppasTier)
@@ -214,7 +214,7 @@ class sppasSyll(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def make_classes(self, syllables):
-        """ Create the tier with syllable classes.
+        """Create the tier with syllable classes.
 
         :param syllables: (sppasTier)
 
@@ -235,7 +235,7 @@ class sppasSyll(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def syllabify_interval(self, phonemes, from_p, to_p, syllables):
-        """ Perform the syllabification of one interval.
+        """Perform the syllabification of one interval.
 
         :param phonemes: (sppasTier)
         :param from_p: (int) index of the first phoneme to be syllabified
@@ -271,7 +271,7 @@ class sppasSyll(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def run(self, input_filename, output_filename=None):
-        """ Perform the Syllabification process.
+        """Perform the Syllabification process.
 
         :param input_filename: (str) Name of the input file with the aligned phonemes
         :param output_filename: (str) Name of the resulting file with syllabification
@@ -328,7 +328,7 @@ class sppasSyll(sppasBaseAnnotation):
 
     @staticmethod
     def _phon_to_intervals(phonemes):
-        """ Create the intervals to be syllabified.
+        """Create the intervals to be syllabified.
 
         we could use symbols.phone only, but for backward compatibility
         we hardly add the symbols we previously used into SPPAS.

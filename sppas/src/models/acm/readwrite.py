@@ -69,7 +69,7 @@ class sppasACMRW(object):
     # -----------------------------------------------------------------------
 
     def __init__(self, folder):
-        """ Create an acoustic model reader-writer.
+        """Create an acoustic model reader-writer.
 
         :param folder: (str) Name of the folder with the acoustic model files
 
@@ -80,21 +80,21 @@ class sppasACMRW(object):
     
     @staticmethod
     def get_formats():
-        """ Return the list of accepted formats for acoustic models. """
+        """Return the list of accepted formats for acoustic models."""
         
         return sppasACMRW.ACM_TYPES.keys()
     
     # -----------------------------------------------------------------------
 
     def get_folder(self):
-        """ Return the name of the folder of the acoustic model. """
+        """Return the name of the folder of the acoustic model."""
 
         return self.__folder
 
     # -----------------------------------------------------------------------
 
     def set_folder(self, folder):
-        """ Set a new folder to store files of the acoustic model. 
+        """Set a new folder to store files of the acoustic model.
 
         :param folder: (str) New name of the folder of the acoustic model.
 
@@ -104,7 +104,7 @@ class sppasACMRW(object):
     # -----------------------------------------------------------------------
 
     def read(self):
-        """ Read an acoustic model from the folder.
+        """Read an acoustic model from the folder.
         
          :returns: sppasAcModel() 
 
@@ -122,7 +122,7 @@ class sppasACMRW(object):
     # -----------------------------------------------------------------------
 
     def get_reader(self):
-        """ Return an acoustic model according to the given folder.
+        """Return an acoustic model according to the given folder.
 
         :returns: sppasAcModel()
 
@@ -139,7 +139,7 @@ class sppasACMRW(object):
     # -----------------------------------------------------------------------
 
     def write(self, acmodel, format="hmmdefs"):
-        """ Write an acoustic model into a folder.
+        """Write an acoustic model into a folder.
 
         :param acmodel: (str)
         :param format: The format to save the acoustic model

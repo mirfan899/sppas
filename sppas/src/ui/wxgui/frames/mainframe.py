@@ -97,7 +97,7 @@ class FrameSPPAS(wx.Frame):
 
     """
     def __init__(self, preferencesIO=None):
-        """ Constructor of the SPPAS main frame.
+        """Constructor of the SPPAS main frame.
 
         :param preferencesIO: (Preferences_IO)
 
@@ -141,7 +141,7 @@ class FrameSPPAS(wx.Frame):
     # ------------------------------------------------------------------------
 
     def _init_infos(self):
-        """  Set the title and the icon. """
+        """ Set the title and the icon."""
 
         wx.GetApp().SetAppName("sppas")
 
@@ -158,7 +158,7 @@ class FrameSPPAS(wx.Frame):
     # ------------------------------------------------------------------------
 
     def _create_content(self):
-        """ Organize all sub-panels into a main panel and return it. """
+        """Organize all sub-panels into a main panel and return it."""
 
         main_panel = wx.Panel(self, -1, style=wx.NO_BORDER)
         main_panel.SetBackgroundColour(self.preferences.GetValue('M_BG_COLOUR'))
@@ -183,7 +183,7 @@ class FrameSPPAS(wx.Frame):
     # ------------------------------------------------------------------------
 
     def _create_splitter(self, parent):
-        """ Create the main panel content. """
+        """Create the main panel content."""
 
         split_panel = SplitterPanel(parent, proportion=0.5)
         split_panel.SetBackgroundColour(self.preferences.GetValue('M_BGM_COLOUR'))
@@ -224,7 +224,7 @@ class FrameSPPAS(wx.Frame):
     # ------------------------------------------------------------------------
 
     def fix_filecontent(self):
-        """ Fix the file explorer panel content. """
+        """Fix the file explorer panel content."""
 
         self.flp.RefreshTree()
         self._left_panel.Layout()
@@ -233,7 +233,7 @@ class FrameSPPAS(wx.Frame):
     # ------------------------------------------------------------------------
 
     def fix_actioncontent(self, ide):
-        """ Fix the action panel content. """
+        """Fix the action panel content."""
 
         # Remove current actions panel
         if self.actions is not None:
@@ -267,7 +267,7 @@ class FrameSPPAS(wx.Frame):
     # -----------------------------------------------------------------------
 
     def _LayoutFrame(self):
-        """ Lays out the frame. """
+        """Lays out the frame."""
 
         wx.LayoutAlgorithm().LayoutFrame(self, self._main_panel)
         self._right_panel.SendSizeEvent()
@@ -323,7 +323,7 @@ class FrameSPPAS(wx.Frame):
     # -----------------------------------------------------------------------
 
     def OnExit(self, evt):
-        """ Close the frame. """
+        """Close the frame."""
 
         logging.info('SPPAS main frame exit.')
         self.Destroy()
@@ -331,7 +331,7 @@ class FrameSPPAS(wx.Frame):
     # -----------------------------------------------------------------------
 
     def OnSettings(self, event):
-        """ Open the Settings dialog. """
+        """Open the Settings dialog."""
 
         import copy
         p = copy.deepcopy(self.preferences)
@@ -346,7 +346,7 @@ class FrameSPPAS(wx.Frame):
     # -----------------------------------------------------------------------
 
     def OnHelp(self, evt):
-        """ Open the help frame. """
+        """Open the help frame."""
 
         ShowInformation(self, self.preferences,
                         "The documentation is available online and "
@@ -355,7 +355,7 @@ class FrameSPPAS(wx.Frame):
     # -----------------------------------------------------------------------
 
     def __create_component(self, instance, idc):
-        """ Create or raise a component frame and return it. """
+        """Create or raise a component frame and return it."""
 
         for c in self.GetChildren():
             if isinstance(c, instance):
@@ -367,7 +367,7 @@ class FrameSPPAS(wx.Frame):
     # -----------------------------------------------------------------------
 
     def OnAnalyzer(self, evt):
-        """ Open a component. """
+        """Open a component."""
 
         eid = evt.GetId()
         selection = []
@@ -407,7 +407,7 @@ class FrameSPPAS(wx.Frame):
     # -----------------------------------------------------------------------
 
     def SetPrefs(self, prefs):
-        """ Set new preferences. """
+        """Set new preferences."""
 
         self.preferences = prefs
 
@@ -425,14 +425,14 @@ class FrameSPPAS(wx.Frame):
     # -----------------------------------------------------------------------
 
     def GetSelected(self, extension):
-        """ Return the list of selected files in FLP. """
+        """Return the list of selected files in FLP."""
 
         return self.flp.GetSelected(extension)
 
     # -----------------------------------------------------------------------
 
     def GetTrsSelection(self):
-        """ Return the list of annotated files selected in the FLP. """
+        """Return the list of annotated files selected in the FLP."""
 
         selection = list()
         for ext in sppas.src.anndata.aio.extensions:
@@ -442,7 +442,7 @@ class FrameSPPAS(wx.Frame):
     # -----------------------------------------------------------------------
 
     def GetAudioSelection(self):
-        """ Return the list of audio files selected in the FLP. """
+        """Return the list of audio files selected in the FLP."""
 
         selection = list()
         for ext in sppas.src.audiodata.aio.extensions:

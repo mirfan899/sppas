@@ -44,7 +44,7 @@ from sppas.src.utils.makeunicode import sppasUnicode
 
 
 class DataRepetition(object):
-    """ Class to store one repetition (the source and the echos).
+    """Class to store one repetition (the source and the echos).
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -57,7 +57,7 @@ class DataRepetition(object):
 
     """
     def __init__(self, s1=None, s2=None, r1=None, r2=None):
-        """ Create a DataRepetition data structure.
+        """Create a DataRepetition data structure.
 
         :param s1: start position of the source.
         :param s2: end position of the source.
@@ -75,7 +75,7 @@ class DataRepetition(object):
     # -----------------------------------------------------------------------
 
     def reset(self):
-        """ Fix the source to None and the echos to an empty list. """
+        """Fix the source to None and the echos to an empty list."""
 
         self.__source = None
         self.__echos = list()
@@ -83,7 +83,7 @@ class DataRepetition(object):
     # -----------------------------------------------------------------------
 
     def set_source(self, start, end):
-        """ Set the positions of the source.
+        """Set the positions of the source.
 
         To reset the source, fix start or end to None.
 
@@ -103,21 +103,21 @@ class DataRepetition(object):
     # -----------------------------------------------------------------------
 
     def get_source(self):
-        """ Return the tuple (start, end) of the source. """
+        """Return the tuple (start, end) of the source."""
 
         return self.__source
 
     # -----------------------------------------------------------------------
 
     def get_echos(self):
-        """ Return the list of echos. """
+        """Return the list of echos."""
 
         return self.__echos
 
     # -----------------------------------------------------------------------
 
     def add_echo(self, start, end):
-        """ Add an entry in the list of echos.
+        """Add an entry in the list of echos.
 
         :param start: Start position of the echo.
         :param end: End position of the source.
@@ -137,7 +137,7 @@ class DataRepetition(object):
     # -----------------------------------------------------------------------
 
     def print_repetition(self):
-        """ Print the repetition: the source and the echos on stdout. """
+        """Print the repetition: the source and the echos on stdout."""
 
         sys.stdout.write("source: ({:d}, {:d}) ; ".format(self.__source[0], self.__source[1]))
         sys.stdout.write("repetitions: ")
@@ -160,7 +160,7 @@ class Entry(object):
     """
 
     def __init__(self, entry):
-        """ Creates a Token instance. """
+        """Creates a Token instance."""
 
         if entry is None:
             self.__entry = ""
@@ -170,21 +170,21 @@ class Entry(object):
     # -----------------------------------------------------------------------
 
     def get(self):
-        """ Return the unicode entry. """
+        """Return the unicode entry."""
 
         return self.__entry.unicode()
 
     # -----------------------------------------------------------------------
 
     def get_formatted(self):
-        """ Return the unicode formatted entry. """
+        """Return the unicode formatted entry."""
 
         return self.__clean()
 
     # -----------------------------------------------------------------------
 
     def is_token(self):
-        """ Ask a string to be a token or not.
+        """Ask a string to be a token or not.
         Silences, pauses, noises and laughs are not considered as tokens.
 
         :returns: (bool)
@@ -207,7 +207,7 @@ class Entry(object):
     # ------------------------------------------------------------------
 
     def __clean(self):
-        """ Clean a string by removing tabs, CR/LF, and some punctuation.
+        """Clean a string by removing tabs, CR/LF, and some punctuation.
 
         :param entry: (str) unicode string to clean
         :returns: unicode string without special chars
@@ -239,7 +239,7 @@ class DataSpeaker(object):
 
     """
     def __init__(self, entries):
-        """ Create a DataSpeaker instance.
+        """Create a DataSpeaker instance.
         
         :param entries: (list) List of observed entries.
 
@@ -251,7 +251,7 @@ class DataSpeaker(object):
     # -----------------------------------------------------------------------
 
     def get_token(self, idx):
-        """ Return the "token" at the given index.
+        """Return the "token" at the given index.
         Return None if index is wrong.
 
         :param idx: (int) Index of the entry to get
@@ -268,7 +268,7 @@ class DataSpeaker(object):
     # ------------------------------------------------------------------
 
     def get_next_token(self, current):
-        """ Ask for the index of the next token in entries.
+        """Ask for the index of the next token in entries.
         Return -1 if the next token can't be found.
 
         :param current (int) Current position for finding the next token
@@ -291,7 +291,7 @@ class DataSpeaker(object):
     # ------------------------------------------------------------------
 
     def is_token_repeated(self, current, other_current, other_speaker):
-        """ Ask for a token to be repeated by the other speaker.
+        """Ask for a token to be repeated by the other speaker.
 
         :param current: (int) From index, in current speaker
         :param other_current: (int) From index, in the other speaker

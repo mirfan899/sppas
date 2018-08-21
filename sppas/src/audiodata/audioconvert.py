@@ -52,14 +52,14 @@ class sppasAudioConverter(object):
 
     """
     def __init__(self):
-        """ Create a sppasAudioConverter instance. """
+        """Create a sppasAudioConverter instance."""
         pass
 
     # -----------------------------------------------------------------------
 
     @staticmethod
     def unpack_data(frames, samples_width, nchannels=1):
-        """ Turn frames into samples.
+        """Turn frames into samples.
         Unpack the data frames depending on their sample width.
 
         :param frames: (str) Audio frames
@@ -97,7 +97,7 @@ class sppasAudioConverter(object):
 
     @staticmethod
     def samples2frames(samples, samples_width, nchannels=1):
-        """ Turn samples into frames.
+        """Turn samples into frames.
 
         :param samples: (int[][]) samples list,
         first index is the index of the channel, second is the index of the sample.
@@ -138,7 +138,7 @@ class sppasAudioConverter(object):
 
     @staticmethod
     def hz2mel(value):
-        """ Return the equivalent value in a mel scale, from a frequency value.
+        """Return the equivalent value in a mel scale, from a frequency value.
 
         Mel is a unit of pitch proposed by Stevens, Volkmann and Newmann in
         1937. The mel scale is a scale of pitches judged by listeners to be
@@ -156,7 +156,7 @@ class sppasAudioConverter(object):
 
     @staticmethod
     def mel2hz(value):
-        """ Return the equivalent value in frequency, from a mel value.
+        """Return the equivalent value in frequency, from a mel value.
 
         :param value: (int) the value in mel to convert
         :returns: (int) the value in dB
@@ -168,7 +168,7 @@ class sppasAudioConverter(object):
 
     @staticmethod
     def amp2db(value):
-        """ Return the equivalent value in a dB scale, from an amplitude value.
+        """Return the equivalent value in a dB scale, from an amplitude value.
 
         Decibels express a power ratio, not an amount. They tell how many times
         more (positive dB) or less (negative dB) but not how much in absolute terms.

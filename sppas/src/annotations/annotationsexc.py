@@ -58,7 +58,7 @@ EMPTY_DIR_ERROR = ":ERROR 1220: "
 
 
 class AnnotationSectionConfigFileError(ValueError):
-    """:ERROR 4014: Missing section {section_name} in the configuration file. """
+    """:ERROR 4014: Missing section {section_name} in the configuration file."""
 
     def __init__(self, section_name):
         self.parameter = SECT_CFG_FILE_ERROR + \
@@ -71,7 +71,7 @@ class AnnotationSectionConfigFileError(ValueError):
 
 
 class AnnotationOptionError(KeyError):
-    """:ERROR 1010: Unknown option with key {key}. """
+    """:ERROR 1010: Unknown option with key {key}."""
 
     def __init__(self, key):
         self.parameter = OPTION_KEY_ERROR + \
@@ -84,7 +84,7 @@ class AnnotationOptionError(KeyError):
 
 
 class EmptyInputError(IOError):
-    """:ERROR 1020: Empty input tier {name}. """
+    """:ERROR 1020: Empty input tier {name}."""
 
     def __init__(self, name):
         self.parameter = EMPTY_INPUT_ERROR + \
@@ -97,7 +97,7 @@ class EmptyInputError(IOError):
 
 
 class EmptyOutputError(IOError):
-    """:ERROR 1025: Empty output result. No file created. """
+    """:ERROR 1025: Empty output result. No file created."""
 
     def __init__(self, name):
         self.parameter = EMPTY_OUTPUT_ERROR + \
@@ -110,7 +110,7 @@ class EmptyOutputError(IOError):
 
 
 class NoInputError(IOError):
-    """:ERROR 1030: Missing input tier. Please read the documentation. """
+    """:ERROR 1030: Missing input tier. Please read the documentation."""
 
     def __init__(self):
         self.parameter = NO_INPUT_ERROR + \
@@ -158,7 +158,7 @@ class SizeInputsError(IOError):
 
 
 class SmallSizeInputError(IOError):
-    """:ERROR 1060: Not enough annotations in the input tier. At least {:d} are required. """
+    """:ERROR 1060: Not enough annotations in the input tier. At least {:d} are required."""
 
     def __init__(self, number):
         self.parameter = TOO_SMALL_INPUT_ERROR + \

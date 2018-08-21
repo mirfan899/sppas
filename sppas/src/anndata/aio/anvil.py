@@ -47,7 +47,7 @@ from .aioutils import format_labels
 
 
 class sppasAnvil(sppasBaseIO):
-    """ ANVIL (partially) reader.
+    """ANVIL (partially) reader.
 
     :author:       Brigitte Bigi, Jibril Saffi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -62,7 +62,7 @@ class sppasAnvil(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of ANVIL format or not.
+        """Check whether a file is of ANVIL format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -82,7 +82,7 @@ class sppasAnvil(sppasBaseIO):
 
     @staticmethod
     def make_point(midpoint):
-        """ The localization is a time value, so always a float. """
+        """The localization is a time value, so always a float."""
 
         try:
             midpoint = float(midpoint)
@@ -94,7 +94,7 @@ class sppasAnvil(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new ANVIL instance.
+        """Initialize a new ANVIL instance.
 
         :param name: (str) This transcription name.
 
@@ -123,7 +123,7 @@ class sppasAnvil(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read an ANVIL file and fill the Transcription.
+        """Read an ANVIL file and fill the Transcription.
 
         :param filename: (str)
 
@@ -162,7 +162,7 @@ class sppasAnvil(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _read_primary_track(self, track_root):
-        """ Read a primary track (primary or primarypoint).
+        """Read a primary track (primary or primarypoint).
         
         :param track_root: 
         
@@ -294,11 +294,11 @@ class sppasAnvil(sppasBaseIO):
     # -----------------------------------------------------------------------
     
     def __create_tier_from_attribute(self, track_root):
-        """ Create a set of tiers from 'attribute' of 'track'. 
+        """Create a set of tiers from 'attribute' of 'track'.
 
         :param track_root: 
 
-        """        
+        """
         for attribute_node in track_root.iter('attribute'):
             tier_name = sppasAnvil.__fix_tier_name(track_root, attribute_node)
             if self.find(tier_name) is None:
@@ -307,7 +307,7 @@ class sppasAnvil(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __create_annotation_from_el(self, track_root, el_root, localization):
-        """ Create a set of annotations from 'attribute' of 'el'.
+        """Create a set of annotations from 'attribute' of 'el'.
         
         :param track_root: 
         :param el_root: 

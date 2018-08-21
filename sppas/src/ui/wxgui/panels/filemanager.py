@@ -133,7 +133,7 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
     # ----------------------------------------------------------------------
 
     def OnCheckBox(self, event):
-        """ Action when a check box is clicked. """
+        """Action when a check box is clicked."""
 
         # Grab the CustomCheckBox that generated the event
         control = event.GetEventObject()
@@ -163,7 +163,7 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
     # ----------------------------------------------------------------------
 
     def SetBackgroundColour(self, colour):
-        """ Change the background color of all CustomCheckBox objects. """
+        """Change the background color of all CustomCheckBox objects."""
 
         wx.lib.scrolledpanel.ScrolledPanel.SetBackgroundColour( self,colour )
         self.Refresh() # required for the bg color to be applied
@@ -176,7 +176,7 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
     # ----------------------------------------------------------------------
 
     def SetForegroundColour(self, colour):
-        """ Change the foreground color of all CustomCheckBox objects. """
+        """Change the foreground color of all CustomCheckBox objects."""
 
         # Apply as foreground on all CustomCheckBoxes
         for i in range(self._xfiles.GetSize()):
@@ -186,7 +186,7 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
     # ----------------------------------------------------------------------
 
     def SetFont(self, font):
-        """ Change font of all text. """
+        """Change font of all text."""
 
         # Change to the list of file names
         if self._xfiles.GetSize() == 0:
@@ -305,7 +305,7 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
     # ----------------------------------------------------------------------
 
     def RemoveFile(self, f):
-        """ Remove the given file. """
+        """Remove the given file."""
 
         if self._xfiles.Exists(f) is True:
             i = self._xfiles.GetIndex(f)
@@ -342,7 +342,7 @@ class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
     # ----------------------------------------------------------------------
 
     def RemoveAll(self):
-        """ Remove all files. """
+        """Remove all files."""
 
         self._xfiles.RemoveAll()
         self._ccbsizer.DeleteWindows()

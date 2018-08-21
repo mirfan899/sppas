@@ -130,7 +130,7 @@ class SeparatorCtrl( wx.Control ):
 
 
     def InitializeColours(self):
-        """ Initializes the pens. """
+        """Initializes the pens."""
 
         self._pen      = wx.Pen(COLOUR,1,wx.SOLID)
         self._brush    = wx.Brush(COLOUR, wx.SOLID)
@@ -141,14 +141,14 @@ class SeparatorCtrl( wx.Control ):
 
 
     def InitialSize(self, size):
-        """ Initialize the size. """
+        """Initialize the size."""
 
         self.SetMinSize(wx.Size(MIN_W,MIN_H))
         self.SetSize(size)
 
 
     def InitializeCursor(self):
-        """ Initialize cursors. """
+        """Initialize cursors."""
 
         # get cursor image
         bmp = wx.BitmapFromXPMData(cursor_move)
@@ -166,7 +166,7 @@ class SeparatorCtrl( wx.Control ):
     #-------------------------------------------------------------------------
 
     def SetMovable(self, value):
-        """ Activate/Disable the mouse shifting.
+        """Activate/Disable the mouse shifting.
 
         @param value (Boolean)
 
@@ -247,7 +247,7 @@ class SeparatorCtrl( wx.Control ):
 
 
     def OnClose(self, event):
-        """ Handles the wx.EVT_CLOSE event for Separator. """
+        """Handles the wx.EVT_CLOSE event for Separator."""
 
         self.Destroy()
 
@@ -256,7 +256,7 @@ class SeparatorCtrl( wx.Control ):
 
 
     def OnMouseEvents(self, event):
-        """ Handles the wx.EVT_MOUSE_EVENTS event for Separator. """
+        """Handles the wx.EVT_MOUSE_EVENTS event for Separator."""
 
         if self._motional is False:
             event.Skip()
@@ -350,7 +350,7 @@ class SeparatorCtrl( wx.Control ):
 
 
     def OnPaint(self, event):
-        """ Handles the wx.EVT_PAINT event for Separator. """
+        """Handles the wx.EVT_PAINT event for Separator."""
 
         dc = wx.BufferedPaintDC(self)
         self.Draw(dc)
@@ -360,7 +360,7 @@ class SeparatorCtrl( wx.Control ):
 
 
     def OnEraseBackground(self, event):
-        """ Handles the wx.EVT_ERASE_BACKGROUND event for Separator. """
+        """Handles the wx.EVT_ERASE_BACKGROUND event for Separator."""
         # This is intentionally empty, because we are using the combination
         # of wx.BufferedPaintDC + an empty OnEraseBackground event to
         # reduce flicker

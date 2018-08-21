@@ -57,7 +57,7 @@ DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 
 def compare_tiers_trs(trs1, trs2, meta=True):
-    """  Compare tiers of 2 sppasTranscription().
+    """ Compare tiers of 2 sppasTranscription().
 
     :param trs1: (sppasTranscription)
     :param trs2: (sppasTranscription)
@@ -94,7 +94,7 @@ def compare_tiers_trs(trs1, trs2, meta=True):
 
 
 def compare_ctrl_vocab_trs(trs1, trs2, meta=True):
-    """ Compare controlled vocabularies of the tiers of 2 sppasTranscription().
+    """Compare controlled vocabularies of the tiers of 2 sppasTranscription().
 
     :param trs1: (sppasTranscription)
     :param trs2: (sppasTranscription)
@@ -127,7 +127,7 @@ def compare_ctrl_vocab_trs(trs1, trs2, meta=True):
 
 
 def compare_media_trs(trs1, trs2, meta=True):
-    """ Compare media of the tiers of 2 sppasTranscription().
+    """Compare media of the tiers of 2 sppasTranscription().
 
     :param trs1: (sppasTranscription)
     :param trs2: (sppasTranscription)
@@ -165,7 +165,7 @@ class TestAIO(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_IO_XRA(self):
-        """ Read/Write/Read then compare XRA files. """
+        """Read/Write/Read then compare XRA files."""
 
         # Read XRA file
         parser = sppasRW(os.path.join(DATA, "sample-1.2.xra"))
@@ -185,7 +185,7 @@ class TestAIO(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_IO_ANTX(self):
-        """ Read/Write/Read then compare ANTX files. """
+        """Read/Write/Read then compare ANTX files."""
 
         # Read ANTX file
         parser = sppasRW(os.path.join(DATA, "grenelle.antx"))
@@ -218,7 +218,7 @@ class TestAIO(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_IO_EAF(self):
-        """ Read/Write/Read then compare EAF files. """
+        """Read/Write/Read then compare EAF files."""
 
         # Read file
         parser = sppasRW(os.path.join(DATA, "sample.eaf"))
@@ -238,7 +238,7 @@ class TestAIO(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_IO_TextGrid(self):
-        """ Read/Write/Read then compare TextGrid files. """
+        """Read/Write/Read then compare TextGrid files."""
 
         # Read file
         parser = sppasRW(os.path.join(DATA, "sample.TextGrid"))
@@ -270,7 +270,7 @@ class TestAIO(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_IO_PitchTier(self):
-        """ Read/Write/Read then compare PitchTier files. """
+        """Read/Write/Read then compare PitchTier files."""
 
         # Read file
         parser = sppasRW(os.path.join(DATA, "sample.PitchTier"))
@@ -288,7 +288,7 @@ class TestAIO(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_IO_MRK(self):
-        """ Read/Write/Read then compare MRK files. """
+        """Read/Write/Read then compare MRK files."""
 
         # Read file
         parser = sppasRW(os.path.join(DATA, "sample.mrk"))
@@ -306,7 +306,7 @@ class TestAIO(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_IO_HZ(self):
-        """ Read/Write/Read then compare HZ files. """
+        """Read/Write/Read then compare HZ files."""
 
         # Read file
         parser = sppasRW(os.path.join(DATA, "sample.hz"))
@@ -324,7 +324,7 @@ class TestAIO(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_IO_CTM(self):
-        """ Read/Write/Read then compare EAF files. """
+        """Read/Write/Read then compare EAF files."""
 
         # Read file
         parser = sppasRW(os.path.join(DATA, "sample.ctm"))
@@ -343,7 +343,7 @@ class TestAIO(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_IO_STM(self):
-        """ Read/Write/Read then compare EAF files. """
+        """Read/Write/Read then compare EAF files."""
 
         # Read file
         parser = sppasRW(os.path.join(DATA, "sample.stm"))
@@ -362,7 +362,7 @@ class TestAIO(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_IO_SRT(self):
-        """ Read/Write/Read then compare EAF files. """
+        """Read/Write/Read then compare EAF files."""
 
         # Read file
         parser = sppasRW(os.path.join(DATA, "sample.srt"))
@@ -380,7 +380,7 @@ class TestAIO(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_IO_SUB(self):
-        """ Read/Write/Read then compare EAF files. """
+        """Read/Write/Read then compare EAF files."""
 
         # Read file
         parser = sppasRW(os.path.join(DATA, "sample.sub"))
@@ -398,7 +398,7 @@ class TestAIO(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_IO_TXT(self):
-        """ Read/Write/Read then compare EAF files. """
+        """Read/Write/Read then compare EAF files."""
 
         # 1. Read file (transcription only)
         parser = sppasRW(os.path.join(DATA, "sample-irish-1.txt"))
@@ -430,7 +430,7 @@ class TestAIO(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_IO_CSV(self):
-        """ Read/Write/Read then compare EAF files. """
+        """Read/Write/Read then compare EAF files."""
 
         # Read file (transcription only)
         parser = sppasRW(os.path.join(DATA, "sample-irish.csv"))
@@ -449,7 +449,7 @@ class TestAIO(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_IO_TextGrid_CSV(self):
-        """ Read/Write/Read then compare EAF files. """
+        """Read/Write/Read then compare EAF files."""
 
         # Read file (transcription only)
         parser = sppasRW(os.path.join(DATA, "sample.TextGrid"))

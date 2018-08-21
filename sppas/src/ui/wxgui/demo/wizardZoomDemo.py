@@ -80,7 +80,7 @@ class WizardZoomDemo( wx.wizard.Wizard ):
 
 
 class WelcomePage(wx.wizard.WizardPageSimple):
-    """ Welcome to the Demo. """
+    """Welcome to the Demo."""
 
     def __init__(self, parent, title):
         """
@@ -102,7 +102,7 @@ class WelcomePage(wx.wizard.WizardPageSimple):
 
 
 class MainPage(wx.wizard.WizardPageSimple):
-    """ Presentation of the main ways to zoom. """
+    """Presentation of the main ways to zoom."""
 
     def __init__(self, parent, title):
         """
@@ -129,7 +129,7 @@ class MainPage(wx.wizard.WizardPageSimple):
 
 
 class KeyboardPage(wx.wizard.WizardPageSimple):
-    """ Presentation of the keyboard ways to zoom. """
+    """Presentation of the keyboard ways to zoom."""
 
     def __init__(self, parent, title):
         """
@@ -161,7 +161,7 @@ class KeyboardPage(wx.wizard.WizardPageSimple):
 
 
 class MouseMotionPage(wx.wizard.WizardPageSimple):
-    """ Presentation of the keyboard ways to zoom. """
+    """Presentation of the keyboard ways to zoom."""
 
     def __init__(self, parent, title):
         """
@@ -193,7 +193,7 @@ class MouseMotionPage(wx.wizard.WizardPageSimple):
 
 
 class ToolbarPage(wx.wizard.WizardPageSimple):
-    """ Presentation of the toolbar. """
+    """Presentation of the toolbar."""
 
     def __init__(self, parent, title):
         """

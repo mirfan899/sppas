@@ -55,7 +55,7 @@ class sppasPluginProcess(object):
 
     """
     def __init__(self, plugin_param):
-        """ Creates a new sppasPluginProcess instance.
+        """Creates a new sppasPluginProcess instance.
 
         :param plugin_param: (sppasPluginParam)
 
@@ -66,7 +66,7 @@ class sppasPluginProcess(object):
     # ------------------------------------------------------------------------
 
     def run(self, filename):
-        """ Execute the plugin in batch mode (ie don't wait it to be finished).
+        """Execute the plugin in batch mode (ie don't wait it to be finished).
 
         :param filename: (str) The file name of the file on which to apply the plugin
         :returns: Process output message
@@ -121,7 +121,7 @@ class sppasPluginProcess(object):
     # ------------------------------------------------------------------------
 
     def communicate(self):
-        """ Wait for the process and get output messages (if any) then return it. """
+        """Wait for the process and get output messages (if any) then return it."""
 
         line = self._process.communicate()
         return "".join(line[0])
@@ -129,7 +129,7 @@ class sppasPluginProcess(object):
     # ------------------------------------------------------------------------
 
     def stop(self):
-        """ Terminate the process if it is running. """
+        """Terminate the process if it is running."""
 
         if self.is_running() is True:
             self._process.terminate()
@@ -137,7 +137,7 @@ class sppasPluginProcess(object):
     # ------------------------------------------------------------------------
 
     def is_running(self):
-        """ Return True if the process is running. """
+        """Return True if the process is running."""
 
         if self._process is None:
             return False

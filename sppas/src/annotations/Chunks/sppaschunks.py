@@ -60,7 +60,7 @@ class sppasChunks(sppasBaseAnnotation):
 
     """
     def __init__(self, model, logfile=None):
-        """ Create a new sppasChunks instance.
+        """Create a new sppasChunks instance.
 
         :param model: (str) the acoustic model directory name of the language of the text
         :param logfile: (sppasLog)
@@ -85,7 +85,7 @@ class sppasChunks(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def fix_options(self, options):
-        """ Fix all options. Available options are:
+        """Fix all options. Available options are:
 
             - clean
             - silences
@@ -140,7 +140,7 @@ class sppasChunks(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def set_clean(self, clean):
-        """ Fix the clean option.
+        """Fix the clean option.
 
         :param clean: (bool) If clean is set to True then temporary files
         will be removed.
@@ -152,7 +152,7 @@ class sppasChunks(sppasBaseAnnotation):
 
     @staticmethod
     def get_phonestier(trs_input):
-        """ Return the tier with phonetization, or None.
+        """Return the tier with phonetization, or None.
 
         :param trs_input: (Transcription)
         :returns: (tier)
@@ -170,7 +170,7 @@ class sppasChunks(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def run(self, phonesname, tokensname, audioname, outputfilename):
-        """ Execute SPPAS Chunks alignment.
+        """Execute SPPAS Chunks alignment.
 
         :param phonesname (str) file containing the phonetization
         :param tokensname (str) file containing the tokenization

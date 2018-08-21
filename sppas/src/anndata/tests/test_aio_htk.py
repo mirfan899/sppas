@@ -85,7 +85,7 @@ class TestBaseHTK(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_make_point(self):
-        """ Convert data into the appropriate digit type, or not. """
+        """Convert data into the appropriate digit type, or not."""
 
         self.assertEqual(sppasPoint(3., 0.005), sppasBaseHTK.make_point("30000000"))
         with self.assertRaises(ValueError):
@@ -94,7 +94,7 @@ class TestBaseHTK(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_serialize_annotation(self):
-        """ Test annotation -> lines in lab file. """
+        """Test annotation -> lines in lab file."""
 
         # No label
         a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
@@ -127,7 +127,7 @@ class TestLab(unittest.TestCase):
 
     """
     def test_read(self):
-        """ Test of reading a LAB sample file. """
+        """Test of reading a LAB sample file."""
 
         txt = sppasLab()
         txt.read(os.path.join(DATA, "sample.lab"))

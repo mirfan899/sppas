@@ -70,7 +70,7 @@ class sppasXRA(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of XRA format or not.
+        """Check whether a file is of XRA format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -91,7 +91,7 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new XRA instance.
+        """Initialize a new XRA instance.
 
         :param name: (str) This transcription name.
 
@@ -121,7 +121,7 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read an XRA file and fill the Transcription.
+        """Read an XRA file and fill the Transcription.
 
         :param filename: (str)
 
@@ -158,7 +158,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def _parse_metadata(meta_object, metadata_root):
-        """ Read any kind of metadata. 
+        """Read any kind of metadata.
         
         :param meta_object: (sppasMetadata)
         :param metadata_root: (ET) XML Element tree root.
@@ -178,7 +178,7 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_tier(self, tier_root):
-        """ Parse a 'Tier' element to create a sppasTier().
+        """Parse a 'Tier' element to create a sppasTier().
 
         :param tier_root: (ET) XML Element tree root.
 
@@ -208,7 +208,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def _parse_annotation(tier, annotation_root):
-        """ Parse an 'Annotation' element and create a sppasAnnotation().
+        """Parse an 'Annotation' element and create a sppasAnnotation().
 
         :param tier: (sppasTier) Tier to add the newly created annotation.
         :param annotation_root: (ET) XML Element tree root.
@@ -236,7 +236,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def _parse_location(location_root):
-        """ Parse a 'Location' element an create a sppasLocation().
+        """Parse a 'Location' element an create a sppasLocation().
 
         :param location_root: (ET) XML Element tree root.
         :returns: (sppasLocation)
@@ -263,7 +263,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def _parse_localization(localization_root):
-        """ Parse a 'Localization' element and create a sppasLocalization().
+        """Parse a 'Localization' element and create a sppasLocalization().
 
         :param localization_root: (ET) XML Element tree root.
         :returns: (sppasLocalization)
@@ -288,7 +288,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def _parse_point(point_node):
-        """ Parse a 'Point' element and create a sppasPoint().
+        """Parse a 'Point' element and create a sppasPoint().
 
         :param point_node: (ET) XML Element node.
         :returns: (sppasPoint)
@@ -329,7 +329,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def _parse_interval(interval_root):
-        """ Parse an 'Interval' element and create a sppasInterval().
+        """Parse an 'Interval' element and create a sppasInterval().
 
         :param interval_root: (ET) XML Element tree root.
         :returns: (sppasInterval)
@@ -353,7 +353,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def _parse_disjoint(disjoint_root):
-        """ Parse a 'Disjoint' element and create a sppasDisjoint().
+        """Parse a 'Disjoint' element and create a sppasDisjoint().
 
         :param disjoint_root: (ET) XML Element tree root.
         :returns: (sppasDisjoint)
@@ -385,7 +385,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def _parse_label(label_root):
-        """ Parse a 'Label' element and return it.
+        """Parse a 'Label' element and return it.
 
         :param label_root: (ET) XML Element tree root.
         :returns: (sppasLabel)
@@ -415,7 +415,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def _parse_tag(tag_node):
-        """ Parse a 'Tag' element and create a sppasTag().
+        """Parse a 'Tag' element and create a sppasTag().
 
         :param tag_node: (ET) XML Element node.
         :returns: (sppasTag)
@@ -442,7 +442,7 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_media(self, media_root):
-        """ Parse a 'Media' element and add create a sppasMedia().
+        """Parse a 'Media' element and add create a sppasMedia().
 
         :param media_root: (ET) XML Element tree root.
 
@@ -473,7 +473,7 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_hierarchy(self, hierarchy_root):
-        """ Parse a 'Hierarchy' element and set it.
+        """Parse a 'Hierarchy' element and set it.
 
         :param hierarchy_root: (ET) XML Element tree root.
 
@@ -507,7 +507,7 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_vocabulary(self, vocabulary_root):
-        """ Parse a 'Vocabulary' element and set it.
+        """Parse a 'Vocabulary' element and set it.
 
         :param hierarchy_root: (ET) XML Element tree root.
 
@@ -555,7 +555,7 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write an XRA file.
+        """Write an XRA file.
 
         :param filename: (str)
 
@@ -595,7 +595,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def format_metadata(metadata_root, meta_object, exclude=[]):
-        """ Add 'Metadata' element in the tree from a sppasMetaData().
+        """Add 'Metadata' element in the tree from a sppasMetaData().
 
         :param metadata_root: (ET) XML Element tree root.
         :param meta_object: (sppasMetadata)
@@ -614,7 +614,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def format_tier(tier_root, tier):
-        """ Add a 'Tier' object in the tree from a sppasTier().
+        """Add a 'Tier' object in the tree from a sppasTier().
 
         :param tier_root: (ET) XML Element tree root.
         :param tier: (sppasTier)
@@ -642,7 +642,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def format_annotation(annotation_root, annotation):
-        """ Add an 'Annotation' element in the tree from a sppasAnnotation().
+        """Add an 'Annotation' element in the tree from a sppasAnnotation().
 
         :param annotation_root: (ET) XML Element tree root.
         :param annotation: (sppasAnnotation)
@@ -671,7 +671,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def format_location(location_root, location):
-        """ Add a 'Location' element in the tree from a sppasLocation().
+        """Add a 'Location' element in the tree from a sppasLocation().
 
         :param location_root: (ET) XML Element tree root.
         :param location: (sppasLocation)
@@ -700,7 +700,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def _format_point(point_node, point):
-        """ Add a 'Point' element in the tree from a sppasPoint().
+        """Add a 'Point' element in the tree from a sppasPoint().
 
         :param point_node: (ET) XML Element node.
         :param point: (sppasPoint)
@@ -714,7 +714,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def _format_interval(interval_root, interval):
-        """ Add an 'Interval' element in the tree from a sppasInterval().
+        """Add an 'Interval' element in the tree from a sppasInterval().
 
         :param interval_root: (ET) XML Element node.
         :param interval: (sppasInterval)
@@ -730,7 +730,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def _format_disjoint(disjoint_root, disjoint):
-        """ Add a 'Disjoint' element in the tree from a sppasDisjoint().
+        """Add a 'Disjoint' element in the tree from a sppasDisjoint().
 
         :param disjoint_root: (ET) XML Element node.
         :param disjoint: (sppasDisjoint)
@@ -744,7 +744,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def format_label(label_root, label):
-        """ Add a 'Label' element in the tree from a sppasLabel().
+        """Add a 'Label' element in the tree from a sppasLabel().
 
         :param label_root: (ET) XML Element tree root.
         :param label: (sppasLabel)
@@ -760,7 +760,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def _format_tag(tag_node, tag):
-        """ Add a 'Tag' element in the tree from a sppasTag().
+        """Add a 'Tag' element in the tree from a sppasTag().
 
         :param tag_node: (ET) XML Element node.
         :param tag: (sppasTag)
@@ -773,7 +773,7 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_media(self, media_root, media):
-        """ Add a 'Media' element in the tree from a sppasMedia.
+        """Add a 'Media' element in the tree from a sppasMedia.
 
         :param media_root: (ET) XML Element tree root.
         :param media: (sppasMedia)
@@ -807,7 +807,7 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_hierarchy(self, hierarchy_root):
-        """ Add a 'Hierarchy' element in the tree from a sppasHierarchy().
+        """Add a 'Hierarchy' element in the tree from a sppasHierarchy().
 
         :param hierarchy_root: (ET) XML Element tree root.
 
@@ -825,7 +825,7 @@ class sppasXRA(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_vocabulary(self, vocabulary_root, vocabulary):
-        """ Add a 'Vocabulary' element in the tree from a sppasVocabulary().
+        """Add a 'Vocabulary' element in the tree from a sppasVocabulary().
 
          :param vocabulary_root: (ET) XML Element tree root.
          :param vocabulary: (sppasCtrlVocab)
@@ -861,7 +861,7 @@ class sppasXRA(sppasBaseIO):
 
     @staticmethod
     def indent(elem, level=0):
-        """ Pretty indent.
+        """Pretty indent.
         http://effbot.org/zone/element-lib.htm#prettyprint
 
         """

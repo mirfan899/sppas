@@ -9,7 +9,7 @@ Add a content to the frame, so requires to organize it.
 
 
 class myFrame(wx.Frame):
-    """ Create my own frame. Inherited from the wx.Frame.
+    """Create my own frame. Inherited from the wx.Frame.
 
     """
     def __init__(self):
@@ -24,7 +24,7 @@ class myFrame(wx.Frame):
 
 
 class myApp(wx.App):
-    """ Create my own Application. Inherited from the wx.App.
+    """Create my own Application. Inherited from the wx.App.
 
     """
     def __init__(self):
@@ -82,7 +82,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def on_exit(self, event):
-        """ Close the frame, terminating the application. """
+        """Close the frame, terminating the application."""
 
         # do whatever you want here (save session, ask for really quit, ...)
         print("Button exit clicked.")
@@ -94,7 +94,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def OnExit(self):
-        """ Optional. Override the already existing method. """
+        """Optional. Override the already existing method."""
 
         # do whatever you want here (save session, ...)
         print("OnExit method invoked")

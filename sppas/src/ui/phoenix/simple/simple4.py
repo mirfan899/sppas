@@ -8,7 +8,7 @@ Create my own frame.
 
 
 class myFrame(wx.Frame):
-    """ Create my own frame. Inherited from the wx.Frame.
+    """Create my own frame. Inherited from the wx.Frame.
 
     """
     def __init__(self):
@@ -23,7 +23,7 @@ class myFrame(wx.Frame):
 
 
 class myApp(wx.App):
-    """ Create my own Application. Inherited from the wx.App.
+    """Create my own Application. Inherited from the wx.App.
 
     """
     def __init__(self):

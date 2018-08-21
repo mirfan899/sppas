@@ -52,7 +52,7 @@ from .timegroupanalysis import TimeGroupAnalysis
 
 
 class sppasTGA(sppasBaseAnnotation):
-    """ Estimates TGA on a tier.
+    """Estimates TGA on a tier.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -67,7 +67,7 @@ class sppasTGA(sppasBaseAnnotation):
 
     """
     def __init__(self, logfile=None):
-        """ Create a new sppasTGA instance.
+        """Create a new sppasTGA instance.
 
         :param logfile: (sppasLog)
 
@@ -97,7 +97,7 @@ class sppasTGA(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def fix_options(self, options):
-        """ Fix all options. Available options are:
+        """Fix all options. Available options are:
 
             - with_radius
 
@@ -125,7 +125,7 @@ class sppasTGA(sppasBaseAnnotation):
     # ------------------------------------------------------------------
 
     def set_tg_prefix_label(self, prefix):
-        """ Fix the prefix to add to each TG.
+        """Fix the prefix to add to each TG.
 
         :param prefix: (str) Default is 'tg_'
 
@@ -138,7 +138,7 @@ class sppasTGA(sppasBaseAnnotation):
     # ------------------------------------------------------------------
 
     def set_with_radius(self, with_radius):
-        """ Set the with_radius option, used to estimate the duration.
+        """Set the with_radius option, used to estimate the duration.
 
         :param with_radius: (int)
             - 0 means to use Midpoint;
@@ -155,7 +155,7 @@ class sppasTGA(sppasBaseAnnotation):
     # ------------------------------------------------------------------
 
     def set_intercept_slope_original(self, value):
-        """ Estimate intercepts and slopes with the original method.
+        """Estimate intercepts and slopes with the original method.
         Default is False.
 
         :param value: (boolean)
@@ -166,7 +166,7 @@ class sppasTGA(sppasBaseAnnotation):
     # ------------------------------------------------------------------
 
     def set_intercept_slope_annotationpro(self, value):
-        """ Estimate intercepts and slopes with the method of annotationpro.
+        """Estimate intercepts and slopes with the method of annotationpro.
         Default is True.
 
         :param value: (boolean)
@@ -179,7 +179,7 @@ class sppasTGA(sppasBaseAnnotation):
     # ------------------------------------------------------------------
 
     def syllables_to_timegroups(self, syllables):
-        """ Create the time group intervals.
+        """Create the time group intervals.
 
         :param syllables: (sppasTier)
         :returns: (sppasTier) Time groups
@@ -198,7 +198,7 @@ class sppasTGA(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def syllables_to_timesegments(self, syllables):
-        """ Create the time segments intervals.
+        """Create the time segments intervals.
 
         Time segments are time groups with serialized syllables.
 
@@ -223,7 +223,7 @@ class sppasTGA(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def timegroups_to_durations(self, syllables, timegroups):
-        """ Return a dict with timegroups and the syllable durations.
+        """Return a dict with timegroups and the syllable durations.
 
         :param syllables: (sppasTier) Syllables
         :param timegroups: (sppasTier) Time groups
@@ -255,7 +255,7 @@ class sppasTGA(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def tga_to_tier(self, tga_result, timegroups, tier_name, tag_type="float"):
-        """ Create a tier from one of the TGA result.
+        """Create a tier from one of the TGA result.
 
         :param tga_result: One of the results of TGA
         :param timegroups: (sppasTier) Time groups
@@ -282,7 +282,7 @@ class sppasTGA(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def tga_to_tier_reglin(self, tga_result, timegroups, intercept=True):
-        """ Create tiers of intercept,slope from one of the TGA result.
+        """Create tiers of intercept,slope from one of the TGA result.
 
         :param tga_result: One of the results of TGA
         :param timegroups: (sppasTier) Time groups
@@ -312,7 +312,7 @@ class sppasTGA(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def convert(self, syllables):
-        """ Estimates TGA on the given syllables.
+        """Estimates TGA on the given syllables.
 
         :param syllables: (sppasTier)
         :returns: (sppasTranscription)
@@ -391,7 +391,7 @@ class sppasTGA(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def run(self, input_filename, output_filename=None):
-        """ Perform the TGA estimation process.
+        """Perform the TGA estimation process.
 
         :param input_filename: (str) Name of the input file with the aligned syllables
         :param output_filename: (str) Name of the resulting file with TGA

@@ -58,7 +58,7 @@ class sppasBaseIO(sppasAcModel):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new Acoustic Model reader-writer instance.
+        """Initialize a new Acoustic Model reader-writer instance.
 
         :param name: (str) Name of the acoustic model.
 
@@ -72,7 +72,7 @@ class sppasBaseIO(sppasAcModel):
     # -----------------------------------------------------------------------
 
     def is_ascii(self):
-        """ Return True if the reader-writer supports to read and write
+        """Return True if the reader-writer supports to read and write
         ASCII files.
 
         :returns: (bool)
@@ -83,7 +83,7 @@ class sppasBaseIO(sppasAcModel):
     # -----------------------------------------------------------------------
 
     def is_binary(self):
-        """ Return True if this reader-writer supports to read and write
+        """Return True if this reader-writer supports to read and write
         binary files.
 
         :returns: (bool)
@@ -96,7 +96,7 @@ class sppasBaseIO(sppasAcModel):
     # -----------------------------------------------------------------------
 
     def set(self, other):
-        """ Set self with other content.
+        """Set self with other content.
 
         :param other: (sppasAcModel)
 
@@ -113,7 +113,7 @@ class sppasBaseIO(sppasAcModel):
     # -----------------------------------------------------------------------
 
     def read(self, folder):
-        """ Read a folder content and fill the Acoustic Model.
+        """Read a folder content and fill the Acoustic Model.
 
         :param folder: (str)
 
@@ -123,7 +123,7 @@ class sppasBaseIO(sppasAcModel):
     # -----------------------------------------------------------------------
 
     def write(self, folder):
-        """ Write the Acoustic Model into a folder.
+        """Write the Acoustic Model into a folder.
 
         :param folder: (str)
 
@@ -134,7 +134,7 @@ class sppasBaseIO(sppasAcModel):
 
     @staticmethod
     def write_hmm_proto(proto_size, proto_filename):
-        """ Write a `proto` file. The proto is based on a 5-states HMM.
+        """Write a `proto` file. The proto is based on a 5-states HMM.
 
         :param proto_size: (int) Number of mean and variance values. It's commonly
         either 25 or 39, it depends on the MFCC parameters.
@@ -146,7 +146,7 @@ class sppasBaseIO(sppasAcModel):
     # -----------------------------------------------------------------------
 
     def read_phonesrepl(self, filename):
-        """ Read a replacement table of phone names from a file.
+        """Read a replacement table of phone names from a file.
 
         :param filename: (str)
 
@@ -164,7 +164,7 @@ class sppasBaseIO(sppasAcModel):
     # -----------------------------------------------------------------------
 
     def read_tiedlist(self, filename):
-        """ Read a tiedlist from a file.
+        """Read a tiedlist from a file.
 
         :param filename: (str)
 

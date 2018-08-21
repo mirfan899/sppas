@@ -54,7 +54,7 @@ class TierCtrl(spControl):
                  pos=wx.DefaultPosition,
                  size=wx.DefaultSize,
                  tier=None):
-        """ Constructor.
+        """Constructor.
 
         Non-wxpython related parameter:
             - tier (Tier) the Tier to draw (see annotationdata library for details).
@@ -122,7 +122,7 @@ class TierCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def SetFont(self, font):
-        """Override. Change the font of all texts (self and labels). """
+        """Override. Change the font of all texts (self and labels)."""
 
         # Apply this new font to self.
         spControl.SetFont(self, font)
@@ -254,7 +254,7 @@ class TierCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def OnPointEdit(self, event):
-        """ Point Edit. Open a dialog to edit the point values. """
+        """Point Edit. Open a dialog to edit the point values."""
 
         logging.info('TIER. OnPointEdit. Not implemented.')
         return
@@ -272,7 +272,7 @@ class TierCtrl(spControl):
     # ------------------------------------------------------------------------
 
     def OnPointResizing(self, event):
-        """ Point Resizing means a new radius value for the TimePoint. """
+        """Point Resizing means a new radius value for the TimePoint."""
         logging.info('TIER. OnPointResizing. Disabled.')
         return
 
@@ -362,7 +362,7 @@ class TierCtrl(spControl):
     # ------------------------------------------------------------------------
 
     def DrawContent(self, dc, x, y, w, h):
-        """ Draw the tier on the DC.
+        """Draw the tier on the DC.
 
         :param dc: (PaintDC, MemoryDC, BufferedDC...)
         :param x, y: (int,int) are coord. of top left corner from which drawing
@@ -430,7 +430,7 @@ class TierCtrl(spControl):
     # ----------------------------------------------------------------------------
 
     def _drawPoint(self, point, x, y, h):
-        """ Display a point. """
+        """Display a point."""
 
         xpt, wpt = self._calcPointXW(point.GetValue())
 
@@ -443,7 +443,7 @@ class TierCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def _drawAnnotation(self, ann):
-        """ Display an existing annotation. """
+        """Display an existing annotation."""
 
         # logging.debug(' ... _drawAnnotation: {:s}'.format(ann))
         label = self._anns[ann][0]
@@ -470,7 +470,7 @@ class TierCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def _addAnnotationInterval(self, ann):
-        """ Create new controls for an annotation, or link to existing controls. """
+        """Create new controls for an annotation, or link to existing controls."""
 
         ti = ann.get_location().get_best()
 
@@ -520,7 +520,7 @@ class TierCtrl(spControl):
     # -----------------------------------------------------------------------
 
     def _addAnnotationPoint(self, ann):
-        """ Create new controls for an annotation, or link to existing controls. """
+        """Create new controls for an annotation, or link to existing controls."""
 
         tp = ann.get_location().get_best()
 
@@ -581,7 +581,7 @@ class TierCtrl(spControl):
 
 
 class PointEditor(wx.Dialog):
-    """ Show a dialog to display/change midpoint and radius. """
+    """Show a dialog to display/change midpoint and radius."""
 
     def __init__(self, parent, middle, radius):
         wx.Dialog.__init__(self, parent,
@@ -636,5 +636,5 @@ class PointEditor(wx.Dialog):
     # ------------------------------------------------------------------------
 
     def GetValues(self):
-        """ Return the new midpoint/radius values. """
+        """Return the new midpoint/radius values."""
         return self.fieldfrom.GetValue(), self.fieldto.GetValue()

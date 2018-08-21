@@ -71,7 +71,7 @@ class sppasHtkIO(sppasBaseIO):
     """
     @staticmethod
     def detect(folder):
-        """ Return True if the folder contains the HTK-ASCII file(s) of an ACM.
+        """Return True if the folder contains the HTK-ASCII file(s) of an ACM.
         Expected files of this reader is mainly "hmmdefs".
 
         """
@@ -88,7 +88,7 @@ class sppasHtkIO(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Create a sppasHtkIO instances.
+        """Create a sppasHtkIO instances.
 
         :param name: (str) An identifier name for the Acoustic Model.
         By default, the name of the class is used.
@@ -101,7 +101,7 @@ class sppasHtkIO(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def read(self, folder, filename=None):
-        """ Load all known data from a folder or only the given file.
+        """Load all known data from a folder or only the given file.
 
         The default file names are:
 
@@ -151,7 +151,7 @@ class sppasHtkIO(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def write(self, folder, filename="hmmdefs"):
-        """ Save the model into a file, in HTK-ASCII standard format.
+        """Save the model into a file, in HTK-ASCII standard format.
 
         The default file names are:
             - hmmdefs (macros + hmms);
@@ -189,7 +189,7 @@ class sppasHtkIO(sppasBaseIO):
 
     @staticmethod
     def read_hmm(filename):
-        """ Return the (first) HMM described into the given filename.
+        """Return the (first) HMM described into the given filename.
 
         :param filename: (str) File to read.
         :returns: (sppasHMM)
@@ -207,7 +207,7 @@ class sppasHtkIO(sppasBaseIO):
 
     @staticmethod
     def write_hmm(hmm, filename):
-        """ Save a single hmm into the given filename.
+        """Save a single hmm into the given filename.
 
         :param hmm: (sppasHMM) The HMM model to write
         :param filename: (str) Name of the file to write.
@@ -221,7 +221,7 @@ class sppasHtkIO(sppasBaseIO):
 
     @staticmethod
     def write_hmm_proto(proto_size, proto_filename):
-        """ Write a `proto` file. The proto is based on a 5-states HMM.
+        """Write a `proto` file. The proto is based on a 5-states HMM.
 
         :param proto_size: (int) Number of mean and variance values. It's commonly
         either 25 or 39, it depends on the MFCC parameters.
@@ -256,7 +256,7 @@ class sppasHtkIO(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def read_macros_hmms(self, filenames):
-        """ Load an HTK-ASCII model from one or more files.
+        """Load an HTK-ASCII model from one or more files.
 
         :param filenames: Name of the files of the model
         (e.g. macros and/or hmms files and/or hmmdefs)
@@ -296,7 +296,7 @@ class sppasHtkIO(sppasBaseIO):
 
     @staticmethod
     def _serialize_macros(macros, options=True, transition=True, variance=True, mean=True, state=True, duration=True):
-        """ Serialize macros into a string, in HTK-ASCII standard format.
+        """Serialize macros into a string, in HTK-ASCII standard format.
 
         :param macros: (OrderedDict) Macros to save
         :returns: The HTK-ASCII macros as a string.
@@ -341,7 +341,7 @@ class sppasHtkIO(sppasBaseIO):
 
     @staticmethod
     def _serialize_hmms(hmms):
-        """ Serialize hmms into a string, in HTK-ASCII standard format.
+        """Serialize hmms into a string, in HTK-ASCII standard format.
 
         :returns: The HTK-ASCII model as a string.
 

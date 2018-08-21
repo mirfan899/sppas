@@ -153,7 +153,7 @@ class sppasAcFeatures(object):
 
     """
     def __init__(self):
-        """ Create a sppasAcFeatures instance. """
+        """Create a sppasAcFeatures instance."""
 
         self.sourcekind = "MFC"   # either WAV or anything else!
         self.win_length_ms = 25   # The window length of the cepstral analysis in milliseconds
@@ -175,7 +175,7 @@ class sppasAcFeatures(object):
     # -----------------------------------------------------------------------
 
     def write_all(self, dirname):
-        """ Write all files at once, with their default name, in the given
+        """Write all files at once, with their default name, in the given
         directory.
 
         :param dirname: (str) a directory name (existing or to be created).
@@ -190,7 +190,7 @@ class sppasAcFeatures(object):
     # -----------------------------------------------------------------------
 
     def write_config(self, filename):
-        """ Write the wav config into a file.
+        """Write the wav config into a file.
 
         :param filename: (str) Name of the file to save the features.
 
@@ -218,7 +218,7 @@ class sppasAcFeatures(object):
     # -----------------------------------------------------------------------
 
     def write_mfcconfig(self, filename):
-        """ Write the wav config into a file. For HCopy only.
+        """Write the wav config into a file. For HCopy only.
 
         :param filename: (str) Name of the file to save the features.
 

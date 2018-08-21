@@ -49,7 +49,7 @@ class sppasChannel(object):
 
     """
     def __init__(self, framerate=16000, sampwidth=2, frames=""):
-        """ Create a sppasChannel instance.
+        """Create a sppasChannel instance.
 
         :param framerate: (int) The frame rate of this channel, in Hertz.
         :param sampwidth: (int) 1 for 8 bits, 2 for 16 bits, 4 for 32 bits.
@@ -70,7 +70,7 @@ class sppasChannel(object):
     # ----------------------------------------------------------------------
 
     def set_frames(self, frames):
-        """ Set new frames to the channel.
+        """Set new frames to the channel.
         It is supposed the sampwidth and framerate are the same as the 
         current ones.
 
@@ -82,7 +82,7 @@ class sppasChannel(object):
     # ----------------------------------------------------------------------
 
     def set_sampwidth(self, sampwidth):
-        """ Set a new samples width to the channel.
+        """Set a new samples width to the channel.
 
         :param sampwidth: (int) 1 for 8 bits, 2 for 16 bits, 4 for 32 bits.
 
@@ -96,7 +96,7 @@ class sppasChannel(object):
     # ----------------------------------------------------------------------
 
     def set_framerate(self, framerate):
-        """ Set a new framerate to the channel.
+        """Set a new framerate to the channel.
 
         :param framerate: (int) The frame rate of this channel, in Hertz.
         A value between 8000 and 192000
@@ -113,7 +113,7 @@ class sppasChannel(object):
     # ----------------------------------------------------------------------
 
     def get_frames(self, chunck_size=None):
-        """ Return some frames from the current position.
+        """Return some frames from the current position.
 
         :param chunck_size: (int) the size of the chunk to return.
         None for all frames of the channel.
@@ -136,7 +136,7 @@ class sppasChannel(object):
     # -----------------------------------------------------------------------
 
     def get_nframes(self):
-        """ Return the number of frames.
+        """Return the number of frames.
         A frame has a length of (sampwidth) bytes.
 
         :returns: (int) the total number of frames
@@ -147,7 +147,7 @@ class sppasChannel(object):
     # -----------------------------------------------------------------------
 
     def get_framerate(self):
-        """ Return the frame rate, in Hz.
+        """Return the frame rate, in Hz.
 
         :returns: (int) the frame rate of the channel
 
@@ -157,7 +157,7 @@ class sppasChannel(object):
     # -----------------------------------------------------------------------
 
     def get_sampwidth(self):
-        """ Return the sample width.
+        """Return the sample width.
 
         :returns: (int) the sample width of the channel
 
@@ -167,7 +167,7 @@ class sppasChannel(object):
     # -----------------------------------------------------------------------
 
     def get_cross(self):
-        """ Return the number of zero crossings.
+        """Return the number of zero crossings.
 
         :returns: (int) number of zero crossing
 
@@ -178,7 +178,7 @@ class sppasChannel(object):
     # -----------------------------------------------------------------------
 
     def rms(self):
-        """ Return the root mean square of the channel.
+        """Return the root mean square of the channel.
 
         :returns: (int) the root mean square of the channel
 
@@ -189,7 +189,7 @@ class sppasChannel(object):
     # -----------------------------------------------------------------------
 
     def clipping_rate(self, factor):
-        """ Return the clipping rate of the frames.
+        """Return the clipping rate of the frames.
 
         :param factor: (float) An interval to be more precise on clipping rate.
         It will consider that all frames outside the interval are clipped.
@@ -203,7 +203,7 @@ class sppasChannel(object):
     # -----------------------------------------------------------------------
 
     def get_duration(self):
-        """ Return the duration of the channel, in seconds.
+        """Return the duration of the channel, in seconds.
 
         :returns: (float) the duration of the channel
 
@@ -213,7 +213,7 @@ class sppasChannel(object):
     # -----------------------------------------------------------------------
 
     def extract_fragment(self, begin=None, end=None):
-        """ Extract a fragment between the beginning and the end.
+        """Extract a fragment between the beginning and the end.
 
         :param begin: (int: number of frames) the beginning of the fragment to extract
         :param end: (int: number of frames) the end of the fragment to extract
@@ -257,21 +257,21 @@ class sppasChannel(object):
     # -----------------------------------------------------------------------
 
     def tell(self):
-        """ Return the current position. """
+        """Return the current position."""
 
         return self._position
 
     # ------------------------------------------------------------------------
 
     def rewind(self):
-        """ Set the position to 0. """
+        """Set the position to 0."""
 
         self._position = 0
 
     # ------------------------------------------------------------------------
 
     def seek(self, position):
-        """ Fix the current position.
+        """Fix the current position.
 
         :param position: (int)
 

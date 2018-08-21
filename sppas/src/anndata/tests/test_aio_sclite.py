@@ -89,7 +89,7 @@ class TestBaseSclite(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_make_point(self):
-        """ Convert data into the appropriate digit type, or not. """
+        """Convert data into the appropriate digit type, or not."""
 
         self.assertEqual(sppasPoint(3., 0.005), sppasBaseSclite.make_point("3.0"))
         self.assertEqual(sppasPoint(3., 0.005), sppasBaseSclite.make_point("3."))
@@ -106,7 +106,7 @@ class TestScliteCTM(unittest.TestCase):
 
     """
     def test_detect(self):
-        """ Test the file format detection method. """
+        """Test the file format detection method."""
 
         for filename in os.listdir(DATA):
             f = os.path.join(DATA, filename)
@@ -118,7 +118,7 @@ class TestScliteCTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_check_line(self):
-        """ Check whether a line is correct or not. """
+        """Check whether a line is correct or not."""
 
         # Ignore comments
         self.assertFalse(sppasCTM.check_line(";;"))
@@ -145,7 +145,7 @@ class TestScliteCTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_get_tier(self):
-        """ Return the tier related to the given line. """
+        """Return the tier related to the given line."""
 
         ctm = sppasCTM()
 
@@ -175,7 +175,7 @@ class TestScliteCTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_get_score(self):
-        """ Return the score of the label of a given line. """
+        """Return the score of the label of a given line."""
 
         # no score
         self.assertIsNone(sppasCTM.get_score("D_NONE 1 108.74 0.31 SO"))
@@ -189,7 +189,7 @@ class TestScliteCTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_create_annotation(self):
-        """ Return the annotation corresponding to data of a line. """
+        """Return the annotation corresponding to data of a line."""
 
         # basic
         ann = sppasCTM._create_annotation(0.3, 0.22, "toto", score=None)
@@ -216,7 +216,7 @@ class TestScliteCTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_lines(self):
-        """ Fill the transcription from the lines of the CTM file. """
+        """Fill the transcription from the lines of the CTM file."""
 
         # 1 media, 1 channel, no alt: the basic (... with a gap and an overlap)
         # -------------------------------------
@@ -305,7 +305,7 @@ class TestScliteCTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_read(self):
-        """ Sample ctm. """
+        """Sample ctm."""
 
         ctm = sppasCTM()
         ctm.read(os.path.join(DATA, "sample.ctm"))
@@ -325,7 +325,7 @@ class TestScliteCTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_serialize_tag(self):
-        """ Convert a tag with its score into a line for CTM files. """
+        """Convert a tag with its score into a line for CTM files."""
 
         line = sppasCTM._serialize_tag("WAV", "A", 0.5, 0.22, sppasTag('byebye'), None)
         self.assertEqual("WAV A 0.5 0.22 byebye\n", line)
@@ -339,7 +339,7 @@ class TestScliteCTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_serialize_annotation(self):
-        """ Convert an annotation into lines for CTM files. """
+        """Convert an annotation into lines for CTM files."""
 
         # annotation without label
         a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
@@ -366,7 +366,7 @@ class TestScliteCTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_read_write(self):
-        """ Write a transcription into a file. """
+        """Write a transcription into a file."""
 
         ctm = sppasCTM()
         ctm.read(os.path.join(DATA, "sample.ctm"))
@@ -381,7 +381,7 @@ class TestScliteSTM(unittest.TestCase):
 
     """
     def test_detect(self):
-        """ Test the file format detection method. """
+        """Test the file format detection method."""
 
         for filename in os.listdir(DATA):
             f = os.path.join(DATA, filename)
@@ -393,7 +393,7 @@ class TestScliteSTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_check_line(self):
-        """ Check whether a line is correct or not. """
+        """Check whether a line is correct or not."""
 
         # Ignore comments
         self.assertFalse(sppasSTM.check_line(";;"))
@@ -420,7 +420,7 @@ class TestScliteSTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_get_tier(self):
-        """ Return the tier related to the given line. """
+        """Return the tier related to the given line."""
 
         stm = sppasSTM()
 
@@ -452,7 +452,7 @@ class TestScliteSTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_create_annotation(self):
-        """ Return the annotation corresponding to data of a line. """
+        """Return the annotation corresponding to data of a line."""
 
         stm = sppasSTM()
         tier = stm.create_tier("test")
@@ -467,7 +467,7 @@ class TestScliteSTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_lines(self):
-        """ Fill the transcription from the lines of the STM file. """
+        """Fill the transcription from the lines of the STM file."""
 
         # 1 media, 1 channel, 1 speaker: the basic (... with a gap and an overlap)
         # ----------------------------------------
@@ -541,7 +541,7 @@ class TestScliteSTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_read(self):
-        """ Sample stm. """
+        """Sample stm."""
 
         stm = sppasSTM()
         stm.read(os.path.join(DATA, "sample.stm"))
@@ -558,7 +558,7 @@ class TestScliteSTM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_serialize_annotation(self):
-        """ Convert an annotation into lines for STM files. """
+        """Convert an annotation into lines for STM files."""
 
         # annotation without label
         a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))

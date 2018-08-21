@@ -131,7 +131,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def InitializeBitmaps(self):
-        """ Initializes the check bitmaps. """
+        """Initializes the check bitmaps."""
 
         # We keep 4 bitmaps for CustomCheckBox, depending on the
         # checking state (Checked/UnCkecked) and the control
@@ -143,7 +143,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def InitializeColours(self):
-        """ Initializes the focus indicator pen. """
+        """Initializes the focus indicator pen."""
 
         textClr = self.GetForegroundColour()
         if wx.Platform == "__WXMAC__":
@@ -259,7 +259,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def AcceptsFocus(self):
-        """ Overridden base class virtual. """
+        """Overridden base class virtual."""
 
         # It seems to me that wx.CheckBox does not accept focus with mouse
         # but please correct me if I am wrong!
@@ -267,7 +267,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def HasFocus(self):
-        """ Returns whether or not we have the focus. """
+        """Returns whether or not we have the focus."""
 
         # We just returns the _hasFocus property that has been set in the
         # wx.EVT_SET_FOCUS and wx.EVT_KILL_FOCUS event handlers.
@@ -275,7 +275,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def SetForegroundColour(self, colour):
-        """ Overridden base class virtual. """
+        """Overridden base class virtual."""
 
         wx.PyControl.SetForegroundColour(self, colour)
 
@@ -286,7 +286,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def SetBackgroundColour(self, colour):
-        """ Overridden base class virtual. """
+        """Overridden base class virtual."""
 
         wx.PyControl.SetBackgroundColour(self, colour)
 
@@ -295,7 +295,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def Enable(self, enable=True):
-        """ Enables/Disables CustomCheckBox. """
+        """Enables/Disables CustomCheckBox."""
 
         wx.PyControl.Enable(self, enable)
 
@@ -322,7 +322,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def SetSpacing(self, spacing):
-        """ Sets a new spacing between the check bitmap and the text. """
+        """Sets a new spacing between the check bitmap and the text."""
 
         self._spacing = spacing
 
@@ -333,7 +333,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def GetSpacing(self):
-        """ Returns the spacing between the check bitmap and the text. """
+        """Returns the spacing between the check bitmap and the text."""
 
         return self._spacing
 
@@ -370,7 +370,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def OnKeyUp(self, event):
-        """ Handles the wx.EVT_KEY_UP event for CustomCheckBox. """
+        """Handles the wx.EVT_KEY_UP event for CustomCheckBox."""
 
         if event.GetKeyCode() == wx.WXK_SPACE:
             # The spacebar has been pressed: toggle our state
@@ -382,7 +382,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def OnSetFocus(self, event):
-        """ Handles the wx.EVT_SET_FOCUS event for CustomCheckBox. """
+        """Handles the wx.EVT_SET_FOCUS event for CustomCheckBox."""
 
         self._hasFocus = True
 
@@ -392,7 +392,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def OnKillFocus(self, event):
-        """ Handles the wx.EVT_KILL_FOCUS event for CustomCheckBox. """
+        """Handles the wx.EVT_KILL_FOCUS event for CustomCheckBox."""
 
         self._hasFocus = False
 
@@ -402,7 +402,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def OnPaint(self, event):
-        """ Handles the wx.EVT_PAINT event for CustomCheckBox. """
+        """Handles the wx.EVT_PAINT event for CustomCheckBox."""
 
         # If you want to reduce flicker, a good starting point is to
         # use wx.BufferedPaintDC.
@@ -478,7 +478,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def OnEraseBackground(self, event):
-        """ Handles the wx.EVT_ERASE_BACKGROUND event for CustomCheckBox. """
+        """Handles the wx.EVT_ERASE_BACKGROUND event for CustomCheckBox."""
 
         # This is intentionally empty, because we are using the combination
         # of wx.BufferedPaintDC + an empty OnEraseBackground event to
@@ -487,7 +487,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def OnMouseClick(self, event):
-        """ Handles the wx.EVT_LEFT_DOWN event for CustomCheckBox. """
+        """Handles the wx.EVT_LEFT_DOWN event for CustomCheckBox."""
 
         if not self.IsEnabled():
             # Nothing to do, we are disabled
@@ -498,7 +498,7 @@ class CustomCheckBox( wx.PyControl ):
 
 
     def SendCheckBoxEvent(self):
-        """ Actually sends the wx.wxEVT_COMMAND_CHECKBOX_CLICKED event. """
+        """Actually sends the wx.wxEVT_COMMAND_CHECKBOX_CLICKED event."""
 
         # This part of the code may be reduced to a 3-liner code
         # but it is kept for better understanding the event handling.

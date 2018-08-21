@@ -65,7 +65,7 @@ class sppasPatterns(object):
     # ------------------------------------------------------------------------
 
     def __init__(self):
-        """ Create a new Pattern instance. """
+        """Create a new Pattern instance."""
 
         self._ngram = 3
         self._score = 1.
@@ -77,15 +77,15 @@ class sppasPatterns(object):
     # ------------------------------------------------------------------------
 
     def get_score(self):
-        """ Return the score value (float). """
+        """Return the score value (float)."""
         return self._score
 
     def get_ngram(self):
-        """ Return the n value for n-grams (int). """
+        """Return the n value for n-grams (int)."""
         return self._ngram
 
     def get_gap(self):
-        """ Return the gap value (int). """
+        """Return the gap value (int)."""
         return self._gap
 
     # ------------------------------------------------------------------------
@@ -93,7 +93,7 @@ class sppasPatterns(object):
     # ------------------------------------------------------------------------
 
     def set_ngram(self, n):
-        """ Fix the value of n of the n-grams.
+        """Fix the value of n of the n-grams.
 
         :param n: (int) Value of n (1<n<MAX_NGRAM)
         :raises: NgramRangeError
@@ -108,7 +108,7 @@ class sppasPatterns(object):
     # ------------------------------------------------------------------------
 
     def set_gap(self, g):
-        """ Fix the value of the gap.
+        """Fix the value of the gap.
 
         :param g: (int) Value of the gap (0<g<MAX_GAP)
         :raises: GapRangeError
@@ -124,7 +124,7 @@ class sppasPatterns(object):
     # ------------------------------------------------------------------------
 
     def set_score(self, s):
-        """ Fix the value of the score.
+        """Fix the value of the score.
 
         :param s: (float) Value of the score (0<s<1)
         :raises: ScoreRangeError
@@ -141,7 +141,7 @@ class sppasPatterns(object):
     # ------------------------------------------------------------------------
 
     def ngram_matches(self, ref, hyp):
-        """ n-gram matches between ref and hyp.
+        """n-gram matches between ref and hyp.
         Search for common n-gram sequences of hyp in ref.
 
         :param ref: (list of tokens) List of references
@@ -177,7 +177,7 @@ class sppasPatterns(object):
     # ------------------------------------------------------------------------
 
     def ngram_alignments(self, ref, hyp):
-        """ n-gram alignment of ref and hyp.
+        """n-gram alignment of ref and hyp.
 
         The algorithm is based on the finding of matching n-grams, in the
         range of a given gap. If 1-gram, keep only hypothesis items with a
@@ -261,7 +261,7 @@ class sppasPatterns(object):
     # ------------------------------------------------------------------------
 
     def dp_matching(self, ref, hyp):
-        """ Dynamic Programming alignment of ref and hyp.
+        """Dynamic Programming alignment of ref and hyp.
 
         The DP alignment algorithm performs a global minimization of a
         Levenshtein distance function which weights the cost of correct words,
@@ -280,7 +280,7 @@ class sppasPatterns(object):
     # ------------------------------------------------------------------------
 
     def _create_ngrams(self, ref, hyp):
-        """ Create ngrams of the reference and the hypothesis.
+        """Create ngrams of the reference and the hypothesis.
 
         :param ref: (list of tokens) List of references
         :param hyp: (list of tuples) List of hypothesis with their scores

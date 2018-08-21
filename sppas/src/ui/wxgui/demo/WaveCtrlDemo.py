@@ -75,7 +75,7 @@ class WaveCtrlDemo(wx.Window):
 
 
     def repaint1(self, event):
-        """ Pane. """
+        """Pane."""
         p = random.sample(range(0,3),  1)[0]
         if p==0:
             self.wavectrl.SetPanePosition( wx.ALIGN_LEFT )
@@ -86,7 +86,7 @@ class WaveCtrlDemo(wx.Window):
 
 
     def repaint2(self, event):
-        """ Period. """
+        """Period."""
         s = float(random.sample(range(0,5), 1)[0])
         d = float(random.sample(range(1,20), 1)[0])/10.
         self.GetTopLevelParent().GetStatusBar().SetStatusText('New period: %f,%f'%(s,s+d))
@@ -94,7 +94,7 @@ class WaveCtrlDemo(wx.Window):
 
 
     def repaint3(self, event):
-        """ Vertical Zoom. """
+        """Vertical Zoom."""
         z = random.sample(range(5,50), 1)[0]
         if self.wavectrl.GetSize()[1] > 140:
             z = 1.0 - z/100.0

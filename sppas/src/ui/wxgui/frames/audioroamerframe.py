@@ -66,7 +66,7 @@ class AudioRoamerFrame(ComponentFrame):
     # ------------------------------------------------------------------------
 
     def CreateClient(self, parent, prefsIO):
-        """ Override. """
+        """Override."""
 
         return AudioRoamerClient(parent, prefsIO)
 

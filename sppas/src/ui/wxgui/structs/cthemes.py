@@ -45,7 +45,7 @@ from sppas.src.ui.wxgui.structs.theme import sppasTheme
 
 
 class ThemeDefault(sppasTheme):
-    """ The theme which assign all required options, with default values. """
+    """The theme which assign all required options, with default values."""
 
     def __init__(self):
 
@@ -105,7 +105,7 @@ class ThemeDefault(sppasTheme):
 
 
 class ThemeBrigitte( ThemeDefault ):
-    """ SppasEdit author' theme. """
+    """SppasEdit author' theme."""
 
     def __init__(self):
 
@@ -140,7 +140,7 @@ class ThemeBrigitte( ThemeDefault ):
 
 
 class ThemePaul(ThemeDefault):
-    """ Theme looking like Praat (more or less...). """
+    """Theme looking like Praat (more or less...)."""
 
     def __init__(self):
 
@@ -175,7 +175,7 @@ class ThemePaul(ThemeDefault):
 
 
 class ThemeLea(ThemeDefault):
-    """ SppasEdit author' daughter theme. """
+    """SppasEdit author' daughter theme."""
 
     def __init__(self):
 
@@ -220,28 +220,28 @@ class Themes(object):
 
     """
     def __init__(self):
-        """ A Theme is a dictionary with key/option. """
+        """A Theme is a dictionary with key/option."""
 
         self._themes = {}
 
     # -----------------------------------------------------------------------
 
     def get_theme(self, key):
-        """ Return a value from its key. """
+        """Return a value from its key."""
 
         return self._themes.get(key, None)
 
     # -----------------------------------------------------------------------
 
     def get_themes(self):
-        """ Return the dictionary with all pairs key/value. """
+        """Return the dictionary with all pairs key/value."""
 
         return self._themes
 
     # -----------------------------------------------------------------------
 
     def add_theme(self, key, value):
-        """ Add a pair key/value or modify the existing one. """
+        """Add a pair key/value or modify the existing one."""
 
         self._themes[key] = value
 

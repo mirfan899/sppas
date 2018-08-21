@@ -117,7 +117,7 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def _create_title(self):
-        """ Create the title of the panel. """
+        """Create the title of the panel."""
 
         _sizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -132,7 +132,7 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def _create_list(self, multiple=False):
-        """ Create the list to show information of a each tier of a transcription. """
+        """Create the list to show information of a each tier of a transcription."""
 
         if multiple:
             tier_list = CheckListCtrl(self, -1, style=wx.LC_REPORT | wx.BORDER_NONE)
@@ -155,7 +155,7 @@ class TrsList(wx.Panel):
     # -------------------------------------------------------------------------
 
     def AddTierProperties(self, tier):
-        """ Display tier properties. """
+        """Display tier properties."""
 
         if tier is None:
             ShowInformation(self,
@@ -197,7 +197,7 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def OnListItemSelected(self, event):
-        """ An item of this panel was clicked. Inform the parent. """
+        """An item of this panel was clicked. Inform the parent."""
 
         evt = PanelSelectedEvent(panel=self)
         evt.SetEventObject(self)
@@ -208,7 +208,7 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetPreferences(self, prefs):
-        """ Set new preferences. """
+        """Set new preferences."""
 
         self._prefs = prefs
         self.SetBackgroundColour(self._prefs.GetValue("M_BG_COLOUR"))
@@ -218,7 +218,7 @@ class TrsList(wx.Panel):
     # -------------------------------------------------------------------------
 
     def SetFont(self, font):
-        """ Set a new font. """
+        """Set a new font."""
 
         wx.Window.SetFont(self, font)
 
@@ -232,7 +232,7 @@ class TrsList(wx.Panel):
     # -------------------------------------------------------------------------
 
     def SetBackgroundColour(self, color):
-        """ Set background. """
+        """Set background."""
 
         wx.Window.SetBackgroundColour(self, color)
 
@@ -246,7 +246,7 @@ class TrsList(wx.Panel):
     # -------------------------------------------------------------------------
 
     def SetForegroundColour(self, color):
-        """ Set foreground and items text color. """
+        """Set foreground and items text color."""
 
         wx.Window.SetForegroundColour(self, color)
 
@@ -344,7 +344,7 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def Cut(self):
-        """ Cut the selected tier. Return the clipboard. """
+        """Cut the selected tier. Return the clipboard."""
 
         sel_list = self._check_selected_tier()
         if sel_list == -1:
@@ -386,7 +386,7 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def Copy(self):
-        """ Return the selected tier. """
+        """Return the selected tier."""
 
         sel_list = self._check_selected_tier()
         if sel_list == -1:
@@ -403,7 +403,7 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def Paste(self, clipboard):
-        """ Paste the clipboard tier to the current page. """
+        """Paste the clipboard tier to the current page."""
 
         # Get the clipboard tier
         if clipboard is None:
@@ -424,7 +424,7 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def Delete(self):
-        """ Delete the selected tier.
+        """Delete the selected tier.
 
             Dialog with the user to confirm.
 
@@ -482,7 +482,7 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def Duplicate(self):
-        """ Duplicate the selected tier. """
+        """Duplicate the selected tier."""
 
         sel_list = self._check_selected_tier()
         if sel_list == -1:
@@ -500,7 +500,7 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def MoveUp(self):
-        """ Move up the selected tier (except for the first one). """
+        """Move up the selected tier (except for the first one)."""
 
         sel_list = self._check_selected_tier()
 
@@ -536,7 +536,7 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def MoveDown(self):
-        """ Move down the selected tier (except for the last one). """
+        """Move down the selected tier (except for the last one)."""
 
         sel_list = self._check_selected_tier()
         if sel_list == -1:
@@ -574,7 +574,7 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def Radius(self):
-        """ Fix a new radius value to all TimePoint instances of the selected tier. """
+        """Fix a new radius value to all TimePoint instances of the selected tier."""
 
         if len(self._transcription) == 0:
             return
@@ -620,7 +620,7 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def Preview(self):
-        """ Open a grid frame with the selected tier content. """
+        """Open a grid frame with the selected tier content."""
 
         sel_list = self._check_selected_tier()
         if sel_list == -1: return
@@ -632,7 +632,7 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def AddTier(self, new_tier):
-        """ Append a tier into the transcription and add in the list. """
+        """Append a tier into the transcription and add in the list."""
         
         # Append tier to the transcription
         self._transcription.append(new_tier)
@@ -710,14 +710,14 @@ class TrsList(wx.Panel):
     # ----------------------------------------------------------------------
 
     def GetTranscription(self):
-        """Return the Transcription. """
+        """Return the Transcription."""
 
         return self._transcription
 
     # ----------------------------------------------------------------------
 
     def GetTranscriptionName(self):
-        """Return the name of the transcription. """
+        """Return the name of the transcription."""
 
         return self._transcription.get_name()
 

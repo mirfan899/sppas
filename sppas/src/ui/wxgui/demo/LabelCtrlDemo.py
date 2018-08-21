@@ -90,7 +90,7 @@ class LabelCtrlDemo(wx.Window):
 
 
     def repaint1(self, event):
-        """ Color. """
+        """Color."""
         (r,g,b) = random.sample(range(170,245),  3)
         (a,d,c) = random.sample(range(5,160),  3)
         self.l1.SetColours(wx.Colour(r,g,b),wx.Colour(a,d,c))
@@ -100,7 +100,7 @@ class LabelCtrlDemo(wx.Window):
 
 
     def repaint2(self, event):
-        """ Position. """
+        """Position."""
         x1,x2 = random.sample(range(20,300),  2)
         y1,y2 = random.sample(range(100,180),  2)
         self.l1.MoveWindow(wx.Point(x1,y1),self.l1.GetSize())
@@ -111,7 +111,7 @@ class LabelCtrlDemo(wx.Window):
 
 
     def repaint3(self, event):
-        """ Size. """
+        """Size."""
         x1,x2 = random.sample(range(40,140),  2)
         y1,y2 = random.sample(range(10,40),  2)
         self.l1.MoveWindow(self.l1.GetPosition(),wx.Size(x1,y1))
@@ -122,7 +122,7 @@ class LabelCtrlDemo(wx.Window):
 
 
     def repaint4(self, event):
-        """ Text. """
+        """Text."""
         text = ['blah blah 1', 'blah blah 2', 'blah blah 3', 'toto 1', 'toto 2', 'toto 3', 'label 1', 'label 2', 'label 3', 'label rouge']
         i,j = random.sample(range(0,9),2)#[0]
         self.l1.SetValue(Label(text[i]))
@@ -132,7 +132,7 @@ class LabelCtrlDemo(wx.Window):
 
 
     def repaint5(self, event):
-        """ Font. """
+        """Font."""
         data = wx.FontData()
         dlg = wx.FontDialog(self, data)
         if dlg.ShowModal() == wx.ID_OK:
@@ -147,7 +147,7 @@ class LabelCtrlDemo(wx.Window):
 
 
     def repaint6(self, event):
-        """ Align. """
+        """Align."""
         a = random.sample(range(0,3),  1)[0]
         if a == 0:
             self.l1.SetAlign( wx.ALIGN_LEFT )

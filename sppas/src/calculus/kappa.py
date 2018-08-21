@@ -85,7 +85,7 @@ class sppasKappa(object):
 
     """
     def __init__(self, p=list(), q=list()):
-        """ Create a sppasKappa instance with two lists of tuples p and q.
+        """Create a sppasKappa instance with two lists of tuples p and q.
 
         >>> p=[(1., 0.), (1., 0.), (0.8, 0.2)]
 
@@ -101,7 +101,7 @@ class sppasKappa(object):
     # -----------------------------------------------------------------------
 
     def set_vectors(self, p, q):
-        """ Set the vectors of probabilities to estimate the sppasKappa value.
+        """Set the vectors of probabilities to estimate the sppasKappa value.
         
         :param p: a vector of tuples of float values
         :param q: a vector of tuples of float values
@@ -115,7 +115,7 @@ class sppasKappa(object):
     # -----------------------------------------------------------------------
 
     def sqv(self):
-        """ Estimates the Euclidian distance between two vectors.
+        """Estimates the Euclidian distance between two vectors.
 
         :returns: v
 
@@ -128,7 +128,7 @@ class sppasKappa(object):
     # -----------------------------------------------------------------------
 
     def sqm(self):
-        """ Estimates the Euclidian distance between two vectors.
+        """Estimates the Euclidian distance between two vectors.
 
         :returns: row, col
 
@@ -152,7 +152,7 @@ class sppasKappa(object):
     # -----------------------------------------------------------------------
 
     def check(self):
-        """ Check if the given p and q vectors are correct to be used.
+        """Check if the given p and q vectors are correct to be used.
 
         :returns: bool
 
@@ -162,7 +162,7 @@ class sppasKappa(object):
     # -----------------------------------------------------------------------
 
     def evaluate(self):
-        """ Estimates the Cohen's Kappa between two lists of tuples p and q.
+        """Estimates the Cohen's Kappa between two lists of tuples p and q.
 
         The tuple size corresponds to the number of categories, each value is
         the score assigned to each category for a given sample.
@@ -183,7 +183,7 @@ class sppasKappa(object):
 
     @staticmethod
     def check_vector(v):
-        """ Check if the vector is correct to be used.
+        """Check if the vector is correct to be used.
 
         :param v: a vector of tuples of probabilities.
 

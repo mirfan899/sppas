@@ -72,7 +72,7 @@ class TestEAF(unittest.TestCase):
 
     """
     def test_detect(self):
-        """ Test the file format detection method. """
+        """Test the file format detection method."""
 
         for filename in os.listdir(DATA):
             f = os.path.join(DATA, filename)
@@ -103,7 +103,7 @@ class TestEAF(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_make_point(self):
-        """ Convert data into the appropriate digit type, or not. """
+        """Convert data into the appropriate digit type, or not."""
 
         self.assertEqual(sppasPoint(132.3), sppasEAF().make_point("132300"))
         self.assertEqual(sppasPoint(4.2), sppasEAF().make_point("4200."))
@@ -114,7 +114,7 @@ class TestEAF(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_format_point(self):
-        """ Convert data into the appropriate digit type, or not. """
+        """Convert data into the appropriate digit type, or not."""
 
         self.assertEqual(132300, sppasEAF().format_point(132.3))
         self.assertEqual(4200, sppasEAF().format_point(4.2))
@@ -125,7 +125,7 @@ class TestEAF(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_document_root(self):
-        """ document <-> root. """
+        """document <-> root."""
 
         # create an element tree for EAF format
         root = sppasEAF._format_document()
@@ -143,7 +143,7 @@ class TestEAF(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_license(self):
-        """ LICENSE <-> root element. """
+        """LICENSE <-> root element."""
 
         # create an element tree for EAF format
         root = sppasEAF._format_document()
@@ -171,7 +171,7 @@ class TestEAF(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_locale(self):
-        """ LOCALE <-> root element. """
+        """LOCALE <-> root element."""
 
         # create an element tree for EAF format
         root = sppasEAF._format_document()
@@ -204,7 +204,7 @@ class TestEAF(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_language(self):
-        """ LANGUAGE <-> root element. """
+        """LANGUAGE <-> root element."""
 
         # create an element tree for EAF format
         root = sppasEAF._format_document()
@@ -249,7 +249,7 @@ class TestEAF(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_media(self):
-        """ MEDIA_DESCRIPTOR <-> sppasMedia(). """
+        """MEDIA_DESCRIPTOR <-> sppasMedia()."""
 
         root = sppasEAF._format_document()
         header_root = ET.SubElement(root, "HEADER")
@@ -298,7 +298,7 @@ class TestEAF(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_linked_file(self):
-        """ LINKED_FILE_DESCRIPTOR <-> sppasMedia(). """
+        """LINKED_FILE_DESCRIPTOR <-> sppasMedia()."""
 
         root = sppasEAF._format_document()
         header_root = ET.SubElement(root, "HEADER")
@@ -347,7 +347,7 @@ class TestEAF(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_property(self):
-        """ PROPERTY <-> sppasMetadata(). """
+        """PROPERTY <-> sppasMetadata()."""
 
         root = sppasEAF._format_document()
         eaf = sppasEAF()
@@ -367,7 +367,7 @@ class TestEAF(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_ctrl_vocab(self):
-        """ CONTROLLED_VOCABULARY <-> sppasCtrlVocab(). """
+        """CONTROLLED_VOCABULARY <-> sppasCtrlVocab()."""
 
         root = sppasEAF._format_document()
         ctrl_vocab = sppasCtrlVocab(name="c")
@@ -384,7 +384,7 @@ class TestEAF(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_alignable_tier(self):
-        """ TIER <-> sppasTier(). """
+        """TIER <-> sppasTier()."""
 
         # two aligned annotations in the tier
         tier_xml = '<TIER TIER_ID="test" LINGUISTIC_TYPE_REF="utterance" DEFAULT_LOCALE="en">\n'\
@@ -463,7 +463,7 @@ class TestEAF(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_parse_ref_tier(self):
-        """ TIER <-> sppasTier(). """
+        """TIER <-> sppasTier()."""
 
         # two aligned annotations in the aligned tier + 2 annotations in the ref tier
         tier_xml = '<TIER TIER_ID="test" LINGUISTIC_TYPE_REF="speech" DEFAULT_LOCALE="en">\n'\
@@ -601,7 +601,7 @@ class TestEAF(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_format_alignable_annotations(self):
-        """ (0..*) ANNOTATION <-> sppasAnnotation (0..*). """
+        """(0..*) ANNOTATION <-> sppasAnnotation (0..*)."""
 
         tier_xml = '<TIER TIER_ID="test"></TIER>'
         tree = ET.ElementTree(ET.fromstring(tier_xml))

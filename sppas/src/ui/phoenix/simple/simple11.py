@@ -23,7 +23,7 @@ A clean solution to use global settings.
 
 
 class sppasBaseSettings(object):
-    """ Base class to manage any kind of settings, represented in a dictionary.
+    """Base class to manage any kind of settings, represented in a dictionary.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -39,7 +39,7 @@ class sppasBaseSettings(object):
 
     """
     def __init__(self):
-        """ Create the dictionary of settings. """
+        """Create the dictionary of settings."""
 
         self.__dict__ = dict()
 
@@ -47,7 +47,7 @@ class sppasBaseSettings(object):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        """ to be overridden, if any. """
+        """to be overridden, if any."""
         pass
 
 # ---------------------------------------------------------------------------
@@ -56,7 +56,7 @@ class sppasBaseSettings(object):
 
 
 class WxAppConfig(sppasBaseSettings):
-    """ Manage the application global settings, represented in a dictionary.
+    """Manage the application global settings, represented in a dictionary.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -66,7 +66,7 @@ class WxAppConfig(sppasBaseSettings):
 
     """
     def __init__(self):
-        """ Create the dictionary of wx settings. """
+        """Create the dictionary of wx settings."""
         super(WxAppConfig, self).__init__()
 
         self.__dict__ = dict(
@@ -78,7 +78,7 @@ class WxAppConfig(sppasBaseSettings):
 
 
 class WxAppSettings(object):
-    """ Manage wx global settings, represented in a dictionary.
+    """Manage wx global settings, represented in a dictionary.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -90,7 +90,7 @@ class WxAppSettings(object):
     _config_location = "settings.json"
 
     def __init__(self):
-        """ Create the dictionary of wx settings. """
+        """Create the dictionary of wx settings."""
         self.__dict__ = dict()
         try:
             self.load()
@@ -151,7 +151,7 @@ class WxAppSettings(object):
 
 
 def setup_logging(log_level=15, filename=None):
-    """ Setup default logger to log to stderr or and possible also to a file.
+    """Setup default logger to log to stderr or and possible also to a file.
 
     :param log_level: Sets the threshold for this logger. Logging messages
     which are less severe than this value will be ignored. When NOTSET is
@@ -195,7 +195,7 @@ def setup_logging(log_level=15, filename=None):
 
 
 class myTitleText(wx.StaticText):
-    """ A class to write a title. """
+    """A class to write a title."""
 
     def __init__(self, parent, title_text):
 
@@ -212,7 +212,7 @@ class myTitleText(wx.StaticText):
 
 
 class myButton(wx.Button):
-    """ Create my own button. Inherited from the wx.Button.
+    """Create my own button. Inherited from the wx.Button.
 
     """
     def __init__(self, parent, label, name):
@@ -234,7 +234,7 @@ class myButton(wx.Button):
 
 
 class myFrame(wx.Frame):
-    """ Create my own frame. Inherited from the wx.Frame.
+    """Create my own frame. Inherited from the wx.Frame.
 
     """
     def __init__(self):
@@ -304,7 +304,7 @@ class myFrame(wx.Frame):
     # -----------------------------------------------------------------------
 
     def process_event(self, event):
-        """ Process any kind of events. """
+        """Process any kind of events."""
 
         event_name = event.GetEventObject().GetName()
         event_id = event.GetEventObject().GetId()
@@ -324,14 +324,14 @@ class myFrame(wx.Frame):
     # -----------------------------------------------------------------------
 
     def exit(self):
-        """ Close the frame, terminating the application. """
+        """Close the frame, terminating the application."""
 
         self.Close(True)
 
     # -----------------------------------------------------------------------
 
     def switch_to_panel(self, panel_name):
-        """ Switch to the expected panel. Hide the current. """
+        """Switch to the expected panel. Hide the current."""
 
         if panel_name not in self.panels:
             logging.warning("Unknown panel name '{:s}' to switch on.".format(panel_name))
@@ -353,7 +353,7 @@ class myFrame(wx.Frame):
 
 
 class myMenuPanel(wx.Panel):
-    """ Create my own menu panel with several action buttons.
+    """Create my own menu panel with several action buttons.
     It aims to replace the old-style menus.
 
     """
@@ -402,7 +402,7 @@ class myMenuPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnAction(self, event):
-        """ A button was clicked.
+        """A button was clicked.
         
         Here we just send the event to the parent.
 
@@ -413,7 +413,7 @@ class myMenuPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnAbout(self, event):
-        """ Display an About Dialog. """
+        """Display an About Dialog."""
 
         # Default dialog which will have the default style... so, it won't
         # have our own colors...
@@ -425,7 +425,7 @@ class myMenuPanel(wx.Panel):
 
 
 class myActionPanel(wx.Panel):
-    """ Create my own panel with 3 action buttons: exit, open, save.
+    """Create my own panel with 3 action buttons: exit, open, save.
 
     """
     def __init__(self, parent):
@@ -455,7 +455,7 @@ class myActionPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnAction(self, event):
-        """ A button was clicked.
+        """A button was clicked.
 
         Here we just send the event to the parent.
 
@@ -467,7 +467,7 @@ class myActionPanel(wx.Panel):
 
 
 class myContentPanel(wx.Panel):
-    """ Create my own panel for the content of the frame.
+    """Create my own panel for the content of the frame.
 
     """
     def __init__(self, parent):
@@ -480,7 +480,7 @@ class myContentPanel(wx.Panel):
 
 
 class myFilePanel(myContentPanel):
-    """ Create my own panel to work with files.
+    """Create my own panel to work with files.
 
     """
     def __init__(self, parent):
@@ -500,7 +500,7 @@ class myFilePanel(myContentPanel):
 
 
 class myAnnotatePanel(myContentPanel):
-    """ Create my own panel to annotate files.
+    """Create my own panel to annotate files.
 
     """
     def __init__(self, parent):
@@ -521,7 +521,7 @@ class myAnnotatePanel(myContentPanel):
 
 
 class myAnalyzePanel(myContentPanel):
-    """ Create my own panel to analyze files.
+    """Create my own panel to analyze files.
 
     """
     def __init__(self, parent):
@@ -542,7 +542,7 @@ class myAnalyzePanel(myContentPanel):
 
 
 class myApp(wx.App):
-    """ Create my own wx application. """
+    """Create my own wx application."""
 
     def __init__(self):
 
@@ -601,7 +601,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def process_command_line_args(self):
-        """ This is an opportunity for users to fix some args. """
+        """This is an opportunity for users to fix some args."""
 
         parser = ArgumentParser(usage="%s" % os.path.basename(__file__), 
                         description="... a program to do something.")
@@ -629,7 +629,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def create_application(self):
-        """ Create the main frame of the application and show it. """
+        """Create the main frame of the application and show it."""
 
         frm = myFrame()
         self.SetTopWindow(frm)
@@ -640,7 +640,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def show_splash_screen(self, delay=10):
-        """ Create and show the splash image during 10 seconds. """
+        """Create and show the splash image during 10 seconds."""
         
         bitmap = wx.Bitmap('splash.png', wx.BITMAP_TYPE_PNG)
 
@@ -658,7 +658,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def OnExit(self):
-        """ Optional. Override the already existing method to kill the app.
+        """Optional. Override the already existing method to kill the app.
         This method is invoked when the user:
 
             - clicks on the X button of the frame manager

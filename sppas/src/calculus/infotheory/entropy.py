@@ -60,7 +60,7 @@ class sppasEntropy(object):
 
     """
     def __init__(self, symbols, n=1):
-        """ Create a sppasEntropy instance with a list of symbols.
+        """Create a sppasEntropy instance with a list of symbols.
 
         :param symbols: (list) a vector of symbols of any type.
         :param n: (int) n value for n-gram estimation. n ranges 1..MAX_NGRAM
@@ -75,7 +75,7 @@ class sppasEntropy(object):
     # -----------------------------------------------------------------------
 
     def set_symbols(self, symbols):
-        """ Set the list of symbols.
+        """Set the list of symbols.
 
         :param symbols: (list) a vector of symbols of any type.
 
@@ -88,7 +88,7 @@ class sppasEntropy(object):
     # -----------------------------------------------------------------------
 
     def set_ngram(self, n):
-        """ Set the n value of n-grams.
+        """Set the n value of n-grams.
 
         :param n: (int) n value for n-gram estimation. n ranges 1..8
 
@@ -102,7 +102,7 @@ class sppasEntropy(object):
     # -----------------------------------------------------------------------
 
     def eval(self):
-        """ Estimates the Shannon entropy of a vector of symbols.
+        """Estimates the Shannon entropy of a vector of symbols.
         
         Shannon's entropy measures the information contained in a message as
         opposed to the portion of the message that is determined

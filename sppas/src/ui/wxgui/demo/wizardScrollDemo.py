@@ -67,7 +67,7 @@ class WizardScrollDemo( wx.wizard.Wizard ):
 
 
 class WelcomePage(wx.wizard.WizardPageSimple):
-    """ Welcome to the Demo. """
+    """Welcome to the Demo."""
 
     def __init__(self, parent, title):
         """
@@ -87,7 +87,7 @@ class WelcomePage(wx.wizard.WizardPageSimple):
 
 
 class ToolbarPage(wx.wizard.WizardPageSimple):
-    """ Presentation of the toolbar. """
+    """Presentation of the toolbar."""
 
     def __init__(self, parent, title):
         """

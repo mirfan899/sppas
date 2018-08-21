@@ -71,7 +71,7 @@ class sppasPluginsManager(Thread):
     """
 
     def __init__(self):
-        """ Instantiate the sppasPluginsManager and load the current plugins. """
+        """Instantiate the sppasPluginsManager and load the current plugins."""
 
         Thread.__init__(self)
 
@@ -89,7 +89,7 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def get_plugin_ids(self):
-        """ Get the list of plugin identifiers.
+        """Get the list of plugin identifiers.
 
         :returns: List of plugin identifiers.
 
@@ -99,7 +99,7 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def get_plugin(self, plugin_id):
-        """ Get the sppasPluginParam from a plugin identifier.
+        """Get the sppasPluginParam from a plugin identifier.
 
         :returns: sppasPluginParam matching the plugin_id or None
 
@@ -109,7 +109,7 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def set_progress(self, progress):
-        """ Fix the progress system to be used while executing a plugin.
+        """Fix the progress system to be used while executing a plugin.
 
         :param progress: (TextProgress or ProcessProgressDialog)
 
@@ -119,7 +119,7 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def load(self):
-        """ Load all installed plugins in the SPPAS directory.
+        """Load all installed plugins in the SPPAS directory.
 
         A plugin is not loaded if:
 
@@ -137,7 +137,7 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def install(self, plugin_archive, plugin_folder):
-        """ Install a plugin into the plugin directory.
+        """Install a plugin into the plugin directory.
 
         :param plugin_archive: (str) File name of the plugin to be installed (ZIP).
         :param plugin_folder: (str) Destination folder name of the plugin to be installed.
@@ -169,7 +169,7 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def delete(self, plugin_id):
-        """ Delete a plugin of the plugins directory.
+        """Delete a plugin of the plugins directory.
 
         :param plugin_id: (str) Identifier of the plugin to delete.
 
@@ -184,7 +184,7 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def append(self, plugin_folder):
-        """ Append a plugin in the list of plugins.
+        """Append a plugin in the list of plugins.
         It is supposed that the given plugin folder name is a folder of the
         plugin directory.
 
@@ -215,7 +215,7 @@ class sppasPluginsManager(Thread):
     # ------------------------------------------------------------------------
 
     def run_plugin(self, plugin_id, file_names):
-        """ Apply a given plugin on a list of files.
+        """Apply a given plugin on a list of files.
 
         :param plugin_id: (str) Identifier of the plugin to apply.
         :param file_names: (list) List of files on which the plugin has to be applied.
@@ -272,7 +272,7 @@ class sppasPluginsManager(Thread):
 
     @staticmethod
     def __init_plugin_dir():
-        """ Create the plugin directory if any. """
+        """Create the plugin directory if any."""
 
         if os.path.exists(paths.plugins):
             return True
@@ -287,7 +287,7 @@ class sppasPluginsManager(Thread):
 
     @staticmethod
     def __get_plugins():
-        """ Return a list of plugin folders. """
+        """Return a list of plugin folders."""
 
         folders = list()
         for entry in os.listdir(paths.plugins):
@@ -301,7 +301,7 @@ class sppasPluginsManager(Thread):
 
     @staticmethod
     def __get_config_file(plugin_dir):
-        """ Return the config file of a given plugin. """
+        """Return the config file of a given plugin."""
 
         sd = sppasDirUtils(plugin_dir)
         files = sd.get_files(extension=".ini", recurs=False)

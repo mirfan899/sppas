@@ -67,7 +67,7 @@ SP_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("pause"
 
 
 class TestDictPhon(unittest.TestCase):
-    """ Test sppasDictPhonetizer: a dictionary-based phonetization. """
+    """Test sppasDictPhonetizer: a dictionary-based phonetization."""
 
     def setUp(self):
         self.dd = sppasDictPron()
@@ -80,7 +80,7 @@ class TestDictPhon(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_get_phon_entry(self):
-        """ ... Phonetization of an entry. """
+        """... Phonetization of an entry."""
 
         # a silence
         self.assertEqual(SIL, self.grph.get_phon_entry("gpf_1"))
@@ -104,7 +104,7 @@ class TestDictPhon(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_get_phon_tokens(self):
-        """ ... Phonetization of a list of tokens, with the status returned. """
+        """... Phonetization of a list of tokens, with the status returned."""
 
         self.assertEqual([], self.grph.get_phon_tokens([' \n \t']))
 
@@ -146,7 +146,7 @@ class TestDictPhon(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_phonetize(self):
-        """ ... Phonetization of an utterance. """
+        """... Phonetization of an utterance."""
 
         with self.assertRaises(TypeError):
             self.grph.phonetize('A', delimiter="_-")
@@ -167,7 +167,7 @@ class TestDictPhon(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_phonetize_with_map_table(self):
-        """ ... Phonetization of an utterance if a sppasMapping() is fixed. """
+        """... Phonetization of an utterance if a sppasMapping() is fixed."""
 
         mapt = sppasMapping()
         mapt.add('a', 'A')
@@ -215,7 +215,7 @@ class TestDictPhon(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_phon_from_loaded_data(self):
-        """ ... Phonetization using real resource data. """
+        """... Phonetization using real resource data."""
 
         dict_file = os.path.join(paths.resources, "dict", "eng.dict")
         map_table = os.path.join(paths.resources, "dict", "eng-fra.map")
@@ -256,7 +256,7 @@ class TestDictPhon(unittest.TestCase):
 
 
 class TestDAGPhon(unittest.TestCase):
-    """ Test phonetization of unknown entries with a DAG. """
+    """Test phonetization of unknown entries with a DAG."""
 
     def setUp(self):
         self.dd = sppasDAGPhonetizer()
@@ -264,7 +264,7 @@ class TestDAGPhon(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_decompose(self):
-        """ ... Create a decomposed phonetization from a string.
+        """... Create a decomposed phonetization from a string.
          As follow:
 
             >>> dag_phon.decompose("p1 p2|x2 p3|x3")
@@ -299,7 +299,7 @@ class TestDAGPhon(unittest.TestCase):
 
 
 class TestPhonUnk(unittest.TestCase):
-    """ Unknown words phonetization. """
+    """Unknown words phonetization."""
 
     def setUp(self):
         d = {'a': 'a|aa',
@@ -313,7 +313,7 @@ class TestPhonUnk(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_phon(self):
-        """ ... Phonetization of an unknown entry. """
+        """... Phonetization of an unknown entry."""
 
         self.assertEqual(set("abb-a|abb-aa".split('|')),
                          set(self.p.get_phon('abba').split('|')))
@@ -344,7 +344,7 @@ class TestPhonUnk(unittest.TestCase):
 
 
 class TestPhonetization(unittest.TestCase):
-    """ Test the SPPAS integration of the Phonetization. """
+    """Test the SPPAS integration of the Phonetization."""
 
     def setUp(self):
         dict_file = os.path.join(paths.resources, "dict", "eng.dict")
@@ -355,7 +355,7 @@ class TestPhonetization(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_phonetize(self):
-        """ ... Phonetization of an utterance. """
+        """... Phonetization of an utterance."""
 
         self.sp.set_unk(True)
         self.assertEqual(symbols.unk, self.sp.phonetize("é à"))
@@ -380,7 +380,7 @@ class TestPhonetization(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_phonetize_learners(self):
-        """ ... Phonetization of an utterance with a map table defined. """
+        """... Phonetization of an utterance with a map table defined."""
 
         self.assertEqual(set("D-@|D-V|D-i:|z-@|z-V|z-i:|D-i|z-i|D-9|z-9|z-@".split('|')),
                          set(self.spl.phonetize("THE")[0].split('|')))
@@ -391,7 +391,7 @@ class TestPhonetization(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_samples(self):
-        """ ... Compare the current result is the same as the existing one. """
+        """... Compare the current result is the same as the existing one."""
 
         # the place where are the samples to be tested.
         samples_path = os.path.join(paths.samples, "annotation-results")

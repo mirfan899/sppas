@@ -66,7 +66,7 @@ DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 
 class TestSetFilter(unittest.TestCase):
-    """ Test filter result. """
+    """Test filter result."""
 
     def setUp(self):
         self.p1 = sppasPoint(1)
@@ -89,7 +89,7 @@ class TestSetFilter(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_append(self):
-        """ Append an annotation and values. """
+        """Append an annotation and values."""
 
         d = sppasAnnSet()
         self.assertEqual(0, len(d))
@@ -110,7 +110,7 @@ class TestSetFilter(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_copy(self):
-        """ Test the copy of a data set. """
+        """Test the copy of a data set."""
 
         d = sppasAnnSet()
         d.append(self.a1, ['contains = t', 'contains = o'])
@@ -124,7 +124,7 @@ class TestSetFilter(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_or(self):
-        """ Test logical "or" between two data sets. """
+        """Test logical "or" between two data sets."""
 
         d1 = sppasAnnSet()
         d2 = sppasAnnSet()
@@ -161,7 +161,7 @@ class TestSetFilter(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_and(self):
-        """ Test logical "and" between two data sets. """
+        """Test logical "and" between two data sets."""
 
         d1 = sppasAnnSet()
         d2 = sppasAnnSet()
@@ -189,7 +189,7 @@ class TestSetFilter(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_to_tier(self):
-        """ Create a tier from the data set. """
+        """Create a tier from the data set."""
 
         d = sppasAnnSet()
         d.append(self.a3, ['contains = t'])
@@ -223,7 +223,7 @@ class TestSetFilter(unittest.TestCase):
 
 
 class TestFilterTier(unittest.TestCase):
-    """ Test filters on a single tier. """
+    """Test filters on a single tier."""
 
     def setUp(self):
         parser = sppasRW(os.path.join(DATA, "grenelle.antx"))
@@ -232,7 +232,7 @@ class TestFilterTier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_tag(self):
-        """ Test tag is matching str. """
+        """Test tag is matching str."""
 
         tier = self.trs.find('P-Phonemes')
 
@@ -266,7 +266,7 @@ class TestFilterTier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_not_tag(self):
-        """ Test tag is not matching str. """
+        """Test tag is not matching str."""
 
         tier = self.trs.find('P-Phonemes')
         f = sppasFilters(tier)
@@ -277,7 +277,7 @@ class TestFilterTier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_dur(self):
-        """ Test localization duration. """
+        """Test localization duration."""
 
         tier = self.trs.find('P-Phonemes')
         f = sppasFilters(tier)
@@ -292,7 +292,7 @@ class TestFilterTier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_loc(self):
-        """ Test localization range. """
+        """Test localization range."""
 
         tier = self.trs.find('P-Phonemes')
         f = sppasFilters(tier)
@@ -319,7 +319,7 @@ class TestFilterTier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_combined(self):
-        """ Test both tag and duration. """
+        """Test both tag and duration."""
 
         tier = self.trs.find('P-Phonemes')
         f = sppasFilters(tier)
@@ -337,7 +337,7 @@ class TestFilterTier(unittest.TestCase):
 
 
 class TestFilterRelationTier(unittest.TestCase):
-    """ Test relations.
+    """Test relations.
 
     Example:
     ========

@@ -81,7 +81,7 @@ class sppasTextNorm(sppasBaseAnnotation):
 
     """
     def __init__(self, vocab, lang="und", logfile=None):
-        """ Create a sppasTextNorm instance.
+        """Create a sppasTextNorm instance.
 
         :param vocab: (str) name of the file with the orthographic transcription
         :param lang: (str) the language code
@@ -120,7 +120,7 @@ class sppasTextNorm(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def fix_options(self, options):
-        """ Fix all options. Available options are:
+        """Fix all options. Available options are:
 
             - faked
             - std
@@ -145,7 +145,7 @@ class sppasTextNorm(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_faked(self, value):
-        """ Fix the faked option.
+        """Fix the faked option.
 
         :param value: (bool) Create a faked tokenization
 
@@ -155,7 +155,7 @@ class sppasTextNorm(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_std(self, value):
-        """ Fix the std option.
+        """Fix the std option.
 
         :param value: (bool) Create a standard tokenization
 
@@ -165,7 +165,7 @@ class sppasTextNorm(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_custom(self, value):
-        """ Fix the custom option.
+        """Fix the custom option.
 
         :param value: (bool) Create a customized tokenization
 
@@ -177,7 +177,7 @@ class sppasTextNorm(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def convert(self, tier):
-        """ Text normalization of all labels of a tier.
+        """Text normalization of all labels of a tier.
 
         :param tier: (sppasTier) the orthographic transcription (standard or EOT)
         :returns: A tuple with 3 tiers named:
@@ -219,7 +219,7 @@ class sppasTextNorm(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def run(self, input_filename, output_filename=None):
-        """ Run the annotation process on an input file.
+        """Run the annotation process on an input file.
 
         :param input_filename: (str) Name of the input file with the transcription
         :param output_filename: (str) Name of the resulting file with normalization
@@ -270,7 +270,7 @@ class sppasTextNorm(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def __convert(self, tier, actions):
-        """ Normalize all tags of all labels of an annotation.
+        """Normalize all tags of all labels of an annotation.
 
         """
         tokens_tier = sppasTier("Tokens")
@@ -321,7 +321,7 @@ class sppasTextNorm(sppasBaseAnnotation):
 
     @staticmethod
     def __add_meta_in_token_tier(tier, enable_actions):
-        """ Add metadata into a normalized tier. """
+        """Add metadata into a normalized tier."""
 
         tier.set_meta("language", "0")
         for action in ['replace', "tokenize", "numbers", "lower", "punct"]:
@@ -333,7 +333,7 @@ class sppasTextNorm(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def __force_align_tiers(self, std_tier, faked_tier):
-        """ Force standard spelling and faked spelling to share the same
+        """Force standard spelling and faked spelling to share the same
         number of tokens.
 
         :param std_tier: (sppasTier)
@@ -369,7 +369,7 @@ class sppasTextNorm(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def __align_tiers(self, std, faked):
-        """ Align standard spelling tokens with faked spelling tokens.
+        """Align standard spelling tokens with faked spelling tokens.
 
         :param std: (str)
         :param faked: (str)

@@ -114,7 +114,7 @@ class sppasPluginConfigParser(object):
 
     """
     def __init__(self, filename=None):
-        """ Create a parser.
+        """Create a parser.
 
         :param filename: (string) the file name of the plugin configuration.
 
@@ -127,7 +127,7 @@ class sppasPluginConfigParser(object):
     # ------------------------------------------------------------------------
 
     def get_config(self):
-        """ Get the 'Configuration' section content.
+        """Get the 'Configuration' section content.
 
         :returns: dictionary.
 
@@ -147,7 +147,7 @@ class sppasPluginConfigParser(object):
     # ------------------------------------------------------------------------
 
     def get_command(self):
-        """ Get the 'Command' section content.
+        """Get the 'Command' section content.
 
         :returns: dictionary.
 
@@ -164,7 +164,7 @@ class sppasPluginConfigParser(object):
     # ------------------------------------------------------------------------
 
     def get_options(self):
-        """ Return all the 'Option' section contents.
+        """Return all the 'Option' section contents.
         The section name is used as key. Values are of type "Option".
 
         :returns: ordered dictionary.
@@ -182,7 +182,7 @@ class sppasPluginConfigParser(object):
     # ------------------------------------------------------------------------
 
     def set_options(self, options):
-        """ Re-set all the 'Option' section.
+        """Re-set all the 'Option' section.
 
         :param options: (ordered dictionary) with key=section name, and \
         value is of type "Option" (with at least a "key").
@@ -204,7 +204,7 @@ class sppasPluginConfigParser(object):
     # ------------------------------------------------------------------------
 
     def parse(self, filename):
-        """ Parse a configuration file.
+        """Parse a configuration file.
         This will forget all previous configurations (if any).
 
         :param filename: (string) Configuration file name.
@@ -228,7 +228,7 @@ class sppasPluginConfigParser(object):
     # ------------------------------------------------------------------------
 
     def save(self, backup=True):
-        """ Save the configuration file.
+        """Save the configuration file.
         Copy the old one into a backup file.
 
         """
@@ -247,7 +247,7 @@ class sppasPluginConfigParser(object):
 
     @staticmethod
     def __parse_option(items):
-        """ Parse an option.
+        """Parse an option.
         Convert an "Option" section of the parser into an "Option" instance.
 
         """
@@ -280,7 +280,7 @@ class sppasPluginConfigParser(object):
     # ------------------------------------------------------------------------
 
     def __set_option(self, section_name, option):
-        """ Set an option.
+        """Set an option.
         Convert a "sppasOption" instance into an "Option" section of the parser.
 
         """

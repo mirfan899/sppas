@@ -73,7 +73,7 @@ class Momel(object):
 
     """
     def __init__(self):
-        """ Create a new Momel instance. """
+        """Create a new Momel instance."""
 
         # Constants
         self.SEUILV = 50.
@@ -116,7 +116,7 @@ class Momel(object):
     # -------------------------------------------------------------------
 
     def initialize(self):
-        """ Set some variables to their default values.
+        """Set some variables to their default values.
             Parameters: None
             Return:     None
         """
@@ -166,7 +166,7 @@ class Momel(object):
     # ------------------------------------------------------------------
 
     def elim_glitch(self):
-        """ Eliminate Glitch of the pitch values array.
+        """Eliminate Glitch of the pitch values array.
             Set a current pith value to 0 if left and right values
             are greater than 5% more than the current value.
             Parameters: None
@@ -488,7 +488,7 @@ class Momel(object):
     # ------------------------------------------------------------------
 
     def reduc2(self):
-        """ reduc2.
+        """reduc2.
             2eme filtrage des cibles trop proches en t [et Hz]
         """
         # classe ordre temporel croissant les cibred
@@ -516,7 +516,7 @@ class Momel(object):
     # ------------------------------------------------------------------
 
     def borne(self):
-        """ borne.
+        """borne.
             Principes:
             calcul borne G (D)  si 1ere (derniere) cible est
             ( > (debut_voisement+halo) )
@@ -592,7 +592,7 @@ class Momel(object):
     # ------------------------------------------------------------------
 
     def annotate(self, pitch_values):
-        """ Apply momel from a vector of pitch values, one each 0.01 sec.
+        """Apply momel from a vector of pitch values, one each 0.01 sec.
 
         :param pitch_values: (list)
         :returns: list of selected anchors

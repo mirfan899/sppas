@@ -65,7 +65,7 @@ FRA_SYLL = os.path.join(paths.resources, "syll", "syllConfig-fra.txt")
 
 
 class TestSyllabifier(unittest.TestCase):
-    """ Syllabification of a list of phonemes. """
+    """Syllabification of a list of phonemes."""
 
     def setUp(self):
         self.syll_pol = Syllabifier(POL_SYLL)
@@ -74,7 +74,7 @@ class TestSyllabifier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_find_next_vowel(self):
-        """ ... Search of the next vowel in classes. """
+        """... Search of the next vowel in classes."""
 
         c = ['L', 'V', 'P', 'P', 'V', 'F', 'V', 'L']
         self.assertEqual(1, Syllabifier._find_next_vowel(c, 0))
@@ -90,7 +90,7 @@ class TestSyllabifier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_find_next_break(self):
-        """ ... Search of the next break in classes. """
+        """... Search of the next break in classes."""
 
         c = ['L', 'V', 'P', 'P', 'V', 'F', 'V', 'L']
         self.assertEqual(-1, Syllabifier._find_next_break(c, 0))
@@ -102,7 +102,7 @@ class TestSyllabifier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_fix_nucleus(self):
-        """ ... Search for the next nucleus of a syllable. """
+        """... Search for the next nucleus of a syllable."""
 
         self.assertEqual(-1, Syllabifier._fix_nucleus([], 0))
         self.assertEqual(-1, Syllabifier._fix_nucleus(['#'], 0))
@@ -127,7 +127,7 @@ class TestSyllabifier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_fix_start_syll(self):
-        """ ... Search for the index of the first phoneme of the syllable. """
+        """... Search for the index of the first phoneme of the syllable."""
 
         c = ['L', 'V', 'P', '#', 'V', '#', 'P', 'V', '#', '#', 'F', 'V', 'V', 'L']
 
@@ -143,7 +143,7 @@ class TestSyllabifier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_apply_class_rules(self):
-        """ ... Apply the syllabification rules between v1 and v2. """
+        """... Apply the syllabification rules between v1 and v2."""
 
         # from classes
         c = ['L', 'V', 'P', 'P', 'V', 'F', 'V', 'L']
@@ -158,7 +158,7 @@ class TestSyllabifier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_annotate(self):
-        """ ... Test creation of the syllable boundaries from a sequence of phonemes """
+        """... Test creation of the syllable boundaries from a sequence of phonemes """
 
         # no syllable
 
@@ -281,7 +281,7 @@ class TestSyllabifier(unittest.TestCase):
 
 
 class TestsppasSyll(unittest.TestCase):
-    """ Syllabification of a tier with time-aligned phonemes. """
+    """Syllabification of a tier with time-aligned phonemes."""
 
     def setUp(self):
         self.syll = sppasSyll(FRA_SYLL)
@@ -335,7 +335,7 @@ class TestsppasSyll(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_phon_to_intervals(self):
-        """ ... Create the intervals to be syllabified. """
+        """... Create the intervals to be syllabified."""
 
         test_tier = self.tier.copy()
 
@@ -384,7 +384,7 @@ class TestsppasSyll(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_syllabify_interval(self):
-        """ ... Perform the syllabification of one interval. """
+        """... Perform the syllabification of one interval."""
 
         expected = sppasTier('Expected')
         expected.create_annotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3))),
@@ -408,21 +408,21 @@ class TestsppasSyll(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_convert(self):
-        """ ... [TO DO] Syllabify labels of a time-aligned phones tier. """
+        """... [TO DO] Syllabify labels of a time-aligned phones tier."""
 
         s = self.syll.convert(self.tier)
 
     # -----------------------------------------------------------------------
 
     def test_run(self):
-        """ ... [TO DO] Test on real-life data. """
+        """... [TO DO] Test on real-life data."""
 
         pass
 
     # -----------------------------------------------------------------------
 
     def test_samples(self):
-        """ ... Compare the current result is the same as the existing one. """
+        """... Compare the current result is the same as the existing one."""
 
         # the place where are the samples to be tested.
         samples_path = os.path.join(paths.samples, "annotation-results")

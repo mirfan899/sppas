@@ -356,7 +356,7 @@ class DisplayCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def SetPreferences(self, prefs):
-        """ Set new preferences. """
+        """Set new preferences."""
 
         self._prefsIO = prefs
         for i in range(self._xfiles.GetSize()):
@@ -370,7 +370,7 @@ class DisplayCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def GetData(self):
-        """ Return the list of really displayed file names. """
+        """Return the list of really displayed file names."""
 
         l = []
         for i in range(self._xfiles.GetSize()):
@@ -383,14 +383,14 @@ class DisplayCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def GetRuler(self):
-        """ Return the ruler (TimeRuler). """
+        """Return the ruler (TimeRuler)."""
 
         return self._timeruler
 
     # ------------------------------------------------------------------------
 
     def GetSelectedObject(self):
-        """ Return the the selected object (or None). """
+        """Return the the selected object (or None)."""
 
         for i in range(self._xfiles.GetSize()):
             obj = self._xfiles.GetObject(i)
@@ -402,7 +402,7 @@ class DisplayCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def SetSelectedObject(self, sel):
-        """ Set selected object (if sel is different of the current' one). """
+        """Set selected object (if sel is different of the current' one)."""
 
         # Nothing to do: same object selected!
         if self.GetSelectedObject() == sel:
@@ -426,7 +426,7 @@ class DisplayCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def GetSelectionFilename(self):
-        """ Return the file name of the selected object (or an empty string). """
+        """Return the file name of the selected object (or an empty string)."""
 
         for i in range(self._xfiles.GetSize()):
             obj = self._xfiles.GetObject(i)
@@ -438,14 +438,14 @@ class DisplayCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def GetPeriod(self):
-        """ Return the displayed period. """
+        """Return the displayed period."""
 
         return self._period
 
     # ------------------------------------------------------------------------
 
     def SetPeriod(self, period):
-        """ Set a new data period. """
+        """Set a new data period."""
         
         self._period = period
         self._updatedPeriod()
@@ -459,14 +459,14 @@ class DisplayCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def GetPeriodValues(self):
-        """ Return a tuple with (mintime,maxtime) of the displayed period. """
+        """Return a tuple with (mintime,maxtime) of the displayed period."""
 
         return self._period.GetStart() , self._period.GetEnd()
 
     # ------------------------------------------------------------------------
 
     def SetPeriodValues(self, start, end):
-        """ Return a tuple with (mintime,maxtime) of the displayed period. """
+        """Return a tuple with (mintime,maxtime) of the displayed period."""
 
         self._period.Update(start, end)
         self._updatedPeriod()
@@ -480,7 +480,7 @@ class DisplayCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def onSelectionRange(self, event):
-        """ The period selection was changed by an object. """
+        """The period selection was changed by an object."""
 
         idt = event.GetId()
         for i in range(self._xfiles.GetSize()):
@@ -496,7 +496,7 @@ class DisplayCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def onSelectedObject(self, event):
-        """ Event handler used by an object when it is selected. """
+        """Event handler used by an object when it is selected."""
 
         idt = event.GetId()
         ctrl = event.GetEventObject()
@@ -715,7 +715,7 @@ class DisplayCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def onPaint(self, event):
-        """ Called when the window is exposed. """
+        """Called when the window is exposed."""
         dc = wx.BufferedPaintDC(self, self._buffer)
 
     # ------------------------------------------------------------------------
@@ -750,7 +750,7 @@ class DisplayCtrl(wx.Window):
     # ------------------------------------------------------------------------
 
     def GetImage(self):
-        """ Return the drawer as an image, or None. """
+        """Return the drawer as an image, or None."""
 
         rect = self.GetParent().GetRect()
         client_x, client_y = self.ClientToScreen((0,0))
@@ -805,7 +805,7 @@ class DisplayCtrl(wx.Window):
     # =====================
 
     def _objSetPreferences(self, obj):
-        """ Set current preferences to any spControl object. """
+        """Set current preferences to any spControl object."""
 
         if isinstance(obj,TimeRulerCtrl):
             obj.SetBackgroundColour(self._prefsIO.GetValue('R_BG_COLOUR'))

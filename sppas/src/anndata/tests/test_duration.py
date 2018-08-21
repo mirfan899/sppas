@@ -161,7 +161,7 @@ class TestDuration(unittest.TestCase):
 
 
 class TestDurationCompare(unittest.TestCase):
-    """ Test methods to compare durations. """
+    """Test methods to compare durations."""
 
     def setUp(self):
         self.dc = sppasDurationCompare()
@@ -169,7 +169,7 @@ class TestDurationCompare(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_members(self):
-        """ Test methods getter. """
+        """Test methods getter."""
 
         self.assertEqual(self.dc.methods['eq'], self.dc.eq)
         self.assertEqual(self.dc.get('eq'), self.dc.eq)
@@ -192,7 +192,7 @@ class TestDurationCompare(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_eq(self):
-        """ dur == x. """
+        """dur == x."""
 
         self.assertTrue(self.dc.eq(sppasDuration(1, 0.02), 1.01))
         self.assertFalse(self.dc.eq(sppasDuration(1, 0.02), sppasDuration(2)))

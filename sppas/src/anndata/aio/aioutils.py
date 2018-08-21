@@ -69,7 +69,7 @@ def format_point_to_float(p):
 
 
 def load(filename, file_encoding=sg.__encoding__):
-    """ Load a file into lines.
+    """Load a file into lines.
 
     :param filename: (str)
     :param file_encoding: (str)
@@ -91,7 +91,7 @@ def load(filename, file_encoding=sg.__encoding__):
 
 
 def format_labels(text, separator="\n", empty=""):
-    """ Create a set of labels from a text.
+    """Create a set of labels from a text.
 
     Use the separator to split the text into labels.
     Use the "{ / }" system to parse the alternative tags.
@@ -121,7 +121,7 @@ def format_labels(text, separator="\n", empty=""):
 
 
 def format_label(text, empty=""):
-    """ Create a label from a text.
+    """Create a label from a text.
 
     Use the "{ / }" system to parse the alternative tags.
 
@@ -141,7 +141,7 @@ def format_label(text, empty=""):
 
 
 def check_gaps(tier, min_loc=None, max_loc=None):
-    """ Check if there are holes between annotations.
+    """Check if there are holes between annotations.
 
     :param tier: (sppasTier)
     :param min_loc: (sppasPoint)
@@ -172,7 +172,7 @@ def check_gaps(tier, min_loc=None, max_loc=None):
 
 
 def fill_gaps(tier, min_loc=None, max_loc=None):
-    """ Return the tier in which the temporal gaps between annotations are
+    """Return the tier in which the temporal gaps between annotations are
     filled with an un-labelled annotation.
 
     :param tier: (Tier) A tier with intervals.
@@ -235,7 +235,7 @@ def fill_gaps(tier, min_loc=None, max_loc=None):
 
 
 def unfill_gaps(tier):
-    """ Return the tier in which un-labelled annotations are removed.
+    """Return the tier in which un-labelled annotations are removed.
 
     An un_labelled annotation means that:
 
@@ -266,7 +266,7 @@ def unfill_gaps(tier):
 
 
 def check_overlaps(tier):
-    """ Check whether some annotations are overlapping or not.
+    """Check whether some annotations are overlapping or not.
 
     :param tier: (sppasTier)
     :returns: (bool)
@@ -289,7 +289,7 @@ def check_overlaps(tier):
 
 
 def merge_overlapping_annotations(tier):
-    """ Merge overlapping annotations.
+    """Merge overlapping annotations.
 
     The labels of 2 overlapping annotations are appended.
 
@@ -447,7 +447,7 @@ def merge_overlapping_annotations(tier):
 
 
 def point2interval(tier, radius=0.001):
-    """ Convert a PointTier into an IntervalTier.
+    """Convert a PointTier into an IntervalTier.
 
     - Ensure the radius to be always >= 1 millisecond and the newly created
     tier won't contain overlapped intervals.

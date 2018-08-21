@@ -222,7 +222,7 @@ class CustomClock( wx.Window ):
 
 
     def _strfduration(self, t):
-        """ convert a duration in ms into a formatted string. """
+        """convert a duration in ms into a formatted string."""
 
         return time.strftime("%H:%M:%S", time.gmtime(t/1000)) + '.%03d' % (t%1000)
 
@@ -279,7 +279,7 @@ class CustomClock( wx.Window ):
 
 
     def __initialSize(self, size):
-        """ Initialize the size. """
+        """Initialize the size."""
 
         self.SetMinSize(wx.Size(MIN_W,MIN_H))
         if size:

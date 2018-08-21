@@ -68,7 +68,7 @@ class sppasBaseHTK(sppasBaseIO):
 
     """
     def __init__(self, name=None):
-        """ Initialize a new sppasMLF instance.
+        """Initialize a new sppasMLF instance.
 
         :param name: (str) This transcription name.
 
@@ -97,7 +97,7 @@ class sppasBaseHTK(sppasBaseIO):
 
     @staticmethod
     def make_point(time_string):
-        """ Convert data into the appropriate sppasPoint().
+        """Convert data into the appropriate sppasPoint().
         No radius if data is an integer. A default radius of 0.001 if data is a
         float.
 
@@ -112,7 +112,7 @@ class sppasBaseHTK(sppasBaseIO):
 
     @staticmethod
     def _format_time(second_count):
-        """ Convert a time in seconds into HTK format. """
+        """Convert a time in seconds into HTK format."""
 
         return int(1. / TIME_UNIT * float(second_count))
 
@@ -120,7 +120,7 @@ class sppasBaseHTK(sppasBaseIO):
 
     @staticmethod
     def _serialize_annotation(ann):
-        """ Convert an annotation into a line for HTK lab of mlf files.
+        """Convert an annotation into a line for HTK lab of mlf files.
 
         :param ann: (sppasAnnotation)
         :returns: (str)
@@ -188,7 +188,7 @@ class sppasLab(sppasBaseHTK):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of HTK-Lab format or not.
+        """Check whether a file is of HTK-Lab format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -218,7 +218,7 @@ class sppasLab(sppasBaseHTK):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasLab instance.
+        """Initialize a new sppasLab instance.
 
         :param name: (str) This transcription name.
 
@@ -232,7 +232,7 @@ class sppasLab(sppasBaseHTK):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a transcription from a file.
+        """Read a transcription from a file.
 
         :param filename:
 
@@ -279,7 +279,7 @@ class sppasLab(sppasBaseHTK):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write a transcription into a file.
+        """Write a transcription into a file.
 
         :param filename: (str)
 

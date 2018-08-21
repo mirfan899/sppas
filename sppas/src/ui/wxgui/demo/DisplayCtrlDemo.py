@@ -135,7 +135,7 @@ class DisplayCtrlDemo( wx.Window ):
 
 
     def repaint1(self, event):
-        """ Theme. """
+        """Theme."""
         themes = [u'Default', u'Brigitte', u'Paul', u'Léa']
         p = random.sample(range(0,4),1)[0]
         # set the theme to prefsIO
@@ -146,7 +146,7 @@ class DisplayCtrlDemo( wx.Window ):
 
 
     def repaint2(self, event):
-        """ Period. """
+        """Period."""
         s = float(random.sample(range(0,5), 1)[0])
         d = float(random.sample(range(1,20), 1)[0])/10.
         self.GetTopLevelParent().GetStatusBar().SetStatusText('New period: %f,%f'%(s,s+d))
@@ -154,7 +154,7 @@ class DisplayCtrlDemo( wx.Window ):
 
 
     def repaint3(self, event):
-        """ Font. """
+        """Font."""
         data = wx.FontData()
         dlg = wx.FontDialog(self, data)
         if dlg.ShowModal() == wx.ID_OK:

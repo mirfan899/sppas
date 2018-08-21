@@ -57,7 +57,7 @@ from .central import fsum
 
 
 def compute_error_for_line_given_points(b, m, points):
-    """ Error function (also called a cost function) measures how "good" a
+    """Error function (also called a cost function) measures how "good" a
     given line is. This function will take in a (m,b) pair and return an
     error value based on how well the line fits our data.
     To compute this error for a given line, we'll iterate through each (x,y)
@@ -77,7 +77,7 @@ def compute_error_for_line_given_points(b, m, points):
 
 
 def step_gradient(b_current, m_current, points, learning_rate):
-    """ To run gradient descent on an error function, we first need to compute
+    """To run gradient descent on an error function, we first need to compute
     its gradient. The gradient will act like a compass and always point us
     downhill. To compute it, we will need to differentiate our error function.
     Since our function is defined by two parameters (m and b), we will need
@@ -107,7 +107,7 @@ def step_gradient(b_current, m_current, points, learning_rate):
 
 
 def gradient_descent(points, starting_b, starting_m, learning_rate, num_iterations):
-    """ Gradient descent is an algorithm that minimizes functions.
+    """Gradient descent is an algorithm that minimizes functions.
     Given a function defined by a set of parameters, gradient descent starts
     with an initial set of parameter values and iteratively moves toward a set
     of parameter values that minimize the function. This iterative minimization
@@ -131,7 +131,7 @@ def gradient_descent(points, starting_b, starting_m, learning_rate, num_iteratio
 
 
 def gradient_descent_linear_regression(points, num_iterations=50000):
-    """ Gradient descent method for linear regression.
+    """Gradient descent method for linear regression.
 
     adapted from:
     http://spin.atomicobject.com/2014/06/24/gradient-descent-linear-regression/
@@ -151,7 +151,7 @@ def gradient_descent_linear_regression(points, num_iterations=50000):
 
 
 def tga_linear_regression(points):
-    """ Linear regression as proposed in TGA, by Dafydd Gibbon.
+    """Linear regression as proposed in TGA, by Dafydd Gibbon.
     http://wwwhomes.uni-bielefeld.de/gibbon/TGA/
 
     :param points: a list of tuples (x,y) of float values.
@@ -187,7 +187,7 @@ def tga_linear_regression(points):
 
 
 def tansey_linear_regression(points):
-    """ Linear regression, as proposed in AnnotationPro.
+    """Linear regression, as proposed in AnnotationPro.
     http://annotationpro.org/
     
     Translated from C# code from here:

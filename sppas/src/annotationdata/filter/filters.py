@@ -49,7 +49,7 @@ from .predicate import Rel
 
 
 class Filter(object):
-    """ Create an empty Filter.
+    """Create an empty Filter.
 
     >>> f = Filter(tier)
     >>> copytier = f.Filter()
@@ -73,7 +73,7 @@ class Filter(object):
                     yield x
 
     def Filter(self):
-        """ Filter the given tier without any predicate: simply copy the tier!
+        """Filter the given tier without any predicate: simply copy the tier!
 
         :returns: (Tier)
 
@@ -91,7 +91,7 @@ class Filter(object):
 
 
 class SingleFilter(Filter):
-    """ Create a filter on a single filter.
+    """Create a filter on a single filter.
 
     >>> f = Filter(tier)
     >>> p = Sel(exact='foo') | Sel(exact='bar') & Sel(duration_le=0.2)
@@ -100,7 +100,7 @@ class SingleFilter(Filter):
 
     """
     def __init__(self, predicate, filter):
-        """ Constructor for SingleFilter, a filter on a single tier.
+        """Constructor for SingleFilter, a filter on a single tier.
 
         :param predicate: (Predicate)
         :param filter: (either: Filter, SingleFilter, RelationFilter)
@@ -118,7 +118,7 @@ class SingleFilter(Filter):
     # -----------------------------------------------------------------------
 
     def Filter(self):
-        """ Apply the predicate on all annotations of the tier defined in the filter.
+        """Apply the predicate on all annotations of the tier defined in the filter.
 
         :returns: (Tier)
 
@@ -136,7 +136,7 @@ class SingleFilter(Filter):
 
 
 class RelationFilter():
-    """ Create a filter on relations between 2 filters.
+    """Create a filter on relations between 2 filters.
 
     >>> fX = Filter(tier1)
     >>> fY = Filter(tier2)
@@ -147,7 +147,7 @@ class RelationFilter():
 
     """
     def __init__(self, relation, filter1, filter2):
-        """ Constructor for RelationFilter, a filter on relations between 2 filters.
+        """Constructor for RelationFilter, a filter on relations between 2 filters.
 
         :param relation: (RelationPredicate)
         :param filter1: (either: Filter, SingleFilter, RelationFilter)
@@ -161,7 +161,7 @@ class RelationFilter():
     # -----------------------------------------------------------------------
 
     def __iter__(self):
-        """ Iterator
+        """Iterator
 
         :returns: a tuple (x, rel, y) with the annotations and their relation (type: (Annotation, string, Annotation))
 
@@ -185,7 +185,7 @@ class RelationFilter():
     # -----------------------------------------------------------------------
 
     def Filter(self, annotformat="{x}"):
-        """ Apply the predicate on all annotations of the tier defined in the filter.
+        """Apply the predicate on all annotations of the tier defined in the filter.
 
         :type annotformat:	str
         :param annotformat:	format of the resulting annotation label.

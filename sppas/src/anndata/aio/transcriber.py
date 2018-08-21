@@ -98,7 +98,7 @@ class sppasTRS(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of TRS format or not.
+        """Check whether a file is of TRS format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -120,7 +120,7 @@ class sppasTRS(sppasBaseIO):
 
     @staticmethod
     def make_point(midpoint):
-        """ The localization is a time value, so a float. """
+        """The localization is a time value, so a float."""
 
         try:
             midpoint = float(midpoint)
@@ -131,7 +131,7 @@ class sppasTRS(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasTRS instance.
+        """Initialize a new sppasTRS instance.
 
         :param name: (str) This transcription name.
 
@@ -160,7 +160,7 @@ class sppasTRS(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a TRS file and fill the Transcription.
+        """Read a TRS file and fill the Transcription.
 
         <!ELEMENT Trans ((Speakers|Topics)*,Episode)>
 
@@ -226,7 +226,7 @@ class sppasTRS(sppasBaseIO):
 
     @staticmethod
     def __format_tag(tag):
-        """ Reformat tokens in tags.
+        """Reformat tokens in tags.
         Remove specific markers of the transcription convention of
         Transcriber.
 
@@ -249,7 +249,7 @@ class sppasTRS(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_metadata(self, root):
-        """ Get metadata from attributes of the main root.
+        """Get metadata from attributes of the main root.
 
         <!ATTLIST Trans
         audio_filename  CDATA           #IMPLIED
@@ -294,7 +294,7 @@ class sppasTRS(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_speakers(self, spk_root):
-        """ Read the <Speakers> element and create tiers.
+        """Read the <Speakers> element and create tiers.
 
         <!ELEMENT Speakers (Speaker*)>
         <!ATTLIST Speakers>
@@ -349,7 +349,7 @@ class sppasTRS(sppasBaseIO):
 
     @staticmethod
     def _parse_topics(topic_root, topic_tier):
-        """ Read the <Topics> element and create a tier.
+        """Read the <Topics> element and create a tier.
         The topics and their description are stored in a controlled
         vocabulary.
 
@@ -391,7 +391,7 @@ class sppasTRS(sppasBaseIO):
 
     @staticmethod
     def _parse_episode_attributes(episode_root, episodes_tier):
-        """ Read the episode attributes.
+        """Read the episode attributes.
 
         <!ELEMENT Episode (Section*)>
         <!ATTLIST Episode
@@ -428,7 +428,7 @@ class sppasTRS(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_section_attributes(self, section_root, section_tier):
-        """ Read the section attributes.
+        """Read the section attributes.
 
         Sections are mainly used to segment the topics and to mention
         un-transcribed segments.
@@ -466,7 +466,7 @@ class sppasTRS(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_turn_attributes(self, turn_root):
-        """ Read the turn attributes and fill the tiers.
+        """Read the turn attributes and fill the tiers.
 
         <!ATTLIST Turn
         speaker		IDREFS		#IMPLIED
@@ -515,7 +515,7 @@ class sppasTRS(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_turn(self, turn_root):
-        """ Fill a tier with the content of a turn.
+        """Fill a tier with the content of a turn.
 
         <!ELEMENT Turn (#PCDATA|Sync|Background|Comment|Who|Vocal|Event)*>
 
@@ -607,7 +607,7 @@ class sppasTRS(sppasBaseIO):
 
     @staticmethod
     def __append_background_in_label(node_event, annotation):
-        """ Background is appended like a comment in the transcription.
+        """Background is appended like a comment in the transcription.
 
         <!ELEMENT Background EMPTY>
         <!ATTLIST Background
@@ -629,7 +629,7 @@ class sppasTRS(sppasBaseIO):
 
     @staticmethod
     def __append_comment_in_label(node_event, annotation):
-        """ Append a comment to the label.
+        """Append a comment to the label.
 
         <!ELEMENT Comment EMPTY>
         <!ATTLIST Comment
@@ -646,7 +646,7 @@ class sppasTRS(sppasBaseIO):
 
     @staticmethod
     def __append_event_in_label(node_event, annotation):
-        """ Append an event to the label.
+        """Append an event to the label.
 
         <!ATTLIST Event
         type		(noise|lexical|pronounce|language)	"noise"
@@ -696,7 +696,7 @@ class sppasTRS(sppasBaseIO):
 
     @staticmethod
     def __parse_type_in_section(section_root):
-        """ Extract the type of a section. """
+        """Extract the type of a section."""
 
         if "type" in section_root.attrib:
             return section_root.attrib['type']
@@ -705,7 +705,7 @@ class sppasTRS(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __parse_topic_in_section(self, section_root, location):
-        """ Extract the topic of a section. """
+        """Extract the topic of a section."""
 
         try:
             section_topic = section_root.attrib['topic']
@@ -719,7 +719,7 @@ class sppasTRS(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __parse_mode_in_turn(self, turn_root, location):
-        """ Extract the mode of a turn. """
+        """Extract the mode of a turn."""
 
         try:
             mode = turn_root.attrib['mode']
@@ -739,7 +739,7 @@ class sppasTRS(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __parse_fidelity_in_turn(self, turn_root, location):
-        """ Extract the fidelity of a turn. """
+        """Extract the fidelity of a turn."""
 
         try:
             fidelity = turn_root.attrib['fidelity']
@@ -760,7 +760,7 @@ class sppasTRS(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __parse_channel_in_turn(self, turn_root, location):
-        """ Extract the channel of a turn. """
+        """Extract the channel of a turn."""
 
         try:
             channel = turn_root.attrib['channel']

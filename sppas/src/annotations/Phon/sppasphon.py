@@ -73,7 +73,7 @@ SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silen
 
 
 class sppasPhon(sppasBaseAnnotation):
-    """ SPPAS integration of the Phonetization automatic annotation.
+    """SPPAS integration of the Phonetization automatic annotation.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -83,7 +83,7 @@ class sppasPhon(sppasBaseAnnotation):
 
     """
     def __init__(self, dict_filename, map_filename=None, logfile=None):
-        """ Create a sppasPhon instance.
+        """Create a sppasPhon instance.
 
         :param dict_filename: (str) is the pronunciation dictionary file name
         (HTK-ASCII format, utf8).
@@ -113,7 +113,7 @@ class sppasPhon(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def fix_options(self, options):
-        """ Fix all options. Available options are:
+        """Fix all options. Available options are:
 
             - unk
             - usesstdtokens
@@ -137,7 +137,7 @@ class sppasPhon(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_unk(self, unk):
-        """ Fix the unk option value.
+        """Fix the unk option value.
 
         :param unk: (bool) If unk is set to True, the system attempts
         to phonetize unknown entries (i.e. tokens missing in the dictionary).
@@ -150,7 +150,7 @@ class sppasPhon(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_usestdtokens(self, stdtokens):
-        """ Fix the stdtokens option.
+        """Fix the stdtokens option.
 
         :param stdtokens: (bool) If it is set to True, the phonetization
         uses the standard transcription as input, instead of the faked
@@ -165,7 +165,7 @@ class sppasPhon(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_dict(self, dict_filename):
-        """ Set the pronunciation dictionary.
+        """Set the pronunciation dictionary.
 
         :param dict_filename: (str) The pronunciation dictionary in HTK-ASCII
         format with UTF-8 encoding.
@@ -177,7 +177,7 @@ class sppasPhon(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def phonetize(self, entry, idx=0):
-        """ Phonetize a text.
+        """Phonetize a text.
 
         Because we absolutely need to match with the number of tokens, this
         method will always return a string: either the automatic phonetization
@@ -216,7 +216,7 @@ class sppasPhon(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def convert(self, tier):
-        """ Phonetize annotations of a tokenized tier.
+        """Phonetize annotations of a tokenized tier.
 
         :param tier: (Tier) the orthographic transcription previously tokenized.
         :returns: (Tier) phonetized tier with name "Phones"
@@ -260,7 +260,7 @@ class sppasPhon(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def run(self, input_filename, output_filename=None):
-        """ Run the Phonetization process on an input file.
+        """Run the Phonetization process on an input file.
 
         :param input_filename (str) Name of the file including a tokenization
         :param output_filename (str) Name of the resulting file

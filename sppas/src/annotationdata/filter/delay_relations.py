@@ -935,7 +935,7 @@ class IntervalsDelay(BinaryPredicate):
     # copy of annotationdata/filter/_relations.py#split()
     @staticmethod
     def splitAnnotations(x, y):
-        """ x,y (Annotation) """
+        """x,y (Annotation) """
         if x.GetLocation().IsPoint():
             xstart = x.GetLocation().GetPoint()
             xend = x.GetLocation().GetPoint()

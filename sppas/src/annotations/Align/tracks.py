@@ -94,7 +94,7 @@ class TrackSplitter(Transcription):
 
     """
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
-        """ Creates a new TrackSplitter instance.
+        """Creates a new TrackSplitter instance.
 
         :param name: (str)
 
@@ -109,7 +109,7 @@ class TrackSplitter(Transcription):
     # ------------------------------------------------------------------------
 
     def set_tracksnames(self, track_names):
-        """ Set the TrackNamesGenerator().
+        """Set the TrackNamesGenerator().
 
         """
         self._tracknames = track_names
@@ -117,7 +117,7 @@ class TrackSplitter(Transcription):
     # ------------------------------------------------------------------------
 
     def set_trackalign( self, ta):
-        """ Set the aligner, required to create tracks (if any).
+        """Set the aligner, required to create tracks (if any).
 
         :param ta:
 
@@ -129,7 +129,7 @@ class TrackSplitter(Transcription):
     # ------------------------------------------------------------------------
 
     def split(self, inputaudio, phontier, toktier, diralign):
-        """ Main method to write tracks from the given data.
+        """Main method to write tracks from the given data.
 
         :param inputaudio: (src) File name of the audio file.
         :param phontier: (Tier) Tier with phonetization to split.
@@ -153,7 +153,7 @@ class TrackSplitter(Transcription):
     # ------------------------------------------------------------------------
 
     def write_text_tracks(self, phontier, toktier, diralign):
-        """ Write tokenization and phonetization of tiers into separated track files.
+        """Write tokenization and phonetization of tiers into separated track files.
 
         :param phontier: (Tier) time-aligned tier with phonetization to split
         :param toktier:  (Tier) time-aligned tier with tokenization to split
@@ -196,7 +196,7 @@ class TrackSplitter(Transcription):
     # ------------------------------------------------------------------------
 
     def write_audio_tracks(self, inputaudio, units, diralign, silence=0.):
-        """ Write the first channel of an audio file into separated track files.
+        """Write the first channel of an audio file into separated track files.
         Re-sample to 16000 Hz, 16 bits.
 
         :param inputaudio: (src) File name of the audio file.
@@ -217,7 +217,7 @@ class TrackSplitter(Transcription):
     # ------------------------------------------------------------------------
 
     def _write_text_track(self, trackname, trackcontent):
-        """ Write a raw text in a file.
+        """Write a raw text in a file.
 
         """
         with codecs.open(trackname, "w", sg.__encoding__) as fp:
@@ -254,7 +254,7 @@ class TracksReader(Transcription):
     # ------------------------------------------------------------------------
 
     def read(self, dirname, units):
-        """ Read a set of alignment files and set as tiers.
+        """Read a set of alignment files and set as tiers.
 
         :param dirname: (str) the input directory containing a set of unit
         :param units: (list) List of units with start/end times
@@ -294,7 +294,7 @@ class TracksReader(Transcription):
     # ------------------------------------------------------------------------
 
     def _append_tuples(self, tier, tdata, delta, unitend):
-        """ Append a list of (start,end,text,score) into the tier.
+        """Append a list of (start,end,text,score) into the tier.
         Shift start/end of a delta value and set the last end value.
 
         """

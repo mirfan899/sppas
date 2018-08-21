@@ -64,7 +64,7 @@ class sppasAcModel(object):
 
     """
     def __init__(self, name=None):
-        """ Create an sppasAcModel instance. """
+        """Create an sppasAcModel instance."""
 
         self._name = None
         self._macros = None
@@ -79,14 +79,14 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def get_name(self):
-        """ Return the identifier name of the acoustic model. """
+        """Return the identifier name of the acoustic model."""
 
         return self._name
 
     # -----------------------------------------------------------------------
 
     def set_name(self, name=None):
-        """ Set the name of the acoustic model.
+        """Set the name of the acoustic model.
 
         :param name: (str or None) The identifier name or None.
         :returns: the name
@@ -120,7 +120,7 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def set_repllist(self, repllist):
-        """ Set the placement list of the model.
+        """Set the placement list of the model.
 
         :param repllist: (sppasMapping)
 
@@ -133,7 +133,7 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def set_macros(self, macros):
-        """ Set the macros of the model.
+        """Set the macros of the model.
 
         :param macros: (OrderedDict)
 
@@ -143,7 +143,7 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def set_hmms(self, hmms):
-        """ Set the list of HMMs the model.
+        """Set the list of HMMs the model.
 
         :param hmms: (list) List of HMM instances
 
@@ -158,7 +158,7 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def get_hmm(self, phone):
-        """ Return the hmm corresponding to the given phoneme.
+        """Return the hmm corresponding to the given phoneme.
 
         :param phone: (str) the phoneme name to get hmm
         :raises: ValueError if phoneme is not in the model
@@ -172,7 +172,7 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def append_hmm(self, hmm):
-        """ Append an HMM to the model.
+        """Append an HMM to the model.
 
         :param hmm: (OrderedDict)
         :raises: TypeError, ValueError
@@ -196,7 +196,7 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def pop_hmm(self, phone):
-        """ Remove an HMM of the model.
+        """Remove an HMM of the model.
 
         :param phone: (str) the phoneme name to get hmm
         :raises: ValueError if phoneme is not in the model
@@ -211,7 +211,7 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def replace_phones(self, reverse=False):
-        """ Replace the phones by using a mapping table.
+        """Replace the phones by using a mapping table.
 
         This is mainly useful due to restrictions in some acoustic model toolkits:
         X-SAMPA can't be fully used and a "mapping" is required.
@@ -266,7 +266,7 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def fill_hmms(self):
-        """ Fill HMM states and transitions, i.e.:
+        """Fill HMM states and transitions, i.e.:
 
            - replace all the "ST_..." by the corresponding macro, for states.
            - replace all the "T_..." by the corresponding macro, for transitions.
@@ -303,7 +303,7 @@ class sppasAcModel(object):
 
     @staticmethod
     def create_model(macros, hmms):
-        """ Create an empty sppasAcModel and return it.
+        """Create an empty sppasAcModel and return it.
 
         :param macros: OrderedDict of options, transitions, states, ...
         :param hmms: models (one per phone/biphone/triphone) is a list of HMM instances
@@ -318,7 +318,7 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def extract_monophones(self):
-        """ Return an Acoustic Model that includes only monophones:
+        """Return an Acoustic Model that includes only monophones:
             - hmms and macros are selected,
             - repllist is copied,
             - tiedlist is ignored.
@@ -346,7 +346,7 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def get_mfcc_parameter_kind(self):
-        """ Return the MFCC parameter kind, as a string, or an empty string. """
+        """Return the MFCC parameter kind, as a string, or an empty string."""
 
         if self._macros is None:
             return ""
@@ -368,7 +368,7 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def compare_mfcc(self, other):
-        """ Compare MFCC parameter kind with another one.
+        """Compare MFCC parameter kind with another one.
 
         :param other: (sppasAcModel)
         :returns: bool
@@ -384,7 +384,7 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def merge_model(self, other, gamma=1.):
-        """ Merge another model with self.
+        """Merge another model with self.
 
         All new phones/biphones/triphones are added and the shared ones are
         combined using a static linear interpolation.

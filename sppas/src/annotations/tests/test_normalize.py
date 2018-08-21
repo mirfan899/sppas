@@ -107,13 +107,13 @@ ref_es = [
 
 
 class TestOrthoTranscription(unittest.TestCase):
-    """ Test of the class sppasOrthoTranscription.
+    """Test of the class sppasOrthoTranscription.
     Manager of an orthographic transcription.
 
     """
 
     def test_clean_toe(self):
-        """ ... Clean Enriched Orthographic Transcription to get a standard ortho. """
+        """... Clean Enriched Orthographic Transcription to get a standard ortho."""
 
         s = sppasOrthoTranscription().clean_toe(u('(il) (ne) faut pas rêver'))
         self.assertEqual(u("faut pas rêver"), s)
@@ -163,7 +163,7 @@ class TestOrthoTranscription(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_toe_spelling(self):
-        """ ... Create a specific spelling from an Enriched Orthographic Transcription. """
+        """... Create a specific spelling from an Enriched Orthographic Transcription."""
 
         s = sppasOrthoTranscription().toe_spelling(u('je, fais: "un essai".'))
         self.assertEqual(u('je , fais : " un essai " .'), s)
@@ -188,7 +188,7 @@ class TestOrthoTranscription(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_toe(self):
-        """ ... Apply both clean_toe then toe_spelling. """
+        """... Apply both clean_toe then toe_spelling."""
 
         s = sppasOrthoTranscription().clean_toe(u(" /l-e-f-o~-n/ "))
         s = sppasOrthoTranscription().toe_spelling(s)
@@ -202,10 +202,10 @@ class TestOrthoTranscription(unittest.TestCase):
 
 
 class TestSimpleSplitter(unittest.TestCase):
-    """ Test of Utterance splitter. """
+    """Test of Utterance splitter."""
 
     def test_split_characters(self):
-        """ ... Split a character-based string. """
+        """... Split a character-based string."""
 
         splitter = sppasSimpleSplitter("cmn")
         result = splitter.split_characters("干脆就把那部蒙人的闲法给废了拉倒")
@@ -219,7 +219,7 @@ class TestSimpleSplitter(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_split(self):
-        """ ... Split a character-based or romanized string. """
+        """... Split a character-based or romanized string."""
 
         splitter = sppasSimpleSplitter("cmn")
         result = splitter.split("干脆就把那部蒙人.的闲法给废了拉倒")
@@ -239,7 +239,7 @@ class TestSimpleSplitter(unittest.TestCase):
 
 
 class TestNum2Letter(unittest.TestCase):
-    """ Convert number to their written form. """
+    """Convert number to their written form."""
 
     def test_init(self):
         # Unknown language
@@ -256,7 +256,7 @@ class TestNum2Letter(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_num2letter_fra(self):
-        """ ... number to letter in French """
+        """... number to letter in French """
 
         num = sppasNum('fra')
         self.assertEquals(u("cent-vingt-trois"),
@@ -265,7 +265,7 @@ class TestNum2Letter(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_num2letter_spa(self):
-        """ ... number to letter in Spanish  """
+        """... number to letter in Spanish  """
 
         num = sppasNum('spa')
         ret = [num.convert(i) for i in range(41)]
@@ -300,7 +300,7 @@ class TestNormalizer(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_replace(self):
-        """ ... Examine tokens and performs some replacements. """
+        """... Examine tokens and performs some replacements."""
 
         repl = sppasDictRepl(os.path.join(paths.resources, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
@@ -343,7 +343,7 @@ class TestNormalizer(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_tokenize(self):
-        """ ... Tokenize is the text segmentation, i.e. to segment into tokens. """
+        """... Tokenize is the text segmentation, i.e. to segment into tokens."""
 
         self.tok.set_lang("fra")
         splitfra = self.tok.tokenize(u("l'assiette l'abat-jour paris-brest et paris-marseille").split())
@@ -360,7 +360,7 @@ class TestNormalizer(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_num2letter(self):
-        """ ... Integration of num2letter into the TextNormalizer. """
+        """... Integration of num2letter into the TextNormalizer."""
 
         repl = sppasDictRepl(os.path.join(paths.resources, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
@@ -377,7 +377,7 @@ class TestNormalizer(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_remove_punct(self):
-        """ ... Remove data of an utterance if included in a dictionary. """
+        """... Remove data of an utterance if included in a dictionary."""
 
         self.tok.set_lang("fra")
         self.assertEquals(u("un deux").split(), self.tok.normalize(u("/un, deux!!!")))
@@ -385,7 +385,7 @@ class TestNormalizer(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_stick(self):
-        """ ... Token Segmenter on compound words. """
+        """... Token Segmenter on compound words."""
 
         t = sppasTokenSegmenter(self.tok.vocab)
         s = t.bind([u("123")])
@@ -398,7 +398,7 @@ class TestNormalizer(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_sampa(self):
-        """ ... X-SAMPA included into the ortho transcription. """
+        """... X-SAMPA included into the ortho transcription."""
 
         repl = sppasDictRepl(os.path.join(paths.resources, "repl", "fra.repl"), nodump=True)
         self.tok.set_repl(repl)
@@ -417,7 +417,7 @@ class TestNormalizer(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_code_switching(self):
-        """ ... [TO DO] support of language switching. """
+        """... [TO DO] support of language switching."""
 
         dictdir  = os.path.join(paths.resources, "vocab")
         vocabfra = os.path.join(dictdir, "fra.vocab")
@@ -442,10 +442,10 @@ class TestNormalizer(unittest.TestCase):
 
 
 class TestTextNorm(unittest.TestCase):
-    """ Test the SPPAS integration of the TextNormalizer. """
+    """Test the SPPAS integration of the TextNormalizer."""
 
     def test_samples(self):
-        """ ... Compare the current result is the same as the existing one. """
+        """... Compare the current result is the same as the existing one."""
 
         for samples_folder in os.listdir(paths.samples):
             if samples_folder.startswith("samples-") is False:

@@ -63,7 +63,7 @@ class sppasDumpFile(object):
     # -----------------------------------------------------------------------
 
     def __init__(self, filename, dump_extension=""):
-        """ Create a sppasDumpFile instance.
+        """Create a sppasDumpFile instance.
 
         :param filename: (str) Name of the ASCII file.
         :param dump_extension: (str) Extension of the dump file.
@@ -78,7 +78,7 @@ class sppasDumpFile(object):
     # -----------------------------------------------------------------------
 
     def set_filename(self, filename):
-        """ Fix the name of the ASCII file.
+        """Fix the name of the ASCII file.
 
         :param filename: (str) Name of the ASCII file.
 
@@ -88,7 +88,7 @@ class sppasDumpFile(object):
     # -----------------------------------------------------------------------
 
     def set_dump_extension(self, extension=""):
-        """ Fix the extension of the dump file.
+        """Fix the extension of the dump file.
         Set to the default extension if the given extension is an empty
         string.
 
@@ -113,14 +113,14 @@ class sppasDumpFile(object):
     # -----------------------------------------------------------------------
 
     def get_dump_extension(self):
-        """ Return the extension of the dump version of filename. """
+        """Return the extension of the dump version of filename."""
 
         return self._dump_ext
 
     # -----------------------------------------------------------------------
 
     def get_dump_filename(self):
-        """ Return the file name of the dump version of filename.
+        """Return the file name of the dump version of filename.
 
         :returns: name of the dump file
 
@@ -131,7 +131,7 @@ class sppasDumpFile(object):
     # ----------------------------------------------------------------------------
 
     def has_dump(self):
-        """ Test if a dump file exists for filename and if it is up-to-date.
+        """Test if a dump file exists for filename and if it is up-to-date.
 
         :returns: (bool)
 
@@ -150,7 +150,7 @@ class sppasDumpFile(object):
     # ----------------------------------------------------------------------------
 
     def load_from_dump(self):
-        """ Load the file from a dumped file.
+        """Load the file from a dumped file.
 
         :returns: loaded data or None
 
@@ -173,7 +173,7 @@ class sppasDumpFile(object):
     # ----------------------------------------------------------------------------
 
     def save_as_dump(self, data):
-        """ Save the data as a dumped file.
+        """Save the data as a dumped file.
 
         :param data: The data to save
         :returns: (bool)

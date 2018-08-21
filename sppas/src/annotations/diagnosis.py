@@ -85,7 +85,7 @@ class sppasDiagnosis(object):
     # ------------------------------------------------------------------------
 
     def __init__(self):
-        """ Create a sppasDiagnosis instance. """
+        """Create a sppasDiagnosis instance."""
 
         pass
 
@@ -95,7 +95,7 @@ class sppasDiagnosis(object):
 
     @staticmethod
     def check_file(filename):
-        """ Check file of any type: audio or annotated file.
+        """Check file of any type: audio or annotated file.
         The extension of the filename is used to know the type of the file.
 
         :param filename: (str) name of the input file to diagnose.
@@ -117,7 +117,7 @@ class sppasDiagnosis(object):
 
     @staticmethod
     def check_audio_file(filename):
-        """ Check an audio file.
+        """Check an audio file.
 
         Are verified:
 
@@ -192,7 +192,7 @@ class sppasDiagnosis(object):
 
     @staticmethod
     def check_trs_file(filename):
-        """ Check an annotated file.
+        """Check an annotated file.
 
         Are verified:
 

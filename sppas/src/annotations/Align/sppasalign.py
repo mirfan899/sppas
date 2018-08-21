@@ -106,7 +106,7 @@ class sppasAlign(sppasBaseAnnotation):
 
     """
     def __init__(self, model, model_L1=None, logfile=None):
-        """ Create a new sppasAlign instance.
+        """Create a new sppasAlign instance.
 
         :param model: (str) Name of the directory of the acoustic model of the language of the text
         :param model_L1: (str) Name of the directory of the acoustic model of the mother language of the speaker
@@ -123,7 +123,7 @@ class sppasAlign(sppasBaseAnnotation):
     # ------------------------------------------------------------------
 
     def reset(self):
-        """ Reset the options to configure this automatic annotation. """
+        """Reset the options to configure this automatic annotation."""
 
         self._options = dict()
         self._options['clean'] = True     # Remove temporary files
@@ -136,7 +136,7 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def fix_segmenter(self, model, model_L1):
-        """ Fix the acoustic model directory, then create a SpeechSegmenter and AlignerIO.
+        """Fix the acoustic model directory, then create a SpeechSegmenter and AlignerIO.
 
         :param model: (str) Name of the directory of the acoustic model of the language of the text
         :param model_L1: (str) Name of the directory of the acoustic model of the mother language of the speaker
@@ -170,7 +170,7 @@ class sppasAlign(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def fix_options(self, options):
-        """ Fix all options. Available options are:
+        """Fix all options. Available options are:
 
             - clean
             - basic
@@ -214,7 +214,7 @@ class sppasAlign(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def set_clean(self, clean):
-        """ Fix the clean option.
+        """Fix the clean option.
 
         :param clean: (bool) If clean is set to True then temporary files
         will be removed.
@@ -225,7 +225,7 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_aligner(self, aligner_name):
-        """ Fix the name of the aligner.
+        """Fix the name of the aligner.
 
         :param aligner_name: (str) Case-insensitive name of the aligner.
 
@@ -236,7 +236,7 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_infersp(self, infersp):
-        """ Fix the infersp option.
+        """Fix the infersp option.
 
         :param infersp: (bool) When set to True, the aligner adds an optional
         short pause at the end of each token, and it will infer it.
@@ -248,7 +248,7 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_basic(self, basic):
-        """ Fix the basic option.
+        """Fix the basic option.
 
         :param basic: (bool) If basic is set to True, a basic segmentation
         will be performed if the main aligner fails.
@@ -259,7 +259,7 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_activity_tier(self, value):
-        """ Fix the activity option.
+        """Fix the activity option.
 
         :param value: (bool) Activity tier generation.
 
@@ -269,7 +269,7 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_activity_duration_tier(self, value):
-        """ Fix the activity duration option.
+        """Fix the activity duration option.
 
         :param value: (bool) Activity tier generation.
 
@@ -279,7 +279,7 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_phntokalign_tier(self, value):
-        """ Fix the phntok option.
+        """Fix the phntok option.
 
         :param value: (bool) PhnTokAlign tier generation.
 
@@ -291,7 +291,7 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def convert_tracks(self, diralign):
-        """ Call the Aligner to align each unit of a directory.
+        """Call the Aligner to align each unit of a directory.
 
         :param diralign: the directory to get units and put alignments.
 
@@ -337,7 +337,7 @@ class sppasAlign(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def convert(self, phontier, toktier, inputaudio, workdir):
-        """ Perform speech segmentation of data in tiers tokenization/phonetization.
+        """Perform speech segmentation of data in tiers tokenization/phonetization.
 
         :param phontier: (Tier) The phonetization.
         :param toktier: (Tier) The tokenization, or None.
@@ -383,7 +383,7 @@ class sppasAlign(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def append_extra(self, trs):
-        """ Append extra tiers in trs.
+        """Append extra tiers in trs.
 
         :param trs: (Transcription)
 
@@ -435,7 +435,7 @@ class sppasAlign(sppasBaseAnnotation):
 
     @staticmethod
     def phntokalign_tier(tierphon, tiertoken):
-        """ Generates the PhnTokAlignTier from PhonAlign and TokensAlign.
+        """Generates the PhnTokAlignTier from PhonAlign and TokensAlign.
 
         :param tierphon: (Tier)
         :param tiertoken: (Tier)
@@ -465,7 +465,7 @@ class sppasAlign(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def run(self, phonesname, tokensname, audioname, outputfilename):
-        """ Execute SPPAS Alignment.
+        """Execute SPPAS Alignment.
 
         :param phonesname: (str) file containing the phonetization
         :param tokensname: (str) file containing the tokenization
@@ -549,7 +549,7 @@ class sppasAlign(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def rustine_others(self, trs):
-        """ veritable rustine pour decaler la fin des non-phonemes. """
+        """veritable rustine pour decaler la fin des non-phonemes."""
 
         tierphon = trs.Find("PhonAlign")
         if tierphon is None:
@@ -596,7 +596,7 @@ class sppasAlign(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def rustine_liaisons(self, trs):
-        """ veritable rustine pour supprimer qqs liaisons en trop. """
+        """veritable rustine pour supprimer qqs liaisons en trop."""
 
         # Only for French!
         if self.alignio.aligntrack.get_model().endswith("fra") is False:

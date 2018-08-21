@@ -89,7 +89,7 @@ class TestMRK(unittest.TestCase):
 
     """
     def test_detect(self):
-        """ Test the file format detection method. """
+        """Test the file format detection method."""
 
         for filename in os.listdir(DATA):
             f = os.path.join(DATA, filename)
@@ -101,7 +101,7 @@ class TestMRK(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_make_point(self):
-        """ Convert data into the appropriate digit type, or not. """
+        """Convert data into the appropriate digit type, or not."""
 
         self.assertEqual(sppasPoint(3., 0.0005), sppasMRK.make_point("3000."))
         self.assertEqual(sppasPoint(3., 0.0005), sppasMRK.make_point("3000."))
@@ -112,7 +112,7 @@ class TestMRK(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_read(self):
-        """ Sample mrk. """
+        """Sample mrk."""
 
         mrk = sppasMRK()
         mrk.read(os.path.join(DATA, "sample.mrk"))
@@ -140,7 +140,7 @@ class TestSignaix(unittest.TestCase):
 
     """
     def test_detect(self):
-        """ Test the file format detection method. """
+        """Test the file format detection method."""
 
         for filename in os.listdir(DATA):
             f = os.path.join(DATA, filename)
@@ -172,7 +172,7 @@ class TestSignaix(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_read(self):
-        """ Test file reader. """
+        """Test file reader."""
 
         hz = sppasSignaix()
         hz.read(os.path.join(DATA, "sample.hz"))

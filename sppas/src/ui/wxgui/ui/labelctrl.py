@@ -230,7 +230,7 @@ class LabelCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def OnMouseEvents(self, event):
-        """ Handles the wx.EVT_MOUSE_EVENTS event for PointCtrl."""
+        """Handles the wx.EVT_MOUSE_EVENTS event for PointCtrl."""
         if event.Entering() or event.Leaving():
             self._highlight = not self._highlight
             self.Refresh()
@@ -342,7 +342,7 @@ class LabelCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def __initializeStyle(self):
-        """ Initializes the label style. """
+        """Initializes the label style."""
 
         self._align = wx.ALIGN_LEFT
         self._underlined = False
@@ -352,7 +352,7 @@ class LabelCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def __initializeColours(self):
-        """ Initializes the pens. """
+        """Initializes the pens."""
 
         self._bgpen = wx.Pen(BG_COLOUR, 1, wx.SOLID)
         self._bgbrush = wx.Brush(BG_COLOUR, wx.SOLID)
@@ -364,7 +364,7 @@ class LabelCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def __initialSize(self, size):
-        """ Initialize the size. """
+        """Initialize the size."""
 
         self.SetMinSize(wx.Size(MIN_W, MIN_H))
         if size:
@@ -378,7 +378,7 @@ class LabelCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def __tooltip(self):
-        """ Set a tooltip string with the label. """
+        """Set a tooltip string with the label."""
 
         if self._label is not None:
             #if self._label.GetSize() > 1:

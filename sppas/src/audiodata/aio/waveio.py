@@ -58,14 +58,14 @@ class WaveIO(sppasAudioPCM):
 
     """
     def __init__(self):
-        """ Constructor. """
+        """Constructor."""
 
         sppasAudioPCM.__init__(self)
 
     # -----------------------------------------------------------------------
 
     def open(self, filename):
-        """ Get an audio from a Waveform Audio File Format file.
+        """Get an audio from a Waveform Audio File Format file.
 
         :param filename (str) input file name.
 
@@ -77,7 +77,7 @@ class WaveIO(sppasAudioPCM):
     # -----------------------------------------------------------------------
 
     def save(self, filename):
-        """ Write an audio content as a Waveform Audio File Format file.
+        """Write an audio content as a Waveform Audio File Format file.
 
         :param filename (str) output filename.
 
@@ -118,7 +118,7 @@ class WaveIO(sppasAudioPCM):
     # -----------------------------------------------------------------------
 
     def save_fragment(self, filename, frames):
-        """ Write an audio content as a Waveform Audio File Format file.
+        """Write an audio content as a Waveform Audio File Format file.
 
         :param filename: (str) output filename.
         :param frames: (str) the frames to write

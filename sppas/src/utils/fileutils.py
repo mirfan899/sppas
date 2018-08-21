@@ -146,7 +146,7 @@ class sppasFileUtils(object):
     # ------------------------------------------------------------------------
 
     def get_filename(self):
-        """Return the current filename. """
+        """Return the current filename."""
 
         return self._filename
 

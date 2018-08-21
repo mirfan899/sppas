@@ -60,7 +60,7 @@ OPTION_KEY_ERROR = ":ERROR 4080: "
 
 
 class PluginConfigFileError(IOError):
-    """ :ERROR 4010: Missing plugin configuration file. """
+    """:ERROR 4010: Missing plugin configuration file."""
 
     def __init__(self):
         self.parameter = CFG_FILE_ERROR + (_(CFG_FILE_ERROR))
@@ -72,7 +72,7 @@ class PluginConfigFileError(IOError):
 
 
 class PluginSectionConfigFileError(ValueError):
-    """ :ERROR 4014: Missing section {section_name} in the configuration file. """
+    """:ERROR 4014: Missing section {section_name} in the configuration file."""
 
     def __init__(self, section_name):
         self.parameter = SECT_CFG_FILE_ERROR + (_(SECT_CFG_FILE_ERROR)).format(section_name=section_name)
@@ -84,7 +84,7 @@ class PluginSectionConfigFileError(ValueError):
 
 
 class PluginOptionConfigFileError(ValueError):
-    """ :ERROR 4016: Missing option {:s} in section {:s} of the configuration file. """
+    """:ERROR 4016: Missing option {:s} in section {:s} of the configuration file."""
 
     def __init__(self, section_name, option_name):
         self.parameter = OPT_CFG_FILE_ERROR + \
@@ -99,7 +99,7 @@ class PluginOptionConfigFileError(ValueError):
 
 
 class PluginArchiveFileError(Exception):
-    """ :ERROR 4020: Unsupported plugin file type. """
+    """:ERROR 4020: Unsupported plugin file type."""
 
     def __init__(self):
         self.parameter = ARCHIVE_FILE_ERROR + (_(ARCHIVE_FILE_ERROR))
@@ -111,7 +111,7 @@ class PluginArchiveFileError(Exception):
 
 
 class PluginArchiveIOError(IOError):
-    """ :ERROR 4024: Unsupported plugin file type. """
+    """:ERROR 4024: Unsupported plugin file type."""
 
     def __init__(self):
         self.parameter = ARCHIVE_IO_ERROR + (_(ARCHIVE_IO_ERROR))
@@ -139,7 +139,7 @@ class PluginDuplicateError(IOError):
 
 
 class PluginIdError(ValueError):
-    """ :ERROR 4040: No plugin with identifier {plugin_id} is available. """
+    """:ERROR 4040: No plugin with identifier {plugin_id} is available."""
 
     def __init__(self, plugin_id):
         self.parameter = PLUGIN_ID_ERROR + \
@@ -152,7 +152,7 @@ class PluginIdError(ValueError):
 
 
 class PluginFolderError(IOError):
-    """ :ERROR 4050: No such plugin folder: {:s}. """
+    """:ERROR 4050: No such plugin folder: {:s}."""
 
     def __init__(self, plugin_folder):
         self.parameter = PLUGIN_FOLDER_ERROR + \
@@ -180,7 +180,7 @@ class PluginKeyError(KeyError):
 
 
 class CommandExecError(OSError):
-    """ :ERROR 4070: {command_name} is not a valid command on your operating system. """
+    """:ERROR 4070: {command_name} is not a valid command on your operating system."""
 
     def __init__(self, command_name):
         self.parameter = CMD_EXEC_ERROR + \
@@ -193,7 +193,7 @@ class CommandExecError(OSError):
 
 
 class CommandSystemError(OSError):
-    """ :ERROR 4075: No command was defined for the system: {:s}. Supported systems of this plugin are: {:s}."""
+    """:ERROR 4075: No command was defined for the system: {:s}. Supported systems of this plugin are: {:s}."""
 
     def __init__(self, current_system, supported_systems=[]):
         systems = ",".join(supported_systems)
@@ -206,7 +206,7 @@ class CommandSystemError(OSError):
 
 
 class OptionKeyError(KeyError):
-    """:ERROR 4080: No option with key {:s}. """
+    """:ERROR 4080: No option with key {:s}."""
 
     def __init__(self, key):
         self.parameter = OPTION_KEY_ERROR + (_(OPTION_KEY_ERROR)).format(key=key)

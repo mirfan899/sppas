@@ -95,14 +95,14 @@ class TierStats(object):
     # ------------------------------------------------------------------
 
     def get_with_alt(self):
-        """Return if alternative labels will be used or not. """
+        """Return if alternative labels will be used or not."""
 
         return self._with_alt
 
     # ------------------------------------------------------------------
     
     def get_tier(self):
-        """Return the tier to estimate stats. """
+        """Return the tier to estimate stats."""
         
         return self.tier
 
@@ -174,7 +174,7 @@ class TierStats(object):
     # ------------------------------------------------------------------
 
     def __tiers_to_tuple(self):
-        """Return a list of tuples of label/duration pairs. """
+        """Return a list of tuples of label/duration pairs."""
         
         tiers = self.tier
         if not isinstance(self.tier, list):

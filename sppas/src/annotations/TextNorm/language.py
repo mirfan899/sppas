@@ -53,7 +53,7 @@ class sppasLangISO(object):
 
     @staticmethod
     def without_whitespace(lang):
-        """ Return true if 'lang' is not using whitespace.
+        """Return true if 'lang' is not using whitespace.
 
         Mandarin Chinese or Japanese languages return True, but English
         or French return False.

@@ -55,7 +55,7 @@ class sppasVocabulary(object):
 
     """
     def __init__(self, filename=None, nodump=False, case_sensitive=False):
-        """ Create a sppasVocabulary instance.
+        """Create a sppasVocabulary instance.
 
         :param filename: (str) Name of the file with the list of words.
         :param nodump: (bool) Allows to disable the creation of a dump file.
@@ -89,7 +89,7 @@ class sppasVocabulary(object):
     # -----------------------------------------------------------------------
 
     def get_filename(self):
-        """ Return the name of the file from which the vocab comes from. """
+        """Return the name of the file from which the vocab comes from."""
         return self.__filename
 
     # -----------------------------------------------------------------------
@@ -97,7 +97,7 @@ class sppasVocabulary(object):
     # -----------------------------------------------------------------------
 
     def add(self, entry):
-        """ Add an entry into the list except if the entry is already inside.
+        """Add an entry into the list except if the entry is already inside.
 
         :param entry: (str) The entry to add in the word list
         :returns: (bool)
@@ -118,14 +118,14 @@ class sppasVocabulary(object):
     # -----------------------------------------------------------------------
 
     def get_list(self):
-        """ Return the list of entries, sorted in alpha-numeric order. """
+        """Return the list of entries, sorted in alpha-numeric order."""
 
         return sorted(self.__entries.keys())
 
     # -----------------------------------------------------------------------
 
     def is_in(self, entry):
-        """ Return True if entry is in the list.
+        """Return True if entry is in the list.
 
         :param entry: (str)
 
@@ -135,7 +135,7 @@ class sppasVocabulary(object):
     # -----------------------------------------------------------------------
 
     def is_unk(self, entry):
-        """ Return True if entry is unknown (not in the list).
+        """Return True if entry is unknown (not in the list).
 
         :param entry: (str)
 
@@ -145,7 +145,7 @@ class sppasVocabulary(object):
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """ Make a deep copy of the instance.
+        """Make a deep copy of the instance.
 
         :returns: sppasVocabulary
 
@@ -161,7 +161,7 @@ class sppasVocabulary(object):
     # -----------------------------------------------------------------------
 
     def load_from_ascii(self, filename):
-        """ Read words from a file: one per line.
+        """Read words from a file: one per line.
 
         :param filename: (str)
 
@@ -186,7 +186,7 @@ class sppasVocabulary(object):
     # -----------------------------------------------------------------------
 
     def save(self, filename):
-        """ Save the list of words in a file.
+        """Save the list of words in a file.
 
         :param filename (str)
         :returns: (bool)

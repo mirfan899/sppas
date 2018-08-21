@@ -81,7 +81,7 @@ class AnalyzePanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def __create_buttons(self):
-        """ Create buttons to call tools. """
+        """Create buttons to call tools."""
 
         annotateButton = ButtonPanel(self, ID_FRAME_DATAROAMER, self._prefs, DATAROAMER_APP_ICON, "DataRoamer")
         analyzeButton = ButtonPanel(self, ID_FRAME_SNDROAMER, self._prefs, AUDIOROAMER_APP_ICON, "AudioRoamer")

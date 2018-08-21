@@ -58,7 +58,7 @@ class AnnotateProcess(object):
 
     """
     def __init__(self, preferences):
-        """ Constructor.
+        """Constructor.
 
         :param preferences: (Preferences)
 
@@ -69,7 +69,7 @@ class AnnotateProcess(object):
     # ------------------------------------------------------------------------
 
     def IsRunning(self):
-        """ Return True if the process is running.
+        """Return True if the process is running.
 
         :returns (bool)
 
@@ -81,7 +81,7 @@ class AnnotateProcess(object):
     # ------------------------------------------------------------------------
 
     def Run(self, parent, filelist, activeannot, parameters):
-        """ Execute the automatic annotations.
+        """Execute the automatic annotations.
 
         :param parent: (wx.Window)
         :param filelist:

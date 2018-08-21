@@ -52,7 +52,7 @@ class sppasChannelVolume(sppasBaseVolume):
 
     """
     def __init__(self, channel, win_len=0.01):
-        """ Constructor.
+        """Constructor.
 
         :param channel: (sppasChannel) The channel to work on.
         :param win_len: (float) Window length to estimate the volume.

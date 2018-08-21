@@ -158,7 +158,7 @@ def trim(text, tabwidth=4):
 
 
 def indent(text, indent=1, multiplier=4):
-    """ Indent the given block of text by indent*4 spaces
+    """Indent the given block of text by indent*4 spaces
     """
     if text is None:
         return ''
@@ -204,7 +204,7 @@ def asjsons(obj):
 
 
 def prune_dict(d, predicate):
-    """ Remove all items x where predicate(x, d[x]) """
+    """Remove all items x where predicate(x, d[x]) """
 
     keys = [k for k, v in d.items() if predicate(k, v)]
     for k in keys:

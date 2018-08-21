@@ -50,7 +50,7 @@ class Syllabifier(object):
 
     """
     def __init__(self, rules_filename):
-        """ Create a new Syllabifier instance.
+        """Create a new Syllabifier instance.
 
         Load rules from a text file, depending on the language and phonemes
         encoding. See documentation for details about this file.
@@ -63,7 +63,7 @@ class Syllabifier(object):
     # ------------------------------------------------------------------
 
     def annotate(self, phonemes):
-        """ Return the syllable boundaries of a sequence of phonemes.
+        """Return the syllable boundaries of a sequence of phonemes.
 
         >>> phonemes = ['a', 'p', 's', 'k', 'm', 'w', 'a']
         >>> Syllabifier("fra-config-file").annotate(phonemes)
@@ -114,7 +114,7 @@ class Syllabifier(object):
 
     @staticmethod
     def phonetize_syllables(phonemes, syllables):
-        """ Return the phonetized sequence of syllables.
+        """Return the phonetized sequence of syllables.
 
         >>> phonemes = ['a', 'p', 's', 'k', 'm', 'w', 'a']
         >>> syllables = Syllabifier("fra-config-file").annotate(phonemes)
@@ -135,7 +135,7 @@ class Syllabifier(object):
     # ------------------------------------------------------------------
 
     def classes_phonetized(self, phonetized_syllable):
-        """ Return the classes of a phonetized syllable.
+        """Return the classes of a phonetized syllable.
 
         >>> syllable = "a-p-s-k"
         >>> syllabifier.classes_phonetized(syllable)
@@ -154,7 +154,7 @@ class Syllabifier(object):
 
     @staticmethod
     def _fix_nucleus(classes, from_index):
-        """ Search for the next nucleus of a syllable. """
+        """Search for the next nucleus of a syllable."""
 
         next_nucleus = -1
         next_break = -1
@@ -172,7 +172,7 @@ class Syllabifier(object):
 
     @staticmethod
     def _fix_start_syll(classes, end_previous, nucleus):
-        """ Search for the index of the first phoneme of the syllable. """
+        """Search for the index of the first phoneme of the syllable."""
 
         # should not occur
         if end_previous == nucleus:
@@ -192,7 +192,7 @@ class Syllabifier(object):
 
     @staticmethod
     def _find_next_vowel(classes, from_index):
-        """ Find the index of the next vowel.
+        """Find the index of the next vowel.
 
         -1 is returned if no longer vowel is existing.
 
@@ -211,7 +211,7 @@ class Syllabifier(object):
 
     @staticmethod
     def _find_next_break(classes, from_index):
-        """ Find the index of the next break.
+        """Find the index of the next break.
 
         -1 is returned if no longer break is existing.
 
@@ -228,7 +228,7 @@ class Syllabifier(object):
     # ------------------------------------------------------------------
 
     def _apply_class_rules(self, classes, v1, v2):
-        """ Apply the syllabification rules between v1 and v2. """
+        """Apply the syllabification rules between v1 and v2."""
 
         sequence = "".join(classes[v1:v2+1])
         return v1 + self.rules.get_class_rules_boundary(sequence)
@@ -236,7 +236,7 @@ class Syllabifier(object):
     # ------------------------------------------------------------------
 
     def _apply_phon_rules(self, phonemes, end_syll, v1, v2):
-        """ Apply the specific phoneme-based syllabification rules between v1 and v2. """
+        """Apply the specific phoneme-based syllabification rules between v1 and v2."""
 
         _str = ""
         nb = v2-v1

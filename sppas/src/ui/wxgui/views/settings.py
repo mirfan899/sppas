@@ -112,7 +112,7 @@ class SettingsDialog(spBaseDialog):
     #-------------------------------------------------------------------------
 
     def _on_save(self, event):
-        """ Save preferences in a file. """
+        """Save preferences in a file."""
 
         self.preferences.Write()
 
@@ -121,7 +121,7 @@ class SettingsDialog(spBaseDialog):
     #-------------------------------------------------------------------------
 
     def GetPreferences(self):
-        """ Return the preferences. """
+        """Return the preferences."""
 
         return self.preferences
 

@@ -91,7 +91,7 @@ class JuliusAligner(BaseAligner):
 
     """
     def __init__(self, modeldir):
-        """ Create a JuliusAligner instance.
+        """Create a JuliusAligner instance.
 
         JuliusAligner is able to align one audio segment that can be:
             - an inter-pausal unit,
@@ -138,7 +138,7 @@ class JuliusAligner(BaseAligner):
     # ------------------------------------------------------------------------
 
     def set_outext(self, ext):
-        """ Set the extension for output files.
+        """Set the extension for output files.
 
         :param ext: (str) Extension for output file name.
 
@@ -152,7 +152,7 @@ class JuliusAligner(BaseAligner):
     # -----------------------------------------------------------------------
 
     def gen_slm_dependencies(self, basename, N=3):
-        """ Generate the dependencies (slm, dictionary) for julius.
+        """Generate the dependencies (slm, dictionary) for julius.
 
         :param basename: (str) the base name of the slm file and of the dictionary file
         :param N: (int) Language model N-gram length.
@@ -188,7 +188,7 @@ class JuliusAligner(BaseAligner):
     # ------------------------------------------------------------------------
 
     def gen_grammar_dependencies(self, basename):
-        """ Generate the dependencies (grammar, dictionary) for julius.
+        """Generate the dependencies (grammar, dictionary) for julius.
 
         :param basename: (str) the base name of the grammar file and of the dictionary file
 
@@ -228,7 +228,7 @@ class JuliusAligner(BaseAligner):
     # ------------------------------------------------------------------------
 
     def run_julius(self, inputwav, basename, outputalign):
-        """ Perform the speech segmentation.
+        """Perform the speech segmentation.
         System call to the command `julius`.
 
         :param inputwav: (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
@@ -306,7 +306,7 @@ class JuliusAligner(BaseAligner):
     # ------------------------------------------------------------------------
 
     def run_alignment(self, inputwav, outputalign, N=3):
-        """ Execute the external program `julius` to align.
+        """Execute the external program `julius` to align.
 
         The data related to the unit to time-align need to be previously
         fixed with:

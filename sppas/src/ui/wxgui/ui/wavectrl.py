@@ -78,7 +78,7 @@ class SelectArea:
     """
 
     def __init__(self):
-        """ Constructor. """
+        """Constructor."""
 
         # Wave... is focused?
         self._isselected = False
@@ -256,7 +256,7 @@ class WaveCtrl( spControl ):
 
 
     def GetBegin(self):
-        """ Override. """
+        """Override."""
         return 0.0
 
     # End GetBegin
@@ -264,7 +264,7 @@ class WaveCtrl( spControl ):
 
 
     def GetEnd(self):
-        """ Override. """
+        """Override."""
         return self.get_duration()
 
     # End GetEnd
@@ -462,7 +462,7 @@ class WaveCtrl( spControl ):
 
 
     def OnMouseEvents(self, event):
-        """ Handles the wx.EVT_MOUSE_EVENTS event for WaveCtrl. """
+        """Handles the wx.EVT_MOUSE_EVENTS event for WaveCtrl."""
 
         if event.Moving():
             wx.PostEvent(self.GetParent().GetEventHandler(), event)
@@ -570,7 +570,7 @@ class WaveCtrl( spControl ):
 
 
     def ResetMouseSelection(self):
-        """ Resets the mouse selection. """
+        """Resets the mouse selection."""
 
         self._selectarea.SetEmpty()
 
@@ -597,7 +597,7 @@ class WaveCtrl( spControl ):
 
 
     def DrawPane(self, dc, x,y, w,h):
-        """ Do not draw anything (each channel draw its own pane). """
+        """Do not draw anything (each channel draw its own pane)."""
         return
 
     # End DrawPane

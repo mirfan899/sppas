@@ -41,7 +41,7 @@ from sppas.src.resources.vocab import sppasVocabulary
 
 
 class sppasPhoneSet(sppasVocabulary):
-    """ Manager of the list of phonemes.
+    """Manager of the list of phonemes.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -58,7 +58,7 @@ class sppasPhoneSet(sppasVocabulary):
 
     """
     def __init__(self, filename=None):
-        """ Create a sppasPhoneSet instance.
+        """Create a sppasPhoneSet instance.
 
         Add events to the list: laugh, dummy, noise, silence.
 
@@ -78,7 +78,7 @@ class sppasPhoneSet(sppasVocabulary):
     # -----------------------------------------------------------------------
 
     def add_from_dict(self, dict_filename):
-        """ Add the list of phones from a pronunciation dictionary.
+        """Add the list of phones from a pronunciation dictionary.
 
         :param dict_filename: (str) Name of an HTK-ASCII pronunciation dictionary
 
@@ -96,7 +96,7 @@ class sppasPhoneSet(sppasVocabulary):
 
     @staticmethod
     def check_as_htk_phone(phone):
-        """ Check if a phone is correct to be used with HTK toolkit.
+        """Check if a phone is correct to be used with HTK toolkit.
         A phone can't start by a digit nor '-' nor '+', and must be ASCII.
 
         :param phone: (str) Phone to be checked

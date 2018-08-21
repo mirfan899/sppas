@@ -63,7 +63,7 @@ class TestANTX(unittest.TestCase):
 
     """
     def test_detect(self):
-        """ Test the file format detection method. """
+        """Test the file format detection method."""
 
         for filename in os.listdir(DATA):
             f = os.path.join(DATA, filename)
@@ -94,7 +94,7 @@ class TestANTX(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_make_point(self):
-        """ Convert data into the appropriate digit type, or not. """
+        """Convert data into the appropriate digit type, or not."""
 
         self.assertEqual(sppasPoint(3., 0.005), sppasANTX.make_point("132300"))
         with self.assertRaises(TypeError):
@@ -105,7 +105,7 @@ class TestANTX(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_configuration(self):
-        """ 'Configuration' <-> metadata. """
+        """'Configuration' <-> metadata."""
 
         root = ET.Element('AnnotationSystemDataSet')
         root.set('xmlns', 'http://tempuri.org/AnnotationSystemDataSet.xsd')
@@ -126,7 +126,7 @@ class TestANTX(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_audiofile(self):
-        """ 'AudioFile' <-> sppasMedia. """
+        """'AudioFile' <-> sppasMedia."""
 
         root = ET.Element('AnnotationSystemDataSet')
         root.set('xmlns', 'http://tempuri.org/AnnotationSystemDataSet.xsd')
@@ -151,7 +151,7 @@ class TestANTX(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_layer(self):
-        """ 'Layer' <-> sppasTier. """
+        """'Layer' <-> sppasTier."""
 
         root = ET.Element('AnnotationSystemDataSet')
         root.set('xmlns', 'http://tempuri.org/AnnotationSystemDataSet.xsd')
@@ -196,7 +196,7 @@ class TestANTX(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_segment(self):
-        """ 'Segment' <-> sppasAnnotation. """
+        """'Segment' <-> sppasAnnotation."""
 
         root = ET.Element('AnnotationSystemDataSet')
         root.set('xmlns', 'http://tempuri.org/AnnotationSystemDataSet.xsd')
@@ -206,7 +206,7 @@ class TestANTX(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_read(self):
-        """ """
+        """"""
         antx = sppasANTX()
         antx.read(os.path.join(DATA, "grenelle.antx"))
         self.assertEqual(len(antx), 20)
@@ -220,7 +220,7 @@ class TestANT(unittest.TestCase):
 
     """
     def test_detect(self):
-        """ Test the file format detection method. """
+        """Test the file format detection method."""
 
         for filename in os.listdir(DATA):
             f = os.path.join(DATA, filename)
@@ -251,7 +251,7 @@ class TestANT(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_read(self):
-        """ """
+        """"""
         ant = sppasANT()
         ant.read(os.path.join(DATA, "grenelle.ant"))
         self.assertEqual(len(ant), 20)

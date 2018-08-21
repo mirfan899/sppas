@@ -73,7 +73,7 @@ class sppasTokenSegmenter(object):
     # -------------------------------------------------------------------------
 
     def __init__(self, vocab=None):
-        """ Create a new sppasTokenSegmenter instance.
+        """Create a new sppasTokenSegmenter instance.
 
         :param vocab: (Vocabulary)
 
@@ -85,7 +85,7 @@ class sppasTokenSegmenter(object):
     # -------------------------------------------------------------------------
 
     def set_aggregate_max(self, value=STICK_MAX):
-        """ Fix the maximum number of words to stick. 
+        """Fix the maximum number of words to stick. 
         This is a language dependant value. For French, it's 5 with the word:
         "au fur et à mesure". But it can be more to stick phrases instead of
         words for example.
@@ -105,7 +105,7 @@ class sppasTokenSegmenter(object):
     # -------------------------------------------------------------------------
 
     def set_separator(self, char=SEPARATOR):
-        """ Fix the character to separate tokens.
+        """Fix the character to separate tokens.
 
         :param char: (char) Separator character. Can be an empty string.
 
@@ -119,7 +119,7 @@ class sppasTokenSegmenter(object):
     # -------------------------------------------------------------------------
 
     def __stick_longest_lr(self, phrase, separator):
-        """ Return the longest first word of a phrase.
+        """Return the longest first word of a phrase.
         A longest matching algorithm is applied from left to right.
 
         :param phrase: (str)
@@ -151,7 +151,7 @@ class sppasTokenSegmenter(object):
     # -------------------------------------------------------------------------
 
     def bind(self, utt):
-        """ Bind tokens of an utterance using a specific character.
+        """Bind tokens of an utterance using a specific character.
 
         :param utt: (list) List of tokens of an utterance (a transcription, a sentence, ...)
         :returns: A list of strings
@@ -175,7 +175,7 @@ class sppasTokenSegmenter(object):
     # -----------------------------------------------------------------------
 
     def unbind(self, utt):
-        """ Unbind tokens containing - or ' or . depending on rules.
+        """Unbind tokens containing - or ' or . depending on rules.
 
         :param utt: (list) List of tokens of an utterance (a transcription, a sentence, ...)
         :returns: A list of strings

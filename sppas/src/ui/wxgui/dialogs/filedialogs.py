@@ -49,7 +49,7 @@ from .msgdialogs import ShowYesNoQuestion
 
 
 def OpenAnnotationFiles(multiple=True):
-    """ Return a list of annotation file names. """
+    """Return a list of annotation file names."""
 
     wildcard = create_wildcard("All files", sppas.src.anndata.aio.extensionsul)
     wildcard += '|' + create_wildcard("SPPAS", sppas.src.anndata.aio.ext_sppas)
@@ -90,7 +90,7 @@ def OpenAnnotationFiles(multiple=True):
 
 
 def OpenSoundFiles():
-    """ Return a list of sound file names. """
+    """Return a list of sound file names."""
 
     wildcard = create_wildcard("Sound files", sppas.src.audiodata.aio.extensionsul)
     wildcard += '|' + create_wildcard("All files", ['*', '*.*'])
@@ -113,7 +113,7 @@ def OpenSoundFiles():
 
 
 def OpenAnyFiles():
-    """  Return a list of file names. """
+    """ Return a list of file names."""
     
     wildcard = create_wildcard("All files", ['*', '*.*'])
 
@@ -134,7 +134,7 @@ def OpenAnyFiles():
 
 
 def OpenSpecificFiles(name, extensions):
-    """ Return a list of file names with specific extensions. """
+    """Return a list of file names with specific extensions."""
     
     wildcard = create_wildcard(name, extensions)
 
@@ -157,7 +157,7 @@ def OpenSpecificFiles(name, extensions):
 
 
 def SaveAsAnnotationFile(default_dir=None, default_file=None):
-    """ Return an annotation file name. """
+    """Return an annotation file name."""
 
     if default_dir is None:
         default_dir = os.path.dirname(paths.sppas)
@@ -194,7 +194,7 @@ def SaveAsAnnotationFile(default_dir=None, default_file=None):
 
 
 def SaveAsAudioFile(default_dir=None, default_file=None):
-    """  Return an audio file name. """
+    """ Return an audio file name."""
 
     if default_dir is None:
         default_dir = os.path.dirname(paths.sppas)
@@ -227,7 +227,7 @@ def SaveAsAudioFile(default_dir=None, default_file=None):
 
 
 def SaveAsImageFile(preferences, image):
-    """ Save the current image as a PNG picture. """
+    """Save the current image as a PNG picture."""
 
     extension_map = {"png": wx.BITMAP_TYPE_PNG}
     extensions = extension_map.keys()
@@ -252,7 +252,7 @@ def SaveAsImageFile(preferences, image):
 
 
 def SaveAsAnyFile(default_dir=None, default_file=None):
-    """ Select a filename to be saved. """
+    """Select a filename to be saved."""
 
     if default_dir is None:
         default_dir = os.path.dirname(paths.sppas)

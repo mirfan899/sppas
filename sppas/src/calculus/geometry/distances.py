@@ -58,7 +58,7 @@ from ..calculusexc import VectorsError
 
 
 def manathan(x, y):
-    """ Estimates the Manathan distance between two tuples.
+    """Estimates the Manathan distance between two tuples.
 
     :param x: a tuple of float values
     :param y: a tuple of float values
@@ -81,7 +81,7 @@ def manathan(x, y):
 
 
 def euclidian(x, y):
-    """ Estimates the Euclidian distance between two tuples.
+    """Estimates the Euclidian distance between two tuples.
 
     :param x: a tuple of float values
     :param y: a tuple of float values
@@ -104,7 +104,7 @@ def euclidian(x, y):
 
 
 def squared_euclidian(x, y):
-    """ Estimates the Squared Euclidian distance between two tuples.
+    """Estimates the Squared Euclidian distance between two tuples.
 
     :param x: a tuple of float values
     :param y: a tuple of float values
@@ -127,7 +127,7 @@ def squared_euclidian(x, y):
 
 
 def minkowski(x, y, p=2):
-    """ Estimates the Minkowski distance between two tuples.
+    """Estimates the Minkowski distance between two tuples.
 
     :param x: a tuple of float values
     :param y: a tuple of float values
@@ -155,7 +155,7 @@ def minkowski(x, y, p=2):
 
 
 def chi_squared(x, y):
-    """ Estimates the Chi-squared distance between two tuples.
+    """Estimates the Chi-squared distance between two tuples.
 
     :param x: a tuple of float values
     :param y: a tuple of float values

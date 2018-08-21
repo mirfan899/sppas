@@ -95,7 +95,7 @@ class IPUscribeClient(BaseClient):
     # ------------------------------------------------------------------------
 
     def _update_members(self):
-        """ Update members. """
+        """Update members."""
 
         self._multiplefiles = False
 
@@ -107,7 +107,7 @@ class IPUscribeClient(BaseClient):
     # ------------------------------------------------------------------------
 
     def Save(self):
-        """ Save the current file(s). """
+        """Save the current file(s)."""
 
         page = self._notebook.GetCurrentPage()
         for i in range(self._xfiles.GetSize()):
@@ -118,7 +118,7 @@ class IPUscribeClient(BaseClient):
     # ------------------------------------------------------------------------
 
     def SaveAll(self):
-        """ Save all files (one per page). """
+        """Save all files (one per page)."""
 
         for i in range(self._xfiles.GetSize()):
             o = self._xfiles.GetObject(i)
@@ -135,7 +135,7 @@ class IPUscribe(wx.Panel):
 
     """
     def __init__(self, parent, prefsIO):
-        """ Create a new instance. """
+        """Create a new instance."""
 
         wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -174,7 +174,7 @@ class IPUscribe(wx.Panel):
     # ----------------------------------------------------------------------
 
     def __create_button(self, bmp):
-        """ Create a button and add it to the sizer.
+        """Create a button and add it to the sizer.
         
         :param bmp: a picture file name
 
@@ -191,7 +191,7 @@ class IPUscribe(wx.Panel):
     # ----------------------------------------------------------------------
 
     def _create_media(self):
-        """ Create the media panel. """
+        """Create the media panel."""
 
         self._mediaPanel = SndPlayer(self,
                                      orient=wx.HORIZONTAL,
@@ -203,7 +203,7 @@ class IPUscribe(wx.Panel):
     # ----------------------------------------------------------------------
 
     def _create_nav(self):
-        """ Create the page-navigation panel. """
+        """Create the page-navigation panel."""
 
         self._navPanel = wx.Panel(self)
         s = wx.BoxSizer(wx.HORIZONTAL)
@@ -250,7 +250,7 @@ class IPUscribe(wx.Panel):
     # ----------------------------------------------------------------------
 
     def __set_footer(self):
-        """ Set the label of the footer. """
+        """Set the label of the footer."""
 
         page_nb = "---"
         if self._current_page:
@@ -375,7 +375,7 @@ class IPUscribe(wx.Panel):
     # ------------------------------------------------------------------------
 
     def OnFocus(self, event):
-        """ An IPU received the focus.
+        """An IPU received the focus.
 
         """
         obj = event.GetEventObject()
@@ -390,14 +390,14 @@ class IPUscribe(wx.Panel):
     # ----------------------------------------------------------------------
 
     def Save(self):
-        """ Save the transcription. """
+        """Save the transcription."""
 
         self._trsPanel.Save()
 
     # ----------------------------------------------------------------------
 
     def SetFont(self, font):
-        """ Change font of all texts. """
+        """Change font of all texts."""
 
         wx.Window.SetFont(self, font)
         # Apply on all panels
@@ -413,7 +413,7 @@ class IPUscribe(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetBackgroundColour(self, color):
-        """ Change background of all panels. """
+        """Change background of all panels."""
 
         wx.Window.SetBackgroundColour(self, color)
         # Apply as background on all panels
@@ -430,7 +430,7 @@ class IPUscribe(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetForegroundColour(self, color):
-        """ Change foreground of all panels. """
+        """Change foreground of all panels."""
 
         wx.Window.SetForegroundColour(self, color)
         # Apply as foreground on all panels
@@ -450,7 +450,7 @@ class IPUscribe(wx.Panel):
     # ----------------------------------------------------------------------
 
     def OnFileWander(self, event):
-        """ A file was selected/unselected.  """
+        """A file was selected/unselected.  """
 
         f = event.filename
         s = event.status
@@ -461,7 +461,7 @@ class IPUscribe(wx.Panel):
     # ----------------------------------------------------------------------
 
     def OnFileDirty(self, event):
-        """ The content of the file was modified.  """
+        """The content of the file was modified.  """
 
         if event.dirty is True:
             self._txtinfo.SetForegroundColour(wx.Colour(20, 20, 230))
@@ -485,7 +485,7 @@ class IPUscribe(wx.Panel):
     # ----------------------------------------------------------------------
 
     def FileSelected(self, filename):
-        """ Add files. """
+        """Add files."""
 
         got = False
         name = os.path.splitext(filename)[0]
@@ -520,7 +520,7 @@ class IPUscribe(wx.Panel):
     # ------------------------------------------------------------------------
 
     def FileDeSelected(self):
-        """ Remove the file. """
+        """Remove the file."""
 
         if self._trsPanel.dirty is True:
             # dlg to ask to save or not
@@ -549,7 +549,7 @@ class IPUscribe(wx.Panel):
     # ------------------------------------------------------------------------
 
     def OnKeyPress(self, event):
-        """ Respond to a keypress event. """
+        """Respond to a keypress event."""
 
         keycode = event.GetKeyCode()
 
@@ -623,7 +623,7 @@ class IPUscribeData(scrolled.ScrolledPanel):
     # ----------------------------------------------------------------------
 
     def OnFocus(self, event):
-        """ An IPU received the focus.
+        """An IPU received the focus.
 
         """
         obj = event.GetEventObject()
@@ -653,7 +653,7 @@ class IPUscribeData(scrolled.ScrolledPanel):
     # ----------------------------------------------------------------------
 
     def SetFont(self, font):
-        """ Change font of all texts. """
+        """Change font of all texts."""
 
         wx.Window.SetFont(self, font)
         # Apply on all panels
@@ -663,7 +663,7 @@ class IPUscribeData(scrolled.ScrolledPanel):
     # ----------------------------------------------------------------------
 
     def SetForegroundColour(self, color):
-        """ Change foreground of all panels. """
+        """Change foreground of all panels."""
 
         wx.Window.SetForegroundColour(self, color)
         # Apply as foreground on all panels
@@ -710,7 +710,7 @@ class IPUscribeData(scrolled.ScrolledPanel):
     # -----------------------------------------------------------------------
 
     def SetData(self, wavname, trsname):
-        """ Open a transcription file with a wav file.
+        """Open a transcription file with a wav file.
 
         @param wav: Wav file name
         @param trsname: Transcription file name
@@ -847,7 +847,7 @@ class IPUscribeData(scrolled.ScrolledPanel):
     # ----------------------------------------------------------------------
 
     def Save(self):
-        """ Save the transcription. """
+        """Save the transcription."""
 
         if self.dirty is True:
             try:
@@ -976,7 +976,7 @@ class IPUPanel(wx.Panel):
     # ----------------------------------------------------------------------
 
     def refresh_title(self):
-        """ Update infos of the infopanel. """
+        """Update infos of the infopanel."""
 
         self._title.SetLabel("{:s} {:d}".format(self._ipu.get_tier_name(), self._ipu.nb_ipu))
         self._startend.SetLabel("{:6.2f} - {:6.2f}".format(self._ipu.get_start(), self._ipu.get_end()))
@@ -986,7 +986,7 @@ class IPUPanel(wx.Panel):
     # -------------------------------------------------------------------------
 
     def SetFont(self, font):
-        """ Change font of all texts. """
+        """Change font of all texts."""
 
         wx.Window.SetFont(self, font)
         self._title.SetFont(font)
@@ -997,7 +997,7 @@ class IPUPanel(wx.Panel):
     # ----------------------------------------------------------------------
 
     def SetForegroundColour(self, color):
-        """ Change foreground of all texts. """
+        """Change foreground of all texts."""
 
         wx.Window.SetForegroundColour(self, color)
         self._title.SetForegroundColour(color)
@@ -1053,7 +1053,7 @@ class IPUPanel(wx.Panel):
     # -------------------------------------------------------------------------
 
     def OnMouseEvents(self, event):
-        """ Handles the wx.EVT_MOUSE_EVENTS event for self and self._infopanel. """
+        """Handles the wx.EVT_MOUSE_EVENTS event for self and self._infopanel."""
 
         if event.Entering() and self._selected is False:
             self.SetBackgroundColour(wx.Colour(175, 245, 165))
@@ -1104,7 +1104,7 @@ class IPUData:
     # -------------------------------------------------------------------------
 
     def set_label(self, value):
-        """ Change the IPU label.
+        """Change the IPU label.
 
         @param value (string)
         

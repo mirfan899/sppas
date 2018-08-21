@@ -9,7 +9,7 @@ OOP... Create my own class.
 
 
 class HelloFrame(wx.Frame):
-    """ A frame that says Hello World. Inherited from the wx.Frame.
+    """A frame that says Hello World. Inherited from the wx.Frame.
 
     """
     def __init__(self, *args, **kw):

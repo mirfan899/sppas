@@ -109,7 +109,7 @@ class CheckListCtrl(wx.ListCtrl):
     # ---------------------------------------------------------------------
 
     def __createImageList(self):
-        """ Load some images into an image list. """
+        """Load some images into an image list."""
 
         il = wx.ImageList(16, 16, True)
 

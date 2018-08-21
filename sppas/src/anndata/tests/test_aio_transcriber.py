@@ -85,7 +85,7 @@ class TestTranscriber(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_make_point(self):
-        """ Convert data into the appropriate digit type, or not. """
+        """Convert data into the appropriate digit type, or not."""
 
         self.assertEqual(sppasPoint(3., 0.005), sppasTRS.make_point("3.0"))
         self.assertEqual(sppasPoint(3., 0.005), sppasTRS.make_point("3."))
@@ -96,7 +96,7 @@ class TestTranscriber(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_parse_metadata(self):
-        """ Test metadata. """
+        """Test metadata."""
 
         # All attributes filled
         trs_attribs = '<Trans scribe="Alice" ' \
@@ -133,7 +133,7 @@ class TestTranscriber(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_parse_speakers(self):
-        """ Test speakers. """
+        """Test speakers."""
 
         spks = '<Speakers> <Speaker ' \
                'id = "spk1" ' \
@@ -169,7 +169,7 @@ class TestTranscriber(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_parse_topics(self):
-        """ Test Topics. """
+        """Test Topics."""
 
         topics = '<Topics> '\
                  '<Topic id="to1" desc="S14"/> ' \
@@ -192,7 +192,7 @@ class TestTranscriber(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_parse_section(self):
-        """ Test Section. """
+        """Test Section."""
 
         sections = '<Episode> ' \
                    ' <Section type="report" startTime="0" endTime="32.114" topic="to1"> </Section>' \
@@ -216,7 +216,7 @@ class TestTranscriber(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_parse_turn_attributes(self):
-        """ Test Turn. """
+        """Test Turn."""
 
         turns = '<Section type="report" startTime="0" endTime="32.114" topic="to1"> ' \
                 '<Turn speaker="spk1 spk2" startTime="0.000" endTime="0.387"> </Turn> '\
@@ -265,7 +265,7 @@ class TestTranscriber(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_parse_turn_emptied(self):
-        """ Test Turn. """
+        """Test Turn."""
 
         turns = '<Section type="report" startTime="0" endTime="32.114" topic="to1"> ' \
                 '<Turn speaker="spk1 spk2" startTime="0.000" endTime="0.387"> </Turn> '\
@@ -290,7 +290,7 @@ class TestTranscriber(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_parse_turn_filled(self):
-        """ Test Turn. """
+        """Test Turn."""
 
         turns = '<Section type="report" startTime="0" endTime="32.114" topic="to1"> ' \
                 '<Turn speaker="spk1 spk2" startTime="0.000" endTime="0.387"> </Turn> '\
@@ -307,7 +307,7 @@ class TestTranscriber(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_read_demo(self):
-        """ Demo in the transcriber package . """
+        """Demo in the transcriber package ."""
 
         trs = sppasTRS()
         trs.read(os.path.join(DATA, "sample-demo.trs"))
@@ -347,7 +347,7 @@ class TestTranscriber(unittest.TestCase):
     # -----------------------------------------------------------------
 
     def test_read_example(self):
-        """ Real-life file. """
+        """Real-life file."""
 
         trs = sppasTRS()
         trs.read(os.path.join(DATA, "20000410_0930_1030_rfi_fm_dga.trs"))

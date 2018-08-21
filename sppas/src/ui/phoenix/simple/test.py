@@ -91,7 +91,7 @@ class sppasMenuPanel(wx.Panel):
 
 
 class sppasActionPanel(wx.Panel):
-    """ Create a panel with 3 action buttons: exit, open, save.
+    """Create a panel with 3 action buttons: exit, open, save.
 
     """
     def __init__(self, parent):
@@ -128,7 +128,7 @@ class sppasActionPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def OnAction(self, event):
-        """ A button was clicked.
+        """A button was clicked.
         Here we just send the event to the parent.
 
         """
@@ -142,7 +142,7 @@ class sppasActionPanel(wx.Panel):
 class sppasApp(wx.App):
 
     def __init__(self):
-        """ Create a customized application.
+        """Create a customized application.
 
         This app is using the following parameters:
 
@@ -229,7 +229,7 @@ class sppasApp(wx.App):
     # -----------------------------------------------------------------------
 
     def exit(self):
-        """ Close the frame, terminating the application. """
+        """Close the frame, terminating the application."""
 
         print "Bye bye."
         self.GetTopWindow().Close(True)
@@ -269,7 +269,7 @@ class sppasApp(wx.App):
     # -----------------------------------------------------------------------
 
     def load_config(self):
-        """ Load the configuration file. """
+        """Load the configuration file."""
 
         self.globals = dict()
 

@@ -50,7 +50,7 @@ class sppasChannelSilence(object):
 
     """
     def __init__(self, channel, win_len=0.01):
-        """ Create a sppasChannelSilence instance.
+        """Create a sppasChannelSilence instance.
 
         :param channel (sppasChannel) the input channel object
         :param win_len (float) duration of a window for the estimation of the volume
@@ -63,14 +63,14 @@ class sppasChannelSilence(object):
     # -----------------------------------------------------------------------
 
     def get_channel(self):
-        """ Return the sppasChannel. """
+        """Return the sppasChannel."""
 
         return self._channel
 
     # -----------------------------------------------------------------------
 
     def get_volstats(self):
-        """ Return the sppasChannelVolume of the sppasChannel. """
+        """Return the sppasChannelVolume of the sppasChannel."""
 
         return self._volume_stats
 
@@ -79,7 +79,7 @@ class sppasChannelSilence(object):
     # -----------------------------------------------------------------------
 
     def track_data(self, tracks):
-        """ Get the track data: a set of frames for each track.
+        """Get the track data: a set of frames for each track.
 
         :param tracks: (list of tuples) List of (from_pos,to_pos)
 
@@ -100,7 +100,7 @@ class sppasChannelSilence(object):
     # -----------------------------------------------------------------------
 
     def refine(self, pos, threshold, win_length=0.005, direction=1):
-        """ Refine the position of a silence around a given position.
+        """Refine the position of a silence around a given position.
 
         :param pos: (int) Initial position of the silence
         :param threshold: (int) RMS threshold value for a silence
@@ -132,7 +132,7 @@ class sppasChannelSilence(object):
     # -----------------------------------------------------------------------
 
     def extract_tracks(self, mintrackdur=0.300, shiftdurstart=0.010, shiftdurend=0.010):
-        """ Return a list of tuples (from_pos,to_pos) of the tracks.
+        """Return a list of tuples (from_pos,to_pos) of the tracks.
 
         :param mintrackdur: (float) The minimum duration for a track (in seconds)
         :param shiftdurstart: (float) The time to remove to the start boundary (in seconds)
@@ -176,7 +176,7 @@ class sppasChannelSilence(object):
     # -----------------------------------------------------------------------
 
     def search_threshold_vol(self):
-        """ Try to fix optimally the threshold for speech/silence segmentation.
+        """Try to fix optimally the threshold for speech/silence segmentation.
         This is a simple observation of the distribution of rms values.
 
         :returns: (int) volume value
@@ -197,7 +197,7 @@ class sppasChannelSilence(object):
     # -----------------------------------------------------------------------
 
     def search_silences(self, threshold=0, mintrackdur=0.08):
-        """ Search windows with a volume lesser than a given threshold.
+        """Search windows with a volume lesser than a given threshold.
 
         :param threshold: (int) Expected minimum volume (rms value)
         If threshold is set to 0, search_minvol() will assign a value.
@@ -253,7 +253,7 @@ class sppasChannelSilence(object):
     # -----------------------------------------------------------------------
 
     def filter_silences(self, minsildur=0.200):
-        """ Filtered the current silences.
+        """Filtered the current silences.
 
         :param minsildur: (float) Minimum silence duration in seconds
 
@@ -274,7 +274,7 @@ class sppasChannelSilence(object):
     # -----------------------------------------------------------------------
 
     def set_silences(self, silences):
-        """ Fix manually silences!
+        """Fix manually silences!
 
         :param silences: (list of tuples (start_pos,end_pos))
 
@@ -284,7 +284,7 @@ class sppasChannelSilence(object):
     # -----------------------------------------------------------------------
 
     def reset_silences(self):
-        """ Reset silences. """
+        """Reset silences."""
 
         self.__silences = []
 

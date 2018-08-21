@@ -101,7 +101,7 @@ class sppasEAF(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of EAF format or not.
+        """Check whether a file is of EAF format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -124,7 +124,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasMLF instance.
+        """Initialize a new sppasMLF instance.
 
         :param name: (str) This transcription name.
 
@@ -162,7 +162,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def make_point(self, midpoint):
-        """ Convert data into the appropriate sppasPoint().
+        """Convert data into the appropriate sppasPoint().
 
         :param midpoint: (str) a time in ELAN format
         :returns: (sppasPoint) Representation of time in seconds with a (very)
@@ -179,7 +179,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def format_point(self, second_count):
-        """ Convert a time in seconds into ELAN format.
+        """Convert a time in seconds into ELAN format.
 
         :param second_count: (float) Time value (in seconds)
         :returns: (int) a time in ELAN format
@@ -197,7 +197,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a ELAN EAF file.
+        """Read a ELAN EAF file.
 
         :param filename: (str) input filename.
 
@@ -254,7 +254,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_document(self, document_root):
-        """ Get the main element root.
+        """Get the main element root.
 
         :param document_root: (ET) Main root.
 
@@ -271,7 +271,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_license(self, license_root, idx=0):
-        """ Get an element 'LICENSE'.
+        """Get an element 'LICENSE'.
         The current version of ELAN does not yet provide a means to edit
         or view the contents of the license.
 
@@ -289,7 +289,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_header(self, header_root):
-        """ Get the element 'HEADER'.
+        """Get the element 'HEADER'.
         There should be exactly one HEADER element. It can contain sequences
         of three elements and has two attributes.
 
@@ -317,7 +317,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _parse_media_descriptor(media_root, header_root):
-        """ Get the elements 'MEDIA_DESCRIPTOR'.
+        """Get the elements 'MEDIA_DESCRIPTOR'.
         This element describes one primary media source.
         Create a sppasMedia instance and add it.
 
@@ -347,7 +347,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _parse_linked_file_descriptor(linked_root, header_root):
-        """ Get the elements 'LINKED_FILE_DESCRIPTOR'.
+        """Get the elements 'LINKED_FILE_DESCRIPTOR'.
         This element describes a “secondary”, additional source.
         Create a sppasMedia instance and add it.
 
@@ -376,7 +376,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_property(self, property_root):
-        """ Get the elements 'PROPERTY' -> sppasMetadata().
+        """Get the elements 'PROPERTY' -> sppasMetadata().
         This is a general purpose element for storing key-value pairs.
 
         This method store all metadata except the identifiers (media, tier...).
@@ -393,7 +393,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_locale(self, locale_root, idx=0):
-        """ Get an element 'LOCALE'.
+        """Get an element 'LOCALE'.
 
         :param locale_root: (ET) Locale root.
         :param idx: (int) Index of the locale
@@ -409,7 +409,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_language(self, language_root, idx=0):
-        """ Get an element 'LANGUAGE'.
+        """Get an element 'LANGUAGE'.
 
         Extracted information are:
             - language iso639-3 code,
@@ -437,7 +437,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _parse_time_order(time_order_root):
-        """ Get the elements 'TIME_ORDER'.
+        """Get the elements 'TIME_ORDER'.
         The TIME_ORDER element is a container for ordered TIME_SLOT elements.
 
         :param time_order_root: (ET) Time order root element.
@@ -460,7 +460,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _parse_ctrl_vocab(ctrl_vocab_root):
-        """ Get the elements 'CONTROLLED_VOCABULARY' -> sppasCtrlVocab().
+        """Get the elements 'CONTROLLED_VOCABULARY' -> sppasCtrlVocab().
 
         In version >= 2.8, the locale is ignored.
 
@@ -506,7 +506,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------
 
     def _parse_linguistic_type(self, linguistic_root):
-        """ Get the elements 'LINGUISTIC_TYPE'.
+        """Get the elements 'LINGUISTIC_TYPE'.
 
         This is a collection of attributes and constraints for TIER objects.
 
@@ -546,7 +546,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_tiers(self, root, time_slots):
-        """ Get all the elements 'TIER' -> sppasTier().
+        """Get all the elements 'TIER' -> sppasTier().
 
         :param root: (ET) Document root.
         :param time_slots: (dict)
@@ -580,7 +580,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_tier(self, tier_root, time_slots, removed_annotations=dict()):
-        """ Get the element 'TIER' -> sppasTier().
+        """Get the element 'TIER' -> sppasTier().
 
         :param tier_root: (ET) Tier root.
         :param time_slots: (dict)
@@ -611,7 +611,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_alignable_tier(self, tier_root, tier, time_slots, removed_annotations=dict()):
-        """ Get the elements 'TIER' -> sppasTier().
+        """Get the elements 'TIER' -> sppasTier().
 
         :param tier_root: (ET) Tier root.
         :param tier: (sppasTier) The tier to add the annotation
@@ -706,7 +706,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __fix_tiers_hierarchy(self, tier, parent_tier):
-        """ Try to link tier/parent_tier into a hierarchy. """
+        """Try to link tier/parent_tier into a hierarchy."""
 
         linked = False
         link_type = sppasHierarchy.infer_hierarchy_type(tier, parent_tier)
@@ -735,7 +735,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _parse_ref_tier(self, tier_root, tier, removed_annotations=dict()):
-        """ Get the elements 'TIER'.
+        """Get the elements 'TIER'.
 
         :param tier_root: (ET) Tier root element.
         :param tier: (sppasTier) The tier to add the annotations
@@ -778,7 +778,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write an ELAN EAF file.
+        """Write an ELAN EAF file.
 
         :param filename: output filename.
 
@@ -838,7 +838,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _format_document():
-        """ Create a root element tree for EAF format. """
+        """Create a root element tree for EAF format."""
 
         root = ET.Element('ANNOTATION_DOCUMENT')
         author = sg.__name__ + " " + sg.__version__ + " (C) " + sg.__author__
@@ -857,7 +857,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_license(self, root):
-        """ Add an element 'LICENSE' into the ElementTree (if any).
+        """Add an element 'LICENSE' into the ElementTree (if any).
 
         :param root: (ElementTree)
         :returns: (ET) License root.
@@ -881,7 +881,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_languages(self, root):
-        """ Add the elements 'LANGUAGE' into the ElementTree (if any).
+        """Add the elements 'LANGUAGE' into the ElementTree (if any).
 
         :param root: (ElementTree)
         :returns: (ET) License root.
@@ -914,7 +914,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_header(self, root):
-        """ Add 'HEADER' into the ElementTree. """
+        """Add 'HEADER' into the ElementTree."""
 
         header_root = ET.SubElement(root, 'HEADER')
         header_root.set('TIME_UNITS', 'milliseconds')
@@ -931,7 +931,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _format_media(root, media):
-        """ Add 'MEDIA_DESCRIPTOR' into the ElementTree (if any).
+        """Add 'MEDIA_DESCRIPTOR' into the ElementTree (if any).
 
         :param root: (ElementTree)
         :param media: (sppasMedia)
@@ -957,7 +957,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _format_linked_media(root, media):
-        """ Add 'LINKED_FILE_DESCRIPTOR' into the ElementTree (if any).
+        """Add 'LINKED_FILE_DESCRIPTOR' into the ElementTree (if any).
 
         :param root: (ElementTree)
         :param media: (sppasMedia)
@@ -983,7 +983,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _format_property(header_root, meta_object):
-        """ Add 'PROPERTY' elements into the ElementTree (if any).
+        """Add 'PROPERTY' elements into the ElementTree (if any).
 
         :param root: (ElementTree)
 
@@ -1019,7 +1019,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_linguistic_types(self, root):
-        """ Add the elements 'LINGUISTIC_TYPES' into the ElementTree.
+        """Add the elements 'LINGUISTIC_TYPES' into the ElementTree.
 
         :param root: (ElementTree)
 
@@ -1080,7 +1080,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_locales(self, root):
-        """ Add the elements 'LOCALE' into the ElementTree (if any).
+        """Add the elements 'LOCALE' into the ElementTree (if any).
 
         :param root: (ElementTree)
 
@@ -1110,7 +1110,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _format_constraints(root):
-        """ Add the elements 'CONSTRAINTS' into the ElementTree.
+        """Add the elements 'CONSTRAINTS' into the ElementTree.
 
         :param root: (ElementTree)
 
@@ -1124,7 +1124,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_ctrl_vocab(self, root, ctrl_vocab):
-        """ Add 'CONTROLLED_VOCABULARY' elements into the ElementTree (if any).
+        """Add 'CONTROLLED_VOCABULARY' elements into the ElementTree (if any).
 
         :param root: (ElementTree)
 
@@ -1155,7 +1155,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_time_slots(self, time_order_root, time_slots):
-        """ Fill the TIME_ORDER element with time slots.
+        """Fill the TIME_ORDER element with time slots.
 
         :param time_order_root: (ET)
         :param time_slots: (dict) The link between time values/tier and time slots.
@@ -1172,7 +1172,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_tier_root(self, root):
-        """ Create the root of each tier. Do not fill at all.
+        """Create the root of each tier. Do not fill at all.
 
         It allows to preserve the rank of each tier in the tree and to fill
         all-in-one alignable-tiers then ref-tiers.
@@ -1190,7 +1190,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_alignable_tiers(self, root, alignable_tiers):
-        """ Add the elements 'TIER' into the ElementTree (if any).
+        """Add the elements 'TIER' into the ElementTree (if any).
         Only for alignable tiers.
 
         :param root: (ElementTree)
@@ -1254,7 +1254,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _format_alignable_annotations(tier_root, tier, time_values):
-        """ Add the elements 'ANNOTATION' into the ElementTree (if any).
+        """Add the elements 'ANNOTATION' into the ElementTree (if any).
         Only for alignable tiers.
 
         Attention: we assign time values instead of time slots. An annotation
@@ -1301,7 +1301,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _create_alignable_annotation_element(ann, tier_root):
-        """ Create ANNOTATION in ElementTree.
+        """Create ANNOTATION in ElementTree.
         Returns the list of created nodes of 'ALIGNABLE_ANNOTATION'.
 
         """
@@ -1347,7 +1347,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _re_format_alignable_annotations(tier_root, tier, time_slots):
-        """ Replace time values instead of time slots in 'ANNOTATION' elements.
+        """Replace time values instead of time slots in 'ANNOTATION' elements.
 
         :param root: (ElementTree)
         :param tier: (sppasTier)
@@ -1379,7 +1379,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _fix_alignable_tiers(self):
-        """ Return the list of tiers to be aligned in time (without annotation ref). """
+        """Return the list of tiers to be aligned in time (without annotation ref)."""
 
         alignable = list()
 
@@ -1409,7 +1409,7 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _format_reference_tiers(self, root, alignable_tiers):
-        """ Add the elements 'TIER' into the ElementTree (if any).
+        """Add the elements 'TIER' into the ElementTree (if any).
         Only for reference tiers (annotations are not aligned but reference).
 
         :param root: (ElementTree)
@@ -1465,7 +1465,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _fix_time_slots(time_values):
-        """ Time values is a list of (float, int, sppasTier). """
+        """Time values is a list of (float, int, sppasTier)."""
 
         # sort by time values and assign the 'ts<num>' id
         time_slots = OrderedDict()
@@ -1481,7 +1481,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def __is_alignable_tier(tier_root):
-        """ Return 0/False if the tier is not time-alignable at all. """
+        """Return 0/False if the tier is not time-alignable at all."""
 
         if 'PARENT_REF' in tier_root.attrib:
             for annotation_root in tier_root.findall('ANNOTATION'):
@@ -1499,7 +1499,7 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def indent(elem, level=0):
-        """ Pretty indent.
+        """Pretty indent.
         http://effbot.org/zone/element-lib.htm#prettyprint
 
         """

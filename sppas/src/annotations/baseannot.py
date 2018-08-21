@@ -67,7 +67,7 @@ class sppasBaseAnnotation(object):
     """
 
     def __init__(self, logfile=None, name="Annotation"):
-        """ Base class for any SPPAS automatic annotation.
+        """Base class for any SPPAS automatic annotation.
 
         :param logfile: (sppasLog) 
         
@@ -89,7 +89,7 @@ class sppasBaseAnnotation(object):
     # -----------------------------------------------------------------------
 
     def get_option(self, key):
-        """ Return the option value of a given key or raise KeyError. 
+        """Return the option value of a given key or raise KeyError.
         
         :param key: (str) Return the value of an option, or None.
         :raises: KeyError
@@ -100,7 +100,7 @@ class sppasBaseAnnotation(object):
     # ------------------------------------------------------------------------
 
     def fix_options(self, options):
-        """ Fix all options.
+        """Fix all options.
 
         :param options: (list)
 
@@ -110,7 +110,7 @@ class sppasBaseAnnotation(object):
     # -----------------------------------------------------------------------
 
     def print_message(self, message, indent=3, status=None):
-        """ Print a message in the user log.
+        """Print a message in the user log.
 
         :param message: (str) The message to communicate
         :param indent: (int) Shift the message with indents
@@ -137,7 +137,7 @@ class sppasBaseAnnotation(object):
     # -----------------------------------------------------------------------
 
     def print_filename(self, filename, status=None):
-        """ Print the annotation name that is applied on a filename in the user log.
+        """Print the annotation name that is applied on a filename in the user log.
 
         :param filename: (str) Name of the file to annotate.
         :param status: (int) 1-4 value or None
@@ -152,7 +152,7 @@ class sppasBaseAnnotation(object):
     # -----------------------------------------------------------------------
 
     def print_options(self):
-        """ Print the list of options in the user log. """
+        """Print the list of options in the user log."""
         
         self.print_message(MSG_OPTIONS + ": ", indent=2, status=None)
         for k, v in self._options.items():
@@ -161,7 +161,7 @@ class sppasBaseAnnotation(object):
     # -----------------------------------------------------------------------
 
     def print_diagnosis(self, *filenames):
-        """ Print the diagnosis of a list of files in the user log.
+        """Print the diagnosis of a list of files in the user log.
 
         :param filenames: (list) List of files.
         

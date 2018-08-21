@@ -47,7 +47,7 @@ from .disjoint import sppasDisjoint
 
 
 class sppasLocalizationCompare(sppasBaseCompare):
-    """ Comparison methods for sppasBaseLocalization.
+    """Comparison methods for sppasBaseLocalization.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -57,7 +57,7 @@ class sppasLocalizationCompare(sppasBaseCompare):
 
     """
     def __init__(self):
-        """ Create a sppasLocalizationCompare instance.
+        """Create a sppasLocalizationCompare instance.
         Defines the list of implemented methods.
 
         """
@@ -70,7 +70,7 @@ class sppasLocalizationCompare(sppasBaseCompare):
 
     @staticmethod
     def rangefrom(localization, x):
-        """ Return True if localization is starting at x or after.
+        """Return True if localization is starting at x or after.
 
         :param localization: (sppasBaseLocalization)
         :param x: (int, float, sppasPoint)
@@ -86,7 +86,7 @@ class sppasLocalizationCompare(sppasBaseCompare):
 
     @staticmethod
     def rangeto(localization, x):
-        """ Return True if localization is ending at x or before.
+        """Return True if localization is ending at x or before.
 
         :param localization: (sppasBaseLocalization)
         :param x: (int, float, sppasPoint)
@@ -104,7 +104,7 @@ class sppasLocalizationCompare(sppasBaseCompare):
 
     @staticmethod
     def __get_begin(localization):
-        """ Return the begin point of a localization. """
+        """Return the begin point of a localization."""
 
         if isinstance(localization, sppasPoint):
             return localization
@@ -117,7 +117,7 @@ class sppasLocalizationCompare(sppasBaseCompare):
 
     @staticmethod
     def __get_end(localization):
-        """ Return the end point of a localization. """
+        """Return the end point of a localization."""
 
         if isinstance(localization, sppasPoint):
             return localization

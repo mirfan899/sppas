@@ -78,7 +78,7 @@ class RulerLabel:
     """
 
     def __init__(self, pos=-1, lx=-1, ly=-1, text=""):
-        """ Constructor. """
+        """Constructor."""
 
         self.pos  = pos
         self.lx   = lx
@@ -100,7 +100,7 @@ class Indicator:
     """
 
     def __init__(self, parent, id=wx.ID_ANY, value=0):
-        """ Constructor. """
+        """Constructor."""
 
         self._parent = parent
         if id == wx.ID_ANY:
@@ -165,7 +165,7 @@ class Indicator:
 
 
     def GetImageSize(self):
-        """ Returns the indicator bitmap size. """
+        """Returns the indicator bitmap size."""
 
         return self._img.GetWidth(), self._img.GetHeight()
 
@@ -174,7 +174,7 @@ class Indicator:
 
 
     def GetRect(self):
-        """ Returns the indicator rect. """
+        """Returns the indicator rect."""
 
         return self._rect
 
@@ -183,7 +183,7 @@ class Indicator:
 
 
     def GetValue(self):
-        """ Returns the indicator value. """
+        """Returns the indicator value."""
 
         return self._value
 
@@ -223,7 +223,7 @@ class Indicator:
 
 
     def SetValue(self, value):
-        """ Sets the indicator value. """
+        """Sets the indicator value."""
 
         self._value = value
         self._rect  = wx.Rect()
@@ -233,7 +233,7 @@ class Indicator:
 
 
     def SetColour(self, colour):
-        """ Sets the indicator color (red, green or blue). """
+        """Sets the indicator color (red, green or blue)."""
 
         (r,g,b) = colour.Red(), colour.Green(), colour.Blue()
         if r >= g and r >= b:
@@ -256,7 +256,7 @@ class Indicator:
 
 
     def Draw(self, dc):
-        """ Actually draws the indicator on the dc. """
+        """Actually draws the indicator on the dc."""
         xpos,ypos = self.GetPosition()
 
         bmp = wx.BitmapFromImage(self._img)
@@ -310,7 +310,7 @@ class RulerCtrl( spControl ):
 
 
     def Reset(self):
-        """ Reset all values to their default. """
+        """Reset all values to their default."""
 
         self.__initializeMembers()
         self.__initializeColours()
@@ -326,7 +326,7 @@ class RulerCtrl( spControl ):
 
 
     def SetIndicatorValue(self, sendEvent=True, x=0, y=0):
-        """ Sets the indicator value. """
+        """Sets the indicator value."""
 
         if self._currentIndicator is None:
             return
@@ -367,7 +367,7 @@ class RulerCtrl( spControl ):
 
 
     def GetIndicator(self, mousePos):
-        """ Returns the indicator located at the mouse position mousePos (if any). """
+        """Returns the indicator located at the mouse position mousePos (if any)."""
 
         for indicator in self._indicators:
             if indicator.GetRect().Contains(mousePos):
@@ -379,7 +379,7 @@ class RulerCtrl( spControl ):
 
 
     def GetCurrentIndicator(self, idx):
-        """ Returns the indicator given its idx. """
+        """Returns the indicator given its idx."""
 
         self._currentIndicator = None
         for indicator in self._indicators:
@@ -392,7 +392,7 @@ class RulerCtrl( spControl ):
 
 
     def GetIndicatorFromId(self, idx):
-        """ Returns the indicator of an Id. """
+        """Returns the indicator of an Id."""
 
         for indicator in self._indicators:
             if indicator.GetId() == idx:
@@ -405,7 +405,7 @@ class RulerCtrl( spControl ):
 
 
     def GetIndicators(self):
-        """ Returns the indicators. """
+        """Returns the indicators."""
 
         return self._indicators
 
@@ -440,7 +440,7 @@ class RulerCtrl( spControl ):
 
 
     def SetIndicatorColour(self, idx, colour=None):
-        """ Change the color of all indicators. """
+        """Change the color of all indicators."""
 
         if colour is None:
             colour = wx.BLUE
@@ -462,7 +462,7 @@ class RulerCtrl( spControl ):
 
 
     def SetTicksColour(self, colour):
-        """ Sets the color of ticks. """
+        """Sets the color of ticks."""
 
         if colour != self._tickcolor:
             self._tickcolor = colour
@@ -474,7 +474,7 @@ class RulerCtrl( spControl ):
 
 
     def GetFlip(self):
-        """ Return true if the orientation of the tick marks is reversed. """
+        """Return true if the orientation of the tick marks is reversed."""
 
         return self._flip
 
@@ -483,7 +483,7 @@ class RulerCtrl( spControl ):
 
 
     def SetFlip(self, flip=True):
-        """ Sets whether the orientation of the tick marks should be reversed. """
+        """Sets whether the orientation of the tick marks should be reversed."""
 
         # If this is True, the orientation of the tick marks is reversed from
         # the default eg. above the line instead of below
@@ -499,7 +499,7 @@ class RulerCtrl( spControl ):
 
 
     def SetFont(self, font):
-        """ Sets the fonts for minor and major tick labels. """
+        """Sets the fonts for minor and major tick labels."""
 
         spControl.SetFont( self, font )
         fontsize = max(FONT_SIZE_MIN,int( 0.7 * self._font.GetPointSize() ))
@@ -511,7 +511,7 @@ class RulerCtrl( spControl ):
 
 
     def SetDrawingParent(self, dparent):
-        """ Sets the window to which RulerCtrl draws a thin line over. """
+        """Sets the window to which RulerCtrl draws a thin line over."""
 
         self._drawingparent = dparent
         self.RequestRedraw()
@@ -520,7 +520,7 @@ class RulerCtrl( spControl ):
 
 
     def GetDrawingParent(self):
-        """ Returns the window to which RulerCtrl draws a thin line over. """
+        """Returns the window to which RulerCtrl draws a thin line over."""
 
         return self._drawingparent
 
@@ -535,7 +535,7 @@ class RulerCtrl( spControl ):
 
 
     def OnMouseEvents(self, event):
-        """ Handles the wx.EVT_MOUSE_EVENTS event for RulerCtrl. """
+        """Handles the wx.EVT_MOUSE_EVENTS event for RulerCtrl."""
 
         if not self._indicators:
             event.Skip()
@@ -646,7 +646,7 @@ class RulerCtrl( spControl ):
 
 
     def DrawOnParent(self, indicator):
-        """ Actually draws the thin line over the drawing parent window. """
+        """Actually draws the thin line over the drawing parent window."""
 
         if not self._drawingparent:
             return
@@ -673,7 +673,7 @@ class RulerCtrl( spControl ):
 
 
     def DrawGridOnParent(self, xpos, ypos):
-        """ TO BE DEBUGGED. Actually draws a thin dotted gray line over the drawing parent window. """
+        """TO BE DEBUGGED. Actually draws a thin dotted gray line over the drawing parent window."""
 
         if not self._drawingparent:
             return
@@ -703,7 +703,7 @@ class RulerCtrl( spControl ):
 
 
     def FindLinearTickSizes(self, UPP):
-        """ Used internally. """
+        """Used internally."""
 
         # Given the dimensions of the ruler, the range of values it
         # has to display figure out how many units are in one Minor tick, and
@@ -735,7 +735,7 @@ class RulerCtrl( spControl ):
 
 
     def LabelString(self, d, major=None):
-        """ Used internally. """
+        """Used internally."""
 
         # Given a value, turn it into a string.  The number of digits of
         # accuracy depends on the resolution of the ruler,
@@ -755,7 +755,7 @@ class RulerCtrl( spControl ):
 
 
     def Tick(self, dc, pos, d, major):
-        """ Tick a particular position. """
+        """Tick a particular position."""
 
         (x,y) = self.GetDrawingPosition()
         (w,h) = self.GetDrawingSize()
@@ -843,7 +843,7 @@ class RulerCtrl( spControl ):
 
 
     def Update(self, dc):
-        """ Updates all the ticks calculations. """
+        """Updates all the ticks calculations."""
 
         # This gets called when something has been changed
         # (i.e. we've been invalidated).  Recompute all
@@ -910,7 +910,7 @@ class RulerCtrl( spControl ):
 
 
     def __initializeMembers(self):
-        """ Initialize all members. """
+        """Initialize all members."""
 
         #  Display a vertical line on the parent while moving an indicator.
         self._drawingparent = None
@@ -935,7 +935,7 @@ class RulerCtrl( spControl ):
 
 
     def __initializeColours(self):
-        """ Create the pens and brush with default colors. """
+        """Create the pens and brush with default colors."""
 
         self._tickcolor = self._fgcolor
         self._tickpen   = wx.Pen(self._fgcolor, 1, wx.SOLID)
@@ -945,7 +945,7 @@ class RulerCtrl( spControl ):
 
 
     def __initializeFonts(self):
-        """ Create the fonts. """
+        """Create the fonts."""
 
         self._fontsizeauto = True
         self.AutoAdjustFont()
@@ -1000,13 +1000,13 @@ class TimeRulerCtrl( RulerCtrl ):
 
 
     def GetPlayerIndicatorValue(self):
-        """ Return the value of the player indicator. """
+        """Return the value of the player indicator."""
 
         return self._indicators[0].GetValue()
 
 
     def SetPlayerIndicatorValue(self, v):
-        """ Set the value of the player indicator. """
+        """Set the value of the player indicator."""
 
         self._indicators[0].SetValue(v)
 
@@ -1017,7 +1017,7 @@ class TimeRulerCtrl( RulerCtrl ):
 
 
     def GetSelectionIndicatorValues(self):
-        """ Return the selection interval. """
+        """Return the selection interval."""
 
         minv = self.GetSelectionIndicatorMinValue()
         maxv = self.GetSelectionIndicatorMaxValue()
@@ -1025,7 +1025,7 @@ class TimeRulerCtrl( RulerCtrl ):
 
 
     def GetSelectionIndicatorMinValue(self):
-        """ Return the selection min value. """
+        """Return the selection min value."""
 
         # which is the min indicator?
         i = self._getmin()
@@ -1034,7 +1034,7 @@ class TimeRulerCtrl( RulerCtrl ):
 
 
     def GetSelectionIndicatorMaxValue(self):
-        """ Return the selection max value. """
+        """Return the selection max value."""
 
         # which is the min indicator?
         i = self._getmax()
@@ -1043,7 +1043,7 @@ class TimeRulerCtrl( RulerCtrl ):
 
 
     def SetSelectionIndicatorValues(self, minv, maxv):
-        """ Move selection indicators to minv and maxv. """
+        """Move selection indicators to minv and maxv."""
 
         # which is the min indicator?
         i = self._getmin()

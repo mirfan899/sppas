@@ -80,7 +80,7 @@ class sppasBasePhonedit(sppasBaseIO):
 
     """
     def __init__(self, name=None):
-        """ Initialize a new sppasBasePhonedit instance.
+        """Initialize a new sppasBasePhonedit instance.
 
         :param name: (str) This transcription name.
 
@@ -109,7 +109,7 @@ class sppasBasePhonedit(sppasBaseIO):
 
     @staticmethod
     def _parse(filename):
-        """ Parse a configuration file.
+        """Parse a configuration file.
 
         :param filename: (string) Configuration file name.
 
@@ -133,7 +133,7 @@ class sppasBasePhonedit(sppasBaseIO):
 
     @staticmethod
     def _parse_metadata(meta_list, meta_object):
-        """ Parse the metadata and append into an object.
+        """Parse the metadata and append into an object.
 
         :param meta_list: (list) tuples with (key,value)
         :param meta_object: (sppasMeta)
@@ -172,7 +172,7 @@ class sppasMRK(sppasBasePhonedit):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of CTM format or not.
+        """Check whether a file is of CTM format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -187,7 +187,7 @@ class sppasMRK(sppasBasePhonedit):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasBaseSclite instance.
+        """Initialize a new sppasBaseSclite instance.
 
         :param name: (str) This transcription name.
 
@@ -202,7 +202,7 @@ class sppasMRK(sppasBasePhonedit):
 
     @staticmethod
     def make_point(midpoint):
-        """ In Phonedit, the localization is a time value, so a float. 
+        """In Phonedit, the localization is a time value, so a float.
 
         :param midpoint: (str) a time in ELAN format
         :returns: sppasPoint() representing time in seconds.
@@ -219,7 +219,7 @@ class sppasMRK(sppasBasePhonedit):
 
     @staticmethod
     def format_point(second_count):
-        """ Convert a time in seconds into MRK format. """
+        """Convert a time in seconds into MRK format."""
 
         try:
             second_count = float(second_count)
@@ -233,7 +233,7 @@ class sppasMRK(sppasBasePhonedit):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """ Read a Phonedit mark file.
+        """Read a Phonedit mark file.
 
         :param filename: intput filename.
 
@@ -255,7 +255,7 @@ class sppasMRK(sppasBasePhonedit):
     # -----------------------------------------------------------------------
 
     def _parse_level(self, data_list, level_id):
-        """ Parse a section DSC_LEVEL_ .
+        """Parse a section DSC_LEVEL_ .
         Creates a tier with the level name and add metadata.
 
         """
@@ -278,7 +278,7 @@ class sppasMRK(sppasBasePhonedit):
 
     @staticmethod
     def _format_text(text):
-        """ Remove the " at the beginning and at the end of the string. """
+        """Remove the " at the beginning and at the end of the string."""
 
         text = text.strip()
 
@@ -292,7 +292,7 @@ class sppasMRK(sppasBasePhonedit):
     # -----------------------------------------------------------------------
 
     def _parse_labels(self, data_list):
-        """ Parse labels of a section LBL_LEVEL_ . """
+        """Parse labels of a section LBL_LEVEL_ ."""
 
         for entry in data_list:
             key = entry[0].upper()
@@ -339,7 +339,7 @@ class sppasMRK(sppasBasePhonedit):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write a Phonedit mark file.
+        """Write a Phonedit mark file.
 
         :param filename: output filename.
 
@@ -396,7 +396,7 @@ class sppasSignaix(sppasBaseIO):
     """
     @staticmethod
     def detect(filename):
-        """ Check whether a file is of CTM format or not.
+        """Check whether a file is of CTM format or not.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -417,7 +417,7 @@ class sppasSignaix(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
-        """ Initialize a new sppasSignaix instance.
+        """Initialize a new sppasSignaix instance.
 
         :param name: (str) This transcription name.
 
@@ -446,7 +446,7 @@ class sppasSignaix(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def read(self, filename, delta=0.01):
-        """ Read a file with Pitch values sampled at delta seconds.
+        """Read a file with Pitch values sampled at delta seconds.
         The file contains one value at a line.
 
         If the audio file is 30 seconds long and delta is 0.01, we expect:
@@ -480,7 +480,7 @@ class sppasSignaix(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def write(self, filename):
-        """ Write a file with pitch values.
+        """Write a file with pitch values.
 
         :param filename: (str) output filename
 

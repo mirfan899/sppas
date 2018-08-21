@@ -51,7 +51,7 @@ sample_3 = os.path.join(paths.samples, "samples-eng", "oriana3.wave")
 class TestAudioPCM(unittest.TestCase):
 
     def test_set_get(self):
-        """ Test open/close get_channels/get_audiofp. """
+        """Test open/close get_channels/get_audiofp."""
 
         a1 = audio_open(sample_1)
         a3 = sppasAudioPCM()
@@ -70,7 +70,7 @@ class TestAudioPCM(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_channels(self):
-        """ Test extract_channel/get_channel/append_channel/verify_channels/pop_channel/remove_channel. """
+        """Test extract_channel/get_channel/append_channel/verify_channels/pop_channel/remove_channel."""
         a1 = audio_open(sample_1)
         a2 = sppasAudioPCM()
         a3 = audio_open(sample_3)
@@ -93,7 +93,7 @@ class TestAudioPCM(unittest.TestCase):
         self.assertEqual(1, a2.get_nchannels())
 
     def test_getters(self):
-        """ Test get_nchannels/get_sampwidth/get_framerate/get_nframes/get_duration. """
+        """Test get_nchannels/get_sampwidth/get_framerate/get_nframes/get_duration."""
         a1 = audio_open(sample_1)
         self.assertEqual(1, a1.get_nchannels())
         self.assertEqual(2, a1.get_sampwidth())
@@ -109,7 +109,7 @@ class TestAudioPCM(unittest.TestCase):
         self.assertEqual(17.792, round(a1.get_duration(), 3))
 
     def test_audio_estimators(self):
-        """ Test rms/clipping_rate. """
+        """Test rms/clipping_rate."""
         a1 = audio_open(sample_1)
         a1.extract_channels()
         self.assertEqual(696, a1.rms())
@@ -117,7 +117,7 @@ class TestAudioPCM(unittest.TestCase):
         a1.close()
 
     def test_incoming(self):
-        """ Test seek/tell/rewind / read/read_samples/read_frames. """
+        """Test seek/tell/rewind / read/read_samples/read_frames."""
         a1 = audio_open(sample_1)
 
         frames = a1.read()

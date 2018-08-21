@@ -61,7 +61,7 @@ class sppasUnigram(object):
 
     """
     def __init__(self, filename=None, nodump=True):
-        """ Create a sppasUnigram instance.
+        """Create a sppasUnigram instance.
 
         :param filename: (str) Name of the file with words and counts (2 columns)
         :param nodump: (bool) Disable the creation of a dump file
@@ -90,7 +90,7 @@ class sppasUnigram(object):
     # -------------------------------------------------------------------------
 
     def add(self, entry, value=1):
-        """ Add or increment a token in the unigram.
+        """Add or increment a token in the unigram.
 
         :param entry: (str) String of the token to add
         :param value: (int) Value to increment the count
@@ -110,7 +110,7 @@ class sppasUnigram(object):
     # -------------------------------------------------------------------------
 
     def get_count(self, token):
-        """ Return the count of a token.
+        """Return the count of a token.
 
         :param token: (str) The string of the token
 
@@ -121,14 +121,14 @@ class sppasUnigram(object):
     # -------------------------------------------------------------------------
 
     def get_sum(self):
-        """ Return the sum of all counts (of all tokens). """
+        """Return the sum of all counts (of all tokens)."""
 
         return self.__sum
 
     # -------------------------------------------------------------------------
 
     def get_tokens(self):
-        """ Return a list with all tokens. """
+        """Return a list with all tokens."""
 
         return self.__entries.keys()
 
@@ -137,7 +137,7 @@ class sppasUnigram(object):
     # ------------------------------------------------------------------------
 
     def load_from_ascii(self, filename):
-        """ Load a unigram from a file with two columns: word count.
+        """Load a unigram from a file with two columns: word count.
 
         :param filename: (str) Name of the unigram ASCII file to read
 
@@ -162,7 +162,7 @@ class sppasUnigram(object):
     # -------------------------------------------------------------------------
 
     def save_as_ascii(self, filename):
-        """ Save a unigram into a file with two columns: word freq.
+        """Save a unigram into a file with two columns: word freq.
 
         :param filename: (str) Name of the unigram ASCII file to write
         :returns: (bool)

@@ -46,7 +46,7 @@ from .channelsilence import sppasChannelSilence
 
 
 def frames2times(frames, framerate):
-    """ Convert a list of frame' into a list of time' values.
+    """Convert a list of frame' into a list of time' values.
 
     :param frames: (list) tuples (from_pos,to_pos)
     :returns: a list of tuples (from_time,to_time)
@@ -66,7 +66,7 @@ def frames2times(frames, framerate):
 
 
 def times2frames(times, framerate):
-    """ Convert a list of time' into a list of frame' values.
+    """Convert a list of time' into a list of frame' values.
 
     :param listframes: (list) tuples (from_time,to_time)
     :returns: a list of tuples (from_pos,to_pos)
@@ -85,7 +85,7 @@ def times2frames(times, framerate):
 
 
 def extract_audio_channel(input_audio, idx):
-    """ Return the channel of a specific index from an audio file name.
+    """Return the channel of a specific index from an audio file name.
 
     :param inputaudio: (str) Audio file name.
     :param idx: (int) Channel index
@@ -103,7 +103,7 @@ def extract_audio_channel(input_audio, idx):
 
 
 def extract_channel_fragment(channel, fromtime, totime, silence=0.):
-    """ Extract a fragment of a channel in the interval [fromtime,totime].
+    """Extract a fragment of a channel in the interval [fromtime,totime].
     Eventually, surround it by silences.
 
     :param channel:  (sppasChannel)
@@ -134,7 +134,7 @@ def extract_channel_fragment(channel, fromtime, totime, silence=0.):
 
 
 def search_channel_speech(channel, winlenght=0.010, minsildur=0.200, mintrackdur=0.300, shiftdurstart=0.010, shiftdurend=0.010):
-    """ Return a list of tracks (i.e. speech intervals where energy is high enough).
+    """Return a list of tracks (i.e. speech intervals where energy is high enough).
     Use only default parameters.
 
     :param channel: (sppasChannel) The channel we'll try to find tracks
@@ -154,7 +154,7 @@ def search_channel_speech(channel, winlenght=0.010, minsildur=0.200, mintrackdur
 
 
 def format_channel(channel, framerate, sampwith):
-    """ Return a channel with the requested framerate and sampwidth.
+    """Return a channel with the requested framerate and sampwidth.
 
     :param channel: (sppasChannel)
 
@@ -174,7 +174,7 @@ def format_channel(channel, framerate, sampwith):
 
 
 def write_channel(audioname, channel):
-    """ Write a channel as an audio file.
+    """Write a channel as an audio file.
 
     :param audioname: (str) Audio file name to write
     :param channel: (sppasChannel) Channel to be saved

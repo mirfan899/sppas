@@ -50,7 +50,7 @@ from wx.lib.buttons import GenBitmapButton, GenBitmapTextButton
 
 
 def CreateButton(parent, bmp, handler, sizer, colour=None):
-    """ Create a bitmap button and bind the event. """
+    """Create a bitmap button and bind the event."""
 
     btn = wx.BitmapButton(parent, -1, bmp, style=wx.NO_BORDER)
     if colour is not None:
@@ -65,7 +65,7 @@ def CreateButton(parent, bmp, handler, sizer, colour=None):
 
 
 def CreateGenButton(parent, id, bmp, text=None, tooltip=None, colour=None, font=None):
-    """ Create a bitmap button. """
+    """Create a bitmap button."""
 
     if text is None:
         button = GenBitmapButton(parent, id, bmp, style=wx.SIMPLE_BORDER)

@@ -71,7 +71,7 @@ class sppasPhonUnk(object):
 
     """
     def __init__(self, pron_dict):
-        """ Create a sppasPhonUnk instance.
+        """Create a sppasPhonUnk instance.
 
         :param pron_dict: (sppasPronDict) Dictionary of a set of tuples:
         token=key, phon=value.
@@ -85,7 +85,7 @@ class sppasPhonUnk(object):
     # ------------------------------------------------------------------
 
     def set_variants(self, v):
-        """ Fix the maximum number of variants.
+        """Fix the maximum number of variants.
 
         :param v: (int) If v is set to 0, all variants will be returned.
 
@@ -95,7 +95,7 @@ class sppasPhonUnk(object):
     # -----------------------------------------------------------------------
 
     def get_phon(self, entry):
-        """ Return the phonetization of an unknown entry.
+        """Return the phonetization of an unknown entry.
 
         :param entry: (str) the string to phonetize
         :returns: a string with the proposed phonetization
@@ -154,7 +154,7 @@ class sppasPhonUnk(object):
     # -----------------------------------------------------------------------
 
     def __longestlr(self, entry):
-        """ Select the longest phonetization of an entry, from the end. """
+        """Select the longest phonetization of an entry, from the end."""
 
         i = len(entry)
         while i > 0:
@@ -170,7 +170,7 @@ class sppasPhonUnk(object):
     # -----------------------------------------------------------------------
 
     def __recurslr(self, entry):
-        """ Recursive method to find a phonetization of a supposed unknown entry.
+        """Recursive method to find a phonetization of a supposed unknown entry.
         Return a string with the proposed phonetization.
         Whitespace separate segments.
 
@@ -217,7 +217,7 @@ class sppasPhonUnk(object):
     # -----------------------------------------------------------------------
 
     def __longestrl(self, entry):
-        """ Select the longest phonetization of an entry, from the start. """
+        """Select the longest phonetization of an entry, from the start."""
 
         i = 0
         while i < len(entry):
@@ -233,7 +233,7 @@ class sppasPhonUnk(object):
     # -----------------------------------------------------------------------
 
     def __recursrl(self, enrty):
-        """ Recursive method to find a phonetization of a supposed unknown entry.
+        """Recursive method to find a phonetization of a supposed unknown entry.
         Return a string with the proposed phonetization.
         Whitespace separate segments.
 

@@ -53,7 +53,7 @@ SIL = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
 
 
 class sppasDictPhonetizer(object):
-    """ Dictionary-based automatic phonetization.
+    """Dictionary-based automatic phonetization.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -82,7 +82,7 @@ class sppasDictPhonetizer(object):
 
     """
     def __init__(self, pdict, maptable=None):
-        """ Create a sppasDictPhonetizer instance.
+        """Create a sppasDictPhonetizer instance.
 
         :param pdict: (sppasDictPron) The pronunciation dictionary.
         :param maptable: (Mapping) A mapping table for phones.
@@ -106,7 +106,7 @@ class sppasDictPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def set_dict(self, pron_dict):
-        """ Set the pronunciation dictionary.
+        """Set the pronunciation dictionary.
 
         :param pron_dict: (sppasDictPron) The pronunciation dictionary.
 
@@ -120,7 +120,7 @@ class sppasDictPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def set_maptable(self, map_table):
-        """ Set the mapping table dictionary.
+        """Set the mapping table dictionary.
 
         :param map_table: (Mapping) The mapping table dictionary.
 
@@ -137,7 +137,7 @@ class sppasDictPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def set_unk_variants(self, value):
-        """ Fix the maximum number of variants for unknown entries.
+        """Fix the maximum number of variants for unknown entries.
 
         :param value: (int) If v is set to 0, all variants will be returned.
 
@@ -147,7 +147,7 @@ class sppasDictPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def get_phon_entry(self, entry):
-        """ Return the phonetization of an entry.
+        """Return the phonetization of an entry.
 
         Unknown entries are not automatically phonetized.
         This is a pure dictionary-based method.
@@ -191,7 +191,7 @@ class sppasDictPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def get_phon_tokens(self, tokens, phonunk=True):
-        """ Return the phonetization of a list of tokens, with the status.
+        """Return the phonetization of a list of tokens, with the status.
         Unknown entries are automatically phonetized if `phonunk` is set to True.
 
         :param tokens: (list) The list of tokens to be phonetized.
@@ -249,7 +249,7 @@ class sppasDictPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def phonetize(self, utterance, phonunk=True, delimiter=" "):
-        """ Return the phonetization of an utterance.
+        """Return the phonetization of an utterance.
 
         :param utterance: (str) The utterance string to be phonetized.
         :param phonunk: (bool) Phonetize unknown words (or not).
@@ -275,7 +275,7 @@ class sppasDictPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def _map_phonentry(self, phonentry):
-        """ Map phonemes of a phonetized entry.
+        """Map phonemes of a phonetized entry.
 
         :param phonentry: (str) Phonetization of an entry.
 
@@ -290,7 +290,7 @@ class sppasDictPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def _map_variant(self, phonvariant):
-        """ Map phonemes of only one variant of a phonetized entry.
+        """Map phonemes of only one variant of a phonetized entry.
 
         :param phonvariant: (str) One phonetization variant of an entry.
 
@@ -321,7 +321,7 @@ class sppasDictPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def _map_split_variant(self, phon_variant):
-        """ Return a list of the longest phone sequences.
+        """Return a list of the longest phone sequences.
 
         :param phon_variant: (str) One phonetization variant of an entry.
 
@@ -347,7 +347,7 @@ class sppasDictPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def __longestlr(self, tabentry):
-        """ Select the longest map of an entry. """
+        """Select the longest map of an entry."""
 
         i = len(tabentry)
         while i > 0:

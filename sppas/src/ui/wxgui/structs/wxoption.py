@@ -61,7 +61,7 @@ class sppasWxOption(sppasBaseOption):
 
     """
     def __init__(self, option_type, option_value, option_text=""):
-        """ Creates a sppasWxOption() instance.
+        """Creates a sppasWxOption() instance.
 
         :param option_type: (str) Type of the option, one of:
             boolean, int, float, string, wx.colour, wx.size, wx.font, wx.align
@@ -77,7 +77,7 @@ class sppasWxOption(sppasBaseOption):
     # -----------------------------------------------------------------------
 
     def get_value(self):
-        """ Return the typed-value.
+        """Return the typed-value.
         Override the sppasBaseOption.get_value().
 
         """
@@ -115,7 +115,7 @@ class sppasWxOption(sppasBaseOption):
     # -----------------------------------------------------------------------
 
     def set_type(self, option_type):
-        """ Set a new type.
+        """Set a new type.
         Override the sppasBaseOption.set_type().
 
         :param option_type: (str) Type of the option, one of:
@@ -131,7 +131,7 @@ class sppasWxOption(sppasBaseOption):
     # -----------------------------------------------------------------------
 
     def set_value(self, value):
-        """ Set a new value.
+        """Set a new value.
         Override the sppasBaseOption.set_value().
 
         """

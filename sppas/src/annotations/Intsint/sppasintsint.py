@@ -59,7 +59,7 @@ class sppasIntsint(sppasBaseAnnotation):
 
     """
     def __init__(self, logfile=None):
-        """ Create a new sppasIntsint instance.
+        """Create a new sppasIntsint instance.
 
         :param logfile: (sppasLog)
 
@@ -74,7 +74,7 @@ class sppasIntsint(sppasBaseAnnotation):
 
     @staticmethod
     def tier_to_anchors(momel_tier):
-        """ Initialize INTSINT attributes from a Tier with anchors.
+        """Initialize INTSINT attributes from a Tier with anchors.
         
         :param momel_tier: (sppasTier)
         :returns: List of tuples (time, f0 value)
@@ -111,7 +111,7 @@ class sppasIntsint(sppasBaseAnnotation):
 
     @staticmethod
     def tones_to_tier(tones, anchors_tier):
-        """ Convert the INTSINT result into a tier.
+        """Convert the INTSINT result into a tier.
         
         :param tones: (list)
         :param anchors_tier: (sppasTier)
@@ -134,7 +134,7 @@ class sppasIntsint(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def run(self, input_filename, output_filename=None):
-        """ Run the INTSINT annotation process on an input file.
+        """Run the INTSINT annotation process on an input file.
 
         :param input_filename: (str) the input file name with momel
         :param output_filename: (str) the output file name of the INTSINT tier

@@ -67,7 +67,7 @@ class DataStatsFrame(ComponentFrame):
     # ------------------------------------------------------------------------
 
     def CreateClient(self, parent, prefsIO):
-        """ Override. """
+        """Override."""
 
         return DataStatsClient(parent, prefsIO)
 

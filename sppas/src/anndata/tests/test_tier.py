@@ -80,7 +80,7 @@ class TestTier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_metadata(self):
-        """ sppasTier() is a child of sppasMetadata. """
+        """sppasTier() is a child of sppasMetadata."""
 
         tierP = sppasTier()
         tierI = sppasTier()
@@ -100,7 +100,7 @@ class TestTier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_name(self):
-        """ The identifier name of the tier. """
+        """The identifier name of the tier."""
 
         tierP = sppasTier()
         # The default name is the metadata GUID.
@@ -117,7 +117,7 @@ class TestTier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_media(self):
-        """ The media of a tier. """
+        """The media of a tier."""
 
         m = sppasMedia("toto.wav")
         tierP = sppasTier()
@@ -130,7 +130,7 @@ class TestTier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_ctrl_vocab(self):
-        """ The controlled vocabulary of a tier. """
+        """The controlled vocabulary of a tier."""
 
         voc = sppasCtrlVocab("Verbal Strategies")
         self.assertTrue(voc.add(sppasTag("definition")))
@@ -170,7 +170,7 @@ class TestTier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_create_ctrl_vocab(self):
-        """ The controlled vocabulary of a tier. """
+        """The controlled vocabulary of a tier."""
 
         tier_cv = sppasTier("toto")
         a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3))),

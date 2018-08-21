@@ -52,7 +52,7 @@ class Targets(object):
 
     """
     def __init__(self):
-        """ Create a new Targets instance with default values. """
+        """Create a new Targets instance with default values."""
 
         self.__x = 0.
         self.__y = 0.
@@ -61,7 +61,7 @@ class Targets(object):
     # ------------------------------------------------------------------
 
     def set(self, x, y, p=0):
-        """ Set new values to a target.
+        """Set new values to a target.
 
         :param x: (float)
         :param y: (float)
@@ -75,7 +75,7 @@ class Targets(object):
     # ------------------------------------------------------------------
 
     def set_x(self, x):
-        """ Set a new x value to a target.
+        """Set a new x value to a target.
 
         :param x: (float)
 
@@ -85,7 +85,7 @@ class Targets(object):
     # ------------------------------------------------------------------
 
     def set_y(self, y):
-        """ Set a new y value to a target.
+        """Set a new y value to a target.
 
         :param y: (float)
 
@@ -95,7 +95,7 @@ class Targets(object):
     # ------------------------------------------------------------------
 
     def set_p(self, p):
-        """ Set a new p value to a target.
+        """Set a new p value to a target.
 
         :param p: (int)
 
@@ -105,19 +105,19 @@ class Targets(object):
     # ------------------------------------------------------------------
 
     def get_x(self):
-        """ Return the x value of a target. """
+        """Return the x value of a target."""
         return self.__x
 
     # ------------------------------------------------------------------
 
     def get_y(self):
-        """ Return the y value of a target. """
+        """Return the y value of a target."""
         return self.__y
 
     # ------------------------------------------------------------------
 
     def get_p(self):
-        """ Return the p value of a target. """
+        """Return the p value of a target."""
         return self.__p
 
     # ------------------------------------------------------------------

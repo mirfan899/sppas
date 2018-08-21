@@ -97,7 +97,7 @@ class spBaseDialog(wx.Dialog):
     # -----------------------------------------------------------------------
 
     def CreateTitle(self, title_icon=APP_ICON, title_text="It's coffee time!"):
-        """ Create a layout including a nice bold-title with an icon.
+        """Create a layout including a nice bold-title with an icon.
 
         :param title_icon: (str) Name of the icon.
         :param title_text: (str) The title
@@ -240,7 +240,7 @@ class spBaseDialog(wx.Dialog):
     # -----------------------------------------------------------------------
 
     def LayoutComponents(self, title, content, buttonbox=None):
-        """ Layout the components of the dialog.
+        """Layout the components of the dialog.
 
             - title at the top
             - then eventually the toolbar

@@ -60,7 +60,7 @@ SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silen
 
 
 class TestAnnotation(unittest.TestCase):
-    """ sppasAnnotation() is a container for:
+    """sppasAnnotation() is a container for:
 
         - a sppasLocation()
         - a list of sppasLabel()
@@ -90,7 +90,7 @@ class TestAnnotation(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_get_labels(self):
-        """ Return the list of sppasLabel() instances. """
+        """Return the list of sppasLabel() instances."""
 
         # Initialize without label
         ann = sppasAnnotation(sppasLocation(self.it))
@@ -110,7 +110,7 @@ class TestAnnotation(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_set_labels(self):
-        """ Fix a new list of labels for this annotation. """
+        """Fix a new list of labels for this annotation."""
 
         # Initialize without label
         ann = sppasAnnotation(sppasLocation(self.it))
@@ -137,7 +137,7 @@ class TestAnnotation(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_copy(self):
-        """ Return a full copy of the annotation. """
+        """Return a full copy of the annotation."""
 
         a = sppasAnnotation(sppasLocation(self.it), sppasLabel(sppasTag("#")))
         clone = a.copy()

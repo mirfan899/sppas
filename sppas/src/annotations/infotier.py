@@ -60,7 +60,7 @@ class sppasMetaInfoTier(sppasMetaInfo):
 
     """
     def __init__(self):
-        """ Creates a new sppasMetaInfoTier instance.
+        """Creates a new sppasMetaInfoTier instance.
         Add and activate all known information about SPPAS.
 
         """
@@ -78,7 +78,7 @@ class sppasMetaInfoTier(sppasMetaInfo):
     # ------------------------------------------------------------------------
 
     def create_time_tier(self, begin, end):
-        """ Return a tier with activated information as annotations.
+        """Return a tier with activated information as annotations.
 
         :param begin: (float) Begin midpoint value
         :param end: (float) End midpoint value

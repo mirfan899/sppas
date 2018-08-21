@@ -193,7 +193,7 @@ class sppasStepPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def SetPrefs(self, prefs):
-        """ Fix new preferences. """
+        """Fix new preferences."""
 
         self._prefsIO = prefs
 
@@ -210,7 +210,7 @@ class sppasStepPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def __apply_preferences(self, wx_object):
-        """ Set font, background color and foreground color to an object. """
+        """Set font, background color and foreground color to an object."""
 
         wx_object.SetFont(self._prefsIO.GetValue('M_FONT'))
         wx_object.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
@@ -230,7 +230,7 @@ class AnnotationsPanel(wx.lib.scrolledpanel.ScrolledPanel):
 
     """
     def __init__(self, parent, preferences):
-        """ Constructor.
+        """Constructor.
 
         :param parent:
         :param preferences:
@@ -273,7 +273,7 @@ class AnnotationsPanel(wx.lib.scrolledpanel.ScrolledPanel):
     # -----------------------------------------------------------------------
 
     def __create_content(self):
-        """ Annotation and language choices."""
+        """Annotation and language choices."""
 
         self.steplist_panel = wx.Panel(self)
         self.steplist_panel.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))

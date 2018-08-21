@@ -83,14 +83,14 @@ class RulerCtrlDemo(wx.Window):
 
 
     def repaint1(self, event):
-        """ Color. """
+        """Color."""
         (r,g,b) = random.sample(range(170,250),  3)
         self.rulerctrl.SetBackgroundColour( wx.Colour(r, g, b))
         self.rulerctrl.SetTicksColour( wx.Colour(r-100, g-100, b-100))
         self.rulerctrl.SetTextColour( wx.Colour(r-150, g-150, b-150))
 
     def repaint2(self, event):
-        """ Zoom/Scroll. """
+        """Zoom/Scroll."""
         s,e = random.sample(range(0,1000), 2)
         s = float(s)/100.0
         e = float(e)/100.0
@@ -103,12 +103,12 @@ class RulerCtrlDemo(wx.Window):
         self.rulerctrl.SetSelectionIndicatorValues( s+0.1, e-0.1 )
 
     def repaint3(self, event):
-        """ Size. """
+        """Size."""
         h = random.sample(range(15,60),  1)[0]
         self.rulerctrl.MoveWindow( self.rulerctrl.GetPosition() , wx.Size(400,h))
 
     def repaint4(self, event):
-        """ Flip. """
+        """Flip."""
         self.rulerctrl.SetFlip( not self.rulerctrl.GetFlip() )
 
     def OnSelect(self, event):
