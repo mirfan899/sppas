@@ -70,13 +70,13 @@ from .aioutils import load
 
 
 class sppasBasePhonedit(sppasBaseIO):
-    """
+    """Readers and writers of Phonedit files.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Class for readers and writers of Phonedit files.
 
     """
     def __init__(self, name=None):
@@ -87,8 +87,7 @@ class sppasBasePhonedit(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
-
-        sppasBaseIO.__init__(self, name)
+        super(sppasBasePhonedit, self).__init__(name)
 
         self._accept_multi_tiers = True
         self._accept_no_tiers = False
@@ -146,13 +145,13 @@ class sppasBasePhonedit(sppasBaseIO):
 
 
 class sppasMRK(sppasBasePhonedit):
-    """
+    """Reader and writer of Phonedit MRK files.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Class for reader and writer of Phonedit MRK file.
 
     Example of the old format:
 
@@ -194,8 +193,8 @@ class sppasMRK(sppasBasePhonedit):
         """
         if name is None:
             name = self.__class__.__name__
+        super(sppasMRK, self).__init__(name)
 
-        sppasBasePhonedit.__init__(self, name)
         self.default_extension = "mrk"
 
     # -----------------------------------------------------------------------
@@ -385,13 +384,13 @@ class sppasMRK(sppasBasePhonedit):
 
 
 class sppasSignaix(sppasBaseIO):
-    """
+    """Reader and writer of F0 values from LPL-Signaix.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Class for reader and writer of F0 values from LPL-Signaix.
 
     """
     @staticmethod
@@ -424,8 +423,8 @@ class sppasSignaix(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
+        super(sppasSignaix, self).__init__(name)
 
-        sppasBaseIO.__init__(self, name)
         self.default_extension = "hz"
 
         self._accept_multi_tiers = False
@@ -447,8 +446,8 @@ class sppasSignaix(sppasBaseIO):
 
     def read(self, filename, delta=0.01):
         """Read a file with Pitch values sampled at delta seconds.
-        The file contains one value at a line.
 
+        The file contains one value at a line.
         If the audio file is 30 seconds long and delta is 0.01, we expect:
         100 * 30 = 3,000 lines in the file
 

@@ -101,7 +101,7 @@ class sppasAnvil(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBaseIO.__init__(self, name)
+        super(sppasAnvil, self).__init__(name)
 
         self._accept_multi_tiers = True
         self._accept_no_tiers = True

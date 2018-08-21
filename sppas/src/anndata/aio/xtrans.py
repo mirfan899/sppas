@@ -59,15 +59,15 @@ from .aioutils import format_labels
 
 
 class sppasTDF(sppasBaseText):
-    """
+    """SPPAS TDF reader.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS TDF reader and writer.
 
-    This class implements only a TDF reader, not a writer.
+    This class implements a TDF reader, but not a writer.
     TDF is a Tab-Delimited Format. It contains 13 columns but SPPAS only
     extracts 8 of them.
 
@@ -136,8 +136,8 @@ class sppasTDF(sppasBaseText):
         """
         if name is None:
             name = self.__class__.__name__
+        super(sppasTDF, self).__init__(name)
 
-        sppasBaseText.__init__(self, name)
         self.default_extension = "tdf"
 
         # override all

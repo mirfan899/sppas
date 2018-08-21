@@ -75,13 +75,13 @@ from .basetrs import sppasBaseIO
 
 
 class sppasBasePraat(sppasBaseIO):
-    """
+    """Base class for readers and writers of Praat files.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Base class for readers and writers of Praat files.
 
     Try first to open the file with the default sppas encoding, then UTF-16.
 
@@ -113,7 +113,7 @@ class sppasBasePraat(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBaseIO.__init__(self, name)
+        super(sppasBasePraat, self).__init__(name)
 
         self._accept_multi_tiers = True
         self._accept_no_tiers = False
@@ -264,13 +264,13 @@ class sppasBasePraat(sppasBaseIO):
 
 
 class sppasTextGrid(sppasBasePraat):
-    """
+    """SPPAS TextGrid reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS TextGrid reader and writer.
 
     TextGrid supports multiple tiers in a file.
     TextGrid does not support empty files (file with no tiers).
@@ -330,7 +330,8 @@ class sppasTextGrid(sppasBasePraat):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBasePraat.__init__(self, name)
+        super(sppasTextGrid, self).__init__(name)
+
         self.default_extension = "TextGrid"
 
         self._accept_point = True
@@ -621,13 +622,13 @@ class sppasTextGrid(sppasBasePraat):
 
 
 class sppasBaseNumericalTier(sppasBasePraat):
-    """
+    """SPPAS PitchTier, IntensityTier, etc reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS PitchTier, IntensityTier, etc reader and writer.
 
     Support of Praat file formats with only one tier of numerical values like
     pitch, intensity, etc.
@@ -641,7 +642,7 @@ class sppasBaseNumericalTier(sppasBasePraat):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBasePraat.__init__(self, name)
+        super(sppasBaseNumericalTier, self).__init__(name)
 
         self._accept_multi_tiers = False
         self._accept_no_tiers = False
@@ -756,13 +757,13 @@ class sppasBaseNumericalTier(sppasBasePraat):
 
 
 class sppasPitchTier(sppasBaseNumericalTier):
-    """
+    """SPPAS PitchTier reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS PitchTier reader and writer.
 
     """
     @staticmethod
@@ -794,8 +795,8 @@ class sppasPitchTier(sppasBaseNumericalTier):
         """
         if name is None:
             name = self.__class__.__name__
+        super(sppasPitchTier, self).__init__(name)
 
-        sppasBaseNumericalTier.__init__(self, name)
         self.default_extension = "PitchTier"
 
     # -----------------------------------------------------------------------
@@ -822,13 +823,13 @@ class sppasPitchTier(sppasBaseNumericalTier):
 
 
 class sppasIntensityTier(sppasPitchTier):
-    """
+    """SPPAS IntensityTier reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS IntensityTier reader and writer.
 
     """
     @staticmethod
@@ -860,8 +861,8 @@ class sppasIntensityTier(sppasPitchTier):
         """
         if name is None:
             name = self.__class__.__name__
+        super(sppasIntensityTier, self).__init__(name)
 
-        sppasBaseNumericalTier.__init__(self, name)
         self.default_extension = "IntensityTier"
 
     # -----------------------------------------------------------------------

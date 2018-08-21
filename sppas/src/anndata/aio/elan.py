@@ -90,13 +90,13 @@ MIMES = {'wav': 'audio/x-wav',
 
 
 class sppasEAF(sppasBaseIO):
-    """
+    """Elan EAF reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS ELAN EAF files reader and writer.
 
     """
     @staticmethod
@@ -131,8 +131,9 @@ class sppasEAF(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
+        super(sppasEAF, self).__init__(name)
 
-        sppasBaseIO.__init__(self, name)
+        self.default_extension = "eaf"
 
         self._accept_multi_tiers = True
         self._accept_no_tiers = True
@@ -148,8 +149,6 @@ class sppasEAF(sppasBaseIO):
         self._accept_radius = False
         self._accept_gaps = True
         self._accept_overlaps = False  # to be verified
-
-        self.default_extension = "eaf"
 
         # Information that are both used by ELAN and another software tool
         self._map_meta = sppasMapping()

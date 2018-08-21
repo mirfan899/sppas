@@ -154,7 +154,9 @@ class sppasANTX(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBaseIO.__init__(self, name)
+        super(sppasANTX, self).__init__(name)
+
+        self.default_extension = "antx"
 
         self._accept_multi_tiers = True
         self._accept_no_tiers = True
@@ -170,8 +172,6 @@ class sppasANTX(sppasBaseIO):
         self._accept_radius = False
         self._accept_gaps = True
         self._accept_overlaps = False
-
-        self.default_extension = "antx"
 
         # Information that are both used by AnnotationPro and another software tool
         self._map_meta = sppasMapping()

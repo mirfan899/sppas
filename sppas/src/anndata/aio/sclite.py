@@ -73,13 +73,13 @@ from .aioutils import load
 
 
 class sppasBaseSclite(sppasBaseText):
-    """
+    """SPPAS base Sclite reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS base Sclite reader and writer.
 
     * * * * * Current version does not fully support alternations. * * * * *
 
@@ -92,7 +92,7 @@ class sppasBaseSclite(sppasBaseText):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBaseText.__init__(self, name)
+        super(sppasBaseSclite, self).__init__(name)
 
         # override all
         self._accept_multi_tiers = True
@@ -127,13 +127,13 @@ class sppasBaseSclite(sppasBaseText):
 
 
 class sppasCTM(sppasBaseSclite):
-    """
+    """SPPAS ctm reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS ctm reader and writer.
 
     This is the reader/writer of the time marked conversation input files to
     be used for scoring the output of speech recognizers via the NIST sclite()
@@ -143,7 +143,7 @@ class sppasCTM(sppasBaseSclite):
 
     where:
         <F> -> The waveform filename.
-            NOTE: no pathnames or extensions are expected.
+            NOTE: no path-names or extensions are expected.
         <C> -> The waveform channel. Either "A" or "B".
             The text of the waveform channel is not restricted by sclite.
             The text can be any text string without whitespace so long as the
@@ -259,8 +259,8 @@ class sppasCTM(sppasBaseSclite):
         """
         if name is None:
             name = self.__class__.__name__
+        super(sppasCTM, self).__init__(name)
 
-        sppasBaseSclite.__init__(self, name)
         self.default_extension = "ctm"
 
     # -----------------------------------------------------------------------
@@ -512,13 +512,13 @@ class sppasCTM(sppasBaseSclite):
 
 
 class sppasSTM(sppasBaseSclite):
-    """
+    """SPPAS stm reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS stm reader and writer.
 
     This is the reader/writer for the segment time marked files to be used
     for scoring the output of speech recognizers via the NIST sclite() program.
@@ -625,8 +625,8 @@ class sppasSTM(sppasBaseSclite):
         """
         if name is None:
             name = self.__class__.__name__
+        super(sppasSTM, self).__init__(name)
 
-        sppasBaseSclite.__init__(self, name)
         self.default_extension = "stm"
 
     # -----------------------------------------------------------------------

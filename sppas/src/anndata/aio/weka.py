@@ -68,13 +68,13 @@ MAX_ATTRIBUTES_TAGS = 200
 
 
 class sppasWEKA(sppasBaseIO):
-    """
+    """SPPAS Base writer for ARFF and XRFF formats.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS Base writer for ARFF and XRFF formats.
 
     The following metadata of the Transcription object can be defined:
 
@@ -107,7 +107,7 @@ class sppasWEKA(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBaseIO.__init__(self, name)
+        super(sppasWEKA, self).__init__(name)
 
         self._max_class_tags = int(MAX_CLASS_TAGS/10)
         self._max_attributes_tags = int(MAX_ATTRIBUTES_TAGS/10)
@@ -724,13 +724,13 @@ class sppasWEKA(sppasBaseIO):
 
 
 class sppasARFF(sppasWEKA):
-    """
+    """SPPAS ARFF writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      SPPAS ARFF writer.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     ARFF format description is at the following URL:
     http://weka.wikispaces.com/ARFF+(book+version)
@@ -766,7 +766,8 @@ class sppasARFF(sppasWEKA):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasWEKA.__init__(self, name)
+        super(sppasARFF, self).__init__(name)
+
         self.default_extension = "arff"
 
     # -----------------------------------------------------------------
@@ -938,13 +939,13 @@ class sppasARFF(sppasWEKA):
 
 
 class sppasXRFF(sppasWEKA):
-    """
+    """SPPAS XRFF writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      SPPAS XRFF writer.
 
     XML-based format of WEKA software tool.
     XRFF format description is at the following URL:
@@ -990,8 +991,8 @@ class sppasXRFF(sppasWEKA):
         """
         if name is None:
             name = self.__class__.__name__
+        super(sppasXRFF, self).__init__(name)
 
-        sppasWEKA.__init__(self, name)
         self.default_extension = "xrff"
 
     # -----------------------------------------------------------------

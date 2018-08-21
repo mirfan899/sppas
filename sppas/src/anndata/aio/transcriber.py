@@ -87,13 +87,13 @@ NOISE_EVENTS = {
 
 
 class sppasTRS(sppasBaseIO):
-    """
+    """SPPAS reader for TRS format.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS reader for TRS format.
 
     """
     @staticmethod
@@ -138,8 +138,8 @@ class sppasTRS(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
+        super(sppasTRS, self).__init__(name)
 
-        sppasBaseIO.__init__(self, name)
         self.default_extension = "trs"
 
         self._accept_multi_tiers = True

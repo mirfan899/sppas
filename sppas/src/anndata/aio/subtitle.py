@@ -51,13 +51,13 @@ from .aioutils import format_labels
 
 
 class sppasBaseSubtitles(sppasBaseIO):
-    """
+    """SPPAS base class for subtitle formats.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS base class for subtitle formats.
 
     """
     def __init__(self, name=None):
@@ -68,8 +68,7 @@ class sppasBaseSubtitles(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
-
-        sppasBaseIO.__init__(self, name)
+        super(sppasBaseSubtitles, self).__init__(name)
 
         self._accept_multi_tiers = False
         self._accept_no_tiers = True
@@ -175,13 +174,13 @@ class sppasBaseSubtitles(sppasBaseIO):
 
 
 class sppasSubRip(sppasBaseSubtitles):
-    """
+    """SPPAS reader/writer for SRT format.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS reader/writer for SRT format.
 
     The SubRip text file format (SRT) is used by the SubRip program to save
     subtitles ripped from video files or DVDs.
@@ -205,8 +204,8 @@ class sppasSubRip(sppasBaseSubtitles):
         """
         if name is None:
             name = self.__class__.__name__
+        super(sppasSubRip, self).__init__(name)
 
-        sppasBaseSubtitles.__init__(self, name)
         self.default_extension = "srt"
 
     # -----------------------------------------------------------------------
@@ -347,13 +346,13 @@ class sppasSubRip(sppasBaseSubtitles):
 
 
 class sppasSubViewer(sppasBaseSubtitles):
-    """
+    """SPPAS reader/writer for SUB format.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS reader/writer for SUB format.
 
     The SubViewer text file format (SUB) is used by the SubViewer program to
     save subtitles of videos.
@@ -367,8 +366,8 @@ class sppasSubViewer(sppasBaseSubtitles):
         """
         if name is None:
             name = self.__class__.__name__
+        super(sppasSubViewer, self).__init__(name)
 
-        sppasBaseSubtitles.__init__(self, name)
         self.default_extension = "sub"
 
     # -----------------------------------------------------------------------

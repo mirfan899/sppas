@@ -52,6 +52,7 @@ class sppasBaseIO(sppasTranscription):
     
     @staticmethod
     def detect(filename):
+        """Check whether a file is of the appropriate format or not."""
         return False
 
     # -----------------------------------------------------------------------
@@ -85,12 +86,11 @@ class sppasBaseIO(sppasTranscription):
         """Initialize a new Transcription reader-writer instance.
 
         :param name: (str) A transcription name.
-        :param multi_tiers: (bool) The IO supports (or not) to read and write
-        several tiers.
-        :param no_tiers: (bool) The IO supports (or not) to write no tiers.
 
         """
-        sppasTranscription.__init__(self, name)
+        super(sppasBaseIO, self).__init__(name)
+
+        self.default_extension = None
 
         self._accept_multi_tiers = False
         self._accept_no_tiers = False
@@ -104,8 +104,6 @@ class sppasBaseIO(sppasTranscription):
         self._accept_alt_localization = False
         self._accept_alt_tag = False
         self._accept_radius = True
-        self._accept_gaps = False
-        self._accept_overlaps = False
         self._accept_gaps = False
         self._accept_overlaps = False
 
@@ -279,7 +277,7 @@ class sppasBaseIO(sppasTranscription):
     # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """Read a file and fill the Transcription.
+        """Read a file and fill the transcription.
 
         :param filename: (str)
 

@@ -58,13 +58,13 @@ TIME_UNIT = pow(10, -7)
 
 
 class sppasBaseHTK(sppasBaseIO):
-    """
+    """SPPAS HTK files reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS HTK files reader and writer.
 
     """
     def __init__(self, name=None):
@@ -75,8 +75,7 @@ class sppasBaseHTK(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
-
-        sppasBaseIO.__init__(self, name)
+        super(sppasBaseHTK, self).__init__(name)
 
         self._accept_multi_tiers = False
         self._accept_no_tiers = True
@@ -98,6 +97,7 @@ class sppasBaseHTK(sppasBaseIO):
     @staticmethod
     def make_point(time_string):
         """Convert data into the appropriate sppasPoint().
+
         No radius if data is an integer. A default radius of 0.001 if data is a
         float.
 
@@ -150,13 +150,13 @@ class sppasBaseHTK(sppasBaseIO):
 
 
 class sppasLab(sppasBaseHTK):
-    """
+    """SPPAS LAB reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS LAB reader and writer.
 
     Each line of a HTK label file contains the actual label optionally
     preceded by start and end times, and optionally followed by a match score.
@@ -225,8 +225,8 @@ class sppasLab(sppasBaseHTK):
         """
         if name is None:
             name = self.__class__.__name__
+        super(sppasLab, self).__init__(name)
 
-        sppasBaseHTK.__init__(self, name)
         self.default_extension = "lab"
 
     # -----------------------------------------------------------------------

@@ -359,8 +359,10 @@ class TestTimeInterval(unittest.TestCase):
         self.assertTrue(sppasInterval(sppasPoint(1, 1), sppasPoint(2, 1)))
         self.assertTrue(sppasInterval(sppasPoint(3, 3), sppasPoint(4, 3)))
 
-        self.assertFalse(sppasInterval(sppasPoint(1), sppasPoint(1)))
-        self.assertFalse(sppasInterval(sppasPoint(2), sppasPoint(1)))
+        with self.assertRaises(IntervalBoundsError):
+            sppasInterval(sppasPoint(1), sppasPoint(1))
+        with self.assertRaises(IntervalBoundsError):
+            sppasInterval(sppasPoint(2), sppasPoint(1))
 
     # -----------------------------------------------------------------------
 

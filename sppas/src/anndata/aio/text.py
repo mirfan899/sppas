@@ -63,13 +63,13 @@ COLUMN_SEPARATORS = [' ', ',', ';', ':', '\t']
 
 
 class sppasBaseText(sppasBaseIO):
-    """
+    """SPPAS base text reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS base text reader and writer.
 
     """
     def __init__(self, name=None):
@@ -80,7 +80,7 @@ class sppasBaseText(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBaseIO.__init__(self, name)
+        super(sppasBaseText, self).__init__(name)
 
         self._accept_multi_tiers = True
         self._accept_no_tiers = True
@@ -353,13 +353,13 @@ class sppasBaseText(sppasBaseIO):
 
 
 class sppasRawText(sppasBaseText):
-    """
+    """SPPAS raw text reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS raw text reader and writer.
 
     RawText does not support multiple tiers for writing (ok for reading).
     RawText accepts no tiers.
@@ -403,8 +403,8 @@ class sppasRawText(sppasBaseText):
         """
         if name is None:
             name = self.__class__.__name__
+        super(sppasRawText, self).__init__(name)
 
-        sppasBaseText.__init__(self, name)
         self.default_extension = "txt"
 
         self._accept_multi_tiers = False
@@ -578,13 +578,13 @@ class sppasRawText(sppasBaseText):
 
 
 class sppasCSV(sppasBaseText):
-    """
+    """SPPAS CSV reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS CSV reader and writer.
 
     """
     @staticmethod
@@ -619,7 +619,7 @@ class sppasCSV(sppasBaseText):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBaseText.__init__(self, name)
+        super(sppasCSV, self).__init__(name)
 
         self.default_extension = "csv"
 

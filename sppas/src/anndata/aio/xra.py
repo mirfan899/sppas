@@ -57,13 +57,13 @@ from .basetrs import sppasBaseIO
 
 
 class sppasXRA(sppasBaseIO):
-    """
+    """SPPAS XRA reader and writer.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS XRA reader and writer.
 
     xra files are the native file format of the GPL tool SPPAS.
 
@@ -98,7 +98,9 @@ class sppasXRA(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBaseIO.__init__(self, name)
+        super(sppasXRA, self).__init__(name)
+
+        self.default_extension = "xra"
 
         self._accept_multi_tiers = True
         self._accept_no_tiers = True
@@ -116,7 +118,6 @@ class sppasXRA(sppasBaseIO):
         self._accept_overlaps = True
 
         self.__format = "1.4"
-        self.default_extension = "xra"
 
     # -----------------------------------------------------------------------
 
