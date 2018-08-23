@@ -70,7 +70,7 @@ class SpeakerRate(object):
     # ----------------------------------------------------------------------
 
     def get_value(self):
-        """Returns the speaking rate."""
+        """Return the speaking rate."""
         return self._spk_rate
 
     # ----------------------------------------------------------------------

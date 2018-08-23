@@ -56,7 +56,7 @@ class Matrix(object):
          self.data = data
 
      def Fill(self, value, *args):
-         """Creates a matrix filled with the given value
+         """Create a matrix filled with the given value
 
          @param value: the value to be used
          @keyword shape: the shape of the matrix. Can be a single integer,
@@ -77,7 +77,7 @@ class Matrix(object):
          return Matrix(mtrx)
 
      def Zero(self, *args):
-         """Creates a matrix filled with zeros.
+         """Create a matrix filled with zeros.
 
           @keyword shape: the shape of the matrix. Can be a single integer,
            two integers or a tuple. If a single integer is
@@ -87,7 +87,7 @@ class Matrix(object):
          return result
 
      def Identity(cls, *args):
-         """Creates an identity matrix.
+         """Create an identity matrix.
 
          @keyword shape: the shape of the matrix. Can be a single integer,
            two integers or a tuple. If a single integer is
@@ -99,7 +99,7 @@ class Matrix(object):
          return result
 
      def _set_data(self, data=None):
-         """Sets the data stored in the matrix"""
+         """Set the data stored in the matrix"""
          if data is not None:
              self._data = [list(row) for row in data]
              self._nrow = len(self._data)
@@ -112,18 +112,18 @@ class Matrix(object):
                      row.extend([0]*(self._ncol-len(row)))
 
      def _get_data(self):
-         """Returns the data stored in the matrix as a list of lists"""
+         """Return the data stored in the matrix as a list of lists"""
          return [list(row) for row in self._data]
 
      data = property(_get_data, _set_data)
 
      @property
      def shape(self):
-         """Returns the shape of the matrix as a tuple"""
+         """Return the shape of the matrix as a tuple"""
          return self._nrow, self._ncol
 
      def __add__(self, other):
-         """Adds the given value to the matrix.
+         """Add the given value to the matrix.
 
          @param other: either a scalar or a matrix. Scalars will
            be added to each element of the matrix. Matrices will
@@ -142,14 +142,14 @@ class Matrix(object):
                  [item+other for item in row] for row in self])
 
      def __eq__(self, other):
-         """Checks whether a given matrix is equal to another one"""
+         """Check whether a given matrix is equal to another one"""
          return isinstance(other, Matrix) and \
                  self._nrow == other._nrow and \
                  self._ncol == other._ncol and \
                  self._data == other._data
 
      def __getitem__(self, i):
-         """Returns a single item, a row or a column of the matrix
+         """Return a single item, a row or a column of the matrix
 
          @param i: if a single integer, returns the M{i}th row as a list. If a
            slice, returns the corresponding rows as another L{Matrix} object. If
@@ -179,7 +179,7 @@ class Matrix(object):
              raise IndexError("invalid matrix index")
 
      def __hash__(self):
-         """Returns a hash value for a matrix."""
+         """Return a hash value for a matrix."""
          return hash(self._nrow, self._ncol, self._data)
 
      def __iadd__(self, other):
@@ -211,11 +211,11 @@ class Matrix(object):
          return self
 
      def __ne__(self, other):
-          """Checks whether a given matrix is not equal to another one."""
+          """Check whether a given matrix is not equal to another one."""
          return not self == other
 
      def __setitem__(self, i, value):
-         """Sets a single item, a row or a column of the matrix
+         """Set a single item, a row or a column of the matrix
 
          @param i: if a single integer, sets the M{i}th row as a list. If a
            slice, sets the corresponding rows from another L{Matrix} object.
@@ -259,7 +259,7 @@ class Matrix(object):
              raise IndexError("invalid matrix index")
 
      def __sub__(self, other):
-         """Subtracts the given value from the matrix.
+         """Subtract the given value from the matrix.
 
          @param other: either a scalar or a matrix. Scalars will
            be subtracted from each element of the matrix. Matrices will
@@ -297,7 +297,7 @@ class Matrix(object):
          return (list(row) for row in self._data)
 
      def min(self, dim=None):
-         """Returns the minimum of the matrix along the given dimension
+         """Return the minimum of the matrix along the given dimension
 
          @param dim: the dimension. 0 means determining the column minimums, 1 means
            determining the row minimums. If C{None}, the global minimum is
@@ -311,7 +311,7 @@ class Matrix(object):
          return min(min(row) for row in self._data)
 
      def max(self, dim=None):
-         """Returns the maximum of the matrix along the given dimension
+         """Return the maximum of the matrix along the given dimension
 
           @param dim: the dimension. 0 means determining the column maximums, 1 means
            determining the row maximums. If C{None}, the global maximum is

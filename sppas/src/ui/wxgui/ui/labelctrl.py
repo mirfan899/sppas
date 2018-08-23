@@ -74,11 +74,13 @@ class LabelCtrl(wx.Window):
     LabelCtrl implements a static text label.
 
     """
+
     def __init__(self, parent, id=-1,
                  pos=wx.DefaultPosition,
                  size=wx.DefaultSize,
                  label=None):
         """LabelCtrl constructor.
+
         Notice that each change of the object implies a refresh.
 
         Non-wxpython related parameter:
@@ -119,7 +121,7 @@ class LabelCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def SetValue(self, label):
-        """Sets the label.
+        """Set the label.
 
         @param label (Label)
 
@@ -155,13 +157,13 @@ class LabelCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def GetUnderlined(self):
-        """Returns whether a label has to be underlined or not."""
+        """Return whether a label has to be underlined or not."""
         return self._underlined
 
     # -----------------------------------------------------------------------
 
     def SetBold(self, bold=False):
-        """Sets if the label must be bold.
+        """Set if the label must be bold.
 
         :param bold: (Boolean) sets whether a label has to be bold or not.
 
@@ -173,7 +175,7 @@ class LabelCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def GetBold(self):
-        """Returns whether the label has to be bold or not."""
+        """Return whether the label has to be bold or not."""
         return self._bold
 
     # -----------------------------------------------------------------------
@@ -191,7 +193,7 @@ class LabelCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def GetAlign(self):
-        """Returns the label alignment value.
+        """Return the label alignment value.
 
         :return: one of wx.ALIGN_LEFT, wx.ALIGN_CENTRE or wx.ALIGN_RIGHT
 
@@ -230,7 +232,7 @@ class LabelCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def OnMouseEvents(self, event):
-        """Handles the wx.EVT_MOUSE_EVENTS event for PointCtrl."""
+        """Handle the wx.EVT_MOUSE_EVENTS event for PointCtrl."""
         if event.Entering() or event.Leaving():
             self._highlight = not self._highlight
             self.Refresh()
@@ -281,7 +283,7 @@ class LabelCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def OnPaint(self, event):
-        """Handles the wx.EVT_PAINT event for LabelCtrl."""
+        """Handle the wx.EVT_PAINT event for LabelCtrl."""
         dc = wx.BufferedPaintDC(self)
         self.Draw(dc)
 
@@ -342,7 +344,7 @@ class LabelCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def __initializeStyle(self):
-        """Initializes the label style."""
+        """Initialize the label style."""
 
         self._align = wx.ALIGN_LEFT
         self._underlined = False
@@ -352,7 +354,7 @@ class LabelCtrl(wx.Window):
     # -----------------------------------------------------------------------
 
     def __initializeColours(self):
-        """Initializes the pens."""
+        """Initialize the pens."""
 
         self._bgpen = wx.Pen(BG_COLOUR, 1, wx.SOLID)
         self._bgbrush = wx.Brush(BG_COLOUR, wx.SOLID)

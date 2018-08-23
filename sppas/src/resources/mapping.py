@@ -32,8 +32,6 @@
     src.resources.mapping.py
     ~~~~~~~~~~~~~~~~~~~~~~~
 
-    Class to manage mapping tables.
-
 """
 import re
 
@@ -47,35 +45,36 @@ DEFAULT_SEP = (";", ",", " ", ".", "|", "+", "-")
 
 
 class sppasMapping(sppasDictRepl):
-    """
+    """Class to manage mapping tables.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      A mapping is an extended replacement dictionary.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
+    A mapping is an extended replacement dictionary.
     sppasMapping is used for the management of a mapping table of any set
     of strings.
 
     """
+
     def __init__(self, dict_name=None):
         """Create a new sppasMapping instance.
 
-        :param dict_name: (str) is the file name with the mapping data (2 columns)
+        :param dict_name: (str) file name with the mapping data (2 columns)
 
         """
-        sppasDictRepl.__init__(self, dict_name, nodump=True)
+        super(sppasMapping, self).__init__(dict_name, nodump=True)
 
         self._keep_miss = True  # remove or not missing values
-        self._reverse = False   # will replace value by key instead of replacing key by value
+        self._reverse = False   # will replace value by key instead of by value
         self._miss_symbol = ""  # Symbol to be used if keep_miss is False
 
     # -----------------------------------------------------------------------
 
     def get_reverse(self):
         """Return the boolean value of reverse member."""
-
         return self._reverse
 
     # -----------------------------------------------------------------------
@@ -121,7 +120,7 @@ class sppasMapping(sppasDictRepl):
     def map_entry(self, entry):
         """Map an entry (a key or a value).
 
-        :param entry: (str) is the input string to map
+        :param entry: (str) input string to map
         :returns: mapped entry is a string
 
         """
@@ -146,7 +145,7 @@ class sppasMapping(sppasDictRepl):
     def map(self, mstr, delimiters=DEFAULT_SEP):
         """Run the Mapping process on an input string.
 
-        :param mstr: is the input string to map
+        :param mstr: input string to map
         :param delimiters: (list) list of character delimiters. Default is:
                [';', ',', ' ', '.', '|', '+', '-']
         :returns: a string

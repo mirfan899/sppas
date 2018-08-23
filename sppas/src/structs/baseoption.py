@@ -269,7 +269,7 @@ class sppasOption(sppasBaseOption):
         :param option_value: (str) The value of the option.
 
         """
-        sppasBaseOption.__init__(self, option_type, option_value)
+        super(sppasOption, self).__init__(option_type, option_value)
         self._key = option_key
 
     # ----------------------------------------------------------------------------

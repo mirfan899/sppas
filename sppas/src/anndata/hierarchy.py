@@ -317,7 +317,7 @@ class sppasHierarchy(object):
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """Returns a deep copy of the hierarchy."""
+        """Return a deep copy of the hierarchy."""
 
         h = sppasHierarchy()
 

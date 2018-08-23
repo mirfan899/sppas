@@ -111,7 +111,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def min(self):
-        """Returns the minimum of RMS values.
+        """Return the minimum of RMS values.
         
         :returns: (int)
 
@@ -121,7 +121,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def max(self):
-        """Returns the maximum of RMS values.
+        """Return the maximum of RMS values.
         
         :returns: (int)
 
@@ -131,7 +131,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def mean(self):
-        """Returns the mean of RMS values.
+        """Return the mean of RMS values.
         
         :returns: (float)
 
@@ -141,7 +141,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def median(self):
-        """Returns the median of RMS values.
+        """Return the median of RMS values.
         
         :returns: (float)
 
@@ -151,7 +151,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def variance(self):
-        """Returns the sample variance of RMS values.
+        """Return the sample variance of RMS values.
         
         :returns: (int)
 
@@ -161,7 +161,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def stdev(self):
-        """Returns the standard deviation of RMS values.
+        """Return the standard deviation of RMS values.
         
         :returns: (int)
 
@@ -171,7 +171,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def coefvariation(self):
-        """Returns the coefficient of variation of RMS values.
+        """Return the coefficient of variation of RMS values.
          
         :returns: (float) coef variation given as a percentage.
 
@@ -181,7 +181,7 @@ class sppasBaseVolume(object):
     # -----------------------------------------------------------------------
 
     def zscores(self):
-        """Returns the z-scores of RMS values.
+        """Return the z-scores of RMS values.
         The z-score determines the relative location of a data value.
         
         :returns: (list of float)

@@ -89,10 +89,11 @@ class sppasDictPron(object):
     Notice that tokens in the dict are case-insensitive.
 
     """
+
     def __init__(self, dict_filename=None, nodump=False):
         """Create a sppasDictPron instance.
 
-        :param dict_filename: (str) Name of the file of the pronunciation dictionary
+        :param dict_filename: (str) Name of the file of the pronunciation dict
         :param nodump: (bool) Create or not a dump file.
 
         A dump file is a binary version of the dictionary. Its size is greater
@@ -113,7 +114,8 @@ class sppasDictPron(object):
             dp = sppasDumpFile(dict_filename)
             data = None
 
-            # Try first to get the dict from a dump file (at least 2 times faster)
+            # Try first to get the dict from a dump file
+            # (at least 2 times faster)
             if nodump is False:
                 data = dp.load_from_dump()
 
@@ -137,7 +139,7 @@ class sppasDictPron(object):
     # -----------------------------------------------------------------------
 
     def get_unkstamp(self):
-        """Returns the unknown words stamp."""
+        """Return the unknown words stamp."""
 
         return symbols.unk
 
@@ -147,7 +149,7 @@ class sppasDictPron(object):
         """Return the pronunciations of an entry in the dictionary.
 
         :param entry: (str) A token to find in the dictionary
-        :param substitution: (str) String to return if token is missing of the dict
+        :param substitution: (str) String to return if token is missing of dict
         :returns: unicode of the pronunciations or the substitution.
 
         """
@@ -217,7 +219,8 @@ class sppasDictPron(object):
         """Add a token/pron to the dict.
 
         :param token: (str) Unicode string of the token to add
-        :param pron: (str) A pronunciation in which the phonemes are separated by whitespace
+        :param pron: (str) A pronunciation in which the phonemes are separated
+        by whitespace
 
         """
         entry = sppasDictPron.format_token(token)
@@ -244,8 +247,9 @@ class sppasDictPron(object):
     # -----------------------------------------------------------------------
 
     def map_phones(self, map_table):
-        """Create a new dictionary by changing the phoneme strings,
-        depending on a mapping table.
+        """Create a new dictionary by changing the phoneme strings.
+
+        Perform changes depending on a mapping table.
 
         :param map_table: (Mapping) A mapping table
         :returns: a sppasDictPron instance with mapped phones
@@ -310,7 +314,8 @@ class sppasDictPron(object):
             if len(uline) == 1:
                 raise FileFormatError(l, uline)
 
-            # The entry is before the "[" and the pronunciation is after the "]"
+            # The entry is before the "[" and
+            # the pronunciation is after the "]"
             i = uline.find("[")
             if i == -1:
                 i = uline.find(" ")
@@ -331,18 +336,22 @@ class sppasDictPron(object):
 
     # -----------------------------------------------------------------------
 
-    def save_as_ascii(self, filename, with_variant_nb=True, with_filled_brackets=True):
+    def save_as_ascii(self,
+                      filename,
+                      with_variant_nb=True,
+                      with_filled_brackets=True):
         """Save the pronunciation dictionary in HTK-ASCII format.
 
         :param filename: (str) Dictionary file name
         :param with_variant_nb: (bool) Write the variant number or not
-        :param with_filled_brackets: (bool) Fill the bracket with the token or not
+        :param with_filled_brackets: (bool) Fill the bracket with the token
 
         """
         try:
             with codecs.open(filename, 'w', encoding=sg.__encoding__) as output:
 
-                for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
+                for entry, value in sorted(self._dict.items(),
+                                           key=lambda x: x[0]):
                     variants = value.split(separators.variants)
 
                     for i, variant in enumerate(variants, 1):
@@ -351,13 +360,16 @@ class sppasDictPron(object):
                         if with_filled_brackets is False:
                             brackets = ""
                         if i > 1 and with_variant_nb is True:
-                            line = "{:s}({:d}) [{:s}] {:s}\n".format(entry, i, brackets, variant)
+                            line = "{:s}({:d}) [{:s}] {:s}\n" \
+                                   "".format(entry, i, brackets, variant)
                         else:
-                            line = "{:s} [{:s}] {:s}\n".format(entry, brackets, variant)
+                            line = "{:s} [{:s}] {:s}\n" \
+                                   "".format(entry, brackets, variant)
                         output.write(line)
 
         except Exception as e:
-            logging.info('Saving the dictionary in ASCII failed: {:s}'.format(str(e)))
+            logging.info('Saving the dictionary in ASCII failed: {:s}'
+                         ''.format(str(e)))
             return False
 
         return True
@@ -382,7 +394,8 @@ class sppasDictPron(object):
                 # raised by index if uri is not specified
                 uri = ""
         except Exception as e:
-            logging.info('{:s}: {:s}'.format(str(FileIOError(filename)), str(e)))
+            logging.info('{:s}: {:s}'
+                         ''.format(str(FileIOError(filename)), str(e)))
             raise FileIOError(filename)
 
         # Load the sampa-ipa conversion dict (if any)
@@ -415,10 +428,16 @@ class sppasDictPron(object):
 
     @staticmethod
     def load_sampa_ipa():
-        """Load the sampa-ipa conversion file. Return it as a dict()."""
+        """Load the sampa-ipa conversion file.
 
+        Return it as a dict().
+
+        """
         conversion = dict()
-        ipa_sampa_mapfile = os.path.join(paths.resources, "dict", "sampa-ipa.txt")
+        ipa_sampa_mapfile = os.path.join(paths.resources,
+                                         "dict",
+                                         "sampa-ipa.txt")
+
         with codecs.open(ipa_sampa_mapfile, "r", 'utf-8') as f:
             for line in f.readlines():
                 tab_line = line.split()
@@ -446,7 +465,8 @@ class sppasDictPron(object):
             # ignore. Also used here to represent any unknown symbol.
             sampa_p = conversion.get(p, "_")
             if sampa_p != "_":
-                if len(sampa) > 0 and sampa_p == ":" or sampa_p.startswith("_"):
+                if len(sampa) > 0 and sampa_p == ":" or \
+                        sampa_p.startswith("_"):
                     sampa[-1] = sampa[-1]+sampa_p
                 else:
                     sampa.append(sampa_p)

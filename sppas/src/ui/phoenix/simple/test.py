@@ -231,7 +231,7 @@ class sppasApp(wx.App):
     def exit(self):
         """Close the frame, terminating the application."""
 
-        print "Bye bye."
+        print("Bye bye.")
         self.GetTopWindow().Close(True)
 
     # -----------------------------------------------------------------------

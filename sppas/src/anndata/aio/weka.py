@@ -809,7 +809,7 @@ class sppasARFF(sppasWEKA):
 
     @staticmethod
     def _serialize_header():
-        """Returns a standard header in comments."""
+        """Return a standard header in comments."""
 
         content = "% creator: {:s}\n".format(sg.__name__)
         content += "% version: {:s}\n".format(sg.__version__)

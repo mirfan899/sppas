@@ -165,7 +165,7 @@ class Indicator:
 
 
     def GetImageSize(self):
-        """Returns the indicator bitmap size."""
+        """Return the indicator bitmap size."""
 
         return self._img.GetWidth(), self._img.GetHeight()
 
@@ -174,7 +174,7 @@ class Indicator:
 
 
     def GetRect(self):
-        """Returns the indicator rect."""
+        """Return the indicator rect."""
 
         return self._rect
 
@@ -183,7 +183,7 @@ class Indicator:
 
 
     def GetValue(self):
-        """Returns the indicator value."""
+        """Return the indicator value."""
 
         return self._value
 
@@ -367,7 +367,7 @@ class RulerCtrl( spControl ):
 
 
     def GetIndicator(self, mousePos):
-        """Returns the indicator located at the mouse position mousePos (if any)."""
+        """Return the indicator located at the mouse position mousePos (if any)."""
 
         for indicator in self._indicators:
             if indicator.GetRect().Contains(mousePos):
@@ -379,7 +379,7 @@ class RulerCtrl( spControl ):
 
 
     def GetCurrentIndicator(self, idx):
-        """Returns the indicator given its idx."""
+        """Return the indicator given its idx."""
 
         self._currentIndicator = None
         for indicator in self._indicators:
@@ -392,7 +392,7 @@ class RulerCtrl( spControl ):
 
 
     def GetIndicatorFromId(self, idx):
-        """Returns the indicator of an Id."""
+        """Return the indicator of an Id."""
 
         for indicator in self._indicators:
             if indicator.GetId() == idx:
@@ -405,7 +405,7 @@ class RulerCtrl( spControl ):
 
 
     def GetIndicators(self):
-        """Returns the indicators."""
+        """Return the indicators."""
 
         return self._indicators
 
@@ -520,7 +520,7 @@ class RulerCtrl( spControl ):
 
 
     def GetDrawingParent(self):
-        """Returns the window to which RulerCtrl draws a thin line over."""
+        """Return the window to which RulerCtrl draws a thin line over."""
 
         return self._drawingparent
 
