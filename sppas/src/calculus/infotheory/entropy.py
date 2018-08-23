@@ -31,9 +31,6 @@
     src.calculus.infotheory.entropy.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Entropy is a measure of unpredictability of information content.
-    Entropy is one of several ways to measure diversity.
-
 """
 from ..calculusexc import EmptyError, InsideIntervalError
 from .utilit import log2
@@ -44,13 +41,16 @@ from .utilit import symbols_to_items
 
 
 class sppasEntropy(object):
-    """
+    """Entropy estimation.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Entropy estimation.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    Entropy is a measure of unpredictability of information content.
+    Entropy is one of several ways to measure diversity.
 
     If we want to look at the entropy on a large series, we could also compute
     the entropy for windows to measure the evenness or uncertainties.
@@ -59,6 +59,7 @@ class sppasEntropy(object):
     lower variance would result in lower entropy.
 
     """
+
     def __init__(self, symbols, n=1):
         """Create a sppasEntropy instance with a list of symbols.
 
@@ -102,8 +103,8 @@ class sppasEntropy(object):
     # -----------------------------------------------------------------------
 
     def eval(self):
-        """Estimates the Shannon entropy of a vector of symbols.
-        
+        """Estimate the Shannon entropy of a vector of symbols.
+
         Shannon's entropy measures the information contained in a message as
         opposed to the portion of the message that is determined
         (or predictable).

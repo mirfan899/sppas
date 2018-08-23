@@ -39,8 +39,8 @@ calculus: perform some math on data.
 :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 """
-from .descriptivesstats import sppasDescriptiveStatistics
-from .kappa import sppasKappa
+from sppas.src.calculus.stats.descriptivesstats import sppasDescriptiveStatistics
+from sppas.src.calculus.scoring.kappa import sppasKappa
 from .geometry.distances import squared_euclidian, euclidian, manathan, minkowski, chi_squared
 from .stats.central import fsum, fmult, fmin, fmax, fmean, fgeometricmean, fharmonicmean
 from .stats.frequency import freq, percent, percentile, quantile
@@ -56,13 +56,38 @@ from .infotheory.utilit import find_ngrams
 __all__ = (
     "sppasDescriptiveStatistics",
     "sppasKappa",
-    "squared_euclidian", "euclidian", "manathan", "minkowski", "chi_squared",
-    "fsum", "fmult", "fmin", "fmax", "fmean", "fgeometricmean", "fharmonicmean",
-    "freq", "percent", "percentile", "quantile",
-    "tga_linear_regression", "tansey_linear_regression",
-    "gradient_descent", "gradient_descent_linear_regression", "compute_error_for_line_given_points",
-    "lmoment", "lvariation", "lskew", "lkurtosis",
-    "lvariance", "lstdev", "lz", "rPVI", "nPVI",
+    "squared_euclidian",
+    "euclidian",
+    "manathan",
+    "minkowski",
+    "chi_squared",
+    "fsum",
+    "fmult",
+    "fmin",
+    "fmax",
+    "fmean",
+    "fgeometricmean",
+    "fharmonicmean",
+    "freq",
+    "percent",
+    "percentile",
+    "quantile",
+    "tga_linear_regression",
+    "tansey_linear_regression",
+    "gradient_descent",
+    "gradient_descent_linear_regression",
+    "compute_error_for_line_given_points",
+    "lmoment",
+    "lvariation",
+    "lskew",
+    "lkurtosis",
+    "lvariance",
+    "lstdev",
+    "lz",
+    "rPVI",
+    "nPVI",
     "ubpa",
-    "sppasKullbackLeibler", "sppasEntropy", "find_ngrams"
+    "sppasKullbackLeibler",
+    "sppasEntropy",
+    "find_ngrams"
 )

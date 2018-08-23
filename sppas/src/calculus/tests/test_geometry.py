@@ -88,7 +88,7 @@ class TestGeometryLinearFct(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_linear_values(self):
-        """Estimates the values between 2 points, step-by-step."""
+        """Estimate the values between 2 points, step-by-step."""
 
         y_values = linear_values(2, p1=(2, 2), p2=(8., 8.))
         self.assertEqual(len(y_values), 4)

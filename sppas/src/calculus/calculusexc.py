@@ -34,6 +34,7 @@
     Exceptions for calculus package.
 
 """
+
 from sppas.src.config import calculus_translation
 
 _ = calculus_translation.gettext
@@ -51,7 +52,12 @@ IN_INTERVAL_ERROR = ":ERROR 3040: "
 
 
 class VectorsError(Exception):
-    """:ERROR 3010: Both vectors p and q must have the same length and must contain probabilities."""
+    """:ERROR 3010:.
+
+    Both vectors p and q must have the same length and
+    must contain probabilities.
+
+    """
 
     def __init__(self):
         self.parameter = VECTORS_ERROR + (_(VECTORS_ERROR))
@@ -63,14 +69,20 @@ class VectorsError(Exception):
 
 
 class ProbabilityError(Exception):
-    """:ERROR 3015: Value must range between 0 and 1. Got {:f}."""
+    """:ERROR 3015:.
+
+    Value must range between 0 and 1. Got {:f}.
+
+    """
 
     def __init__(self, value=None):
         if value is not None:
             value = float(value)
-            self.parameter = PROBABILITY_VALUE_ERROR + (_(PROBABILITY_VALUE_ERROR)).format(value=value)
+            self.parameter = PROBABILITY_VALUE_ERROR + \
+                             (_(PROBABILITY_VALUE_ERROR)).format(value=value)
         else:
-            self.parameter = PROBABILITY_VALUE_ERROR + _(PROBABILITY_VALUE_ERROR).replace("{value}", "")
+            self.parameter = PROBABILITY_VALUE_ERROR + \
+                             (_(PROBABILITY_VALUE_ERROR)).replace("{value}", "")
 
     def __str__(self):
         return repr(self.parameter)
@@ -79,14 +91,20 @@ class ProbabilityError(Exception):
 
 
 class SumProbabilityError(Exception):
-    """:ERROR 3016: Probabilities must sum to 1. Got {:f}."""
+    """:ERROR 3016:.
+
+    Probabilities must sum to 1. Got {:f}.
+
+    """
 
     def __init__(self, value=None):
         if value is not None:
             value = float(value)
-            self.parameter = PROBABILITY_SUM_ERROR + (_(PROBABILITY_SUM_ERROR)).format(value=value)
+            self.parameter = PROBABILITY_SUM_ERROR + \
+                             (_(PROBABILITY_SUM_ERROR)).format(value=value)
         else:
-            self.parameter = PROBABILITY_SUM_ERROR + _(PROBABILITY_SUM_ERROR).replace("{value}", "")
+            self.parameter = PROBABILITY_SUM_ERROR + \
+                             (_(PROBABILITY_SUM_ERROR)).replace("{value}", "")
 
     def __str__(self):
         return repr(self.parameter)
@@ -95,10 +113,15 @@ class SumProbabilityError(Exception):
 
 
 class EuclidianDistanceError(ValueError):
-    """:ERROR 3025: Error while estimating Euclidian distances of rows and columns."""
+    """:ERROR 3025:.
+
+    Error while estimating Euclidian distances of rows and columns.
+
+    """
 
     def __init__(self):
-        self.parameter = EUCLIDIAN_DISTANCE_ERROR + (_(EUCLIDIAN_DISTANCE_ERROR))
+        self.parameter = EUCLIDIAN_DISTANCE_ERROR + \
+                         (_(EUCLIDIAN_DISTANCE_ERROR))
 
     def __str__(self):
         return repr(self.parameter)
@@ -107,7 +130,11 @@ class EuclidianDistanceError(ValueError):
 
 
 class EmptyError(Exception):
-    """:ERROR 3030: The given data must be defined or must not be empty."""
+    """:ERROR 3030:.
+
+    The given data must be defined or must not be empty.
+
+    """
 
     def __init__(self):
         self.parameter = EMPTY_LIST + (_(EMPTY_LIST))
@@ -119,14 +146,21 @@ class EmptyError(Exception):
 
 
 class InsideIntervalError(ValueError):
-    """:ERROR 3040: Value {value} is out of range: expected value in range [{min_value},{max_value}]."""
+    """:ERROR 3040:.
+
+     Value {value} is out of range: expected value in range
+     [{min_value},{max_value}].
+
+     """
 
     def __init__(self, value, min_value, max_value):
         min_value = int(min_value)
         max_value = int(max_value)
         value = int(value)
         self.parameter = IN_INTERVAL_ERROR + \
-                         (_(IN_INTERVAL_ERROR)).format(value=value, min_value=min_value, max_value=max_value)
+                         (_(IN_INTERVAL_ERROR)).format(value=value,
+                                                       min_value=min_value,
+                                                       max_value=max_value)
 
     def __str__(self):
         return repr(self.parameter)

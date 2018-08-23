@@ -34,33 +34,33 @@
 
 """
 
-from .stats.central import fsum
-from .stats.central import fmin
-from .stats.central import fmax
-from .stats.central import fmean
-from .stats.central import fmedian
+from sppas.src.calculus.stats.central import fsum
+from sppas.src.calculus.stats.central import fmin
+from sppas.src.calculus.stats.central import fmax
+from sppas.src.calculus.stats.central import fmean
+from sppas.src.calculus.stats.central import fmedian
 
-from .stats.variability import lvariance
-from .stats.variability import lstdev
-from .stats.variability import lzs
+from sppas.src.calculus.stats.variability import lvariance
+from sppas.src.calculus.stats.variability import lstdev
+from sppas.src.calculus.stats.variability import lzs
 
-from .stats.moment import lvariation
+from sppas.src.calculus.stats.moment import lvariation
 
 # ----------------------------------------------------------------------------
 
 
 class sppasDescriptiveStatistics(object):
-    """
+    """Descriptive statistics estimator class.
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      brigitte.bigi@gmail.com
-    :summary:      Descriptive statistics estimator class.
 
     This class estimates descriptive statistics on a set of data values,
     stored in a dictionary:
-    
+
         - the key is the name of the data set;
         - the value is the list of data values for this data set.
 
@@ -82,100 +82,112 @@ class sppasDescriptiveStatistics(object):
     # -----------------------------------------------------------------------
 
     def len(self):
-        """Estimates the number of occurrences of data values.
+        """Estimate the number of occurrences of data values.
 
         :returns: (dict) a dictionary of tuples (key, len)
 
         """
-        return dict((key, len(values)) for key,values in self._items.items())
+        return dict((key, len(values))
+                    for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
     def total(self):
-        """Estimates the sum of data values.
+        """Estimate the sum of data values.
 
         :returns: (dict) a dictionary of tuples (key, total) of float values
 
         """
-        return dict((key, fsum(values)) for key, values in self._items.items())
+        return dict((key, fsum(values))
+                    for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
     def min(self):
-        """Estimates the minimum of data values.
+        """Estimate the minimum of data values.
 
         :returns: (dict) a dictionary of (key, min) of float values
 
         """
-        return dict((key, fmin(values)) for key, values in self._items.items())
+        return dict((key, fmin(values))
+                    for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
     def max(self):
-        """Estimates the maximum of data values.
+        """Estimate the maximum of data values.
 
         :returns: (dict) a dictionary of (key, max) of float values
 
         """
-        return dict((key, fmax(values)) for key, values in self._items.items())
+        return dict((key, fmax(values))
+                    for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
     def mean(self):
-        """Estimates the arithmetic mean of data values.
+        """Estimate the arithmetic mean of data values.
 
         :returns: (dict) a dictionary of (key, mean) of float values
 
         """
-        return dict((key, fmean(values)) for key, values in self._items.items())
+        return dict((key, fmean(values))
+                    for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
     def median(self):
-        """Estimates the 'middle' score of the data values.
+        """Estimate the 'middle' score of the data values.
 
         :returns: (dict) a dictionary of (key, mean) of float values
 
         """
-        return dict((key, fmedian(values)) for key, values in self._items.items())
+        return dict((key, fmedian(values))
+                    for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
     def variance(self):
-        """Estimates the unbiased sample variance of data values.
+        """Estimate the unbiased sample variance of data values.
 
         :returns: (dict) a dictionary of (key, variance) of float values
 
         """
-        return dict((key, lvariance(values)) for key, values in self._items.items())
+        return dict((key, lvariance(values))
+                    for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
     def stdev(self):
-        """Estimates the standard deviation of data values.
+        """Estimate the standard deviation of data values.
 
         :returns: (dict) a dictionary of (key, stddev) of float values
 
         """
-        return dict((key, lstdev(values)) for key, values in self._items.items())
+        return dict((key, lstdev(values))
+                    for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
     def coefvariation(self):
-        """Estimates the coefficient of variation of data values (given as a percentage).
+        """Estimate the coefficient of variation of data values.
 
-        :returns: (dict) a dictionary of (key, coefvariation) of float values
+        :returns: (dict) a dictionary of (key, coefvariation) of float
+        values (given as a percentage).
 
         """
-        return dict((key, lvariation(values)) for key, values in self._items.items())
+        return dict((key, lvariation(values))
+                    for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
     def zscore(self):
-        """Estimates the z-scores of data values.
+        """Estimate the z-scores of data values.
+
         The z-score determines the relative location of a data value.
 
         :returns: (dict) a dictionary of (key, [z-scores]) of float values
 
         """
-        return dict((key, lzs(values)) for key, values in self._items.items())
+        return dict((key, lzs(values))
+                    for key, values in self._items.items())

@@ -36,22 +36,12 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    A collection of basic frequency functions for python.
-
-    Function list
-    =============
-
-        - frequency
-        - percentage
-        - hapax
-        - occranks
-        - ranks
-        - zipf
-        - tfidf
+A collection of basic frequency functions for python.
 
 """
+
 import math
 from ..calculusexc import EmptyError, ProbabilityError
 
@@ -85,7 +75,7 @@ def percent(mylist, item):
 
 
 def percentile(mylist, p=(25, 50, 75), sort=True):
-    """Returns the pth percentile of an unsorted or sorted numeric list.
+    """Return the pth percentile of an unsorted or sorted numeric list.
 
     This is equivalent to calling quantile(mylist, p/100.0).
 
@@ -115,7 +105,7 @@ def percentile(mylist, p=(25, 50, 75), sort=True):
 
 
 def quantile(mylist, q=(0.25, 0.5, 0.75), sort=True):
-    """Returns the qth quantile of an unsorted or sorted numeric list.
+    """Return the qth quantile of an unsorted or sorted numeric list.
 
      Calculates a rank n as q(N+1), where N is the number of items in mylist,
      then splits n into its integer component k and decimal component d.
@@ -217,7 +207,7 @@ def ranks(counter):
     :returns: dict
 
     """
-    r = {}
+    r = dict()
     oclist = occranks(counter)
     for k in counter.keys():
         occ = counter[k]
@@ -230,6 +220,7 @@ def ranks(counter):
 
 def zipf(dict_ranks, item):
     """Return the Zipf Law value of an item.
+
     Zipf's law states that given some corpus of natural language utterances,
     the frequency of any word is inversely proportional to its rank in the
     frequency table. Thus the most frequent word will occur approximately
@@ -251,6 +242,7 @@ def zipf(dict_ranks, item):
 
 def tfidf(documents, item):
     """Return the tf.idf of an item.
+
     Term frequency–inverse document frequency, is a numerical statistic
     that is intended to reflect how important a word is to a document in a
     collection or corpus. The tf.idf value increases proportionally to the

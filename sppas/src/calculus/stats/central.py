@@ -36,21 +36,12 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    A collection of basic statistical functions for python.
-
-    Function list
-    =============
-
-        - fsum
-        - fmult
-        - fgeometricmean
-        - fharmonicmean
-        - fmean
-        - fmedian
+A collection of basic statistical functions for python.
 
 """
+
 import math
 import functools
 
@@ -58,7 +49,7 @@ import functools
 
 
 def fsum(items):
-    """Estimates the sum of a list of data values.
+    """Estimate the sum of a list of data values.
 
     :param items: (list) list of data values
     :returns: (float)
@@ -70,7 +61,7 @@ def fsum(items):
 
 
 def fmult(items):
-    """Estimates the product of a list of data values.
+    """Estimate the product of a list of data values.
 
     :param items: (list) list of data values
     :returns: (float)
@@ -82,7 +73,8 @@ def fmult(items):
 
 
 def fgeometricmean(items):
-    """Calculates the geometric mean of the data values:
+    """Calculate the geometric mean of the data values.
+
     n-th root of (x1 * x2 * ... * xn).
 
     :param items: (list) list of data values
@@ -103,7 +95,8 @@ def fgeometricmean(items):
 
 
 def fharmonicmean(items):
-    """Calculates the harmonic mean of the data values:
+    """Calculate the harmonic mean of the data values.
+
     C{n / (1/x1 + 1/x2 + ... + 1/xn)}.
 
     :param items: (list) list of data values
@@ -124,7 +117,8 @@ def fharmonicmean(items):
 
 
 def fmean(items):
-    """Calculates the arithmetic mean of the data values:
+    """Calculate the arithmetic mean of the data values.
+
     sum(items)/len(items)
 
     :param items: (list) list of data values
@@ -140,8 +134,10 @@ def fmean(items):
 
 
 def fmedian(items):
-    """Calculates the 'middle' score of the data values. If there is an even
-    number of scores, the mean of the 2 middle scores is returned.
+    """Calculate the 'middle' score of the data values.
+
+    If there is an even number of scores, the mean of the 2 middle scores
+    is returned.
 
     :param items: (list) list of data values
     :returns: (float)

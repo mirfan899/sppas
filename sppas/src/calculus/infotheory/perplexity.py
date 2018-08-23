@@ -30,17 +30,7 @@
         ---------------------------------------------------------------------
 
     src.calculus.infotheory.perplexity.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Perplexity is a measurement of how well a probability distribution or
-    probability model predicts a sample.
-    The perplexity of a discrete probability distribution p is defined as:
-    2^{H(p)}=2^{-\sum_x p(x)\log_2 p(x)}
-    where H(p) is the entropy of the distribution and x ranges over events.
-
-    Perplexity is commonly used to compare models on the same list of
-    symbols - this list of symbols is "representing" the problem we are
-    facing one. The higher perplexity, the better model.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 from ..calculusexc import EmptyError, InsideIntervalError
@@ -52,14 +42,24 @@ from .utilit import symbols_to_items
 # ----------------------------------------------------------------------------
 
 
-class Perplexity(object):
-    """
+class sppasPerplexity(object):
+    r"""Perplexity estimator.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Perplexity estimator.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    Perplexity is a measurement of how well a probability distribution or
+    probability model predicts a sample.
+    The perplexity of a discrete probability distribution p is defined as:
+    2^{H(p)}=2^{-\sum_x p(x)\log_2 p(x)}
+    where H(p) is the entropy of the distribution and x ranges over events.
+
+    Perplexity is commonly used to compare models on the same list of
+    symbols - this list of symbols is "representing" the problem we are
+    facing one. The higher perplexity, the better model.
 
     A model is represented as a distribution of probabilities: the key is
     representing the symbol and the value is the the probability.
@@ -69,7 +69,7 @@ class Perplexity(object):
     >>>model["pineapple"] = 0.2
     >>>model["tomato"] = 0.3
     >>>model["apple"] = 0.4
-    >>>pp = Perplexity(model)
+    >>>pp = sppasPerplexity(model)
 
     The observation on which the perplexity must be estimated on is
     represented as a list:
@@ -91,10 +91,13 @@ class Perplexity(object):
     >>>2.62034217479
 
     """
+
     DEFAULT_EPSILON = 0.000001
 
+    # -----------------------------------------------------------------------
+
     def __init__(self, model, ngram=1):
-        """Creates a Perplexity instance with a list of symbols.
+        """Create a Perplexity instance with a list of symbols.
 
         :param model: (dict) a dictionary with key=item, value=probability
         :param ngram: (int) the n value, in the range 1..8
@@ -102,7 +105,7 @@ class Perplexity(object):
         """
         self._model = dict()
         self._ngram = 1
-        self._epsilon = Perplexity.DEFAULT_EPSILON
+        self._epsilon = sppasPerplexity.DEFAULT_EPSILON
 
         self.set_model(model)
         self.set_ngram(ngram)
@@ -111,7 +114,7 @@ class Perplexity(object):
 
     def set_epsilon(self, eps=0.):
         """Set a value for epsilon.
-        
+
         This value must be significantly lower than the minimum value in the
         model.
 
@@ -138,9 +141,11 @@ class Perplexity(object):
 
     def set_model(self, model):
         """Set the probability distribution to the model.
+
         Notice that the epsilon value is re-assigned.
 
-        :param model: (dict) Dictionary with symbols as keys and values as probabilities.
+        :param model: (dict) Dictionary with symbols as keys and values as
+        probabilities.
 
         """
         # check the model before assigning to the member
@@ -175,7 +180,7 @@ class Perplexity(object):
     # -----------------------------------------------------------------------
 
     def eval_pp(self, symbols):
-        """Estimates the perplexity of a list of symbols.
+        """Estimate the perplexity of a list of symbols.
 
         :returns: float value
 

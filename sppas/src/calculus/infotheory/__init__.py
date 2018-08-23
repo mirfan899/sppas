@@ -32,25 +32,25 @@
     src.calculus.infotheory.__init__.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Information Theory is a scientific fields that started with the Claude
-    Shannon's 1948 paper: *“A Mathematical  Theory  of  Communication”*
-    published in the Bell Systems Technical Journal.
-    There are several major concepts in this paper, including:
+Information Theory is a scientific fields that started with the Claude
+Shannon's 1948 paper: *“A Mathematical  Theory  of  Communication”*
+published in the Bell Systems Technical Journal.
+There are several major concepts in this paper, including:
 
-        1. every communication channel has a speed limit, measured in binary
-        digits per second,
-        2. the architecture and design of communication systems,
-        3. source coding, i.e. the efficiency of the data representation
-        (remove redundancy in the information to make the message smaller)
+1. every communication channel has a speed limit, measured in binary
+digits per second,
+2. the architecture and design of communication systems,
+3. source coding, i.e. the efficiency of the data representation
+(remove redundancy in the information to make the message smaller)
 
 """
 
 from .entropy import sppasEntropy
 from .kullbackleibler import sppasKullbackLeibler
-from .perplexity import Perplexity
+from .perplexity import sppasPerplexity
 
 __all__ = [
         "sppasEntropy",
         "sppasKullbackLeibler",
-        "Perplexity"
+        "sppasPerplexity"
 ]

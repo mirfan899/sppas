@@ -41,7 +41,7 @@ from .utilit import log2
 
 
 class sppasKullbackLeibler(object):
-    """Kullback-Leibler distance estimator.
+    u"""Kullback-Leibler distance estimator.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -93,6 +93,8 @@ class sppasKullbackLeibler(object):
     """
 
     DEFAULT_EPSILON = 0.000001
+
+    # -----------------------------------------------------------------------
 
     def __init__(self, model=None, observations=None):
         """Create a sppasKullbackLeibler instance from a list of symbols.
@@ -255,9 +257,8 @@ class sppasKullbackLeibler(object):
             proba_model = self._epsilon
             if x in self._model:
                 proba_model = alpha * self._model[x]
-            proba_ngram = beta * \
-                          (float(self._observations.count(x)) /
-                           float(len(self._observations)))
+            proba_ngram = beta * (float(self._observations.count(x)) /
+                                  float(len(self._observations)))
             d = (proba_model - proba_ngram) * log2(proba_model / proba_ngram)
             dist += d
 

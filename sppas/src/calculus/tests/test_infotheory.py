@@ -37,7 +37,7 @@ import unittest
 
 from ..infotheory.entropy import sppasEntropy
 from ..infotheory.kullbackleibler import sppasKullbackLeibler
-from ..infotheory.perplexity import Perplexity
+from ..infotheory.perplexity import sppasPerplexity
 
 # ---------------------------------------------------------------------------
 
@@ -78,7 +78,7 @@ class TestInformationTheory(unittest.TestCase):
         model["pineapple"] = 0.2
         model["tomato"] = 0.3
         model["apple"] = 0.4
-        pp = Perplexity(model)
+        pp = sppasPerplexity(model)
         observed = ['apple', 'pineapple', 'apple', 'peer']
         self.assertEqual(round(pp.eval_pp(observed), 5), 3.61531)
         observed = ['apple', 'pineapple', 'apple', 'tomato']
@@ -92,13 +92,13 @@ class TestInformationTheory(unittest.TestCase):
         kl.set_epsilon(1.0 / (10.*len(data)))
         kl.set_model_from_data(data)
         kl.set_observations(list('000'))
-        self.assertEqual(round(kl.eval_kld(), 5), 1796.01074)
+        self.assertEqual(2.06851, round(kl.eval_kld(), 5))
         kl.set_observations(list('010'))
-        self.assertEqual(round(kl.eval_kld(), 5), 1120.27006)
+        self.assertEqual(0.06409, round(kl.eval_kld(), 5))
         kl.set_observations(list('011'))
-        self.assertEqual(round(kl.eval_kld(), 5), 1120.27006)
+        self.assertEqual(1.65549, round(kl.eval_kld(), 5))
         kl.set_observations(list('111'))
-        self.assertEqual(round(kl.eval_kld(), 5), 1796.01074)
+        self.assertEqual(10.97067, round(kl.eval_kld(), 5))
 
     def test_kl2(self):
         modell = dict()

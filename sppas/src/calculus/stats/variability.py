@@ -36,21 +36,12 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    A collection of basic statistical functions for python.
-
-    Function List
-    =============
-
-        - lvariance, lunbiasedvariance
-        - lstdev, lunbiasedstdev
-        - lsterr
-        - lz
-        - lzs
-        - rPVI, nPVI
+A collection of basic statistical functions for python.
 
 """
+
 import math
 
 from .central import fmean
@@ -60,10 +51,9 @@ from .central import fsum
 
 
 def lunbiasedvariance(items):
-    """Calculates the unbiased sample variance of the data values, for a sample.
+    """Calculate the unbiased sample variance of the data values, for a sample.
+
     It means that the estimation is using N-1 for the denominator.
-
-
     The variance is a measure of dispersion near the mean.
 
     :param items: (list) list of data values
@@ -80,9 +70,9 @@ def lunbiasedvariance(items):
 
 
 def lvariance(items):
-    """Calculates the variance of the data values, for a population.
-    It means that the estimation is using N for the denominator.
+    """Calculate the variance of the data values, for a population.
 
+    It means that the estimation is using N for the denominator.
     The variance is a measure of dispersion near the mean.
 
     :param items: (list) list of data values
@@ -99,7 +89,7 @@ def lvariance(items):
 
 
 def lunbiasedstdev(items):
-    """Calculates the standard deviation of the data values, for a sample.
+    """Calculate the standard deviation of the data values, for a sample.
 
     The standard deviation is the positive square root of the variance.
 
@@ -116,7 +106,7 @@ def lunbiasedstdev(items):
 
 
 def lstdev(items):
-    """Calculates the standard deviation of the data values, for a population.
+    """Calculate the standard deviation of the data values, for a population.
 
     The standard deviation is the positive square root of the variance.
 
@@ -133,7 +123,7 @@ def lstdev(items):
 
 
 def lsterr(items):
-    """Calculates the standard error of the data values.
+    """Calculate the standard error of the data values.
 
     :param items: (list) list of data values
     :returns: (float)
@@ -145,7 +135,8 @@ def lsterr(items):
 
 
 def lz(items, score):
-    """Calculates the z-score for a given input score,
+    """Calculate the z-score for a given input score.
+
     given that score and the data values from which that score came.
 
     The z-score determines the relative location of a data value.
@@ -164,19 +155,19 @@ def lz(items, score):
 
 
 def lzs(items):
-    """Calculates a list of z-scores, one for each score in the data values.
+    """Calculate a list of z-scores, one for each score in the data values.
 
     :param items: (list) list of data values
     :returns: (list)
 
     """
-    return [ lz(items,i) for i in items ]
+    return [lz(items, i) for i in items]
 
 # ----------------------------------------------------------------------------
 
 
 def rPVI(items):
-    """Calculates the Raw Pairwise Variability Index.
+    """Calculate the Raw Pairwise Variability Index.
 
     :param items: (list) list of data values
     :returns: (float)
@@ -193,7 +184,7 @@ def rPVI(items):
 
 
 def nPVI(items):
-    """Calculates the Normalized Pairwise Variability Index.
+    """Calculate the Normalized Pairwise Variability Index.
 
     :param items: (list) list of data values
     :returns: (float)

@@ -52,7 +52,7 @@ from .timegroupanalysis import TimeGroupAnalysis
 
 
 class sppasTGA(sppasBaseAnnotation):
-    """Estimates TGA on a tier.
+    """Estimate TGA on a tier.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -312,7 +312,7 @@ class sppasTGA(sppasBaseAnnotation):
     # ----------------------------------------------------------------------
 
     def convert(self, syllables):
-        """Estimates TGA on the given syllables.
+        """Estimate TGA on the given syllables.
 
         :param syllables: (sppasTier)
         :returns: (sppasTranscription)

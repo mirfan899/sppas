@@ -32,21 +32,24 @@
     src.calculus.infotheory.utilit.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Utilities for the information theory package.
-
-    Function List
-    =============
-
-        - find_ngrams
-        - symbols_to_items
-        - log2
-        - MAX_NGRAM
+Utilities for the information theory package.
 
 """
 import math
 
-log2 = lambda x: math.log(x)/math.log(2)
 MAX_NGRAM = 8
+
+# ----------------------------------------------------------------------------
+
+
+def log2(x):
+    """Estimate log in base 2.
+
+    :param x: (int, float) value
+    :return: (float)
+    """
+    x = float(x)
+    return math.log(x)/math.log(2)
 
 # ----------------------------------------------------------------------------
 

@@ -51,8 +51,8 @@ class TestStats(unittest.TestCase):
 
     def test_central(self):
         l = [x * x for x in range(1, 500)]
-        self.assertEqual(fgeometricmean(l), 34246.72071757449)
-        self.assertEqual(fharmonicmean(l), 303.7252790142687)
+        self.assertEqual(34246.72072, round(fgeometricmean(l), 5))
+        self.assertEqual(303.72528, round(fharmonicmean(l), 5))
         self.assertEqual(fmean(l), 83250.0)
         self.assertEqual(fmin(l), 1)
         self.assertEqual(fmax(l), 249001)

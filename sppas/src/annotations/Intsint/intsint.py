@@ -248,7 +248,7 @@ class Intsint(object):
     # -------------------------------------------------------------------
 
     def estimate(self, tone, last_anchor):
-        """Estimates f0 from current tone and last target.
+        """Estimate f0 from current tone and last target.
 
         :param tone:
         :param last_anchor:

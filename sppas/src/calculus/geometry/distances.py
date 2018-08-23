@@ -35,30 +35,23 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    A collection of basic distance functions for python.
-    Distance axioms:
-        - d(x,y) = 0 iff x = y
-        - d(x,y) = d(y,x)
-        - d(x,z) <= d(x,y) + d(y,z)
-
-    Function list:
-    ==============
-
-        - manathan
-        - euclidian
-        - squared_euclidian
-        - minkowski
+A collection of basic distance functions for python.
+Distance axioms:
+    - d(x,y) = 0 iff x = y
+    - d(x,y) = d(y,x)
+    - d(x,z) <= d(x,y) + d(y,z)
 
 """
+
 from ..calculusexc import VectorsError
 
 # ---------------------------------------------------------------------------
 
 
 def manathan(x, y):
-    """Estimates the Manathan distance between two tuples.
+    """Estimate the Manathan distance between two tuples.
 
     :param x: a tuple of float values
     :param y: a tuple of float values
@@ -81,7 +74,7 @@ def manathan(x, y):
 
 
 def euclidian(x, y):
-    """Estimates the Euclidian distance between two tuples.
+    """Estimate the Euclidian distance between two tuples.
 
     :param x: a tuple of float values
     :param y: a tuple of float values
@@ -104,7 +97,7 @@ def euclidian(x, y):
 
 
 def squared_euclidian(x, y):
-    """Estimates the Squared Euclidian distance between two tuples.
+    """Estimate the Squared Euclidian distance between two tuples.
 
     :param x: a tuple of float values
     :param y: a tuple of float values
@@ -127,7 +120,7 @@ def squared_euclidian(x, y):
 
 
 def minkowski(x, y, p=2):
-    """Estimates the Minkowski distance between two tuples.
+    """Estimate the Minkowski distance between two tuples.
 
     :param x: a tuple of float values
     :param y: a tuple of float values
@@ -155,7 +148,7 @@ def minkowski(x, y, p=2):
 
 
 def chi_squared(x, y):
-    """Estimates the Chi-squared distance between two tuples.
+    """Estimate the Chi-squared distance between two tuples.
 
     :param x: a tuple of float values
     :param y: a tuple of float values
@@ -177,5 +170,3 @@ def chi_squared(x, y):
         summ += (float((a-b)**2) / float((a+b)))
 
     return pow(summ, 0.5)
-
-# ---------------------------------------------------------------------------

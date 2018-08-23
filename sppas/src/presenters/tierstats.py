@@ -33,7 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from sppas.src.calculus.descriptivesstats import sppasDescriptiveStatistics
+from sppas.src.calculus.stats.descriptivesstats import sppasDescriptiveStatistics
 from sppas.src.calculus.infotheory.utilit import MAX_NGRAM
 from sppas.src.calculus.calculusexc import InsideIntervalError
 
@@ -41,7 +41,7 @@ from sppas.src.calculus.calculusexc import InsideIntervalError
 
 
 class TierStats(object):
-    """Estimates descriptive statistics of annotations of a tier.
+    """Estimate descriptive statistics of annotations of a tier.
     
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France

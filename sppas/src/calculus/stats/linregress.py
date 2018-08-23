@@ -38,18 +38,12 @@
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    The goal of linear regression is to fit a line to a set of points.
-    Equation of the line is y = mx + b
-    where m is slope, b is y-intercept.
-
-    Function list
-    =============
-
-        - gradient_descent_linear_regression
-        - tga_linear_regression
-        - tansey_linear_regression
+The goal of linear regression is to fit a line to a set of points.
+Equation of the line is y = mx + b
+where m is slope, b is y-intercept.
 
 """
+
 from .central import fmean
 from .central import fsum
 
@@ -57,8 +51,11 @@ from .central import fsum
 
 
 def compute_error_for_line_given_points(b, m, points):
-    """Error function (also called a cost function) measures how "good" a
-    given line is. This function will take in a (m,b) pair and return an
+    """Error function (also called a cost function).
+
+    It measures how "good" a given line is.
+
+    This function will take in a (m,b) pair and return an
     error value based on how well the line fits our data.
     To compute this error for a given line, we'll iterate through each (x,y)
     point in our data set and sum the square distances between each point's y
@@ -77,7 +74,9 @@ def compute_error_for_line_given_points(b, m, points):
 
 
 def step_gradient(b_current, m_current, points, learning_rate):
-    """To run gradient descent on an error function, we first need to compute
+    """One step of a gradient linear regression.
+
+    To run gradient descent on an error function, we first need to compute
     its gradient. The gradient will act like a compass and always point us
     downhill. To compute it, we will need to differentiate our error function.
     Since our function is defined by two parameters (m and b), we will need
@@ -94,20 +93,22 @@ def step_gradient(b_current, m_current, points, learning_rate):
     """
     b_gradient = 0
     m_gradient = 0
-    N = float(len(points))
+    n = float(len(points))
     for x, y in points:
-        b_gradient += -(2/N) * (y - ((m_current * x) + b_current))
-        m_gradient += -(2/N) * x * (y - ((m_current * x) + b_current))
+        b_gradient += -(2./n) * (y - ((m_current * x) + b_current))
+        m_gradient += -(2./n) * x * (y - ((m_current * x) + b_current))
     new_b = b_current - (learning_rate * b_gradient)
     new_m = m_current - (learning_rate * m_gradient)
-    
+
     return [new_b, new_m]
 
 # ---------------------------------------------------------------------------
 
 
-def gradient_descent(points, starting_b, starting_m, learning_rate, num_iterations):
+def gradient_descent(points,
+                     starting_b, starting_m, learning_rate, num_iterations):
     """Gradient descent is an algorithm that minimizes functions.
+
     Given a function defined by a set of parameters, gradient descent starts
     with an initial set of parameter values and iteratively moves toward a set
     of parameter values that minimize the function. This iterative minimization
@@ -115,6 +116,10 @@ def gradient_descent(points, starting_b, starting_m, learning_rate, num_iteratio
     the function gradient.
 
     :param points: a list of tuples (x,y) of float values.
+    :param starting_b: (float)
+    :param starting_m: (float)
+    :param learning_rate: (float)
+    :param num_iterations: (int)
     :returns: intercept, slope
 
     """
@@ -141,17 +146,19 @@ def gradient_descent_linear_regression(points, num_iterations=50000):
     :returns: intercept, slope
 
     """
-    learning_rate = 0.0001
-    initial_b = 0  # initial y-intercept guess
-    initial_m = 0  # initial slope guess
-    
-    return gradient_descent(points, initial_b, initial_m, learning_rate, num_iterations)
+    g = gradient_descent(points,
+                         starting_b=0.,  # initial y-intercept guess
+                         starting_m=0.,  # initial slope guess
+                         learning_rate=0.0001,
+                         num_iterations=num_iterations)
+    return g
 
 # ---------------------------------------------------------------------------
 
 
 def tga_linear_regression(points):
     """Linear regression as proposed in TGA, by Dafydd Gibbon.
+
     http://wwwhomes.uni-bielefeld.de/gibbon/TGA/
 
     :param points: a list of tuples (x,y) of float values.
@@ -188,8 +195,9 @@ def tga_linear_regression(points):
 
 def tansey_linear_regression(points):
     """Linear regression, as proposed in AnnotationPro.
+
     http://annotationpro.org/
-    
+
     Translated from C# code from here:
     https://gist.github.com/tansey/1375526
 

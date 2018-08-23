@@ -36,9 +36,9 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    Estimates the Unit Boundary Positioning Accuracy.
+Estimates the Unit Boundary Positioning Accuracy.
 
 """
 import sys
@@ -59,7 +59,7 @@ def _inc(vector, idx):
 
 
 def ubpa(vector, text, fp=sys.stdout, delta_max=0.04, step=0.01):
-    """Estimates the Unit Boundary Positioning Accuracy.
+    """Estimate the Unit Boundary Positioning Accuracy.
 
     :param vector: contains the list of the delta values.
     :param text: one of "Duration", "Position Start", ...
@@ -107,6 +107,7 @@ def ubpa(vector, text, fp=sys.stdout, delta_max=0.04, step=0.01):
             fp.write("%d (%.2f%%)\n" % (value, percent))
             percentsum += percent
     fp.write("|--------------------------------------------| \n")
-    fp.write("| Total: {0:.2f} %                           | \n".format(round(percentsum, 3)))
+    fp.write("| Total: {0:.2f} %                           | \n"
+             "".format(round(percentsum, 3)))
     fp.write("|--------------------------------------------| \n")
 

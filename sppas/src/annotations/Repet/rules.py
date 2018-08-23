@@ -100,7 +100,7 @@ class Rules(object):
     # -----------------------------------------------------------------------
 
     def count_relevant_tokens(self, start, end, speaker):
-        """Estimates the number of relevant tokens between start and end (included).
+        """Estimate the number of relevant tokens between start and end (included).
 
         :param start: (int)
         :param end: (int)

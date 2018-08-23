@@ -35,7 +35,7 @@
 """
 import unittest
 
-from ..kappa import sppasKappa
+from sppas.src.calculus.scoring.kappa import sppasKappa
 
 # ---------------------------------------------------------------------------
 

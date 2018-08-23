@@ -30,25 +30,18 @@
         ---------------------------------------------------------------------
 
     src.calculus.stats.moment.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    A collection of basic statistical functions for python.
-
-    Function List
-    =============
-
-        - lmoment
-        - lvariation
-        - lskew
-        - lkurtosis
+A collection of basic statistical functions for python.
 
 """
+
 from .central import fmean
 from .variability import lstdev
 
@@ -56,7 +49,7 @@ from .variability import lstdev
 
 
 def lmoment(items, moment=1):
-    """Calculates the r-th moment about the mean for a sample.
+    """Calculate the r-th moment about the mean for a sample.
 
     1/n * SUM((items(i)-mean)**r)
 
@@ -76,7 +69,7 @@ def lmoment(items, moment=1):
 
 
 def lvariation(items):
-    """Calculates the coefficient of variation of data values.
+    """Calculate the coefficient of variation of data values.
 
     It shows the extent of variability in relation to the mean. It's a
     standardized measure of dispersion: stdev / mean and returned as a
@@ -92,7 +85,7 @@ def lvariation(items):
 
 
 def lskew(items):
-    """Calculates the skewness of a distribution.
+    """Calculate the skewness of a distribution.
 
     The skewness represents a measure of the asymmetry: an understanding
     of the skewness of the dataset indicates whether deviations from the
@@ -108,7 +101,7 @@ def lskew(items):
 
 
 def lkurtosis(items):
-    """Returns the kurtosis of a distribution.
+    """Return the kurtosis of a distribution.
 
     The kurtosis represents a measure of the "peakedness": a high kurtosis
     distribution has a sharper peak and fatter tails, while a low kurtosis

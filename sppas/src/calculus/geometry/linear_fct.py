@@ -38,19 +38,12 @@
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    A linear function from the real numbers to the real numbers is a function
-    whose graph - in Cartesian coordinates with uniform scales, is a line in
-    the plane.
+A linear function from the real numbers to the real numbers is a function
+whose graph - in Cartesian coordinates with uniform scales, is a line in
+the plane.
 
-    Function list
-    =============
-
-        - slope
-        - intercept
-        -
-
-    The equation y = ax + b is referred to as the slope-intercept form of a
-    linear equation.
+The equation y = ax + b is referred to as the slope-intercept form of a
+linear equation.
 
 """
 import math
@@ -151,7 +144,8 @@ def linear_values(delta, p1, p2):
     :param p1: (tuple) first point as (x1, y1)
     :param p2: (tuple) second point as (x2, y2)
     :returns: list of float values
-    :raises: MemoryError could be raised if too many values have to be returned.
+    :raises: MemoryError could be raised if too many values have to be \
+    returned.
 
     """
     delta = float(delta)

@@ -43,8 +43,8 @@
 """
 from __future__ import division
 
-from .geometry.distances import squared_euclidian as sq
-from .calculusexc import VectorsError, EuclidianDistanceError
+from sppas.src.calculus.geometry.distances import squared_euclidian as sq
+from sppas.src.calculus.calculusexc import VectorsError, EuclidianDistanceError
 
 # ----------------------------------------------------------------------------
 
@@ -115,7 +115,7 @@ class sppasKappa(object):
     # -----------------------------------------------------------------------
 
     def sqv(self):
-        """Estimates the Euclidian distance between two vectors.
+        """Estimate the Euclidian distance between two vectors.
 
         :returns: v
 
@@ -128,7 +128,7 @@ class sppasKappa(object):
     # -----------------------------------------------------------------------
 
     def sqm(self):
-        """Estimates the Euclidian distance between two vectors.
+        """Estimate the Euclidian distance between two vectors.
 
         :returns: row, col
 
@@ -162,7 +162,7 @@ class sppasKappa(object):
     # -----------------------------------------------------------------------
 
     def evaluate(self):
-        """Estimates the Cohen's Kappa between two lists of tuples p and q.
+        """Estimate the Cohen's Kappa between two lists of tuples p and q.
 
         The tuple size corresponds to the number of categories, each value is
         the score assigned to each category for a given sample.
