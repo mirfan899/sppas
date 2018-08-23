@@ -32,10 +32,6 @@
     src.resources.patterns.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Pattern matching aims at checking a given sequence of tokens for the
-    presence of the constituents of some pattern. In contrast to pattern
-    recognition, the match usually has to be exact.
-
 """
 import math
 
@@ -47,18 +43,23 @@ from .resourcesexc import ScoreRangeError
 
 
 class sppasPatterns(object):
-    """
+    """Pattern matching.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Pattern matching.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    Pattern matching aims at checking a given sequence of tokens for the
+    presence of the constituents of some pattern. In contrast to pattern
+    recognition, the match usually has to be exact.
 
     Several pattern matching algorithms are implemented in this class.
     They allow to find an hypothesis pattern in a reference.
 
     """
+
     MAX_GAP = 4
     MAX_NGRAM = 8
 
@@ -66,7 +67,6 @@ class sppasPatterns(object):
 
     def __init__(self):
         """Create a new Pattern instance."""
-
         self._ngram = 3
         self._score = 1.
         self._gap = 2
@@ -142,6 +142,7 @@ class sppasPatterns(object):
 
     def ngram_matches(self, ref, hyp):
         """n-gram matches between ref and hyp.
+
         Search for common n-gram sequences of hyp in ref.
 
         :param ref: (list of tokens) List of references
@@ -168,7 +169,6 @@ class sppasPatterns(object):
             # or ORs if there are more than one speaker in the audiofile)
             if len(match_idxa) == 1:
                 idxm = match_idxa[0]
-                previdxm = idxm+1
                 for i in range(self._ngram):
                     _matches.append((idxm+i, idxa+i))
 
@@ -177,7 +177,7 @@ class sppasPatterns(object):
     # ------------------------------------------------------------------------
 
     def ngram_alignments(self, ref, hyp):
-        """n-gram alignment of ref and hyp.
+        r"""n-gram alignment of ref and hyp.
 
         The algorithm is based on the finding of matching n-grams, in the
         range of a given gap. If 1-gram, keep only hypothesis items with a
@@ -223,7 +223,7 @@ class sppasPatterns(object):
             # matching
             if idxm < lastidxm and nasr[idxa] == nman[idxm]:
                 for i in range(self._ngram):
-                    alignment.append((idxm+i,idxa+i))
+                    alignment.append((idxm+i, idxa+i))
                 found = True
 
             # matching, supposing deletions in hyp
@@ -292,7 +292,7 @@ class sppasPatterns(object):
         # create n-gram sequences of the hypothesis
         # if ngram=1, keep only items with a high confidence score
         if self._ngram > 1:
-            tab = [token for (token,score) in hyp]
+            tab = [token for (token, score) in hyp]
             nasr = list(zip(*[tab[i:] for i in range(self._ngram)]))
         else:
             nasr = []

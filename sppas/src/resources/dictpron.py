@@ -140,7 +140,6 @@ class sppasDictPron(object):
 
     def get_unkstamp(self):
         """Return the unknown words stamp."""
-
         return symbols.unk
 
     # -----------------------------------------------------------------------
@@ -183,6 +182,7 @@ class sppasDictPron(object):
 
     def is_pron_of(self, entry, pron):
         """Return True if pron is a pronunciation of entry.
+
         Phonemes of pron are separated by "-".
 
         :param entry: (str) A unicode token to find in the dictionary

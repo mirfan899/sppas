@@ -32,11 +32,6 @@
     src.resources.dumpfile.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Class to manage dump files.
-    A dump file is a binary version of an ASCII file. Its size is greater
-    than the original ASCII one but the time to load it is divided by two
-    or three.
-
 """
 import os
 import codecs
@@ -49,15 +44,20 @@ from .resourcesexc import DumpExtensionError
 
 
 class sppasDumpFile(object):
-    """
+    """Class to manage dump files.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Manager for dump files.
+
+    A dump file is a binary version of an ASCII file. Its size is greater
+    than the original ASCII one but the time to load it is divided by two
+    or three.
 
     """
+
     DUMP_FILENAME_EXT = ".dump"
 
     # -----------------------------------------------------------------------
@@ -89,11 +89,14 @@ class sppasDumpFile(object):
 
     def set_dump_extension(self, extension=""):
         """Fix the extension of the dump file.
+
         Set to the default extension if the given extension is an empty
         string.
 
-        :param extension: (str) Extension of the dump file (starting with or without the .).
-        :raises: DumpExtensionError if extension of the dump file is the same as the ASCII file.
+        :param extension: (str) Extension of the dump file \
+        (starting with or without the dot).
+        :raises: DumpExtensionError if extension of the dump file is \
+        the same as the ASCII file.
 
         """
         if extension.startswith('.') is False:
@@ -114,7 +117,6 @@ class sppasDumpFile(object):
 
     def get_dump_extension(self):
         """Return the extension of the dump version of filename."""
-
         return self._dump_ext
 
     # -----------------------------------------------------------------------

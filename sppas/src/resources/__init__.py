@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
 resources: access and manage linguistic resources like lexicons, etc.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :author:       Brigitte Bigi
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -45,6 +45,7 @@ from .mapping import sppasMapping
 from .patterns import sppasPatterns
 from .unigram import sppasUnigram
 from .vocab import sppasVocabulary
+from .dumpfile import sppasDumpFile
 
 # ---------------------------------
 
@@ -54,5 +55,6 @@ __all__ = (
     "sppasDictPron",
     "sppasPatterns",
     "sppasUnigram",
-    "sppasVocabulary"
+    "sppasVocabulary",
+    "sppasDumpFile"
 )

@@ -146,7 +146,7 @@ class sppasMapping(sppasDictRepl):
         """Run the Mapping process on an input string.
 
         :param mstr: input string to map
-        :param delimiters: (list) list of character delimiters. Default is:
+        :param delimiters: (list) list of character delimiters. Default is:\
                [';', ',', ' ', '.', '|', '+', '-']
         :returns: a string
 

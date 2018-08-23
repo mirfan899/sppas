@@ -31,8 +31,6 @@
     src.resources.dictrepl.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    A dictionary to manage automated replacements.
-
 """
 import codecs
 import logging
@@ -46,14 +44,15 @@ from .resourcesexc import FileUnicodeError
 
 
 class sppasDictRepl(object):
-    """
+    """A dictionary to manage automated replacements.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      A dictionary with specific features for language resources.
-    
+
+    A dictionary with specific features for language resources.
     The main feature is that values are "accumulated".
 
     >>>d = sppasDictRepl()
@@ -67,6 +66,7 @@ class sppasDictRepl(object):
     >>>False
 
     """
+
     REPLACE_SEPARATOR = "|"
 
     # -----------------------------------------------------------------------
@@ -90,11 +90,14 @@ class sppasDictRepl(object):
             data = None
             dp = sppasDumpFile(dict_filename)
 
-            # Try first to get the dict from a dump file (at least 2 times faster)
+            # Try first to get the dict from a dump file
+            # (at least 2 times faster)
             if nodump is False:
                 data = dp.load_from_dump()
 
-            # Load from ascii if: 1st load, or dump load error, or dump older than ascii
+            # Load from ascii if: 1st load,
+            # or dump load error,
+            # or dump older than ascii
             if data is None:
                 self.load_from_ascii(dict_filename)
                 if nodump is False:
@@ -130,6 +133,7 @@ class sppasDictRepl(object):
         :param entry: (str) Unicode string.
 
         """
+
         return u(entry) in self._dict
 
     # -----------------------------------------------------------------------
@@ -183,7 +187,6 @@ class sppasDictRepl(object):
 
     def is_empty(self):
         """Return True if there is no entry in the dictionary."""
-
         return len(self._dict) == 0
 
     # -----------------------------------------------------------------------
@@ -192,7 +195,8 @@ class sppasDictRepl(object):
         """Return the value of a key of the dictionary or substitution.
 
         :param entry: (str) A token to find in the dictionary
-        :param substitution: (str) String to return if token is missing of the dict
+        :param substitution: (str) String to return if token is missing
+        of the dict
         :returns: unicode of the replacement or the substitution.
 
         """
@@ -203,15 +207,16 @@ class sppasDictRepl(object):
 
     def replace(self, key):
         """Return the value of a key or None if key has no replacement."""
-
         return self.get(key)
 
     # -----------------------------------------------------------------------
 
     def replace_reversed(self, value):
-        """Return the key(s) of a value or an empty string if value does not exists.
+        """Return the key(s) of a value or an empty string.
 
-        :returns: a unicode string with all keys, separated by '_'.
+        :param value: (str) value to search
+        :returns: a unicode string with all keys, separated by '_', or an
+        empty string if value does not exists.
 
         """
         s = sppasDictRepl.format_token(value)
@@ -232,7 +237,7 @@ class sppasDictRepl(object):
 
     @staticmethod
     def format_token(entry):
-        """Remove the CR/LF, tabs, multiple spaces and others... and lowerise.
+        """Remove the CR/LF, tabs, multiple spaces and others... and lower.
 
         :param entry: (str) a token
         :returns: formatted token
@@ -245,8 +250,10 @@ class sppasDictRepl(object):
     # -----------------------------------------------------------------------
 
     def add(self, token, repl):
-        """Add a new key,value into the dict, or append value to the existing
-        one with a "|" used as separator.
+        """Add a new key,value into the dict.
+
+        Add as a new pair or append the value to the existing one with
+        a "|" used as separator.
 
         :param token: (str) string of the token to add
         :param repl: (str) the replacement token
@@ -326,12 +333,16 @@ class sppasDictRepl(object):
         """
         try:
             with codecs.open(filename, 'w', encoding=sg.__encoding__) as output:
-                for entry, value in sorted(self._dict.items(), key=lambda x: x[0]):
+
+                for entry, value in sorted(self._dict.items(),
+                                           key=lambda x: x[0]):
                     values = value.split(sppasDictRepl.REPLACE_SEPARATOR)
                     for v in values:
-                        output.write("%s %s\n" % (entry, v.strip()))
+                        output.write("{:s} {:s}\n".format(entry, v.strip()))
+
         except Exception as e:
-            logging.info('Saving file failed due to the following error: {:s}'.format(str(e)))
+            logging.info('Saving file failed due to the following error: {:s}'
+                         ''.format(str(e)))
             return False
 
         return True

@@ -31,12 +31,6 @@
     src.resources.unigram.py
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
-    An unigram is commonly a data structure with tokens and their probabilities,
-    and a back-off value. Is is a statistical language model.
-    This class is a simplified version with only tokens and their occurrences.
-
-    Notice that tokens are case-sensitive.
-
 """
 import codecs
 import logging
@@ -51,19 +45,27 @@ from .resourcesexc import PositiveValueError
 
 
 class sppasUnigram(object):
-    """
+    """Class to represent a simple unigram: a set of token/count.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Class to represent a simple unigram: a set of token/count.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    An unigram is commonly a data structure with tokens and their
+    probabilities, and a back-off value. Is is a statistical language model.
+    This class is a simplified version with only tokens and their occurrences.
+
+    Notice that tokens are case-sensitive.
 
     """
+
     def __init__(self, filename=None, nodump=True):
         """Create a sppasUnigram instance.
 
-        :param filename: (str) Name of the file with words and counts (2 columns)
+        :param filename: (str) Name of the file with words and counts \
+        (2 columns)
         :param nodump: (bool) Disable the creation of a dump file
 
         """
@@ -75,11 +77,14 @@ class sppasUnigram(object):
             data = None
             dp = sppasDumpFile(filename)
 
-            # Try first to get the dict from a dump file (at least 2 times faster)
+            # Try first to get the dict from a dump file
+            # (at least 2 times faster)
             if nodump is False:
                 data = dp.load_from_dump()
 
-            # Load from ascii if: 1st load, or, dump load error, or dump older than ascii
+            # Load from ascii if: 1st load,
+            # or, dump load error,
+            # or dump older than ascii
             if data is None:
                 self.load_from_ascii(filename)
                 if nodump is False:
@@ -122,14 +127,12 @@ class sppasUnigram(object):
 
     def get_sum(self):
         """Return the sum of all counts (of all tokens)."""
-
         return self.__sum
 
     # -------------------------------------------------------------------------
 
     def get_tokens(self):
         """Return a list with all tokens."""
-
         return self.__entries.keys()
 
     # ------------------------------------------------------------------------
@@ -170,10 +173,14 @@ class sppasUnigram(object):
         """
         try:
             with codecs.open(filename, 'w', encoding=sg.__encoding__) as output:
-                for entry, value in sorted(self.__entries.items(), key=lambda x: x[0]):
+
+                for entry, value in sorted(self.__entries.items(),
+                                           key=lambda x: x[0]):
                     output.write("{:s} {:d}\n".format(entry, value))
+
         except Exception as e:
-            logging.info('Save file failed due to the following error: {:s}'.format(str(e)))
+            logging.info('Save file failed due to the following error: {:s}'
+                         ''.format(str(e)))
             return False
 
         return True

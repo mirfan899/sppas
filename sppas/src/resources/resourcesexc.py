@@ -29,7 +29,7 @@
         ---------------------------------------------------------------------
 
     src.resources.resourcesexc.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 from sppas.src.config import resources_translation
@@ -53,7 +53,11 @@ POSITIVE_VALUE_ERROR = ":ERROR 5040: "
 
 
 class FileUnicodeError(UnicodeDecodeError):
-    """:ERROR 5005: Encoding error while trying to read the file: {name}."""
+    """:ERROR 5005:.
+
+    Encoding error while trying to read the file: {name}.
+
+    """
 
     def __init__(self, filename):
         self.parameter = FILE_UNICODE_ERROR + \
@@ -66,7 +70,11 @@ class FileUnicodeError(UnicodeDecodeError):
 
 
 class FileIOError(Exception):
-    """:ERROR 5010: Error while trying to open and read the file: {name}."""
+    """:ERROR 5010:.
+
+    Error while trying to open and read the file: {name}.
+
+    """
 
     def __init__(self, filename):
         self.parameter = FILE_IO_ERROR + \
@@ -79,7 +87,11 @@ class FileIOError(Exception):
 
 
 class FileFormatError(ValueError):
-    """:ERROR 5015: Read file failed at line number {number}: {string}."""
+    """:ERROR 5015:.
+
+    Read file failed at line number {number}: {string}.
+
+    """
 
     def __init__(self, line_number, filename):
         line_number = int(line_number)
@@ -95,7 +107,12 @@ class FileFormatError(ValueError):
 
 
 class NgramRangeError(ValueError):
-    """:ERROR 5020: The n value of n-grams pattern matching must range [1;{maximum}]. Got {observed}."""
+    """:ERROR 5020:.
+
+    The n value of n-grams pattern matching must range [1;{maximum}].
+    Got {observed}.
+
+    """
 
     def __init__(self, maxi, value):
         maxi = int(maxi)
@@ -112,13 +129,19 @@ class NgramRangeError(ValueError):
 
 
 class GapRangeError(ValueError):
-    """:ERROR 5022: The gap value of pattern matching must range [0;{maximum}]. Got {observed}."""
+    """:ERROR 5022:.
+
+    The gap value of pattern matching must range [0;{maximum}].
+    Got {observed}.
+
+    """
 
     def __init__(self, maxi, value):
         maxi = int(maxi)
         value = int(value)
         self.parameter = GAP_RANGE_ERROR + \
-                         (_(GAP_RANGE_ERROR)).format(maximum=maxi, observed=value)
+                         (_(GAP_RANGE_ERROR)).format(maximum=maxi,
+                                                     observed=value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -127,7 +150,12 @@ class GapRangeError(ValueError):
 
 
 class ScoreRangeError(ValueError):
-    """:ERROR 5024: The score value of unigrams pattern matching must range [0;1]. Got {observed}."""
+    """:ERROR 5024:.
+
+    The score value of unigrams pattern matching must range [0;1].
+    Got {observed}.
+
+    """
 
     def __init__(self, value):
         value = float(value)
@@ -141,7 +169,12 @@ class ScoreRangeError(ValueError):
 
 
 class DumpExtensionError(ValueError):
-    """:ERROR 5030: The dump file can't have the same extension as the ASCII file ({extension})."""
+    """:ERROR 5030:.
+
+    The dump file can't have the same extension as the ASCII file
+    ({extension}).
+
+    """
 
     def __init__(self, extension):
         self.parameter = DUMP_EXTENSION_ERROR + \
@@ -154,7 +187,11 @@ class DumpExtensionError(ValueError):
 
 
 class PositiveValueError(ValueError):
-    """:ERROR 5040: The count value must be positive. Got ({count})."""
+    """:ERROR 5040:.
+
+    The count value must be positive. Got ({count}).
+
+    """
 
     def __init__(self, count):
         self.parameter = POSITIVE_VALUE_ERROR + \

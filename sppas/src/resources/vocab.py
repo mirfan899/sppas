@@ -45,15 +45,16 @@ from .dumpfile import sppasDumpFile
 
 
 class sppasVocabulary(object):
-    """
+    """Class to represent a list of words.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Class to represent a list of words.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, filename=None, nodump=False, case_sensitive=False):
         """Create a sppasVocabulary instance.
 
@@ -78,7 +79,9 @@ class sppasVocabulary(object):
             # (at least 2 times faster than the ascii one)
             data = dp.load_from_dump()
 
-            # Load from ascii if: 1st load, or, dump load error, or dump older than ascii
+            # Load from ascii if: 1st load,
+            # or, dump load error,
+            # or dump older than ascii
             if data is None:
                 self.load_from_ascii(filename)
                 if nodump is False:
@@ -119,7 +122,6 @@ class sppasVocabulary(object):
 
     def get_list(self):
         """Return the list of entries, sorted in alpha-numeric order."""
-
         return sorted(self.__entries.keys())
 
     # -----------------------------------------------------------------------
@@ -193,12 +195,14 @@ class sppasVocabulary(object):
 
         """
         try:
+
             with codecs.open(filename, 'w', sg.__encoding__) as fd:
                 for word in sorted(self.__entries.keys()):
                     fd.write("{:s}\n".format(word))
 
         except Exception as e:
-            logging.info('Save file failed due to the following error: {:s}'.format(str(e)))
+            logging.info('Save file failed due to the following error: {:s}'
+                         ''.format(str(e)))
             return False
 
         return True
