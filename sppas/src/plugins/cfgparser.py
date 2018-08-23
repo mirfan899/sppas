@@ -32,27 +32,27 @@
     src.plugins.cfgparser.py
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
-    A config file consists of one or more named sections, each of which can
-    contain individual options with names and values.
+A config file consists of one or more named sections, each of which can
+contain individual options with names and values.
 
-    Config file sections are identified by looking for lines starting with
-    [ and ending with ]. The value between the square brackets is the section
-    name, and can contain any characters except square brackets.
+Config file sections are identified by looking for lines starting with
+[ and ending with ]. The value between the square brackets is the section
+name, and can contain any characters except square brackets.
 
-    Options are listed one per line within a section. The line starts with
-    the name of the option, which is separated from the value by a colon (:)
-    or equal sign (=).
-    Whitespace around the separator is ignored when the file is parsed.
+Options are listed one per line within a section. The line starts with
+the name of the option, which is separated from the value by a colon (:)
+or equal sign (=).
+Whitespace around the separator is ignored when the file is parsed.
 
-    A config file may include comments, prefixed by specific characters
-    (# and ;).
+A config file may include comments, prefixed by specific characters
+(# and ;).
 
-    Here is an example with a comment, a section definition and two options:
+Here is an example with a comment, a section definition and two options:
 
-        | # This is a comment in a configuration file
-        | [Section]
-        | option1 = value1
-        | option2 = value2
+    | # This is a comment in a configuration file
+    | [Section]
+    | option1 = value1
+    | option2 = value2
 
 """
 try:  # python 3
@@ -73,13 +73,13 @@ from .pluginsexc import PluginOptionConfigFileError
 
 
 class sppasPluginConfigParser(object):
-    """
+    """Class to parse a plugin configuration file.
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      brigitte.bigi@gmail.com
-    :summary:      Class to read a plugin configuration file.
 
     The required section "Configuration" includes an id, a name and a
     description, as for example:
@@ -113,6 +113,7 @@ class sppasPluginConfigParser(object):
         - options
 
     """
+
     def __init__(self, filename=None):
         """Create a parser.
 
@@ -165,6 +166,7 @@ class sppasPluginConfigParser(object):
 
     def get_options(self):
         """Return all the 'Option' section contents.
+
         The section name is used as key. Values are of type "Option".
 
         :returns: ordered dictionary.
@@ -184,7 +186,7 @@ class sppasPluginConfigParser(object):
     def set_options(self, options):
         """Re-set all the 'Option' section.
 
-        :param options: (ordered dictionary) with key=section name, and \
+        :param options: (ordered dictionary) with key=section name, and
         value is of type "Option" (with at least a "key").
 
         """
@@ -205,6 +207,7 @@ class sppasPluginConfigParser(object):
 
     def parse(self, filename):
         """Parse a configuration file.
+
         This will forget all previous configurations (if any).
 
         :param filename: (string) Configuration file name.
@@ -229,6 +232,7 @@ class sppasPluginConfigParser(object):
 
     def save(self, backup=True):
         """Save the configuration file.
+
         Copy the old one into a backup file.
 
         """
@@ -248,6 +252,7 @@ class sppasPluginConfigParser(object):
     @staticmethod
     def __parse_option(items):
         """Parse an option.
+
         Convert an "Option" section of the parser into an "Option" instance.
 
         """
@@ -281,7 +286,9 @@ class sppasPluginConfigParser(object):
 
     def __set_option(self, section_name, option):
         """Set an option.
-        Convert a "sppasOption" instance into an "Option" section of the parser.
+
+        Convert a "sppasOption" instance into an "Option" section of the
+        parser.
 
         """
         self._parser.add_section(section_name)

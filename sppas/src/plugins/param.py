@@ -32,17 +32,8 @@
     src.plugins.param.py
     ~~~~~~~~~~~~~~~~~~~~
 
-    The set of parameters of a plugin is made of a directory name, a 
-    configuration file name and a sppasPluginParser. This latter allows to
-    get all information related to the plugin from the configuration file 
-    name:
-    
-        - the plugin configuration: identifier, name, description and icon;
-        - the commands for windows, macos and linux;
-        - a set of options, each one containing at least an identifier, \
-        and optionally a type, a value and a description text.
-
 """
+
 import os
 import platform
 import shlex
@@ -57,17 +48,28 @@ from .cfgparser import sppasPluginConfigParser
 
 
 class sppasPluginParam(object):
-    """
+    """Class to represent the set of parameters of a plugin.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Represent the set of parameters of a plugin.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    The set of parameters of a plugin is made of a directory name, a
+    configuration file name and a sppasPluginParser. This latter allows to
+    get all information related to the plugin from the configuration file
+    name:
+
+        - the plugin configuration: identifier, name, description and icon;
+        - the commands for windows, macos and linux;
+        - a set of options, each one containing at least an identifier,
+        and optionally a type, a value and a description text.
 
     """
+
     def __init__(self, directory, config_file):
-        """Creates a new sppasPluginParam instance.
+        """Create a new sppasPluginParam instance.
 
         :param directory: (str) the directory where to find the plugin
         :param config_file: (str) the file name of the plugin configuration
@@ -99,7 +101,6 @@ class sppasPluginParam(object):
 
     def reset(self):
         """Reset all members to their default value."""
-
         self._key = None
         self._name = ""
         self._descr = ""
@@ -111,8 +112,7 @@ class sppasPluginParam(object):
     # ------------------------------------------------------------------------
 
     def parse(self):
-        """Parse the configuration file of the plugin.  """
-
+        """Parse the configuration file of the plugin."""
         self.reset()
         filename = os.path.join(self._directory, self._cfgfile)
         self._cfgparser.parse(filename)
@@ -137,6 +137,7 @@ class sppasPluginParam(object):
 
     def save(self):
         """Save the configuration file.
+
         Copy the old one into a backup file.
 
         """
@@ -198,11 +199,11 @@ class sppasPluginParam(object):
 
     @staticmethod
     def __get_command(commands):
-        """Returns the appropriate command from a list of available ones."""
-
+        """Return the appropriate command from a list of available ones."""
         _system = platform.system().lower()
 
-        if ('windows' in _system or 'cygwin' in _system) and 'windows' in commands.keys():
+        if ('windows' in _system or 'cygwin' in _system) and \
+                'windows' in commands.keys():
             return commands['windows']
 
         if 'darwin' in _system and 'macos' in commands.keys():
@@ -217,7 +218,8 @@ class sppasPluginParam(object):
 
     @staticmethod
     def __check_command(command):
-        """Returns True if command exists.
+        """Return True if command exists.
+
         Test only the main command (i.e. the first string, without args).
 
         """

@@ -22,7 +22,8 @@ class TestPluginProcess(unittest.TestCase):
 
     def test_run(self):
         self.process.run(sample)
-        time.sleep(0.3)
-        self.process.stop()
+        # time.sleep(0.8)
+        # self.process.stop()
         line = self.process.communicate()
-        self.assertGreater(len(line), 0)
+        # we'll get the usage of the sox command:
+        self.assertGreater(len(line), 10)

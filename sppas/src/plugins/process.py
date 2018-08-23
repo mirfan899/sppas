@@ -32,9 +32,6 @@
     src.plugins.process.py
     ~~~~~~~~~~~~~~~~~~~~~~
 
-    Process a plugin.
-    This is currently restricted to one file only.
-
 """
 
 import os.path
@@ -45,17 +42,18 @@ from subprocess import Popen, PIPE, STDOUT
 
 
 class sppasPluginProcess(object):
-    """
+    """Process one plugin (and only one).
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      brigitte.bigi@gmail.com
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Class to run a plugin.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, plugin_param):
-        """Creates a new sppasPluginProcess instance.
+        """Create a new sppasPluginProcess instance.
 
         :param plugin_param: (sppasPluginParam)
 
@@ -68,7 +66,8 @@ class sppasPluginProcess(object):
     def run(self, filename):
         """Execute the plugin in batch mode (ie don't wait it to be finished).
 
-        :param filename: (str) The file name of the file on which to apply the plugin
+        :param filename: (str) The file name of the file on which to apply
+        the plugin
         :returns: Process output message
 
         """
@@ -116,13 +115,19 @@ class sppasPluginProcess(object):
                 newarg = argument.replace("PLUGIN_PATH/", "")
                 args[i] = os.path.join(self._plugin.get_directory(), newarg)
 
-        self._process = Popen(args, shell=False, stdout=PIPE, stderr=STDOUT, universal_newlines=True)
+        self._process = Popen(args, shell=False,
+                              stdout=PIPE,
+                              stderr=STDOUT,
+                              universal_newlines=True)
 
     # ------------------------------------------------------------------------
 
     def communicate(self):
-        """Wait for the process and get output messages (if any) then return it."""
+        """Wait for the process and get output messages (if any).
 
+        :returns: output message
+
+        """
         line = self._process.communicate()
         return "".join(line[0])
 
@@ -130,7 +135,6 @@ class sppasPluginProcess(object):
 
     def stop(self):
         """Terminate the process if it is running."""
-
         if self.is_running() is True:
             self._process.terminate()
 
@@ -138,10 +142,7 @@ class sppasPluginProcess(object):
 
     def is_running(self):
         """Return True if the process is running."""
-
         if self._process is None:
             return False
         # A None value indicates that the process hasn't terminated yet.
         return self._process.poll() is None
-
-    # ------------------------------------------------------------------------

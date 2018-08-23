@@ -40,7 +40,8 @@ plugins: access and manage external programs to plug into SPPAS.
 >>> # Create a plugin manager (it will explore the installed plugins).
 >>> manager = sppasPluginsManager()
 >>> # Install a plugin
->>> plugin_id = manager.install(plugin_zip_filename, plugin_destination_folder_name)
+>>> plugin_id = manager.install(plugin_zip_filename,
+>>>                             plugin_destination_folder_name)
 >>> # Get a plugin
 >>> p = manager.get_plugin(plugin_id)
 >>> # Apply a plugin on a list of files
@@ -50,6 +51,7 @@ plugins: access and manage external programs to plug into SPPAS.
 >>> manager.delete(plugin_id)
 
 """
+
 from .manager import sppasPluginsManager
 from .param import sppasPluginParam
 from .process import sppasPluginProcess
