@@ -36,7 +36,7 @@
 # ----------------------------------------------------------------------------
 
 __docformat__ = """reST"""
-__authors___  = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors___  = """Brigitte Bigi (contact@sppas.org)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 import logging
@@ -77,7 +77,7 @@ class AnnotationCtrl(wx.Window):
     """This class is used to display an annotation (see annotationdata).
     
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: contact@sppas.org
     :license: GPL, v3
 
     """
@@ -523,7 +523,7 @@ class BorderCtrl(wx.Window):
     """This class is used to display a border as an object.
 
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: contact@sppas.org
     @license: GPL, v3
 
     BorderCtrl implements a transparent rectangle line that can be placed

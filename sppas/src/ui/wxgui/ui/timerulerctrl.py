@@ -36,7 +36,7 @@
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__   = """Brigitte Bigi (contact@sppas.org)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 
@@ -274,7 +274,7 @@ class Indicator:
 class RulerCtrl( spControl ):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: contact@sppas.org
     @license: GPL
     @summary: This class is used to display a Ruler.
 

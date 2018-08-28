@@ -56,7 +56,7 @@ class sppasGlobalSettings(sppasBaseSettings):
         self.__dict__ = dict(
             __version__="1.9.8",
             __author__="Brigitte Bigi",
-            __contact__="brigite.bigi@gmail.com",
+            __contact__="contact@sppas.org",
             __copyright__="Copyright (C) 2011-2018 Brigitte Bigi",
             __license__="GNU Public License, version 3",
             __docformat__='reStructedText en',

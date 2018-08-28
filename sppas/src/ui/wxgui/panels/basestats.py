@@ -69,7 +69,7 @@ def writecsv(filename, rows, separator="\t", encoding="utf-8-sig"):
 class BaseStatPanel( wx.Panel ):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL
     @summary: Base stat panel.
 

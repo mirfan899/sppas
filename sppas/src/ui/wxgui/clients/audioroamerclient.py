@@ -88,7 +88,7 @@ class AudioRoamerClient(BaseClient):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
+    @contact:      develop@sppas.org
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary:      Manage the opened files in a notebook.
@@ -109,7 +109,7 @@ class SndRoamer(scrolled.ScrolledPanel):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
+    @contact:      develop@sppas.org
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary:      Manage audio files.
@@ -325,7 +325,7 @@ class AudioRoamer(wx.Panel):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
+    @contact:      develop@sppas.org
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary:      Propose to manage the content of an audio file.
@@ -380,7 +380,7 @@ class AudioRoamer(wx.Panel):
 class AudioRoamerDialog(spBaseDialog):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL
     @summary: Frame allowing to show details of a tier.
 
@@ -478,7 +478,7 @@ class AudioRoamerPanel(wx.Panel):
     """
     @author:       Brigitte Bigi
     @organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    @contact:      brigitte.bigi@gmail.com
+    @contact:      develop@sppas.org
     @license:      GPL, v3
     @copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     @summary:      Display info about a channel. Allows to save.

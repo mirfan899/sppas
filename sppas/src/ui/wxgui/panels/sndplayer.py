@@ -93,7 +93,7 @@ BACKWARD_STEP = 1000  # backward step (in milliseconds)
 class SndPlayer(wx.Panel):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, version 3
     @summary: This class is a generic Sound Player.
     """

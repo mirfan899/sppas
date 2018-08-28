@@ -56,7 +56,7 @@ from sppas.src.ui.wxgui.sp_icons import INFO_ICON
 class AudioInfoDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL
     @summary: Open a dialog with information about a sound file.
 

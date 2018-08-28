@@ -66,7 +66,7 @@ class PreviewTierDialog(spBaseDialog):
     """Frame allowing to show details of a tier.
     
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: develop@sppas.org
     :license: GPL
 
     """
@@ -138,7 +138,7 @@ class BaseTierPanel(wx.Panel):
     """Base tier panel.
     
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: develop@sppas.org
     :license: GPL
 
     """
@@ -176,7 +176,7 @@ class TierAsListPanel(BaseTierPanel):
     """List-view of a tier.
     
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: develop@sppas.org
     :license: GPL
 
     """
@@ -248,7 +248,7 @@ class TierDetailsPanel(BaseTierPanel):
     """Detailed-view of a tiers.
     
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: develop@sppas.org
     :license: GPL
 
     """
@@ -338,7 +338,7 @@ class TierGraphicPanel(BaseTierPanel):
     """Graphical-view of tiers (TODO).
     
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: develop@sppas.org
     :license: GPL
 
     """

@@ -50,7 +50,7 @@ class TranscriptionCtrl(spControl):
     """Display a Transcription (see anndata for details).
 
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: contact@sppas.org
     :license: GPL, v3
     :summary:
 

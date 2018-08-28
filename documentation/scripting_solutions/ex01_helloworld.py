@@ -3,7 +3,7 @@
 
 :author:       Brigitte Bigi
 :date:         2017-July-13
-:contact:      brigitte.bigi@gmail.com
+:contact:      contact@sppas.org
 :copyright:    Copyright (C) 2017 Brigitte Bigi
 
 :summary:      Simple script to print Hello World.

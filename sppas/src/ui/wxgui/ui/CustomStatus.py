@@ -57,7 +57,7 @@ REFRESH_TIMER = 2000
 class CustomStatusBar( wx.StatusBar ):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, v3
     @summary: This class is used to manage a custom status bar.
 

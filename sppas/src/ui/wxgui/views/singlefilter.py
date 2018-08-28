@@ -71,7 +71,7 @@ class SingleFilterDialog(spBaseDialog):
     """Dialog for the user to fix a set of filters to be applied to a tier.
     
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: develop@sppas.org
     :license: GPL, v3
 
     """
@@ -193,7 +193,7 @@ class SingleFilterPanel(wx.Panel):
     """Panel to fix the filters to be used.
 
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: develop@sppas.org
     :license: GPL
 
     """
@@ -393,7 +393,7 @@ class LabelFilterDialog(spBaseDialog):
     """Open a frame to fix the list of patterns and mode to filter tags.
 
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: develop@sppas.org
     :license: GPL, v3
 
     """
@@ -657,7 +657,7 @@ class TimeFilterDialog(spBaseDialog):
     """Open a frame to fix the list of modes and values to filter time(s).
 
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: develop@sppas.org
     :license: GPL, v3
 
     """
@@ -736,7 +736,7 @@ class DurationFilterDialog(spBaseDialog):
     """Open a frame to fix the list of modes and values to filter duration(s).
 
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: develop@sppas.org
     :license: GPL, v3
 
     """

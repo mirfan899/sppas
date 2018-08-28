@@ -32,7 +32,7 @@
 
     Any and all constructive comments are welcome. Contact the author:
 
-    - `brigitte.bigi@gmail.com`
+    - `contact@sppas.org`
     - http://www.lpl-aix.fr/~bigi/
 
     -------------------------------------------------------------------------

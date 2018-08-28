@@ -65,7 +65,7 @@ SearchedCommandEvent, spEVT_SEARCHED_COMMAND = newevent.NewCommandEvent()
 class SearchDialog(spBaseDialog):
     """
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: develop@sppas.org
     :license: GPL, v3
     :summary: This class is used to display a Search dialog.
 

@@ -56,7 +56,7 @@ class DescriptivesStatsDialog(spBaseDialog):
     """Display descriptive stats of tiers.
 
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, v3
 
     Dialog for the user to display and save various descriptive statistics
@@ -222,7 +222,7 @@ class SummaryPanel(BaseStatPanel):
     """Summary of descriptive stats of all merged-tiers.
 
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL
 
     """
@@ -299,7 +299,7 @@ class SummaryPanel(BaseStatPanel):
 class DetailedPanel(BaseStatPanel):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL
     @summary: Details of descriptive stats: either occurrences, or durations of each tier.
 

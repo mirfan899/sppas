@@ -3,7 +3,7 @@
 
 :author:       Brigitte Bigi
 :date:         2018-07-09
-:contact:      brigitte.bigi@gmail.com
+:contact:      contact@sppas.org
 :license:      GPL, v3
 :copyright:    Copyright (C) 2018 Brigitte Bigi, Laboratoire Parole et Langage
 

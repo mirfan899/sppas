@@ -58,7 +58,7 @@ from sppas.src.ui.wxgui.sp_consts import FRAME_TITLE
 class TrsInfoDialog( wx.Dialog ):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, v3
     @summary: Open a dialog with information about a transcription.
 

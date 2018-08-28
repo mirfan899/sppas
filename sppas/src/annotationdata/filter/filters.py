@@ -35,7 +35,7 @@
 # File: filters.py
 # ----------------------------------------------------------------------------
 
-__authors__   = """Tatsuya Watanabe, Brigitte Bigi (brigitte.bigi@gmail.com), Grégoire Montcheuil"""
+__authors__   = """Tatsuya Watanabe, Brigitte Bigi (contact@sppas.org), Grégoire Montcheuil"""
 __copyright__ = """Copyright (C) 2011-2017 Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------

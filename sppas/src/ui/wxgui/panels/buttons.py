@@ -34,7 +34,7 @@
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      This is a base class for buttons.
@@ -59,7 +59,7 @@ class ButtonCreator(object):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     :summary:      Create buttons.
@@ -121,7 +121,7 @@ class ImgPanel( wx.Panel ):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      Simple panel with an image.
@@ -153,7 +153,7 @@ class ButtonPanel( wx.Panel ):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     :summary:      Panel imitating behaviors of a complex button.
@@ -257,7 +257,7 @@ class ButtonToolbarPanel( wx.Panel ):
     """
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
     :summary:      Panel imitating behaviors of a complex button.
@@ -349,7 +349,7 @@ class ButtonToolbarPanel( wx.Panel ):
 class ButtonMenuPanel( wx.Panel ):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL
     @summary: Panel imitating behaviors of a menu button.
 

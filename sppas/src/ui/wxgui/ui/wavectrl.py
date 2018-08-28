@@ -67,7 +67,7 @@ SELECTION_PEN_COLOUR   = wx.Colour(30,70,110)
 class SelectArea:
     """
     @author: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: contact@sppas.org
     @license: GPL
     @summary: This class is used to select an area on a displayed speech file.
 

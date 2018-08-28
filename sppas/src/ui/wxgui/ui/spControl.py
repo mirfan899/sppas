@@ -99,7 +99,7 @@ ControlSelectedCommandEvent, spEVT_CTRL_SELECTED_COMMAND = wx.lib.newevent.NewCo
 class spControl(wx.Window):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, v3
     @summary: This class is a generic Control object.
 

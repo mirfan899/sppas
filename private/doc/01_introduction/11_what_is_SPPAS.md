@@ -156,7 +156,7 @@ She has a tenured position of researcher at the French CNRS -
 [Centre National de la Recherche Scientifique](http://www.cnrs.fr/index.php).
 She's working since 2009 at Laboratoire Parole et Langage, Aix-en-Provence, France.
 
-Send an e-mail to the author: `brigitte.bigi@gmail.com`
+Send an e-mail to the author: `contact@sppas.org`
 
 Know more about the author: <http://www.lpl-aix.fr/~bigi>
 

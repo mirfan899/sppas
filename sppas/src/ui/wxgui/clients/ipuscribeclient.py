@@ -79,7 +79,7 @@ IPU_BY_PAGE = 50
 class IPUscribeClient(BaseClient):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL
     @summary: This class is used to manage the opened files.
 
@@ -581,7 +581,7 @@ class IPUscribe(wx.Panel):
 class IPUscribeData(scrolled.ScrolledPanel):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, v3
     @summary: This component allows to manually transcribe speech files.
 

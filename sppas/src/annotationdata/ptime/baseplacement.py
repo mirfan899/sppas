@@ -36,7 +36,7 @@
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__ = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__ = """Brigitte Bigi (contact@sppas.org)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
@@ -45,7 +45,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 class BasePlacement(object):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: contact@sppas.org
     @license: GPL, version 3
     @summary: This class represents a Generic Placement of an annotation.
 

@@ -36,7 +36,7 @@
 # ---------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__   = """Brigitte Bigi (contact@sppas.org)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
@@ -138,7 +138,7 @@ def detect_praat_file(filename, ftype):
 class TextGrid(Transcription):
     """
     @authors: Jibril Saffi, Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: contact@sppas.org
     @license: GPL, v3
     @summary: Represents a TextGrid Transcription.
 
@@ -408,7 +408,7 @@ class TextGrid(Transcription):
 class PitchTier(Pitch):
     """
     @authors: Jibril Saffi, Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: contact@sppas.org
     @license: GPL, v3
     @summary: Represents a PitchTier file, a native format of Praat software.
 
@@ -513,7 +513,7 @@ class PitchTier(Pitch):
 class IntensityTier(Transcription):
     """
     @authors: Jibril Saffi, Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: contact@sppas.org
     @license: GPL, v3
     @summary: Represents an Intensity Tier Transcription.
 

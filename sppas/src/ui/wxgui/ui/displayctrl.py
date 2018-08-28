@@ -78,7 +78,7 @@ class DisplayCtrl(wx.Window):
     """Displays annotated files and media files.
 
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: contact@sppas.org
     @license: GPL, v3
     @summary: This class is used to display speech sounds and annotation files.
 

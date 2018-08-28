@@ -36,7 +36,7 @@
 # ---------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__ = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__ = """Brigitte Bigi (develop@sppas.org)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
@@ -144,7 +144,7 @@ class PointCtrl(wx.Window):
     """Used to display a TimePoint instance (see anndata for details).
 
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, v3
     
     PointCtrl implements a vertical line that can be placed anywhere to any

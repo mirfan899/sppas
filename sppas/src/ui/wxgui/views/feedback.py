@@ -68,7 +68,7 @@ DESCRIBE_TEXT = "Describe what you did here..."
 class FeedbackForm(object):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL
     @summary: This class is used to send feedback to the author.
 
@@ -78,7 +78,7 @@ class FeedbackForm(object):
         self.webbrowser = webbrowser
 
     def Populate(self, subject=None, body=None):
-        self.dialog.SetToText("brigitte.bigi@gmail.com")
+        self.dialog.SetToText(sg.__contact__)
         if subject: self.dialog.SetSubjectText(subject)
         if body: self.dialog.SetBodyText(body)
         if body and body.startswith(DESCRIBE_TEXT):
@@ -99,14 +99,17 @@ class FeedbackForm(object):
             urllib.quote(self.dialog.GetBodyText())))
 
     def SendWithOther(self):
-        ShowInformation( self.dialog, self.dialog.preferences, "Copy and paste this email into your favorite email client and send it from there.")
+        ShowInformation( self.dialog,
+                         self.dialog.preferences,
+                         "Copy and paste this email into your favorite email "
+                         "client and send it from there.")
 
 # ----------------------------------------------------------------------------
 
 class FeedbackDialog( spBaseDialog ):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL
     @summary: Dialog to send feedback comments by email to the author.
 
@@ -141,7 +144,11 @@ class FeedbackDialog( spBaseDialog ):
 
     def _create_content(self):
         self.to_text = self.CreateTextCtrl("", style=wx.TE_READONLY)
-        self.subject_text = self.CreateTextCtrl(sg.__name__ + " " + sg.__version__ + " - Feedback...", style=wx.TE_READONLY)
+        self.subject_text = self.CreateTextCtrl(sg.__name__ +
+                                                " " +
+                                                sg.__version__ +
+                                                " - Feedback...",
+                                                style=wx.TE_READONLY)
         self.body_text = self.CreateTextCtrl(DESCRIBE_TEXT, style=wx.TE_MULTILINE)
         self.body_text.SetMinSize((300,200))
         self.body_text.SetForegroundColour(wx.Colour(128, 128, 128))

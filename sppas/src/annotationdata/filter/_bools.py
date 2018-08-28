@@ -36,7 +36,7 @@
 # ---------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__   = """Tatsuya Watanabe, Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__   = """Tatsuya Watanabe, Brigitte Bigi (contact@sppas.org)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------

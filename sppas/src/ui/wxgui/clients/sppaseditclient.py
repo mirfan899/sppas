@@ -36,7 +36,7 @@
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__   = """Brigitte Bigi (develop@sppas.org)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 
@@ -100,7 +100,7 @@ class SppasEditClient(BaseClient):
     """This class manages the pages of a notebook with all opened files.
 
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, v3
 
     Each page (except if empty...) contains an instance of a SppasEdit.
@@ -135,7 +135,7 @@ class SppasEdit(wx.Panel):
     """used to display all opened files.
 
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, v3
 
     """
@@ -383,7 +383,7 @@ class NavigatePanel(wx.Panel):
     """It is used to change the displayed time period.
 
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL
 
     """
@@ -639,7 +639,7 @@ class TrsPanel(wx.Panel):
     """This panel is used to manage transcription files.
 
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, v3
 
     """
@@ -793,7 +793,7 @@ class MediaPanel(SndPlayer):
     """Display an audio player panel, used to play media files (wave only).
 
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, v3
 
     """

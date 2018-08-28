@@ -89,7 +89,7 @@ class FiletreePanel(wx.Panel):
     """
     :author:       Brigitte Bigi, Cazembe Henry
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      A panel with a toolbar and a tree-style list of files.

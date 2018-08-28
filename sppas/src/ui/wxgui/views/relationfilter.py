@@ -166,7 +166,7 @@ class RelationFilterDialog(spBaseDialog):
     """Dialog for the user to fix a set of filters to be applied to a tier.
     
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: develop@sppas.org
     :license: GPL, v3
 
     """
@@ -328,7 +328,7 @@ class RelationFilterPanel(wx.Panel):
     """Panel to fix filters to be used with rel method of 'sppasFilter()'.
 
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: develop@sppas.org
     :license: GPL
 
     """

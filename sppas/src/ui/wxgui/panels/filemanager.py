@@ -64,7 +64,7 @@ from sppas.src.ui.wxgui.ui.CustomEvents import spEVT_SETTINGS
 class FileManager( wx.lib.scrolledpanel.ScrolledPanel ):
     """
     @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, v3
     @summary: Store a list of filenames and related objects.
 

@@ -45,7 +45,7 @@ class TierCtrl(spControl):
     """Used to display a Tier (see anndata for details).
 
     :author:  Brigitte Bigi
-    :contact: brigitte.bigi@gmail.com
+    :contact: contact@sppas.org
     :license: GPL
 
     """

@@ -48,7 +48,7 @@ PRECISION = 3  # number of digits, for zoom or scroll.
 class DataPeriod(object):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL
     @summary: This class is used to represent the displayed time period.
 

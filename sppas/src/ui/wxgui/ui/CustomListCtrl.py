@@ -46,7 +46,7 @@ from sppas.src.ui.wxgui.cutils.imageutils import GetCheckedBitmap, GetCheckedIma
 class CheckListCtrl(wx.ListCtrl):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: contact@sppas.org
     @license: GPL, v3
     @summary: A ListCtrl with check-able buttons in the first column.
 
@@ -404,7 +404,7 @@ class CheckListCtrl(wx.ListCtrl):
 class LineListCtrl( wx.ListCtrl ):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: contact@sppas.org
     @license: GPL, v3
     @summary: A ListCtrl with line numbers in the first column.
 
@@ -522,7 +522,7 @@ class LineListCtrl( wx.ListCtrl ):
 class SortListCtrl( wx.ListCtrl ):
     """
     @author:  Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: contact@sppas.org
     @license: GPL, v3
     @summary: A ListCtrl with sorted columns.
 
