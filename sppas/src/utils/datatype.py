@@ -79,8 +79,7 @@ class sppasTime(object):
         # Fix other members from now
         if 'T' not in self.now or \
            '-' not in self.now or \
-           ":" not in self.now or \
-           '+' not in self.now:
+           ":" not in self.now:
             raise UtilsDataTypeError("sppasTime(now)",
                                      "%Y-%m-%dT%H:%M:%S{:0=+3d}:{:0=2d}", now)
 
@@ -90,7 +89,7 @@ class sppasTime(object):
             self.day = self.now.split('T')[0].split('-')[2]
             self.hours = self.now.split('T')[1].split(':')[0]
             self.min = self.now.split('T')[1].split(':')[1]
-            self.sec = self.now.split('T')[1].split(':')[2].split('+')[0]
+            self.sec = self.now[-8:-6]
             self.gmt = self.now[-6:]
         except IndexError:
             raise UtilsDataTypeError("sppasTime(now)",
