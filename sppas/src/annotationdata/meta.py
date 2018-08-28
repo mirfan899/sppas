@@ -36,7 +36,7 @@
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__   = """Jibril Saffi, Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__   = """Jibril Saffi, Brigitte Bigi (develop@sppas.org)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
@@ -45,7 +45,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 class MetaObject(object):
     """
     @authors: Jibril Saffi, Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, v3
     @summary: Dictionary of meta data.
     """

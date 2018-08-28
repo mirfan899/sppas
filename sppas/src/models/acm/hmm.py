@@ -48,7 +48,7 @@ class sppasHMM(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
     :summary:      HMM representation for one phone.
 
     Hidden Markov Models (HMMs) provide a simple and effective framework for
@@ -425,7 +425,7 @@ class HMMInterpolation(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
     :summary:      HMM interpolation.
 
     """

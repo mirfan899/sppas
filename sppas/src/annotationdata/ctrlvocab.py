@@ -36,7 +36,7 @@
 # ----------------------------------------------------------------------------
 
 __docformat__ = """epytext"""
-__authors__   = """Brigitte Bigi (brigitte.bigi@gmail.com)"""
+__authors__   = """Brigitte Bigi (develop@sppas.org)"""
 __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 
 # ----------------------------------------------------------------------------
@@ -51,7 +51,7 @@ from .label.text import Text
 class CtrlVocabEntry(object):
     """
     @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, v3
     @summary: Represents an entry of a controlled vocabulary.
 
@@ -156,7 +156,7 @@ class CtrlVocabEntry(object):
 class CtrlVocab( object ):
     """
     @authors: Brigitte Bigi
-    @contact: brigitte.bigi@gmail.com
+    @contact: develop@sppas.org
     @license: GPL, v3
     @summary: Generic representation of a media file.
     """

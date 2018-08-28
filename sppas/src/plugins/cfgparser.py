@@ -79,7 +79,7 @@ class sppasPluginConfigParser(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
 
     The required section "Configuration" includes an id, a name and a
     description, as for example:

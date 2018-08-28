@@ -148,7 +148,7 @@ class sppasAcFeatures(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
     :summary:      Acoustic model features.
 
     """

@@ -56,7 +56,7 @@ class sppasDescriptiveStatistics(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
 
     This class estimates descriptive statistics on a set of data values,
     stored in a dictionary:

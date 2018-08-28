@@ -45,7 +45,7 @@ class sppasModelMixer(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
     :summary:      Mix two acoustic models.
 
     Create a mixed monophones model.

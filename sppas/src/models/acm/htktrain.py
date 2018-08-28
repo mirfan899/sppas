@@ -121,7 +121,7 @@ class sppasDataTrainer(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
 
     This class manage the data created at each step of the acoustic training
     model procedure, following the HTK Handbook. It includes:
@@ -420,7 +420,7 @@ class sppasTrainingCorpus(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
     :summary:      Manager of a training corpus, to prepare such a set of data.
 
     Data preparation is the step 1 of the acoustic model training procedure.
@@ -966,7 +966,7 @@ class sppasHTKModelInitializer(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
     :summary:      Acoustic model initializer.
 
     Monophones initialization is the step 2 of the acoustic model training
@@ -1230,7 +1230,7 @@ class sppasHTKModelTrainer(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
     :summary:      Acoustic model trainer.
 
     This class allows to train an acoustic model from audio data and their

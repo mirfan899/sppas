@@ -49,7 +49,7 @@ class sppasArpaIO(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
-    :contact:      brigitte.bigi@gmail.com
+    :contact:      develop@sppas.org
 
     This class is able to load and save statistical language models from
     ARPA-ASCII files.
