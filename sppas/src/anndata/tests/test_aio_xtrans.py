@@ -46,7 +46,7 @@ import unittest
 import os.path
 
 from ..aio.xtrans import sppasTDF
-from ..annlocation.point import sppasPoint
+from ..ann.annlocation import sppasPoint
 
 # ---------------------------------------------------------------------------
 

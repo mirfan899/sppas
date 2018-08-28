@@ -34,10 +34,11 @@
 
 """
 import logging
+
 from sppas.src.utils.makeunicode import text_type, binary_type
 
-from ..anndataexc import AnnDataTypeError
-from ..anndataexc import AnnDataNegValueError
+from ...anndataexc import AnnDataTypeError
+from ...anndataexc import AnnDataNegValueError
 
 from .localization import sppasBaseLocalization
 from .duration import sppasDuration

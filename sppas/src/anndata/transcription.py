@@ -48,7 +48,7 @@ from .ctrlvocab import sppasCtrlVocab
 from .media import sppasMedia
 from .tier import sppasTier
 from .hierarchy import sppasHierarchy
-from .annotation import sppasAnnotation
+from .ann.annotation import sppasAnnotation
 
 # ----------------------------------------------------------------------------
 

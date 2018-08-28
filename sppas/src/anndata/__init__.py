@@ -54,19 +54,19 @@ from .aio.readwrite import sppasRW
 from .metadata import sppasMetaData
 from .transcription import sppasTranscription
 from .tier import sppasTier
-from .annotation import sppasAnnotation
 from .ctrlvocab import sppasCtrlVocab
 from .media import sppasMedia
 from .hierarchy import sppasHierarchy
-from .annlabel import sppasLabel
-from .annlabel import sppasTag
-from .annlocation import sppasLocation
-from .annlocation import sppasDuration
-from .annlocation import sppasInterval
-from .annlocation import sppasPoint
-from .annlocation import sppasDisjoint
+from .ann.annlabel import sppasLabel
+from .ann.annlabel import sppasTag
+from .ann.annlocation import sppasLocation
+from .ann.annlocation import sppasDuration
+from .ann.annlocation import sppasInterval
+from .ann.annlocation import sppasPoint
+from .ann.annlocation import sppasDisjoint
+from .ann.annotation import sppasAnnotation
+from .ann.annset import sppasAnnSet
 from .filters import sppasFilters
-from .filters import sppasAnnSet
 
 __all__ = (
     'sppasMetaData',

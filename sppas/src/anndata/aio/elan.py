@@ -47,15 +47,15 @@ from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioFormatError
 from ..anndataexc import CtrlVocabSetTierError
 from ..anndataexc import CtrlVocabContainsError
-from ..annlocation.location import sppasLocation
-from ..annlocation.point import sppasPoint
-from ..annlocation.interval import sppasInterval
-from ..annlabel.label import sppasLabel
-from ..annlabel.tag import sppasTag
+from ..ann.annlocation import sppasLocation
+from ..ann.annlocation import sppasPoint
+from ..ann.annlocation import sppasInterval
+from ..ann.annlabel import sppasLabel
+from ..ann.annlabel import sppasTag
 from ..media import sppasMedia
 from ..tier import sppasTier
 from ..hierarchy import sppasHierarchy
-from ..annotation import sppasAnnotation
+from ..ann.annotation import sppasAnnotation
 
 from ..ctrlvocab import sppasCtrlVocab
 

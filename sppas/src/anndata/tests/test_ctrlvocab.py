@@ -45,7 +45,7 @@ import unittest
 from sppas.src.utils.makeunicode import u
 from ..anndataexc import AnnDataTypeError
 from ..ctrlvocab import sppasCtrlVocab
-from ..annlabel.tag import sppasTag
+from ..ann.annlabel import sppasTag
 
 # ---------------------------------------------------------------------------
 

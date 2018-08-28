@@ -58,12 +58,12 @@ from sppas.src.utils.makeunicode import sppasUnicode
 from ..anndataexc import AioLocationTypeError
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioLineFormatError
-from ..annotation import sppasAnnotation
-from ..annlocation.location import sppasLocation
-from ..annlocation.point import sppasPoint
-from ..annlocation.interval import sppasInterval
-from ..annlabel.label import sppasLabel
-from ..annlabel.tag import sppasTag
+from ..ann.annotation import sppasAnnotation
+from ..ann.annlocation import sppasLocation
+from ..ann.annlocation import sppasPoint
+from ..ann.annlocation import sppasInterval
+from ..ann.annlabel import sppasLabel
+from ..ann.annlabel import sppasTag
 
 from .text import sppasBaseText
 from .aioutils import format_labels

@@ -29,12 +29,13 @@
 
         ---------------------------------------------------------------------
 
-    anndata.annlabel.label.py
+    anndata.ann.annlabel.label.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import copy
-from ..anndataexc import AnnDataTypeError
+
+from ...anndataexc import AnnDataTypeError
 from .tag import sppasTag
 
 # ----------------------------------------------------------------------------

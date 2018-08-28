@@ -43,7 +43,7 @@
 import unittest
 from ..anndataexc import TrsAddError
 
-from ..annlabel.label import sppasTag
+from ..ann.annlabel import sppasTag
 from ..tier import sppasTier
 from ..transcription import sppasTranscription
 

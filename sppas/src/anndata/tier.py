@@ -44,10 +44,10 @@ from .anndataexc import TierAppendError
 from .anndataexc import TierAddError
 from .anndataexc import TrsAddError
 
-from .annlocation.point import sppasPoint
-from .annotation import sppasAnnotation
-from .annlocation import sppasInterval
-from .annlocation import sppasLocation
+from .ann.annlocation import sppasPoint
+from .ann.annotation import sppasAnnotation
+from .ann.annlocation import sppasInterval
+from .ann.annlocation import sppasLocation
 from .metadata import sppasMetaData
 from .ctrlvocab import sppasCtrlVocab
 from .media import sppasMedia

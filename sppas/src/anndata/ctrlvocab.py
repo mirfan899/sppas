@@ -38,7 +38,7 @@ from collections import OrderedDict
 from sppas.src.utils.makeunicode import sppasUnicode
 from .anndataexc import AnnDataTypeError
 from .anndataexc import CtrlVocabContainsError
-from .annlabel.tag import sppasTag
+from .ann.annlabel import sppasTag
 from .metadata import sppasMetaData
 
 # ----------------------------------------------------------------------------

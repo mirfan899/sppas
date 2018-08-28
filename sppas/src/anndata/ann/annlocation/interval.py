@@ -34,9 +34,10 @@
 
 """
 import logging
-from ..anndataexc import AnnDataTypeError
-from ..anndataexc import AnnDataEqTypeError
-from ..anndataexc import IntervalBoundsError
+
+from ...anndataexc import AnnDataTypeError
+from ...anndataexc import AnnDataEqTypeError
+from ...anndataexc import IntervalBoundsError
 
 from .localization import sppasBaseLocalization
 from .point import sppasPoint

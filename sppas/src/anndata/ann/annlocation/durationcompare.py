@@ -35,8 +35,8 @@
 """
 from sppas.src.utils.datatype import sppasType
 
-from ..anndataexc import AnnDataTypeError
-from ..basecompare import sppasBaseCompare
+from ...anndataexc import AnnDataTypeError
+from ...basecompare import sppasBaseCompare
 
 from .duration import sppasDuration
 

@@ -46,7 +46,7 @@ import xml.etree.cElementTree as ET
 
 from ..aio.annotationpro import sppasANTX
 from ..aio.annotationpro import sppasANT
-from ..annlocation.point import sppasPoint
+from ..ann.annlocation import sppasPoint
 from ..tier import sppasTier
 from ..media import sppasMedia
 

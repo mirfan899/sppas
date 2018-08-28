@@ -33,8 +33,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from ..anndataexc import AnnDataTypeError
-from ..anndataexc import AnnDataNegValueError
+from ...anndataexc import AnnDataTypeError
+from ...anndataexc import AnnDataNegValueError
 
 # ---------------------------------------------------------------------------
 

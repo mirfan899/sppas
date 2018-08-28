@@ -47,11 +47,11 @@ import os.path
 import xml.etree.cElementTree as ET
 
 from ..aio.transcriber import sppasTRS
-from ..annlocation.point import sppasPoint
-from ..annlabel.tag import sppasTag
-from ..annlocation.interval import sppasInterval
-from ..annlabel.label import sppasLabel
-from ..annlocation.location import sppasLocation
+from ..ann.annlocation import sppasPoint
+from ..ann.annlabel import sppasTag
+from ..ann.annlocation import sppasInterval
+from ..ann.annlabel import sppasLabel
+from ..ann.annlocation import sppasLocation
 
 # ---------------------------------------------------------------------------
 

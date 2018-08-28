@@ -52,14 +52,13 @@ from ..aio.praat import sppasBasePraat
 from ..aio.praat import sppasTextGrid
 from ..aio.praat import sppasBaseNumericalTier
 from ..aio.praat import sppasPitchTier
-from ..aio.praat import sppasIntensityTier
-from ..annlocation.interval import sppasInterval
-from ..annlocation.point import sppasPoint
-from ..annlabel.tag import sppasTag
-from ..annlabel.label import sppasLabel
-from ..annotation import sppasAnnotation
+from ..ann.annlocation import sppasInterval
+from ..ann.annlocation import sppasPoint
+from ..ann.annlabel import sppasTag
+from ..ann.annlabel import sppasLabel
+from ..ann.annotation import sppasAnnotation
 from ..tier import sppasTier
-from ..annlocation.location import sppasLocation
+from ..ann.annlocation import sppasLocation
 
 # ---------------------------------------------------------------------------
 

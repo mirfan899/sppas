@@ -42,8 +42,8 @@
 """
 import unittest
 
-from ..annlocation.duration import sppasDuration
-from ..annlocation.durationcompare import sppasDurationCompare
+from ..ann.annlocation import sppasDuration
+from ..ann.annlocation import sppasDurationCompare
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AnnDataNegValueError
 

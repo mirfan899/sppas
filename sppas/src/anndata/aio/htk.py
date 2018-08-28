@@ -40,11 +40,11 @@ from sppas.src.config import sg
 
 from ..anndataexc import AioMultiTiersError
 from ..anndataexc import AioLocationTypeError
-from ..annlocation.location import sppasLocation
-from ..annlocation.point import sppasPoint
-from ..annlocation.interval import sppasInterval
-from ..annlabel.label import sppasLabel
-from ..annlabel.tag import sppasTag
+from ..ann.annlocation import sppasLocation
+from ..ann.annlocation import sppasPoint
+from ..ann.annlocation import sppasInterval
+from ..ann.annlabel import sppasLabel
+from ..ann.annlabel import sppasTag
 
 from .basetrs import sppasBaseIO
 from .aioutils import load

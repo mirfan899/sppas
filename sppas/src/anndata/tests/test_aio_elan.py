@@ -48,13 +48,13 @@ from sppas.src.config import sg
 from sppas.src.utils.datatype import sppasTime
 
 from ..aio.elan import sppasEAF
-from ..annlocation.location import sppasLocation
-from ..annlocation.interval import sppasInterval
-from ..annlocation.point import sppasPoint
-from ..annlabel.label import sppasLabel
-from ..annlabel.tag import sppasTag
+from ..ann.annlocation import sppasLocation
+from ..ann.annlocation import sppasInterval
+from ..ann.annlocation import sppasPoint
+from ..ann.annlabel import sppasLabel
+from ..ann.annlabel import sppasTag
 from ..tier import sppasTier
-from ..annotation import sppasAnnotation
+from ..ann.annotation import sppasAnnotation
 from ..media import sppasMedia
 from ..ctrlvocab import sppasCtrlVocab
 from ..aio.aioutils import format_labels

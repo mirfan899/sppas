@@ -29,14 +29,15 @@
 
         ---------------------------------------------------------------------
 
-    anndata.annlabel.tag.py
+    anndata.ann.annlabel.tag.py
     ~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 from sppas.src.config import symbols
 from sppas.src.utils.makeunicode import sppasUnicode, b
-from ..anndataexc import AnnDataTypeError
-from ..anndataexc import AnnUnkTypeError
+
+from ...anndataexc import AnnDataTypeError
+from ...anndataexc import AnnUnkTypeError
 
 # ---------------------------------------------------------------------------
 

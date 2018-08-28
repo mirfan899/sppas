@@ -49,7 +49,7 @@ from ..aio.phonedit import sppasBasePhonedit
 from ..aio.phonedit import sppasMRK
 from ..aio.phonedit import sppasSignaix
 
-from ..annlocation.point import sppasPoint
+from ..ann.annlocation import sppasPoint
 
 # ---------------------------------------------------------------------------
 

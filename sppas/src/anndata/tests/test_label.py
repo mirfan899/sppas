@@ -46,9 +46,9 @@ import unittest
 
 from sppas.src.config import symbols
 from sppas.src.utils.makeunicode import u, b, text_type
-from ..annlabel.tag import sppasTag
-from ..annlabel.label import sppasLabel
-from ..annlabel.tagcompare import sppasTagCompare
+from ..ann.annlabel import sppasTag
+from ..ann.annlabel import sppasLabel
+from ..ann.annlabel import sppasTagCompare
 
 # ---------------------------------------------------------------------------
 

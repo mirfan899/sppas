@@ -49,10 +49,10 @@ from ..aio.subtitle import sppasBaseSubtitles
 from ..aio.subtitle import sppasSubRip
 from ..aio.subtitle import sppasSubViewer
 
-from ..annlocation.interval import sppasInterval
-from ..annlocation.point import sppasPoint
-from ..annotation import sppasAnnotation
-from ..annlocation.location import sppasLocation
+from ..ann.annlocation import sppasInterval
+from ..ann.annlocation import sppasPoint
+from ..ann.annotation import sppasAnnotation
+from ..ann.annlocation import sppasLocation
 
 # ---------------------------------------------------------------------------
 

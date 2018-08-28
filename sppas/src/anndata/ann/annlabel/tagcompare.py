@@ -29,7 +29,7 @@
 
         ---------------------------------------------------------------------
 
-    anndata.annlabel.tagcompare.py
+    anndata.ann.annlabel.tagcompare.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
@@ -38,8 +38,8 @@ import re
 from sppas.src.utils.makeunicode import text_type
 from sppas.src.utils.datatype import sppasType
 
-from ..anndataexc import AnnDataTypeError
-from ..basecompare import sppasBaseCompare
+from ...anndataexc import AnnDataTypeError
+from ...basecompare import sppasBaseCompare
 
 from .tag import sppasTag
 

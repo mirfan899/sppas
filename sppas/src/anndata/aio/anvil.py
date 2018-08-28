@@ -36,9 +36,9 @@
 import xml.etree.cElementTree as ET
 
 from ..anndataexc import AnnDataTypeError
-from ..annlocation.location import sppasLocation
-from ..annlocation.point import sppasPoint
-from ..annlocation.interval import sppasInterval
+from ..ann.annlocation import sppasLocation
+from ..ann.annlocation import sppasPoint
+from ..ann.annlocation import sppasInterval
 
 from .basetrs import sppasBaseIO
 from .aioutils import format_labels

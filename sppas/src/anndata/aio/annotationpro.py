@@ -45,9 +45,9 @@ from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.fileutils import sppasFileUtils
 
 from ..media import sppasMedia
-from ..annlocation.location import sppasLocation
-from ..annlocation.point import sppasPoint
-from ..annlocation.interval import sppasInterval
+from ..ann.annlocation import sppasLocation
+from ..ann.annlocation import sppasPoint
+from ..ann.annlocation import sppasInterval
 from ..anndataexc import AioFormatError
 from ..anndataexc import AnnDataTypeError
 

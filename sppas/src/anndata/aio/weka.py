@@ -50,9 +50,9 @@ from .basetrs import sppasBaseIO
 from ..anndataexc import AioNoTiersError
 from ..anndataexc import TagValueError
 from ..anndataexc import AioEmptyTierError
-from ..annlabel.label import sppasLabel
-from ..annlabel.tag import sppasTag
-from ..annlocation import sppasPoint
+from ..ann.annlabel import sppasLabel
+from ..ann.annlabel import sppasTag
+from ..ann.annlocation import sppasPoint
 
 from sppas.src.utils.makeunicode import sppasUnicode, b
 

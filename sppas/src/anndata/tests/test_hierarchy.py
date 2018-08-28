@@ -35,13 +35,13 @@
 """
 import unittest
 
-from ..annlabel.label import sppasLabel
-from ..annlabel.tag import sppasTag
-from ..annlocation.point import sppasPoint
-from ..annlocation.interval import sppasInterval
-from ..annlocation.location import sppasLocation
+from ..ann.annlabel import sppasLabel
+from ..ann.annlabel import sppasTag
+from ..ann.annlocation import sppasPoint
+from ..ann.annlocation import sppasInterval
+from ..ann.annlocation import sppasLocation
 
-from ..annotation import sppasAnnotation
+from ..ann.annotation import sppasAnnotation
 from ..tier import sppasTier
 from ..transcription import sppasTranscription
 

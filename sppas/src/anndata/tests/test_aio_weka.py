@@ -49,12 +49,12 @@ import io
 
 from ..aio.weka import sppasWEKA, sppasARFF, sppasXRFF
 from ..transcription import sppasTranscription
-from ..annlocation.interval import sppasInterval
-from ..annlocation.point import sppasPoint
-from ..annlabel.label import sppasTag
-from ..annlabel.label import sppasLabel
-from ..annotation import sppasAnnotation
-from ..annlocation.location import sppasLocation
+from ..ann.annlocation import sppasInterval
+from ..ann.annlocation import sppasPoint
+from ..ann.annlabel import sppasTag
+from ..ann.annlabel import sppasLabel
+from ..ann.annotation import sppasAnnotation
+from ..ann.annlocation import sppasLocation
 
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.makeunicode import u

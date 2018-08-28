@@ -44,12 +44,12 @@ import os.path
 import unittest
 
 from ..tier import sppasTier
-from ..annotation import sppasAnnotation
-from ..annlocation.location import sppasLocation
-from ..annlocation.point import sppasPoint
-from ..annlocation.interval import sppasInterval
-from ..annlabel.label import sppasLabel
-from ..annlabel.tag import sppasTag
+from ..ann.annotation import sppasAnnotation
+from ..ann.annlocation import sppasLocation
+from ..ann.annlocation import sppasPoint
+from ..ann.annlocation import sppasInterval
+from ..ann.annlabel import sppasLabel
+from ..ann.annlabel import sppasTag
 
 from ..aio.aioutils import fill_gaps, check_gaps, unfill_gaps
 from ..aio.aioutils import merge_overlapping_annotations

@@ -46,9 +46,9 @@ import os.path
 from ..aio.text import sppasRawText
 from ..aio.text import sppasCSV
 from ..aio.text import sppasBaseText
-from ..annlocation.location import sppasLocation
-from ..annlocation.point import sppasPoint
-from ..annlocation.interval import sppasInterval
+from ..ann.annlocation import sppasLocation
+from ..ann.annlocation import sppasPoint
+from ..ann.annlocation import sppasInterval
 
 # ---------------------------------------------------------------------------
 

@@ -34,7 +34,8 @@
 
 """
 import copy
-from ..anndataexc import AnnDataTypeError
+
+from ...anndataexc import AnnDataTypeError
 from .localization import sppasBaseLocalization
 
 # ---------------------------------------------------------------------------

@@ -101,9 +101,9 @@
     are not exhaustive too.
 
 """
-from ..anndataexc import AnnDataTypeError
-from ..anndataexc import AnnDataValueError
-from ..basecompare import sppasBaseCompare
+from ...anndataexc import AnnDataTypeError
+from ...anndataexc import AnnDataValueError
+from ...basecompare import sppasBaseCompare
 
 from .point import sppasPoint
 from .interval import sppasInterval

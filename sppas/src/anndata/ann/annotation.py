@@ -33,11 +33,13 @@
     ~~~~~~~~~~~~~~~~~~~~~
 
 """
-from .anndataexc import AnnDataTypeError
-from .annlabel.tag import sppasTag
-from .annlabel.label import sppasLabel
-from .annlocation.location import sppasLocation
-from .metadata import sppasMetaData
+
+from ..anndataexc import AnnDataTypeError
+from ..metadata import sppasMetaData
+
+from .annlabel import sppasTag
+from .annlabel import sppasLabel
+from .annlocation import sppasLocation
 
 # ----------------------------------------------------------------------------
 
