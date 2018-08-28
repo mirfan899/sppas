@@ -32,13 +32,8 @@
     src.term.terminalcontroller.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    A pacage that can be used to portably generate formatted output to a
-    terminal.
-
-    This package was originally created by Edward Loper and downloaded from:
-    http://igraph.org/python/doc/igraph.app.shell.TerminalController-class.html
-
 """
+
 import sys
 import re
 
@@ -52,8 +47,9 @@ except:
 
 
 class TerminalController(object):
-    """A class that can be used to portably generate formatted output to a
-    terminal. `TerminalController` defines a set of instance variables whose
+    """A class that can be used to generate formatted output to a terminal.
+
+    `TerminalController` defines a set of instance variables whose
     values are initialized to the control sequence necessary to perform a
     given action.  These can be simply included in normal output to the
     terminal:
@@ -82,6 +78,7 @@ class TerminalController(object):
     they will be stored in the `COLS` and `LINES` attributes.
 
     """
+
     # Cursor movement:
     BOL = ''             # Move the cursor to the beginning of the line
     UP = ''              # Move the cursor up one line
@@ -126,11 +123,13 @@ class TerminalController(object):
     _ANSICOLORS = "BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE".split()
 
     def __init__(self, term_stream=sys.stdout):
-        """Create a `TerminalController` and initialize its attributes
-        with appropriate values for the current terminal.
+        """Create a `TerminalController` and initialize its attributes.
+
+        Initialize with appropriate values for the current terminal.
         `term_stream` is the stream that will be used for terminal
         output; if this stream is not a tty, then the terminal is
         assumed to be a dumb terminal (i.e., have no capabilities).
+
         """
         # If the stream isn't a tty, then assume it has no capabilities.
         if not term_stream.isatty():
@@ -155,19 +154,23 @@ class TerminalController(object):
         # Colors
         set_fg = self._tigetstr('setf')
         if set_fg:
-            for i, color in zip(range(len(self._COLORS)), self._COLORS):
+            for i, color in zip(range(len(self._COLORS)),
+                                self._COLORS):
                 setattr(self, color, curses.tparm(set_fg, i) or '')
         set_fg_ansi = self._tigetstr('setaf')
         if set_fg_ansi:
-            for i, color in zip(range(len(self._ANSICOLORS)), self._ANSICOLORS):
+            for i, color in zip(range(len(self._ANSICOLORS)),
+                                self._ANSICOLORS):
                 setattr(self, color, curses.tparm(set_fg_ansi, i) or '')
         set_bg = self._tigetstr('setb')
         if set_bg:
-            for i, color in zip(range(len(self._COLORS)), self._COLORS):
+            for i, color in zip(range(len(self._COLORS)),
+                                self._COLORS):
                 setattr(self, 'BG_'+color, curses.tparm(set_bg, i) or '')
         set_bg_ansi = self._tigetstr('setab')
         if set_bg_ansi:
-            for i, color in zip(range(len(self._ANSICOLORS)), self._ANSICOLORS):
+            for i, color in zip(range(len(self._ANSICOLORS)),
+                                self._ANSICOLORS):
                 setattr(self, 'BG_'+color, curses.tparm(set_bg_ansi, i) or '')
 
     # -----------------------------------------------------------------------
@@ -182,9 +185,11 @@ class TerminalController(object):
     # -----------------------------------------------------------------------
 
     def render(self, template):
-        """Replace each $-substitutions in the given template string
-        with the corresponding terminal control string (if it's defined)
-        or '' (if it's not).
+        """Replace each $-substitutions in the given template string.
+
+        Replace with the corresponding terminal control string
+        (if it's defined) or '' (if it's not).
+
         """
         return re.sub(r'\$\$|\${\w+}', self._render_sub, template)
 

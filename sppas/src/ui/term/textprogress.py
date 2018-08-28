@@ -32,8 +32,6 @@
     src.term.textprogress.py
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
-    A 3-lines progress bar to be used while processing from a terminal.
-    
 """
 import sys
 
@@ -50,13 +48,13 @@ HEADER = '${BOLD}${CYAN}%s${NORMAL}\n\n'
 
 
 class ProcessProgressTerminal(object):
-    """
+    """A 3-lines progress bar to be used while processing from a terminal.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      A 3-lines progress bar.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     It looks like:
 
@@ -68,9 +66,9 @@ class ProcessProgressTerminal(object):
     output; and adjusts to the width of the terminal.
 
     """
+
     def __init__(self):
         """Create a ProcessProgressTerminal instance."""
-
         try:
             self._term = TerminalController()
         except:
@@ -114,7 +112,6 @@ class ProcessProgressTerminal(object):
 
     def clear(self):
         """Clear."""
-
         if not self._cleared:
             if self._term:
                 sys.stdout.write(self._term.BOL + self._term.CLEAR_EOL +
@@ -163,7 +160,6 @@ class ProcessProgressTerminal(object):
 
     def set_new(self):
         """Initialize a new progress line."""
-
         sys.stdout.write('\n')
         self.clear()
         self._text = ""

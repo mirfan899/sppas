@@ -32,19 +32,22 @@
     src.term.__init__.py
     ~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      contact@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      develop@sppas.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    term is a free and open source Python library to access the terminal.
+term is a free and open source Python library to access the terminal.
+
+This package was originally created by Edward Loper and downloaded from:
+http://igraph.org/python/doc/igraph.app.shell.TerminalController-class.html
 
 """
 from .terminalcontroller import TerminalController
 from .textprogress import ProcessProgressTerminal
 
-__all__ = [
+__all__ = (
     'TerminalController',
     'ProcessProgressTerminal'
-]
+)
