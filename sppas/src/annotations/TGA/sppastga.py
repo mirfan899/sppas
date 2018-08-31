@@ -33,6 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 from sppas.src.config import symbols
 from sppas.src.utils.makeunicode import sppasUnicode
 from sppas.src.anndata import sppasRW
@@ -58,21 +59,22 @@ class sppasTGA(sppasBaseAnnotation):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     Create time groups then map them into a dictionary where:
 
         - key is a label assigned to the time group;
-        - value is the list of observed durations of segments in this time group.
+        - value is the list of observed durations of segments in this TG.
 
     """
+
     def __init__(self, logfile=None):
         """Create a new sppasTGA instance.
 
         :param logfile: (sppasLog)
 
         """
-        sppasBaseAnnotation.__init__(self, logfile, "Syllabification")
+        sppasBaseAnnotation.__init__(self, logfile, "TGA")
 
         # List of the symbols used to create the time groups
         self._tg_separators = list(symbols.phone.keys())
@@ -97,9 +99,14 @@ class sppasTGA(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def fix_options(self, options):
-        """Fix all options. Available options are:
+        """Fix all options.
+
+        Available options are:
 
             - with_radius
+            - original
+            - annotationpro
+            - tg_prefix_label
 
         :param options: (sppasOption)
 
@@ -122,7 +129,7 @@ class sppasTGA(sppasBaseAnnotation):
             else:
                 raise AnnotationOptionError(key)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_tg_prefix_label(self, prefix):
         """Fix the prefix to add to each TG.
@@ -135,15 +142,16 @@ class sppasTGA(sppasBaseAnnotation):
         if len(tg) > 0:
             self._options['tg_prefix_label'] = tg
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_with_radius(self, with_radius):
         """Set the with_radius option, used to estimate the duration.
 
         :param with_radius: (int)
-            - 0 means to use Midpoint;
-            - negative value means to use R-;
-            - positive radius means to use R+.
+
+        - 0 means to use Midpoint;
+        - negative value means to use R-;
+        - positive radius means to use R+.
 
         """
         try:
@@ -152,10 +160,11 @@ class sppasTGA(sppasBaseAnnotation):
         except ValueError:
             raise
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_intercept_slope_original(self, value):
         """Estimate intercepts and slopes with the original method.
+
         Default is False.
 
         :param value: (boolean)
@@ -163,10 +172,11 @@ class sppasTGA(sppasBaseAnnotation):
         """
         self._options['original'] = value
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_intercept_slope_annotationpro(self, value):
         """Estimate intercepts and slopes with the method of annotationpro.
+
         Default is True.
 
         :param value: (boolean)
@@ -174,9 +184,9 @@ class sppasTGA(sppasBaseAnnotation):
         """
         self._options['annotationpro'] = value
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Workers
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def syllables_to_timegroups(self, syllables):
         """Create the time group intervals.
@@ -252,7 +262,7 @@ class sppasTGA(sppasBaseAnnotation):
 
         return tg_dur
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def tga_to_tier(self, tga_result, timegroups, tier_name, tag_type="float"):
         """Create a tier from one of the TGA result.
@@ -286,7 +296,8 @@ class sppasTGA(sppasBaseAnnotation):
 
         :param tga_result: One of the results of TGA
         :param timegroups: (sppasTier) Time groups
-        :param intercept: (boolean) Export the intercept. If False, export Slope.
+        :param intercept: (boolean) Export the intercept.
+        If False, export Slope.
 
         :returns: (sppasTier)
 
@@ -305,7 +316,8 @@ class sppasTGA(sppasBaseAnnotation):
                 tag_value = tga_result[tg_label][1]
 
             tag_value = round(tag_value, 5)
-            tier.create_annotation(loc, sppasLabel(sppasTag(tag_value, "float")))
+            tier.create_annotation(loc,
+                                   sppasLabel(sppasTag(tag_value, "float")))
 
         return tier
 
@@ -365,23 +377,31 @@ class sppasTGA(sppasBaseAnnotation):
 
         # Put TGA Intercept/Slope results
         if self._options['original'] is True:
-            tier = self.tga_to_tier_reglin(ts.intercept_slope_original(), timegroups, True)
+            tier = self.tga_to_tier_reglin(ts.intercept_slope_original(),
+                                           timegroups,
+                                           True)
             tier.set_name('TGA-Intercept_original')
             trs_out.append(tier)
             trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
 
-            tier = self.tga_to_tier_reglin(ts.intercept_slope_original(), timegroups, False)
+            tier = self.tga_to_tier_reglin(ts.intercept_slope_original(),
+                                           timegroups,
+                                           False)
             tier.set_name('TGA-slope_original')
             trs_out.append(tier)
             trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
 
         if self._options['annotationpro'] is True:
-            tier = self.tga_to_tier_reglin(ts.intercept_slope(), timegroups, True)
+            tier = self.tga_to_tier_reglin(ts.intercept_slope(),
+                                           timegroups,
+                                           True)
             tier.set_name('TGA-Intercept_timestamps')
             trs_out.append(tier)
             trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
 
-            tier = self.tga_to_tier_reglin(ts.intercept_slope(), timegroups, False)
+            tier = self.tga_to_tier_reglin(ts.intercept_slope(),
+                                           timegroups,
+                                           False)
             tier.set_name('TGA-slope_timestamps')
             trs_out.append(tier)
             trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
@@ -393,7 +413,7 @@ class sppasTGA(sppasBaseAnnotation):
     def run(self, input_filename, output_filename=None):
         """Perform the TGA estimation process.
 
-        :param input_filename: (str) Name of the input file with the aligned syllables
+        :param input_filename: (str) Name of the input file with syllables
         :param output_filename: (str) Name of the resulting file with TGA
 
         """
@@ -423,4 +443,3 @@ class sppasTGA(sppasBaseAnnotation):
                 raise EmptyOutputError
 
         return trs_output
-

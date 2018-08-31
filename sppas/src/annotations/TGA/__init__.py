@@ -32,32 +32,33 @@
     src.annotations.TGA.__init_.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      contact@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      contact@sppas.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    TGA: Time Group Analyzer is an online tool for speech annotation mining
-    written by Dafydd Gibbon, emeritus professor of English and General
-    Linguistics at Bielefeld University..
+TGA: Time Group Analyzer is an online tool for speech annotation mining
+written by Dafydd Gibbon, emeritus professor of English and General
+Linguistics at Bielefeld University..
 
-    TGA software calculates, inter alia, mean, median, rPVI, nPVI, slope and
-    intercept functions within inter-pausal groups.
+TGA software calculates, inter alia, mean, median, rPVI, nPVI, slope and
+intercept functions within inter-pausal groups.
 
-    For details, read the following reference:
-        | Dafydd Gibbon (2013).
-        | TGA: a web tool for Time Group Analysis.
-        | Tools ans Resources for the Analysis of Speech Prosody,
-        | Aix-en-Provence, France, pp. 66-69.
+For details, read the following reference:
+    | Dafydd Gibbon (2013).
+    | TGA: a web tool for Time Group Analysis.
+    | Tools ans Resources for the Analysis of Speech Prosody,
+    | Aix-en-Provence, France, pp. 66-69.
 
-    See also: <http://wwwhomes.uni-bielefeld.de/gibbon/TGA/>
+See also: <http://wwwhomes.uni-bielefeld.de/gibbon/TGA/>
 
 """
+
 from .timegroupanalysis import TimeGroupAnalysis
 from .sppastga import sppasTGA
 
-__all__ = [
+__all__ = (
     "TimeGroupAnalysis",
     "sppasTGA"
-]
+)

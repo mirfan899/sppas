@@ -29,13 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.calculus.timegroupanalysis.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    TGA: Time Group Analyzer is an online tool for speech annotation mining
-    written by Dafydd Gibbon (Universität Bielefeld).
-
-    See: <http://wwwhomes.uni-bielefeld.de/gibbon/TGA/>
+    src.annotations.TGA.timegroupanalysis.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import sppas.src.calculus.stats.variability as variability
@@ -46,13 +41,18 @@ from sppas.src.calculus.stats.descriptivesstats import sppasDescriptiveStatistic
 
 
 class TimeGroupAnalysis(sppasDescriptiveStatistics):
-    """
+    u"""Time Group Analyzer estimator class.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    :summary:      TGA estimator class.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    TGA: Time Group Analyzer is an online tool for speech annotation mining
+    written by Dafydd Gibbon (Universität Bielefeld).
+
+    See: <http://wwwhomes.uni-bielefeld.de/gibbon/TGA/>
 
     This class estimates TGA on a set of data values, stored in a dictionary:
 
@@ -67,8 +67,9 @@ class TimeGroupAnalysis(sppasDescriptiveStatistics):
     >>> print(slope['tg_2'])
 
     """
+
     def __init__(self, dict_items):
-        """TGA - The Time Group Analyzer
+        """TGA - The Time Group Analyzer.
 
         :param dict_items: (dict) a dict of a list of durations.
 
@@ -85,7 +86,8 @@ class TimeGroupAnalysis(sppasDescriptiveStatistics):
         :returns: (dict) a dictionary of (key, nPVI) of float values
 
         """
-        return dict((key, variability.rPVI(values)) for key, values in self._items.items())
+        return dict((key, variability.rPVI(values))
+                    for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -95,7 +97,8 @@ class TimeGroupAnalysis(sppasDescriptiveStatistics):
         :returns: (dict) a dictionary of (key, nPVI) of float values
 
         """
-        return dict((key, variability.nPVI(values)) for key, values in self._items.items())
+        return dict((key, variability.nPVI(values))
+                    for key, values in self._items.items())
 
     # -----------------------------------------------------------------------
 
@@ -106,12 +109,12 @@ class TimeGroupAnalysis(sppasDescriptiveStatistics):
             - x is the position
             - y is the duration
 
-        :returns: (dict) a dictionary of (key, (intercept,slope)) of float values
+        :returns: (dict) a dict of (key, (intercept,slope)) of float values
 
         """
         lin_reg = list()
         for key, values in self._items.items():
-            points = [(position, duration) for position, duration in enumerate(values)]
+            points = [(pos, dur) for pos, dur in enumerate(values)]
             lin_reg.append((key, (tga_linear_regression(points))))
 
         return dict(lin_reg)
@@ -125,7 +128,7 @@ class TimeGroupAnalysis(sppasDescriptiveStatistics):
             - x is the timestamps
             - y is the duration
 
-        :returns: (dict) a dictionary of (key, (intercept,slope)) of float values
+        :returns: (dict) a dict of (key, (intercept, slope)) of float values
 
         """
         lin_reg = list()
