@@ -35,6 +35,7 @@
 """
 from sppas.src.config import symbols
 from sppas.src.config import separators
+from sppas.src.config import annots
 from sppas.src.config import annotations_translation
 
 from sppas.src.anndata import sppasRW
@@ -46,7 +47,6 @@ from sppas.src.anndata import sppasTag
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.mapping import sppasMapping
 
-from .. import ERROR_ID, WARNING_ID
 from ..annotationsexc import AnnotationOptionError
 from ..annotationsexc import EmptyInputError
 from ..annotationsexc import EmptyOutputError
@@ -194,12 +194,12 @@ class sppasPhon(sppasBaseAnnotation):
         tab_phones = list()
         for tex, p, s in tab:
             message = None
-            if s == ERROR_ID:
+            if s == annots.error:
                 message = MSG_MISSING.format(tex) + MSG_NOT_PHONETIZED
                 self.print_message(message, indent=3, status=s)
                 return symbols.unk
             else:
-                if s == WARNING_ID:
+                if s == annots.warning:
                     message = MSG_MISSING.format(tex)
                     if len(p) > 0:
                         message = message + MSG_PHONETIZED.format(p)

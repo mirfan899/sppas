@@ -185,3 +185,29 @@ class sppasSeparatorSettings(sppasBaseSettings):
             syllables=".",   # X-SAMPA standard
             variants="|"     # used for all alternative tags
         )
+
+# ---------------------------------------------------------------------------
+
+
+class sppasAnnotationsSettings(sppasBaseSettings):
+    """Representation of global non-modifiable settings of annotations.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    """
+
+    def __init__(self):
+        """Create the sppasAnnotationsSettings dictionary."""
+        super(sppasAnnotationsSettings, self).__init__()
+        self.__dict__ = dict(
+            error=-1,
+            ok=0,
+            warning=1,
+            ignore=2,
+            info=3,
+            extension=".xra"
+        )

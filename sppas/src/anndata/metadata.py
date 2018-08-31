@@ -222,14 +222,12 @@ class sppasDefaultMeta(sppasMetaData):
 
     def __init__(self):
         """Instantiate a default set of meta data."""
-
         super(sppasDefaultMeta, self).__init__()
 
     # -----------------------------------------------------------------------
 
     def speaker(self):
         """Add metadata related to a speaker."""
-
         # sclite, transcriber
         self.set_meta("speaker_id", "")
 

@@ -34,7 +34,8 @@
 
 """
 import os
-import logging
+
+from sppas.src.config import annots
 
 import sppas.src.annotationdata.aio
 import sppas.src.audiodata.aio
@@ -43,7 +44,6 @@ from sppas.src.annotationdata.transcription import Transcription
 from sppas.src.annotationdata.media import Media
 from sppas.src.audiodata.autils import times2frames
 
-from .. import INFO_ID
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasSearchTier
 from ..annotationsexc import AnnotationOptionError
@@ -214,7 +214,9 @@ class sppasIPUseg(sppasBaseAnnotation):
 
         trs_output = Transcription("Output")
         if self.logfile:
-            self.logfile.print_message("IPUs+Transcription tier found: %s" % trs_tier.GetName(), indent=3, status=INFO_ID)
+            self.logfile.print_message("IPUs+Transcription tier found: %s" % trs_tier.GetName(),
+                                       indent=3,
+                                       status=annots.info)
 
         trs_tier.SetName('Transcription')
         trs_output.Append(trs_tier)
@@ -224,7 +226,9 @@ class sppasIPUseg(sppasBaseAnnotation):
             tier_name = tier.GetName().lower()
             if "name" in tier_name or "file" in tier_name:
                 if self.logfile:
-                    self.logfile.print_message("IPUs file names found: %s" % tier.GetName(), indent=3, status=INFO_ID)
+                    self.logfile.print_message("IPUs file names found: %s" % tier.GetName(),
+                                               indent=3,
+                                               status=annots.info)
                 tier.SetName("Name")
                 trs_output.Append(tier)
                 break

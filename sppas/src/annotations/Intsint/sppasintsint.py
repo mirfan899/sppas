@@ -32,6 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
 from sppas.src.anndata.anndataexc import AnnDataTypeError
@@ -49,15 +50,16 @@ from .intsint import Intsint
 
 
 class sppasIntsint(sppasBaseAnnotation):
-    """
+    """SPPAS integration of the INTSINT automatic annotation.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS integration of the INTSINT automatic annotation.
 
     """
+
     def __init__(self, logfile=None):
         """Create a new sppasIntsint instance.
 
@@ -75,7 +77,7 @@ class sppasIntsint(sppasBaseAnnotation):
     @staticmethod
     def tier_to_anchors(momel_tier):
         """Initialize INTSINT attributes from a Tier with anchors.
-        
+
         :param momel_tier: (sppasTier)
         :returns: List of tuples (time, f0 value)
 
@@ -112,13 +114,14 @@ class sppasIntsint(sppasBaseAnnotation):
     @staticmethod
     def tones_to_tier(tones, anchors_tier):
         """Convert the INTSINT result into a tier.
-        
+
         :param tones: (list)
         :param anchors_tier: (sppasTier)
 
         """
         if len(tones) != len(anchors_tier):
-            raise AnnDataEqError("tones:"+str(len(tones)), "anchors:"+str(len(anchors_tier)))
+            raise AnnDataEqError("tones:"+str(len(tones)),
+                                 "anchors:"+str(len(anchors_tier)))
 
         tier = sppasTier("INTSINT")
         for tone, anchor_ann in zip(tones, anchors_tier):

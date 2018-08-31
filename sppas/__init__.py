@@ -39,6 +39,7 @@ sppas: Global imports and some settings for external use.
 
 """
 from sppas.src.anndata import *
+from sppas.src.annotations import *
 from sppas.src.audiodata import *
 from sppas.src.calculus import *
 from sppas.src.models import *

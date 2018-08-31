@@ -35,20 +35,20 @@
 import os.path
 
 from sppas.src.config import paths
+from sppas.src.config import annots
 from sppas.src.annotations.cfgparser import sppasAnnotationConfigParser
-from . import DEFAULT_OUTPUT_EXTENSION
 
 # ----------------------------------------------------------------------------
 
 
 class annotationParam(object):
-    """
+    """Annotation parameters data manager.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Annotation parameters data manager.
 
     Class to store data of an automatic annotation like its name, description, 
     supported languages, etc.
@@ -138,35 +138,30 @@ class annotationParam(object):
 
     def get_key(self):
         """Return the identifier of the annotation (str)."""
-
         return self.__key
 
     # ------------------------------------------------------------------------
 
     def get_name(self):
         """Return the name of the annotation (str)."""
-
         return self.__name
 
     # ------------------------------------------------------------------------
 
     def get_descr(self):
         """Return the description of the annotation (str)."""
-
         return self.__descr
 
     # ------------------------------------------------------------------------
 
     def get_activate(self):
         """Return the activation status of the annotation (bool)."""
-
         return self.__enabled
 
     # ------------------------------------------------------------------------
 
     def get_lang(self):
         """Return the language defined for the annotation (str) or an empty string."""
-
         if len(self.__langres) > 0:
             return self.__langres[0].get_lang()
         return ""
@@ -184,7 +179,6 @@ class annotationParam(object):
 
     def get_langresource(self):
         """Return the list of language resources related to the annotation (list of sppasLang)."""
-
         if len(self.__langres) > 0:
             return self.__langres[0].get_langresource()
         return []
@@ -193,21 +187,18 @@ class annotationParam(object):
 
     def get_options(self):
         """Return the list of options of the annotation."""
-
         return self.__options
 
     # ------------------------------------------------------------------------
 
     def get_option(self, step):
         """Return the step-th option."""
-
         return self.__options[step]
 
     # ------------------------------------------------------------------------
 
     def get_option_by_key(self, key):
         """Return an option from its key."""
-
         for opt in self.__options:
             if key == opt.get_key():
                 return opt
@@ -216,13 +207,13 @@ class annotationParam(object):
 
 
 class sppasParam(object):
-    """
+    """Annotations parameters manager.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Annotations parameters manager.
 
     """
     def __init__(self):
@@ -233,7 +224,7 @@ class sppasParam(object):
 
         # User
         self.logfilename = ""
-        self.output_format = DEFAULT_OUTPUT_EXTENSION
+        self.output_format = annots.extension
 
         # SPPAS parameters
         self.sppasinput = []
@@ -246,7 +237,6 @@ class sppasParam(object):
 
     def parse_config_file(self):
         """Parse the sppas.conf file to get the list of annotations."""
-
         with open(os.path.join(paths.etc, "sppas.conf"), "r") as fp:
             lines = fp.readlines()
 

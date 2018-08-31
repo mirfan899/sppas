@@ -36,10 +36,10 @@ import codecs
 import os
 
 from sppas.src.config import sg
+from sppas.src.config import annots
 from sppas.src.config import annotations_translation
-import sppas.src.annotationdata.aio
+import sppas.src.anndata
 import sppas.src.audiodata.aio
-from . import ERROR_ID, WARNING_ID, OK_ID
 
 # ----------------------------------------------------------------------------
 
@@ -65,19 +65,20 @@ MSG_FILE_ENCODING = (_(":INFO 1026: "))
 
 
 class sppasDiagnosis(object):
-    """
+    """Diagnose if files are appropriate.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      A class to diagnose if files are appropriate.
-    
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
     A set of methods to check if files are valid for SPPAS automatic
     annotations. Each method returns a status and a message depending on the
     fact that the given file is matching the requirements.
 
     """
+
     EXPECTED_CHANNELS = 1
     EXPECTED_FRAME_RATE = 16000
     EXPECTED_SAMPLE_WIDTH = 2
@@ -86,7 +87,6 @@ class sppasDiagnosis(object):
 
     def __init__(self):
         """Create a sppasDiagnosis instance."""
-
         pass
 
     # ------------------------------------------------------------------------
@@ -96,6 +96,7 @@ class sppasDiagnosis(object):
     @staticmethod
     def check_file(filename):
         """Check file of any type: audio or annotated file.
+
         The extension of the filename is used to know the type of the file.
 
         :param filename: (str) name of the input file to diagnose.
@@ -107,11 +108,11 @@ class sppasDiagnosis(object):
         if ext.lower() in sppas.src.audiodata.aio.extensions:
             return sppasDiagnosis.check_audio_file(filename)
 
-        if ext.lower() in sppas.src.annotationdata.aio.extensions:
+        if ext.lower() in sppas.src.anndata.aio.extensions:
             return sppasDiagnosis.check_trs_file(filename)
 
         message = MSG_FAILED + MSG_UNKNOWN_FILE.format(extension=ext)
-        return ERROR_ID, message
+        return annots.error, message
 
     # ------------------------------------------------------------------------
 
@@ -131,7 +132,7 @@ class sppasDiagnosis(object):
         :returns: tuple with (status identifier, message)
 
         """
-        status = OK_ID
+        status = annots.ok
         message = ""
 
         # test file format: can we support it?
@@ -142,46 +143,47 @@ class sppasDiagnosis(object):
             nc = audio.get_nchannels()
             audio.close()
         except UnicodeDecodeError:
-            message = MSG_INVALID + MSG_FILE_ENCODING.format(encoding=sg.__encoding__)
-            return ERROR_ID, message
+            message = MSG_INVALID + \
+                      MSG_FILE_ENCODING.format(encoding=sg.__encoding__)
+            return annots.error, message
         except Exception as e:
             message = MSG_INVALID + str(e)
-            return ERROR_ID, message
+            return annots.error, message
 
         if nc > sppasDiagnosis.EXPECTED_CHANNELS:
-            status = ERROR_ID
+            status = annots.error
             message += MSG_AUDIO_CHANNELS_ERROR.format(number=nc)
 
         if sp < sppasDiagnosis.EXPECTED_SAMPLE_WIDTH*8:
-            status = ERROR_ID
+            status = annots.error
             message += MSG_AUDIO_SAMPWIDTH_ERROR.format(sampwidth=sp)
 
         if fm < sppasDiagnosis.EXPECTED_FRAME_RATE:
-            status = ERROR_ID
+            status = annots.error
             message += MSG_AUDIO_FRAMERATE_ERROR.format(framerate=fm)
 
-        if status != ERROR_ID:
+        if status != annots.error:
             if sp > sppasDiagnosis.EXPECTED_SAMPLE_WIDTH*8:
-                status = WARNING_ID
+                status = annots.warning
                 message += MSG_AUDIO_SAMPWIDTH_WARN.format(sampwidth=sp)
 
             if fm > sppasDiagnosis.EXPECTED_FRAME_RATE:
-                status = WARNING_ID
+                status = annots.warning
                 message += MSG_AUDIO_FRAMERATE_WARN.format(framerate=fm)
 
         # test US-ASCII chars
         if all(ord(x) < 128 for x in filename) is False:
-            status = WARNING_ID
+            status = annots.warning
             message += MSG_FILE_NON_ASCII
 
         if " " in filename:
-            status = WARNING_ID
+            status = annots.warning
             message += MSG_FILE_WHITESPACE
 
         # test whitespace
-        if status == ERROR_ID:
+        if status == annots.error:
             message = MSG_INVALID + message
-        elif status == WARNING_ID:
+        elif status == annots.warning:
             message = MSG_ADMIT + message
         else:
             message = MSG_VALID
@@ -204,7 +206,7 @@ class sppasDiagnosis(object):
         :returns: tuple with (status identifier, message)
 
         """
-        status = OK_ID
+        status = annots.ok
         message = MSG_VALID
 
         # test encoding
@@ -212,20 +214,21 @@ class sppasDiagnosis(object):
             f = codecs.open(filename, "r", sg.__encoding__)
             f.close()
         except UnicodeDecodeError:
-            message = MSG_INVALID + MSG_FILE_ENCODING.format(encoding=sg.__encoding__)
-            return ERROR_ID, message
+            message = MSG_INVALID + \
+                      MSG_FILE_ENCODING.format(encoding=sg.__encoding__)
+            return annots.error, message
         except Exception as e:
             message = MSG_INVALID + str(e)
-            return ERROR_ID, message
+            return annots.error, message
 
         # test US_ASCII in filename
         if all(ord(x) < 128 for x in filename) is False:
             message = MSG_ADMIT + MSG_FILE_NON_ASCII
-            return WARNING_ID, message
+            return annots.warning, message
 
         # test whitespace in filename
         if " " in filename:
             message = MSG_ADMIT + MSG_FILE_WHITESPACE
-            return WARNING_ID, message
+            return annots.warning, message
 
         return status, message

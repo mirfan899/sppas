@@ -230,12 +230,9 @@ class sppasRW(object):
         trs_rw.set_meta('file_name', os.path.basename(self.__filename))
         trs_rw.set_meta('file_path', os.path.dirname(self.__filename))
         trs_rw.set_meta('file_ext', os.path.splitext(self.__filename)[1])
-        now = datetime.now().strftime("%Y-%M-%d %H:%M")
-        trs_rw.set_meta('file_write_date', "{:s}".format(now))
+        trs_rw.set_meta('file_write_date', "{:s}".format(sppasTime().now))
         file_version = int(trs_rw.get_meta("file_version", "0")) + 1
         trs_rw.set_meta('file_version', str(file_version))
-        file_created_date = trs_rw.get_meta("file_created_date", now)
-        trs_rw.set_meta('file_created_date', file_created_date)
 
         try:
             trs_rw.write(self.__filename)

@@ -32,15 +32,14 @@
     ~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import datetime
 import codecs
 import logging
 import os
 
 from sppas.src.config import sg
+from sppas.src.config import annots
 from sppas.src.config import annotations_translation
-
-from . import OK_ID, INFO_ID, WARNING_ID, IGNORE_ID, ERROR_ID
+from sppas.src.utils.datatype import sppasTime
 
 # ----------------------------------------------------------------------------
 
@@ -70,18 +69,19 @@ MSG_REPORT = _(":INFO 1054: ")
 
 
 class sppasLog(object):
-    """
+    """A log file utility class dedicated to automatic annotations.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      A log file utility class.
 
     Class to manage the SPPAS automatic annotations log file, which is also
     called the "Procedure Outcome Report".
 
     """
+
     STR_INDENT = " ... "
     STR_ITEM = "  - "
     MAX_INDENT = 10
@@ -103,31 +103,30 @@ class sppasLog(object):
 
     def close(self):
         """Close the current output stream."""
-        
         self.logfp.close()
 
     # ----------------------------------------------------------------------
 
     def create(self, filename):
         """Create and open a new output stream.
-        
+
         :param filename: (str) Output filename
-        
+
         """
         try:
             self.close()
         except:
             pass
-        
+
         self.logfp = codecs.open(filename, 'w', sg.__encoding__)
 
     # ----------------------------------------------------------------------
 
     def open(self, filename):
         """Open an existing file and set the output stream.
-        
+
         :param filename: (str) Output filename
-        
+
         """
         try:
             self.close()
@@ -143,13 +142,15 @@ class sppasLog(object):
     def print_step(self, step_number):
         """Print a step name in the output stream from its number.
 
-        :param step_number: (1..N) Number of an annotation defined in a sppasParam instance.
+        :param step_number: (1..N) Number of an annotation defined in a
+        sppasParam instance.
 
         """
         try:
             self.logfp.seek(0, 2)  # force to write at the end of the file
             self.print_separator()
-            self.logfp.write(' '*24 + self.parameters.get_step_name(step_number))
+            self.logfp.write(' '*24 +
+                             self.parameters.get_step_name(step_number))
             self.print_newline()
             self.print_separator()
         except Exception as e:
@@ -161,8 +162,13 @@ class sppasLog(object):
         """Print a message at the end of the current output stream.
 
         :param  message: (str) text to print
-        :param  indent: (int) is the number of indentation to apply to the message
-        :param  status: (int) 0 means OK, 1 means WARNING, 2 means IGNORED, and
+        :param  indent: (int) is the number of indentation to apply to
+        the message
+        :param  status: (int)
+
+        0 means OK,
+        1 means WARNING,
+        2 means IGNORED, and
         -1 value means ERROR.
 
         """
@@ -193,7 +199,6 @@ class sppasLog(object):
 
     def print_newline(self):
         """Print a carriage return in the output stream."""
-
         try:
             self.logfp.write('\n')
         except Exception:
@@ -203,7 +208,6 @@ class sppasLog(object):
 
     def print_separator(self):
         """Print a line in the output stream."""
-
         try:
             self.logfp.write('-'*78)
             self.print_newline()
@@ -216,7 +220,8 @@ class sppasLog(object):
         """Print the statistics values in the output stream for a given step.
 
         :param step_number: (1..N)
-        :param value: (str) A statistic value. Instead, print the status (enabled or disabled).
+        :param value: (str) A statistic value.
+        Instead, print the status (enabled or disabled).
 
         """
         try:
@@ -225,7 +230,8 @@ class sppasLog(object):
                     value = MSG_ENABLED
                 else:
                     value = MSG_DISABLED
-            self.print_item(self.parameters.get_step_name(step_number), str(value))
+            self.print_item(self.parameters.get_step_name(step_number),
+                            str(value))
         except Exception as e:
             logging.info(str(e))
 
@@ -253,7 +259,6 @@ class sppasLog(object):
 
     def print_header(self):
         """Print the parameters information in the output stream."""
-
         self.logfp.seek(0, 2)  # write at the end of the file
         self.print_message(sg.__name__ + ' ' +
                            MSG_VERSION + ' ' +
@@ -270,20 +275,21 @@ class sppasLog(object):
 
     def print_annotations_header(self):
         """Print the parameters information in the output stream."""
-
         self.print_message(' '*24 + MSG_REPORT)
         self.print_newline()
         self.print_message(' '*24 + MSG_AUTO_ANNS)
         self.print_separator()
         self.print_newline()
 
-        self.print_message(MSG_DATE + ': ' + str(datetime.datetime.now()))
+        self.print_message(MSG_DATE + ': ' + sppasTime().now)
         self.print_message(MSG_LANGUAGES + ': ')
         for i in range(self.parameters.get_step_numbers()):
             if self.parameters.get_lang(i) is not None:
-                self.print_item(self.parameters.get_step_name(i), self.parameters.get_lang(i))
+                self.print_item(self.parameters.get_step_name(i),
+                                self.parameters.get_lang(i))
             else:
-                self.print_item(self.parameters.get_step_name(i), "---")
+                self.print_item(self.parameters.get_step_name(i),
+                                "---")
         self.print_newline()
 
         self.print_message(MSG_SEL_FILES + ': ')
@@ -296,7 +302,9 @@ class sppasLog(object):
             self.print_stat(i)
         self.print_newline()
 
-        self.print_message(MSG_FILE_EXT + ': ' + self.parameters.get_output_format())
+        self.print_message(MSG_FILE_EXT +
+                           ': ' +
+                           self.parameters.get_output_format())
         self.print_newline()
 
     # ----------------------------------------------------------------------
@@ -313,19 +321,19 @@ class sppasLog(object):
 
         status_id = int(status_id)
 
-        if status_id == OK_ID:
+        if status_id == annots.ok:
             return MSG_STATUS_OK
 
-        if status_id == WARNING_ID:
+        if status_id == annots.warning:
             return MSG_STATUS_WARNING
 
-        if status_id == IGNORE_ID:
+        if status_id == annots.ignore:
             return MSG_STATUS_IGNORE
 
-        if status_id == INFO_ID:
+        if status_id == annots.info:
             return MSG_STATUS_INFO
 
-        if status_id == ERROR_ID:
+        if status_id == annots.error:
             return MSG_STATUS_ERROR
 
         return ""

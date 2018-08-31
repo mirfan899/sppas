@@ -34,6 +34,7 @@
 
 """
 from sppas.src.config import symbols
+from sppas.src.config import annots
 from sppas.src.config import annotations_translation
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
@@ -44,7 +45,6 @@ from sppas.src.anndata import sppasTag
 from sppas.src.anndata import sppasLabel
 from sppas.src.utils.makeunicode import sppasUnicode
 
-from .. import WARNING_ID
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasFindTier
 from ..annotationsexc import AnnotationOptionError
@@ -207,7 +207,7 @@ class sppasSyll(sppasBaseAnnotation):
                                         syllables)
             else:
                 self.print_message(MSG_INVALID.format(interval),
-                                   indent=2, status=WARNING_ID)
+                                   indent=2, status=annots.warning)
 
         return syllables
 
@@ -302,7 +302,7 @@ class sppasSyll(sppasBaseAnnotation):
             intervals = trs_input.find(self._options['tiername'])
             if intervals is None:
                 self.print_message(MSG_NO_TIER.format(tiername=self._options['tiername']),
-                                   indent=2, status=WARNING_ID)
+                                   indent=2, status=annots.warning)
             else:
                 tier_syll_int = self.convert(tier_input, intervals)
                 tier_syll_int.set_name("SyllAlign-Intervals")

@@ -31,15 +31,14 @@
     src.annotations.baseannot.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Base class for any automatic annotations integrated into SPPAS.
-
 """
 import logging
 import os.path
 
+from sppas.src.config import annots
 from sppas.src.config import annotations_translation
 from sppas.src.utils.makeunicode import u
-from . import ERROR_ID, WARNING_ID, INFO_ID
+
 from .diagnosis import sppasDiagnosis
 
 # ---------------------------------------------------------------------------
@@ -56,21 +55,21 @@ MSG_ANN_FILE = (_(":INFO 1056: "))
 
 
 class sppasBaseAnnotation(object):
-    """SPPAS Base class of any automatic annotation.
+    """Base class for any automatic annotations integrated into SPPAS.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
 
     def __init__(self, logfile=None, name="Annotation"):
         """Base class for any SPPAS automatic annotation.
 
-        :param logfile: (sppasLog) 
-        
+        :param logfile: (sppasLog)
+
         """
         # The public name of the automatic annotation
         self.name = name
@@ -90,10 +89,10 @@ class sppasBaseAnnotation(object):
 
     def get_option(self, key):
         """Return the option value of a given key or raise KeyError.
-        
+
         :param key: (str) Return the value of an option, or None.
         :raises: KeyError
-        
+
         """
         return self._options[key]
 
@@ -115,21 +114,23 @@ class sppasBaseAnnotation(object):
         :param message: (str) The message to communicate
         :param indent: (int) Shift the message with indents
         :param status: (int) A status identifier
-        
+
         """
         message = u(message)
         if self.logfile:
-            self.logfile.print_message(message, indent=indent, status=status)
+            self.logfile.print_message(message,
+                                       indent=indent,
+                                       status=status)
 
         elif len(message) > 0:
             if status is None:
                 logging.info(message)
             else:
-                if status == INFO_ID:
+                if status == annots.info:
                     logging.info(message)
-                elif status == WARNING_ID:
+                elif status == annots.warning:
                     logging.warning(message)
-                elif status == ERROR_ID:
+                elif status == annots.error:
                     logging.error(message)
                 else:
                     logging.debug(message)
@@ -137,7 +138,7 @@ class sppasBaseAnnotation(object):
     # -----------------------------------------------------------------------
 
     def print_filename(self, filename, status=None):
-        """Print the annotation name that is applied on a filename in the user log.
+        """Print the annotation name applied on a filename in the user log.
 
         :param filename: (str) Name of the file to annotate.
         :param status: (int) 1-4 value or None
@@ -145,7 +146,9 @@ class sppasBaseAnnotation(object):
         """
         if self.logfile:
             fn = os.path.basename(filename)
-            self.print_message(MSG_ANN_FILE.format(fn), indent=1, status=status)
+            self.print_message(MSG_ANN_FILE.format(fn),
+                               indent=1,
+                               status=status)
         else:
             logging.info(MSG_ANN_FILE.format(filename))
 
@@ -153,10 +156,20 @@ class sppasBaseAnnotation(object):
 
     def print_options(self):
         """Print the list of options in the user log."""
-        
-        self.print_message(MSG_OPTIONS + ": ", indent=2, status=None)
+        if self.logfile:
+            self.print_message(MSG_OPTIONS + ": ",
+                               indent=2,
+                               status=None)
+        else:
+            logging.info(MSG_OPTIONS)
+
         for k, v in self._options.items():
-            self.print_message(" - {!s:s}: {!s:s}".format(k, v), indent=3, status=None)
+            if self.logfile:
+                self.print_message(" - {!s:s}: {!s:s}".format(k, v),
+                                   indent=3,
+                                   status=None)
+            else:
+                logging.info("    - {!s:s}: {!s:s}".format(k, v))
 
     # -----------------------------------------------------------------------
 
@@ -164,11 +177,22 @@ class sppasBaseAnnotation(object):
         """Print the diagnosis of a list of files in the user log.
 
         :param filenames: (list) List of files.
-        
+
         """
-        self.print_message(MSG_DIAGNOSIS + ": ", indent=2, status=None)
+        if self.logfile:
+            self.print_message(MSG_DIAGNOSIS + ": ",
+                               indent=2,
+                               status=None)
+        else:
+            logging.info(MSG_DIAGNOSIS)
+
         for filename in filenames:
             if filename is not None:
                 fn = os.path.basename(filename)
                 (s, m) = sppasDiagnosis.check_file(filename)
-                self.print_message(" - {!s:s}: {!s:s}".format(fn, m), indent=3, status=None)
+                if self.logfile:
+                    self.print_message(" - {!s:s}: {!s:s}".format(fn, m),
+                                       indent=3,
+                                       status=None)
+                else:
+                    logging.info("    - {!s:s}: {!s:s}".format(fn, m))

@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
 annotations: SPPAS Automatic annotations.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :author:       Brigitte Bigi
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -43,32 +43,18 @@ annotations: SPPAS Automatic annotations.
 # from .Intsint import sppasIntsint
 #
 
-# from .TextNorm import sppasTextNorm
-# from .Phon import sppasPhon
-# from .Syll import sppasSyll
-# from .TGA import sppasTGA
-
-# ---------------------------------------------------------------------------
-# Default output extension:
-
-DEFAULT_OUTPUT_EXTENSION = ".xra"
-
-# ---------------------------------------------------------------------------
-# Annotation status, mainly used for log:
-
-ERROR_ID = -1
-INFO_ID = 3
-IGNORE_ID = 2
-WARNING_ID = 1
-OK_ID = 0
+from .TextNorm import sppasTextNorm
+from .Phon import sppasPhon
+from .Syll import sppasSyll
+from .TGA import sppasTGA
 
 # ---------------------------------------------------------------------------
 #
 __all__ = (
 #     'sppasAlign',
 #     'sppasIntsint',
-#      'sppasPhon',
-#      'sppasSyll',
-#      'sppasTGA',
-#      'sppasTextNorm'
+      'sppasPhon',
+      'sppasSyll',
+      'sppasTGA',
+      'sppasTextNorm'
 )

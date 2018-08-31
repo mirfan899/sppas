@@ -32,48 +32,48 @@
     src.annotations.Intsint
     ~~~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      develop@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      develop@sppas.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    INTSINT is an acronym for INternational Transcription System for INTonation.
-    It was originally developed by Daniel Hirst in his 1987 thesis as a
-    prosodic equivalent of the International Phonetic Alphabet, and the
-    INTSINT alphabet was subsequently used in Hirst & Di Cristo (eds) 1998
-    in just over half of the chapters.
+INTSINT is an acronym for INternational Transcription System for INTonation.
+It was originally developed by Daniel Hirst in his 1987 thesis as a
+prosodic equivalent of the International Phonetic Alphabet, and the
+INTSINT alphabet was subsequently used in Hirst & Di Cristo (eds) 1998
+in just over half of the chapters.
 
-    INTSINT codes the intonation of an utterance by means of an alphabet of
-    8 discrete symbols constituting a surface phonological representation
-    of the intonation:
+INTSINT codes the intonation of an utterance by means of an alphabet of
+8 discrete symbols constituting a surface phonological representation
+of the intonation:
 
-        T (Top),
-        H (Higher),
-        U (Upstepped),
-        S (Same),
-        M (mid),
-        D (Downstepped),
-        L (Lower),
-        B (Bottom).
+    T (Top),
+    H (Higher),
+    U (Upstepped),
+    S (Same),
+    M (mid),
+    D (Downstepped),
+    L (Lower),
+    B (Bottom).
 
-    These tonal symbols are considered phonological in that they represent
-    discrete categories and surface since each tonal symbol corresponds to
-    a directly observable property of the speech signal.
+These tonal symbols are considered phonological in that they represent
+discrete categories and surface since each tonal symbol corresponds to
+a directly observable property of the speech signal.
 
-    INTSINT is computed from a set of selected F0 anchors. The implementation
-    into SPPAS corresponds to the most recent version of the algorithm:
+INTSINT is computed from a set of selected F0 anchors. The implementation
+into SPPAS corresponds to the most recent version of the algorithm:
 
-        | De Looze, Céline & Hirst, Daniel. (2010).
-        | Integrating changes of register into automatic intonation analysis.
-        | Proceedings of the Fifth International Conference on Speech Prosody,
-        | Chicago
+    | De Looze, Céline & Hirst, Daniel. (2010).
+    | Integrating changes of register into automatic intonation analysis.
+    | Proceedings of the Fifth International Conference on Speech Prosody,
+    | Chicago
 
 """
 from .intsint import Intsint
 from .sppasintsint import sppasIntsint
 
-__all__ = [
-    Intsint,
-    sppasIntsint
-]
+__all__ = (
+    "Intsint",
+    "sppasIntsint"
+)

@@ -52,6 +52,7 @@ from .sglobal import sppasGlobalSettings
 from .sglobal import sppasPathSettings
 from .sglobal import sppasSymbolSettings
 from .sglobal import sppasSeparatorSettings
+from .sglobal import sppasAnnotationsSettings
 from .po import sppasTranslate
 
 # ---------------------------------------------------------------------------
@@ -62,6 +63,7 @@ sg = sppasGlobalSettings()
 paths = sppasPathSettings()
 symbols = sppasSymbolSettings()
 separators = sppasSeparatorSettings()
+annots = sppasAnnotationsSettings()
 
 # ---------------------------------------------------------------------------
 
@@ -96,6 +98,7 @@ __all__ = [
     "paths",
     "symbols",
     "separators",
+    "annots",
     "st",
     "anndata_translation",
     "annotations_translation",

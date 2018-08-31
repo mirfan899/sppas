@@ -37,11 +37,11 @@ import re
 
 from sppas.src.config import symbols
 from sppas.src.config import separators
+from sppas.src.config import annots
 from sppas.src.utils.makeunicode import sppasUnicode, u
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.resources.dictpron import sppasDictPron
 
-from .. import ERROR_ID, WARNING_ID, OK_ID
 from .phonunk import sppasPhonUnk
 from .dagphon import sppasDAGPhonetizer
 
@@ -59,7 +59,7 @@ class sppasDictPhonetizer(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     Grapheme-to-phoneme conversion is a complex task, for which a number of
     diverse solutions have been proposed. It is a structure prediction task;
@@ -207,7 +207,7 @@ class sppasDictPhonetizer(object):
         for entry in tokens:
             entry = entry.strip()
             phon = self._pdict.get_unkstamp()
-            status = OK_ID
+            status = annots.ok
 
             # Enriched Orthographic Transcription Convention:
             # entry can be already in SAMPA.
@@ -220,7 +220,7 @@ class sppasDictPhonetizer(object):
                 phon = self.get_phon_entry(entry)
 
                 if phon == self._pdict.get_unkstamp():
-                    status = ERROR_ID
+                    status = annots.error
 
                     # A missing compound word?
                     if "-" in entry or "'" in entry or "_" in entry:
@@ -231,15 +231,15 @@ class sppasDictPhonetizer(object):
                             # ATTENTION: each part can have variants! must be decomposed.
                             self._dag_phon.variants = 4
                             phon = sppasUnicode(self._dag_phon.decompose(" ".join(_tabpron))).to_strip()
-                            status = WARNING_ID
+                            status = annots.warning
 
                     if phon == self._pdict.get_unkstamp() and phonunk is True:
                         try:
                             phon = self._phonunk.get_phon(entry)
-                            status = WARNING_ID
+                            status = annots.warning
                         except:
                             phon = self._pdict.get_unkstamp()
-                            status = ERROR_ID
+                            status = annots.error
 
             if len(phon) > 0:
                 tab.append((entry, phon, status))

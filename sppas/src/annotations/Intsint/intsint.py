@@ -33,6 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import math
 from ..annotationsexc import SmallSizeInputError
 
@@ -56,15 +57,16 @@ def linear(value):
 
 
 class Intsint(object):
-    """
+    """Provide optimal INTSINT coding for anchor points.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Provide optimal INTSINT coding for anchor points.
 
     """
+
     # parameters for data checking.
     MIN_F0 = 60  # (Hz)
     MAX_F0 = 600  # (Hz)
@@ -96,7 +98,6 @@ class Intsint(object):
 
     def __init__(self):
         """Create a new Intsint instance."""
-
         self.best_intsint = None
         self.best_estimate = None
 
@@ -120,7 +121,6 @@ class Intsint(object):
 
     def reset(self):
         """Fix all member to their initial value."""
-        
         self.best_intsint = None
         self.best_estimate = None
 
@@ -162,7 +162,8 @@ class Intsint(object):
     def init(self, momel_anchors):
         """Initialize INTSINT attributes from a list of targets.
 
-        :param momel_anchors: (list of tuple) List of time (in seconds) and target (Hz).
+        :param momel_anchors: (list of tuple) List of time
+        (in seconds) and anchors (Hz).
 
         """
         self.reset()
@@ -252,7 +253,7 @@ class Intsint(object):
 
         :param tone:
         :param last_anchor:
-        
+
         """
         estimated = ""
         if tone == "M":
@@ -262,15 +263,19 @@ class Intsint(object):
         elif tone == "T":
             estimated = self.top
         elif tone == "H":
-            estimated = last_anchor + (self.top - last_anchor) * Intsint.HIGHER
+            estimated = last_anchor + \
+                        (self.top - last_anchor) * Intsint.HIGHER
         elif tone == "U":
-            estimated = last_anchor + (self.top - last_anchor) * Intsint.UP
+            estimated = last_anchor + \
+                        (self.top - last_anchor) * Intsint.UP
         elif tone == "B":
             estimated = self.bottom
         elif tone == "L":
-            estimated = last_anchor - (last_anchor - self.bottom) * Intsint.LOWER
+            estimated = last_anchor - \
+                        (last_anchor - self.bottom) * Intsint.LOWER
         elif tone == "D":
-            estimated = last_anchor - (last_anchor - self.bottom) * Intsint.DOWN
+            estimated = last_anchor - \
+                        (last_anchor - self.bottom) * Intsint.DOWN
 
         return estimated
 
@@ -278,6 +283,7 @@ class Intsint(object):
 
     def recode(self):
         """Recode within the parameters space.
+
         mean +/- 50 Hz for key and [0.5..2.5 octaves] for range.
 
         """
@@ -297,7 +303,8 @@ class Intsint(object):
     def annotate(self, momel_anchors):
         """Provide optimal INTSINT coding for sequence of target points.
 
-        :param momel_anchors: (list of tuple) List of time (in seconds) and target (Hz).
+        :param momel_anchors: (list of tuple) List of time (in seconds)
+        and anchors (Hz).
 
         """
         if len(momel_anchors) < 2:

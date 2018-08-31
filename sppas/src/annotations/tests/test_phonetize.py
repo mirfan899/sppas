@@ -46,12 +46,12 @@ import os.path
 
 from sppas.src.config import paths
 from sppas.src.config import symbols
+from sppas.src.config import annots
 
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.anndata import sppasRW
 
-from .. import ERROR_ID, WARNING_ID, OK_ID
 from ..Phon.phonetize import sppasDictPhonetizer
 from ..Phon.dagphon import sppasDAGPhonetizer
 from ..Phon.phonunk import sppasPhonUnk
@@ -108,39 +108,39 @@ class TestDictPhon(unittest.TestCase):
 
         self.assertEqual([], self.grph.get_phon_tokens([' \n \t']))
 
-        self.assertEqual([('a', 'a', OK_ID)],
+        self.assertEqual([('a', 'a', annots.ok)],
                          self.grph.get_phon_tokens(['a']))
 
-        self.assertEqual([('gpf_1', SIL, OK_ID)],
+        self.assertEqual([('gpf_1', SIL, annots.ok)],
                          self.grph.get_phon_tokens(['gpf_1']))
 
         self.assertEqual([], self.grph.get_phon_tokens(['gpd_1']))
 
-        self.assertEqual([('a', 'a', OK_ID), ('b', 'b', OK_ID)],
+        self.assertEqual([('a', 'a', annots.ok), ('b', 'b', annots.ok)],
                          self.grph.get_phon_tokens(['a', 'b']))
 
-        self.assertEqual([('a-a', 'a-a', WARNING_ID), ('b', 'b', OK_ID)],
+        self.assertEqual([('a-a', 'a-a', annots.warning), ('b', 'b', annots.ok)],
                          self.grph.get_phon_tokens(['a-a', 'b']))
 
-        self.assertEqual([('a-', 'a', WARNING_ID)],
+        self.assertEqual([('a-', 'a', annots.warning)],
                          self.grph.get_phon_tokens(['a-']))
 
-        self.assertEqual([('A', 'a', OK_ID), ('B', 'b', OK_ID)],
+        self.assertEqual([('A', 'a', annots.ok), ('B', 'b', annots.ok)],
                          self.grph.get_phon_tokens(['A', 'B']))
 
-        self.assertEqual([('a', 'a', OK_ID), ('aa', 'a-a', WARNING_ID)],
+        self.assertEqual([('a', 'a', annots.ok), ('aa', 'a-a', annots.warning)],
                          self.grph.get_phon_tokens(['a', 'aa']))
 
-        self.assertEqual([('a', 'a', OK_ID), ('aa', symbols.unk, ERROR_ID)],
+        self.assertEqual([('a', 'a', annots.ok), ('aa', symbols.unk, annots.error)],
                          self.grph.get_phon_tokens(['a', 'aa'], phonunk=False))
 
-        self.assertEqual([('a', 'a', OK_ID), ('d', symbols.unk, ERROR_ID)],
+        self.assertEqual([('a', 'a', annots.ok), ('d', symbols.unk, annots.error)],
                          self.grph.get_phon_tokens(['a', 'd']))
 
-        self.assertEqual([('/a/', 'a', OK_ID), ('d', symbols.unk, ERROR_ID)],
+        self.assertEqual([('/a/', 'a', annots.ok), ('d', symbols.unk, annots.error)],
                          self.grph.get_phon_tokens(['/a/', 'd']))
 
-        self.assertEqual([('/A-a/', 'A-a', OK_ID), ('d', symbols.unk, ERROR_ID)],
+        self.assertEqual([('/A-a/', 'A-a', annots.ok), ('d', symbols.unk, annots.error)],
                          self.grph.get_phon_tokens(['/A-a/', 'd']))
 
     # -----------------------------------------------------------------------

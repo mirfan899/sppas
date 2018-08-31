@@ -31,6 +31,31 @@
     src.annotations.cfgparser.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+"""
+from collections import OrderedDict
+try:  # python 3
+    from configparser import ConfigParser as SafeConfigParser
+except ImportError:  # python 2
+    from ConfigParser import SafeConfigParser
+
+from sppas.src.structs.lang import sppasLangResource
+from sppas.src.structs.baseoption import sppasOption
+from sppas.src.utils.makeunicode import u
+
+from .annotationsexc import AnnotationSectionConfigFileError
+
+# ----------------------------------------------------------------------------
+
+
+class sppasAnnotationConfigParser(object):
+    """Read an automatic annotation configuration file.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
     A config file consists of one or more named sections, each of which can
     contain individual options with names and values.
 
@@ -53,33 +78,9 @@
         | option1 = value1
         | option2 = value2
 
-"""
-from collections import OrderedDict
-try:  # python 3
-    from configparser import ConfigParser as SafeConfigParser
-except ImportError:  # python 2
-    from ConfigParser import SafeConfigParser
-
-from sppas.src.structs.lang import sppasLangResource
-from sppas.src.structs.baseoption import sppasOption
-from sppas.src.utils.makeunicode import u
-from .annotationsexc import AnnotationSectionConfigFileError
-
-# ----------------------------------------------------------------------------
-
-
-class sppasAnnotationConfigParser(object):
-    """
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      develop@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Class to read an annotation configuration file.
-
     The required section "Configuration" includes an id, a name and a
     description, as for example:
-    
+
         | [Configuration]
         | id:    annotationid
         | name:  The Annotation Name
@@ -88,7 +89,7 @@ class sppasAnnotationConfigParser(object):
     Then, a set of sections with name starting by "Resource" can be defined,
     with the relative path to resource directory, the type (file or dir) and
     the extension, as for example:
-        
+
         | [Resource]
         | path:  vocab
         | type:  file
@@ -96,7 +97,7 @@ class sppasAnnotationConfigParser(object):
 
     Finally, a set of sections with name starting by "Option" can be appended,
     as follow:
-        
+
         | [Option1]
         | id:    optid
         | type:  int
@@ -104,9 +105,9 @@ class sppasAnnotationConfigParser(object):
         | text:  Explain what this option do here.
 
     """
-    def __init__(self):
-        """Creates a new instance."""
 
+    def __init__(self):
+        """Create a new sppasAnnotationConfigParser instance."""
         self._config = OrderedDict()
         self._resources = list()
         self._options = list()
@@ -116,7 +117,6 @@ class sppasAnnotationConfigParser(object):
 
     def reset(self):
         """Set all members to their default value."""
-
         self._config = OrderedDict()
         self._resources = list()
         self._options = list()
@@ -125,21 +125,18 @@ class sppasAnnotationConfigParser(object):
 
     def get_config(self):
         """Return the configuration dictionary."""
-        
         return self._config
 
     # ------------------------------------------------------------------------
 
     def get_resources(self):
         """Return the list of language resources."""
-        
         return self._resources
 
     # ------------------------------------------------------------------------
 
     def get_options(self):
         """Return the list of options."""
-        
         return self._options
 
     # ------------------------------------------------------------------------
@@ -170,22 +167,24 @@ class sppasAnnotationConfigParser(object):
     # ------------------------------------------------------------------------
 
     def _parse(self):
-
         for section_name in self._parser.sections():
 
             if section_name == "Configuration":
                 self._parse_config(self._parser.items(section_name))
 
             if section_name.startswith("Resource"):
-                self._resources.append(sppasAnnotationConfigParser._parse_resource(self._parser.items(section_name)))
+                self._resources.append(
+                    sppasAnnotationConfigParser._parse_resource(
+                        self._parser.items(section_name)))
 
             if section_name.startswith("Option"):
-                self._options.append(sppasAnnotationConfigParser._parse_option(self._parser.items(section_name)))
+                self._options.append(
+                    sppasAnnotationConfigParser._parse_option(
+                        self._parser.items(section_name)))
 
     # ------------------------------------------------------------------------
 
     def _parse_config(self, items):
-
         for name, value in items:
             self._config[name] = u(value)
 
@@ -193,7 +192,6 @@ class sppasAnnotationConfigParser(object):
 
     @staticmethod
     def _parse_resource(items):
-
         rtype = ""
         rpath = ""
         rname = ""
@@ -216,7 +214,6 @@ class sppasAnnotationConfigParser(object):
 
     @staticmethod
     def _parse_option(items):
-
         oid = ""
         otype = ""
         ovalue = ""

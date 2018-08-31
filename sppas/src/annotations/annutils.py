@@ -30,11 +30,10 @@
         ---------------------------------------------------------------------
 
     src.annotations.annutils.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Utility classes for annotations.
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import os
 import shutil
 
@@ -45,6 +44,7 @@ from sppas.src.utils.fileutils import sppasFileUtils
 
 def fix_audioinput(inputaudioname):
     """Fix the audio file name that will be used.
+
     An only-ascii-based file name without whitespace is set if the
     current audio file name does not fit in these requirements.
 
@@ -84,4 +84,3 @@ def fix_workingdir(inputaudio=""):
 
     os.mkdir(workdir)
     return workdir
-

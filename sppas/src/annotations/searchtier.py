@@ -31,8 +31,6 @@
     src.annotations.searchtier.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Search tiers in a Transcription for automatic annotations.
-
 """
 from .annotationsexc import NoInputError
 
@@ -40,15 +38,16 @@ from .annotationsexc import NoInputError
 
 
 class sppasFindTier(object):
-    """
+    """Search for tiers in a sppasTranscription.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      SPPAS tier finder.
 
     """
+
     def __init__(self):
         pass
 
@@ -186,7 +185,8 @@ class sppasFindTier(object):
 
         """
         for tier in trs:
-            if "align" in tier.get_name().lower() and "phon" in tier.get_name().lower():
+            if "align" in tier.get_name().lower() and \
+                    "phon" in tier.get_name().lower():
                 return tier
 
         raise NoInputError
@@ -201,7 +201,8 @@ class sppasFindTier(object):
 
         """
         for tier in trs:
-            if "align" in tier.get_name().lower() and "token" in tier.get_name().lower():
+            if "align" in tier.get_name().lower() and \
+                    "token" in tier.get_name().lower():
                 return tier
 
         raise NoInputError
@@ -216,7 +217,8 @@ class sppasFindTier(object):
 
         """
         for tier in trs:
-            if "align" in tier.get_name().lower() and "syll" in tier.get_name().lower():
+            if "align" in tier.get_name().lower() and \
+                    "syll" in tier.get_name().lower():
                 return tier
 
         # for backward compatibility:
@@ -250,13 +252,13 @@ class sppasFindTier(object):
 
 
 class sppasSearchTier(object):
-    """
+    """SPPAS tier finder (deprecated).
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      SPPAS tier finder.
 
     """
 

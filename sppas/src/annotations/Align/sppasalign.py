@@ -39,6 +39,7 @@ import glob
 import logging
 
 from sppas.src.config import paths
+from sppas.src.config import annots
 from sppas.src.config import annotations_translation
 import sppas.src.annotationdata.aio
 from sppas.src.annotationdata import Transcription
@@ -49,7 +50,6 @@ from sppas.src.annotationdata.aio.utils import gen_id
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.models.acm.modelmixer import sppasModelMixer
 
-from .. import ERROR_ID, WARNING_ID, INFO_ID
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasSearchTier
 from ..annotationsexc import AnnotationOptionError
@@ -150,7 +150,9 @@ class sppasAlign(sppasBaseAnnotation):
                 model_mixer.mix(output_dir, gamma=0.6)
                 model = output_dir
             except Exception as e:
-                self.print_message(MSG_MODEL_L1_FAILED.format(str(e)), indent=3, status=WARNING_ID)
+                self.print_message(MSG_MODEL_L1_FAILED.format(str(e)),
+                                   indent=3,
+                                   status=annots.warning)
 
         # Map phoneme names from model-specific to SAMPA and vice-versa
         mapping_filename = os.path.join(model, "monophones.repl")
@@ -313,11 +315,15 @@ class sppasAlign(sppasBaseAnnotation):
             try:
                 msg = self.alignio.segment_track(track, diralign)
                 if len(msg) > 0:
-                    self.print_message(msg, indent=3, status=INFO_ID)
+                    self.print_message(msg, indent=3, status=annots.info)
 
             except Exception as e:
-                self.print_message(MSG_ALIGN_FAILED.format(name=self.alignio.get_aligner()), indent=3, status=ERROR_ID)
-                self.print_message(str(e), indent=4, status=INFO_ID)
+                self.print_message(MSG_ALIGN_FAILED.format(name=self.alignio.get_aligner()),
+                                   indent=3,
+                                   status=annots.error)
+                self.print_message(str(e),
+                                   indent=4,
+                                   status=annots.info)
 
                 # Execute BasicAlign
                 if self._options['basic'] is True:
@@ -390,7 +396,7 @@ class sppasAlign(sppasBaseAnnotation):
         """
         token_align = trs.Find("TokensAlign")
         if token_align is None:
-            self.print_message(MSG_NO_TOKENS_ALIGN, indent=2, status=WARNING_ID)
+            self.print_message(MSG_NO_TOKENS_ALIGN, indent=2, status=annots.warning)
             return trs
 
         # PhnTokAlign tier
@@ -404,7 +410,7 @@ class sppasAlign(sppasBaseAnnotation):
                 self.print_message(
                     MSG_EXTRA_TIER.format(tiername="PhnTokAlign", message=str(e)), 
                     indent=2, 
-                    status=WARNING_ID)
+                    status=annots.warning)
 
         # Activity tier
         if self._options['activity'] is True or self._options['activityduration'] is True:
@@ -427,7 +433,7 @@ class sppasAlign(sppasBaseAnnotation):
                 self.print_message(
                     MSG_EXTRA_TIER.format(tiername="Activities", message=str(e)), 
                     indent=2, 
-                    status=WARNING_ID)
+                    status=annots.warning)
 
         return trs
 
@@ -492,7 +498,7 @@ class sppasAlign(sppasBaseAnnotation):
             toktier = sppasSearchTier.tokenization(trsinputtok)
         except Exception:   # IOError, AttributeError:
             toktier = None
-            self.print_message(MSG_TOKENS_DISABLED, indent=2, status=WARNING_ID)
+            self.print_message(MSG_TOKENS_DISABLED, indent=2, status=annots.warning)
 
         # Prepare data
         # -------------------------------------------------------------
