@@ -74,6 +74,7 @@ class sppasSyll(sppasBaseAnnotation):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, config_filename, logfile=None):
         """Create a new sppasSyll instance.
 
@@ -97,7 +98,9 @@ class sppasSyll(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def fix_options(self, options):
-        """Fix all options. Available options are:
+        """Fix all options.
+
+        Available options are:
 
             - usesintervals
             - usesphons
@@ -131,8 +134,8 @@ class sppasSyll(sppasBaseAnnotation):
     def set_usesintervals(self, mode):
         """Fix the usesintervals option.
 
-        :param mode: (bool) If mode is set to True, the syllabification operates
-        inside specific (given) intervals.
+        :param mode: (bool) If mode is set to True, the syllabification
+        operates inside specific (given) intervals.
 
         """
         self._options['usesintervals'] = mode
@@ -188,16 +191,21 @@ class sppasSyll(sppasBaseAnnotation):
 
         for interval in intervals:
 
-            # get the index of the phonemes containing the begin of the interval
-            start_phon_idx = phonemes.lindex(interval.get_lowest_localization())
+            # get the index of the phonemes containing the begin
+            # of the interval
+            start_phon_idx = phonemes.lindex(
+                interval.get_lowest_localization())
             if start_phon_idx == -1:
-                start_phon_idx = phonemes.mindex(interval.get_lowest_localization(), bound=-1)
+                start_phon_idx = phonemes.mindex(
+                    interval.get_lowest_localization(),
+                    bound=-1)
 
             # get the index of the phonemes containing the end of the interval
             end_phon_idx = phonemes.rindex(interval.get_highest_localization())
             if end_phon_idx == -1:
-                end_phon_idx = phonemes.mindex(interval.get_highest_localization(),
-                                               bound=1)
+                end_phon_idx = phonemes.mindex(
+                    interval.get_highest_localization(),
+                    bound=1)
 
             # syllabify within the interval
             if start_phon_idx != -1 and end_phon_idx != -1:
@@ -220,7 +228,8 @@ class sppasSyll(sppasBaseAnnotation):
 
         """
         classes = sppasTier("SyllClassAlign")
-        classes.set_meta('syllabification_classes_of_tier', syllables.get_name())
+        classes.set_meta('syllabification_classes_of_tier',
+                         syllables.get_name())
 
         for syll in syllables:
             location = syll.get_location().copy()
@@ -273,8 +282,8 @@ class sppasSyll(sppasBaseAnnotation):
     def run(self, input_filename, output_filename=None):
         """Perform the Syllabification process.
 
-        :param input_filename: (str) Name of the input file with the aligned phonemes
-        :param output_filename: (str) Name of the resulting file with syllabification
+        :param input_filename: (str) Input file with the aligned phonemes
+        :param output_filename: (str) Resulting file with syllabification
 
         """
         self.print_filename(input_filename)
@@ -301,12 +310,15 @@ class sppasSyll(sppasBaseAnnotation):
         if self._options['usesintervals'] is True:
             intervals = trs_input.find(self._options['tiername'])
             if intervals is None:
-                self.print_message(MSG_NO_TIER.format(tiername=self._options['tiername']),
-                                   indent=2, status=annots.warning)
+                self.print_message(
+                    MSG_NO_TIER.format(tiername=self._options['tiername']),
+                    indent=2,
+                    status=annots.warning)
             else:
                 tier_syll_int = self.convert(tier_input, intervals)
                 tier_syll_int.set_name("SyllAlign-Intervals")
-                tier_syll_int.set_meta('syllabification_used_intervals', intervals.get_name())
+                tier_syll_int.set_meta('syllabification_used_intervals',
+                                       intervals.get_name())
                 trs_output.append(tier_syll_int)
                 if self._options['createclasses']:
                     t = self.make_classes(tier_syll_int)

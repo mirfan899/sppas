@@ -40,15 +40,16 @@ from .rules import Rules
 
 
 class Syllabifier(object):
-    """
+    """Syllabification of a sequence of phonemes.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Syllabification of a sequence of phonemes.
 
     """
+
     def __init__(self, rules_filename):
         """Create a new Syllabifier instance.
 
@@ -60,7 +61,7 @@ class Syllabifier(object):
         """
         self.rules = Rules(rules_filename)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def annotate(self, phonemes):
         """Return the syllable boundaries of a sequence of phonemes.
@@ -89,28 +90,36 @@ class Syllabifier(object):
             next_nucleus = Syllabifier._find_next_vowel(classes, nucleus+1)
             next_break = Syllabifier._find_next_break(classes, nucleus)
 
-            if next_break != -1 and (next_break < next_nucleus or next_nucleus == -1):
+            if next_break != -1 and \
+                    (next_break < next_nucleus or next_nucleus == -1):
                 # no rule to apply if the next event is a break.
-                # ie next break occurs before next nucleus or no next nucleus
+                # ie next break occurs before next nucleus or
+                # no next nucleus
                 syllables.append((start_syll, next_break-1))
 
             elif next_break == -1 and next_nucleus == -1:
-                # no rule to apply if current nucleus concerns the last syllable
+                # no rule to apply if current nucleus concerns
+                # the last syllable
                 end_syll = len(phonemes) - 1
                 syllables.append((start_syll, end_syll))
 
             else:
                 # apply the exception rule or the general one
-                end_syll = self._apply_class_rules(classes, nucleus, next_nucleus)
+                end_syll = self._apply_class_rules(classes,
+                                                   nucleus,
+                                                   next_nucleus)
                 # apply the specific rules on phonemes to shift the end
-                end_syll = self._apply_phon_rules(phonemes, end_syll, nucleus, next_nucleus)
+                end_syll = self._apply_phon_rules(phonemes,
+                                                  end_syll,
+                                                  nucleus,
+                                                  next_nucleus)
                 syllables.append((start_syll, end_syll))
 
             nucleus = next_nucleus
 
         return syllables
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def phonetize_syllables(phonemes, syllables):
@@ -132,7 +141,7 @@ class Syllabifier(object):
 
         return separators.syllables.join(str_syll)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def classes_phonetized(self, phonetized_syllable):
         """Return the classes of a phonetized syllable.
@@ -148,14 +157,13 @@ class Syllabifier(object):
 
         return separators.phonemes.join(c)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Private
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _fix_nucleus(classes, from_index):
         """Search for the next nucleus of a syllable."""
-
         next_nucleus = -1
         next_break = -1
         while next_break <= next_nucleus:
@@ -168,12 +176,11 @@ class Syllabifier(object):
             from_index = next_nucleus
         return next_nucleus
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _fix_start_syll(classes, end_previous, nucleus):
         """Search for the index of the first phoneme of the syllable."""
-
         # should not occur
         if end_previous == nucleus:
             return nucleus
@@ -188,7 +195,7 @@ class Syllabifier(object):
         # and the current nucleus
         return end_previous+1
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _find_next_vowel(classes, from_index):
@@ -207,7 +214,7 @@ class Syllabifier(object):
                 return i
         return -1
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _find_next_break(classes, from_index):
@@ -225,19 +232,21 @@ class Syllabifier(object):
                 return i
         return -1
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _apply_class_rules(self, classes, v1, v2):
         """Apply the syllabification rules between v1 and v2."""
-
         sequence = "".join(classes[v1:v2+1])
         return v1 + self.rules.get_class_rules_boundary(sequence)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _apply_phon_rules(self, phonemes, end_syll, v1, v2):
-        """Apply the specific phoneme-based syllabification rules between v1 and v2."""
+        """Apply the specific phoneme-based syllabification rules.
 
+        Applied between v1 and v2.
+
+        """
         _str = ""
         nb = v2-v1
         if nb > 1:

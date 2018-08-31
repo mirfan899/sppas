@@ -32,13 +32,6 @@
     src.annotations.rules.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    The rules we propose follow usual phonological statements for most of the
-    corpus. A configuration file indicates phonemes, classes and rules.
-    This file can be edited and modified to adapt the syllabification.
-
-    The syllable configuration file is a simple ASCII text file that the user
-    can change as needed.
-
 """
 from sppas.src.config import symbols
 from sppas.src.config import separators
@@ -56,7 +49,15 @@ class Rules(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
+    The rules we propose follow usual phonological statements for most of the
+    corpus. A configuration file indicates phonemes, classes and rules.
+    This file can be edited and modified to adapt the syllabification.
+
+    The syllable configuration file is a simple ASCII text file that the user
+    can change as needed.
+
     """
+
     BREAK_SYMBOL = "#"
 
     # -----------------------------------------------------------------------
@@ -79,7 +80,6 @@ class Rules(object):
 
     def reset(self):
         """Reset the set of rules."""
-
         self.general = dict()  # list of general rules
         self.general["VV"] = 0
         self.general["VXV"] = 0
@@ -135,6 +135,7 @@ class Rules(object):
 
     def get_class(self, phoneme):
         """Return the class identifier of the phoneme.
+
         If the phoneme is unknown, the break symbol is returned.
 
         :param phoneme: (str) A phoneme
@@ -162,7 +163,7 @@ class Rules(object):
         variable.
 
         :param phonemes: (str) Sequence of phonemes to syllabify
-        :returns: (int) boundary index or -1 if phonemes does not match any rule.
+        :returns: (int) boundary index or -1 if phonemes don't match any rule.
 
         """
         sp = sppasUnicode(phonemes)
