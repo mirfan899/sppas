@@ -210,7 +210,6 @@ class sppasLabel(object):
 
     def is_tagged(self):
         """Return False if no tag is set."""
-
         if self.__tags is None:
             return False
         if len(self.__tags) == 0:
@@ -270,7 +269,6 @@ class sppasLabel(object):
 
     def copy(self):
         """Return a deep copy of the label."""
-
         return copy.deepcopy(self)
 
     # -----------------------------------------------------------------------

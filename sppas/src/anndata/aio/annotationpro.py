@@ -41,8 +41,8 @@ from datetime import datetime
 import xml.etree.cElementTree as ET
 
 from sppas.src.config import sg
-from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.utils.datatype import bidict
 
 from ..media import sppasMedia
 from ..ann.annlocation import sppasLocation
@@ -174,17 +174,17 @@ class sppasANTX(sppasBaseIO):
         self._accept_overlaps = False
 
         # Information that are both used by AnnotationPro and another software tool
-        self._map_meta = sppasMapping()
-        self._map_meta.add('Id', 'id')
-        self._map_meta.add('Created', 'file_created_date')
-        self._map_meta.add('Modified', 'file_write_date')
-        self._map_meta.add('FileVersion', 'file_version')
-        self._map_meta.add('Author', 'file_author')
-        self._map_meta.add('Samplerate', 'media_sample_rate')
-        self._map_meta.add('IsSelected', 'tier_is_selected')
-        self._map_meta.add('IsClosed', 'tier_is_closed')
-        self._map_meta.add('Height', 'tier_height')
-        self._map_meta.add('Language', 'language_name_0')
+        self._map_meta = bidict()
+        self._map_meta['Id'] = 'id'
+        self._map_meta['Created'] = 'file_created_date'
+        self._map_meta['Modified'] = 'file_write_date'
+        self._map_meta['FileVersion'] = 'file_version'
+        self._map_meta['Author'] = 'file_author'
+        self._map_meta['Samplerate'] = 'media_sample_rate'
+        self._map_meta['IsSelected'] = 'tier_is_selected'
+        self._map_meta['IsClosed'] = 'tier_is_closed'
+        self._map_meta['Height'] = 'tier_height'
+        self._map_meta['Language'] = 'language_name_0'
 
     # -----------------------------------------------------------------------
 
@@ -228,11 +228,10 @@ class sppasANTX(sppasBaseIO):
         value = configuration_root.find(uri + 'Value')
 
         if key is not None and value is not None:
-            self._map_meta.set_reverse(False)
             new_key = key.text.replace(uri, "")
-            new_key = self._map_meta.map_entry(new_key)
             if value.text is not None:
-                self.set_meta(new_key, value.text.replace(uri, ""))
+                self.set_meta(self._map_meta.get(new_key, new_key),
+                              value.text.replace(uri, ""))
 
     # -----------------------------------------------------------------------
 
@@ -334,12 +333,11 @@ class sppasANTX(sppasBaseIO):
     def elt_to_meta(self, root, meta_object, uri, exclude_list=[]):
         """Add nodes of root in meta_object."""
 
-        self._map_meta.set_reverse(False)
         for node in root:
             if node.text is not None:
                 key = node.tag.replace(uri, '')
                 if key not in exclude_list:
-                    key = self._map_meta.map_entry(key)
+                    key = self._map_meta.get(key, key)
                     meta_object.set_meta(key, node.text)
 
                 if 'Color' in key:
@@ -430,7 +428,6 @@ class sppasANTX(sppasBaseIO):
     def _format_configuration(self, root):
         """Add 'Configuration' into the ElementTree."""
 
-        self._map_meta.set_reverse(True)
         now = datetime.now().strftime("%Y-%M-%d %H:%M")
 
         # File format version
@@ -442,22 +439,22 @@ class sppasANTX(sppasBaseIO):
 
         # FileVersion
         sppasANTX._add_configuration(root,
-                                     self._map_meta.map_entry("file_version"),
+                                     self._map_meta["file_version"],
                                      self.get_meta("file_version", "1"))
 
         # Samplerate
         sppasANTX._add_configuration(root,
-                                     self._map_meta.map_entry("media_sample_rate"),
+                                     self._map_meta["media_sample_rate"],
                                      self.get_meta("media_sample_rate", "44100"))
 
         # Created
         sppasANTX._add_configuration(root,
-                                     self._map_meta.map_entry("file_created_date"),
+                                     self._map_meta["file_created_date"],
                                      self.get_meta("file_created_date", now))
 
         # Modified
         sppasANTX._add_configuration(root,
-                                     self._map_meta.map_entry("file_write_date"),
+                                     self._map_meta["file_write_date"],
                                      self.get_meta("file_write_date", now))
 
     # -----------------------------------------------------------------------
@@ -542,7 +539,6 @@ class sppasANTX(sppasBaseIO):
 
         segment_root = ET.SubElement(root, 'Segment')
         is_point = tier.is_point()
-        self._map_meta.set_reverse(True)
 
         # Write all the elements SPPAS has interpreted
         child_id = ET.SubElement(segment_root, 'Id')            # Id
@@ -593,12 +589,13 @@ class sppasANTX(sppasBaseIO):
                            'IsMarker': "false", 'Marker': None, 'RScript': None}
 
         # in SPPAS, the language can be defined at any level (trs, tier, annotation).
-        meta_key_language = self._map_meta.map_entry('Language')
-        elt_opt_segment['Language'] = tier.get_meta(meta_key_language, self.get_meta(meta_key_language, None))
+        meta_key_language = self._map_meta['Language']
+        elt_opt_segment['Language'] = tier.get_meta(meta_key_language,
+                                                    self.get_meta(meta_key_language, None))
 
         for key in elt_opt_segment:
             child = ET.SubElement(segment_root, key)
-            meta_key = self._map_meta.map_entry(key)
+            meta_key = self._map_meta.get(key, key)
             child.text = ann.get_meta(meta_key, elt_opt_segment[key])
 
     # -----------------------------------------------------------------------

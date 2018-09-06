@@ -40,8 +40,8 @@ from collections import OrderedDict
 import logging
 
 from sppas.src.config import sg
-from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.datatype import sppasTime
+from sppas.src.utils.datatype import bidict
 
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioFormatError
@@ -151,9 +151,9 @@ class sppasEAF(sppasBaseIO):
         self._accept_overlaps = False  # to be verified
 
         # Information that are both used by ELAN and another software tool
-        self._map_meta = sppasMapping()
-        self._map_meta.add('PARTICIPANT', 'speaker_name')
-        self._map_meta.add('ANNOTATOR', 'annotator_name')
+        self._map_meta = bidict()
+        self._map_meta['PARTICIPANT'] = 'speaker_name'
+        self._map_meta['ANNOTATOR'] = 'annotator_name'
 
         # ELAN only supports (and assumes) milliseconds.
         self.unit = 0.001
@@ -589,10 +589,11 @@ class sppasEAF(sppasBaseIO):
         tier = self.create_tier(tier_root.attrib['TIER_ID'])
 
         # meta information (required or optional)
-        self._map_meta.set_reverse(False)
-        for key in ['LINGUISTIC_TYPE_REF', 'DEFAULT_LOCALE', 'PARTICIPANT', 'ANNOTATOR', 'LANG_REF']:
+        for key in ['LINGUISTIC_TYPE_REF', 'DEFAULT_LOCALE', 'PARTICIPANT',
+                    'ANNOTATOR', 'LANG_REF']:
             if key in tier_root.attrib:
-                tier.set_meta(self._map_meta.map_entry(key), tier_root.attrib[key])
+                tier.set_meta(self._map_meta.get(key, key),
+                              tier_root.attrib[key])
 
         # get annotations
         if sppasEAF.__is_alignable_tier(tier_root) > 0:

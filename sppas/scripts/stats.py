@@ -31,7 +31,7 @@
         ---------------------------------------------------------------------
 
     scripts.stats.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~
 
     ... a script to estimates stats of a tier of an/several annotated file.
 
@@ -45,8 +45,8 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
+from sppas.src.anndata import sppasRW
 from sppas.src.config import sg
-import sppas.src.annotationdata.aio
 from sppas.src.presenters.tierstats import TierStats
 
 # ----------------------------------------------------------------------------
@@ -60,8 +60,10 @@ modeshelp += '  3 = Average duration,\n'
 modeshelp += '  4 = Median duration,\n'
 modeshelp += '  5 = Standard deviation duration.'
 
-parser = ArgumentParser(usage="%s -i file [options]" % os.path.basename(PROGRAM),
-                        description="... a script to estimates stats of a tier of an/several annotated file.")
+parser = ArgumentParser(usage="{:s} -i file [options]"
+                              "".format(os.path.basename(PROGRAM)),
+                        description="... a script to estimates stats of"
+                                    " a tier of an/several annotated file.")
 
 parser.add_argument("-i",
                     metavar="file",
@@ -98,11 +100,11 @@ if len(sys.argv) <= 1:
 args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
-# Extrac args
+# Extract args
 
-tieridx = args.t-1
-fileinput = args.i
-filename, fileextension = os.path.splitext(fileinput[0])
+tier_idx = args.t-1
+file_input = args.i
+filename, file_ext = os.path.splitext(file_input[0])
 
 ngram = args.n
 mode = args.s
@@ -119,19 +121,20 @@ else:
 # ----------------------------------------------------------------------------
 # Read data
 
-tiername = None
-tiers = []
-for trs in args.i:
+tier_name = None
+tiers = list()
+for file_input in args.i:
 
-    trsinput = sppas.src.annotationdata.aio.read(trs)
+    parser = sppasRW(file_input)
+    trs_input = parser.read()
 
-    if tieridx < 0 or tieridx > trsinput.GetSize():
+    if tier_idx < 0 or tier_idx > len(trs_input):
         print('Error: Bad tier number.')
         sys.exit(1)
 
-    tier = trsinput[tieridx]
-    if tiername is None:
-        tiername = tier.GetName().replace(' ', '_')
+    tier = trs_input[tier_idx]
+    if tier_name is None:
+        tier_name = tier.get_name().replace(' ', '_')
     tiers.append(tier)
 
 # ----------------------------------------------------------------------------
@@ -141,8 +144,14 @@ t = TierStats(tiers)
 t.set_ngram(ngram)
 
 ds = t.ds()
-title = ["filename", "tier", "annotation label"]
-stats = {}  # used just to get the list of keys
+occurrences = dict()
+total = dict()
+mean = dict()
+median = dict()
+stdev = dict()
+
+title = ["filename", "tier", "annotation tag"]
+stats = dict()  # used only to get the list of keys
 if 0 in mode or 1 in mode:
     occurrences = ds.len()
     title.append('occurrences')
@@ -171,13 +180,13 @@ if 0 in mode or 5 in mode:
 # ----------------------------------------------------------------------------
 # Format stats
 
-rowdata = list()
-rowdata.append(title)
+row_data = list()
+row_data.append(title)
 
 for i, key in enumerate(stats.keys()):
     if len(key) == 0:  # ignore empty label
         continue
-    row = [filename, tiername, key]
+    row = [filename, tier_name, key]
     if 0 in mode or 1 in mode:
         row.append(str(occurrences[key]))
     if 0 in mode or 2 in mode:
@@ -188,16 +197,21 @@ for i, key in enumerate(stats.keys()):
         row.append(str(round(median[key], 3)))
     if 0 in mode or 5 in mode:
         row.append(str(round(stdev[key], 3)))
-    rowdata.append(row)
+    row_data.append(row)
 
 # ----------------------------------------------------------------------------
 # Save stats
 if args.o:
-    fileoutput = args.o
+    file_output = args.o
 else:
-    fileoutput = filename + "-" + tiername + "-stats-" + str(ngram) + ".csv"
-with codecs.open(fileoutput, 'w', sg.__encoding__) as fp:
-    for row in rowdata:
+    file_output = filename + \
+                  "-" + \
+                  tier_name + \
+                  "-stats-" + \
+                  str(ngram) + \
+                  ".csv"
+with codecs.open(file_output, 'w', sg.__encoding__) as fp:
+    for row in row_data:
         s = ','.join(row)
         fp.write(s)
         fp.write('\n')

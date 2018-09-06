@@ -51,17 +51,18 @@ class TierStats(object):
 
     Map a tier into a dictionary where:
     
-        - key is a label
-        - value is the list of observed durations for this label
+        - key is a tag
+        - value is the list of observed durations of this tag in annotations
 
     """
 
     def __init__(self, tier=None, n=1, with_radius=0, with_alt=False):
         """Create a new TierStats instance.
 
-        :param tier: (either Tier or list of tiers)
+        :param tier: (either sppasTier or list of them)
         :param n: (int) n-gram value
-        :param with_radius: (int) 0 to use Midpoint, negative value to use R-, positive value to use R+
+        :param with_radius: (int) 0 to use Midpoint, negative value
+        to use R-, positive value to use R+
         :param with_alt: (bool) Use or not use of alternative labels
 
         """
@@ -78,7 +79,6 @@ class TierStats(object):
 
     def get_ngram(self):
         """Returns the n-gram value."""
-        
         return self._ngram
 
     # ------------------------------------------------------------------
@@ -96,14 +96,12 @@ class TierStats(object):
 
     def get_with_alt(self):
         """Return if alternative labels will be used or not."""
-
         return self._with_alt
 
     # ------------------------------------------------------------------
     
     def get_tier(self):
         """Return the tier to estimate stats."""
-        
         return self.tier
 
     # ------------------------------------------------------------------
@@ -175,7 +173,6 @@ class TierStats(object):
 
     def __tiers_to_tuple(self):
         """Return a list of tuples of label/duration pairs."""
-        
         tiers = self.tier
         if not isinstance(self.tier, list):
             tiers = [self.tier]
@@ -252,7 +249,7 @@ class TierStats(object):
         :returns: dictionary key=text, value=list of durations.
         
         """
-        d = {}
+        d = dict()
         for item in items:
             dur = sum([i[1] for i in item])
             text = " ".join([i[0] for i in item])

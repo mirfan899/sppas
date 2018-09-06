@@ -39,8 +39,52 @@ from .utilsexc import UtilsDataTypeError
 # ---------------------------------------------------------------------------
 
 
+class bidict(dict):
+    """A simple bidirectional dictionary.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      contact@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    Implements a 1:1 dictionary.
+    It implies that two keys can't have the same value.
+
+    >>> relation = bidict()
+    >>> relation['Alice'] = 'Bob'
+    >>> print(relation['Bob'])
+    >>> 'Alice'
+    >>> print(relation['Alice'])
+    >>> 'Bob'
+
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(bidict, self).__init__(*args, **kwargs)
+
+        # add all value=key in the dictionary
+        inverse = dict()
+        for key in self:
+            inverse[self[key]] = key
+        self.update(inverse)
+
+    def __setitem__(self, key, value):
+        if key in self:
+            del self[key]
+        super(bidict, self).__setitem__(key, value)
+        super(bidict, self).__setitem__(value, key)
+
+    def __delitem__(self, key):
+        value = self[key]
+        super(bidict, self).__delitem__(key)
+        super(bidict, self).__delitem__(value)
+
+# ---------------------------------------------------------------------------
+
+
 class sppasTime(object):
-    """Utility class to check date time.
+    """Utility class to represent date time with a string.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
