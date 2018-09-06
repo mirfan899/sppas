@@ -52,8 +52,7 @@ class SunauIO(sppasAudioPCM):
     """
     def __init__(self):
         """Constructor."""
-
-        sppasAudioPCM.__init__(self)
+        super(SunauIO, self).__init__()
 
     # ------------------------------------------------------------------------
 

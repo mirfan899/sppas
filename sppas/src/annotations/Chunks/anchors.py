@@ -70,7 +70,7 @@ class AnchorTier(Tier):
         :param name: (str) Name of the anchors tier
         
         """
-        Tier.__init__(self, name)
+        super(AnchorTier, self).__init__(name)
 
         self._duration = 0.
 

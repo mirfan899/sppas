@@ -72,7 +72,7 @@ class sppasIPUseg(sppasBaseAnnotation):
         messages to the user.
 
         """
-        sppasBaseAnnotation.__init__(self, logfile, "IPUs Segmentation")
+        super(sppasIPUseg, self).__init__(logfile, "IPUs Segmentation")
 
         self.ipusaudio = IPUsAudio(None)  # Find IPUs from an audio file
         self.ipustrs = IPUsTrs(None)      # Get IPUs from a transcription file

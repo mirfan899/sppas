@@ -68,7 +68,7 @@ class BasicAligner(BaseAligner):
         :param modeldir: (str) Name of the directory of the acoustic model
 
         """
-        BaseAligner.__init__(self, modeldir)
+        super(BasicAligner, self).__init__(modeldir)
         self._outext = DEFAULT_EXT_OUT
 
     # -----------------------------------------------------------------------

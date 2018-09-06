@@ -58,7 +58,7 @@ class sppasChannelVolume(sppasBaseVolume):
         :param win_len: (float) Window length to estimate the volume.
 
         """
-        sppasBaseVolume.__init__(self, win_len)
+        super(sppasChannelVolume, self).__init__(win_len)
 
         # Remember current position
         pos = channel.tell()

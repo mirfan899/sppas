@@ -83,7 +83,7 @@ class sppasRepet(sppasBaseAnnotation):
         must be ".stp" for stop-words and ".lem" for lemmas (case-sensitive)!
 
         """
-        sppasBaseAnnotation.__init__(self, logfile, "Repetitions")
+        super(sppasRepet, self).__init__(logfile, "Repetitions")
 
         # Members
         self._use_lemmatize = True   # Lemmatize the input

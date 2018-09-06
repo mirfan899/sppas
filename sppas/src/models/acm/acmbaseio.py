@@ -63,7 +63,7 @@ class sppasBaseIO(sppasAcModel):
         :param name: (str) Name of the acoustic model.
 
         """
-        sppasAcModel.__init__(self, name)
+        super(sppasBaseIO, self).__init__(name)
         self._is_ascii = True
         self._is_binary = False
 

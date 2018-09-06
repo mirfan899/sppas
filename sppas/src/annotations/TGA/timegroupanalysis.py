@@ -74,7 +74,7 @@ class TimeGroupAnalysis(sppasDescriptiveStatistics):
         :param dict_items: (dict) a dict of a list of durations.
 
         """
-        sppasDescriptiveStatistics.__init__(self, dict_items)
+        super(TimeGroupAnalysis, self).__init__(dict_items)
 
     # -----------------------------------------------------------------------
     # Specific estimators for speech rythm analysis

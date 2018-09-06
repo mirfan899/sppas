@@ -66,7 +66,7 @@ class sppasIntsint(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        sppasBaseAnnotation.__init__(self, logfile, "INTSINT")
+        super(sppasIntsint, self).__init__(logfile, "INTSINT")
 
         self.intsint = Intsint()
 

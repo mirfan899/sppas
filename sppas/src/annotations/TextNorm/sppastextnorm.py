@@ -88,7 +88,7 @@ class sppasTextNorm(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        sppasBaseAnnotation.__init__(self, logfile, name="Text Normalization")
+        super(sppasTextNorm, self).__init__(logfile, name="Text Normalization")
 
         self.normalizer = None
         voc = sppasVocabulary(vocab)

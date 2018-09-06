@@ -56,7 +56,7 @@ class Repetitions(DataRepetition):
         :param stop_list: (Vocabulary) List of un-relevant tokens.
 
         """
-        DataRepetition.__init__(self)
+        super(Repetitions, self).__init__()
         self.__rules = Rules(stop_list)
 
     # -----------------------------------------------------------------------

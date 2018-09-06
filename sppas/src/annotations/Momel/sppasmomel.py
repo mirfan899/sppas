@@ -66,7 +66,7 @@ class sppasMomel(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        sppasBaseAnnotation.__init__(self, logfile, "Momel")
+        super(sppasMomel, self).__init__(logfile, "Momel")
 
         self.momel = Momel()
         self.PAS_TRAME = 10.

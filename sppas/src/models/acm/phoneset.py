@@ -65,7 +65,9 @@ class sppasPhoneSet(sppasVocabulary):
         :param filename (str) A file with 1 column containing the list of phonemes.
 
         """
-        sppasVocabulary.__init__(self, filename, nodump=True, case_sensitive=True)
+        super(sppasPhoneSet, self).__init__(filename,
+                                            nodump=True,
+                                            case_sensitive=True)
 
         for key in symbols.phone:
             if symbols.phone[key] != "pause":

@@ -96,7 +96,7 @@ class sppasHtkIO(sppasBaseIO):
         """
         if name is None:
             name = self.__class__.__name__
-        sppasBaseIO.__init__(self, name)
+        super(sppasHtkIO, self).__init__(name)
 
     # -----------------------------------------------------------------------
 

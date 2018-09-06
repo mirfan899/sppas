@@ -60,7 +60,7 @@ class TierMapping(sppasMapping):
         :param dict_name: (str) The mapping dictionary.
 
         """
-        sppasMapping.__init__(self, dict_name)
+        super(TierMapping, self).__init__(dict_name)
         self._delimiters = DEFAULT_SEP
 
     # ------------------------------------------------------------------

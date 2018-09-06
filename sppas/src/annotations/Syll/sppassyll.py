@@ -82,7 +82,7 @@ class sppasSyll(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        sppasBaseAnnotation.__init__(self, logfile, "Syllabification")
+        super(sppasSyll, self).__init__(logfile, "Syllabification")
 
         self.syllabifier = Syllabifier(config_filename)
 

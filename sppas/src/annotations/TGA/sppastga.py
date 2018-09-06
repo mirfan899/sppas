@@ -74,7 +74,7 @@ class sppasTGA(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        sppasBaseAnnotation.__init__(self, logfile, "TGA")
+        super(sppasTGA, self).__init__(logfile, "TGA")
 
         # List of the symbols used to create the time groups
         self._tg_separators = list(symbols.phone.keys())

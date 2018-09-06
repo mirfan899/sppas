@@ -99,7 +99,7 @@ class TrackSplitter(Transcription):
         :param name: (str)
 
         """
-        Transcription.__init__(self, name, mintime, maxtime)
+        super(TrackSplitter, self).__init__(name, mintime, maxtime)
         self._radius = 0.005
         self._tracknames = TrackNamesGenerator()
         self._aligntrack = None
@@ -241,7 +241,7 @@ class TracksReader(Transcription):
         Creates a new SegmentsIn instance.
 
         """
-        Transcription.__init__(self, name, mintime, maxtime)
+        super(TracksReader, self).__init__(name, mintime, maxtime)
         self.alignerio = AlignerIO()
         self._radius = 0.005
         self._tracknames = TrackNamesGenerator()

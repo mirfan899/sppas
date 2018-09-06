@@ -58,8 +58,7 @@ class AiffIO(sppasAudioPCM):
     """
     def __init__(self):
         """Constructor."""
-
-        sppasAudioPCM.__init__(self)
+        super(AiffIO, self).__init__()
 
     # ------------------------------------------------------------------------
 

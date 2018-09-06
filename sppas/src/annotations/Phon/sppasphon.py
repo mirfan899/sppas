@@ -93,7 +93,7 @@ class sppasPhon(sppasBaseAnnotation):
         :raises: ValueError if loading the dictionary fails
 
         """
-        sppasBaseAnnotation.__init__(self, logfile, "Phonetization")
+        super(sppasPhon, self).__init__(logfile, "Phonetization")
 
         # Pronunciation dictionary
         self.maptable = None

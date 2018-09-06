@@ -59,7 +59,7 @@ class DictReplUTF8(sppasDictRepl):
 
     """
     def __init__(self):
-        sppasDictRepl.__init__(self, None, nodump=True)
+        super(DictReplUTF8, self).__init__(None, nodump=True)
 
         self.add(u("æ"), u("ae"))
         self.add(u("œ"), u("oe"))

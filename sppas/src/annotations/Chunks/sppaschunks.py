@@ -66,7 +66,7 @@ class sppasChunks(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        sppasBaseAnnotation.__init__(self, logfile, "Chunks")
+        super(sppasChunks, self).__init__(logfile, "Chunks")
 
         self.chunks = Chunks(model)
 

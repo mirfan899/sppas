@@ -59,8 +59,7 @@ class WaveIO(sppasAudioPCM):
     """
     def __init__(self):
         """Constructor."""
-
-        sppasAudioPCM.__init__(self)
+        super(WaveIO, self).__init__()
 
     # -----------------------------------------------------------------------
 
