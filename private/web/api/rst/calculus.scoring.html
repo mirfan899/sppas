@@ -48,31 +48,186 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-calculus.scoring.ubpa">
-<span id="calculus-scoring-ubpa-module"></span><h2>calculus.scoring.ubpa module<a class="headerlink" href="#module-calculus.scoring.ubpa" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="src-calculus-scoring-ubpa-py">
-<h3>src.calculus.scoring.ubpa.py<a class="headerlink" href="#src-calculus-scoring-ubpa-py" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-calculus.scoring.kappa">
+<span id="calculus-scoring-kappa-module"></span><h2>calculus.scoring.kappa module<a class="headerlink" href="#module-calculus.scoring.kappa" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="src-calculus-kappa-py">
+<h3>src.calculus.kappa.py<a class="headerlink" href="#src-calculus-kappa-py" title="Permalink to this headline">¶</a></h3>
+<p>Inter-observer variation can be measured in any situation in which two or
+more independent observers are evaluating the same thing. The Kappa
+statistic seems the most commonly used measure of inter-rater agreement
+in Computational Linguistics.</p>
+<p>Kappa is intended to give the reader a quantitative measure of the
+magnitude of agreement between observers.</p>
+<dl class="class">
+<dt id="calculus.scoring.kappa.sppasKappa">
+<em class="property">class </em><code class="descclassname">calculus.scoring.kappa.</code><code class="descname">sppasKappa</code><span class="sig-paren">(</span><em>p=[]</em>, <em>q=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/scoring/kappa.html#sppasKappa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.scoring.kappa.sppasKappa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
 </tr>
-<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2016  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Inter-observer variation estimation.</td>
 </tr>
 </tbody>
 </table>
+<p>The calculation is based on the difference between how much agreement is
+actually present (“observed” agreement) compared to how much agreement
+would be expected to be present by chance alone (“expected” agreement).</p>
+<p>Imagine a situation in which annotators have to answer Yes or No to
+5 questions.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Person “P” answered: Yes, No, No, Yes, Yes</li>
+<li>Person “Q” answered: Yes, No, Yes, Yes, Yes</li>
+</ul>
+</div></blockquote>
+<p>This results in the following vectors of probabilities:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>The Cohen’s Kappa is then evaluated as follow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sppasKappa</span><span class="o">.</span><span class="n">check_vector</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kc">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sppasKappa</span><span class="o">.</span><span class="n">check_vector</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kc">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kappa</span> <span class="o">=</span> <span class="n">sppasKappa</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kappa</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mf">0.54545</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="calculus.scoring.kappa.sppasKappa.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>p=[]</em>, <em>q=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/scoring/kappa.html#sppasKappa.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.scoring.kappa.sppasKappa.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sppasKappa instance with two lists of tuples p and q.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">=</span><span class="p">[(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)]</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>p</strong> – a vector of tuples of float values</li>
+<li><strong>q</strong> – a vector of tuples of float values</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.scoring.kappa.sppasKappa.check">
+<code class="descname">check</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/scoring/kappa.html#sppasKappa.check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.scoring.kappa.sppasKappa.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the given p and q vectors are correct to be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="calculus.scoring.kappa.sppasKappa.check_vector">
+<em class="property">static </em><code class="descname">check_vector</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/scoring/kappa.html#sppasKappa.check_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.scoring.kappa.sppasKappa.check_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the vector is correct to be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>v</strong> – a vector of tuples of probabilities.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.scoring.kappa.sppasKappa.evaluate">
+<code class="descname">evaluate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/scoring/kappa.html#sppasKappa.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.scoring.kappa.sppasKappa.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the Cohen’s Kappa between two lists of tuples p and q.</p>
+<p>The tuple size corresponds to the number of categories, each value is
+the score assigned to each category for a given sample.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">float value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.scoring.kappa.sppasKappa.set_vectors">
+<code class="descname">set_vectors</code><span class="sig-paren">(</span><em>p</em>, <em>q</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/scoring/kappa.html#sppasKappa.set_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.scoring.kappa.sppasKappa.set_vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the vectors of probabilities to estimate the sppasKappa value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>p</strong> – a vector of tuples of float values</li>
+<li><strong>q</strong> – a vector of tuples of float values</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.scoring.kappa.sppasKappa.sqm">
+<code class="descname">sqm</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/scoring/kappa.html#sppasKappa.sqm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.scoring.kappa.sppasKappa.sqm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the Euclidian distance between two vectors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">row, col</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.scoring.kappa.sppasKappa.sqv">
+<code class="descname">sqv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/scoring/kappa.html#sppasKappa.sqv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.scoring.kappa.sppasKappa.sqv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the Euclidian distance between two vectors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">v</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="calculus-scoring-ubpa-module">
+<h2>calculus.scoring.ubpa module<a class="headerlink" href="#calculus-scoring-ubpa-module" title="Permalink to this headline">¶</a></h2>
 <p>Estimates the Unit Boundary Positioning Accuracy.</p>
 <dl class="function">
 <dt id="calculus.scoring.ubpa.ubpa">
 <code class="descclassname">calculus.scoring.ubpa.</code><code class="descname">ubpa</code><span class="sig-paren">(</span><em>vector</em>, <em>text</em>, <em>fp=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>delta_max=0.04</em>, <em>step=0.01</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/scoring/ubpa.html#ubpa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.scoring.ubpa.ubpa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the Unit Boundary Positioning Accuracy.</p>
+<dd><p>Estimate the Unit Boundary Positioning Accuracy.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -94,7 +249,6 @@
 </dd></dl>
 
 </div>
-</div>
 <div class="section" id="module-calculus.scoring">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-calculus.scoring" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -110,10 +264,11 @@
   <ul>
 <li><a class="reference internal" href="#">calculus.scoring package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-calculus.scoring.ubpa">calculus.scoring.ubpa module</a><ul>
-<li><a class="reference internal" href="#src-calculus-scoring-ubpa-py">src.calculus.scoring.ubpa.py</a></li>
+<li><a class="reference internal" href="#module-calculus.scoring.kappa">calculus.scoring.kappa module</a><ul>
+<li><a class="reference internal" href="#src-calculus-kappa-py">src.calculus.kappa.py</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#calculus-scoring-ubpa-module">calculus.scoring.ubpa module</a></li>
 <li><a class="reference internal" href="#module-calculus.scoring">Module contents</a></li>
 </ul>
 </li>

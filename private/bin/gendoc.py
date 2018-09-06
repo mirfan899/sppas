@@ -62,13 +62,13 @@ INDEX_EXT = ".idx"
 
 
 class sppasDocFiles(object):
-    """
+    """Documentation explorer.
+    
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Documentation explorer.
 
     Fix all files required to generate the documentation, and explore the
     documentation directory and folders.
@@ -95,7 +95,7 @@ class sppasDocFiles(object):
     # -----------------------------------------------------------------------
 
     def __init__(self, doc_dir, doc_temp):
-        """ Create a sppasDocFiles instance.
+        """Create a sppasDocFiles instance.
 
         :param doc_dir: (str) Name of the directory of the markdown and index files
         :param doc_temp: (str) Name of the directory of the external template files.
@@ -108,22 +108,22 @@ class sppasDocFiles(object):
 
     @staticmethod
     def test_file(filename):
-        """ Test if a file exists.
+        """Test if a file exists.
 
         :param filename: (str) Name of the file to test.
         :raises: IOError
 
         """
         if os.path.exists(filename) is False:
-            raise IOError("The file {:s} is missing of the documentation.".format(filename))
+            raise IOError("The file {:s} is missing of the documentation."
+                          "".format(filename))
 
     # -----------------------------------------------------------------------
     # Getters
     # -----------------------------------------------------------------------
 
     def get_file(self, filename):
-        """ Return a file of the documentation. """
-
+        """Return a file of the documentation. """
         new_filename = os.path.join(self._doc_temp, filename)
         sppasDocFiles.test_file(new_filename)
         return new_filename
@@ -131,8 +131,7 @@ class sppasDocFiles(object):
     # -----------------------------------------------------------------------
 
     def get_base_index(self):
-        """ Return the file indicating the list of documentation folders. """
-
+        """Return the file indicating the list of documentation folders. """
         filename = os.path.join(self._doc_dir, sppasDocFiles.BASE_INDEX)
         sppasDocFiles.test_file(filename)
         return filename
@@ -140,50 +139,43 @@ class sppasDocFiles(object):
     # -----------------------------------------------------------------------
 
     def get_markdown_header(self):
-        """ Return the header markdown file. """
-
+        """Return the header markdown file. """
         return self.get_file(sppasDocFiles.MARKDOWN_HEADER)
 
     # -----------------------------------------------------------------------
 
     def get_markdown_footer(self):
-        """ Return the footer markdown file. """
-
+        """Return the footer markdown file. """
         return self.get_file(sppasDocFiles.MARKDOWN_FOOTER)
 
     # -----------------------------------------------------------------------
 
     def get_latex_template(self):
-        """ Return the LaTeX template file. """
-
+        """Return the LaTeX template file. """
         return self.get_file(sppasDocFiles.LATEX_TEMPLATE)
 
     # -----------------------------------------------------------------------
 
     def get_latex_front_page(self):
-        """ Return the LaTeX front page file. """
-
+        """Return the LaTeX front page file. """
         return self.get_file(sppasDocFiles.LATEX_FRONTPAGE)
 
     # -----------------------------------------------------------------------
 
     def get_html_header(self):
-        """ Return the header html file. """
-
+        """Return the header html file. """
         return self.get_file(sppasDocFiles.HTML_HEADER)
 
     # -----------------------------------------------------------------------
 
     def get_html_footer(self):
-        """ Return the footer html file. """
-
+        """Return the footer html file. """
         return self.get_file(sppasDocFiles.HTML_FOOTER)
 
     # -----------------------------------------------------------------------
 
     def get_js_head_scripts(self):
-        """ Return the scripts for the <head> of an html file. """
-
+        """Return the scripts for the <head> of an html file. """
         return self.get_file(sppasDocFiles.HTML_JS_HEAD)
 
     # -----------------------------------------------------------------------
@@ -192,8 +184,7 @@ class sppasDocFiles(object):
 
     @staticmethod
     def get_index(dirname):
-        """ Return the filename of the index of a directory. """
-
+        """Return the filename of the index of a directory. """
         try:
             index_filename = os.path.join(dirname, sppasDocFiles.BASE_INDEX)
             sppasDocFiles.test_file(index_filename)
@@ -209,7 +200,7 @@ class sppasDocFiles(object):
     # -----------------------------------------------------------------------
 
     def get_idx_markdown_files(self, folder):
-        """ Return a list of markdown files.
+        """Return a list of markdown files.
         Search for an index file either in doc_dir/folder or in doc_dir.
 
         :param folder: (str) Folder to search for markdown files. If folder is
@@ -218,14 +209,12 @@ class sppasDocFiles(object):
 
         """
         # Search the index file
-
         if folder is None:
             index_filename = self.get_index(self._doc_dir)
         else:
             index_filename = self.get_index(os.path.join(self._doc_dir, folder))
 
         # Get all files mentioned in the idx
-
         files = list()
         fp = open(index_filename, "r")
         for line in fp.readlines():
@@ -250,7 +239,7 @@ class sppasDocFiles(object):
     # -----------------------------------------------------------------------
 
     def get_doc_folders(self):
-        """ Return the list of folders of the documentation.
+        """Return the list of folders of the documentation.
 
         This list is extracted from the BASE_INDEX file which should be included
         into the documentation directory.
@@ -287,7 +276,7 @@ class sppasDocFiles(object):
     # -----------------------------------------------------------------------
 
     def get_all_md(self, header=True, footer=False):
-        """ Return the list of markdown files for a documentation directory.
+        """Return the list of markdown files for a documentation directory.
         Explore 1st level folders (if any) OR the doc dir.
 
         :param header: (bool) Add an header markdown file into the list
@@ -326,7 +315,7 @@ class sppasDocFiles(object):
 
 
 def exec_external_command(command, result_filename):
-    """ Execute a command and check the output file.
+    """Execute a command and check the output file.
 
     :param command: (str) The external command to be executed, with its parameters.
     :param result_filename: (str) Name of the expected output file of the command
@@ -334,7 +323,7 @@ def exec_external_command(command, result_filename):
 
     """
     p = Popen(command, shell=True, stdout=PIPE, stderr=STDOUT)
-    p.wait()
+    # p.wait()
     line = p.communicate()
 
     # Check output file
@@ -347,7 +336,7 @@ def exec_external_command(command, result_filename):
 
 
 def gen_pdf_file(doc, files, result_filename):
-    """ Execute pandoc to generate a documentation in PDF.
+    """Execute pandoc to generate a documentation in PDF.
 
     :param doc: (sppasDocFiles) Documentation, used to get filenames.
     :param files: (list) List of filenames (markdown files)
@@ -401,7 +390,7 @@ def gen_pdf_file(doc, files, result_filename):
 
 
 def gen_html_file(doc, css_filename, files, result_filename):
-    """ Execute pandoc to generate a documentation in HTML 5.
+    """Execute pandoc to generate a documentation in HTML 5.
 
     :param doc: (sppasDocFiles) Documentation, used to get filenames.
     :param css_filename: (str) Name of a CSS file
@@ -429,8 +418,8 @@ def gen_html_file(doc, css_filename, files, result_filename):
     command += " -s"
     # command += " --toc"
     command += " --mathjax"
-    command += " -5"   # --html"   # html5
-    command += " --css " + css_filename
+    command += " --html"   # --html5"   # -5
+    command += " --css " + css_filename.replace('web', '')
     command += " -H " + head_html_file
     command += " -B " + body_header_html_file
     command += " -A " + body_footer_html_file
@@ -451,7 +440,7 @@ def gen_html_file(doc, css_filename, files, result_filename):
 
 
 def gen_html_slides_file(tuto, css_filename, files, result_filename):
-    """ Execute pandoc to generate slides in HTML 5.
+    """Execute pandoc to generate slides in HTML 5.
 
     :param tuto: (sppasDocFiles) Documentation, used to get filenames.
     :param css_filename: (str) Name of a CSS file.
@@ -499,8 +488,7 @@ def gen_html_slides_file(tuto, css_filename, files, result_filename):
 
 
 def generate_pdf(doc_dir, doc_temp):
-    """ Generate the SPPAS documentation in PDF format. """
-
+    """Generate the SPPAS documentation in PDF format. """
     doc = sppasDocFiles(doc_dir, doc_temp)
 
     # name of the resulting file
@@ -514,8 +502,7 @@ def generate_pdf(doc_dir, doc_temp):
 
 
 def generate_web(doc_dir, doc_temp):
-    """ Generate the SPPAS documentation in a directory with HTML files. """
-
+    """Generate the SPPAS documentation in a directory with HTML files. """
     # doc template files
     css_file = os.path.join(".", "web", "etc", "styles", "sppas.css")
 
@@ -539,7 +526,7 @@ def generate_web(doc_dir, doc_temp):
 
 
 def generate_tuto(tuto_dir, doc_temp):
-
+    """Generate the SPPAS tutorials in a directory with HTML files. """
     # tuto template files
     css_file = os.path.join(".", "web", "etc", "styles", "tuto.css")
 
@@ -572,9 +559,10 @@ if __name__ == "__main__":
     # Verify and extract args:
     # -----------------------------------------------------------------------
 
-    parser = ArgumentParser(usage="%s [options]" % os.path.basename(PROGRAM),
-                            description="... a script to generate the documentation of "
-                                        "{:s}, version {:s}.".format(sg.__name__, sg.__version__))
+    parser = ArgumentParser(
+        usage="{:s} [options]".format(os.path.basename(PROGRAM)),
+        description="... a script to generate the documentation of "
+                    "{:s}, version {:s}.".format(sg.__name__, sg.__version__))
 
     parser.add_argument("--web",
                         action='store_true',

@@ -52,12 +52,11 @@
 <span id="calculus-infotheory-entropy-module"></span><h2>calculus.infotheory.entropy module<a class="headerlink" href="#module-calculus.infotheory.entropy" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="src-calculus-infotheory-entropy-py">
 <h3>src.calculus.infotheory.entropy.py<a class="headerlink" href="#src-calculus-infotheory-entropy-py" title="Permalink to this headline">¶</a></h3>
-<p>Entropy is a measure of unpredictability of information content.
-Entropy is one of several ways to measure diversity.</p>
 <dl class="class">
 <dt id="calculus.infotheory.entropy.sppasEntropy">
 <em class="property">class </em><code class="descclassname">calculus.infotheory.entropy.</code><code class="descname">sppasEntropy</code><span class="sig-paren">(</span><em>symbols</em>, <em>n=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/entropy.html#sppasEntropy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.entropy.sppasEntropy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Entropy estimation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -66,16 +65,16 @@ Entropy is one of several ways to measure diversity.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Entropy estimation.</td>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
 </tbody>
 </table>
+<p>Entropy is a measure of unpredictability of information content.
+Entropy is one of several ways to measure diversity.</p>
 <p>If we want to look at the entropy on a large series, we could also compute
 the entropy for windows to measure the evenness or uncertainties.
 By looking at the definition, one could predict the areas that have a
@@ -102,7 +101,7 @@ lower variance would result in lower entropy.</p>
 <dl class="method">
 <dt id="calculus.infotheory.entropy.sppasEntropy.eval">
 <code class="descname">eval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/entropy.html#sppasEntropy.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.entropy.sppasEntropy.eval" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the Shannon entropy of a vector of symbols.</p>
+<dd><p>Estimate the Shannon entropy of a vector of symbols.</p>
 <p>Shannon’s entropy measures the information contained in a message as
 opposed to the portion of the message that is determined
 (or predictable).</p>
@@ -152,43 +151,11 @@ opposed to the portion of the message that is determined
 <span id="calculus-infotheory-kullbackleibler-module"></span><h2>calculus.infotheory.kullbackleibler module<a class="headerlink" href="#module-calculus.infotheory.kullbackleibler" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="src-calculus-infotheory-kullbackleibler-py">
 <h3>src.calculus.infotheory.kullbackleibler.py<a class="headerlink" href="#src-calculus-infotheory-kullbackleibler-py" title="Permalink to this headline">¶</a></h3>
-<p>In probability theory and information theory, the Kullback–Leibler
-divergence (also called relative entropy) is a measure of the difference
-between two probability distributions P and Q. It is not symmetric in P
-and Q.
-Specifically, the Kullback–Leibler divergence of Q from P, denoted DKL(P‖Q),
-is a measure of the information gained when one revises ones beliefs from
-the prior probability distribution Q to the posterior probability
-distribution P.</p>
-<p>However, the sppasKullbackLeibler class estimates the KL distance, i.e. the
-<em>symmetric Kullback-Leibler divergence</em>.</p>
-<p>This sppasKullbackLeibler class implements the distance estimation
-between a model and the content of a moving window on data,
-as described in:</p>
-<blockquote>
-<div><div class="line-block">
-<div class="line">Brigitte Bigi, Renato De Mori, Marc El-Bèze, Thierry Spriet (1997).</div>
-<div class="line"><em>Combined models for topic spotting and topic-dependent language modeling</em></div>
-<div class="line">IEEE Workshop on Automatic Speech Recognition and Understanding Proceedings</div>
-<div class="line">(ASRU), Edited by S. Furui, B. H. Huang and Wu Chu, IEEE Signal Processing</div>
-<div class="line">Society Publ, NY, pages 535-542.</div>
-</div>
-</div></blockquote>
-<p>This KL distance can also be used to estimate the distance between
-documents for text categorization, as proposed in:</p>
-<blockquote>
-<div><div class="line-block">
-<div class="line">Brigitte Bigi (2003).</div>
-<div class="line">Using Kullback-Leibler Distance for Text Categorization.</div>
-</div>
-<p><a href="#id1"><span class="problematic" id="id2">|</span></a>&nbsp;Lecture Notes in Computer Science, Advances in Information Retrieval,
-<a href="#id3"><span class="problematic" id="id4">|</span></a>&nbsp;ISSN 0302-9743, Fabrizio Sebastiani (Editor), Springer-Verlag (Publisher), 
-| pages 305–319, Pisa (Italy).</p>
-</div></blockquote>
 <dl class="class">
 <dt id="calculus.infotheory.kullbackleibler.sppasKullbackLeibler">
 <em class="property">class </em><code class="descclassname">calculus.infotheory.kullbackleibler.</code><code class="descname">sppasKullbackLeibler</code><span class="sig-paren">(</span><em>model=None</em>, <em>observations=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/kullbackleibler.html#sppasKullbackLeibler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.kullbackleibler.sppasKullbackLeibler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Kullback-Leibler distance estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -197,16 +164,40 @@ documents for text categorization, as proposed in:</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Kullback-Leibler distance estimator.</td>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
 </tbody>
 </table>
+<p>In probability theory and information theory, the Kullback–Leibler
+divergence (also called relative entropy) is a measure of the difference
+between two probability distributions P and Q. It is not symmetric in P
+and Q.</p>
+<p>Specifically, the Kullback–Leibler divergence of Q from P, denoted
+DKL(P‖Q), is a measure of the information gained when one revises ones
+beliefs from the prior probability distribution Q to the posterior
+probability distribution P.</p>
+<p>However, the sppasKullbackLeibler class estimates the KL distance, i.e. the
+<em>symmetric Kullback-Leibler divergence</em>.</p>
+<p>This sppasKullbackLeibler class implements the distance estimation
+between a model and the content of a moving window on data,
+as described in:</p>
+<p>Brigitte Bigi, Renato De Mori, Marc El-Bèze, Thierry Spriet (1997).
+<em>Combined models for topic spotting and topic-dependent language modeling</em>
+IEEE Workshop on Automatic Speech Recognition and Understanding Proceedings
+(ASRU), Edited by S. Furui, B. H. Huang and Wu Chu, IEEE Signal Processing
+Society Publ, NY, pages 535-542.</p>
+<p>This KL distance can also be used to estimate the distance between
+documents for text categorization, as proposed in:</p>
+<p>Brigitte Bigi (2003).
+Using Kullback-Leibler Distance for Text Categorization.
+Lecture Notes in Computer Science, Advances in Information Retrieval,
+ISSN 0302-9743, Fabrizio Sebastiani (Editor), Springer-Verlag (Publisher),
+pages 305–319, Pisa (Italy).</p>
+<p>In this class…</p>
 <p>A model is a dictionary with:</p>
 <blockquote>
 <div><ul class="simple">
@@ -241,7 +232,7 @@ documents for text categorization, as proposed in:</p>
 <dl class="method">
 <dt id="calculus.infotheory.kullbackleibler.sppasKullbackLeibler.eval_kld">
 <code class="descname">eval_kld</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/kullbackleibler.html#sppasKullbackLeibler.eval_kld"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.kullbackleibler.sppasKullbackLeibler.eval_kld" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the KL distance between a model and observations.</p>
+<dd><p>Estimate the KL distance between a model and observations.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -250,6 +241,18 @@ documents for text categorization, as proposed in:</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.infotheory.kullbackleibler.sppasKullbackLeibler.get_epsilon">
+<code class="descname">get_epsilon</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/kullbackleibler.html#sppasKullbackLeibler.get_epsilon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.kullbackleibler.sppasKullbackLeibler.get_epsilon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the epsilon value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.infotheory.kullbackleibler.sppasKullbackLeibler.get_model">
+<code class="descname">get_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/kullbackleibler.html#sppasKullbackLeibler.get_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.kullbackleibler.sppasKullbackLeibler.get_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the model.</p>
 </dd></dl>
 
 <dl class="method">
@@ -320,18 +323,11 @@ be significantly lower than the minimum value in the model.</p>
 <span id="calculus-infotheory-perplexity-module"></span><h2>calculus.infotheory.perplexity module<a class="headerlink" href="#module-calculus.infotheory.perplexity" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="src-calculus-infotheory-perplexity-py">
 <h3>src.calculus.infotheory.perplexity.py<a class="headerlink" href="#src-calculus-infotheory-perplexity-py" title="Permalink to this headline">¶</a></h3>
-<p>Perplexity is a measurement of how well a probability distribution or
-probability model predicts a sample.
-The perplexity of a discrete probability distribution p is defined as:
-2^{H(p)}=2^{-sum_x p(x)log_2 p(x)}
-where H(p) is the entropy of the distribution and x ranges over events.</p>
-<p>Perplexity is commonly used to compare models on the same list of
-symbols - this list of symbols is “representing” the problem we are
-facing one. The higher perplexity, the better model.</p>
 <dl class="class">
-<dt id="calculus.infotheory.perplexity.Perplexity">
-<em class="property">class </em><code class="descclassname">calculus.infotheory.perplexity.</code><code class="descname">Perplexity</code><span class="sig-paren">(</span><em>model</em>, <em>ngram=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#Perplexity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.perplexity.Perplexity" title="Permalink to this definition">¶</a></dt>
+<dt id="calculus.infotheory.perplexity.sppasPerplexity">
+<em class="property">class </em><code class="descclassname">calculus.infotheory.perplexity.</code><code class="descname">sppasPerplexity</code><span class="sig-paren">(</span><em>model</em>, <em>ngram=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#sppasPerplexity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.perplexity.sppasPerplexity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Perplexity estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -340,16 +336,22 @@ facing one. The higher perplexity, the better model.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Perplexity estimator.</td>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
 </tbody>
 </table>
+<p>Perplexity is a measurement of how well a probability distribution or
+probability model predicts a sample.
+The perplexity of a discrete probability distribution p is defined as:
+2^{H(p)}=2^{-sum_x p(x)log_2 p(x)}
+where H(p) is the entropy of the distribution and x ranges over events.</p>
+<p>Perplexity is commonly used to compare models on the same list of
+symbols - this list of symbols is “representing” the problem we are
+facing one. The higher perplexity, the better model.</p>
 <p>A model is represented as a distribution of probabilities: the key is
 representing the symbol and the value is the the probability.</p>
 <p>&gt;&gt;&gt;model = dict()
@@ -357,7 +359,7 @@ representing the symbol and the value is the the probability.</p>
 &gt;&gt;&gt;model[“pineapple”] = 0.2
 &gt;&gt;&gt;model[“tomato”] = 0.3
 &gt;&gt;&gt;model[“apple”] = 0.4
-&gt;&gt;&gt;pp = Perplexity(model)</p>
+&gt;&gt;&gt;pp = sppasPerplexity(model)</p>
 <p>The observation on which the perplexity must be estimated on is
 represented as a list:
 &gt;&gt;&gt;observed=[‘apple’, ‘pineapple’, ‘apple’, ‘peer’]
@@ -375,14 +377,14 @@ probability is assigned to missing symbols.
 &gt;&gt;&gt;pp.eval_perplexity(observed)
 &gt;&gt;&gt;2.62034217479</p>
 <dl class="attribute">
-<dt id="calculus.infotheory.perplexity.Perplexity.DEFAULT_EPSILON">
-<code class="descname">DEFAULT_EPSILON</code><em class="property"> = 1e-06</em><a class="headerlink" href="#calculus.infotheory.perplexity.Perplexity.DEFAULT_EPSILON" title="Permalink to this definition">¶</a></dt>
+<dt id="calculus.infotheory.perplexity.sppasPerplexity.DEFAULT_EPSILON">
+<code class="descname">DEFAULT_EPSILON</code><em class="property"> = 1e-06</em><a class="headerlink" href="#calculus.infotheory.perplexity.sppasPerplexity.DEFAULT_EPSILON" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="calculus.infotheory.perplexity.Perplexity.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>model</em>, <em>ngram=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#Perplexity.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.perplexity.Perplexity.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a Perplexity instance with a list of symbols.</p>
+<dt id="calculus.infotheory.perplexity.sppasPerplexity.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>model</em>, <em>ngram=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#sppasPerplexity.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.perplexity.sppasPerplexity.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Perplexity instance with a list of symbols.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -398,9 +400,9 @@ probability is assigned to missing symbols.
 </dd></dl>
 
 <dl class="method">
-<dt id="calculus.infotheory.perplexity.Perplexity.eval_pp">
-<code class="descname">eval_pp</code><span class="sig-paren">(</span><em>symbols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#Perplexity.eval_pp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.perplexity.Perplexity.eval_pp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the perplexity of a list of symbols.</p>
+<dt id="calculus.infotheory.perplexity.sppasPerplexity.eval_pp">
+<code class="descname">eval_pp</code><span class="sig-paren">(</span><em>symbols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#sppasPerplexity.eval_pp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.perplexity.sppasPerplexity.eval_pp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the perplexity of a list of symbols.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -412,8 +414,8 @@ probability is assigned to missing symbols.
 </dd></dl>
 
 <dl class="method">
-<dt id="calculus.infotheory.perplexity.Perplexity.set_epsilon">
-<code class="descname">set_epsilon</code><span class="sig-paren">(</span><em>eps=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#Perplexity.set_epsilon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.perplexity.Perplexity.set_epsilon" title="Permalink to this definition">¶</a></dt>
+<dt id="calculus.infotheory.perplexity.sppasPerplexity.set_epsilon">
+<code class="descname">set_epsilon</code><span class="sig-paren">(</span><em>eps=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#sppasPerplexity.set_epsilon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.perplexity.sppasPerplexity.set_epsilon" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a value for epsilon.</p>
 <p>This value must be significantly lower than the minimum value in the
 model.</p>
@@ -429,23 +431,24 @@ model.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="calculus.infotheory.perplexity.Perplexity.set_model">
-<code class="descname">set_model</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#Perplexity.set_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.perplexity.Perplexity.set_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the probability distribution to the model.
-Notice that the epsilon value is re-assigned.</p>
+<dt id="calculus.infotheory.perplexity.sppasPerplexity.set_model">
+<code class="descname">set_model</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#sppasPerplexity.set_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.perplexity.sppasPerplexity.set_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the probability distribution to the model.</p>
+<p>Notice that the epsilon value is re-assigned.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>model</strong> – (dict) Dictionary with symbols as keys and values as probabilities.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>model</strong> – (dict) Dictionary with symbols as keys and values as</td>
 </tr>
 </tbody>
 </table>
+<p>probabilities.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="calculus.infotheory.perplexity.Perplexity.set_ngram">
-<code class="descname">set_ngram</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#Perplexity.set_ngram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.perplexity.Perplexity.set_ngram" title="Permalink to this definition">¶</a></dt>
+<dt id="calculus.infotheory.perplexity.sppasPerplexity.set_ngram">
+<code class="descname">set_ngram</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#sppasPerplexity.set_ngram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.perplexity.sppasPerplexity.set_ngram" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the n value of n-grams.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -461,21 +464,9 @@ Notice that the epsilon value is re-assigned.</p>
 
 </div>
 </div>
-<div class="section" id="module-calculus.infotheory.utilit">
-<span id="calculus-infotheory-utilit-module"></span><h2>calculus.infotheory.utilit module<a class="headerlink" href="#module-calculus.infotheory.utilit" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="src-calculus-infotheory-utilit-py">
-<h3>src.calculus.infotheory.utilit.py<a class="headerlink" href="#src-calculus-infotheory-utilit-py" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="calculus-infotheory-utilit-module">
+<h2>calculus.infotheory.utilit module<a class="headerlink" href="#calculus-infotheory-utilit-module" title="Permalink to this headline">¶</a></h2>
 <p>Utilities for the information theory package.</p>
-<div class="section" id="function-list">
-<h4>Function List<a class="headerlink" href="#function-list" title="Permalink to this headline">¶</a></h4>
-<blockquote>
-<div><ul class="simple">
-<li>find_ngrams</li>
-<li>symbols_to_items</li>
-<li>log2</li>
-<li>MAX_NGRAM</li>
-</ul>
-</div></blockquote>
 <dl class="function">
 <dt id="calculus.infotheory.utilit.find_ngrams">
 <code class="descclassname">calculus.infotheory.utilit.</code><code class="descname">find_ngrams</code><span class="sig-paren">(</span><em>symbols</em>, <em>ngram</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/utilit.html#find_ngrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.utilit.find_ngrams" title="Permalink to this definition">¶</a></dt>
@@ -504,8 +495,19 @@ Notice that the epsilon value is re-assigned.</p>
 
 <dl class="function">
 <dt id="calculus.infotheory.utilit.log2">
-<code class="descclassname">calculus.infotheory.utilit.</code><code class="descname">log2</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#calculus.infotheory.utilit.log2" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descclassname">calculus.infotheory.utilit.</code><code class="descname">log2</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/utilit.html#log2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.utilit.log2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate log in base 2.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> – (int, float) value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(float)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="calculus.infotheory.utilit.symbols_to_items">
@@ -527,26 +529,22 @@ Notice that the epsilon value is re-assigned.</p>
 </dd></dl>
 
 </div>
-</div>
-</div>
-<div class="section" id="module-calculus.infotheory">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-calculus.infotheory" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="src-calculus-infotheory-init-py">
-<h3>src.calculus.infotheory.__init__.py<a class="headerlink" href="#src-calculus-infotheory-init-py" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 <p>Information Theory is a scientific fields that started with the Claude
 Shannon’s 1948 paper: <em>“A Mathematical  Theory  of  Communication”</em>
 published in the Bell Systems Technical Journal.
 There are several major concepts in this paper, including:</p>
-<blockquote>
-<div>1. every communication channel has a speed limit, measured in binary
+<p>1. every communication channel has a speed limit, measured in binary
 digits per second,
 2. the architecture and design of communication systems,
 3. source coding, i.e. the efficiency of the data representation
-(remove redundancy in the information to make the message smaller)</div></blockquote>
+(remove redundancy in the information to make the message smaller)</p>
 <dl class="class">
 <dt id="calculus.infotheory.sppasEntropy">
 <em class="property">class </em><code class="descclassname">calculus.infotheory.</code><code class="descname">sppasEntropy</code><span class="sig-paren">(</span><em>symbols</em>, <em>n=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/entropy.html#sppasEntropy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.sppasEntropy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Entropy estimation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -555,16 +553,16 @@ digits per second,
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Entropy estimation.</td>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
 </tbody>
 </table>
+<p>Entropy is a measure of unpredictability of information content.
+Entropy is one of several ways to measure diversity.</p>
 <p>If we want to look at the entropy on a large series, we could also compute
 the entropy for windows to measure the evenness or uncertainties.
 By looking at the definition, one could predict the areas that have a
@@ -591,7 +589,7 @@ lower variance would result in lower entropy.</p>
 <dl class="method">
 <dt id="calculus.infotheory.sppasEntropy.eval">
 <code class="descname">eval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/entropy.html#sppasEntropy.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.sppasEntropy.eval" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the Shannon entropy of a vector of symbols.</p>
+<dd><p>Estimate the Shannon entropy of a vector of symbols.</p>
 <p>Shannon’s entropy measures the information contained in a message as
 opposed to the portion of the message that is determined
 (or predictable).</p>
@@ -639,6 +637,7 @@ opposed to the portion of the message that is determined
 <dt id="calculus.infotheory.sppasKullbackLeibler">
 <em class="property">class </em><code class="descclassname">calculus.infotheory.</code><code class="descname">sppasKullbackLeibler</code><span class="sig-paren">(</span><em>model=None</em>, <em>observations=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/kullbackleibler.html#sppasKullbackLeibler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.sppasKullbackLeibler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Kullback-Leibler distance estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -647,16 +646,40 @@ opposed to the portion of the message that is determined
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Kullback-Leibler distance estimator.</td>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
 </tbody>
 </table>
+<p>In probability theory and information theory, the Kullback–Leibler
+divergence (also called relative entropy) is a measure of the difference
+between two probability distributions P and Q. It is not symmetric in P
+and Q.</p>
+<p>Specifically, the Kullback–Leibler divergence of Q from P, denoted
+DKL(P‖Q), is a measure of the information gained when one revises ones
+beliefs from the prior probability distribution Q to the posterior
+probability distribution P.</p>
+<p>However, the sppasKullbackLeibler class estimates the KL distance, i.e. the
+<em>symmetric Kullback-Leibler divergence</em>.</p>
+<p>This sppasKullbackLeibler class implements the distance estimation
+between a model and the content of a moving window on data,
+as described in:</p>
+<p>Brigitte Bigi, Renato De Mori, Marc El-Bèze, Thierry Spriet (1997).
+<em>Combined models for topic spotting and topic-dependent language modeling</em>
+IEEE Workshop on Automatic Speech Recognition and Understanding Proceedings
+(ASRU), Edited by S. Furui, B. H. Huang and Wu Chu, IEEE Signal Processing
+Society Publ, NY, pages 535-542.</p>
+<p>This KL distance can also be used to estimate the distance between
+documents for text categorization, as proposed in:</p>
+<p>Brigitte Bigi (2003).
+Using Kullback-Leibler Distance for Text Categorization.
+Lecture Notes in Computer Science, Advances in Information Retrieval,
+ISSN 0302-9743, Fabrizio Sebastiani (Editor), Springer-Verlag (Publisher),
+pages 305–319, Pisa (Italy).</p>
+<p>In this class…</p>
 <p>A model is a dictionary with:</p>
 <blockquote>
 <div><ul class="simple">
@@ -691,7 +714,7 @@ opposed to the portion of the message that is determined
 <dl class="method">
 <dt id="calculus.infotheory.sppasKullbackLeibler.eval_kld">
 <code class="descname">eval_kld</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/kullbackleibler.html#sppasKullbackLeibler.eval_kld"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.sppasKullbackLeibler.eval_kld" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the KL distance between a model and observations.</p>
+<dd><p>Estimate the KL distance between a model and observations.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -700,6 +723,18 @@ opposed to the portion of the message that is determined
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.infotheory.sppasKullbackLeibler.get_epsilon">
+<code class="descname">get_epsilon</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/kullbackleibler.html#sppasKullbackLeibler.get_epsilon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.sppasKullbackLeibler.get_epsilon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the epsilon value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.infotheory.sppasKullbackLeibler.get_model">
+<code class="descname">get_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/kullbackleibler.html#sppasKullbackLeibler.get_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.sppasKullbackLeibler.get_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the model.</p>
 </dd></dl>
 
 <dl class="method">
@@ -765,9 +800,10 @@ be significantly lower than the minimum value in the model.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="calculus.infotheory.Perplexity">
-<em class="property">class </em><code class="descclassname">calculus.infotheory.</code><code class="descname">Perplexity</code><span class="sig-paren">(</span><em>model</em>, <em>ngram=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#Perplexity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.Perplexity" title="Permalink to this definition">¶</a></dt>
+<dt id="calculus.infotheory.sppasPerplexity">
+<em class="property">class </em><code class="descclassname">calculus.infotheory.</code><code class="descname">sppasPerplexity</code><span class="sig-paren">(</span><em>model</em>, <em>ngram=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#sppasPerplexity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.sppasPerplexity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Perplexity estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -776,16 +812,22 @@ be significantly lower than the minimum value in the model.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Perplexity estimator.</td>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
 </tbody>
 </table>
+<p>Perplexity is a measurement of how well a probability distribution or
+probability model predicts a sample.
+The perplexity of a discrete probability distribution p is defined as:
+2^{H(p)}=2^{-sum_x p(x)log_2 p(x)}
+where H(p) is the entropy of the distribution and x ranges over events.</p>
+<p>Perplexity is commonly used to compare models on the same list of
+symbols - this list of symbols is “representing” the problem we are
+facing one. The higher perplexity, the better model.</p>
 <p>A model is represented as a distribution of probabilities: the key is
 representing the symbol and the value is the the probability.</p>
 <p>&gt;&gt;&gt;model = dict()
@@ -793,7 +835,7 @@ representing the symbol and the value is the the probability.</p>
 &gt;&gt;&gt;model[“pineapple”] = 0.2
 &gt;&gt;&gt;model[“tomato”] = 0.3
 &gt;&gt;&gt;model[“apple”] = 0.4
-&gt;&gt;&gt;pp = Perplexity(model)</p>
+&gt;&gt;&gt;pp = sppasPerplexity(model)</p>
 <p>The observation on which the perplexity must be estimated on is
 represented as a list:
 &gt;&gt;&gt;observed=[‘apple’, ‘pineapple’, ‘apple’, ‘peer’]
@@ -811,14 +853,14 @@ probability is assigned to missing symbols.
 &gt;&gt;&gt;pp.eval_perplexity(observed)
 &gt;&gt;&gt;2.62034217479</p>
 <dl class="attribute">
-<dt id="calculus.infotheory.Perplexity.DEFAULT_EPSILON">
-<code class="descname">DEFAULT_EPSILON</code><em class="property"> = 1e-06</em><a class="headerlink" href="#calculus.infotheory.Perplexity.DEFAULT_EPSILON" title="Permalink to this definition">¶</a></dt>
+<dt id="calculus.infotheory.sppasPerplexity.DEFAULT_EPSILON">
+<code class="descname">DEFAULT_EPSILON</code><em class="property"> = 1e-06</em><a class="headerlink" href="#calculus.infotheory.sppasPerplexity.DEFAULT_EPSILON" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="calculus.infotheory.Perplexity.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>model</em>, <em>ngram=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#Perplexity.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.Perplexity.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a Perplexity instance with a list of symbols.</p>
+<dt id="calculus.infotheory.sppasPerplexity.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>model</em>, <em>ngram=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#sppasPerplexity.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.sppasPerplexity.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Perplexity instance with a list of symbols.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -834,9 +876,9 @@ probability is assigned to missing symbols.
 </dd></dl>
 
 <dl class="method">
-<dt id="calculus.infotheory.Perplexity.eval_pp">
-<code class="descname">eval_pp</code><span class="sig-paren">(</span><em>symbols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#Perplexity.eval_pp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.Perplexity.eval_pp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the perplexity of a list of symbols.</p>
+<dt id="calculus.infotheory.sppasPerplexity.eval_pp">
+<code class="descname">eval_pp</code><span class="sig-paren">(</span><em>symbols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#sppasPerplexity.eval_pp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.sppasPerplexity.eval_pp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the perplexity of a list of symbols.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -848,8 +890,8 @@ probability is assigned to missing symbols.
 </dd></dl>
 
 <dl class="method">
-<dt id="calculus.infotheory.Perplexity.set_epsilon">
-<code class="descname">set_epsilon</code><span class="sig-paren">(</span><em>eps=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#Perplexity.set_epsilon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.Perplexity.set_epsilon" title="Permalink to this definition">¶</a></dt>
+<dt id="calculus.infotheory.sppasPerplexity.set_epsilon">
+<code class="descname">set_epsilon</code><span class="sig-paren">(</span><em>eps=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#sppasPerplexity.set_epsilon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.sppasPerplexity.set_epsilon" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a value for epsilon.</p>
 <p>This value must be significantly lower than the minimum value in the
 model.</p>
@@ -865,23 +907,24 @@ model.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="calculus.infotheory.Perplexity.set_model">
-<code class="descname">set_model</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#Perplexity.set_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.Perplexity.set_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the probability distribution to the model.
-Notice that the epsilon value is re-assigned.</p>
+<dt id="calculus.infotheory.sppasPerplexity.set_model">
+<code class="descname">set_model</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#sppasPerplexity.set_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.sppasPerplexity.set_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the probability distribution to the model.</p>
+<p>Notice that the epsilon value is re-assigned.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>model</strong> – (dict) Dictionary with symbols as keys and values as probabilities.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>model</strong> – (dict) Dictionary with symbols as keys and values as</td>
 </tr>
 </tbody>
 </table>
+<p>probabilities.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="calculus.infotheory.Perplexity.set_ngram">
-<code class="descname">set_ngram</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#Perplexity.set_ngram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.Perplexity.set_ngram" title="Permalink to this definition">¶</a></dt>
+<dt id="calculus.infotheory.sppasPerplexity.set_ngram">
+<code class="descname">set_ngram</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/infotheory/perplexity.html#sppasPerplexity.set_ngram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.infotheory.sppasPerplexity.set_ngram" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the n value of n-grams.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -895,7 +938,6 @@ Notice that the epsilon value is re-assigned.</p>
 
 </dd></dl>
 
-</div>
 </div>
 </div>
 
@@ -921,17 +963,8 @@ Notice that the epsilon value is re-assigned.</p>
 <li><a class="reference internal" href="#src-calculus-infotheory-perplexity-py">src.calculus.infotheory.perplexity.py</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-calculus.infotheory.utilit">calculus.infotheory.utilit module</a><ul>
-<li><a class="reference internal" href="#src-calculus-infotheory-utilit-py">src.calculus.infotheory.utilit.py</a><ul>
-<li><a class="reference internal" href="#function-list">Function List</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-calculus.infotheory">Module contents</a><ul>
-<li><a class="reference internal" href="#src-calculus-infotheory-init-py">src.calculus.infotheory.__init__.py</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#calculus-infotheory-utilit-module">calculus.infotheory.utilit module</a></li>
+<li><a class="reference internal" href="#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>

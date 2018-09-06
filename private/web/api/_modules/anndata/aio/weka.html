@@ -88,9 +88,9 @@
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioNoTiersError</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">TagValueError</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioEmptyTierError</span>
-<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="k">import</span> <span class="n">sppasLabel</span>
-<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
-<span class="kn">from</span> <span class="nn">..annlocation</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..ann.annlabel</span> <span class="k">import</span> <span class="n">sppasLabel</span>
+<span class="kn">from</span> <span class="nn">..ann.annlabel</span> <span class="k">import</span> <span class="n">sppasTag</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasPoint</span>
 
 <span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="k">import</span> <span class="n">sppasUnicode</span><span class="p">,</span> <span class="n">b</span>
 
@@ -106,13 +106,13 @@
 
 
 <div class="viewcode-block" id="sppasWEKA"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA">[docs]</a><span class="k">class</span> <span class="nc">sppasWEKA</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SPPAS Base writer for ARFF and XRFF formats.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS Base writer for ARFF and XRFF formats.</span>
 
 <span class="sd">    The following metadata of the Transcription object can be defined:</span>
 
@@ -138,14 +138,14 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasWEKA.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasWEKA instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasWEKA instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasWEKA</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_class_tags</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">MAX_CLASS_TAGS</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_attributes_tags</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">MAX_ATTRIBUTES_TAGS</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span>
@@ -174,14 +174,14 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasWEKA.get_max_class_tags"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.get_max_class_tags">[docs]</a>    <span class="k">def</span> <span class="nf">get_max_class_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the maximum number of tags for the class. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the maximum number of tags for the class.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_class_tags</span></div>
 
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasWEKA.set_max_class_tags"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.set_max_class_tags">[docs]</a>    <span class="k">def</span> <span class="nf">set_max_class_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb_tags</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the maximum number of tags for a class.</span>
+        <span class="sd">&quot;&quot;&quot;Set the maximum number of tags for a class.</span>
 
 <span class="sd">        :param nb_tags: (int) Size of the controlled vocabulary of the</span>
 <span class="sd">        class tier</span>
@@ -194,7 +194,7 @@
 
 <div class="viewcode-block" id="sppasWEKA.check_max_class_tags"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.check_max_class_tags">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">check_max_class_tags</span><span class="p">(</span><span class="n">nb_tags</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check the maximum number of tags for the class.</span>
+        <span class="sd">&quot;&quot;&quot;Check the maximum number of tags for the class.</span>
 
 <span class="sd">        :param nb_tags: (int) Size of the controlled vocabulary of the</span>
 <span class="sd">        class tier</span>
@@ -210,7 +210,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasWEKA.set_max_attributes_tags"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.set_max_attributes_tags">[docs]</a>    <span class="k">def</span> <span class="nf">set_max_attributes_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nb_tags</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the maximum number of tags for an attribute.</span>
+        <span class="sd">&quot;&quot;&quot;Set the maximum number of tags for an attribute.</span>
 <span class="sd">        Instead, the program won&#39;t list the attribute and will use &#39;STRING&#39;.</span>
 
 <span class="sd">        :param nb_tags: (int) Size of the controlled vocabulary of the</span>
@@ -224,7 +224,7 @@
 
 <div class="viewcode-block" id="sppasWEKA.check_max_attributes_tags"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.check_max_attributes_tags">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">check_max_attributes_tags</span><span class="p">(</span><span class="n">nb_tags</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check the maximum number of tags for an attribute.</span>
+        <span class="sd">&quot;&quot;&quot;Check the maximum number of tags for an attribute.</span>
 
 <span class="sd">        :param nb_tags: (int) Size of the controlled vocabulary of the</span>
 <span class="sd">        attribute tier</span>
@@ -240,7 +240,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasWEKA.set_empty_annotation_tag"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.set_empty_annotation_tag">[docs]</a>    <span class="k">def</span> <span class="nf">set_empty_annotation_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_str</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the annotation string that will be used to replace</span>
+        <span class="sd">&quot;&quot;&quot;Fix the annotation string that will be used to replace</span>
 <span class="sd">        empty annotations.</span>
 
 <span class="sd">        :param tag_str: (str)</span>
@@ -255,7 +255,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasWEKA.set_empty_annotation_class_tag"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.set_empty_annotation_class_tag">[docs]</a>    <span class="k">def</span> <span class="nf">set_empty_annotation_class_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_str</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the annotation string that will be used to replace</span>
+        <span class="sd">&quot;&quot;&quot;Fix the annotation string that will be used to replace</span>
 <span class="sd">        empty annotations in the class tier.</span>
 
 <span class="sd">        :param tag_str: (str or None) None is used to NOT fill</span>
@@ -274,7 +274,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasWEKA.set_uncertain_annotation_tag"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.set_uncertain_annotation_tag">[docs]</a>    <span class="k">def</span> <span class="nf">set_uncertain_annotation_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_str</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the annotation string that is used in the annotations to</span>
+        <span class="sd">&quot;&quot;&quot;Fix the annotation string that is used in the annotations to</span>
 <span class="sd">        mention an uncertain label.</span>
 
 <span class="sd">        :param tag_str: (str)</span>
@@ -291,7 +291,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasWEKA.check_metadata"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.check_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">check_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check the metadata and fix the variable members. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Check the metadata and fix the variable members.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_max_class_tags&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_max_class_tags</span><span class="p">(</span>
@@ -316,7 +316,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasWEKA.validate_annotations"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.validate_annotations">[docs]</a>    <span class="k">def</span> <span class="nf">validate_annotations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Prepare data to be compatible with the expected format.</span>
+        <span class="sd">&quot;&quot;&quot;Prepare data to be compatible with the expected format.</span>
 
 <span class="sd">        - Convert tier names</span>
 <span class="sd">        - Delete the existing controlled vocabularies</span>
@@ -391,7 +391,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasWEKA.validate"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasWEKA.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check the tiers.</span>
+        <span class="sd">&quot;&quot;&quot;Check the tiers.</span>
 
 <span class="sd">         Verify if everything is ok:</span>
 
@@ -446,7 +446,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_create_ctrl_vocab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the controlled vocabularies of attribute tiers. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Fix the controlled vocabularies of attribute tiers.&quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_attribute&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_class&quot;</span><span class="p">):</span>
@@ -456,7 +456,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_tier_is_attribute</span><span class="p">(</span><span class="n">tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check if a tier is an attribute for the classification.</span>
+        <span class="sd">&quot;&quot;&quot;Check if a tier is an attribute for the classification.</span>
 
 <span class="sd">        :param tier: (sppasTier)</span>
 <span class="sd">        :returns: (is attribute, is numeric)</span>
@@ -476,7 +476,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_get_class_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the tier which is the class or None. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the tier which is the class or None.&quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_class&quot;</span><span class="p">):</span>
@@ -487,7 +487,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_get_anchor_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the tier which will be used to create the instances or None. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the tier which will be used to create the instances or None.&quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">tier</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;weka_instance_anchor&quot;</span><span class="p">):</span>
@@ -498,7 +498,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">localization</span><span class="p">,</span> <span class="n">tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the list of sppasLabel() at the given time in the given tier.</span>
+        <span class="sd">&quot;&quot;&quot;Return the list of sppasLabel() at the given time in the given tier.</span>
 <span class="sd">        Return the empty label if no label was assigned at the given time.</span>
 
 <span class="sd">        :param localization: (sppasPoint)</span>
@@ -543,7 +543,7 @@
                                          <span class="n">end_time</span><span class="p">,</span>
                                          <span class="n">time_step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                          <span class="n">anchor_tier</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix all the possible time-points of the instances.</span>
+        <span class="sd">&quot;&quot;&quot;Fix all the possible time-points of the instances.</span>
 
 <span class="sd">        If an anchor tier is given, only labelled annotations are used</span>
 <span class="sd">        to create the instances.</span>
@@ -594,7 +594,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_fix_instance_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the time-points to create the instances and the</span>
+        <span class="sd">&quot;&quot;&quot;Fix the time-points to create the instances and the</span>
 <span class="sd">        tag of the class to predict by the classification system.</span>
 
 <span class="sd">        The instances are created only for the labelled annotations of</span>
@@ -641,7 +641,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_scores_to_probas</span><span class="p">(</span><span class="n">tags</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert scores of a set of tags to probas. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Convert scores of a set of tags to probas.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
@@ -679,7 +679,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_fix_data_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the data content of an instance.</span>
+        <span class="sd">&quot;&quot;&quot;Fix the data content of an instance.</span>
 
 <span class="sd">        Create the instance at the given point with annotations of all</span>
 <span class="sd">        attribute tiers, followed by the class.</span>
@@ -762,13 +762,13 @@
 
 
 <div class="viewcode-block" id="sppasARFF"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasARFF">[docs]</a><span class="k">class</span> <span class="nc">sppasARFF</span><span class="p">(</span><span class="n">sppasWEKA</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SPPAS ARFF writer.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS ARFF writer.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
 <span class="sd">    ARFF format description is at the following URL:</span>
 <span class="sd">    http://weka.wikispaces.com/ARFF+(book+version)</span>
@@ -797,14 +797,15 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasARFF.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasARFF.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasARFF instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasARFF instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-        <span class="n">sppasWEKA</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasARFF</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;arff&quot;</span></div>
 
     <span class="c1"># -----------------------------------------------------------------</span>
@@ -812,7 +813,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasARFF.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasARFF.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write a RawText file.</span>
+        <span class="sd">&quot;&quot;&quot;Write a RawText file.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
@@ -846,7 +847,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_header</span><span class="p">():</span>
-        <span class="sd">&quot;&quot;&quot; Returns a standard header in comments. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return a standard header in comments.&quot;&quot;&quot;</span>
 
         <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">% c</span><span class="s2">reator: </span><span class="si">{:s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sg</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;% version: </span><span class="si">{:s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sg</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
@@ -859,7 +860,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_serialize_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Serialize metadata in comments. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Serialize metadata in comments.&quot;&quot;&quot;</span>
 
         <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_meta_keys</span><span class="p">():</span>
@@ -872,7 +873,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_serialize_relation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Serialize the relation of the ARFF file. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Serialize the relation of the ARFF file.&quot;&quot;&quot;</span>
 
         <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;@RELATION </span><span class="si">{:s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
         <span class="n">content</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -882,7 +883,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_attributes_ctrl_vocab</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">is_class</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Serialize the controlled vocabulary in an attribute set.</span>
+        <span class="sd">&quot;&quot;&quot;Serialize the controlled vocabulary in an attribute set.</span>
 
 <span class="sd">        :param tier: (sppasTier)</span>
 
@@ -908,7 +909,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_serialize_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write the attributes of the ARFF file.</span>
+        <span class="sd">&quot;&quot;&quot;Write the attributes of the ARFF file.</span>
 <span class="sd">        Attributes are corresponding to the controlled vocabulary.</span>
 <span class="sd">        They are the list of possible tags of the annotations, except</span>
 <span class="sd">        for the numerical ones.</span>
@@ -945,7 +946,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_write_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write the data content of the ARFF file.</span>
+        <span class="sd">&quot;&quot;&quot;Write the data content of the ARFF file.</span>
 <span class="sd">        Data are the tags of the annotations or distributions of</span>
 <span class="sd">        probabilities.</span>
 
@@ -976,13 +977,13 @@
 
 
 <div class="viewcode-block" id="sppasXRFF"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasXRFF">[docs]</a><span class="k">class</span> <span class="nc">sppasXRFF</span><span class="p">(</span><span class="n">sppasWEKA</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SPPAS XRFF writer.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS XRFF writer.</span>
 
 <span class="sd">    XML-based format of WEKA software tool.</span>
 <span class="sd">    XRFF format description is at the following URL:</span>
@@ -1021,15 +1022,15 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasXRFF.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasXRFF.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasXRFF instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasXRFF instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasXRFF</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="n">sppasWEKA</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;xrff&quot;</span></div>
 
     <span class="c1"># -----------------------------------------------------------------</span>
@@ -1037,7 +1038,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasXRFF.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.weka.sppasXRFF.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write a XRFF file.</span>
+        <span class="sd">&quot;&quot;&quot;Write a XRFF file.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
@@ -1077,7 +1078,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_write_attribute_ctrl_vocab</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">is_class</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write the controlled vocabulary in an attribute set.</span>
+        <span class="sd">&quot;&quot;&quot;Write the controlled vocabulary in an attribute set.</span>
 
 <span class="sd">        :param tier: (sppasTier)</span>
 <span class="sd">        :param fp: FileDescription</span>
@@ -1097,7 +1098,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_write_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write the attributes of the ARFF file.</span>
+        <span class="sd">&quot;&quot;&quot;Write the attributes of the ARFF file.</span>
 <span class="sd">        Attributes are corresponding to the controlled vocabulary.</span>
 <span class="sd">        They are the list of possible tags of the annotations, except</span>
 <span class="sd">        for the numerical ones.</span>
@@ -1144,7 +1145,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_write_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fp</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write the data content of the XRFF file.</span>
+        <span class="sd">&quot;&quot;&quot;Write the data content of the XRFF file.</span>
 <span class="sd">        Data are the tags of the annotations or distributions of</span>
 <span class="sd">        probabilities.</span>
 

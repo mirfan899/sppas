@@ -67,12 +67,8 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.structs.metainfo.py</span>
+<span class="sd">    structs.metainfo.py</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~</span>
-
-<span class="sd">    Meta-information is a sorted collection of pairs (key, value) where</span>
-<span class="sd">    value is a tuple with first argument of type boolean to indicate the</span>
-<span class="sd">    state of the key: enabled/disabled.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">collections</span>
@@ -84,14 +80,18 @@
 <span class="c1"># ---------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasMetaInfo"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasMetaInfo">[docs]</a><span class="k">class</span> <span class="nc">sppasMetaInfo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasMetaInfo"><a class="viewcode-back" href="../../rst/structs.html#structs.metainfo.sppasMetaInfo">[docs]</a><span class="k">class</span> <span class="nc">sppasMetaInfo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Meta information manager.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Meta information manager.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
+
+<span class="sd">    Meta-information is a sorted collection of pairs (key, value) where</span>
+<span class="sd">    value is a tuple with first argument of type boolean to indicate the</span>
+<span class="sd">    state of the key: enabled/disabled.</span>
 
 <span class="sd">    Manage meta information of type (key,value). Allows to enable/disable</span>
 <span class="sd">    each one. Keys are unicode strings, and values can be of any type.</span>
@@ -101,18 +101,19 @@
 <span class="sd">    &gt;&gt;&gt; m.add_metainfo(&#39;version&#39;, (1,8,2))</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasMetaInfo.__init__"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasMetaInfo.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Creates a new sppasMetaInfo instance. &quot;&quot;&quot;</span>
 
+<div class="viewcode-block" id="sppasMetaInfo.__init__"><a class="viewcode-back" href="../../rst/structs.html#structs.metainfo.sppasMetaInfo.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new sppasMetaInfo instance.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">sppasMetaInfo</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metainfo</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaInfo.is_enable_metainfo"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasMetaInfo.is_enable_metainfo">[docs]</a>    <span class="k">def</span> <span class="nf">is_enable_metainfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the status of a given key or raise a MetaKeyError exception.</span>
+<div class="viewcode-block" id="sppasMetaInfo.is_enable_metainfo"><a class="viewcode-back" href="../../rst/structs.html#structs.metainfo.sppasMetaInfo.is_enable_metainfo">[docs]</a>    <span class="k">def</span> <span class="nf">is_enable_metainfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the status of a given key.</span>
 
 <span class="sd">        :param key: (str) The key of the meta-information</span>
+<span class="sd">        :raises: MetaKeyError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">u</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metainfo</span><span class="p">:</span>
@@ -122,10 +123,11 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaInfo.get_metainfo"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasMetaInfo.get_metainfo">[docs]</a>    <span class="k">def</span> <span class="nf">get_metainfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the value of a given key or raise a MetaKeyError exception.</span>
+<div class="viewcode-block" id="sppasMetaInfo.get_metainfo"><a class="viewcode-back" href="../../rst/structs.html#structs.metainfo.sppasMetaInfo.get_metainfo">[docs]</a>    <span class="k">def</span> <span class="nf">get_metainfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the value of a given key.</span>
 
 <span class="sd">        :param key: (str) The key of the meta-information</span>
+<span class="sd">        :raises: MetaKeyError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">u</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metainfo</span><span class="p">:</span>
@@ -135,11 +137,12 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaInfo.enable_metainfo"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasMetaInfo.enable_metainfo">[docs]</a>    <span class="k">def</span> <span class="nf">enable_metainfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Enable/Disable a meta information or raise a MetaKeyError exception.</span>
+<div class="viewcode-block" id="sppasMetaInfo.enable_metainfo"><a class="viewcode-back" href="../../rst/structs.html#structs.metainfo.sppasMetaInfo.enable_metainfo">[docs]</a>    <span class="k">def</span> <span class="nf">enable_metainfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Enable/Disable a meta information.</span>
 
 <span class="sd">        :param key: (str) The key of the meta-information</span>
 <span class="sd">        :param value: (bool) Status of the meta-information</span>
+<span class="sd">        :raises: MetaKeyError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">u</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metainfo</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -149,8 +152,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaInfo.add_metainfo"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasMetaInfo.add_metainfo">[docs]</a>    <span class="k">def</span> <span class="nf">add_metainfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">strv</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix a meta information or update it.</span>
+<div class="viewcode-block" id="sppasMetaInfo.add_metainfo"><a class="viewcode-back" href="../../rst/structs.html#structs.metainfo.sppasMetaInfo.add_metainfo">[docs]</a>    <span class="k">def</span> <span class="nf">add_metainfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">strv</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fix a meta information or update it.</span>
 
 <span class="sd">        :param key: (str) The key of the meta-information</span>
 <span class="sd">        :param strv: (str)</span>
@@ -160,10 +163,11 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaInfo.pop_metainfo"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasMetaInfo.pop_metainfo">[docs]</a>    <span class="k">def</span> <span class="nf">pop_metainfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Pop a meta information or raise a MetaKeyError exception.</span>
+<div class="viewcode-block" id="sppasMetaInfo.pop_metainfo"><a class="viewcode-back" href="../../rst/structs.html#structs.metainfo.sppasMetaInfo.pop_metainfo">[docs]</a>    <span class="k">def</span> <span class="nf">pop_metainfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pop a meta information.</span>
 
 <span class="sd">        :param key: (str) The key of the meta-information</span>
+<span class="sd">        :raises: MetaKeyError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">u</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metainfo</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -173,19 +177,21 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaInfo.keys_enabled"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasMetaInfo.keys_enabled">[docs]</a>    <span class="k">def</span> <span class="nf">keys_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return a list of the keys of enabled meta information.</span>
+<div class="viewcode-block" id="sppasMetaInfo.keys_enabled"><a class="viewcode-back" href="../../rst/structs.html#structs.metainfo.sppasMetaInfo.keys_enabled">[docs]</a>    <span class="k">def</span> <span class="nf">keys_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of the keys of enabled meta information.</span>
 
 <span class="sd">        :returns: list of unicode strings</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metainfo</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metainfo</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metainfo</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metainfo</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">]</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
     <span class="c1"># Overloads</span>
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of meta info (enabled+disabled).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_metainfo</span><span class="p">)</span></div>
 </pre></div>
 

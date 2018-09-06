@@ -68,25 +68,18 @@
 <span class="sd">        ---------------------------------------------------------------------</span>
 
 <span class="sd">    src.calculus.stats.moment.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
-<span class="sd">    A collection of basic statistical functions for python.</span>
-
-<span class="sd">    Function List</span>
-<span class="sd">    =============</span>
-
-<span class="sd">        - lmoment</span>
-<span class="sd">        - lvariation</span>
-<span class="sd">        - lskew</span>
-<span class="sd">        - lkurtosis</span>
+<span class="sd">A collection of basic statistical functions for python.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">from</span> <span class="nn">.central</span> <span class="k">import</span> <span class="n">fmean</span>
 <span class="kn">from</span> <span class="nn">.variability</span> <span class="k">import</span> <span class="n">lstdev</span>
 
@@ -94,7 +87,7 @@
 
 
 <div class="viewcode-block" id="lmoment"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.lmoment">[docs]</a><span class="k">def</span> <span class="nf">lmoment</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">moment</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the r-th moment about the mean for a sample.</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the r-th moment about the mean for a sample.</span>
 
 <span class="sd">    1/n * SUM((items(i)-mean)**r)</span>
 
@@ -114,7 +107,7 @@
 
 
 <div class="viewcode-block" id="lvariation"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.lvariation">[docs]</a><span class="k">def</span> <span class="nf">lvariation</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the coefficient of variation of data values.</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the coefficient of variation of data values.</span>
 
 <span class="sd">    It shows the extent of variability in relation to the mean. It&#39;s a</span>
 <span class="sd">    standardized measure of dispersion: stdev / mean and returned as a</span>
@@ -130,7 +123,7 @@
 
 
 <div class="viewcode-block" id="lskew"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.lskew">[docs]</a><span class="k">def</span> <span class="nf">lskew</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the skewness of a distribution.</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the skewness of a distribution.</span>
 
 <span class="sd">    The skewness represents a measure of the asymmetry: an understanding</span>
 <span class="sd">    of the skewness of the dataset indicates whether deviations from the</span>
@@ -146,7 +139,7 @@
 
 
 <div class="viewcode-block" id="lkurtosis"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.lkurtosis">[docs]</a><span class="k">def</span> <span class="nf">lkurtosis</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Returns the kurtosis of a distribution.</span>
+    <span class="sd">&quot;&quot;&quot;Return the kurtosis of a distribution.</span>
 
 <span class="sd">    The kurtosis represents a measure of the &quot;peakedness&quot;: a high kurtosis</span>
 <span class="sd">    distribution has a sharper peak and fatter tails, while a low kurtosis</span>

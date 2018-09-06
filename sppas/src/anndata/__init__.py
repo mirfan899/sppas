@@ -44,9 +44,10 @@ Praat's TextGrid and others into a sppasTranscription() object and convert
 into any of these formats. Those objects allow unified access to linguistic
 data from a wide range sources.
 
-To get the list of extensions currently supported for reading and/or writing:
+anndata requires the following other packages:
 
->>> ext = aio.extensions
+    - config;
+    - utils.
 
 """
 from .aio import aioutils

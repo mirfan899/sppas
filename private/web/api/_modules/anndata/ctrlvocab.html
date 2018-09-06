@@ -67,11 +67,8 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.anndata.ctrlvocab.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-
-<span class="sd">    A controlled Vocabulary is a set of tags. It is used to restrict the use</span>
-<span class="sd">    of tags in a label: only the accepted tags can be set to a label.</span>
+<span class="sd">    anndata.ctrlvocab.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
@@ -79,27 +76,31 @@
 <span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="k">import</span> <span class="n">sppasUnicode</span>
 <span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
 <span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">CtrlVocabContainsError</span>
-<span class="kn">from</span> <span class="nn">.annlabel.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
+<span class="kn">from</span> <span class="nn">.ann.annlabel</span> <span class="k">import</span> <span class="n">sppasTag</span>
 <span class="kn">from</span> <span class="nn">.metadata</span> <span class="k">import</span> <span class="n">sppasMetaData</span>
 
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasCtrlVocab"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasCtrlVocab">[docs]</a><span class="k">class</span> <span class="nc">sppasCtrlVocab</span><span class="p">(</span><span class="n">sppasMetaData</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasCtrlVocab"><a class="viewcode-back" href="../../rst/anndata.html#anndata.ctrlvocab.sppasCtrlVocab">[docs]</a><span class="k">class</span> <span class="nc">sppasCtrlVocab</span><span class="p">(</span><span class="n">sppasMetaData</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generic representation of a controlled vocabulary.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Generic representation of a controlled vocabulary.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018 Brigitte Bigi</span>
+
+<span class="sd">    A controlled Vocabulary is a set of tags. It is used to restrict the use</span>
+<span class="sd">    of tags in a label: only the accepted tags can be set to a label.</span>
 
 <span class="sd">    A controlled vocabulary is made of an identifier name, a description and</span>
 <span class="sd">    a list of pairs tag/description.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasCtrlVocab.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasCtrlVocab.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Creates a new sppasCtrlVocab instance.</span>
+
+<div class="viewcode-block" id="sppasCtrlVocab.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.ctrlvocab.sppasCtrlVocab.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new sppasCtrlVocab instance.</span>
 
 <span class="sd">        :param name: (str) Identifier name of the controlled vocabulary</span>
 <span class="sd">        :param description: (str)</span>
@@ -122,23 +123,20 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCtrlVocab.get_name"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasCtrlVocab.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the name of the controlled vocabulary. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasCtrlVocab.get_name"><a class="viewcode-back" href="../../rst/anndata.html#anndata.ctrlvocab.sppasCtrlVocab.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the name of the controlled vocabulary.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCtrlVocab.get_description"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasCtrlVocab.get_description">[docs]</a>    <span class="k">def</span> <span class="nf">get_description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the unicode str of the description of the ctrl vocab. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasCtrlVocab.get_description"><a class="viewcode-back" href="../../rst/anndata.html#anndata.ctrlvocab.sppasCtrlVocab.get_description">[docs]</a>    <span class="k">def</span> <span class="nf">get_description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the unicode str of the description of the ctrl vocab.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__desc</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCtrlVocab.get_tag_description"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasCtrlVocab.get_tag_description">[docs]</a>    <span class="k">def</span> <span class="nf">get_tag_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the unicode string of the description of an entry of the</span>
-<span class="sd">        controlled vocabulary.</span>
+<div class="viewcode-block" id="sppasCtrlVocab.get_tag_description"><a class="viewcode-back" href="../../rst/anndata.html#anndata.ctrlvocab.sppasCtrlVocab.get_tag_description">[docs]</a>    <span class="k">def</span> <span class="nf">get_tag_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the unicode string of the description of an entry.</span>
 
 <span class="sd">        :param tag: (sppasTag) the tag to get the description.</span>
 <span class="sd">        :returns: (str)</span>
@@ -151,8 +149,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCtrlVocab.set_description"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasCtrlVocab.set_description">[docs]</a>    <span class="k">def</span> <span class="nf">set_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the description of the controlled vocabulary.</span>
+<div class="viewcode-block" id="sppasCtrlVocab.set_description"><a class="viewcode-back" href="../../rst/anndata.html#anndata.ctrlvocab.sppasCtrlVocab.set_description">[docs]</a>    <span class="k">def</span> <span class="nf">set_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the description of the controlled vocabulary.</span>
 
 <span class="sd">        :param description: (str)</span>
 
@@ -162,8 +160,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCtrlVocab.contains"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasCtrlVocab.contains">[docs]</a>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Test if a tag is in the controlled vocabulary.</span>
+<div class="viewcode-block" id="sppasCtrlVocab.contains"><a class="viewcode-back" href="../../rst/anndata.html#anndata.ctrlvocab.sppasCtrlVocab.contains">[docs]</a>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test if a tag is in the controlled vocabulary.</span>
 <span class="sd">        Attention: Do not check the instance but the data content of the tag.</span>
 
 <span class="sd">        :param tag: (sppasTag) the tag to check.</span>
@@ -182,8 +180,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCtrlVocab.validate_tag"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasCtrlVocab.validate_tag">[docs]</a>    <span class="k">def</span> <span class="nf">validate_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check if the given tag can be added to the ctrl vocabulary. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasCtrlVocab.validate_tag"><a class="viewcode-back" href="../../rst/anndata.html#anndata.ctrlvocab.sppasCtrlVocab.validate_tag">[docs]</a>    <span class="k">def</span> <span class="nf">validate_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if the given tag can be added to the ctrl vocabulary.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">sppasTag</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="s2">&quot;sppasTag&quot;</span><span class="p">)</span>
@@ -198,8 +196,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCtrlVocab.add"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasCtrlVocab.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add a tag to the controlled vocab.</span>
+<div class="viewcode-block" id="sppasCtrlVocab.add"><a class="viewcode-back" href="../../rst/anndata.html#anndata.ctrlvocab.sppasCtrlVocab.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a tag to the controlled vocab.</span>
 
 <span class="sd">        :param tag: (sppasTag): the tag to add.</span>
 <span class="sd">        :param description: (str)</span>
@@ -216,8 +214,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCtrlVocab.remove"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasCtrlVocab.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove a tag of the controlled vocab.</span>
+<div class="viewcode-block" id="sppasCtrlVocab.remove"><a class="viewcode-back" href="../../rst/anndata.html#anndata.ctrlvocab.sppasCtrlVocab.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove a tag of the controlled vocab.</span>
 
 <span class="sd">        :param tag: (sppasTag) the tag to remove.</span>
 <span class="sd">        :returns: Boolean</span>
@@ -234,9 +232,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCtrlVocab.set_tag_description"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasCtrlVocab.set_tag_description">[docs]</a>    <span class="k">def</span> <span class="nf">set_tag_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">description</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the unicode string of the description of an entry of the</span>
-<span class="sd">        controlled vocabulary.</span>
+<div class="viewcode-block" id="sppasCtrlVocab.set_tag_description"><a class="viewcode-back" href="../../rst/anndata.html#anndata.ctrlvocab.sppasCtrlVocab.set_tag_description">[docs]</a>    <span class="k">def</span> <span class="nf">set_tag_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">description</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the unicode string of the description of an entry.</span>
 
 <span class="sd">        :param tag: (sppasTag) the tag to get the description.</span>
 <span class="sd">        :param description: (str)</span>
@@ -265,7 +262,7 @@
                <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__desc</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Test if other is strictly identical to self (even the id). &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Test if other is strictly identical to self (even the id).&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasCtrlVocab</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>

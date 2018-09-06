@@ -94,11 +94,11 @@
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioEmptyTierError</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioLocationTypeError</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioError</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
-<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="k">import</span> <span class="n">sppasLabel</span>
-<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..ann.annlabel</span> <span class="k">import</span> <span class="n">sppasLabel</span>
+<span class="kn">from</span> <span class="nn">..ann.annlabel</span> <span class="k">import</span> <span class="n">sppasTag</span>
 
 <span class="kn">from</span> <span class="nn">.basetrs</span> <span class="k">import</span> <span class="n">sppasBaseIO</span>
 <span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">format_labels</span>
@@ -108,25 +108,24 @@
 
 
 <div class="viewcode-block" id="sppasBasePhonedit"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.phonedit.sppasBasePhonedit">[docs]</a><span class="k">class</span> <span class="nc">sppasBasePhonedit</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Readers and writers of Phonedit files.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      Class for readers and writers of Phonedit files.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasBasePhonedit.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.phonedit.sppasBasePhonedit.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasBasePhonedit instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasBasePhonedit instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasBasePhonedit</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="kc">False</span>
@@ -147,7 +146,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a configuration file.</span>
+        <span class="sd">&quot;&quot;&quot;Parse a configuration file.</span>
 
 <span class="sd">        :param filename: (string) Configuration file name.</span>
 
@@ -171,7 +170,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_metadata</span><span class="p">(</span><span class="n">meta_list</span><span class="p">,</span> <span class="n">meta_object</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse the metadata and append into an object.</span>
+        <span class="sd">&quot;&quot;&quot;Parse the metadata and append into an object.</span>
 
 <span class="sd">        :param meta_list: (list) tuples with (key,value)</span>
 <span class="sd">        :param meta_object: (sppasMeta)</span>
@@ -184,13 +183,13 @@
 
 
 <div class="viewcode-block" id="sppasMRK"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.phonedit.sppasMRK">[docs]</a><span class="k">class</span> <span class="nc">sppasMRK</span><span class="p">(</span><span class="n">sppasBasePhonedit</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Reader and writer of Phonedit MRK files.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      Class for reader and writer of Phonedit MRK file.</span>
 
 <span class="sd">    Example of the old format:</span>
 
@@ -210,7 +209,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasMRK.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.phonedit.sppasMRK.detect">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check whether a file is of CTM format or not.</span>
+        <span class="sd">&quot;&quot;&quot;Check whether a file is of CTM format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
 <span class="sd">        :returns: (bool)</span>
@@ -225,22 +224,22 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasMRK.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.phonedit.sppasMRK.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasBaseSclite instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasBaseSclite instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasMRK</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="n">sppasBasePhonedit</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;mrk&quot;</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasMRK.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.phonedit.sppasMRK.make_point">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; In Phonedit, the localization is a time value, so a float. </span>
+        <span class="sd">&quot;&quot;&quot;In Phonedit, the localization is a time value, so a float.</span>
 
 <span class="sd">        :param midpoint: (str) a time in ELAN format</span>
 <span class="sd">        :returns: sppasPoint() representing time in seconds.</span>
@@ -257,7 +256,7 @@
 
 <div class="viewcode-block" id="sppasMRK.format_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.phonedit.sppasMRK.format_point">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">format_point</span><span class="p">(</span><span class="n">second_count</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert a time in seconds into MRK format. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Convert a time in seconds into MRK format.&quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">second_count</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">second_count</span><span class="p">)</span>
@@ -271,7 +270,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasMRK.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.phonedit.sppasMRK.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read a Phonedit mark file.</span>
+        <span class="sd">&quot;&quot;&quot;Read a Phonedit mark file.</span>
 
 <span class="sd">        :param filename: intput filename.</span>
 
@@ -293,7 +292,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_list</span><span class="p">,</span> <span class="n">level_id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a section DSC_LEVEL_ .</span>
+        <span class="sd">&quot;&quot;&quot;Parse a section DSC_LEVEL_ .</span>
 <span class="sd">        Creates a tier with the level name and add metadata.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -316,7 +315,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove the &quot; at the beginning and at the end of the string. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Remove the &quot; at the beginning and at the end of the string.&quot;&quot;&quot;</span>
 
         <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
@@ -330,7 +329,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_list</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse labels of a section LBL_LEVEL_ . &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Parse labels of a section LBL_LEVEL_ .&quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
@@ -377,7 +376,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasMRK.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.phonedit.sppasMRK.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write a Phonedit mark file.</span>
+        <span class="sd">&quot;&quot;&quot;Write a Phonedit mark file.</span>
 
 <span class="sd">        :param filename: output filename.</span>
 
@@ -423,18 +422,18 @@
 
 
 <div class="viewcode-block" id="sppasSignaix"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.phonedit.sppasSignaix">[docs]</a><span class="k">class</span> <span class="nc">sppasSignaix</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Reader and writer of F0 values from LPL-Signaix.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      Class for reader and writer of F0 values from LPL-Signaix.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasSignaix.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.phonedit.sppasSignaix.detect">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check whether a file is of CTM format or not.</span>
+        <span class="sd">&quot;&quot;&quot;Check whether a file is of CTM format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
 <span class="sd">        :returns: (bool)</span>
@@ -455,15 +454,15 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasSignaix.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.phonedit.sppasSignaix.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasSignaix instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasSignaix instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasSignaix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;hz&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">False</span>
@@ -484,9 +483,9 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasSignaix.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.phonedit.sppasSignaix.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read a file with Pitch values sampled at delta seconds.</span>
-<span class="sd">        The file contains one value at a line.</span>
+        <span class="sd">&quot;&quot;&quot;Read a file with Pitch values sampled at delta seconds.</span>
 
+<span class="sd">        The file contains one value at a line.</span>
 <span class="sd">        If the audio file is 30 seconds long and delta is 0.01, we expect:</span>
 <span class="sd">        100 * 30 = 3,000 lines in the file</span>
 
@@ -518,7 +517,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasSignaix.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.phonedit.sppasSignaix.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write a file with pitch values.</span>
+        <span class="sd">&quot;&quot;&quot;Write a file with pitch values.</span>
 
 <span class="sd">        :param filename: (str) output filename</span>
 

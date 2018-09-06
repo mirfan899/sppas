@@ -78,10 +78,10 @@
 <span class="kn">from</span> <span class="nn">.basetrs</span> <span class="k">import</span> <span class="n">sppasBaseIO</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioMultiTiersError</span>
-<span class="kn">from</span> <span class="nn">..annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..ann.annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasInterval</span>
 
 <span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">format_labels</span>
 
@@ -89,25 +89,24 @@
 
 
 <div class="viewcode-block" id="sppasBaseSubtitles"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.subtitle.sppasBaseSubtitles">[docs]</a><span class="k">class</span> <span class="nc">sppasBaseSubtitles</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SPPAS base class for subtitle formats.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS base class for subtitle formats.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasBaseSubtitles.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.subtitle.sppasBaseSubtitles.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasBaseSubtitles instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasBaseSubtitles instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasBaseSubtitles</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="kc">True</span>
@@ -128,7 +127,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_time</span><span class="p">(</span><span class="n">time_string</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert a time in &quot;%H:%M:%S,%m&quot; format into seconds. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Convert a time in &quot;%H:%M:%S,%m&quot; format into seconds.&quot;&quot;&quot;</span>
 
         <span class="n">time_string</span> <span class="o">=</span> <span class="n">time_string</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">time_string</span><span class="p">,</span> <span class="s1">&#39;%H:%M:%S,</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">-</span>
@@ -139,7 +138,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_time</span><span class="p">(</span><span class="n">second_count</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert a time in seconds into &quot;%H:%M:%S&quot; format. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Convert a time in seconds into &quot;%H:%M:%S&quot; format.&quot;&quot;&quot;</span>
 
         <span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">second_count</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S,</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
@@ -148,7 +147,7 @@
 
 <div class="viewcode-block" id="sppasBaseSubtitles.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.subtitle.sppasBaseSubtitles.make_point">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; In subtitles, the localization is a time value, so a float. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;In subtitles, the localization is a time value, so a float.&quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">midpoint</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">midpoint</span><span class="p">)</span>
@@ -160,7 +159,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove HTML tags, etc. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Remove HTML tags, etc.&quot;&quot;&quot;</span>
 
         <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;b&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;B&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
@@ -190,7 +189,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_location</span><span class="p">(</span><span class="n">ann</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Extract location to serialize the timestamps. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Extract location to serialize the timestamps.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">location_is_point</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="n">begin</span> <span class="o">=</span> <span class="n">sppasBaseSubtitles</span><span class="o">.</span><span class="n">_format_time</span><span class="p">(</span>
@@ -213,13 +212,13 @@
 
 
 <div class="viewcode-block" id="sppasSubRip"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.subtitle.sppasSubRip">[docs]</a><span class="k">class</span> <span class="nc">sppasSubRip</span><span class="p">(</span><span class="n">sppasBaseSubtitles</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SPPAS reader/writer for SRT format.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS reader/writer for SRT format.</span>
 
 <span class="sd">    The SubRip text file format (SRT) is used by the SubRip program to save</span>
 <span class="sd">    subtitles ripped from video files or DVDs.</span>
@@ -236,21 +235,21 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasSubRip.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.subtitle.sppasSubRip.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasSubRip instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasSubRip instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasSubRip</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="n">sppasBaseSubtitles</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;srt&quot;</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasSubRip.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.subtitle.sppasSubRip.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read a SRT file and fill the Transcription.</span>
+        <span class="sd">&quot;&quot;&quot;Read a SRT file and fill the Transcription.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
@@ -281,7 +280,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_subtitle</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a single subtitle.</span>
+        <span class="sd">&quot;&quot;&quot;Parse a single subtitle.</span>
 
 <span class="sd">        The subtitle can be written on several lines. In this case, one sppasLabel()</span>
 <span class="sd">        is created for each line.</span>
@@ -322,7 +321,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasSubRip.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.subtitle.sppasSubRip.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write a transcription into a file.</span>
+        <span class="sd">&quot;&quot;&quot;Write a transcription into a file.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
@@ -366,7 +365,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_metadata</span><span class="p">(</span><span class="n">ann</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Extract metadata to serialize the position on screen. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Extract metadata to serialize the position on screen.&quot;&quot;&quot;</span>
 
         <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">if</span> <span class="n">ann</span><span class="o">.</span><span class="n">is_meta_key</span><span class="p">(</span><span class="s2">&quot;position_pixel_X1&quot;</span><span class="p">):</span>
@@ -385,34 +384,34 @@
 
 
 <div class="viewcode-block" id="sppasSubViewer"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.subtitle.sppasSubViewer">[docs]</a><span class="k">class</span> <span class="nc">sppasSubViewer</span><span class="p">(</span><span class="n">sppasBaseSubtitles</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SPPAS reader/writer for SUB format.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS reader/writer for SUB format.</span>
 
 <span class="sd">    The SubViewer text file format (SUB) is used by the SubViewer program to</span>
 <span class="sd">    save subtitles of videos.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasSubViewer.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.subtitle.sppasSubViewer.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasBaseSubtitles instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasBaseSubtitles instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasSubViewer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="n">sppasBaseSubtitles</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;sub&quot;</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasSubViewer.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.subtitle.sppasSubViewer.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read a SUB file and fill the Transcription.</span>
+        <span class="sd">&quot;&quot;&quot;Read a SUB file and fill the Transcription.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
@@ -445,7 +444,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse the header lines to get metadata.</span>
+        <span class="sd">&quot;&quot;&quot;Parse the header lines to get metadata.</span>
 
 <span class="sd">        [INFORMATION]</span>
 <span class="sd">        [TITLE]SubViewer file example</span>
@@ -477,7 +476,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_subtitle</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a single subtitle.</span>
+        <span class="sd">&quot;&quot;&quot;Parse a single subtitle.</span>
 
 <span class="sd">        :param lines: (list) the lines of a subtitle (index, timestamps, label)</span>
 
@@ -503,7 +502,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasSubViewer.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.subtitle.sppasSubViewer.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write a transcription into a file.</span>
+        <span class="sd">&quot;&quot;&quot;Write a transcription into a file.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
@@ -542,7 +541,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_serialize_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert metadata into an header.</span>
+        <span class="sd">&quot;&quot;&quot;Convert metadata into an header.</span>
 
 <span class="sd">        [INFORMATION]</span>
 <span class="sd">        [TITLE]SubViewer file example</span>

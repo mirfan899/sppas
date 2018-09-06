@@ -15,7 +15,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="anndata.annlabel package" href="anndata.annlabel.html" />
+    <link rel="next" title="anndata.ann package" href="anndata.ann.html" />
     <link rel="prev" title="anndata package" href="anndata.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="anndata.annlabel.html" title="anndata.annlabel package"
+          <a href="anndata.ann.html" title="anndata.ann package"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="anndata.html" title="anndata package"
@@ -50,8 +50,8 @@
 </div>
 <div class="section" id="module-anndata.aio.aioutils">
 <span id="anndata-aio-aioutils-module"></span><h2>anndata.aio.aioutils module<a class="headerlink" href="#module-anndata.aio.aioutils" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="src-anndata-aio-aioutils-py">
-<h3>src.anndata.aio.aioutils.py<a class="headerlink" href="#src-anndata-aio-aioutils-py" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="anndata-aio-aioutils-py-utilities-for-readers-and-writers">
+<h3>anndata.aio.aioutils.py: Utilities for readers and writers.<a class="headerlink" href="#anndata-aio-aioutils-py-utilities-for-readers-and-writers" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -60,22 +60,19 @@
 </tr>
 <tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
-<tr class="field-even field"><th class="field-name">summary:</th><td class="field-body">Utilities for readers and writers.</td>
-</tr>
 </tbody>
 </table>
-<dl class="docutils">
-<dt>BNF to represent alternative tags:</dt>
-<dd>ALTERNATE :== “{” TEXT ALT+ “}”
+<p>BNF to represent alternative tags:</p>
+<blockquote>
+<div>ALTERNATE :== “{” TEXT ALT+ “}”
 ALT :== “|” TEXT
-TEXT :== tag content | empty</dd>
-</dl>
+TEXT :== tag content | empty</div></blockquote>
 <dl class="function">
 <dt id="anndata.aio.aioutils.check_gaps">
 <code class="descclassname">anndata.aio.aioutils.</code><code class="descname">check_gaps</code><span class="sig-paren">(</span><em>tier</em>, <em>min_loc=None</em>, <em>max_loc=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/aioutils.html#check_gaps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.aioutils.check_gaps" title="Permalink to this definition">¶</a></dt>
@@ -286,7 +283,6 @@ their ‘id’ is different.</p>
 <span id="anndata-aio-annotationpro-module"></span><h2>anndata.aio.annotationpro module<a class="headerlink" href="#module-anndata.aio.annotationpro" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="src-anndata-aio-annotationpro-py">
 <h3>src.anndata.aio.annotationpro.py<a class="headerlink" href="#src-anndata-aio-annotationpro-py" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="http://annotationpro.org/">http://annotationpro.org/</a></p>
 <dl class="function">
 <dt id="anndata.aio.annotationpro.color_to_rgb">
 <code class="descclassname">anndata.aio.annotationpro.</code><code class="descname">color_to_rgb</code><span class="sig-paren">(</span><em>color</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/annotationpro.html#color_to_rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.annotationpro.color_to_rgb" title="Permalink to this definition">¶</a></dt>
@@ -309,6 +305,7 @@ their ‘id’ is different.</p>
 <dt id="anndata.aio.annotationpro.sppasANT">
 <em class="property">class </em><code class="descclassname">anndata.aio.annotationpro.</code><code class="descname">sppasANT</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/annotationpro.html#sppasANT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.annotationpro.sppasANT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.basetrs.sppasBaseIO" title="anndata.aio.basetrs.sppasBaseIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.basetrs.sppasBaseIO</span></code></a></p>
+<p>AnnotationPro ANT reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -317,13 +314,11 @@ their ‘id’ is different.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">AnnotationPro ANT reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -392,6 +387,7 @@ their ‘id’ is different.</p>
 <dt id="anndata.aio.annotationpro.sppasANTX">
 <em class="property">class </em><code class="descclassname">anndata.aio.annotationpro.</code><code class="descname">sppasANTX</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/annotationpro.html#sppasANTX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.annotationpro.sppasANTX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.basetrs.sppasBaseIO" title="anndata.aio.basetrs.sppasBaseIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.basetrs.sppasBaseIO</span></code></a></p>
+<p>AnnotationPro ANTX reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -400,16 +396,15 @@ their ‘id’ is different.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">AnnotationPro ANTX reader and writer.</td>
-</tr>
 </tbody>
 </table>
+<p><a class="reference external" href="http://annotationpro.org/">http://annotationpro.org/</a></p>
 <dl class="method">
 <dt id="anndata.aio.annotationpro.sppasANTX.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/annotationpro.html#sppasANTX.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.annotationpro.sppasANTX.__init__" title="Permalink to this definition">¶</a></dt>
@@ -493,14 +488,13 @@ their ‘id’ is different.</p>
 </div>
 <div class="section" id="module-anndata.aio.anvil">
 <span id="anndata-aio-anvil-module"></span><h2>anndata.aio.anvil module<a class="headerlink" href="#module-anndata.aio.anvil" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="src-anndata-aio-anvil-py">
-<h3>src.anndata.aio.anvil.py<a class="headerlink" href="#src-anndata-aio-anvil-py" title="Permalink to this headline">¶</a></h3>
-<p>Support of the native format of ANVIL annotation tool.</p>
-<p>BE AWARE THAT: this support has to be verified, tested and extended!!!</p>
+<div class="section" id="anndata-aio-anvil-py">
+<h3>anndata.aio.anvil.py<a class="headerlink" href="#anndata-aio-anvil-py" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="anndata.aio.anvil.sppasAnvil">
 <em class="property">class </em><code class="descclassname">anndata.aio.anvil.</code><code class="descname">sppasAnvil</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/anvil.html#sppasAnvil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.anvil.sppasAnvil" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.basetrs.sppasBaseIO" title="anndata.aio.basetrs.sppasBaseIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.basetrs.sppasBaseIO</span></code></a></p>
+<p>ANVIL (partially) reader.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -509,16 +503,16 @@ their ‘id’ is different.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">ANVIL reader.</td>
-</tr>
 </tbody>
 </table>
+<p>Support of the native format of ANVIL annotation tool.</p>
+<p>BE AWARE THAT: this support has to be verified, tested and extended!!!</p>
 <dl class="method">
 <dt id="anndata.aio.anvil.sppasAnvil.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/anvil.html#sppasAnvil.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.anvil.sppasAnvil.__init__" title="Permalink to this definition">¶</a></dt>
@@ -593,7 +587,7 @@ volunteers and distributed under the GNU General Public License (GPL).</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -676,13 +670,13 @@ AUP files are encoded in UTF-8 without BOM.</p>
 </div>
 <div class="section" id="module-anndata.aio.basetrs">
 <span id="anndata-aio-basetrs-module"></span><h2>anndata.aio.basetrs module<a class="headerlink" href="#module-anndata.aio.basetrs" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="src-anndata-aio-basetrs-py">
-<h3>src.anndata.aio.basetrs.py<a class="headerlink" href="#src-anndata-aio-basetrs-py" title="Permalink to this headline">¶</a></h3>
-<p>Base object for readers and writers of annotated data.</p>
+<div class="section" id="anndata-aio-basetrs-py">
+<h3>anndata.aio.basetrs.py<a class="headerlink" href="#anndata-aio-basetrs-py" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="anndata.aio.basetrs.sppasBaseIO">
 <em class="property">class </em><code class="descclassname">anndata.aio.basetrs.</code><code class="descname">sppasBaseIO</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="anndata.html#anndata.transcription.sppasTranscription" title="anndata.transcription.sppasTranscription"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.transcription.sppasTranscription</span></code></a></p>
+<p>Base object for readers and writers of annotated data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -691,13 +685,11 @@ AUP files are encoded in UTF-8 without BOM.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Base object for readers and writers of annotated data.</td>
 </tr>
 </tbody>
 </table>
@@ -709,23 +701,17 @@ AUP files are encoded in UTF-8 without BOM.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> – (str) A transcription name.</li>
-<li><strong>multi_tiers</strong> – (bool) The IO supports (or not) to read and write</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> – (str) A transcription name.</td>
 </tr>
 </tbody>
 </table>
-<p>several tiers.
-:param no_tiers: (bool) The IO supports (or not) to write no tiers.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.alternative_localization_support">
 <code class="descname">alternative_localization_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.alternative_localization_support"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.alternative_localization_support" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if this reader-writer supports to read and write
-alternative localizations (with a score or not).</p>
+<dd><p>Return True if it supports to alternative localizations.</p>
+<p>If support with or without a score, it returns true.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -739,8 +725,8 @@ alternative localizations (with a score or not).</p>
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.alternative_tag_support">
 <code class="descname">alternative_tag_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.alternative_tag_support"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.alternative_tag_support" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if this reader-writer supports to read and write
-alternative tags (with a score or not).</p>
+<dd><p>Return True if it supports alternative tags.</p>
+<p>If support with or without a score, it returns true.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -754,8 +740,7 @@ alternative tags (with a score or not).</p>
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.ctrl_vocab_support">
 <code class="descname">ctrl_vocab_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.ctrl_vocab_support"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.ctrl_vocab_support" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if this reader-writer supports to read and write
-a controlled vocabulary.</p>
+<dd><p>Return True if it supports to read and write a controlled vocab.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -769,13 +754,13 @@ a controlled vocabulary.</p>
 <dl class="staticmethod">
 <dt id="anndata.aio.basetrs.sppasBaseIO.detect">
 <em class="property">static </em><code class="descname">detect</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.detect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.detect" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Check whether a file is of the appropriate format or not.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.disjoint_support">
 <code class="descname">disjoint_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.disjoint_support"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.disjoint_support" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if this reader-writer supports to read and write
-tiers with localizations as disjoint intervals.</p>
+<dd><p>Return True if it supports tiers with localizations as disjoint.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -789,8 +774,7 @@ tiers with localizations as disjoint intervals.</p>
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.gaps_support">
 <code class="descname">gaps_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.gaps_support"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.gaps_support" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if this reader-writer supports gaps between
-annotations of a tier (i.e. gaps = holes).</p>
+<dd><p>Return True if it supports gaps between annotations of a tier.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -804,8 +788,7 @@ annotations of a tier (i.e. gaps = holes).</p>
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.hierarchy_support">
 <code class="descname">hierarchy_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.hierarchy_support"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.hierarchy_support" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if this reader-writer supports to read and write
-a hierarchy between tiers.</p>
+<dd><p>Return True if it supports a hierarchy between tiers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -819,8 +802,7 @@ a hierarchy between tiers.</p>
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.interval_support">
 <code class="descname">interval_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.interval_support"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.interval_support" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if this reader-writer supports to read and write
-tiers with localizations as intervals.</p>
+<dd><p>Return True if it supports tiers with localizations as intervals.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -850,8 +832,7 @@ tiers with localizations as intervals.</p>
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.media_support">
 <code class="descname">media_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.media_support"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.media_support" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if this reader-writer supports to read and write
-a link to a media.</p>
+<dd><p>Return True if it supports to read and write a link to a media.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -865,8 +846,7 @@ a link to a media.</p>
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.metadata_support">
 <code class="descname">metadata_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.metadata_support"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.metadata_support" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if this reader-writer supports to read and write
-metadata.</p>
+<dd><p>Return True if it supports to read and write metadata.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -880,8 +860,7 @@ metadata.</p>
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.multi_tiers_support">
 <code class="descname">multi_tiers_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.multi_tiers_support"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.multi_tiers_support" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if this reader-writer supports to read and write
-several tiers.</p>
+<dd><p>Return True if it supports to read and write several tiers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -895,7 +874,7 @@ several tiers.</p>
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.no_tiers_support">
 <code class="descname">no_tiers_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.no_tiers_support"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.no_tiers_support" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if this reader-writer supports to write no tier.</p>
+<dd><p>Return True if it supports to write no tier.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -909,8 +888,7 @@ several tiers.</p>
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.overlaps_support">
 <code class="descname">overlaps_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.overlaps_support"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.overlaps_support" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if this reader-writer supports overlaps between
-annotations of a tier.</p>
+<dd><p>Return True if it supports overlaps between annotations of a tier.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -924,8 +902,7 @@ annotations of a tier.</p>
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.point_support">
 <code class="descname">point_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.point_support"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.point_support" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if this reader-writer supports to read and write
-tiers with localizations as points.</p>
+<dd><p>Return True if it supports tiers with localizations as points.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -939,8 +916,7 @@ tiers with localizations as points.</p>
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.radius_support">
 <code class="descname">radius_support</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.radius_support"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.radius_support" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return True if this reader-writer supports to read and write
-the radius value (the vagueness or a point).</p>
+<dd><p>Return True if it supports the radius value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -954,7 +930,7 @@ the radius value (the vagueness or a point).</p>
 <dl class="method">
 <dt id="anndata.aio.basetrs.sppasBaseIO.read">
 <code class="descname">read</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/basetrs.html#sppasBaseIO.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.basetrs.sppasBaseIO.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read a file and fill the Transcription.</p>
+<dd><p>Read a file and fill the transcription.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1005,6 +981,7 @@ the radius value (the vagueness or a point).</p>
 <dt id="anndata.aio.elan.sppasEAF">
 <em class="property">class </em><code class="descclassname">anndata.aio.elan.</code><code class="descname">sppasEAF</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/elan.html#sppasEAF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.elan.sppasEAF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.basetrs.sppasBaseIO" title="anndata.aio.basetrs.sppasBaseIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.basetrs.sppasBaseIO</span></code></a></p>
+<p>Elan EAF reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1013,13 +990,11 @@ the radius value (the vagueness or a point).</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS ELAN EAF files reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -1133,6 +1108,7 @@ the radius value (the vagueness or a point).</p>
 <dt id="anndata.aio.htk.sppasBaseHTK">
 <em class="property">class </em><code class="descclassname">anndata.aio.htk.</code><code class="descname">sppasBaseHTK</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/htk.html#sppasBaseHTK"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.htk.sppasBaseHTK" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.basetrs.sppasBaseIO" title="anndata.aio.basetrs.sppasBaseIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.basetrs.sppasBaseIO</span></code></a></p>
+<p>SPPAS HTK files reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1141,13 +1117,11 @@ the radius value (the vagueness or a point).</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS HTK files reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -1168,8 +1142,8 @@ the radius value (the vagueness or a point).</p>
 <dl class="staticmethod">
 <dt id="anndata.aio.htk.sppasBaseHTK.make_point">
 <em class="property">static </em><code class="descname">make_point</code><span class="sig-paren">(</span><em>time_string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/htk.html#sppasBaseHTK.make_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.htk.sppasBaseHTK.make_point" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert data into the appropriate sppasPoint().
-No radius if data is an integer. A default radius of 0.001 if data is a
+<dd><p>Convert data into the appropriate sppasPoint().</p>
+<p>No radius if data is an integer. A default radius of 0.001 if data is a
 float.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1189,6 +1163,7 @@ float.</p>
 <dt id="anndata.aio.htk.sppasLab">
 <em class="property">class </em><code class="descclassname">anndata.aio.htk.</code><code class="descname">sppasLab</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/htk.html#sppasLab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.htk.sppasLab" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.htk.sppasBaseHTK" title="anndata.aio.htk.sppasBaseHTK"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.htk.sppasBaseHTK</span></code></a></p>
+<p>SPPAS LAB reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1197,13 +1172,11 @@ float.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS LAB reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -1313,6 +1286,7 @@ display, the analysis, the labeling of multi-parametric data.</p>
 <dt id="anndata.aio.phonedit.sppasBasePhonedit">
 <em class="property">class </em><code class="descclassname">anndata.aio.phonedit.</code><code class="descname">sppasBasePhonedit</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/phonedit.html#sppasBasePhonedit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.phonedit.sppasBasePhonedit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.basetrs.sppasBaseIO" title="anndata.aio.basetrs.sppasBaseIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.basetrs.sppasBaseIO</span></code></a></p>
+<p>Readers and writers of Phonedit files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1321,13 +1295,11 @@ display, the analysis, the labeling of multi-parametric data.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Class for readers and writers of Phonedit files.</td>
 </tr>
 </tbody>
 </table>
@@ -1351,6 +1323,7 @@ display, the analysis, the labeling of multi-parametric data.</p>
 <dt id="anndata.aio.phonedit.sppasMRK">
 <em class="property">class </em><code class="descclassname">anndata.aio.phonedit.</code><code class="descname">sppasMRK</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/phonedit.html#sppasMRK"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.phonedit.sppasMRK" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.phonedit.sppasBasePhonedit" title="anndata.aio.phonedit.sppasBasePhonedit"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.phonedit.sppasBasePhonedit</span></code></a></p>
+<p>Reader and writer of Phonedit MRK files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1359,13 +1332,11 @@ display, the analysis, the labeling of multi-parametric data.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Class for reader and writer of Phonedit MRK file.</td>
 </tr>
 </tbody>
 </table>
@@ -1468,6 +1439,7 @@ LBL_LEVEL_AA_000003= “ipu_2” 5743.602653 8460.595544</div></blockquote>
 <dt id="anndata.aio.phonedit.sppasSignaix">
 <em class="property">class </em><code class="descclassname">anndata.aio.phonedit.</code><code class="descname">sppasSignaix</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/phonedit.html#sppasSignaix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.phonedit.sppasSignaix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.basetrs.sppasBaseIO" title="anndata.aio.basetrs.sppasBaseIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.basetrs.sppasBaseIO</span></code></a></p>
+<p>Reader and writer of F0 values from LPL-Signaix.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1476,13 +1448,11 @@ LBL_LEVEL_AA_000003= “ipu_2” 5743.602653 8460.595544</div></blockquote>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Class for reader and writer of F0 values from LPL-Signaix.</td>
 </tr>
 </tbody>
 </table>
@@ -1519,9 +1489,9 @@ LBL_LEVEL_AA_000003= “ipu_2” 5743.602653 8460.595544</div></blockquote>
 <dl class="method">
 <dt id="anndata.aio.phonedit.sppasSignaix.read">
 <code class="descname">read</code><span class="sig-paren">(</span><em>filename</em>, <em>delta=0.01</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/phonedit.html#sppasSignaix.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.phonedit.sppasSignaix.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read a file with Pitch values sampled at delta seconds.
-The file contains one value at a line.</p>
-<p>If the audio file is 30 seconds long and delta is 0.01, we expect:
+<dd><p>Read a file with Pitch values sampled at delta seconds.</p>
+<p>The file contains one value at a line.
+If the audio file is 30 seconds long and delta is 0.01, we expect:
 100 * 30 = 3,000 lines in the file</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1572,6 +1542,7 @@ The file contains one value at a line.</p>
 <dt id="anndata.aio.praat.sppasBaseNumericalTier">
 <em class="property">class </em><code class="descclassname">anndata.aio.praat.</code><code class="descname">sppasBaseNumericalTier</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/praat.html#sppasBaseNumericalTier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.praat.sppasBaseNumericalTier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.praat.sppasBasePraat" title="anndata.aio.praat.sppasBasePraat"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.praat.sppasBasePraat</span></code></a></p>
+<p>SPPAS PitchTier, IntensityTier, etc reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1580,13 +1551,11 @@ The file contains one value at a line.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS PitchTier, IntensityTier, etc reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -1612,6 +1581,7 @@ pitch, intensity, etc.</p>
 <dt id="anndata.aio.praat.sppasBasePraat">
 <em class="property">class </em><code class="descclassname">anndata.aio.praat.</code><code class="descname">sppasBasePraat</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/praat.html#sppasBasePraat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.praat.sppasBasePraat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.basetrs.sppasBaseIO" title="anndata.aio.basetrs.sppasBaseIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.basetrs.sppasBaseIO</span></code></a></p>
+<p>Base class for readers and writers of Praat files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1620,13 +1590,11 @@ pitch, intensity, etc.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Base class for readers and writers of Praat files.</td>
 </tr>
 </tbody>
 </table>
@@ -1672,6 +1640,7 @@ pitch, intensity, etc.</p>
 <dt id="anndata.aio.praat.sppasIntensityTier">
 <em class="property">class </em><code class="descclassname">anndata.aio.praat.</code><code class="descname">sppasIntensityTier</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/praat.html#sppasIntensityTier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.praat.sppasIntensityTier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.praat.sppasPitchTier" title="anndata.aio.praat.sppasPitchTier"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.praat.sppasPitchTier</span></code></a></p>
+<p>SPPAS IntensityTier reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1680,13 +1649,11 @@ pitch, intensity, etc.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS IntensityTier reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -1754,6 +1721,7 @@ pitch, intensity, etc.</p>
 <dt id="anndata.aio.praat.sppasPitchTier">
 <em class="property">class </em><code class="descclassname">anndata.aio.praat.</code><code class="descname">sppasPitchTier</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/praat.html#sppasPitchTier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.praat.sppasPitchTier" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.praat.sppasBaseNumericalTier" title="anndata.aio.praat.sppasBaseNumericalTier"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.praat.sppasBaseNumericalTier</span></code></a></p>
+<p>SPPAS PitchTier reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1762,13 +1730,11 @@ pitch, intensity, etc.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS PitchTier reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -1836,6 +1802,7 @@ pitch, intensity, etc.</p>
 <dt id="anndata.aio.praat.sppasTextGrid">
 <em class="property">class </em><code class="descclassname">anndata.aio.praat.</code><code class="descname">sppasTextGrid</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/praat.html#sppasTextGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.praat.sppasTextGrid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.praat.sppasBasePraat" title="anndata.aio.praat.sppasBasePraat"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.praat.sppasBasePraat</span></code></a></p>
+<p>SPPAS TextGrid reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1844,13 +1811,11 @@ pitch, intensity, etc.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS TextGrid reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -1930,13 +1895,13 @@ TextGrid does not support radius.</p>
 </div>
 <div class="section" id="module-anndata.aio.readwrite">
 <span id="anndata-aio-readwrite-module"></span><h2>anndata.aio.readwrite module<a class="headerlink" href="#module-anndata.aio.readwrite" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="src-anndata-aio-readwrite-py">
-<h3>src.anndata.aio.readwrite.py<a class="headerlink" href="#src-anndata-aio-readwrite-py" title="Permalink to this headline">¶</a></h3>
-<p>Readers and writers of annotated data.</p>
+<div class="section" id="anndata-aio-readwrite-py">
+<h3>anndata.aio.readwrite.py<a class="headerlink" href="#anndata-aio-readwrite-py" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="anndata.aio.readwrite.sppasRW">
 <em class="property">class </em><code class="descclassname">anndata.aio.readwrite.</code><code class="descname">sppasRW</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/readwrite.html#sppasRW"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.readwrite.sppasRW" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Main parser of annotated data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1945,16 +1910,15 @@ TextGrid does not support radius.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">Main parser of annotated data.</td>
-</tr>
 </tbody>
 </table>
+<p>Readers and writers of annotated data.</p>
 <dl class="attribute">
 <dt id="anndata.aio.readwrite.sppasRW.TRANSCRIPTION_TYPES">
 <code class="descname">TRANSCRIPTION_TYPES</code><em class="property"> = {'ant': &lt;class 'anndata.aio.annotationpro.sppasANT'&gt;, 'antx': &lt;class 'anndata.aio.annotationpro.sppasANTX'&gt;, 'anvil': &lt;class 'anndata.aio.anvil.sppasAnvil'&gt;, 'arff': &lt;class 'anndata.aio.weka.sppasARFF'&gt;, 'aup': &lt;class 'anndata.aio.audacity.sppasAudacity'&gt;, 'csv': &lt;class 'anndata.aio.text.sppasCSV'&gt;, 'ctm': &lt;class 'anndata.aio.sclite.sppasCTM'&gt;, 'eaf': &lt;class 'anndata.aio.elan.sppasEAF'&gt;, 'hz': &lt;class 'anndata.aio.phonedit.sppasSignaix'&gt;, 'intensitytier': &lt;class 'anndata.aio.praat.sppasIntensityTier'&gt;, 'lab': &lt;class 'anndata.aio.htk.sppasLab'&gt;, 'mrk': &lt;class 'anndata.aio.phonedit.sppasMRK'&gt;, 'pitchtier': &lt;class 'anndata.aio.praat.sppasPitchTier'&gt;, 'srt': &lt;class 'anndata.aio.subtitle.sppasSubRip'&gt;, 'stm': &lt;class 'anndata.aio.sclite.sppasSTM'&gt;, 'sub': &lt;class 'anndata.aio.subtitle.sppasSubViewer'&gt;, 'tdf': &lt;class 'anndata.aio.xtrans.sppasTDF'&gt;, 'textgrid': &lt;class 'anndata.aio.praat.sppasTextGrid'&gt;, 'trs': &lt;class 'anndata.aio.transcriber.sppasTRS'&gt;, 'txt': &lt;class 'anndata.aio.text.sppasRawText'&gt;, 'xra': &lt;class 'anndata.aio.xra.sppasXRA'&gt;, 'xrff': &lt;class 'anndata.aio.weka.sppasXRFF'&gt;}</em><a class="headerlink" href="#anndata.aio.readwrite.sppasRW.TRANSCRIPTION_TYPES" title="Permalink to this definition">¶</a></dt>
@@ -1977,8 +1941,8 @@ TextGrid does not support radius.</p>
 <dl class="staticmethod">
 <dt id="anndata.aio.readwrite.sppasRW.create_trs_from_extension">
 <em class="property">static </em><code class="descname">create_trs_from_extension</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/readwrite.html#sppasRW.create_trs_from_extension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.readwrite.sppasRW.create_trs_from_extension" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a transcription according to a given filename.
-Only the extension of the filename is used.</p>
+<dd><p>Return a transcription according to a given filename.</p>
+<p>Only the extension of the filename is used.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1994,8 +1958,8 @@ Only the extension of the filename is used.</p>
 <dl class="staticmethod">
 <dt id="anndata.aio.readwrite.sppasRW.create_trs_from_heuristic">
 <em class="property">static </em><code class="descname">create_trs_from_heuristic</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/readwrite.html#sppasRW.create_trs_from_heuristic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.readwrite.sppasRW.create_trs_from_heuristic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a transcription according to a given filename.
-The given file is opened and an heuristic allows to fix the format.</p>
+<dd><p>Return a transcription according to a given filename.</p>
+<p>The given file is opened and an heuristic allows to fix the format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2028,11 +1992,11 @@ The given file is opened and an heuristic allows to fix the format.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>heuristic</strong> – (bool) if the extension of the file is unknown,</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>heuristic</strong> – (bool) if the extension of the file is unknown, use</td>
 </tr>
 </tbody>
 </table>
-<p>use an heuristic to detect the format, then to choose the reader-writer.
+<p>an heuristic to detect the format, then to choose the reader-writer.
 :returns: sppasTranscription reader-writer</p>
 </dd></dl>
 
@@ -2087,6 +2051,7 @@ opportunity to store metadata.</p>
 <dt id="anndata.aio.sclite.sppasBaseSclite">
 <em class="property">class </em><code class="descclassname">anndata.aio.sclite.</code><code class="descname">sppasBaseSclite</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/sclite.html#sppasBaseSclite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.sclite.sppasBaseSclite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.text.sppasBaseText" title="anndata.aio.text.sppasBaseText"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.text.sppasBaseText</span></code></a></p>
+<p>SPPAS base Sclite reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2095,13 +2060,11 @@ opportunity to store metadata.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS base Sclite reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -2146,6 +2109,7 @@ opportunity to store metadata.</p>
 <dt id="anndata.aio.sclite.sppasCTM">
 <em class="property">class </em><code class="descclassname">anndata.aio.sclite.</code><code class="descname">sppasCTM</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/sclite.html#sppasCTM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.sclite.sppasCTM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.sclite.sppasBaseSclite" title="anndata.aio.sclite.sppasBaseSclite"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.sclite.sppasBaseSclite</span></code></a></p>
+<p>SPPAS ctm reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2154,13 +2118,11 @@ opportunity to store metadata.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS ctm reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -2172,7 +2134,7 @@ program. This file format is as follow (in BNF):</p>
 <dt>where:</dt>
 <dd><dl class="first docutils">
 <dt>&lt;F&gt; -&gt; The waveform filename.</dt>
-<dd>NOTE: no pathnames or extensions are expected.</dd>
+<dd>NOTE: no path-names or extensions are expected.</dd>
 <dt>&lt;C&gt; -&gt; The waveform channel. Either “A” or “B”.</dt>
 <dd>The text of the waveform channel is not restricted by sclite.
 The text can be any text string without whitespace so long as the
@@ -2340,6 +2302,7 @@ It creates a tier for each media-channel observed in the file.</p>
 <dt id="anndata.aio.sclite.sppasSTM">
 <em class="property">class </em><code class="descclassname">anndata.aio.sclite.</code><code class="descname">sppasSTM</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/sclite.html#sppasSTM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.sclite.sppasSTM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.sclite.sppasBaseSclite" title="anndata.aio.sclite.sppasBaseSclite"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.sclite.sppasBaseSclite</span></code></a></p>
+<p>SPPAS stm reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2348,13 +2311,11 @@ It creates a tier for each media-channel observed in the file.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS stm reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -2512,6 +2473,7 @@ It creates a tier for each media-channel observed in the file.</p>
 <dt id="anndata.aio.subtitle.sppasBaseSubtitles">
 <em class="property">class </em><code class="descclassname">anndata.aio.subtitle.</code><code class="descname">sppasBaseSubtitles</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/subtitle.html#sppasBaseSubtitles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.subtitle.sppasBaseSubtitles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.basetrs.sppasBaseIO" title="anndata.aio.basetrs.sppasBaseIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.basetrs.sppasBaseIO</span></code></a></p>
+<p>SPPAS base class for subtitle formats.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2520,13 +2482,11 @@ It creates a tier for each media-channel observed in the file.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS base class for subtitle formats.</td>
 </tr>
 </tbody>
 </table>
@@ -2556,6 +2516,7 @@ It creates a tier for each media-channel observed in the file.</p>
 <dt id="anndata.aio.subtitle.sppasSubRip">
 <em class="property">class </em><code class="descclassname">anndata.aio.subtitle.</code><code class="descname">sppasSubRip</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/subtitle.html#sppasSubRip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.subtitle.sppasSubRip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.subtitle.sppasBaseSubtitles" title="anndata.aio.subtitle.sppasBaseSubtitles"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.subtitle.sppasBaseSubtitles</span></code></a></p>
+<p>SPPAS reader/writer for SRT format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2564,13 +2525,11 @@ It creates a tier for each media-channel observed in the file.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS reader/writer for SRT format.</td>
 </tr>
 </tbody>
 </table>
@@ -2636,6 +2595,7 @@ in the format %H:%M:%S,%m and the start and end of the range separated by –&gt
 <dt id="anndata.aio.subtitle.sppasSubViewer">
 <em class="property">class </em><code class="descclassname">anndata.aio.subtitle.</code><code class="descname">sppasSubViewer</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/subtitle.html#sppasSubViewer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.subtitle.sppasSubViewer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.subtitle.sppasBaseSubtitles" title="anndata.aio.subtitle.sppasBaseSubtitles"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.subtitle.sppasBaseSubtitles</span></code></a></p>
+<p>SPPAS reader/writer for SUB format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2644,13 +2604,11 @@ in the format %H:%M:%S,%m and the start and end of the range separated by –&gt
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS reader/writer for SUB format.</td>
 </tr>
 </tbody>
 </table>
@@ -2711,6 +2669,7 @@ save subtitles of videos.</p>
 <dt id="anndata.aio.text.sppasBaseText">
 <em class="property">class </em><code class="descclassname">anndata.aio.text.</code><code class="descname">sppasBaseText</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/text.html#sppasBaseText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.text.sppasBaseText" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.basetrs.sppasBaseIO" title="anndata.aio.basetrs.sppasBaseIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.basetrs.sppasBaseIO</span></code></a></p>
+<p>SPPAS base text reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2719,13 +2678,11 @@ save subtitles of videos.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS base text reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -2905,6 +2862,7 @@ A default radius of 0.001 seconds if data is a float.</p>
 <dt id="anndata.aio.text.sppasCSV">
 <em class="property">class </em><code class="descclassname">anndata.aio.text.</code><code class="descname">sppasCSV</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/text.html#sppasCSV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.text.sppasCSV" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.text.sppasBaseText" title="anndata.aio.text.sppasBaseText"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.text.sppasBaseText</span></code></a></p>
+<p>SPPAS CSV reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2913,13 +2871,11 @@ A default radius of 0.001 seconds if data is a float.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS CSV reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -3013,6 +2969,7 @@ The algorithm doesn’t suppose that the file is sorted by tiers</p>
 <dt id="anndata.aio.text.sppasRawText">
 <em class="property">class </em><code class="descclassname">anndata.aio.text.</code><code class="descname">sppasRawText</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/text.html#sppasRawText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.text.sppasRawText" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.text.sppasBaseText" title="anndata.aio.text.sppasBaseText"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.text.sppasBaseText</span></code></a></p>
+<p>SPPAS raw text reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3021,13 +2978,11 @@ The algorithm doesn’t suppose that the file is sorted by tiers</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS raw text reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -3108,6 +3063,7 @@ are indicating the location).</p>
 <dt id="anndata.aio.transcriber.sppasTRS">
 <em class="property">class </em><code class="descclassname">anndata.aio.transcriber.</code><code class="descname">sppasTRS</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/transcriber.html#sppasTRS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.transcriber.sppasTRS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.basetrs.sppasBaseIO" title="anndata.aio.basetrs.sppasBaseIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.basetrs.sppasBaseIO</span></code></a></p>
+<p>SPPAS reader for TRS format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3116,13 +3072,11 @@ are indicating the location).</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS reader for TRS format.</td>
 </tr>
 </tbody>
 </table>
@@ -3199,6 +3153,7 @@ learning algorithms for data mining tasks.
 <dt id="anndata.aio.weka.sppasARFF">
 <em class="property">class </em><code class="descclassname">anndata.aio.weka.</code><code class="descname">sppasARFF</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/weka.html#sppasARFF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.weka.sppasARFF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.weka.sppasWEKA" title="anndata.aio.weka.sppasWEKA"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.weka.sppasWEKA</span></code></a></p>
+<p>SPPAS ARFF writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3207,13 +3162,11 @@ learning algorithms for data mining tasks.
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS ARFF writer.</td>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
 </tbody>
 </table>
@@ -3267,6 +3220,7 @@ An ARFF file for WEKA has the following structure:</p>
 <dt id="anndata.aio.weka.sppasWEKA">
 <em class="property">class </em><code class="descclassname">anndata.aio.weka.</code><code class="descname">sppasWEKA</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/weka.html#sppasWEKA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.weka.sppasWEKA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.basetrs.sppasBaseIO" title="anndata.aio.basetrs.sppasBaseIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.basetrs.sppasBaseIO</span></code></a></p>
+<p>SPPAS Base writer for ARFF and XRFF formats.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3275,13 +3229,11 @@ An ARFF file for WEKA has the following structure:</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS Base writer for ARFF and XRFF formats.</td>
 </tr>
 </tbody>
 </table>
@@ -3480,6 +3432,7 @@ mention an uncertain label.</p>
 <dt id="anndata.aio.weka.sppasXRFF">
 <em class="property">class </em><code class="descclassname">anndata.aio.weka.</code><code class="descname">sppasXRFF</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/weka.html#sppasXRFF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.weka.sppasXRFF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.weka.sppasWEKA" title="anndata.aio.weka.sppasWEKA"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.weka.sppasWEKA</span></code></a></p>
+<p>SPPAS XRFF writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3488,13 +3441,11 @@ mention an uncertain label.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS XRFF writer.</td>
 </tr>
 </tbody>
 </table>
@@ -3570,6 +3521,7 @@ XRFF format description is at the following URL:
 <dt id="anndata.aio.xra.sppasXRA">
 <em class="property">class </em><code class="descclassname">anndata.aio.xra.</code><code class="descname">sppasXRA</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/xra.html#sppasXRA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.xra.sppasXRA" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.basetrs.sppasBaseIO" title="anndata.aio.basetrs.sppasBaseIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.basetrs.sppasBaseIO</span></code></a></p>
+<p>SPPAS XRA reader and writer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3578,13 +3530,11 @@ XRFF format description is at the following URL:
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS XRA reader and writer.</td>
 </tr>
 </tbody>
 </table>
@@ -3614,6 +3564,97 @@ XRFF format description is at the following URL:
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – (str) Name of the file to check.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(bool)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="anndata.aio.xra.sppasXRA.format_annotation">
+<em class="property">static </em><code class="descname">format_annotation</code><span class="sig-paren">(</span><em>annotation_root</em>, <em>annotation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/xra.html#sppasXRA.format_annotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.xra.sppasXRA.format_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an ‘Annotation’ element in the tree from a sppasAnnotation().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>annotation_root</strong> – (ET) XML Element tree root.</li>
+<li><strong>annotation</strong> – (sppasAnnotation)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="anndata.aio.xra.sppasXRA.format_label">
+<em class="property">static </em><code class="descname">format_label</code><span class="sig-paren">(</span><em>label_root</em>, <em>label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/xra.html#sppasXRA.format_label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.xra.sppasXRA.format_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a ‘Label’ element in the tree from a sppasLabel().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>label_root</strong> – (ET) XML Element tree root.</li>
+<li><strong>label</strong> – (sppasLabel)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="anndata.aio.xra.sppasXRA.format_location">
+<em class="property">static </em><code class="descname">format_location</code><span class="sig-paren">(</span><em>location_root</em>, <em>location</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/xra.html#sppasXRA.format_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.xra.sppasXRA.format_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a ‘Location’ element in the tree from a sppasLocation().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>location_root</strong> – (ET) XML Element tree root.</li>
+<li><strong>location</strong> – (sppasLocation)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="anndata.aio.xra.sppasXRA.format_metadata">
+<em class="property">static </em><code class="descname">format_metadata</code><span class="sig-paren">(</span><em>metadata_root</em>, <em>meta_object</em>, <em>exclude=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/xra.html#sppasXRA.format_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.xra.sppasXRA.format_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add ‘Metadata’ element in the tree from a sppasMetaData().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>metadata_root</strong> – (ET) XML Element tree root.</li>
+<li><strong>meta_object</strong> – (sppasMetadata)</li>
+<li><strong>exclude</strong> – (list) List of keys to exclude</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="anndata.aio.xra.sppasXRA.format_tier">
+<em class="property">static </em><code class="descname">format_tier</code><span class="sig-paren">(</span><em>tier_root</em>, <em>tier</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/xra.html#sppasXRA.format_tier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.xra.sppasXRA.format_tier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a ‘Tier’ object in the tree from a sppasTier().</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>tier_root</strong> – (ET) XML Element tree root.</li>
+<li><strong>tier</strong> – (sppasTier)</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -3671,6 +3712,7 @@ Last version of Xtrans was released in 2009.</p>
 <dt id="anndata.aio.xtrans.sppasTDF">
 <em class="property">class </em><code class="descclassname">anndata.aio.xtrans.</code><code class="descname">sppasTDF</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/aio/xtrans.html#sppasTDF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.aio.xtrans.sppasTDF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#anndata.aio.text.sppasBaseText" title="anndata.aio.text.sppasBaseText"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.aio.text.sppasBaseText</span></code></a></p>
+<p>SPPAS TDF reader.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3679,17 +3721,15 @@ Last version of Xtrans was released in 2009.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:contact&#37;&#52;&#48;sppas&#46;org">contact<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">SPPAS TDF reader and writer.</td>
-</tr>
 </tbody>
 </table>
-<p>This class implements only a TDF reader, not a writer.
+<p>This class implements a TDF reader, but not a writer.
 TDF is a Tab-Delimited Format. It contains 13 columns but SPPAS only
 extracts 8 of them.</p>
 <p>TDF does not support alternatives labels nor locations. Only the ones
@@ -3759,9 +3799,25 @@ It creates a tier for each speaker-channel observed in the file.</p>
 </div>
 <div class="section" id="module-anndata.aio">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-anndata.aio" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="src-anndata-aio">
-<h3>src.anndata.aio<a class="headerlink" href="#src-anndata-aio" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="anndata-aio">
+<h3>anndata.aio<a class="headerlink" href="#anndata-aio" title="Permalink to this headline">¶</a></h3>
 <p>Readers and writers of annotated data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -3777,7 +3833,7 @@ It creates a tier for each speaker-channel observed in the file.</p>
 <li><a class="reference internal" href="#">anndata.aio package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-anndata.aio.aioutils">anndata.aio.aioutils module</a><ul>
-<li><a class="reference internal" href="#src-anndata-aio-aioutils-py">src.anndata.aio.aioutils.py</a></li>
+<li><a class="reference internal" href="#anndata-aio-aioutils-py-utilities-for-readers-and-writers">anndata.aio.aioutils.py: Utilities for readers and writers.</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-anndata.aio.annotationpro">anndata.aio.annotationpro module</a><ul>
@@ -3785,7 +3841,7 @@ It creates a tier for each speaker-channel observed in the file.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-anndata.aio.anvil">anndata.aio.anvil module</a><ul>
-<li><a class="reference internal" href="#src-anndata-aio-anvil-py">src.anndata.aio.anvil.py</a></li>
+<li><a class="reference internal" href="#anndata-aio-anvil-py">anndata.aio.anvil.py</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-anndata.aio.audacity">anndata.aio.audacity module</a><ul>
@@ -3793,7 +3849,7 @@ It creates a tier for each speaker-channel observed in the file.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-anndata.aio.basetrs">anndata.aio.basetrs module</a><ul>
-<li><a class="reference internal" href="#src-anndata-aio-basetrs-py">src.anndata.aio.basetrs.py</a></li>
+<li><a class="reference internal" href="#anndata-aio-basetrs-py">anndata.aio.basetrs.py</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-anndata.aio.elan">anndata.aio.elan module</a><ul>
@@ -3813,7 +3869,7 @@ It creates a tier for each speaker-channel observed in the file.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-anndata.aio.readwrite">anndata.aio.readwrite module</a><ul>
-<li><a class="reference internal" href="#src-anndata-aio-readwrite-py">src.anndata.aio.readwrite.py</a></li>
+<li><a class="reference internal" href="#anndata-aio-readwrite-py">anndata.aio.readwrite.py</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-anndata.aio.sclite">anndata.aio.sclite module</a><ul>
@@ -3848,7 +3904,7 @@ It creates a tier for each speaker-channel observed in the file.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-anndata.aio">Module contents</a><ul>
-<li><a class="reference internal" href="#src-anndata-aio">src.anndata.aio</a></li>
+<li><a class="reference internal" href="#anndata-aio">anndata.aio</a></li>
 </ul>
 </li>
 </ul>
@@ -3859,8 +3915,8 @@ It creates a tier for each speaker-channel observed in the file.</p>
   <p class="topless"><a href="anndata.html"
                         title="previous chapter">anndata package</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="anndata.annlabel.html"
-                        title="next chapter">anndata.annlabel package</a></p>
+  <p class="topless"><a href="anndata.ann.html"
+                        title="next chapter">anndata.ann package</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -3894,7 +3950,7 @@ It creates a tier for each speaker-channel observed in the file.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="anndata.annlabel.html" title="anndata.annlabel package"
+          <a href="anndata.ann.html" title="anndata.ann package"
              >next</a> |</li>
         <li class="right" >
           <a href="anndata.html" title="anndata package"

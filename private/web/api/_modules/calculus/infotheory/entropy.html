@@ -69,9 +69,6 @@
 <span class="sd">    src.calculus.infotheory.entropy.py</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
-<span class="sd">    Entropy is a measure of unpredictability of information content.</span>
-<span class="sd">    Entropy is one of several ways to measure diversity.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">..calculusexc</span> <span class="k">import</span> <span class="n">EmptyError</span><span class="p">,</span> <span class="n">InsideIntervalError</span>
 <span class="kn">from</span> <span class="nn">.utilit</span> <span class="k">import</span> <span class="n">log2</span>
@@ -82,13 +79,16 @@
 
 
 <div class="viewcode-block" id="sppasEntropy"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.sppasEntropy">[docs]</a><span class="k">class</span> <span class="nc">sppasEntropy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Entropy estimation.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Entropy estimation.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
+
+<span class="sd">    Entropy is a measure of unpredictability of information content.</span>
+<span class="sd">    Entropy is one of several ways to measure diversity.</span>
 
 <span class="sd">    If we want to look at the entropy on a large series, we could also compute</span>
 <span class="sd">    the entropy for windows to measure the evenness or uncertainties.</span>
@@ -97,8 +97,9 @@
 <span class="sd">    lower variance would result in lower entropy.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="sppasEntropy.__init__"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.sppasEntropy.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbols</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasEntropy instance with a list of symbols.</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasEntropy instance with a list of symbols.</span>
 
 <span class="sd">        :param symbols: (list) a vector of symbols of any type.</span>
 <span class="sd">        :param n: (int) n value for n-gram estimation. n ranges 1..MAX_NGRAM</span>
@@ -113,7 +114,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasEntropy.set_symbols"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.sppasEntropy.set_symbols">[docs]</a>    <span class="k">def</span> <span class="nf">set_symbols</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbols</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the list of symbols.</span>
+        <span class="sd">&quot;&quot;&quot;Set the list of symbols.</span>
 
 <span class="sd">        :param symbols: (list) a vector of symbols of any type.</span>
 
@@ -126,7 +127,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasEntropy.set_ngram"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.sppasEntropy.set_ngram">[docs]</a>    <span class="k">def</span> <span class="nf">set_ngram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the n value of n-grams.</span>
+        <span class="sd">&quot;&quot;&quot;Set the n value of n-grams.</span>
 
 <span class="sd">        :param n: (int) n value for n-gram estimation. n ranges 1..8</span>
 
@@ -140,8 +141,8 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasEntropy.eval"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.sppasEntropy.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Estimates the Shannon entropy of a vector of symbols.</span>
-<span class="sd">        </span>
+        <span class="sd">&quot;&quot;&quot;Estimate the Shannon entropy of a vector of symbols.</span>
+
 <span class="sd">        Shannon&#39;s entropy measures the information contained in a message as</span>
 <span class="sd">        opposed to the portion of the message that is determined</span>
 <span class="sd">        (or predictable).</span>

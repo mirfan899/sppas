@@ -70,9 +70,6 @@
 <span class="sd">    src.plugins.process.py</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~</span>
 
-<span class="sd">    Process a plugin.</span>
-<span class="sd">    This is currently restricted to one file only.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os.path</span>
@@ -82,18 +79,19 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasPluginProcess"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginProcess">[docs]</a><span class="k">class</span> <span class="nc">sppasPluginProcess</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPluginProcess"><a class="viewcode-back" href="../../rst/plugins.html#plugins.process.sppasPluginProcess">[docs]</a><span class="k">class</span> <span class="nc">sppasPluginProcess</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Process one plugin (and only one).</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Class to run a plugin.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasPluginProcess.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginProcess.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_param</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Creates a new sppasPluginProcess instance.</span>
+
+<div class="viewcode-block" id="sppasPluginProcess.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.process.sppasPluginProcess.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_param</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new sppasPluginProcess instance.</span>
 
 <span class="sd">        :param plugin_param: (sppasPluginParam)</span>
 
@@ -103,10 +101,11 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginProcess.run"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginProcess.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Execute the plugin in batch mode (ie don&#39;t wait it to be finished).</span>
+<div class="viewcode-block" id="sppasPluginProcess.run"><a class="viewcode-back" href="../../rst/plugins.html#plugins.process.sppasPluginProcess.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Execute the plugin in batch mode (ie don&#39;t wait it to be finished).</span>
 
-<span class="sd">        :param filename: (str) The file name of the file on which to apply the plugin</span>
+<span class="sd">        :param filename: (str) The file name of the file on which to apply</span>
+<span class="sd">        the plugin</span>
 <span class="sd">        :returns: Process output message</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -154,35 +153,37 @@
                 <span class="n">newarg</span> <span class="o">=</span> <span class="n">argument</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;PLUGIN_PATH/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
                 <span class="n">args</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plugin</span><span class="o">.</span><span class="n">get_directory</span><span class="p">(),</span> <span class="n">newarg</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">STDOUT</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                              <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span>
+                              <span class="n">stderr</span><span class="o">=</span><span class="n">STDOUT</span><span class="p">,</span>
+                              <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginProcess.communicate"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginProcess.communicate">[docs]</a>    <span class="k">def</span> <span class="nf">communicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Wait for the process and get output messages (if any) then return it. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPluginProcess.communicate"><a class="viewcode-back" href="../../rst/plugins.html#plugins.process.sppasPluginProcess.communicate">[docs]</a>    <span class="k">def</span> <span class="nf">communicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wait for the process and get output messages (if any).</span>
 
+<span class="sd">        :returns: output message</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginProcess.stop"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginProcess.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Terminate the process if it is running. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasPluginProcess.stop"><a class="viewcode-back" href="../../rst/plugins.html#plugins.process.sppasPluginProcess.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Terminate the process if it is running.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_running</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginProcess.is_running"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginProcess.is_running">[docs]</a>    <span class="k">def</span> <span class="nf">is_running</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if the process is running. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasPluginProcess.is_running"><a class="viewcode-back" href="../../rst/plugins.html#plugins.process.sppasPluginProcess.is_running">[docs]</a>    <span class="k">def</span> <span class="nf">is_running</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if the process is running.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="c1"># A None value indicates that the process hasn&#39;t terminated yet.</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span></div></div>
-
-    <span class="c1"># ------------------------------------------------------------------------</span>
 </pre></div>
 
           </div>

@@ -84,9 +84,9 @@
 
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioMultiTiersError</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioLineFormatError</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasInterval</span>
 <span class="kn">from</span> <span class="nn">..media</span> <span class="k">import</span> <span class="n">sppasMedia</span>
 
 <span class="kn">from</span> <span class="nn">.basetrs</span> <span class="k">import</span> <span class="n">sppasBaseIO</span>
@@ -101,24 +101,24 @@
 
 
 <div class="viewcode-block" id="sppasBaseText"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasBaseText">[docs]</a><span class="k">class</span> <span class="nc">sppasBaseText</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SPPAS base text reader and writer.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS base text reader and writer.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasBaseText.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasBaseText.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasBaseText instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasBaseText instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasBaseText</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="kc">True</span>
@@ -139,7 +139,7 @@
 
 <div class="viewcode-block" id="sppasBaseText.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasBaseText.make_point">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert data into the appropriate sppasPoint().</span>
+        <span class="sd">&quot;&quot;&quot;Convert data into the appropriate sppasPoint().</span>
 
 <span class="sd">        No radius is fixed if data is an integer.</span>
 <span class="sd">        A default radius of 0.001 seconds if data is a float.</span>
@@ -161,7 +161,7 @@
 
 <div class="viewcode-block" id="sppasBaseText.is_comment"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasBaseText.is_comment">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">is_comment</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check if the line is a comment, ie starts with &#39;;;&#39;.</span>
+        <span class="sd">&quot;&quot;&quot;Check if the line is a comment, ie starts with &#39;;;&#39;.</span>
 
 <span class="sd">        :param line: (str/unicode)</span>
 <span class="sd">        :returns: boolean</span>
@@ -176,7 +176,7 @@
 
 <div class="viewcode-block" id="sppasBaseText.format_quotation_marks"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasBaseText.format_quotation_marks">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">format_quotation_marks</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove initial and final quotation mark.</span>
+        <span class="sd">&quot;&quot;&quot;Remove initial and final quotation mark.</span>
 
 <span class="sd">        :param text: (str/unicode) Text to clean</span>
 <span class="sd">        :returns: (unicode) the text without initial and final quotation mark.</span>
@@ -194,7 +194,7 @@
 
 <div class="viewcode-block" id="sppasBaseText.split_lines"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasBaseText.split_lines">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">split_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Split the lines with the given separator.</span>
+        <span class="sd">&quot;&quot;&quot;Split the lines with the given separator.</span>
 
 <span class="sd">        :param lines: (list) List of lines</span>
 <span class="sd">        :param separator: (char) a character used to separate columns of the lines</span>
@@ -230,7 +230,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_comment</span><span class="p">(</span><span class="n">comment</span><span class="p">,</span> <span class="n">meta_object</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a comment and eventually fill metadata.</span>
+        <span class="sd">&quot;&quot;&quot;Parse a comment and eventually fill metadata.</span>
 
 <span class="sd">        :param comment: (str) A line of a file</span>
 <span class="sd">        :param meta_object: (sppasMeta)</span>
@@ -249,7 +249,7 @@
 
 <div class="viewcode-block" id="sppasBaseText.fix_location"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasBaseText.fix_location">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">fix_location</span><span class="p">(</span><span class="n">content_begin</span><span class="p">,</span> <span class="n">content_end</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the location from the content of the data.</span>
+        <span class="sd">&quot;&quot;&quot;Fix the location from the content of the data.</span>
 
 <span class="sd">        :param content_begin: (str) The content of a column representing</span>
 <span class="sd">        the begin of a localization.</span>
@@ -287,7 +287,7 @@
 
 <div class="viewcode-block" id="sppasBaseText.serialize_header"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasBaseText.serialize_header">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">serialize_header</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">meta_object</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a comment with the metadata to be written.</span>
+        <span class="sd">&quot;&quot;&quot;Create a comment with the metadata to be written.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to serialize.</span>
 <span class="sd">        :param meta_object: (sppasMeta)</span>
@@ -308,7 +308,7 @@
 
 <div class="viewcode-block" id="sppasBaseText.serialize_header_software"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasBaseText.serialize_header_software">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">serialize_header_software</span><span class="p">():</span>
-        <span class="sd">&quot;&quot;&quot; Serialize the header of a file with SPPAS information. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Serialize the header of a file with SPPAS information.&quot;&quot;&quot;</span>
 
         <span class="n">comment</span> <span class="o">=</span> <span class="s2">&quot;;; </span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">comment</span> <span class="o">+=</span> <span class="s2">&quot;;; software_name=</span><span class="si">{:s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sg</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
@@ -327,7 +327,7 @@
 
 <div class="viewcode-block" id="sppasBaseText.serialize_metadata"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasBaseText.serialize_metadata">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">serialize_metadata</span><span class="p">(</span><span class="n">meta_object</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Serialize the metadata of an object in a multi-lines comment. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Serialize the metadata of an object in a multi-lines comment.&quot;&quot;&quot;</span>
 
         <span class="n">meta_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;file_write_date&quot;</span><span class="p">,</span> <span class="s2">&quot;file_writer&quot;</span><span class="p">,</span> <span class="s2">&quot;file_name&quot;</span><span class="p">,</span> <span class="s2">&quot;file_path&quot;</span><span class="p">,</span> <span class="s2">&quot;file_ext&quot;</span><span class="p">]</span>
         <span class="n">comment</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -341,7 +341,7 @@
 
 <div class="viewcode-block" id="sppasBaseText.create_media"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasBaseText.create_media">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">create_media</span><span class="p">(</span><span class="n">media_url</span><span class="p">,</span> <span class="n">meta_object</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the media of the given name (create it if necessary).</span>
+        <span class="sd">&quot;&quot;&quot;Return the media of the given name (create it if necessary).</span>
 
 <span class="sd">        :param media_url: (str) Name (url) of the media to search/create</span>
 <span class="sd">        :param meta_object: (sppasTranscription)</span>
@@ -368,7 +368,7 @@
 
 <div class="viewcode-block" id="sppasBaseText.get_lines_columns"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasBaseText.get_lines_columns">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_lines_columns</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Column-delimited? Search for the relevant separator.</span>
+        <span class="sd">&quot;&quot;&quot;Column-delimited? Search for the relevant separator.</span>
 
 <span class="sd">        :param lines: (list of str)</span>
 <span class="sd">        :returns: lines (list) of columns (list of str)</span>
@@ -391,13 +391,13 @@
 
 
 <div class="viewcode-block" id="sppasRawText"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasRawText">[docs]</a><span class="k">class</span> <span class="nc">sppasRawText</span><span class="p">(</span><span class="n">sppasBaseText</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SPPAS raw text reader and writer.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS raw text reader and writer.</span>
 
 <span class="sd">    RawText does not support multiple tiers for writing (ok for reading).</span>
 <span class="sd">    RawText accepts no tiers.</span>
@@ -434,15 +434,15 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasRawText.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasRawText.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasRawText instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasRawText instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasRawText</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="n">sppasBaseText</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;txt&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">False</span></div>
@@ -450,7 +450,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasRawText.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasRawText.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read a raw file and fill the Transcription.</span>
+        <span class="sd">&quot;&quot;&quot;Read a raw file and fill the Transcription.</span>
 
 <span class="sd">        The file can be a simple raw text (without location information).</span>
 <span class="sd">        It can also be a column-based (table-style) file, so that each</span>
@@ -466,7 +466,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fill the transcription from the lines of the TXT file. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Fill the transcription from the lines of the TXT file.&quot;&quot;&quot;</span>
 
         <span class="n">columns</span> <span class="o">=</span> <span class="n">sppasBaseText</span><span class="o">.</span><span class="n">get_lines_columns</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
@@ -483,7 +483,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__format_raw_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Format lines of a raw text.</span>
+        <span class="sd">&quot;&quot;&quot;Format lines of a raw text.</span>
 
 <span class="sd">        - Each &#39;CR/LF&#39; is a unit separator, NOT added into the transcription.</span>
 <span class="sd">        - Each &#39;#&#39; is a unit separator, added as a silence mark into the</span>
@@ -526,7 +526,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_create_annotation</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">utterance</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add the annotation corresponding to data of a line. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Add the annotation corresponding to data of a line.&quot;&quot;&quot;</span>
 
         <span class="n">labels</span> <span class="o">=</span> <span class="n">format_labels</span><span class="p">(</span><span class="n">utterance</span><span class="p">)</span>
         <span class="n">location</span> <span class="o">=</span> <span class="n">sppasLocation</span><span class="p">(</span><span class="n">sppasPoint</span><span class="p">(</span><span class="n">rank</span><span class="p">))</span>
@@ -535,7 +535,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__format_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Format columns of a column-based text.</span>
+        <span class="sd">&quot;&quot;&quot;Format columns of a column-based text.</span>
 
 <span class="sd">        :param columns: (list) List of columns (list).</span>
 
@@ -571,7 +571,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasRawText.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasRawText.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write a RawText file.</span>
+        <span class="sd">&quot;&quot;&quot;Write a RawText file.</span>
 
 <span class="sd">        Labels are preserved, ie. separated by whitespace and alternative tags included.</span>
 
@@ -616,18 +616,18 @@
 
 
 <div class="viewcode-block" id="sppasCSV"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasCSV">[docs]</a><span class="k">class</span> <span class="nc">sppasCSV</span><span class="p">(</span><span class="n">sppasBaseText</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SPPAS CSV reader and writer.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS CSV reader and writer.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasCSV.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasCSV.detect">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check whether a file is of CSV format or not.</span>
+        <span class="sd">&quot;&quot;&quot;Check whether a file is of CSV format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
 <span class="sd">        :returns: (bool)</span>
@@ -650,14 +650,14 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasCSV.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasCSV.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new CSV instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new CSV instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-        <span class="n">sppasBaseText</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasCSV</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;csv&quot;</span>
 
@@ -666,7 +666,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasCSV.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasCSV.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read a CSV file.</span>
+        <span class="sd">&quot;&quot;&quot;Read a CSV file.</span>
 
 <span class="sd">        :param filename: (str)</span>
 <span class="sd">        :param separator: (char)</span>
@@ -685,7 +685,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasCSV.format_columns_lines"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasCSV.format_columns_lines">[docs]</a>    <span class="k">def</span> <span class="nf">format_columns_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Append lines content into self.</span>
+        <span class="sd">&quot;&quot;&quot;Append lines content into self.</span>
 <span class="sd">        The algorithm doesn&#39;t suppose that the file is sorted by tiers</span>
 
 <span class="sd">        :param lines: (list)</span>
@@ -742,7 +742,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasCSV.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.text.sppasCSV.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write a CSV file.</span>
+        <span class="sd">&quot;&quot;&quot;Write a CSV file.</span>
 
 <span class="sd">        :param filename: (str)</span>
 <span class="sd">        :param signed: (bool) Indicate if the encoding is UTF-8 signed.</span>

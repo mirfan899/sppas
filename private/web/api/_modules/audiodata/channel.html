@@ -76,18 +76,18 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasChannel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel">[docs]</a><span class="k">class</span> <span class="nc">sppasChannel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasChannel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel">[docs]</a><span class="k">class</span> <span class="nc">sppasChannel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Nicolas Chazeau, Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
 <span class="sd">    :summary:      A class to manage a channel.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasChannel.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framerate</span><span class="o">=</span><span class="mi">16000</span><span class="p">,</span> <span class="n">sampwidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasChannel instance.</span>
+<div class="viewcode-block" id="sppasChannel.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framerate</span><span class="o">=</span><span class="mi">16000</span><span class="p">,</span> <span class="n">sampwidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasChannel instance.</span>
 
 <span class="sd">        :param framerate: (int) The frame rate of this channel, in Hertz.</span>
 <span class="sd">        :param sampwidth: (int) 1 for 8 bits, 2 for 16 bits, 4 for 32 bits.</span>
@@ -107,8 +107,8 @@
     <span class="c1"># Setters</span>
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.set_frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.set_frames">[docs]</a>    <span class="k">def</span> <span class="nf">set_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set new frames to the channel.</span>
+<div class="viewcode-block" id="sppasChannel.set_frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.set_frames">[docs]</a>    <span class="k">def</span> <span class="nf">set_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set new frames to the channel.</span>
 <span class="sd">        It is supposed the sampwidth and framerate are the same as the </span>
 <span class="sd">        current ones.</span>
 
@@ -119,8 +119,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.set_sampwidth"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.set_sampwidth">[docs]</a>    <span class="k">def</span> <span class="nf">set_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampwidth</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set a new samples width to the channel.</span>
+<div class="viewcode-block" id="sppasChannel.set_sampwidth"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.set_sampwidth">[docs]</a>    <span class="k">def</span> <span class="nf">set_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampwidth</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set a new samples width to the channel.</span>
 
 <span class="sd">        :param sampwidth: (int) 1 for 8 bits, 2 for 16 bits, 4 for 32 bits.</span>
 
@@ -133,8 +133,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.set_framerate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.set_framerate">[docs]</a>    <span class="k">def</span> <span class="nf">set_framerate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framerate</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set a new framerate to the channel.</span>
+<div class="viewcode-block" id="sppasChannel.set_framerate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.set_framerate">[docs]</a>    <span class="k">def</span> <span class="nf">set_framerate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framerate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set a new framerate to the channel.</span>
 
 <span class="sd">        :param framerate: (int) The frame rate of this channel, in Hertz.</span>
 <span class="sd">        A value between 8000 and 192000</span>
@@ -150,8 +150,8 @@
     <span class="c1"># Getters</span>
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.get_frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.get_frames">[docs]</a>    <span class="k">def</span> <span class="nf">get_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunck_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return some frames from the current position.</span>
+<div class="viewcode-block" id="sppasChannel.get_frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.get_frames">[docs]</a>    <span class="k">def</span> <span class="nf">get_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunck_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return some frames from the current position.</span>
 
 <span class="sd">        :param chunck_size: (int) the size of the chunk to return.</span>
 <span class="sd">        None for all frames of the channel.</span>
@@ -173,8 +173,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.get_nframes"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.get_nframes">[docs]</a>    <span class="k">def</span> <span class="nf">get_nframes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the number of frames.</span>
+<div class="viewcode-block" id="sppasChannel.get_nframes"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.get_nframes">[docs]</a>    <span class="k">def</span> <span class="nf">get_nframes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of frames.</span>
 <span class="sd">        A frame has a length of (sampwidth) bytes.</span>
 
 <span class="sd">        :returns: (int) the total number of frames</span>
@@ -184,8 +184,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.get_framerate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.get_framerate">[docs]</a>    <span class="k">def</span> <span class="nf">get_framerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the frame rate, in Hz.</span>
+<div class="viewcode-block" id="sppasChannel.get_framerate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.get_framerate">[docs]</a>    <span class="k">def</span> <span class="nf">get_framerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the frame rate, in Hz.</span>
 
 <span class="sd">        :returns: (int) the frame rate of the channel</span>
 
@@ -194,8 +194,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.get_sampwidth"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.get_sampwidth">[docs]</a>    <span class="k">def</span> <span class="nf">get_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the sample width.</span>
+<div class="viewcode-block" id="sppasChannel.get_sampwidth"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.get_sampwidth">[docs]</a>    <span class="k">def</span> <span class="nf">get_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the sample width.</span>
 
 <span class="sd">        :returns: (int) the sample width of the channel</span>
 
@@ -204,8 +204,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.get_cross"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.get_cross">[docs]</a>    <span class="k">def</span> <span class="nf">get_cross</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the number of zero crossings.</span>
+<div class="viewcode-block" id="sppasChannel.get_cross"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.get_cross">[docs]</a>    <span class="k">def</span> <span class="nf">get_cross</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of zero crossings.</span>
 
 <span class="sd">        :returns: (int) number of zero crossing</span>
 
@@ -215,8 +215,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.rms"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.rms">[docs]</a>    <span class="k">def</span> <span class="nf">rms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the root mean square of the channel.</span>
+<div class="viewcode-block" id="sppasChannel.rms"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.rms">[docs]</a>    <span class="k">def</span> <span class="nf">rms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the root mean square of the channel.</span>
 
 <span class="sd">        :returns: (int) the root mean square of the channel</span>
 
@@ -226,8 +226,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.clipping_rate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.clipping_rate">[docs]</a>    <span class="k">def</span> <span class="nf">clipping_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the clipping rate of the frames.</span>
+<div class="viewcode-block" id="sppasChannel.clipping_rate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.clipping_rate">[docs]</a>    <span class="k">def</span> <span class="nf">clipping_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the clipping rate of the frames.</span>
 
 <span class="sd">        :param factor: (float) An interval to be more precise on clipping rate.</span>
 <span class="sd">        It will consider that all frames outside the interval are clipped.</span>
@@ -240,8 +240,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.get_duration"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.get_duration">[docs]</a>    <span class="k">def</span> <span class="nf">get_duration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the duration of the channel, in seconds.</span>
+<div class="viewcode-block" id="sppasChannel.get_duration"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.get_duration">[docs]</a>    <span class="k">def</span> <span class="nf">get_duration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the duration of the channel, in seconds.</span>
 
 <span class="sd">        :returns: (float) the duration of the channel</span>
 
@@ -250,8 +250,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.extract_fragment"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.extract_fragment">[docs]</a>    <span class="k">def</span> <span class="nf">extract_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Extract a fragment between the beginning and the end.</span>
+<div class="viewcode-block" id="sppasChannel.extract_fragment"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.extract_fragment">[docs]</a>    <span class="k">def</span> <span class="nf">extract_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">begin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extract a fragment between the beginning and the end.</span>
 
 <span class="sd">        :param begin: (int: number of frames) the beginning of the fragment to extract</span>
 <span class="sd">        :param end: (int: number of frames) the end of the fragment to extract</span>
@@ -294,22 +294,22 @@
     <span class="c1"># Manage position</span>
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.tell"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.tell">[docs]</a>    <span class="k">def</span> <span class="nf">tell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the current position. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasChannel.tell"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.tell">[docs]</a>    <span class="k">def</span> <span class="nf">tell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the current position.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.rewind"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.rewind">[docs]</a>    <span class="k">def</span> <span class="nf">rewind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the position to 0. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasChannel.rewind"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.rewind">[docs]</a>    <span class="k">def</span> <span class="nf">rewind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the position to 0.&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="mi">0</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasChannel.seek"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasChannel.seek">[docs]</a>    <span class="k">def</span> <span class="nf">seek</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the current position.</span>
+<div class="viewcode-block" id="sppasChannel.seek"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channel.sppasChannel.seek">[docs]</a>    <span class="k">def</span> <span class="nf">seek</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fix the current position.</span>
 
 <span class="sd">        :param position: (int)</span>
 

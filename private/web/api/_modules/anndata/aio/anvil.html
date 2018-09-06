@@ -67,20 +67,16 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.anndata.aio.anvil.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~</span>
-
-<span class="sd">    Support of the native format of ANVIL annotation tool.</span>
-
-<span class="sd">    BE AWARE THAT: this support has to be verified, tested and extended!!!</span>
+<span class="sd">    anndata.aio.anvil.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">xml.etree.cElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
 
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasInterval</span>
 
 <span class="kn">from</span> <span class="nn">.basetrs</span> <span class="k">import</span> <span class="n">sppasBaseIO</span>
 <span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">format_labels</span>
@@ -89,18 +85,22 @@
 
 
 <div class="viewcode-block" id="sppasAnvil"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.anvil.sppasAnvil">[docs]</a><span class="k">class</span> <span class="nc">sppasAnvil</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;ANVIL (partially) reader.</span>
+
 <span class="sd">    :author:       Brigitte Bigi, Jibril Saffi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      ANVIL reader.</span>
+
+<span class="sd">    Support of the native format of ANVIL annotation tool.</span>
+
+<span class="sd">    BE AWARE THAT: this support has to be verified, tested and extended!!!</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasAnvil.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.anvil.sppasAnvil.detect">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check whether a file is of ANVIL format or not.</span>
+        <span class="sd">&quot;&quot;&quot;Check whether a file is of ANVIL format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
 <span class="sd">        :returns: (bool)</span>
@@ -120,7 +120,7 @@
 
 <div class="viewcode-block" id="sppasAnvil.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.anvil.sppasAnvil.make_point">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; The localization is a time value, so always a float. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;The localization is a time value, so always a float.&quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">midpoint</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">midpoint</span><span class="p">)</span>
@@ -132,14 +132,14 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAnvil.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.anvil.sppasAnvil.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new ANVIL instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new ANVIL instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasAnvil</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="kc">True</span>
@@ -161,7 +161,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAnvil.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.anvil.sppasAnvil.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read an ANVIL file and fill the Transcription.</span>
+        <span class="sd">&quot;&quot;&quot;Read an ANVIL file and fill the Transcription.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
@@ -200,7 +200,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_read_primary_track</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">track_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read a primary track (primary or primarypoint).</span>
+        <span class="sd">&quot;&quot;&quot;Read a primary track (primary or primarypoint).</span>
 <span class="sd">        </span>
 <span class="sd">        :param track_root: </span>
 <span class="sd">        </span>
@@ -332,11 +332,11 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
     
     <span class="k">def</span> <span class="nf">__create_tier_from_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">track_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a set of tiers from &#39;attribute&#39; of &#39;track&#39;. </span>
+        <span class="sd">&quot;&quot;&quot;Create a set of tiers from &#39;attribute&#39; of &#39;track&#39;.</span>
 
 <span class="sd">        :param track_root: </span>
 
-<span class="sd">        &quot;&quot;&quot;</span>        
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">attribute_node</span> <span class="ow">in</span> <span class="n">track_root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s1">&#39;attribute&#39;</span><span class="p">):</span>
             <span class="n">tier_name</span> <span class="o">=</span> <span class="n">sppasAnvil</span><span class="o">.</span><span class="n">__fix_tier_name</span><span class="p">(</span><span class="n">track_root</span><span class="p">,</span> <span class="n">attribute_node</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">tier_name</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -345,7 +345,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__create_annotation_from_el</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">track_root</span><span class="p">,</span> <span class="n">el_root</span><span class="p">,</span> <span class="n">localization</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a set of annotations from &#39;attribute&#39; of &#39;el&#39;.</span>
+        <span class="sd">&quot;&quot;&quot;Create a set of annotations from &#39;attribute&#39; of &#39;el&#39;.</span>
 <span class="sd">        </span>
 <span class="sd">        :param track_root: </span>
 <span class="sd">        :param el_root: </span>

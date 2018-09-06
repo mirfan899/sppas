@@ -67,10 +67,8 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.utils.sppasCompare.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-
-<span class="sd">    Utilities to compare data contents.</span>
+<span class="sd">    utils.sppasCompare.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -82,14 +80,14 @@
 <span class="c1"># ---------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasCompare"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasCompare">[docs]</a><span class="k">class</span> <span class="nc">sppasCompare</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasCompare"><a class="viewcode-back" href="../../rst/utils.html#utils.compare.sppasCompare">[docs]</a><span class="k">class</span> <span class="nc">sppasCompare</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utility class to compare data.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Utility class to compare data.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
 <span class="sd">    &gt;&gt;&gt; sc = sppasCompare()</span>
 <span class="sd">    &gt;&gt;&gt; d1 = {1:&quot;one&quot;, 2:&quot;two&quot;}</span>
@@ -103,8 +101,9 @@
 <span class="sd">    &gt;&gt;&gt; False</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasCompare.__init__"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasCompare.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasCompare instance and set options.</span>
+
+<div class="viewcode-block" id="sppasCompare.__init__"><a class="viewcode-back" href="../../rst/utils.html#utils.compare.sppasCompare.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasCompare instance and set options.</span>
 
 <span class="sd">        :param verbose: (bool) Print comparison results on stdout</span>
 <span class="sd">        :param case_sensitive: (bool) Only to compare strings</span>
@@ -115,8 +114,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCompare.set_verbose"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasCompare.set_verbose">[docs]</a>    <span class="k">def</span> <span class="nf">set_verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Print comparison results on stdout or not.</span>
+<div class="viewcode-block" id="sppasCompare.set_verbose"><a class="viewcode-back" href="../../rst/utils.html#utils.compare.sppasCompare.set_verbose">[docs]</a>    <span class="k">def</span> <span class="nf">set_verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print comparison results on stdout or not.</span>
 
 <span class="sd">        :param v: (bool) Enable or disable verbosity</span>
 
@@ -125,25 +124,24 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCompare.set_case_sensitive"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasCompare.set_case_sensitive">[docs]</a>    <span class="k">def</span> <span class="nf">set_case_sensitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Compare strings with lower/upper case.</span>
+<div class="viewcode-block" id="sppasCompare.set_case_sensitive"><a class="viewcode-back" href="../../rst/utils.html#utils.compare.sppasCompare.set_case_sensitive">[docs]</a>    <span class="k">def</span> <span class="nf">set_case_sensitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compare strings with lower/upper case.</span>
 
-<span class="sd">        :param v: (bool) Enable or disable case sensitive comparison of strings</span>
+<span class="sd">        :param v: (bool) Enable or not the case sensitive comparison of strings</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_case_sensitive</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCompare.equals"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasCompare.equals">[docs]</a>    <span class="k">def</span> <span class="nf">equals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Compare two data sets of any type.</span>
+<div class="viewcode-block" id="sppasCompare.equals"><a class="viewcode-back" href="../../rst/utils.html#utils.compare.sppasCompare.equals">[docs]</a>    <span class="k">def</span> <span class="nf">equals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compare two data sets of any type.</span>
 
 <span class="sd">        :param data1 (any) The data to compare.</span>
 <span class="sd">        :param data2 (any) The data to be compared with.</span>
 <span class="sd">        :returns: (bool) whether the 2 data sets are equals or not</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="n">data1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">data2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;TypeError: None instead of data.&quot;</span><span class="p">)</span>
@@ -159,8 +157,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCompare.equals_lists"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasCompare.equals_lists">[docs]</a>    <span class="k">def</span> <span class="nf">equals_lists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Compare two lists.</span>
+<div class="viewcode-block" id="sppasCompare.equals_lists"><a class="viewcode-back" href="../../rst/utils.html#utils.compare.sppasCompare.equals_lists">[docs]</a>    <span class="k">def</span> <span class="nf">equals_lists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compare two lists.</span>
 
 <span class="sd">        :param list1 (list) The list to compare.</span>
 <span class="sd">        :param list2 (list) The list to be compared with.</span>
@@ -172,14 +170,17 @@
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;TypeError: None instead of lists.&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">type</span><span class="p">(</span><span class="n">list2</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">list2</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">type</span><span class="p">(</span><span class="n">list2</span><span class="p">)</span> <span class="ow">or</span> \
+           <span class="nb">type</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span> <span class="ow">or</span> \
+           <span class="nb">type</span><span class="p">(</span><span class="n">list2</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;TypeError: Not same types (expected two lists).&quot;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;TypeError: Not same types (expected 2 lists).&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">list2</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;FALSE: Not the same number of items: </span><span class="si">{0}</span><span class="s2"> </span><span class="si">{1}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">list1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">list2</span><span class="p">)))</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;FALSE: Not the same number of items: </span><span class="si">{0}</span><span class="s2"> </span><span class="si">{1}</span><span class="s2">.&quot;</span>
+                             <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">list1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">list2</span><span class="p">)))</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">for</span> <span class="n">item1</span><span class="p">,</span> <span class="n">item2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
@@ -198,8 +199,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCompare.equals_dictionaries"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasCompare.equals_dictionaries">[docs]</a>    <span class="k">def</span> <span class="nf">equals_dictionaries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict1</span><span class="p">,</span> <span class="n">dict2</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Compare two dictionaries.</span>
+<div class="viewcode-block" id="sppasCompare.equals_dictionaries"><a class="viewcode-back" href="../../rst/utils.html#utils.compare.sppasCompare.equals_dictionaries">[docs]</a>    <span class="k">def</span> <span class="nf">equals_dictionaries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict1</span><span class="p">,</span> <span class="n">dict2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compare two dictionaries.</span>
 
 <span class="sd">        :param dict1: (dict or collection) The dict to compare.</span>
 <span class="sd">        :param dict2: (dict or collection) The dict to be compared with.</span>
@@ -211,26 +212,33 @@
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;TypeError: None instead of lists.&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">if</span> <span class="n">sppasType</span><span class="o">.</span><span class="n">is_dict</span><span class="p">(</span><span class="n">dict1</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span> <span class="ow">or</span> <span class="n">sppasType</span><span class="o">.</span><span class="n">is_dict</span><span class="p">(</span><span class="n">dict2</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sppasType</span><span class="o">.</span><span class="n">is_dict</span><span class="p">(</span><span class="n">dict1</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">or</span> \
+           <span class="n">sppasType</span><span class="o">.</span><span class="n">is_dict</span><span class="p">(</span><span class="n">dict2</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;TypeError: Not same types (expected two dictionaries).&quot;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;TypeError: &quot;</span>
+                             <span class="s2">&quot;Not same types (expected two dictionaries).&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="n">shared_keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dict2</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">dict2</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">shared_keys</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">dict1</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">shared_keys</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">dict2</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">shared_keys</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">dict1</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="ow">or</span> \
+           <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">shared_keys</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">dict2</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;FALSE: not shared keys: </span><span class="si">{0}</span><span class="s2"> vs </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dict1</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">dict2</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;FALSE: not shared keys: </span><span class="si">{0}</span><span class="s2"> vs </span><span class="si">{1}</span><span class="s2">&quot;</span>
+                             <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dict1</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">dict2</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dict1</span><span class="p">:</span>
 
             <span class="k">if</span> <span class="n">sppasType</span><span class="o">.</span><span class="n">is_dict</span><span class="p">(</span><span class="n">dict1</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">items_are_equals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">equals_dictionaries</span><span class="p">(</span><span class="n">dict1</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">dict2</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                <span class="n">items_are_equals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">equals_dictionaries</span><span class="p">(</span><span class="n">dict1</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+                                                            <span class="n">dict2</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
             <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">dict1</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
-                <span class="n">items_are_equals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">equals_lists</span><span class="p">(</span><span class="n">dict1</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">dict2</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                <span class="n">items_are_equals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">equals_lists</span><span class="p">(</span><span class="n">dict1</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+                                                     <span class="n">dict2</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">items_are_equals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">equals_items</span><span class="p">(</span><span class="n">dict1</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">dict2</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                <span class="n">items_are_equals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">equals_items</span><span class="p">(</span><span class="n">dict1</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+                                                     <span class="n">dict2</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
 
             <span class="k">if</span> <span class="n">items_are_equals</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
@@ -239,8 +247,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCompare.equals_items"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasCompare.equals_items">[docs]</a>    <span class="k">def</span> <span class="nf">equals_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item1</span><span class="p">,</span> <span class="n">item2</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Compare 2 items of type string or numeric.</span>
+<div class="viewcode-block" id="sppasCompare.equals_items"><a class="viewcode-back" href="../../rst/utils.html#utils.compare.sppasCompare.equals_items">[docs]</a>    <span class="k">def</span> <span class="nf">equals_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item1</span><span class="p">,</span> <span class="n">item2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compare 2 items of type string or numeric.</span>
 
 <span class="sd">        :param item1: The string or numeric to compare</span>
 <span class="sd">        :param item2: The string or numeric to be compared with</span>
@@ -253,7 +261,8 @@
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">item1</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">float</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">item2</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">float</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">round</span><span class="p">(</span><span class="n">item1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">round</span><span class="p">(</span><span class="n">item2</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Float values rounded to 4 digits are not equals: &quot;</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Float values rounded to &quot;</span>
+                                 <span class="s2">&quot;4 digits are not equals: &quot;</span>
                                  <span class="s2">&quot;</span><span class="si">{:0.4f}</span><span class="s2"> != </span><span class="si">{:0.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">item1</span><span class="p">,</span> <span class="n">item2</span><span class="p">))</span>
                 <span class="k">return</span> <span class="kc">False</span>
             <span class="k">return</span> <span class="kc">True</span>
@@ -267,8 +276,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasCompare.equals_strings"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasCompare.equals_strings">[docs]</a>    <span class="k">def</span> <span class="nf">equals_strings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item1</span><span class="p">,</span> <span class="n">item2</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Compare 2 data of type string or unicode.</span>
+<div class="viewcode-block" id="sppasCompare.equals_strings"><a class="viewcode-back" href="../../rst/utils.html#utils.compare.sppasCompare.equals_strings">[docs]</a>    <span class="k">def</span> <span class="nf">equals_strings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item1</span><span class="p">,</span> <span class="n">item2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compare 2 data of type string or unicode.</span>
 
 <span class="sd">        :param item1: The string to compare</span>
 <span class="sd">        :param item2: The string to be compared with</span>
@@ -278,7 +287,8 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item1</span><span class="p">,</span> <span class="p">(</span><span class="n">text_type</span><span class="p">,</span> <span class="n">binary_type</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">or</span> \
            <span class="nb">isinstance</span><span class="p">(</span><span class="n">item2</span><span class="p">,</span> <span class="p">(</span><span class="n">text_type</span><span class="p">,</span> <span class="n">binary_type</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;TypeError: Not same types (expected two strings).&quot;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;TypeError: Not same types &quot;</span>
+                             <span class="s2">&quot;(expected two strings).&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item1</span><span class="p">,</span> <span class="n">binary_type</span><span class="p">):</span>

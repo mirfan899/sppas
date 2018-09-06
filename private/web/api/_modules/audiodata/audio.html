@@ -97,11 +97,11 @@
 <span class="c1"># ---------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasAudioPCM"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM">[docs]</a><span class="k">class</span> <span class="nc">sppasAudioPCM</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="sppasAudioPCM"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM">[docs]</a><span class="k">class</span> <span class="nc">sppasAudioPCM</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Nicolas Chazeau, Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
 <span class="sd">    :summary:      An audio reader/writer utility class.</span>
@@ -127,8 +127,8 @@
 <span class="sd">        - rewind()</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasAudioPCM.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Creates a new sppasAudioPCM instance. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasAudioPCM.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new sppasAudioPCM instance.&quot;&quot;&quot;</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">sppasAudioPCM</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -140,8 +140,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.set"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set a new sppasAudioPCM() instance.</span>
+<div class="viewcode-block" id="sppasAudioPCM.set"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set a new sppasAudioPCM() instance.</span>
 
 <span class="sd">        It can be set either with an audio file pointer, or a list of</span>
 <span class="sd">        channels or both.</span>
@@ -154,8 +154,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.get_channels"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.get_channels">[docs]</a>    <span class="k">def</span> <span class="nf">get_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the list of uploaded channels.</span>
+<div class="viewcode-block" id="sppasAudioPCM.get_channels"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.get_channels">[docs]</a>    <span class="k">def</span> <span class="nf">get_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the list of uploaded channels.</span>
 
 <span class="sd">        :returns: (list) channels</span>
 
@@ -164,8 +164,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.get_audiofp"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.get_audiofp">[docs]</a>    <span class="k">def</span> <span class="nf">get_audiofp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the audio file pointer.</span>
+<div class="viewcode-block" id="sppasAudioPCM.get_audiofp"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.get_audiofp">[docs]</a>    <span class="k">def</span> <span class="nf">get_audiofp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the audio file pointer.</span>
 
 <span class="sd">        :returns: audio file pointer</span>
 
@@ -176,8 +176,8 @@
     <span class="c1"># Uploaded channels</span>
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.remove_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.remove_channel">[docs]</a>    <span class="k">def</span> <span class="nf">remove_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove a channel from the list of uploaded channels.</span>
+<div class="viewcode-block" id="sppasAudioPCM.remove_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.remove_channel">[docs]</a>    <span class="k">def</span> <span class="nf">remove_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove a channel from the list of uploaded channels.</span>
 
 <span class="sd">        :param channel: (sppasChannel) the channel to remove</span>
 
@@ -186,8 +186,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.pop_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.pop_channel">[docs]</a>    <span class="k">def</span> <span class="nf">pop_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Pop a channel at the position given from the list of uploaded channels.</span>
+<div class="viewcode-block" id="sppasAudioPCM.pop_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.pop_channel">[docs]</a>    <span class="k">def</span> <span class="nf">pop_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Pop a channel at the position given from the list of uploaded channels.</span>
 
 <span class="sd">        :param idx: (int) the index of the channel to remove</span>
 
@@ -197,8 +197,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.insert_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.insert_channel">[docs]</a>    <span class="k">def</span> <span class="nf">insert_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Insert a channel at the position given in the list of uploaded channels.</span>
+<div class="viewcode-block" id="sppasAudioPCM.insert_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.insert_channel">[docs]</a>    <span class="k">def</span> <span class="nf">insert_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Insert a channel at the position given in the list of uploaded channels.</span>
 
 <span class="sd">        :param idx: (int) the index where the channel has to be inserted</span>
 <span class="sd">        :param channel: (sppasChannel) the channel to insert</span>
@@ -209,8 +209,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.get_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.get_channel">[docs]</a>    <span class="k">def</span> <span class="nf">get_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get an uploaded channel.</span>
+<div class="viewcode-block" id="sppasAudioPCM.get_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.get_channel">[docs]</a>    <span class="k">def</span> <span class="nf">get_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get an uploaded channel.</span>
 
 <span class="sd">        :param idx: (int) the index of the channel to return</span>
 <span class="sd">        :returns: (sppasChannel)</span>
@@ -221,8 +221,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.append_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.append_channel">[docs]</a>    <span class="k">def</span> <span class="nf">append_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Append a channel to the list of uploaded channels.</span>
+<div class="viewcode-block" id="sppasAudioPCM.append_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.append_channel">[docs]</a>    <span class="k">def</span> <span class="nf">append_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Append a channel to the list of uploaded channels.</span>
 
 <span class="sd">        :param channel: (sppasChannel) the channel to append</span>
 <span class="sd">        :returns: index of the channel</span>
@@ -233,8 +233,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.extract_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.extract_channel">[docs]</a>    <span class="k">def</span> <span class="nf">extract_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Extract a channel from the Audio File Pointer,</span>
+<div class="viewcode-block" id="sppasAudioPCM.extract_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.extract_channel">[docs]</a>    <span class="k">def</span> <span class="nf">extract_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extract a channel from the Audio File Pointer,</span>
 <span class="sd">         and append it into the list of channels.</span>
 
 <span class="sd">        Frames are stored into a sppasChannel() instance.</span>
@@ -276,8 +276,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.extract_channels"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.extract_channels">[docs]</a>    <span class="k">def</span> <span class="nf">extract_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Extract all channels from the Audio File Pointer,</span>
+<div class="viewcode-block" id="sppasAudioPCM.extract_channels"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.extract_channels">[docs]</a>    <span class="k">def</span> <span class="nf">extract_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extract all channels from the Audio File Pointer,</span>
 <span class="sd">         and append them to the list of channels.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -303,8 +303,8 @@
     <span class="c1"># Read content, for audiofp</span>
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.read"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read all frames of the audio file.</span>
+<div class="viewcode-block" id="sppasAudioPCM.read"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read all frames of the audio file.</span>
 
 <span class="sd">        :returns: (str) frames</span>
 
@@ -313,8 +313,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.read_frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.read_frames">[docs]</a>    <span class="k">def</span> <span class="nf">read_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nframes</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read n frames from the audio file.</span>
+<div class="viewcode-block" id="sppasAudioPCM.read_frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.read_frames">[docs]</a>    <span class="k">def</span> <span class="nf">read_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nframes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read n frames from the audio file.</span>
 
 <span class="sd">        :param nframes: (int) the number of frames to read</span>
 <span class="sd">        :returns: (str) frames</span>
@@ -327,8 +327,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.read_samples"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.read_samples">[docs]</a>    <span class="k">def</span> <span class="nf">read_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nframes</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read the samples from the audio file.</span>
+<div class="viewcode-block" id="sppasAudioPCM.read_samples"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.read_samples">[docs]</a>    <span class="k">def</span> <span class="nf">read_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nframes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read the samples from the audio file.</span>
 
 <span class="sd">        :param nframes: (int) the number of frames to read</span>
 <span class="sd">        :returns: (list of list) list of samples of each channel</span>
@@ -345,8 +345,8 @@
     <span class="c1"># Getters, for audiofp</span>
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.get_sampwidth"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.get_sampwidth">[docs]</a>    <span class="k">def</span> <span class="nf">get_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the sample width of the Audio File Pointer.</span>
+<div class="viewcode-block" id="sppasAudioPCM.get_sampwidth"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.get_sampwidth">[docs]</a>    <span class="k">def</span> <span class="nf">get_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the sample width of the Audio File Pointer.</span>
 
 <span class="sd">        :returns: (int) sample width of the audio file</span>
 
@@ -361,8 +361,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.get_framerate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.get_framerate">[docs]</a>    <span class="k">def</span> <span class="nf">get_framerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the frame rate of the Audio File Pointer.</span>
+<div class="viewcode-block" id="sppasAudioPCM.get_framerate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.get_framerate">[docs]</a>    <span class="k">def</span> <span class="nf">get_framerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the frame rate of the Audio File Pointer.</span>
 
 <span class="sd">        :returns: (int) frame rate of the audio file</span>
 
@@ -377,8 +377,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.get_nframes"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.get_nframes">[docs]</a>    <span class="k">def</span> <span class="nf">get_nframes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the number of frames of the Audio File Pointer.</span>
+<div class="viewcode-block" id="sppasAudioPCM.get_nframes"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.get_nframes">[docs]</a>    <span class="k">def</span> <span class="nf">get_nframes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of frames of the Audio File Pointer.</span>
 
 <span class="sd">        :returns: (int) number of frames of the audio file</span>
 
@@ -393,8 +393,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.get_nchannels"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.get_nchannels">[docs]</a>    <span class="k">def</span> <span class="nf">get_nchannels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the number of channels of the Audio File Pointer.</span>
+<div class="viewcode-block" id="sppasAudioPCM.get_nchannels"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.get_nchannels">[docs]</a>    <span class="k">def</span> <span class="nf">get_nchannels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of channels of the Audio File Pointer.</span>
 
 <span class="sd">        :returns: (int) number of channels of the audio file</span>
 
@@ -409,8 +409,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.get_duration"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.get_duration">[docs]</a>    <span class="k">def</span> <span class="nf">get_duration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the duration of the Audio File Pointer.</span>
+<div class="viewcode-block" id="sppasAudioPCM.get_duration"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.get_duration">[docs]</a>    <span class="k">def</span> <span class="nf">get_duration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the duration of the Audio File Pointer.</span>
 
 <span class="sd">        :returns: (float) duration of the audio file (in seconds)</span>
 
@@ -425,8 +425,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.rms"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.rms">[docs]</a>    <span class="k">def</span> <span class="nf">rms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the root mean square of the whole file.</span>
+<div class="viewcode-block" id="sppasAudioPCM.rms"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.rms">[docs]</a>    <span class="k">def</span> <span class="nf">rms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the root mean square of the whole file.</span>
 
 <span class="sd">        :returns: (int) rms of the audio file</span>
 
@@ -440,8 +440,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.clipping_rate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.clipping_rate">[docs]</a>    <span class="k">def</span> <span class="nf">clipping_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the clipping rate of the frames.</span>
+<div class="viewcode-block" id="sppasAudioPCM.clipping_rate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.clipping_rate">[docs]</a>    <span class="k">def</span> <span class="nf">clipping_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the clipping rate of the frames.</span>
 
 <span class="sd">        :param factor: (float) An interval to be more precise on clipping rate.</span>
 <span class="sd">        It will consider that all frames outside the interval are clipped.</span>
@@ -460,8 +460,8 @@
     <span class="c1"># Navigate into the audiofp</span>
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.seek"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.seek">[docs]</a>    <span class="k">def</span> <span class="nf">seek</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the reader pointer position.</span>
+<div class="viewcode-block" id="sppasAudioPCM.seek"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.seek">[docs]</a>    <span class="k">def</span> <span class="nf">seek</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fix the reader pointer position.</span>
 
 <span class="sd">        :param pos: (int) the position to set.</span>
 
@@ -473,8 +473,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.tell"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.tell">[docs]</a>    <span class="k">def</span> <span class="nf">tell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the reader pointer position.</span>
+<div class="viewcode-block" id="sppasAudioPCM.tell"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.tell">[docs]</a>    <span class="k">def</span> <span class="nf">tell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the reader pointer position.</span>
 
 <span class="sd">        :returns: (int) the current position</span>
 
@@ -486,8 +486,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.rewind"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.rewind">[docs]</a>    <span class="k">def</span> <span class="nf">rewind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set reader position at the beginning of the file. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasAudioPCM.rewind"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.rewind">[docs]</a>    <span class="k">def</span> <span class="nf">rewind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set reader position at the beginning of the file.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_audio_fp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AudioError</span>
@@ -498,8 +498,8 @@
     <span class="c1"># Verify the compatibility between the channels</span>
     <span class="c1"># ----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.verify_channels"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.verify_channels">[docs]</a>    <span class="k">def</span> <span class="nf">verify_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check that the uploaded channels have the same parameters.</span>
+<div class="viewcode-block" id="sppasAudioPCM.verify_channels"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.verify_channels">[docs]</a>    <span class="k">def</span> <span class="nf">verify_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that the uploaded channels have the same parameters.</span>
 
 <span class="sd">        Check the frame rate, sample width and number of frames.</span>
 
@@ -521,29 +521,29 @@
     <span class="c1"># Input/Output</span>
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.open"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Open an audio file. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasAudioPCM.open"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Open an audio file.&quot;&quot;&quot;</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> does not support open().&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.save"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Save an audio file. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasAudioPCM.save"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save an audio file.&quot;&quot;&quot;</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> does not support save().&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.save_fragments"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.save_fragments">[docs]</a>    <span class="k">def</span> <span class="nf">save_fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Save a fragment of an audio file. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasAudioPCM.save_fragments"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.save_fragments">[docs]</a>    <span class="k">def</span> <span class="nf">save_fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save a fragment of an audio file.&quot;&quot;&quot;</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> does not support save_fragments().&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasAudioPCM.close"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.sppasAudioPCM.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Close the audio file. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasAudioPCM.close"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audio.sppasAudioPCM.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Close the audio file.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_audio_fp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">AudioError</span>

@@ -83,7 +83,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Nicolas Chazeau, Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2016  Brigitte Bigi</span>
 <span class="sd">    :summary:      An utility class for audio frames.</span>
@@ -92,7 +92,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasAudioFrames.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">sampwidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create an sppasAudioFrames instance.</span>
+        <span class="sd">&quot;&quot;&quot;Create an sppasAudioFrames instance.</span>
 
 <span class="sd">        :param frames: (str) input frames.</span>
 <span class="sd">        :param sampwidth: (int) sample width of the frames.</span>
@@ -115,7 +115,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAudioFrames.resample"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.resample">[docs]</a>    <span class="k">def</span> <span class="nf">resample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">new_rate</span><span class="o">=</span><span class="mi">16000</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return re-sampled frames.</span>
+        <span class="sd">&quot;&quot;&quot;Return re-sampled frames.</span>
 
 <span class="sd">        :param rate: (int) current frame rate of the frames</span>
 <span class="sd">        :param new_rate: (int) new frame rate of the frames</span>
@@ -127,7 +127,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAudioFrames.change_sampwidth"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.change_sampwidth">[docs]</a>    <span class="k">def</span> <span class="nf">change_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_sampwidth</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return frames with the given number of bytes.</span>
+        <span class="sd">&quot;&quot;&quot;Return frames with the given number of bytes.</span>
 
 <span class="sd">        :param new_sampwidth: (int) new sample width of the frames.</span>
 <span class="sd">            (1 for 8 bits, 2 for 16 bits, 4 for 32 bits)</span>
@@ -141,7 +141,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAudioFrames.bias"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.bias">[docs]</a>    <span class="k">def</span> <span class="nf">bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return frames that is the original fragment with a bias added to each sample.</span>
+        <span class="sd">&quot;&quot;&quot;Return frames that is the original fragment with a bias added to each sample.</span>
 <span class="sd">        Samples wrap around in case of overflow.</span>
 
 <span class="sd">        :param value: (int) the bias which will be applied to each sample.</span>
@@ -154,7 +154,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAudioFrames.mul"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.mul">[docs]</a>    <span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return frames for which all samples are multiplied by factor.</span>
+        <span class="sd">&quot;&quot;&quot;Return frames for which all samples are multiplied by factor.</span>
 <span class="sd">        Samples are truncated in case of overflow.</span>
 
 <span class="sd">        :param factor: (int) the factor which will be applied to each sample.</span>
@@ -166,7 +166,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAudioFrames.cross"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.cross">[docs]</a>    <span class="k">def</span> <span class="nf">cross</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the number of zero crossings in frames.</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of zero crossings in frames.</span>
 
 <span class="sd">        :returns: number of zero crossing</span>
 
@@ -176,7 +176,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAudioFrames.minmax"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.minmax">[docs]</a>    <span class="k">def</span> <span class="nf">minmax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the (minimum,maximum) of the values of all frames.</span>
+        <span class="sd">&quot;&quot;&quot;Return the (minimum,maximum) of the values of all frames.</span>
 
 <span class="sd">        :returns (min,max)</span>
 
@@ -186,28 +186,28 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAudioFrames.min"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.min">[docs]</a>    <span class="k">def</span> <span class="nf">min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the minimum of the values of all frames. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the minimum of the values of all frames.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">minmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAudioFrames.max"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.max">[docs]</a>    <span class="k">def</span> <span class="nf">max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the maximum of the values of all frames. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the maximum of the values of all frames.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">minmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAudioFrames.avg"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.avg">[docs]</a>    <span class="k">def</span> <span class="nf">avg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the average of all the frames. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the average of all the frames.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAudioFrames.rms"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.rms">[docs]</a>    <span class="k">def</span> <span class="nf">rms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the root mean square of the frames. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the root mean square of the frames.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nchannels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">audioop</span><span class="o">.</span><span class="n">rms</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span>
@@ -225,7 +225,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAudioFrames.clipping_rate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.clipping_rate">[docs]</a>    <span class="k">def</span> <span class="nf">clipping_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the clipping rate of the frames.</span>
+        <span class="sd">&quot;&quot;&quot;Return the clipping rate of the frames.</span>
 
 <span class="sd">        :param factor: (float) An interval to be more precise on clipping rate.</span>
 <span class="sd">        It will consider that all frames outside the interval are clipped.</span>
@@ -255,7 +255,7 @@
 
 <div class="viewcode-block" id="sppasAudioFrames.get_maxval"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.get_maxval">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_maxval</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the max value for a given sampwidth.</span>
+        <span class="sd">&quot;&quot;&quot;Return the max value for a given sampwidth.</span>
 
 <span class="sd">        :param size: (int) the sampwidth</span>
 <span class="sd">        :param signed: (bool) if the values will be signed or not</span>
@@ -279,7 +279,7 @@
 
 <div class="viewcode-block" id="sppasAudioFrames.get_minval"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioframes.sppasAudioFrames.get_minval">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">get_minval</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the min value for a given sampwidth.</span>
+        <span class="sd">&quot;&quot;&quot;Return the min value for a given sampwidth.</span>
 
 <span class="sd">        :param size: (int) the sampwidth</span>
 <span class="sd">        :param signed: (bool) if the values will be signed or not</span>

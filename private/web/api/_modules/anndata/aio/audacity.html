@@ -82,10 +82,10 @@
 
 <span class="kn">from</span> <span class="nn">.basetrs</span> <span class="k">import</span> <span class="n">sppasBaseIO</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
-<span class="kn">from</span> <span class="nn">..annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..ann.annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasInterval</span>
 
 <span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">format_labels</span>
 
@@ -106,7 +106,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasAudacity.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.audacity.sppasAudacity.detect">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check whether a file is of AUP format or not.</span>
+        <span class="sd">&quot;&quot;&quot;Check whether a file is of AUP format or not.</span>
 <span class="sd">        AUP files are encoded in UTF-8 without BOM.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
@@ -129,7 +129,7 @@
 
 <div class="viewcode-block" id="sppasAudacity.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.audacity.sppasAudacity.make_point">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; The localization is a time value, so a float. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;The localization is a time value, so a float.&quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">midpoint</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">midpoint</span><span class="p">)</span>
@@ -141,15 +141,15 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAudacity.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.audacity.sppasAudacity.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasAudacity instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasAudacity instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasAudacity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;aup&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">True</span>
@@ -170,7 +170,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAudacity.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.audacity.sppasAudacity.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read an AUP file and fill the Transcription.</span>
+        <span class="sd">&quot;&quot;&quot;Read an AUP file and fill the Transcription.</span>
 
 <span class="sd">        &lt;!ELEMENT project (tags, (wavetrack | labeltrack | timetrack)*)&gt;</span>
 
@@ -208,7 +208,7 @@
 
 <div class="viewcode-block" id="sppasAudacity.normalize"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.audacity.sppasAudacity.normalize">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Provide namespaces in element names.</span>
+        <span class="sd">&quot;&quot;&quot;Provide namespaces in element names.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &lt;Element &#39;{http://audacity.sourceforge.net/xml/}simpleblockfile&#39; at 0x03270230&gt;</span>
@@ -346,7 +346,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_wavetrack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wave_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Not implemented.</span>
+        <span class="sd">&quot;&quot;&quot;Not implemented.</span>
 
 <span class="sd">        &lt;!ELEMENT wavetrack (waveclip*)&gt;</span>
 
@@ -358,7 +358,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_timetrack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Not implemented.</span>
+        <span class="sd">&quot;&quot;&quot;Not implemented.</span>
 
 <span class="sd">        &lt;!ELEMENT timetrack (envelope)&gt;</span>
 <span class="sd">        &lt;!ATTLIST timetrack name CDATA #REQUIRED&gt;</span>

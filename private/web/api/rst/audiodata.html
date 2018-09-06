@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="audiodata.aio package" href="audiodata.aio.html" />
-    <link rel="prev" title="anndata.annlocation package" href="anndata.annlocation.html" /> 
+    <link rel="prev" title="anndata.ann.annlocation package" href="anndata.ann.annlocation.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="audiodata.aio.html" title="audiodata.aio package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="anndata.annlocation.html" title="anndata.annlocation package"
+          <a href="anndata.ann.annlocation.html" title="anndata.ann.annlocation package"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">SPPAS 1.9.8 documentation</a> &#187;</li> 
       </ul>
@@ -44,710 +44,6 @@
             
   <div class="section" id="audiodata-package">
 <h1>audiodata package<a class="headerlink" href="#audiodata-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-audiodata">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-audiodata" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="audiodata">
-<h3>audiodata<a class="headerlink" href="#audiodata" title="Permalink to this headline">¶</a></h3>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
-</tr>
-</tbody>
-</table>
-<p>Management of digital audio data.</p>
-<dl class="class">
-<dt id="audiodata.sppasAudioPCM">
-<em class="property">class </em><code class="descclassname">audiodata.</code><code class="descname">sppasAudioPCM</code><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Nicolas Chazeau, Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">An audio reader/writer utility class.</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>These variables are user gettable through appropriate methods:</dt>
-<dd><ul class="first last simple">
-<li>nchannels – the number of audio channels</li>
-<li>framerate – the sampling frequency</li>
-<li>sampwidth – the number of bytes per audio sample (1, 2 or 4)</li>
-<li>nframes   – the number of frames</li>
-<li>params    – parameters of the wave file</li>
-<li>filename  – the name of the wave file</li>
-</ul>
-</dd>
-</dl>
-<p>The audiofp member is assigned by the IO classes, as WaveIO, AifIO, SunauIO.
-It is expected that it can access the following methods:</p>
-<blockquote>
-<div><ul class="simple">
-<li>readframes()</li>
-<li>writeframes()</li>
-<li>getsampwidth()</li>
-<li>getframerate()</li>
-<li>getnframes()</li>
-<li>getnchannels()</li>
-<li>setpos()</li>
-<li>tell()</li>
-<li>rewind()</li>
-</ul>
-</div></blockquote>
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a new sppasAudioPCM instance.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.append_channel">
-<code class="descname">append_channel</code><span class="sig-paren">(</span><em>channel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.append_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.append_channel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Append a channel to the list of uploaded channels.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>channel</strong> – (sppasChannel) the channel to append</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">index of the channel</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.clipping_rate">
-<code class="descname">clipping_rate</code><span class="sig-paren">(</span><em>factor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.clipping_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.clipping_rate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the clipping rate of the frames.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>factor</strong> – (float) An interval to be more precise on clipping rate.</td>
-</tr>
-</tbody>
-</table>
-<p>It will consider that all frames outside the interval are clipped.
-Factor has to be between 0 and 1.
-:returns: (float)</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.close">
-<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.close" title="Permalink to this definition">¶</a></dt>
-<dd><p>Close the audio file.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.extract_channel">
-<code class="descname">extract_channel</code><span class="sig-paren">(</span><em>index=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.extract_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.extract_channel" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>Extract a channel from the Audio File Pointer,</dt>
-<dd>and append it into the list of channels.</dd>
-</dl>
-<p>Frames are stored into a sppasChannel() instance.
-Index of the channel in the audio file:
-0 = 1st channel (left); 1 = 2nd channel (right); 2 = 3rd channel…</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> – (int) The index of the channel to extract</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the index of the sppasChannel() in the list</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.extract_channels">
-<code class="descname">extract_channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.extract_channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.extract_channels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract all channels from the Audio File Pointer,
-and append them to the list of channels.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.get_audiofp">
-<code class="descname">get_audiofp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_audiofp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_audiofp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the audio file pointer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">audio file pointer</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.get_channel">
-<code class="descname">get_channel</code><span class="sig-paren">(</span><em>idx</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_channel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get an uploaded channel.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>idx</strong> – (int) the index of the channel to return</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(sppasChannel)</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.get_channels">
-<code class="descname">get_channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_channels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the list of uploaded channels.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(list) channels</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.get_duration">
-<code class="descname">get_duration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_duration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the duration of the Audio File Pointer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(float) duration of the audio file (in seconds)</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.get_framerate">
-<code class="descname">get_framerate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_framerate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_framerate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the frame rate of the Audio File Pointer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) frame rate of the audio file</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.get_nchannels">
-<code class="descname">get_nchannels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_nchannels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_nchannels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the number of channels of the Audio File Pointer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) number of channels of the audio file</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.get_nframes">
-<code class="descname">get_nframes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_nframes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_nframes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the number of frames of the Audio File Pointer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) number of frames of the audio file</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.get_sampwidth">
-<code class="descname">get_sampwidth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_sampwidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_sampwidth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the sample width of the Audio File Pointer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) sample width of the audio file</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.insert_channel">
-<code class="descname">insert_channel</code><span class="sig-paren">(</span><em>idx</em>, <em>channel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.insert_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.insert_channel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Insert a channel at the position given in the list of uploaded channels.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>idx</strong> – (int) the index where the channel has to be inserted</li>
-<li><strong>channel</strong> – (sppasChannel) the channel to insert</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.open">
-<code class="descname">open</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.open" title="Permalink to this definition">¶</a></dt>
-<dd><p>Open an audio file.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.pop_channel">
-<code class="descname">pop_channel</code><span class="sig-paren">(</span><em>idx</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.pop_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.pop_channel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pop a channel at the position given from the list of uploaded channels.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>idx</strong> – (int) the index of the channel to remove</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.read">
-<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read all frames of the audio file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(str) frames</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.read_frames">
-<code class="descname">read_frames</code><span class="sig-paren">(</span><em>nframes</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.read_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.read_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read n frames from the audio file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nframes</strong> – (int) the number of frames to read</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(str) frames</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.read_samples">
-<code class="descname">read_samples</code><span class="sig-paren">(</span><em>nframes</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.read_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.read_samples" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read the samples from the audio file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nframes</strong> – (int) the number of frames to read</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(list of list) list of samples of each channel</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.remove_channel">
-<code class="descname">remove_channel</code><span class="sig-paren">(</span><em>channel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.remove_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.remove_channel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove a channel from the list of uploaded channels.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>channel</strong> – (sppasChannel) the channel to remove</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.rewind">
-<code class="descname">rewind</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.rewind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.rewind" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set reader position at the beginning of the file.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.rms">
-<code class="descname">rms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.rms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.rms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the root mean square of the whole file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) rms of the audio file</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.save">
-<code class="descname">save</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save an audio file.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.save_fragments">
-<code class="descname">save_fragments</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.save_fragments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.save_fragments" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save a fragment of an audio file.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.seek">
-<code class="descname">seek</code><span class="sig-paren">(</span><em>pos</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.seek"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.seek" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fix the reader pointer position.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pos</strong> – (int) the position to set.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.set">
-<code class="descname">set</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set a new sppasAudioPCM() instance.</p>
-<p>It can be set either with an audio file pointer, or a list of
-channels or both.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other</strong> – (sppasAudioPCM) the other sppasAudioPCM to set</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.tell">
-<code class="descname">tell</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.tell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.tell" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the reader pointer position.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) the current position</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasAudioPCM.verify_channels">
-<code class="descname">verify_channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.verify_channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.verify_channels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check that the uploaded channels have the same parameters.</p>
-<p>Check the frame rate, sample width and number of frames.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(bool)</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="audiodata.sppasChannel">
-<em class="property">class </em><code class="descclassname">audiodata.</code><code class="descname">sppasChannel</code><span class="sig-paren">(</span><em>framerate=16000</em>, <em>sampwidth=2</em>, <em>frames=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Nicolas Chazeau, Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">A class to manage a channel.</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="audiodata.sppasChannel.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>framerate=16000</em>, <em>sampwidth=2</em>, <em>frames=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a sppasChannel instance.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>framerate</strong> – (int) The frame rate of this channel, in Hertz.</li>
-<li><strong>sampwidth</strong> – (int) 1 for 8 bits, 2 for 16 bits, 4 for 32 bits.</li>
-<li><strong>frames</strong> – (str) The frames represented by a string.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.clipping_rate">
-<code class="descname">clipping_rate</code><span class="sig-paren">(</span><em>factor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.clipping_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.clipping_rate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the clipping rate of the frames.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>factor</strong> – (float) An interval to be more precise on clipping rate.</td>
-</tr>
-</tbody>
-</table>
-<p>It will consider that all frames outside the interval are clipped.
-Factor has to be between 0 and 1.
-:returns: (float) the clipping rate</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.extract_fragment">
-<code class="descname">extract_fragment</code><span class="sig-paren">(</span><em>begin=None</em>, <em>end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.extract_fragment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.extract_fragment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extract a fragment between the beginning and the end.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>begin</strong> – (int: number of frames) the beginning of the fragment to extract</li>
-<li><strong>end</strong> – (int: number of frames) the end of the fragment to extract</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(sppasChannel) the fragment extracted.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.get_cross">
-<code class="descname">get_cross</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.get_cross"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.get_cross" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the number of zero crossings.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) number of zero crossing</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.get_duration">
-<code class="descname">get_duration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.get_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.get_duration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the duration of the channel, in seconds.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(float) the duration of the channel</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.get_framerate">
-<code class="descname">get_framerate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.get_framerate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.get_framerate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the frame rate, in Hz.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) the frame rate of the channel</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.get_frames">
-<code class="descname">get_frames</code><span class="sig-paren">(</span><em>chunck_size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.get_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.get_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return some frames from the current position.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chunck_size</strong> – (int) the size of the chunk to return.</td>
-</tr>
-</tbody>
-</table>
-<p>None for all frames of the channel.
-:returns: (str) the frames</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.get_nframes">
-<code class="descname">get_nframes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.get_nframes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.get_nframes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the number of frames.
-A frame has a length of (sampwidth) bytes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) the total number of frames</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.get_sampwidth">
-<code class="descname">get_sampwidth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.get_sampwidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.get_sampwidth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the sample width.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) the sample width of the channel</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.rewind">
-<code class="descname">rewind</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.rewind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.rewind" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the position to 0.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.rms">
-<code class="descname">rms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.rms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.rms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the root mean square of the channel.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) the root mean square of the channel</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.seek">
-<code class="descname">seek</code><span class="sig-paren">(</span><em>position</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.seek"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.seek" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fix the current position.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>position</strong> – (int)</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.set_framerate">
-<code class="descname">set_framerate</code><span class="sig-paren">(</span><em>framerate</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.set_framerate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.set_framerate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set a new framerate to the channel.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>framerate</strong> – (int) The frame rate of this channel, in Hertz.</td>
-</tr>
-</tbody>
-</table>
-<p>A value between 8000 and 192000</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.set_frames">
-<code class="descname">set_frames</code><span class="sig-paren">(</span><em>frames</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.set_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.set_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set new frames to the channel.
-It is supposed the sampwidth and framerate are the same as the 
-current ones.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>frames</strong> – (str) the new frames</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.set_sampwidth">
-<code class="descname">set_sampwidth</code><span class="sig-paren">(</span><em>sampwidth</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.set_sampwidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.set_sampwidth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set a new samples width to the channel.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sampwidth</strong> – (int) 1 for 8 bits, 2 for 16 bits, 4 for 32 bits.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="audiodata.sppasChannel.tell">
-<code class="descname">tell</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.tell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.tell" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the current position.</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-</div>
 <div class="section" id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
@@ -813,7 +109,7 @@ analysis) per sample.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -1247,7 +543,7 @@ channels or both.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -1589,7 +885,7 @@ Unpack the data frames depending on their sample width.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -1816,7 +1112,7 @@ Samples are truncated in case of overflow.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -1887,7 +1183,7 @@ Samples are truncated in case of overflow.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -2062,7 +1358,7 @@ Use only default parameters.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -2081,7 +1377,7 @@ Use only default parameters.</p>
 <dl class="method">
 <dt id="audiodata.basevolume.sppasBaseVolume.coefvariation">
 <code class="descname">coefvariation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/basevolume.html#sppasBaseVolume.coefvariation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.basevolume.sppasBaseVolume.coefvariation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the coefficient of variation of RMS values.</p>
+<dd><p>Return the coefficient of variation of RMS values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2123,7 +1419,7 @@ Use only default parameters.</p>
 <dl class="method">
 <dt id="audiodata.basevolume.sppasBaseVolume.max">
 <code class="descname">max</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/basevolume.html#sppasBaseVolume.max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.basevolume.sppasBaseVolume.max" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the maximum of RMS values.</p>
+<dd><p>Return the maximum of RMS values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2137,7 +1433,7 @@ Use only default parameters.</p>
 <dl class="method">
 <dt id="audiodata.basevolume.sppasBaseVolume.mean">
 <code class="descname">mean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/basevolume.html#sppasBaseVolume.mean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.basevolume.sppasBaseVolume.mean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the mean of RMS values.</p>
+<dd><p>Return the mean of RMS values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2151,7 +1447,7 @@ Use only default parameters.</p>
 <dl class="method">
 <dt id="audiodata.basevolume.sppasBaseVolume.median">
 <code class="descname">median</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/basevolume.html#sppasBaseVolume.median"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.basevolume.sppasBaseVolume.median" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the median of RMS values.</p>
+<dd><p>Return the median of RMS values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2165,7 +1461,7 @@ Use only default parameters.</p>
 <dl class="method">
 <dt id="audiodata.basevolume.sppasBaseVolume.min">
 <code class="descname">min</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/basevolume.html#sppasBaseVolume.min"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.basevolume.sppasBaseVolume.min" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the minimum of RMS values.</p>
+<dd><p>Return the minimum of RMS values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2179,7 +1475,7 @@ Use only default parameters.</p>
 <dl class="method">
 <dt id="audiodata.basevolume.sppasBaseVolume.stdev">
 <code class="descname">stdev</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/basevolume.html#sppasBaseVolume.stdev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.basevolume.sppasBaseVolume.stdev" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the standard deviation of RMS values.</p>
+<dd><p>Return the standard deviation of RMS values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2193,7 +1489,7 @@ Use only default parameters.</p>
 <dl class="method">
 <dt id="audiodata.basevolume.sppasBaseVolume.variance">
 <code class="descname">variance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/basevolume.html#sppasBaseVolume.variance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.basevolume.sppasBaseVolume.variance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the sample variance of RMS values.</p>
+<dd><p>Return the sample variance of RMS values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2249,7 +1545,7 @@ Use only default parameters.</p>
 <dl class="method">
 <dt id="audiodata.basevolume.sppasBaseVolume.zscores">
 <code class="descname">zscores</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/basevolume.html#sppasBaseVolume.zscores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.basevolume.sppasBaseVolume.zscores" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the z-scores of RMS values.
+<dd><p>Return the z-scores of RMS values.
 The z-score determines the relative location of a data value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2281,7 +1577,7 @@ The z-score determines the relative location of a data value.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -2540,7 +1836,7 @@ current ones.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -2763,7 +2059,7 @@ current one  of the channel.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -2923,7 +2219,7 @@ spectrum on a nonlinear mel scale of frequency.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -3006,7 +2302,7 @@ Requires HCopy to be installed.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -3178,7 +2474,7 @@ This is a simple observation of the distribution of rms values.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -3291,7 +2587,7 @@ by appending silence at the end.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -3324,6 +2620,709 @@ by appending silence at the end.</p>
 
 </div>
 </div>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="audiodata-manage-of-digital-audio-data">
+<h3>audiodata: Manage of digital audio data.<a class="headerlink" href="#audiodata-manage-of-digital-audio-data" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="audiodata.sppasAudioPCM">
+<em class="property">class </em><code class="descclassname">audiodata.</code><code class="descname">sppasAudioPCM</code><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Nicolas Chazeau, Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">An audio reader/writer utility class.</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>These variables are user gettable through appropriate methods:</dt>
+<dd><ul class="first last simple">
+<li>nchannels – the number of audio channels</li>
+<li>framerate – the sampling frequency</li>
+<li>sampwidth – the number of bytes per audio sample (1, 2 or 4)</li>
+<li>nframes   – the number of frames</li>
+<li>params    – parameters of the wave file</li>
+<li>filename  – the name of the wave file</li>
+</ul>
+</dd>
+</dl>
+<p>The audiofp member is assigned by the IO classes, as WaveIO, AifIO, SunauIO.
+It is expected that it can access the following methods:</p>
+<blockquote>
+<div><ul class="simple">
+<li>readframes()</li>
+<li>writeframes()</li>
+<li>getsampwidth()</li>
+<li>getframerate()</li>
+<li>getnframes()</li>
+<li>getnchannels()</li>
+<li>setpos()</li>
+<li>tell()</li>
+<li>rewind()</li>
+</ul>
+</div></blockquote>
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new sppasAudioPCM instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.append_channel">
+<code class="descname">append_channel</code><span class="sig-paren">(</span><em>channel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.append_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.append_channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a channel to the list of uploaded channels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>channel</strong> – (sppasChannel) the channel to append</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">index of the channel</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.clipping_rate">
+<code class="descname">clipping_rate</code><span class="sig-paren">(</span><em>factor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.clipping_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.clipping_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the clipping rate of the frames.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>factor</strong> – (float) An interval to be more precise on clipping rate.</td>
+</tr>
+</tbody>
+</table>
+<p>It will consider that all frames outside the interval are clipped.
+Factor has to be between 0 and 1.
+:returns: (float)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the audio file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.extract_channel">
+<code class="descname">extract_channel</code><span class="sig-paren">(</span><em>index=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.extract_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.extract_channel" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Extract a channel from the Audio File Pointer,</dt>
+<dd>and append it into the list of channels.</dd>
+</dl>
+<p>Frames are stored into a sppasChannel() instance.
+Index of the channel in the audio file:
+0 = 1st channel (left); 1 = 2nd channel (right); 2 = 3rd channel…</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> – (int) The index of the channel to extract</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the index of the sppasChannel() in the list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.extract_channels">
+<code class="descname">extract_channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.extract_channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.extract_channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract all channels from the Audio File Pointer,
+and append them to the list of channels.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.get_audiofp">
+<code class="descname">get_audiofp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_audiofp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_audiofp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the audio file pointer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">audio file pointer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.get_channel">
+<code class="descname">get_channel</code><span class="sig-paren">(</span><em>idx</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an uploaded channel.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>idx</strong> – (int) the index of the channel to return</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(sppasChannel)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.get_channels">
+<code class="descname">get_channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of uploaded channels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(list) channels</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.get_duration">
+<code class="descname">get_duration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the duration of the Audio File Pointer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(float) duration of the audio file (in seconds)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.get_framerate">
+<code class="descname">get_framerate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_framerate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_framerate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the frame rate of the Audio File Pointer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) frame rate of the audio file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.get_nchannels">
+<code class="descname">get_nchannels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_nchannels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_nchannels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of channels of the Audio File Pointer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) number of channels of the audio file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.get_nframes">
+<code class="descname">get_nframes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_nframes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_nframes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of frames of the Audio File Pointer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) number of frames of the audio file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.get_sampwidth">
+<code class="descname">get_sampwidth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.get_sampwidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.get_sampwidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the sample width of the Audio File Pointer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) sample width of the audio file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.insert_channel">
+<code class="descname">insert_channel</code><span class="sig-paren">(</span><em>idx</em>, <em>channel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.insert_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.insert_channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert a channel at the position given in the list of uploaded channels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>idx</strong> – (int) the index where the channel has to be inserted</li>
+<li><strong>channel</strong> – (sppasChannel) the channel to insert</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.open">
+<code class="descname">open</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open an audio file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.pop_channel">
+<code class="descname">pop_channel</code><span class="sig-paren">(</span><em>idx</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.pop_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.pop_channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pop a channel at the position given from the list of uploaded channels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>idx</strong> – (int) the index of the channel to remove</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read all frames of the audio file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(str) frames</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.read_frames">
+<code class="descname">read_frames</code><span class="sig-paren">(</span><em>nframes</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.read_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.read_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read n frames from the audio file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nframes</strong> – (int) the number of frames to read</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(str) frames</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.read_samples">
+<code class="descname">read_samples</code><span class="sig-paren">(</span><em>nframes</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.read_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.read_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the samples from the audio file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>nframes</strong> – (int) the number of frames to read</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(list of list) list of samples of each channel</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.remove_channel">
+<code class="descname">remove_channel</code><span class="sig-paren">(</span><em>channel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.remove_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.remove_channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a channel from the list of uploaded channels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>channel</strong> – (sppasChannel) the channel to remove</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.rewind">
+<code class="descname">rewind</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.rewind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.rewind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set reader position at the beginning of the file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.rms">
+<code class="descname">rms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.rms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.rms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the root mean square of the whole file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) rms of the audio file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save an audio file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.save_fragments">
+<code class="descname">save_fragments</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.save_fragments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.save_fragments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a fragment of an audio file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.seek">
+<code class="descname">seek</code><span class="sig-paren">(</span><em>pos</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.seek"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.seek" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fix the reader pointer position.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pos</strong> – (int) the position to set.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.set">
+<code class="descname">set</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a new sppasAudioPCM() instance.</p>
+<p>It can be set either with an audio file pointer, or a list of
+channels or both.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other</strong> – (sppasAudioPCM) the other sppasAudioPCM to set</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.tell">
+<code class="descname">tell</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.tell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.tell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the reader pointer position.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) the current position</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasAudioPCM.verify_channels">
+<code class="descname">verify_channels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/audio.html#sppasAudioPCM.verify_channels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasAudioPCM.verify_channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the uploaded channels have the same parameters.</p>
+<p>Check the frame rate, sample width and number of frames.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(bool)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="audiodata.sppasChannel">
+<em class="property">class </em><code class="descclassname">audiodata.</code><code class="descname">sppasChannel</code><span class="sig-paren">(</span><em>framerate=16000</em>, <em>sampwidth=2</em>, <em>frames=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Nicolas Chazeau, Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Summary:</th><td class="field-body">A class to manage a channel.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="audiodata.sppasChannel.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>framerate=16000</em>, <em>sampwidth=2</em>, <em>frames=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sppasChannel instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>framerate</strong> – (int) The frame rate of this channel, in Hertz.</li>
+<li><strong>sampwidth</strong> – (int) 1 for 8 bits, 2 for 16 bits, 4 for 32 bits.</li>
+<li><strong>frames</strong> – (str) The frames represented by a string.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.clipping_rate">
+<code class="descname">clipping_rate</code><span class="sig-paren">(</span><em>factor</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.clipping_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.clipping_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the clipping rate of the frames.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>factor</strong> – (float) An interval to be more precise on clipping rate.</td>
+</tr>
+</tbody>
+</table>
+<p>It will consider that all frames outside the interval are clipped.
+Factor has to be between 0 and 1.
+:returns: (float) the clipping rate</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.extract_fragment">
+<code class="descname">extract_fragment</code><span class="sig-paren">(</span><em>begin=None</em>, <em>end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.extract_fragment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.extract_fragment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract a fragment between the beginning and the end.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>begin</strong> – (int: number of frames) the beginning of the fragment to extract</li>
+<li><strong>end</strong> – (int: number of frames) the end of the fragment to extract</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(sppasChannel) the fragment extracted.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.get_cross">
+<code class="descname">get_cross</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.get_cross"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.get_cross" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of zero crossings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) number of zero crossing</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.get_duration">
+<code class="descname">get_duration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.get_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.get_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the duration of the channel, in seconds.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(float) the duration of the channel</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.get_framerate">
+<code class="descname">get_framerate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.get_framerate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.get_framerate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the frame rate, in Hz.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) the frame rate of the channel</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.get_frames">
+<code class="descname">get_frames</code><span class="sig-paren">(</span><em>chunck_size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.get_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.get_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return some frames from the current position.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>chunck_size</strong> – (int) the size of the chunk to return.</td>
+</tr>
+</tbody>
+</table>
+<p>None for all frames of the channel.
+:returns: (str) the frames</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.get_nframes">
+<code class="descname">get_nframes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.get_nframes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.get_nframes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of frames.
+A frame has a length of (sampwidth) bytes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) the total number of frames</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.get_sampwidth">
+<code class="descname">get_sampwidth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.get_sampwidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.get_sampwidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the sample width.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) the sample width of the channel</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.rewind">
+<code class="descname">rewind</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.rewind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.rewind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the position to 0.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.rms">
+<code class="descname">rms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.rms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.rms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the root mean square of the channel.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(int) the root mean square of the channel</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.seek">
+<code class="descname">seek</code><span class="sig-paren">(</span><em>position</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.seek"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.seek" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fix the current position.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>position</strong> – (int)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.set_framerate">
+<code class="descname">set_framerate</code><span class="sig-paren">(</span><em>framerate</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.set_framerate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.set_framerate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a new framerate to the channel.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>framerate</strong> – (int) The frame rate of this channel, in Hertz.</td>
+</tr>
+</tbody>
+</table>
+<p>A value between 8000 and 192000</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.set_frames">
+<code class="descname">set_frames</code><span class="sig-paren">(</span><em>frames</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.set_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.set_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set new frames to the channel.
+It is supposed the sampwidth and framerate are the same as the 
+current ones.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>frames</strong> – (str) the new frames</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.set_sampwidth">
+<code class="descname">set_sampwidth</code><span class="sig-paren">(</span><em>sampwidth</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.set_sampwidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.set_sampwidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a new samples width to the channel.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sampwidth</strong> – (int) 1 for 8 bits, 2 for 16 bits, 4 for 32 bits.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="audiodata.sppasChannel.tell">
+<code class="descname">tell</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/audiodata/channel.html#sppasChannel.tell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#audiodata.sppasChannel.tell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current position.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
 </div>
 
 
@@ -3335,10 +3334,6 @@ by appending silence at the end.</p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">audiodata package</a><ul>
-<li><a class="reference internal" href="#module-audiodata">Module contents</a><ul>
-<li><a class="reference internal" href="#audiodata">audiodata</a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-audiodata.audio">audiodata.audio module</a><ul>
@@ -3401,13 +3396,17 @@ by appending silence at the end.</p>
 <li><a class="reference internal" href="#src-audiodata-channelvolume-py">src.audiodata.channelvolume.py</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#module-contents">Module contents</a><ul>
+<li><a class="reference internal" href="#audiodata-manage-of-digital-audio-data">audiodata: Manage of digital audio data.</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="anndata.annlocation.html"
-                        title="previous chapter">anndata.annlocation package</a></p>
+  <p class="topless"><a href="anndata.ann.annlocation.html"
+                        title="previous chapter">anndata.ann.annlocation package</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="audiodata.aio.html"
                         title="next chapter">audiodata.aio package</a></p>
@@ -3447,7 +3446,7 @@ by appending silence at the end.</p>
           <a href="audiodata.aio.html" title="audiodata.aio package"
              >next</a> |</li>
         <li class="right" >
-          <a href="anndata.annlocation.html" title="anndata.annlocation package"
+          <a href="anndata.ann.annlocation.html" title="anndata.ann.annlocation package"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">SPPAS 1.9.8 documentation</a> &#187;</li> 
       </ul>

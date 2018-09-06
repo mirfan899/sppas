@@ -72,23 +72,16 @@
 
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
-<span class="sd">    A linear function from the real numbers to the real numbers is a function</span>
-<span class="sd">    whose graph - in Cartesian coordinates with uniform scales, is a line in</span>
-<span class="sd">    the plane.</span>
+<span class="sd">A linear function from the real numbers to the real numbers is a function</span>
+<span class="sd">whose graph - in Cartesian coordinates with uniform scales, is a line in</span>
+<span class="sd">the plane.</span>
 
-<span class="sd">    Function list</span>
-<span class="sd">    =============</span>
-
-<span class="sd">        - slope</span>
-<span class="sd">        - intercept</span>
-<span class="sd">        -</span>
-
-<span class="sd">    The equation y = ax + b is referred to as the slope-intercept form of a</span>
-<span class="sd">    linear equation.</span>
+<span class="sd">The equation y = ax + b is referred to as the slope-intercept form of a</span>
+<span class="sd">linear equation.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">math</span>
@@ -97,7 +90,7 @@
 
 
 <div class="viewcode-block" id="slope"><a class="viewcode-back" href="../../../rst/calculus.geometry.html#calculus.geometry.linear_fct.slope">[docs]</a><span class="k">def</span> <span class="nf">slope</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Estimates the slope between 2 points.</span>
+    <span class="sd">&quot;&quot;&quot;Estimate the slope between 2 points.</span>
 
 <span class="sd">    :param p1: (tuple) first point as (x1, y1)</span>
 <span class="sd">    :param p2: (tuple) second point as (x2, y2)</span>
@@ -126,7 +119,7 @@
 
 
 <div class="viewcode-block" id="intercept"><a class="viewcode-back" href="../../../rst/calculus.geometry.html#calculus.geometry.linear_fct.intercept">[docs]</a><span class="k">def</span> <span class="nf">intercept</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Estimates the intercept between 2 points.</span>
+    <span class="sd">&quot;&quot;&quot;Estimate the intercept between 2 points.</span>
 
 <span class="sd">    :param p1: (tuple) first point as (x1, y1)</span>
 <span class="sd">    :param p2: (tuple) second point as (x2, y2)</span>
@@ -142,7 +135,7 @@
 
 
 <div class="viewcode-block" id="slope_intercept"><a class="viewcode-back" href="../../../rst/calculus.geometry.html#calculus.geometry.linear_fct.slope_intercept">[docs]</a><span class="k">def</span> <span class="nf">slope_intercept</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Returns the slope and the intercept.</span>
+    <span class="sd">&quot;&quot;&quot;Return the slope and the intercept.</span>
 
 <span class="sd">    :param p1: (tuple) first point as (x1, y1)</span>
 <span class="sd">    :param p2: (tuple) second point as (x2, y2)</span>
@@ -158,7 +151,7 @@
 
 
 <div class="viewcode-block" id="linear_fct"><a class="viewcode-back" href="../../../rst/calculus.geometry.html#calculus.geometry.linear_fct.linear_fct">[docs]</a><span class="k">def</span> <span class="nf">linear_fct</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return f(x) of the linear function f(x) = ax + b.</span>
+    <span class="sd">&quot;&quot;&quot;Return f(x) of the linear function f(x) = ax + b.</span>
 
 <span class="sd">    :param x: (float) X-coord</span>
 <span class="sd">    :param a: (float) slope</span>
@@ -174,7 +167,7 @@
 
 
 <div class="viewcode-block" id="linear_values"><a class="viewcode-back" href="../../../rst/calculus.geometry.html#calculus.geometry.linear_fct.linear_values">[docs]</a><span class="k">def</span> <span class="nf">linear_values</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Estimates the values between 2 points, step-by-step.</span>
+    <span class="sd">&quot;&quot;&quot;Estimate the values between 2 points, step-by-step.</span>
 
 <span class="sd">    Two different points p1=(x1,y1) and p2=(x2,y2) determine a line. It is</span>
 <span class="sd">    enough to substitute two different values for &#39;x&#39; in the linear function</span>
@@ -189,7 +182,8 @@
 <span class="sd">    :param p1: (tuple) first point as (x1, y1)</span>
 <span class="sd">    :param p2: (tuple) second point as (x2, y2)</span>
 <span class="sd">    :returns: list of float values</span>
-<span class="sd">    :raises: MemoryError could be raised if too many values have to be returned.</span>
+<span class="sd">    :raises: MemoryError could be raised if too many values have to be \</span>
+<span class="sd">    returned.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">delta</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>

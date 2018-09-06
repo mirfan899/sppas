@@ -1,0 +1,293 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>config.sglobal &#8212; SPPAS 1.9.8 documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for config.sglobal</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ..</span>
+<span class="sd">        ---------------------------------------------------------------------</span>
+<span class="sd">         ___   __    __    __    ___</span>
+<span class="sd">        /     |  \  |  \  |  \  /              the automatic</span>
+<span class="sd">        \__   |__/  |__/  |___| \__             annotation and</span>
+<span class="sd">           \  |     |     |   |    \             analysis</span>
+<span class="sd">        ___/  |     |     |   | ___/              of speech</span>
+
+<span class="sd">        http://www.sppas.org/</span>
+
+<span class="sd">        Use of this software is governed by the GNU Public License, version 3.</span>
+
+<span class="sd">        SPPAS is free software: you can redistribute it and/or modify</span>
+<span class="sd">        it under the terms of the GNU General Public License as published by</span>
+<span class="sd">        the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">        (at your option) any later version.</span>
+
+<span class="sd">        SPPAS is distributed in the hope that it will be useful,</span>
+<span class="sd">        but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">        GNU General Public License for more details.</span>
+
+<span class="sd">        You should have received a copy of the GNU General Public License</span>
+<span class="sd">        along with SPPAS. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">        This banner notice must not be removed.</span>
+
+<span class="sd">        ---------------------------------------------------------------------</span>
+
+<span class="sd">    config.sglobal.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">.settings</span> <span class="k">import</span> <span class="n">sppasBaseSettings</span>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="sppasGlobalSettings"><a class="viewcode-back" href="../../rst/config.html#config.sglobal.sppasGlobalSettings">[docs]</a><span class="k">class</span> <span class="nc">sppasGlobalSettings</span><span class="p">(</span><span class="n">sppasBaseSettings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representation of global non-modifiable settings of SPPAS.</span>
+
+<span class="sd">    :author:       Brigitte Bigi</span>
+<span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
+<span class="sd">    :license:      GPL, v3</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="sppasGlobalSettings.__init__"><a class="viewcode-back" href="../../rst/config.html#config.sglobal.sppasGlobalSettings.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create the sppasGlobalSettings dictionary.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasGlobalSettings</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">__version__</span><span class="o">=</span><span class="s2">&quot;1.9.8&quot;</span><span class="p">,</span>
+            <span class="n">__author__</span><span class="o">=</span><span class="s2">&quot;Brigitte Bigi&quot;</span><span class="p">,</span>
+            <span class="n">__contact__</span><span class="o">=</span><span class="s2">&quot;contact@sppas.org&quot;</span><span class="p">,</span>
+            <span class="n">__copyright__</span><span class="o">=</span><span class="s2">&quot;Copyright (C) 2011-2018 Brigitte Bigi&quot;</span><span class="p">,</span>
+            <span class="n">__license__</span><span class="o">=</span><span class="s2">&quot;GNU Public License, version 3&quot;</span><span class="p">,</span>
+            <span class="n">__docformat__</span><span class="o">=</span><span class="s1">&#39;reStructedText en&#39;</span><span class="p">,</span>
+            <span class="vm">__name__</span><span class="o">=</span><span class="s2">&quot;SPPAS&quot;</span><span class="p">,</span>
+            <span class="n">__url__</span><span class="o">=</span><span class="s2">&quot;http://www.sppas.org/&quot;</span><span class="p">,</span>
+            <span class="n">__summary__</span><span class="o">=</span><span class="s2">&quot;SPPAS produces automatically annotations</span><span class="se">\n\</span>
+<span class="s2">        from a recorded speech sound and its transcription</span><span class="se">\n\</span>
+<span class="s2">        and performs the analysis of any annotated data.&quot;</span><span class="p">,</span>
+            <span class="n">__title__</span><span class="o">=</span><span class="s2">&quot;the automatic annotation and analysis of speech&quot;</span><span class="p">,</span>
+            <span class="n">__encoding__</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="sppasPathSettings"><a class="viewcode-back" href="../../rst/config.html#config.sglobal.sppasPathSettings">[docs]</a><span class="k">class</span> <span class="nc">sppasPathSettings</span><span class="p">(</span><span class="n">sppasBaseSettings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representation of global non-modifiable paths of SPPAS.</span>
+
+<span class="sd">    :author:       Brigitte Bigi</span>
+<span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
+<span class="sd">    :license:      GPL, v3</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="sppasPathSettings.__init__"><a class="viewcode-back" href="../../rst/config.html#config.sglobal.sppasPathSettings.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create the sppasPathSettings dictionary.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasPathSettings</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="n">sppas_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">sppas</span><span class="o">=</span><span class="n">sppas_dir</span><span class="p">,</span>
+            <span class="nb">bin</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sppas_dir</span><span class="p">,</span> <span class="s2">&quot;bin&quot;</span><span class="p">),</span>
+            <span class="n">etc</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sppas_dir</span><span class="p">,</span> <span class="s2">&quot;etc&quot;</span><span class="p">),</span>
+            <span class="n">po</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sppas_dir</span><span class="p">,</span> <span class="s2">&quot;po&quot;</span><span class="p">),</span>
+            <span class="n">src</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sppas_dir</span><span class="p">,</span> <span class="s2">&quot;src&quot;</span><span class="p">),</span>
+            <span class="n">plugins</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">sppas_dir</span><span class="p">),</span> <span class="s2">&quot;plugins&quot;</span><span class="p">),</span>
+            <span class="n">resources</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">sppas_dir</span><span class="p">),</span> <span class="s2">&quot;resources&quot;</span><span class="p">),</span>
+            <span class="n">samples</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">sppas_dir</span><span class="p">),</span> <span class="s2">&quot;samples&quot;</span><span class="p">)</span>
+        <span class="p">)</span></div></div>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="sppasSymbolSettings"><a class="viewcode-back" href="../../rst/config.html#config.sglobal.sppasSymbolSettings">[docs]</a><span class="k">class</span> <span class="nc">sppasSymbolSettings</span><span class="p">(</span><span class="n">sppasBaseSettings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representation of global non-modifiable symbols of SPPAS.</span>
+
+<span class="sd">    :author:       Brigitte Bigi</span>
+<span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
+<span class="sd">    :license:      GPL, v3</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
+
+<span class="sd">    This class defines:</span>
+
+<span class="sd">        - unk: the default symbol used by annotations and resources to</span>
+<span class="sd">          represent unknown entries</span>
+<span class="sd">        - ortho: symbols used in an orthographic transcription, or after</span>
+<span class="sd">          a text normalization</span>
+<span class="sd">        - phone: symbols used to represent events in grapheme to phoneme</span>
+<span class="sd">          conversion.</span>
+<span class="sd">        - all: ortho+phone (i.e. all known symbols)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="sppasSymbolSettings.__init__"><a class="viewcode-back" href="../../rst/config.html#config.sglobal.sppasSymbolSettings.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create the sppasSymbolSettings dictionary.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasSymbolSettings</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">unk</span><span class="o">=</span><span class="s2">&quot;&lt;UNK&gt;&quot;</span><span class="p">,</span>
+            <span class="n">phone</span><span class="o">=</span><span class="n">sppasSymbolSettings</span><span class="o">.</span><span class="n">__phone_symbols</span><span class="p">(),</span>
+            <span class="n">ortho</span><span class="o">=</span><span class="n">sppasSymbolSettings</span><span class="o">.</span><span class="n">__ortho_symbols</span><span class="p">(),</span>
+            <span class="nb">all</span><span class="o">=</span><span class="n">sppasSymbolSettings</span><span class="o">.</span><span class="n">__all_symbols</span><span class="p">()</span>
+        <span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__ortho_symbols</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;#&#39;</span><span class="p">:</span> <span class="s2">&quot;silence&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;+&#39;</span><span class="p">:</span> <span class="s2">&quot;pause&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;*&#39;</span><span class="p">:</span> <span class="s2">&quot;noise&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;@&#39;</span><span class="p">:</span> <span class="s2">&quot;laugh&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;dummy&#39;</span><span class="p">:</span> <span class="s1">&#39;dummy&#39;</span>
+        <span class="p">}</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__phone_symbols</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;sil&#39;</span><span class="p">:</span> <span class="s2">&quot;silence&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;sp&#39;</span><span class="p">:</span> <span class="s2">&quot;pause&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;noise&#39;</span><span class="p">:</span> <span class="s2">&quot;noise&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;laugh&#39;</span><span class="p">:</span> <span class="s2">&quot;laugh&quot;</span><span class="p">,</span>
+            <span class="s1">&#39;dummy&#39;</span><span class="p">:</span> <span class="s1">&#39;dummy&#39;</span>
+        <span class="p">}</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__all_symbols</span><span class="p">():</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sppasSymbolSettings</span><span class="o">.</span><span class="n">__ortho_symbols</span><span class="p">())</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sppasSymbolSettings</span><span class="o">.</span><span class="n">__phone_symbols</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="sppasSeparatorSettings"><a class="viewcode-back" href="../../rst/config.html#config.sglobal.sppasSeparatorSettings">[docs]</a><span class="k">class</span> <span class="nc">sppasSeparatorSettings</span><span class="p">(</span><span class="n">sppasBaseSettings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representation of global non-modifiable separators of SPPAS.</span>
+
+<span class="sd">    :author:       Brigitte Bigi</span>
+<span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
+<span class="sd">    :license:      GPL, v3</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="sppasSeparatorSettings.__init__"><a class="viewcode-back" href="../../rst/config.html#config.sglobal.sppasSeparatorSettings.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create the sppasSeparatorSettings dictionary.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasSeparatorSettings</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">phonemes</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>    <span class="c1"># X-SAMPA standard</span>
+            <span class="n">syllables</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>   <span class="c1"># X-SAMPA standard</span>
+            <span class="n">variants</span><span class="o">=</span><span class="s2">&quot;|&quot;</span>     <span class="c1"># used for all alternative tags</span>
+        <span class="p">)</span></div></div>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="sppasAnnotationsSettings"><a class="viewcode-back" href="../../rst/config.html#config.sglobal.sppasAnnotationsSettings">[docs]</a><span class="k">class</span> <span class="nc">sppasAnnotationsSettings</span><span class="p">(</span><span class="n">sppasBaseSettings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representation of global non-modifiable settings of annotations.</span>
+
+<span class="sd">    :author:       Brigitte Bigi</span>
+<span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
+<span class="sd">    :license:      GPL, v3</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="sppasAnnotationsSettings.__init__"><a class="viewcode-back" href="../../rst/config.html#config.sglobal.sppasAnnotationsSettings.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create the sppasAnnotationsSettings dictionary.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasAnnotationsSettings</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">error</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">ok</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">warning</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">ignore</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">info</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.xra&quot;</span>
+        <span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

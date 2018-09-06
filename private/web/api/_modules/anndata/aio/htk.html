@@ -78,11 +78,11 @@
 
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioMultiTiersError</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioLocationTypeError</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
-<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="k">import</span> <span class="n">sppasLabel</span>
-<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..ann.annlabel</span> <span class="k">import</span> <span class="n">sppasLabel</span>
+<span class="kn">from</span> <span class="nn">..ann.annlabel</span> <span class="k">import</span> <span class="n">sppasTag</span>
 
 <span class="kn">from</span> <span class="nn">.basetrs</span> <span class="k">import</span> <span class="n">sppasBaseIO</span>
 <span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">load</span>
@@ -96,25 +96,24 @@
 
 
 <div class="viewcode-block" id="sppasBaseHTK"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasBaseHTK">[docs]</a><span class="k">class</span> <span class="nc">sppasBaseHTK</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SPPAS HTK files reader and writer.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS HTK files reader and writer.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasBaseHTK.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasBaseHTK.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasMLF instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasMLF instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasBaseHTK</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="kc">True</span>
@@ -135,7 +134,8 @@
 
 <div class="viewcode-block" id="sppasBaseHTK.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasBaseHTK.make_point">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">time_string</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert data into the appropriate sppasPoint().</span>
+        <span class="sd">&quot;&quot;&quot;Convert data into the appropriate sppasPoint().</span>
+
 <span class="sd">        No radius if data is an integer. A default radius of 0.001 if data is a</span>
 <span class="sd">        float.</span>
 
@@ -150,7 +150,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_time</span><span class="p">(</span><span class="n">second_count</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert a time in seconds into HTK format. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Convert a time in seconds into HTK format.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="n">TIME_UNIT</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">second_count</span><span class="p">))</span>
 
@@ -158,7 +158,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_serialize_annotation</span><span class="p">(</span><span class="n">ann</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert an annotation into a line for HTK lab of mlf files.</span>
+        <span class="sd">&quot;&quot;&quot;Convert an annotation into a line for HTK lab of mlf files.</span>
 
 <span class="sd">        :param ann: (sppasAnnotation)</span>
 <span class="sd">        :returns: (str)</span>
@@ -188,13 +188,13 @@
 
 
 <div class="viewcode-block" id="sppasLab"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasLab">[docs]</a><span class="k">class</span> <span class="nc">sppasLab</span><span class="p">(</span><span class="n">sppasBaseHTK</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SPPAS LAB reader and writer.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS LAB reader and writer.</span>
 
 <span class="sd">    Each line of a HTK label file contains the actual label optionally</span>
 <span class="sd">    preceded by start and end times, and optionally followed by a match score.</span>
@@ -226,7 +226,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasLab.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasLab.detect">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check whether a file is of HTK-Lab format or not.</span>
+        <span class="sd">&quot;&quot;&quot;Check whether a file is of HTK-Lab format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
 <span class="sd">        :returns: (bool)</span>
@@ -256,21 +256,21 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasLab.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasLab.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasLab instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasLab instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasLab</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="n">sppasBaseHTK</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;lab&quot;</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasLab.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasLab.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read a transcription from a file.</span>
+        <span class="sd">&quot;&quot;&quot;Read a transcription from a file.</span>
 
 <span class="sd">        :param filename:</span>
 
@@ -317,7 +317,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasLab.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.htk.sppasLab.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write a transcription into a file.</span>
+        <span class="sd">&quot;&quot;&quot;Write a transcription into a file.</span>
 
 <span class="sd">        :param filename: (str)</span>
 

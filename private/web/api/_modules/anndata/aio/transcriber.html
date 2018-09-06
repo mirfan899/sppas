@@ -78,12 +78,12 @@
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
 <span class="kn">from</span> <span class="nn">..media</span> <span class="k">import</span> <span class="n">sppasMedia</span>
 <span class="kn">from</span> <span class="nn">..ctrlvocab</span> <span class="k">import</span> <span class="n">sppasCtrlVocab</span>
-<span class="kn">from</span> <span class="nn">..annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
-<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="k">import</span> <span class="n">sppasLabel</span>
-<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
+<span class="kn">from</span> <span class="nn">..ann.annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..ann.annlabel</span> <span class="k">import</span> <span class="n">sppasLabel</span>
+<span class="kn">from</span> <span class="nn">..ann.annlabel</span> <span class="k">import</span> <span class="n">sppasTag</span>
 <span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">format_labels</span>
 
 <span class="c1"># ---------------------------------------------------------------------------</span>
@@ -125,18 +125,18 @@
 
 
 <div class="viewcode-block" id="sppasTRS"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.transcriber.sppasTRS">[docs]</a><span class="k">class</span> <span class="nc">sppasTRS</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SPPAS reader for TRS format.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS reader for TRS format.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasTRS.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.transcriber.sppasTRS.detect">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check whether a file is of TRS format or not.</span>
+        <span class="sd">&quot;&quot;&quot;Check whether a file is of TRS format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
 <span class="sd">        :returns: (bool)</span>
@@ -158,7 +158,7 @@
 
 <div class="viewcode-block" id="sppasTRS.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.transcriber.sppasTRS.make_point">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; The localization is a time value, so a float. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;The localization is a time value, so a float.&quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">midpoint</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">midpoint</span><span class="p">)</span>
@@ -169,15 +169,15 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasTRS.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.transcriber.sppasTRS.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasTRS instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasTRS instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasTRS</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;trs&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">True</span>
@@ -198,7 +198,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasTRS.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.transcriber.sppasTRS.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read a TRS file and fill the Transcription.</span>
+        <span class="sd">&quot;&quot;&quot;Read a TRS file and fill the Transcription.</span>
 
 <span class="sd">        &lt;!ELEMENT Trans ((Speakers|Topics)*,Episode)&gt;</span>
 
@@ -264,7 +264,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__format_tag</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Reformat tokens in tags.</span>
+        <span class="sd">&quot;&quot;&quot;Reformat tokens in tags.</span>
 <span class="sd">        Remove specific markers of the transcription convention of</span>
 <span class="sd">        Transcriber.</span>
 
@@ -287,7 +287,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get metadata from attributes of the main root.</span>
+        <span class="sd">&quot;&quot;&quot;Get metadata from attributes of the main root.</span>
 
 <span class="sd">        &lt;!ATTLIST Trans</span>
 <span class="sd">        audio_filename  CDATA           #IMPLIED</span>
@@ -332,7 +332,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_speakers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spk_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read the &lt;Speakers&gt; element and create tiers.</span>
+        <span class="sd">&quot;&quot;&quot;Read the &lt;Speakers&gt; element and create tiers.</span>
 
 <span class="sd">        &lt;!ELEMENT Speakers (Speaker*)&gt;</span>
 <span class="sd">        &lt;!ATTLIST Speakers&gt;</span>
@@ -387,7 +387,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_topics</span><span class="p">(</span><span class="n">topic_root</span><span class="p">,</span> <span class="n">topic_tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read the &lt;Topics&gt; element and create a tier.</span>
+        <span class="sd">&quot;&quot;&quot;Read the &lt;Topics&gt; element and create a tier.</span>
 <span class="sd">        The topics and their description are stored in a controlled</span>
 <span class="sd">        vocabulary.</span>
 
@@ -429,7 +429,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_episode_attributes</span><span class="p">(</span><span class="n">episode_root</span><span class="p">,</span> <span class="n">episodes_tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read the episode attributes.</span>
+        <span class="sd">&quot;&quot;&quot;Read the episode attributes.</span>
 
 <span class="sd">        &lt;!ELEMENT Episode (Section*)&gt;</span>
 <span class="sd">        &lt;!ATTLIST Episode</span>
@@ -466,7 +466,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_section_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_root</span><span class="p">,</span> <span class="n">section_tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read the section attributes.</span>
+        <span class="sd">&quot;&quot;&quot;Read the section attributes.</span>
 
 <span class="sd">        Sections are mainly used to segment the topics and to mention</span>
 <span class="sd">        un-transcribed segments.</span>
@@ -504,7 +504,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_turn_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">turn_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read the turn attributes and fill the tiers.</span>
+        <span class="sd">&quot;&quot;&quot;Read the turn attributes and fill the tiers.</span>
 
 <span class="sd">        &lt;!ATTLIST Turn</span>
 <span class="sd">        speaker		IDREFS		#IMPLIED</span>
@@ -553,7 +553,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">turn_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fill a tier with the content of a turn.</span>
+        <span class="sd">&quot;&quot;&quot;Fill a tier with the content of a turn.</span>
 
 <span class="sd">        &lt;!ELEMENT Turn (#PCDATA|Sync|Background|Comment|Who|Vocal|Event)*&gt;</span>
 
@@ -645,7 +645,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__append_background_in_label</span><span class="p">(</span><span class="n">node_event</span><span class="p">,</span> <span class="n">annotation</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Background is appended like a comment in the transcription.</span>
+        <span class="sd">&quot;&quot;&quot;Background is appended like a comment in the transcription.</span>
 
 <span class="sd">        &lt;!ELEMENT Background EMPTY&gt;</span>
 <span class="sd">        &lt;!ATTLIST Background</span>
@@ -667,7 +667,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__append_comment_in_label</span><span class="p">(</span><span class="n">node_event</span><span class="p">,</span> <span class="n">annotation</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Append a comment to the label.</span>
+        <span class="sd">&quot;&quot;&quot;Append a comment to the label.</span>
 
 <span class="sd">        &lt;!ELEMENT Comment EMPTY&gt;</span>
 <span class="sd">        &lt;!ATTLIST Comment</span>
@@ -684,7 +684,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__append_event_in_label</span><span class="p">(</span><span class="n">node_event</span><span class="p">,</span> <span class="n">annotation</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Append an event to the label.</span>
+        <span class="sd">&quot;&quot;&quot;Append an event to the label.</span>
 
 <span class="sd">        &lt;!ATTLIST Event</span>
 <span class="sd">        type		(noise|lexical|pronounce|language)	&quot;noise&quot;</span>
@@ -734,7 +734,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__parse_type_in_section</span><span class="p">(</span><span class="n">section_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Extract the type of a section. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Extract the type of a section.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">section_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">section_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
@@ -743,7 +743,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__parse_topic_in_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_root</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Extract the topic of a section. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Extract the topic of a section.&quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">section_topic</span> <span class="o">=</span> <span class="n">section_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;topic&#39;</span><span class="p">]</span>
@@ -757,7 +757,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__parse_mode_in_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">turn_root</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Extract the mode of a turn. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Extract the mode of a turn.&quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">mode</span> <span class="o">=</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span>
@@ -777,7 +777,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__parse_fidelity_in_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">turn_root</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Extract the fidelity of a turn. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Extract the fidelity of a turn.&quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">fidelity</span> <span class="o">=</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;fidelity&#39;</span><span class="p">]</span>
@@ -798,7 +798,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__parse_channel_in_turn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">turn_root</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Extract the channel of a turn. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Extract the channel of a turn.&quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">channel</span> <span class="o">=</span> <span class="n">turn_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">]</span>

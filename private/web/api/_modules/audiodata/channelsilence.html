@@ -81,14 +81,14 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
 <span class="sd">    :summary:      This class implements the silence finding on a channel.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasChannelSilence.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">win_len</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasChannelSilence instance.</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasChannelSilence instance.</span>
 
 <span class="sd">        :param channel (sppasChannel) the input channel object</span>
 <span class="sd">        :param win_len (float) duration of a window for the estimation of the volume</span>
@@ -101,14 +101,14 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelSilence.get_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.get_channel">[docs]</a>    <span class="k">def</span> <span class="nf">get_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the sppasChannel. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the sppasChannel.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelSilence.get_volstats"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.get_volstats">[docs]</a>    <span class="k">def</span> <span class="nf">get_volstats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the sppasChannelVolume of the sppasChannel. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the sppasChannelVolume of the sppasChannel.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume_stats</span></div>
 
@@ -117,7 +117,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelSilence.track_data"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.track_data">[docs]</a>    <span class="k">def</span> <span class="nf">track_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracks</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the track data: a set of frames for each track.</span>
+        <span class="sd">&quot;&quot;&quot;Get the track data: a set of frames for each track.</span>
 
 <span class="sd">        :param tracks: (list of tuples) List of (from_pos,to_pos)</span>
 
@@ -138,7 +138,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelSilence.refine"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.refine">[docs]</a>    <span class="k">def</span> <span class="nf">refine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">win_length</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Refine the position of a silence around a given position.</span>
+        <span class="sd">&quot;&quot;&quot;Refine the position of a silence around a given position.</span>
 
 <span class="sd">        :param pos: (int) Initial position of the silence</span>
 <span class="sd">        :param threshold: (int) RMS threshold value for a silence</span>
@@ -170,7 +170,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelSilence.extract_tracks"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.extract_tracks">[docs]</a>    <span class="k">def</span> <span class="nf">extract_tracks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mintrackdur</span><span class="o">=</span><span class="mf">0.300</span><span class="p">,</span> <span class="n">shiftdurstart</span><span class="o">=</span><span class="mf">0.010</span><span class="p">,</span> <span class="n">shiftdurend</span><span class="o">=</span><span class="mf">0.010</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return a list of tuples (from_pos,to_pos) of the tracks.</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of tuples (from_pos,to_pos) of the tracks.</span>
 
 <span class="sd">        :param mintrackdur: (float) The minimum duration for a track (in seconds)</span>
 <span class="sd">        :param shiftdurstart: (float) The time to remove to the start boundary (in seconds)</span>
@@ -214,7 +214,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelSilence.search_threshold_vol"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.search_threshold_vol">[docs]</a>    <span class="k">def</span> <span class="nf">search_threshold_vol</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Try to fix optimally the threshold for speech/silence segmentation.</span>
+        <span class="sd">&quot;&quot;&quot;Try to fix optimally the threshold for speech/silence segmentation.</span>
 <span class="sd">        This is a simple observation of the distribution of rms values.</span>
 
 <span class="sd">        :returns: (int) volume value</span>
@@ -235,7 +235,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelSilence.search_silences"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.search_silences">[docs]</a>    <span class="k">def</span> <span class="nf">search_silences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mintrackdur</span><span class="o">=</span><span class="mf">0.08</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Search windows with a volume lesser than a given threshold.</span>
+        <span class="sd">&quot;&quot;&quot;Search windows with a volume lesser than a given threshold.</span>
 
 <span class="sd">        :param threshold: (int) Expected minimum volume (rms value)</span>
 <span class="sd">        If threshold is set to 0, search_minvol() will assign a value.</span>
@@ -291,7 +291,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelSilence.filter_silences"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.filter_silences">[docs]</a>    <span class="k">def</span> <span class="nf">filter_silences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minsildur</span><span class="o">=</span><span class="mf">0.200</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Filtered the current silences.</span>
+        <span class="sd">&quot;&quot;&quot;Filtered the current silences.</span>
 
 <span class="sd">        :param minsildur: (float) Minimum silence duration in seconds</span>
 
@@ -312,7 +312,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelSilence.set_silences"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.set_silences">[docs]</a>    <span class="k">def</span> <span class="nf">set_silences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">silences</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix manually silences!</span>
+        <span class="sd">&quot;&quot;&quot;Fix manually silences!</span>
 
 <span class="sd">        :param silences: (list of tuples (start_pos,end_pos))</span>
 
@@ -322,7 +322,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelSilence.reset_silences"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsilence.sppasChannelSilence.reset_silences">[docs]</a>    <span class="k">def</span> <span class="nf">reset_silences</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Reset silences. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Reset silences.&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__silences</span> <span class="o">=</span> <span class="p">[]</span></div>
 

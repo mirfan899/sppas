@@ -1,0 +1,581 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>anndata.ann.annlabel.label &#8212; SPPAS 1.9.8 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for anndata.ann.annlabel.label</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ..</span>
+<span class="sd">        ---------------------------------------------------------------------</span>
+<span class="sd">         ___   __    __    __    ___</span>
+<span class="sd">        /     |  \  |  \  |  \  /              the automatic</span>
+<span class="sd">        \__   |__/  |__/  |___| \__             annotation and</span>
+<span class="sd">           \  |     |     |   |    \             analysis</span>
+<span class="sd">        ___/  |     |     |   | ___/              of speech</span>
+
+<span class="sd">        http://www.sppas.org/</span>
+
+<span class="sd">        Use of this software is governed by the GNU Public License, version 3.</span>
+
+<span class="sd">        SPPAS is free software: you can redistribute it and/or modify</span>
+<span class="sd">        it under the terms of the GNU General Public License as published by</span>
+<span class="sd">        the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">        (at your option) any later version.</span>
+
+<span class="sd">        SPPAS is distributed in the hope that it will be useful,</span>
+<span class="sd">        but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">        GNU General Public License for more details.</span>
+
+<span class="sd">        You should have received a copy of the GNU General Public License</span>
+<span class="sd">        along with SPPAS. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">        This banner notice must not be removed.</span>
+
+<span class="sd">        ---------------------------------------------------------------------</span>
+
+<span class="sd">    anndata.ann.annlabel.label.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">from</span> <span class="nn">...anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
+<span class="kn">from</span> <span class="nn">.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
+
+<span class="c1"># ----------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="sppasLabel"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel">[docs]</a><span class="k">class</span> <span class="nc">sppasLabel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents the content of an annotation.</span>
+
+<span class="sd">    :author:       Brigitte Bigi</span>
+<span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
+<span class="sd">    :license:      GPL, v3</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
+<span class="sd">    </span>
+<span class="sd">    sppasLabel allows to store a set of sppasTags with their scores.</span>
+<span class="sd">    This class is using a list of lists, i.e. a list of pairs (tag, score).</span>
+<span class="sd">    This is the best compromise between memory usage, speed and</span>
+<span class="sd">    readability. </span>
+
+<span class="sd">    A label is a list of possible sppasTag(), represented as a UNICODE </span>
+<span class="sd">    string. A data type can be associated, as sppasTag() can be &#39;int&#39;, </span>
+<span class="sd">    &#39;float&#39; or &#39;bool&#39;.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasLabel.__init__"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new sppasLabel instance.</span>
+
+<span class="sd">        :param tag: (sppasTag or list of sppasTag)</span>
+<span class="sd">        :param score: (float or list of float)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">score</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tag</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">tag</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c1"># Setters</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.append_content"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.append_content">[docs]</a>    <span class="k">def</span> <span class="nf">append_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a text into the list.</span>
+
+<span class="sd">        :param content: (str)</span>
+<span class="sd">        :param data_type: (str): The type of this text content.\ </span>
+<span class="sd">        One of: (str, int, float, bool)</span>
+<span class="sd">        :param score: (float)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="n">sppasTag</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">data_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.append"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a sppasTag into the list.</span>
+
+<span class="sd">        :param tag: (sppasTag)</span>
+<span class="sd">        :param score: (float)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">sppasTag</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="s2">&quot;sppasTag&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+        <span class="c1"># check types consistency.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">!=</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_type</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="p">])</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.remove"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove a tag of the list.</span>
+
+<span class="sd">        :param tag: (sppasTag) the tag to be removed of the list.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">sppasTag</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="s2">&quot;sppasTag&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">tag</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.get_score"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.get_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the score of a tag or None if tag is not in the label.</span>
+
+<span class="sd">        :param tag: (sppasTag)</span>
+<span class="sd">        :return: score: (float)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">sppasTag</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="s2">&quot;sppasTag&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">tag</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.set_score"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.set_score">[docs]</a>    <span class="k">def</span> <span class="nf">set_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set a score to a given tag.</span>
+
+<span class="sd">        :param tag: (sppasTag)</span>
+<span class="sd">        :param score: (float)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">sppasTag</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="s2">&quot;sppasTag&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">tag</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.get_best"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.get_best">[docs]</a>    <span class="k">def</span> <span class="nf">get_best</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the best sppasTag, i.e. the one with the better score.</span>
+
+<span class="sd">        :returns: (sppasTag or None)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">_max_tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">_max_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">_max_score</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="p">(</span><span class="n">s</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="n">_max_score</span><span class="p">):</span>
+                <span class="n">_max_score</span> <span class="o">=</span> <span class="n">s</span>
+                <span class="n">_max_tag</span> <span class="o">=</span> <span class="n">t</span>
+
+        <span class="k">return</span> <span class="n">_max_tag</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.get_type"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.get_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the type of the tags content.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;str&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.is_tagged"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.is_tagged">[docs]</a>    <span class="k">def</span> <span class="nf">is_tagged</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return False if no tag is set.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.is_string"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.is_string">[docs]</a>    <span class="k">def</span> <span class="nf">is_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if tags are string or unicode.</span>
+
+<span class="sd">        Return False if no tag is set.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;str&quot;</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.is_float"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.is_float">[docs]</a>    <span class="k">def</span> <span class="nf">is_float</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if tags are of type &quot;float&quot;.</span>
+
+<span class="sd">        Return False if no tag is set.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;float&quot;</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.is_int"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.is_int">[docs]</a>    <span class="k">def</span> <span class="nf">is_int</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if tags are of type &quot;int&quot;.</span>
+
+<span class="sd">        Return False if no tag is set.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;int&quot;</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.is_bool"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.is_bool">[docs]</a>    <span class="k">def</span> <span class="nf">is_bool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if tags are of type &quot;bool&quot;.</span>
+
+<span class="sd">        Return False if no tag is set.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_tagged</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;bool&quot;</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.copy"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a deep copy of the label.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.match"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.match">[docs]</a>    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_functions</span><span class="p">,</span> <span class="n">logic_bool</span><span class="o">=</span><span class="s2">&quot;and&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if a tag matches all or any of the functions.</span>
+
+<span class="sd">        :param tag_functions: list of (function, value, logical_not)</span>
+<span class="sd">        :param logic_bool: (str) Apply a logical &quot;and&quot; or a logical &quot;or&quot; \</span>
+<span class="sd">        between the functions.</span>
+<span class="sd">        :returns: (bool)</span>
+
+<span class="sd">            - function: a function in python with 2 arguments: tag/value</span>
+<span class="sd">            - value: the expected value for the tag</span>
+<span class="sd">            - logical_not: boolean</span>
+
+<span class="sd">        :Example: Search if a tag is exactly matching &quot;R&quot;:</span>
+
+<span class="sd">            &gt;&gt;&gt; l.match([(exact, &quot;R&quot;, False)])</span>
+
+<span class="sd">        :Example: Search if a tag is starting with &quot;p&quot; or starting with &quot;t&quot;:</span>
+
+<span class="sd">            &gt;&gt;&gt; l.match([(startswith, &quot;p&quot;, False),</span>
+<span class="sd">            &gt;&gt;&gt;          (startswith, &quot;t&quot;, False), ], logic_bool=&quot;or&quot;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">is_matching</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># any tag can match</span>
+        <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">:</span>
+
+            <span class="n">matches</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">func</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">logical_not</span> <span class="ow">in</span> <span class="n">tag_functions</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">logical_not</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="ow">not</span> <span class="n">func</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">logic_bool</span> <span class="o">==</span> <span class="s2">&quot;and&quot;</span><span class="p">:</span>
+                <span class="n">is_matching</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">is_matching</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>
+
+            <span class="c1"># no need to test the next tags if the current one is matching.</span>
+            <span class="k">if</span> <span class="n">is_matching</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="n">is_matching</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+    <span class="c1"># WILL BE DEPRECATED (when filter will be finished)</span>
+    <span class="c1"># USED ONLY BY &quot;SEARCH&quot; METHOD IN TIERS.</span>
+<div class="viewcode-block" id="sppasLabel.contains"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.contains">[docs]</a>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">search_function</span><span class="o">=</span><span class="s1">&#39;exact&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if the label contains a given tag.</span>
+
+<span class="sd">        * * *   WILL BE DEPRECATED (when filter will be finished)  * * *</span>
+
+<span class="sd">        :param tag: (sppasTag)</span>
+<span class="sd">        :param search_function: (str) Can be one of the followings:</span>
+<span class="sd">                -    exact (str): exact match</span>
+<span class="sd">                -    iexact (str): Case-insensitive exact match</span>
+<span class="sd">                -    startswith (str):</span>
+<span class="sd">                -    istartswith (str): Case-insensitive startswith</span>
+<span class="sd">                -    endswith (str):</span>
+<span class="sd">                -    iendswith: (str) Case-insensitive endswith</span>
+<span class="sd">                -    contains (str):</span>
+<span class="sd">                -    icontains: (str) Case-insensitive contains</span>
+<span class="sd">                -    equal (str): is equal (identical as exact)</span>
+<span class="sd">                -    greater (str): is greater then</span>
+<span class="sd">                -    lower (str): is lower than</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">sppasTag</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="s2">&quot;sppasTag&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">search_function</span> <span class="o">==</span> <span class="s2">&quot;exact&quot;</span> <span class="ow">or</span> <span class="n">search_function</span> <span class="o">==</span> <span class="s2">&quot;equal&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">any</span><span class="p">([</span><span class="n">tag</span> <span class="o">==</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;str&quot;</span><span class="p">:</span>
+            <span class="n">search_unicode_content</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span>
+            <span class="n">lsearch_unicode_content</span> <span class="o">=</span> <span class="n">search_unicode_content</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">:</span>
+                <span class="n">unicode_content</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span>
+                <span class="n">lunicode_content</span> <span class="o">=</span> <span class="n">unicode_content</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">search_function</span> <span class="o">==</span> <span class="s2">&quot;iexact&quot;</span> <span class="ow">and</span> \
+                        <span class="n">lunicode_content</span> <span class="o">==</span> <span class="n">lsearch_unicode_content</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">search_function</span> <span class="o">==</span> <span class="s2">&quot;startswith&quot;</span> <span class="ow">and</span> \
+                        <span class="n">unicode_content</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">search_unicode_content</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">search_function</span> <span class="o">==</span> <span class="s2">&quot;istartswith&quot;</span> <span class="ow">and</span> \
+                        <span class="n">lunicode_content</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">lsearch_unicode_content</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">search_function</span> <span class="o">==</span> <span class="s2">&quot;endswith&quot;</span> <span class="ow">and</span> \
+                        <span class="n">unicode_content</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">search_unicode_content</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">search_function</span> <span class="o">==</span> <span class="s2">&quot;iendswith&quot;</span> <span class="ow">and</span> \
+                        <span class="n">lunicode_content</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">lsearch_unicode_content</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">search_function</span> <span class="o">==</span> <span class="s2">&quot;contains&quot;</span> <span class="ow">and</span> \
+                        <span class="n">search_unicode_content</span> <span class="ow">in</span> <span class="n">unicode_content</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">search_function</span> <span class="o">==</span> <span class="s2">&quot;icontains&quot;</span> <span class="ow">and</span> \
+                        <span class="n">lsearch_unicode_content</span> <span class="ow">in</span> <span class="n">lunicode_content</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">elif</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">search_function</span> <span class="o">==</span> <span class="s2">&quot;greater&quot;</span> <span class="ow">and</span> \
+                   <span class="n">t</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">():</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">search_function</span> <span class="o">==</span> <span class="s2">&quot;lower&quot;</span> <span class="ow">and</span> \
+                   <span class="n">t</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_typed_content</span><span class="p">():</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasLabel.serialize"><a class="viewcode-back" href="../../../../rst/anndata.ann.annlabel.html#anndata.sppasLabel.serialize">[docs]</a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">alt</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert the label into a string, include or not alternative tags.</span>
+
+<span class="sd">        Use the &quot;{ | }&quot; system to serialize the alternative tags.</span>
+<span class="sd">        Scores of the tags are not returned.</span>
+
+<span class="sd">        :param empty: (str) The text to return if a tag is empty or not set.</span>
+<span class="sd">        :param alt: (bool) Include alternative tags</span>
+<span class="sd">        :returns: (str)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">empty</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">empty</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">empty</span>
+
+        <span class="k">if</span> <span class="n">alt</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_best</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">best</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">empty</span>
+            <span class="k">return</span> <span class="n">best</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span>
+
+        <span class="c1"># we store the alternative tags into a list.</span>
+        <span class="c1"># empty tags are replaced by the empty item.</span>
+        <span class="n">tag_contents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">get_content</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">tag_contents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tag_contents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">empty</span><span class="p">)</span>
+
+        <span class="c1"># if len(tag_contents) == 1:</span>
+        <span class="c1">#     return tag_contents[0]</span>
+
+        <span class="c1"># we return the alternative tags</span>
+        <span class="k">return</span> <span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tag_contents</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+    <span class="c1"># Overloads</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">:</span>
+                <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;sppasTag(</span><span class="si">{!s:s}</span><span class="s2">, score=</span><span class="si">{!s:s}</span><span class="s2">), &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">st</span>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">:</span>
+                <span class="n">st</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">{!s:s}</span><span class="s2">, </span><span class="si">{!s:s}</span><span class="s2"> ; &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">st</span>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">t</span>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__tags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">other</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">tag1</span><span class="p">,</span> <span class="n">tag2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__tags</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+                <span class="c1"># compare the typed content of the tags and</span>
+                <span class="c1"># also compare the scores...</span>
+                <span class="k">if</span> <span class="n">tag1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">tag2</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">tag1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">tag2</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># self and other are both None</span>
+            <span class="k">if</span> <span class="n">other</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

@@ -67,17 +67,17 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.anndata.aio.aioutils.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    anndata.aio.aioutils.py: Utilities for readers and writers.</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      Utilities for readers and writers.</span>
 
 <span class="sd">    BNF to represent alternative tags:</span>
+
 <span class="sd">        ALTERNATE :== &quot;{&quot; TEXT ALT+ &quot;}&quot;</span>
 <span class="sd">        ALT :== &quot;|&quot; TEXT</span>
 <span class="sd">        TEXT :== tag content | empty</span>
@@ -87,13 +87,12 @@
 <span class="kn">import</span> <span class="nn">codecs</span>
 
 <span class="kn">from</span> <span class="nn">..tier</span> <span class="k">import</span> <span class="n">sppasTier</span>
-<span class="kn">from</span> <span class="nn">..annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="k">import</span> <span class="n">sppasLabel</span>
-<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
-<span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
+<span class="kn">from</span> <span class="nn">..ann.annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..ann.annlabel</span> <span class="k">import</span> <span class="n">sppasLabel</span>
+<span class="kn">from</span> <span class="nn">..ann.annlabel</span> <span class="k">import</span> <span class="n">sppasTag</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioError</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioEncodingError</span>
 
@@ -108,7 +107,7 @@
 
 
 <div class="viewcode-block" id="load"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.aioutils.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">file_encoding</span><span class="o">=</span><span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Load a file into lines.</span>
+    <span class="sd">&quot;&quot;&quot;Load a file into lines.</span>
 
 <span class="sd">    :param filename: (str)</span>
 <span class="sd">    :param file_encoding: (str)</span>
@@ -130,7 +129,7 @@
 
 
 <div class="viewcode-block" id="format_labels"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.aioutils.format_labels">[docs]</a><span class="k">def</span> <span class="nf">format_labels</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">separator</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Create a set of labels from a text.</span>
+    <span class="sd">&quot;&quot;&quot;Create a set of labels from a text.</span>
 
 <span class="sd">    Use the separator to split the text into labels.</span>
 <span class="sd">    Use the &quot;{ / }&quot; system to parse the alternative tags.</span>
@@ -160,7 +159,7 @@
 
 
 <div class="viewcode-block" id="format_label"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.aioutils.format_label">[docs]</a><span class="k">def</span> <span class="nf">format_label</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Create a label from a text.</span>
+    <span class="sd">&quot;&quot;&quot;Create a label from a text.</span>
 
 <span class="sd">    Use the &quot;{ / }&quot; system to parse the alternative tags.</span>
 
@@ -180,7 +179,7 @@
 
 
 <div class="viewcode-block" id="check_gaps"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.aioutils.check_gaps">[docs]</a><span class="k">def</span> <span class="nf">check_gaps</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">min_loc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_loc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Check if there are holes between annotations.</span>
+    <span class="sd">&quot;&quot;&quot;Check if there are holes between annotations.</span>
 
 <span class="sd">    :param tier: (sppasTier)</span>
 <span class="sd">    :param min_loc: (sppasPoint)</span>
@@ -211,7 +210,7 @@
 
 
 <div class="viewcode-block" id="fill_gaps"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.aioutils.fill_gaps">[docs]</a><span class="k">def</span> <span class="nf">fill_gaps</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">min_loc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_loc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return the tier in which the temporal gaps between annotations are</span>
+    <span class="sd">&quot;&quot;&quot;Return the tier in which the temporal gaps between annotations are</span>
 <span class="sd">    filled with an un-labelled annotation.</span>
 
 <span class="sd">    :param tier: (Tier) A tier with intervals.</span>
@@ -274,7 +273,7 @@
 
 
 <div class="viewcode-block" id="unfill_gaps"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.aioutils.unfill_gaps">[docs]</a><span class="k">def</span> <span class="nf">unfill_gaps</span><span class="p">(</span><span class="n">tier</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return the tier in which un-labelled annotations are removed.</span>
+    <span class="sd">&quot;&quot;&quot;Return the tier in which un-labelled annotations are removed.</span>
 
 <span class="sd">    An un_labelled annotation means that:</span>
 
@@ -305,7 +304,7 @@
 
 
 <div class="viewcode-block" id="check_overlaps"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.aioutils.check_overlaps">[docs]</a><span class="k">def</span> <span class="nf">check_overlaps</span><span class="p">(</span><span class="n">tier</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Check whether some annotations are overlapping or not.</span>
+    <span class="sd">&quot;&quot;&quot;Check whether some annotations are overlapping or not.</span>
 
 <span class="sd">    :param tier: (sppasTier)</span>
 <span class="sd">    :returns: (bool)</span>
@@ -328,7 +327,7 @@
 
 
 <div class="viewcode-block" id="merge_overlapping_annotations"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.aioutils.merge_overlapping_annotations">[docs]</a><span class="k">def</span> <span class="nf">merge_overlapping_annotations</span><span class="p">(</span><span class="n">tier</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Merge overlapping annotations.</span>
+    <span class="sd">&quot;&quot;&quot;Merge overlapping annotations.</span>
 
 <span class="sd">    The labels of 2 overlapping annotations are appended.</span>
 
@@ -486,7 +485,7 @@
 
 
 <div class="viewcode-block" id="point2interval"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.aioutils.point2interval">[docs]</a><span class="k">def</span> <span class="nf">point2interval</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Convert a PointTier into an IntervalTier.</span>
+    <span class="sd">&quot;&quot;&quot;Convert a PointTier into an IntervalTier.</span>
 
 <span class="sd">    - Ensure the radius to be always &gt;= 1 millisecond and the newly created</span>
 <span class="sd">    tier won&#39;t contain overlapped intervals.</span>

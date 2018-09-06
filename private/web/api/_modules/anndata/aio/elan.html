@@ -78,22 +78,22 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">sppas.src.config</span> <span class="k">import</span> <span class="n">sg</span>
-<span class="kn">from</span> <span class="nn">sppas.src.resources.mapping</span> <span class="k">import</span> <span class="n">sppasMapping</span>
 <span class="kn">from</span> <span class="nn">sppas.src.utils.datatype</span> <span class="k">import</span> <span class="n">sppasTime</span>
+<span class="kn">from</span> <span class="nn">sppas.src.utils.datatype</span> <span class="k">import</span> <span class="n">bidict</span>
 
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioFormatError</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">CtrlVocabSetTierError</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">CtrlVocabContainsError</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
-<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="k">import</span> <span class="n">sppasLabel</span>
-<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..ann.annlabel</span> <span class="k">import</span> <span class="n">sppasLabel</span>
+<span class="kn">from</span> <span class="nn">..ann.annlabel</span> <span class="k">import</span> <span class="n">sppasTag</span>
 <span class="kn">from</span> <span class="nn">..media</span> <span class="k">import</span> <span class="n">sppasMedia</span>
 <span class="kn">from</span> <span class="nn">..tier</span> <span class="k">import</span> <span class="n">sppasTier</span>
 <span class="kn">from</span> <span class="nn">..hierarchy</span> <span class="k">import</span> <span class="n">sppasHierarchy</span>
-<span class="kn">from</span> <span class="nn">..annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
+<span class="kn">from</span> <span class="nn">..ann.annotation</span> <span class="k">import</span> <span class="n">sppasAnnotation</span>
 
 <span class="kn">from</span> <span class="nn">..ctrlvocab</span> <span class="k">import</span> <span class="n">sppasCtrlVocab</span>
 
@@ -128,18 +128,18 @@
 
 
 <div class="viewcode-block" id="sppasEAF"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.elan.sppasEAF">[docs]</a><span class="k">class</span> <span class="nc">sppasEAF</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Elan EAF reader and writer.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS ELAN EAF files reader and writer.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasEAF.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.elan.sppasEAF.detect">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check whether a file is of EAF format or not.</span>
+        <span class="sd">&quot;&quot;&quot;Check whether a file is of EAF format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
 <span class="sd">        :returns: (bool)</span>
@@ -162,15 +162,16 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasEAF.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.elan.sppasEAF.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasMLF instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasMLF instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasEAF</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;eaf&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="kc">True</span>
@@ -187,12 +188,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># to be verified</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;eaf&quot;</span>
-
         <span class="c1"># Information that are both used by ELAN and another software tool</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_map_meta</span> <span class="o">=</span> <span class="n">sppasMapping</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_map_meta</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;PARTICIPANT&#39;</span><span class="p">,</span> <span class="s1">&#39;speaker_name&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_map_meta</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;ANNOTATOR&#39;</span><span class="p">,</span> <span class="s1">&#39;annotator_name&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_map_meta</span> <span class="o">=</span> <span class="n">bidict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_map_meta</span><span class="p">[</span><span class="s1">&#39;PARTICIPANT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;speaker_name&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_map_meta</span><span class="p">[</span><span class="s1">&#39;ANNOTATOR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;annotator_name&#39;</span>
 
         <span class="c1"># ELAN only supports (and assumes) milliseconds.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="mf">0.001</span></div>
@@ -200,7 +199,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasEAF.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.elan.sppasEAF.make_point">[docs]</a>    <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midpoint</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert data into the appropriate sppasPoint().</span>
+        <span class="sd">&quot;&quot;&quot;Convert data into the appropriate sppasPoint().</span>
 
 <span class="sd">        :param midpoint: (str) a time in ELAN format</span>
 <span class="sd">        :returns: (sppasPoint) Representation of time in seconds with a (very)</span>
@@ -217,7 +216,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasEAF.format_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.elan.sppasEAF.format_point">[docs]</a>    <span class="k">def</span> <span class="nf">format_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">second_count</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert a time in seconds into ELAN format.</span>
+        <span class="sd">&quot;&quot;&quot;Convert a time in seconds into ELAN format.</span>
 
 <span class="sd">        :param second_count: (float) Time value (in seconds)</span>
 <span class="sd">        :returns: (int) a time in ELAN format</span>
@@ -235,7 +234,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasEAF.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.elan.sppasEAF.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read a ELAN EAF file.</span>
+        <span class="sd">&quot;&quot;&quot;Read a ELAN EAF file.</span>
 
 <span class="sd">        :param filename: (str) input filename.</span>
 
@@ -292,7 +291,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the main element root.</span>
+        <span class="sd">&quot;&quot;&quot;Get the main element root.</span>
 
 <span class="sd">        :param document_root: (ET) Main root.</span>
 
@@ -309,7 +308,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_license</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">license_root</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get an element &#39;LICENSE&#39;.</span>
+        <span class="sd">&quot;&quot;&quot;Get an element &#39;LICENSE&#39;.</span>
 <span class="sd">        The current version of ELAN does not yet provide a means to edit</span>
 <span class="sd">        or view the contents of the license.</span>
 
@@ -327,7 +326,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">header_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the element &#39;HEADER&#39;.</span>
+        <span class="sd">&quot;&quot;&quot;Get the element &#39;HEADER&#39;.</span>
 <span class="sd">        There should be exactly one HEADER element. It can contain sequences</span>
 <span class="sd">        of three elements and has two attributes.</span>
 
@@ -355,7 +354,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_media_descriptor</span><span class="p">(</span><span class="n">media_root</span><span class="p">,</span> <span class="n">header_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the elements &#39;MEDIA_DESCRIPTOR&#39;.</span>
+        <span class="sd">&quot;&quot;&quot;Get the elements &#39;MEDIA_DESCRIPTOR&#39;.</span>
 <span class="sd">        This element describes one primary media source.</span>
 <span class="sd">        Create a sppasMedia instance and add it.</span>
 
@@ -385,7 +384,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_linked_file_descriptor</span><span class="p">(</span><span class="n">linked_root</span><span class="p">,</span> <span class="n">header_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the elements &#39;LINKED_FILE_DESCRIPTOR&#39;.</span>
+        <span class="sd">&quot;&quot;&quot;Get the elements &#39;LINKED_FILE_DESCRIPTOR&#39;.</span>
 <span class="sd">        This element describes a “secondary”, additional source.</span>
 <span class="sd">        Create a sppasMedia instance and add it.</span>
 
@@ -414,7 +413,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">property_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the elements &#39;PROPERTY&#39; -&gt; sppasMetadata().</span>
+        <span class="sd">&quot;&quot;&quot;Get the elements &#39;PROPERTY&#39; -&gt; sppasMetadata().</span>
 <span class="sd">        This is a general purpose element for storing key-value pairs.</span>
 
 <span class="sd">        This method store all metadata except the identifiers (media, tier...).</span>
@@ -431,7 +430,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_locale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locale_root</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get an element &#39;LOCALE&#39;.</span>
+        <span class="sd">&quot;&quot;&quot;Get an element &#39;LOCALE&#39;.</span>
 
 <span class="sd">        :param locale_root: (ET) Locale root.</span>
 <span class="sd">        :param idx: (int) Index of the locale</span>
@@ -447,7 +446,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_language</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">language_root</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get an element &#39;LANGUAGE&#39;.</span>
+        <span class="sd">&quot;&quot;&quot;Get an element &#39;LANGUAGE&#39;.</span>
 
 <span class="sd">        Extracted information are:</span>
 <span class="sd">            - language iso639-3 code,</span>
@@ -475,7 +474,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_time_order</span><span class="p">(</span><span class="n">time_order_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the elements &#39;TIME_ORDER&#39;.</span>
+        <span class="sd">&quot;&quot;&quot;Get the elements &#39;TIME_ORDER&#39;.</span>
 <span class="sd">        The TIME_ORDER element is a container for ordered TIME_SLOT elements.</span>
 
 <span class="sd">        :param time_order_root: (ET) Time order root element.</span>
@@ -498,7 +497,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_ctrl_vocab</span><span class="p">(</span><span class="n">ctrl_vocab_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the elements &#39;CONTROLLED_VOCABULARY&#39; -&gt; sppasCtrlVocab().</span>
+        <span class="sd">&quot;&quot;&quot;Get the elements &#39;CONTROLLED_VOCABULARY&#39; -&gt; sppasCtrlVocab().</span>
 
 <span class="sd">        In version &gt;= 2.8, the locale is ignored.</span>
 
@@ -544,7 +543,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_linguistic_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">linguistic_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the elements &#39;LINGUISTIC_TYPE&#39;.</span>
+        <span class="sd">&quot;&quot;&quot;Get the elements &#39;LINGUISTIC_TYPE&#39;.</span>
 
 <span class="sd">        This is a collection of attributes and constraints for TIER objects.</span>
 
@@ -584,7 +583,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_tiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">time_slots</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get all the elements &#39;TIER&#39; -&gt; sppasTier().</span>
+        <span class="sd">&quot;&quot;&quot;Get all the elements &#39;TIER&#39; -&gt; sppasTier().</span>
 
 <span class="sd">        :param root: (ET) Document root.</span>
 <span class="sd">        :param time_slots: (dict)</span>
@@ -618,7 +617,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tier_root</span><span class="p">,</span> <span class="n">time_slots</span><span class="p">,</span> <span class="n">removed_annotations</span><span class="o">=</span><span class="nb">dict</span><span class="p">()):</span>
-        <span class="sd">&quot;&quot;&quot; Get the element &#39;TIER&#39; -&gt; sppasTier().</span>
+        <span class="sd">&quot;&quot;&quot;Get the element &#39;TIER&#39; -&gt; sppasTier().</span>
 
 <span class="sd">        :param tier_root: (ET) Tier root.</span>
 <span class="sd">        :param time_slots: (dict)</span>
@@ -628,10 +627,11 @@
         <span class="n">tier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tier</span><span class="p">(</span><span class="n">tier_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;TIER_ID&#39;</span><span class="p">])</span>
 
         <span class="c1"># meta information (required or optional)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_map_meta</span><span class="o">.</span><span class="n">set_reverse</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;LINGUISTIC_TYPE_REF&#39;</span><span class="p">,</span> <span class="s1">&#39;DEFAULT_LOCALE&#39;</span><span class="p">,</span> <span class="s1">&#39;PARTICIPANT&#39;</span><span class="p">,</span> <span class="s1">&#39;ANNOTATOR&#39;</span><span class="p">,</span> <span class="s1">&#39;LANG_REF&#39;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;LINGUISTIC_TYPE_REF&#39;</span><span class="p">,</span> <span class="s1">&#39;DEFAULT_LOCALE&#39;</span><span class="p">,</span> <span class="s1">&#39;PARTICIPANT&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;ANNOTATOR&#39;</span><span class="p">,</span> <span class="s1">&#39;LANG_REF&#39;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tier_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-                <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map_meta</span><span class="o">.</span><span class="n">map_entry</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">tier_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                <span class="n">tier</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map_meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span>
+                              <span class="n">tier_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
 
         <span class="c1"># get annotations</span>
         <span class="k">if</span> <span class="n">sppasEAF</span><span class="o">.</span><span class="n">__is_alignable_tier</span><span class="p">(</span><span class="n">tier_root</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -649,7 +649,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_alignable_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tier_root</span><span class="p">,</span> <span class="n">tier</span><span class="p">,</span> <span class="n">time_slots</span><span class="p">,</span> <span class="n">removed_annotations</span><span class="o">=</span><span class="nb">dict</span><span class="p">()):</span>
-        <span class="sd">&quot;&quot;&quot; Get the elements &#39;TIER&#39; -&gt; sppasTier().</span>
+        <span class="sd">&quot;&quot;&quot;Get the elements &#39;TIER&#39; -&gt; sppasTier().</span>
 
 <span class="sd">        :param tier_root: (ET) Tier root.</span>
 <span class="sd">        :param tier: (sppasTier) The tier to add the annotation</span>
@@ -744,7 +744,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__fix_tiers_hierarchy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tier</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Try to link tier/parent_tier into a hierarchy. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Try to link tier/parent_tier into a hierarchy.&quot;&quot;&quot;</span>
 
         <span class="n">linked</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">link_type</span> <span class="o">=</span> <span class="n">sppasHierarchy</span><span class="o">.</span><span class="n">infer_hierarchy_type</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">)</span>
@@ -773,7 +773,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_ref_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tier_root</span><span class="p">,</span> <span class="n">tier</span><span class="p">,</span> <span class="n">removed_annotations</span><span class="o">=</span><span class="nb">dict</span><span class="p">()):</span>
-        <span class="sd">&quot;&quot;&quot; Get the elements &#39;TIER&#39;.</span>
+        <span class="sd">&quot;&quot;&quot;Get the elements &#39;TIER&#39;.</span>
 
 <span class="sd">        :param tier_root: (ET) Tier root element.</span>
 <span class="sd">        :param tier: (sppasTier) The tier to add the annotations</span>
@@ -816,7 +816,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasEAF.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.elan.sppasEAF.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write an ELAN EAF file.</span>
+        <span class="sd">&quot;&quot;&quot;Write an ELAN EAF file.</span>
 
 <span class="sd">        :param filename: output filename.</span>
 
@@ -876,7 +876,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_document</span><span class="p">():</span>
-        <span class="sd">&quot;&quot;&quot; Create a root element tree for EAF format. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Create a root element tree for EAF format.&quot;&quot;&quot;</span>
 
         <span class="n">root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s1">&#39;ANNOTATION_DOCUMENT&#39;</span><span class="p">)</span>
         <span class="n">author</span> <span class="o">=</span> <span class="n">sg</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">sg</span><span class="o">.</span><span class="n">__version__</span> <span class="o">+</span> <span class="s2">&quot; (C) &quot;</span> <span class="o">+</span> <span class="n">sg</span><span class="o">.</span><span class="n">__author__</span>
@@ -895,7 +895,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_format_license</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add an element &#39;LICENSE&#39; into the ElementTree (if any).</span>
+        <span class="sd">&quot;&quot;&quot;Add an element &#39;LICENSE&#39; into the ElementTree (if any).</span>
 
 <span class="sd">        :param root: (ElementTree)</span>
 <span class="sd">        :returns: (ET) License root.</span>
@@ -919,7 +919,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_format_languages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add the elements &#39;LANGUAGE&#39; into the ElementTree (if any).</span>
+        <span class="sd">&quot;&quot;&quot;Add the elements &#39;LANGUAGE&#39; into the ElementTree (if any).</span>
 
 <span class="sd">        :param root: (ElementTree)</span>
 <span class="sd">        :returns: (ET) License root.</span>
@@ -952,7 +952,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_format_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add &#39;HEADER&#39; into the ElementTree. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Add &#39;HEADER&#39; into the ElementTree.&quot;&quot;&quot;</span>
 
         <span class="n">header_root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;HEADER&#39;</span><span class="p">)</span>
         <span class="n">header_root</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;TIME_UNITS&#39;</span><span class="p">,</span> <span class="s1">&#39;milliseconds&#39;</span><span class="p">)</span>
@@ -969,7 +969,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_media</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">media</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add &#39;MEDIA_DESCRIPTOR&#39; into the ElementTree (if any).</span>
+        <span class="sd">&quot;&quot;&quot;Add &#39;MEDIA_DESCRIPTOR&#39; into the ElementTree (if any).</span>
 
 <span class="sd">        :param root: (ElementTree)</span>
 <span class="sd">        :param media: (sppasMedia)</span>
@@ -995,7 +995,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_linked_media</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">media</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add &#39;LINKED_FILE_DESCRIPTOR&#39; into the ElementTree (if any).</span>
+        <span class="sd">&quot;&quot;&quot;Add &#39;LINKED_FILE_DESCRIPTOR&#39; into the ElementTree (if any).</span>
 
 <span class="sd">        :param root: (ElementTree)</span>
 <span class="sd">        :param media: (sppasMedia)</span>
@@ -1021,7 +1021,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_property</span><span class="p">(</span><span class="n">header_root</span><span class="p">,</span> <span class="n">meta_object</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add &#39;PROPERTY&#39; elements into the ElementTree (if any).</span>
+        <span class="sd">&quot;&quot;&quot;Add &#39;PROPERTY&#39; elements into the ElementTree (if any).</span>
 
 <span class="sd">        :param root: (ElementTree)</span>
 
@@ -1057,7 +1057,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_format_linguistic_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add the elements &#39;LINGUISTIC_TYPES&#39; into the ElementTree.</span>
+        <span class="sd">&quot;&quot;&quot;Add the elements &#39;LINGUISTIC_TYPES&#39; into the ElementTree.</span>
 
 <span class="sd">        :param root: (ElementTree)</span>
 
@@ -1118,7 +1118,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_format_locales</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add the elements &#39;LOCALE&#39; into the ElementTree (if any).</span>
+        <span class="sd">&quot;&quot;&quot;Add the elements &#39;LOCALE&#39; into the ElementTree (if any).</span>
 
 <span class="sd">        :param root: (ElementTree)</span>
 
@@ -1148,7 +1148,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_constraints</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add the elements &#39;CONSTRAINTS&#39; into the ElementTree.</span>
+        <span class="sd">&quot;&quot;&quot;Add the elements &#39;CONSTRAINTS&#39; into the ElementTree.</span>
 
 <span class="sd">        :param root: (ElementTree)</span>
 
@@ -1162,7 +1162,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_format_ctrl_vocab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">ctrl_vocab</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add &#39;CONTROLLED_VOCABULARY&#39; elements into the ElementTree (if any).</span>
+        <span class="sd">&quot;&quot;&quot;Add &#39;CONTROLLED_VOCABULARY&#39; elements into the ElementTree (if any).</span>
 
 <span class="sd">        :param root: (ElementTree)</span>
 
@@ -1193,7 +1193,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_format_time_slots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_order_root</span><span class="p">,</span> <span class="n">time_slots</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fill the TIME_ORDER element with time slots.</span>
+        <span class="sd">&quot;&quot;&quot;Fill the TIME_ORDER element with time slots.</span>
 
 <span class="sd">        :param time_order_root: (ET)</span>
 <span class="sd">        :param time_slots: (dict) The link between time values/tier and time slots.</span>
@@ -1210,7 +1210,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_format_tier_root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create the root of each tier. Do not fill at all.</span>
+        <span class="sd">&quot;&quot;&quot;Create the root of each tier. Do not fill at all.</span>
 
 <span class="sd">        It allows to preserve the rank of each tier in the tree and to fill</span>
 <span class="sd">        all-in-one alignable-tiers then ref-tiers.</span>
@@ -1228,7 +1228,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_format_alignable_tiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">alignable_tiers</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add the elements &#39;TIER&#39; into the ElementTree (if any).</span>
+        <span class="sd">&quot;&quot;&quot;Add the elements &#39;TIER&#39; into the ElementTree (if any).</span>
 <span class="sd">        Only for alignable tiers.</span>
 
 <span class="sd">        :param root: (ElementTree)</span>
@@ -1292,7 +1292,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_alignable_annotations</span><span class="p">(</span><span class="n">tier_root</span><span class="p">,</span> <span class="n">tier</span><span class="p">,</span> <span class="n">time_values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add the elements &#39;ANNOTATION&#39; into the ElementTree (if any).</span>
+        <span class="sd">&quot;&quot;&quot;Add the elements &#39;ANNOTATION&#39; into the ElementTree (if any).</span>
 <span class="sd">        Only for alignable tiers.</span>
 
 <span class="sd">        Attention: we assign time values instead of time slots. An annotation</span>
@@ -1339,7 +1339,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_create_alignable_annotation_element</span><span class="p">(</span><span class="n">ann</span><span class="p">,</span> <span class="n">tier_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create ANNOTATION in ElementTree.</span>
+        <span class="sd">&quot;&quot;&quot;Create ANNOTATION in ElementTree.</span>
 <span class="sd">        Returns the list of created nodes of &#39;ALIGNABLE_ANNOTATION&#39;.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1385,7 +1385,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_re_format_alignable_annotations</span><span class="p">(</span><span class="n">tier_root</span><span class="p">,</span> <span class="n">tier</span><span class="p">,</span> <span class="n">time_slots</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Replace time values instead of time slots in &#39;ANNOTATION&#39; elements.</span>
+        <span class="sd">&quot;&quot;&quot;Replace time values instead of time slots in &#39;ANNOTATION&#39; elements.</span>
 
 <span class="sd">        :param root: (ElementTree)</span>
 <span class="sd">        :param tier: (sppasTier)</span>
@@ -1417,7 +1417,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_fix_alignable_tiers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the list of tiers to be aligned in time (without annotation ref). &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the list of tiers to be aligned in time (without annotation ref).&quot;&quot;&quot;</span>
 
         <span class="n">alignable</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
@@ -1447,7 +1447,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_format_reference_tiers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">alignable_tiers</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add the elements &#39;TIER&#39; into the ElementTree (if any).</span>
+        <span class="sd">&quot;&quot;&quot;Add the elements &#39;TIER&#39; into the ElementTree (if any).</span>
 <span class="sd">        Only for reference tiers (annotations are not aligned but reference).</span>
 
 <span class="sd">        :param root: (ElementTree)</span>
@@ -1503,7 +1503,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_fix_time_slots</span><span class="p">(</span><span class="n">time_values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Time values is a list of (float, int, sppasTier). &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Time values is a list of (float, int, sppasTier).&quot;&quot;&quot;</span>
 
         <span class="c1"># sort by time values and assign the &#39;ts&lt;num&gt;&#39; id</span>
         <span class="n">time_slots</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
@@ -1519,7 +1519,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__is_alignable_tier</span><span class="p">(</span><span class="n">tier_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return 0/False if the tier is not time-alignable at all. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return 0/False if the tier is not time-alignable at all.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="s1">&#39;PARENT_REF&#39;</span> <span class="ow">in</span> <span class="n">tier_root</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">annotation_root</span> <span class="ow">in</span> <span class="n">tier_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;ANNOTATION&#39;</span><span class="p">):</span>
@@ -1537,7 +1537,7 @@
 
 <div class="viewcode-block" id="sppasEAF.indent"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.elan.sppasEAF.indent">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">indent</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Pretty indent.</span>
+        <span class="sd">&quot;&quot;&quot;Pretty indent.</span>
 <span class="sd">        http://effbot.org/zone/element-lib.htm#prettyprint</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>

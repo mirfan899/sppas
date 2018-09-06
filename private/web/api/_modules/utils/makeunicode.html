@@ -70,20 +70,14 @@
 <span class="sd">    src.utils.makeunicode</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~</span>
 
-<span class="sd">    :author:       Brigitte Bigi</span>
-<span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
-<span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
+<span class="sd">makeunicode is useful for the compatibility of strings between</span>
+<span class="sd">Python 2.7 and Python &gt; 3.2.</span>
 
-<span class="sd">    makeunicode is useful for the compatibility of strings between</span>
-<span class="sd">    Python 2.7 and Python &gt; 3.2.</span>
-
-<span class="sd">    &gt;&gt;&gt; token = &quot;  \n Ỹ  \t\r   ỏ  &quot;</span>
-<span class="sd">    &gt;&gt;&gt; sp = sppasUnicode(token)</span>
-<span class="sd">    &gt;&gt;&gt; token = sp.to_strip()</span>
-<span class="sd">    &gt;&gt;&gt; token == u(&#39;Ỹ ỏ&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; True</span>
+<span class="sd">&gt;&gt;&gt; token = &quot;  \n Ỹ  \t\r   ỏ  &quot;</span>
+<span class="sd">&gt;&gt;&gt; sp = sppasUnicode(token)</span>
+<span class="sd">&gt;&gt;&gt; token = sp.to_strip()</span>
+<span class="sd">&gt;&gt;&gt; token == u(&#39;Ỹ ỏ&#39;)</span>
+<span class="sd">&gt;&gt;&gt; True</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
@@ -91,10 +85,11 @@
 <span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">from</span> <span class="nn">sppas.src.config</span> <span class="k">import</span> <span class="n">sg</span>
+<span class="kn">from</span> <span class="nn">.utilsexc</span> <span class="k">import</span> <span class="n">UtilsDataTypeError</span>
 
 <span class="c1"># ---------------------------------------------------------------------------</span>
 
-<span class="sd">&quot;&quot;&quot; Unicode conversion for Python 2.7. &quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Unicode conversion for Python 2.7.&quot;&quot;&quot;</span>
 
 <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
 
@@ -103,6 +98,12 @@
     <span class="n">basestring</span> <span class="o">=</span> <span class="n">basestring</span>
 
     <span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to unicode using decode().</span>
+
+<span class="sd">        :param x: a string</span>
+<span class="sd">        :return: a unicode string</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># here we take care to not raise &quot;AttributeError&quot;, like:</span>
         <span class="c1"># AttributeError: &#39;int&#39; object has no attribute &#39;decode&#39;</span>
         <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -112,6 +113,12 @@
             <span class="k">return</span> <span class="n">s</span>
 
     <span class="k">def</span> <span class="nf">b</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to byte using encode().</span>
+
+<span class="sd">        :param x: a unicode string</span>
+<span class="sd">        :return: a string</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">)</span>
@@ -119,39 +126,48 @@
             <span class="k">return</span> <span class="n">s</span>
 
 <span class="k">else</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot; Unicode conversion for Python &gt; 3.2 &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Unicode conversion for Python &gt; 3.2 &quot;&quot;&quot;</span>
 
     <span class="n">text_type</span> <span class="o">=</span> <span class="nb">str</span>
     <span class="n">binary_type</span> <span class="o">=</span> <span class="nb">bytes</span>
     <span class="n">basestring</span> <span class="o">=</span> <span class="nb">str</span>
 
-<div class="viewcode-block" id="u"><a class="viewcode-back" href="../../rst/utils.html#utils.u">[docs]</a>    <span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="u"><a class="viewcode-back" href="../../rst/utils.html#utils.makeunicode.u">[docs]</a>    <span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to unicode (i.e. do nothing).</span>
+
+<span class="sd">        :param x: a string</span>
+<span class="sd">        :return: a unicode string</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="b"><a class="viewcode-back" href="../../rst/utils.html#utils.b">[docs]</a>    <span class="k">def</span> <span class="nf">b</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="b"><a class="viewcode-back" href="../../rst/utils.html#utils.makeunicode.b">[docs]</a>    <span class="k">def</span> <span class="nf">b</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to byte using encode().</span>
+
+<span class="sd">        :param x: a unicode string</span>
+<span class="sd">        :return: a string</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">)</span></div>
 
 
 <span class="c1"># ---------------------------------------------------------------------------</span>
 
-<span class="kn">from</span> <span class="nn">.utilsexc</span> <span class="k">import</span> <span class="n">UtilsDataTypeError</span>
 
-<span class="c1"># ---------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="sppasUnicode"><a class="viewcode-back" href="../../rst/utils.html#utils.makeunicode.sppasUnicode">[docs]</a><span class="k">class</span> <span class="nc">sppasUnicode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Make a string as unicode and operates on it.</span>
 
-
-<div class="viewcode-block" id="sppasUnicode"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasUnicode">[docs]</a><span class="k">class</span> <span class="nc">sppasUnicode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Make a string as unicode and operates on it.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasUnicode.__init__"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasUnicode.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasUnicode instance.</span>
+
+<div class="viewcode-block" id="sppasUnicode.__init__"><a class="viewcode-back" href="../../rst/utils.html#utils.makeunicode.sppasUnicode.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasUnicode instance.</span>
 
 <span class="sd">        :param entry: (str or unicode or bytes in python 2)</span>
 
@@ -162,8 +178,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasUnicode.unicode"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasUnicode.unicode">[docs]</a>    <span class="k">def</span> <span class="nf">unicode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the unicode string of the given entry.</span>
+<div class="viewcode-block" id="sppasUnicode.unicode"><a class="viewcode-back" href="../../rst/utils.html#utils.makeunicode.sppasUnicode.unicode">[docs]</a>    <span class="k">def</span> <span class="nf">unicode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the unicode string of the given entry.</span>
 
 <span class="sd">        :returns: unicode</span>
 
@@ -175,8 +191,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasUnicode.to_lower"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasUnicode.to_lower">[docs]</a>    <span class="k">def</span> <span class="nf">to_lower</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the unicode string with lower case.</span>
+<div class="viewcode-block" id="sppasUnicode.to_lower"><a class="viewcode-back" href="../../rst/utils.html#utils.makeunicode.sppasUnicode.to_lower">[docs]</a>    <span class="k">def</span> <span class="nf">to_lower</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the unicode string with lower case.</span>
 
 <span class="sd">        :returns: unicode</span>
 
@@ -188,8 +204,9 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasUnicode.to_strip"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasUnicode.to_strip">[docs]</a>    <span class="k">def</span> <span class="nf">to_strip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Strip the string.</span>
+<div class="viewcode-block" id="sppasUnicode.to_strip"><a class="viewcode-back" href="../../rst/utils.html#utils.makeunicode.sppasUnicode.to_strip">[docs]</a>    <span class="k">def</span> <span class="nf">to_strip</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Strip the string.</span>
+
 <span class="sd">        Remove also multiple whitespace, tab and CR/LF inside the string.</span>
 
 <span class="sd">        :returns: unicode</span>
@@ -210,8 +227,8 @@
 
     <span class="c1"># ----------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasUnicode.clear_whitespace"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasUnicode.clear_whitespace">[docs]</a>    <span class="k">def</span> <span class="nf">clear_whitespace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Replace the whitespace by underscores.</span>
+<div class="viewcode-block" id="sppasUnicode.clear_whitespace"><a class="viewcode-back" href="../../rst/utils.html#utils.makeunicode.sppasUnicode.clear_whitespace">[docs]</a>    <span class="k">def</span> <span class="nf">clear_whitespace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Replace the whitespace by underscores.</span>
 
 <span class="sd">        :returns: unicode</span>
 
@@ -224,8 +241,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasUnicode.to_ascii"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasUnicode.to_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">to_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Replace the non-ASCII characters by underscores.</span>
+<div class="viewcode-block" id="sppasUnicode.to_ascii"><a class="viewcode-back" href="../../rst/utils.html#utils.makeunicode.sppasUnicode.to_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">to_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Replace the non-ASCII characters by underscores.</span>
 
 <span class="sd">        :returns: unicode</span>
 

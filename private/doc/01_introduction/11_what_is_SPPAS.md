@@ -61,12 +61,17 @@ Contact the author by e-mail to contribute to SPPAS:
 - to add new annotations or analysis methods,
 - or anything else! 
 
+Possible e-mails are: 
+
+- *contact@sppas.org* for general questions of users
+- *develop@sppas.org* for developer questions or for a bug alert
 
 
 ### Licenses
 
 SPPAS software, except documentation and resources, are distributed 
-under the terms of the [GNU GENERAL PUBLIC LICENSE v3](https://www.gnu.org/licenses/gpl-3.0.en.html).
+under the terms of the 
+[GNU GENERAL PUBLIC LICENSE v3](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
 Documentation is governed by 
 [GNU Free Documentation License, version 1.3](https://www.gnu.org/licenses/fdl-1.3.en.html).
@@ -156,10 +161,10 @@ She has a tenured position of researcher at the French CNRS -
 [Centre National de la Recherche Scientifique](http://www.cnrs.fr/index.php).
 She's working since 2009 at Laboratoire Parole et Langage, Aix-en-Provence, France.
 
-Send an e-mail to the author: `contact@sppas.org`
+More about the author: 
 
-Know more about the author: <http://www.lpl-aix.fr/~bigi>
-
+- <http://www.lpl-aix.fr/~bigi>
+- <https://orcid.org/0000-0003-1834-6918>
 
 #### Contributors
 

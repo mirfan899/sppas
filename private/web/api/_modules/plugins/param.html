@@ -70,17 +70,8 @@
 <span class="sd">    src.plugins.param.py</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~</span>
 
-<span class="sd">    The set of parameters of a plugin is made of a directory name, a </span>
-<span class="sd">    configuration file name and a sppasPluginParser. This latter allows to</span>
-<span class="sd">    get all information related to the plugin from the configuration file </span>
-<span class="sd">    name:</span>
-<span class="sd">    </span>
-<span class="sd">        - the plugin configuration: identifier, name, description and icon;</span>
-<span class="sd">        - the commands for windows, macos and linux;</span>
-<span class="sd">        - a set of options, each one containing at least an identifier, \</span>
-<span class="sd">        and optionally a type, a value and a description text.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">platform</span>
 <span class="kn">import</span> <span class="nn">shlex</span>
@@ -94,18 +85,29 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasPluginParam"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginParam">[docs]</a><span class="k">class</span> <span class="nc">sppasPluginParam</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPluginParam"><a class="viewcode-back" href="../../rst/plugins.html#plugins.param.sppasPluginParam">[docs]</a><span class="k">class</span> <span class="nc">sppasPluginParam</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to represent the set of parameters of a plugin.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Represent the set of parameters of a plugin.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
+
+<span class="sd">    The set of parameters of a plugin is made of a directory name, a</span>
+<span class="sd">    configuration file name and a sppasPluginParser. This latter allows to</span>
+<span class="sd">    get all information related to the plugin from the configuration file</span>
+<span class="sd">    name:</span>
+
+<span class="sd">        - the plugin configuration: identifier, name, description and icon;</span>
+<span class="sd">        - the commands for windows, macos and linux;</span>
+<span class="sd">        - a set of options, each one containing at least an identifier,</span>
+<span class="sd">        and optionally a type, a value and a description text.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasPluginParam.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginParam.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">config_file</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Creates a new sppasPluginParam instance.</span>
+
+<div class="viewcode-block" id="sppasPluginParam.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.param.sppasPluginParam.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">config_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new sppasPluginParam instance.</span>
 
 <span class="sd">        :param directory: (str) the directory where to find the plugin</span>
 <span class="sd">        :param config_file: (str) the file name of the plugin configuration</span>
@@ -135,9 +137,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginParam.reset"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginParam.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Reset all members to their default value. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasPluginParam.reset"><a class="viewcode-back" href="../../rst/plugins.html#plugins.param.sppasPluginParam.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reset all members to their default value.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_descr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -148,9 +149,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginParam.parse"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginParam.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse the configuration file of the plugin.  &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasPluginParam.parse"><a class="viewcode-back" href="../../rst/plugins.html#plugins.param.sppasPluginParam.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse the configuration file of the plugin.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directory</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cfgfile</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cfgparser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -173,8 +173,9 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginParam.save"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginParam.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Save the configuration file.</span>
+<div class="viewcode-block" id="sppasPluginParam.save"><a class="viewcode-back" href="../../rst/plugins.html#plugins.param.sppasPluginParam.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save the configuration file.</span>
+
 <span class="sd">        Copy the old one into a backup file.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -185,49 +186,49 @@
     <span class="c1"># Getters</span>
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginParam.get_directory"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginParam.get_directory">[docs]</a>    <span class="k">def</span> <span class="nf">get_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the directory name of the plugin. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPluginParam.get_directory"><a class="viewcode-back" href="../../rst/plugins.html#plugins.param.sppasPluginParam.get_directory">[docs]</a>    <span class="k">def</span> <span class="nf">get_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the directory name of the plugin.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_directory</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginParam.get_key"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginParam.get_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the identifier of the plugin. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPluginParam.get_key"><a class="viewcode-back" href="../../rst/plugins.html#plugins.param.sppasPluginParam.get_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the identifier of the plugin.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span></div>
 
-<div class="viewcode-block" id="sppasPluginParam.get_name"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginParam.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the name of the plugin. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPluginParam.get_name"><a class="viewcode-back" href="../../rst/plugins.html#plugins.param.sppasPluginParam.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the name of the plugin.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span></div>
 
-<div class="viewcode-block" id="sppasPluginParam.get_descr"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginParam.get_descr">[docs]</a>    <span class="k">def</span> <span class="nf">get_descr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the short description of the plugin. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPluginParam.get_descr"><a class="viewcode-back" href="../../rst/plugins.html#plugins.param.sppasPluginParam.get_descr">[docs]</a>    <span class="k">def</span> <span class="nf">get_descr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the short description of the plugin.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_descr</span></div>
 
-<div class="viewcode-block" id="sppasPluginParam.get_icon"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginParam.get_icon">[docs]</a>    <span class="k">def</span> <span class="nf">get_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the icon file name of the plugin. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPluginParam.get_icon"><a class="viewcode-back" href="../../rst/plugins.html#plugins.param.sppasPluginParam.get_icon">[docs]</a>    <span class="k">def</span> <span class="nf">get_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the icon file name of the plugin.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_icon</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginParam.get_command"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginParam.get_command">[docs]</a>    <span class="k">def</span> <span class="nf">get_command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the appropriate command to execute the plugin. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPluginParam.get_command"><a class="viewcode-back" href="../../rst/plugins.html#plugins.param.sppasPluginParam.get_command">[docs]</a>    <span class="k">def</span> <span class="nf">get_command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the appropriate command to execute the plugin.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_command</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginParam.get_option_from_key"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginParam.get_option_from_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_option_from_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get an option from its key. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPluginParam.get_option_from_key"><a class="viewcode-back" href="../../rst/plugins.html#plugins.param.sppasPluginParam.get_option_from_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_option_from_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get an option from its key.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">option</span><span class="o">.</span><span class="n">get_key</span><span class="p">()</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">option</span>
         <span class="k">raise</span> <span class="n">OptionKeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="sppasPluginParam.get_options"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginParam.get_options">[docs]</a>    <span class="k">def</span> <span class="nf">get_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get all the options. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPluginParam.get_options"><a class="viewcode-back" href="../../rst/plugins.html#plugins.param.sppasPluginParam.get_options">[docs]</a>    <span class="k">def</span> <span class="nf">get_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get all the options.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span></div>
 
-<div class="viewcode-block" id="sppasPluginParam.set_options"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginParam.set_options">[docs]</a>    <span class="k">def</span> <span class="nf">set_options</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options_dict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the options. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPluginParam.set_options"><a class="viewcode-back" href="../../rst/plugins.html#plugins.param.sppasPluginParam.set_options">[docs]</a>    <span class="k">def</span> <span class="nf">set_options</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options_dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fix the options.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">options_dict</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
@@ -236,11 +237,11 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__get_command</span><span class="p">(</span><span class="n">commands</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns the appropriate command from a list of available ones. &quot;&quot;&quot;</span>
-
+        <span class="sd">&quot;&quot;&quot;Return the appropriate command from a list of available ones.&quot;&quot;&quot;</span>
         <span class="n">_system</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;windows&#39;</span> <span class="ow">in</span> <span class="n">_system</span> <span class="ow">or</span> <span class="s1">&#39;cygwin&#39;</span> <span class="ow">in</span> <span class="n">_system</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;windows&#39;</span> <span class="ow">in</span> <span class="n">commands</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;windows&#39;</span> <span class="ow">in</span> <span class="n">_system</span> <span class="ow">or</span> <span class="s1">&#39;cygwin&#39;</span> <span class="ow">in</span> <span class="n">_system</span><span class="p">)</span> <span class="ow">and</span> \
+                <span class="s1">&#39;windows&#39;</span> <span class="ow">in</span> <span class="n">commands</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">commands</span><span class="p">[</span><span class="s1">&#39;windows&#39;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="s1">&#39;darwin&#39;</span> <span class="ow">in</span> <span class="n">_system</span> <span class="ow">and</span> <span class="s1">&#39;macos&#39;</span> <span class="ow">in</span> <span class="n">commands</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -255,7 +256,8 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__check_command</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns True if command exists.</span>
+        <span class="sd">&quot;&quot;&quot;Return True if command exists.</span>
+
 <span class="sd">        Test only the main command (i.e. the first string, without args).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>

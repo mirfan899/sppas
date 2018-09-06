@@ -79,14 +79,14 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Nicolas Chazeau, Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
 <span class="sd">    :summary:      An utility for frames of one channel only.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasChannelFrames.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelframes.sppasChannelFrames.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasChannelFrames instance.</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasChannelFrames instance.</span>
 
 <span class="sd">        :param frames: (str) Frames that must be MONO ONLY.</span>
 
@@ -96,7 +96,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFrames.get_frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelframes.sppasChannelFrames.get_frames">[docs]</a>    <span class="k">def</span> <span class="nf">get_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the frames</span>
+        <span class="sd">&quot;&quot;&quot;Return the frames</span>
 
 <span class="sd">        :returns: (str) the frames</span>
 
@@ -106,7 +106,7 @@
     <span class="c1"># ----------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFrames.set_frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelframes.sppasChannelFrames.set_frames">[docs]</a>    <span class="k">def</span> <span class="nf">set_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the frames.</span>
+        <span class="sd">&quot;&quot;&quot;Set the frames.</span>
 
 <span class="sd">        :param frames: (str) the frames to set</span>
 
@@ -116,7 +116,7 @@
     <span class="c1"># ----------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFrames.append_silence"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelframes.sppasChannelFrames.append_silence">[docs]</a>    <span class="k">def</span> <span class="nf">append_silence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nframes</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create n frames of silence and append it to the frames.</span>
+        <span class="sd">&quot;&quot;&quot;Create n frames of silence and append it to the frames.</span>
 
 <span class="sd">        :param nframes: (int) the number of frames of silence to append</span>
 
@@ -131,7 +131,7 @@
     <span class="c1"># ----------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFrames.prepend_silence"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelframes.sppasChannelFrames.prepend_silence">[docs]</a>    <span class="k">def</span> <span class="nf">prepend_silence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nframes</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create n frames of silence and prepend it to the frames.</span>
+        <span class="sd">&quot;&quot;&quot;Create n frames of silence and prepend it to the frames.</span>
 
 <span class="sd">        :param nframes: (int) the number of frames of silence to append</span>
 
@@ -146,7 +146,7 @@
     <span class="c1"># ----------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFrames.resample"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelframes.sppasChannelFrames.resample">[docs]</a>    <span class="k">def</span> <span class="nf">resample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampwidth</span><span class="p">,</span> <span class="n">rate</span><span class="p">,</span> <span class="n">newrate</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Resample the frames with a new frame rate.</span>
+        <span class="sd">&quot;&quot;&quot;Resample the frames with a new frame rate.</span>
 
 <span class="sd">        :param sampwidth: (int) sample width of the frames.</span>
 <span class="sd">        :param rate: (int) current frame rate of the frames</span>
@@ -159,7 +159,7 @@
     <span class="c1"># ----------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFrames.change_sampwidth"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelframes.sppasChannelFrames.change_sampwidth">[docs]</a>    <span class="k">def</span> <span class="nf">change_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampwidth</span><span class="p">,</span> <span class="n">newsampwidth</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Change the number of bytes used to encode the frames.</span>
+        <span class="sd">&quot;&quot;&quot;Change the number of bytes used to encode the frames.</span>
 
 <span class="sd">        :param sampwidth: (int) current sample width of the frames.</span>
 <span class="sd">        (1 for 8 bits, 2 for 16 bits, 4 for 32 bits)</span>

@@ -27,11 +27,15 @@ system.
 The following software are required:
 
 1. Python 2.7.x
-2. wxPython >= 3.0
-3. julius >= 4.1
+2. wxPython 3.0
+3. julius >= 4.1 (or HVite 3.4)
 
-It is very (very very) important to take care about the version of 
-Python. An installation guide is available on the website, depending 
+It is very important to take care about the versions: 
+
+- SPPAS does not work with Python 3;
+- the GUI of SPPAS does not work with wxPython 4 (also called Phoenix).
+
+An installation guide is available on the website, depending 
 on the operating system. **Please, closely follow the instructions.**
 Notice that administrator rights are required to perform the installations.
 In case of difficulty arising from the installation of such software, 

@@ -72,24 +72,14 @@
 
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
-<span class="sd">    A collection of basic frequency functions for python.</span>
-
-<span class="sd">    Function list</span>
-<span class="sd">    =============</span>
-
-<span class="sd">        - frequency</span>
-<span class="sd">        - percentage</span>
-<span class="sd">        - hapax</span>
-<span class="sd">        - occranks</span>
-<span class="sd">        - ranks</span>
-<span class="sd">        - zipf</span>
-<span class="sd">        - tfidf</span>
+<span class="sd">A collection of basic frequency functions for python.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">from</span> <span class="nn">..calculusexc</span> <span class="k">import</span> <span class="n">EmptyError</span><span class="p">,</span> <span class="n">ProbabilityError</span>
 
@@ -97,7 +87,7 @@
 
 
 <div class="viewcode-block" id="freq"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.freq">[docs]</a><span class="k">def</span> <span class="nf">freq</span><span class="p">(</span><span class="n">mylist</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return the relative frequency of an item of a list.</span>
+    <span class="sd">&quot;&quot;&quot;Return the relative frequency of an item of a list.</span>
 
 <span class="sd">    :param mylist: (list) list of elements</span>
 <span class="sd">    :param item: (any) an element of the list (or not!)</span>
@@ -110,7 +100,7 @@
 
 
 <div class="viewcode-block" id="percent"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.percent">[docs]</a><span class="k">def</span> <span class="nf">percent</span><span class="p">(</span><span class="n">mylist</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return the percentage of an item of a list.</span>
+    <span class="sd">&quot;&quot;&quot;Return the percentage of an item of a list.</span>
 
 <span class="sd">    :param mylist: (list) list of elements</span>
 <span class="sd">    :param item: (any) an element of the list (or not!)</span>
@@ -123,7 +113,7 @@
 
 
 <div class="viewcode-block" id="percentile"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.percentile">[docs]</a><span class="k">def</span> <span class="nf">percentile</span><span class="p">(</span><span class="n">mylist</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">75</span><span class="p">),</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Returns the pth percentile of an unsorted or sorted numeric list.</span>
+    <span class="sd">&quot;&quot;&quot;Return the pth percentile of an unsorted or sorted numeric list.</span>
 
 <span class="sd">    This is equivalent to calling quantile(mylist, p/100.0).</span>
 
@@ -153,7 +143,7 @@
 
 
 <div class="viewcode-block" id="quantile"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.quantile">[docs]</a><span class="k">def</span> <span class="nf">quantile</span><span class="p">(</span><span class="n">mylist</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Returns the qth quantile of an unsorted or sorted numeric list.</span>
+    <span class="sd">&quot;&quot;&quot;Return the qth quantile of an unsorted or sorted numeric list.</span>
 
 <span class="sd">     Calculates a rank n as q(N+1), where N is the number of items in mylist,</span>
 <span class="sd">     then splits n into its integer component k and decimal component d.</span>
@@ -211,7 +201,7 @@
 
 
 <div class="viewcode-block" id="hapax"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.hapax">[docs]</a><span class="k">def</span> <span class="nf">hapax</span><span class="p">(</span><span class="n">mydict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return a list of hapax.</span>
+    <span class="sd">&quot;&quot;&quot;Return a list of hapax.</span>
 
 <span class="sd">    :param mydict: (dict)</span>
 <span class="sd">    :returns: list of keys for which value = 1</span>
@@ -223,7 +213,7 @@
 
 
 <div class="viewcode-block" id="occranks"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.occranks">[docs]</a><span class="k">def</span> <span class="nf">occranks</span><span class="p">(</span><span class="n">mydict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return a dictionary with key=occurrence, value=rank.</span>
+    <span class="sd">&quot;&quot;&quot;Return a dictionary with key=occurrence, value=rank.</span>
 
 <span class="sd">    :param mydict: (dict)</span>
 <span class="sd">    :returns: dict</span>
@@ -249,13 +239,13 @@
 
 
 <div class="viewcode-block" id="ranks"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.ranks">[docs]</a><span class="k">def</span> <span class="nf">ranks</span><span class="p">(</span><span class="n">counter</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return a dictionary with key=token, value=rank.</span>
+    <span class="sd">&quot;&quot;&quot;Return a dictionary with key=token, value=rank.</span>
 
 <span class="sd">    :param counter: (collections.Counter)</span>
 <span class="sd">    :returns: dict</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">oclist</span> <span class="o">=</span> <span class="n">occranks</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">counter</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="n">occ</span> <span class="o">=</span> <span class="n">counter</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
@@ -267,7 +257,8 @@
 
 
 <div class="viewcode-block" id="zipf"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.zipf">[docs]</a><span class="k">def</span> <span class="nf">zipf</span><span class="p">(</span><span class="n">dict_ranks</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return the Zipf Law value of an item.</span>
+    <span class="sd">&quot;&quot;&quot;Return the Zipf Law value of an item.</span>
+
 <span class="sd">    Zipf&#39;s law states that given some corpus of natural language utterances,</span>
 <span class="sd">    the frequency of any word is inversely proportional to its rank in the</span>
 <span class="sd">    frequency table. Thus the most frequent word will occur approximately</span>
@@ -288,7 +279,8 @@
 
 
 <div class="viewcode-block" id="tfidf"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.tfidf">[docs]</a><span class="k">def</span> <span class="nf">tfidf</span><span class="p">(</span><span class="n">documents</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return the tf.idf of an item.</span>
+    <span class="sd">&quot;&quot;&quot;Return the tf.idf of an item.</span>
+
 <span class="sd">    Term frequency–inverse document frequency, is a numerical statistic</span>
 <span class="sd">    that is intended to reflect how important a word is to a document in a</span>
 <span class="sd">    collection or corpus. The tf.idf value increases proportionally to the</span>

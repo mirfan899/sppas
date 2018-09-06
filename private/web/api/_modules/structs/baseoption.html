@@ -67,12 +67,8 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.structs.baseoption.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-
-<span class="sd">    In many situations, we have to store an un-typed data and its type</span>
-<span class="sd">    separately, plus eventually other information like a description.</span>
-<span class="sd">    Such data is called &quot;option&quot;.</span>
+<span class="sd">    structs.baseoption.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="k">import</span> <span class="n">u</span><span class="p">,</span> <span class="n">text_type</span><span class="p">,</span> <span class="n">binary_type</span>
@@ -80,14 +76,18 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasBaseOption"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasBaseOption">[docs]</a><span class="k">class</span> <span class="nc">sppasBaseOption</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasBaseOption"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption">[docs]</a><span class="k">class</span> <span class="nc">sppasBaseOption</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to deal with one option.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      Class to deal with one option.</span>
+
+<span class="sd">    In many situations, we have to store an un-typed data and its type</span>
+<span class="sd">    separately, plus eventually other information like a description.</span>
+<span class="sd">    Such data is called &quot;option&quot;.</span>
 
 <span class="sd">    An option is a set of data with a main value and its type, plus 3 other</span>
 <span class="sd">    variables to store any kind of information. By default, the type of an</span>
@@ -103,8 +103,9 @@
 <span class="sd">    &gt;&gt;&gt; &lt;type &#39;str&#39;&gt;</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasBaseOption.__init__"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasBaseOption.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_type</span><span class="p">,</span> <span class="n">option_value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Creates a sppasBaseOption instance.</span>
+
+<div class="viewcode-block" id="sppasBaseOption.__init__"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_type</span><span class="p">,</span> <span class="n">option_value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasBaseOption instance.</span>
 
 <span class="sd">        :param option_type: (str) Type of the option (i.e. &#39;int&#39;, &#39;bool&#39;,</span>
 <span class="sd">        &#39;float&#39;, ...). Notice that the type will be normalized. For example,</span>
@@ -123,8 +124,8 @@
     <span class="c1"># Getters</span>
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasBaseOption.get_type"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasBaseOption.get_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the type of the option.</span>
+<div class="viewcode-block" id="sppasBaseOption.get_type"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.get_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the type of the option.</span>
 
 <span class="sd">        :returns: normalized value of the type</span>
 
@@ -133,8 +134,9 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasBaseOption.get_untypedvalue"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasBaseOption.get_untypedvalue">[docs]</a>    <span class="k">def</span> <span class="nf">get_untypedvalue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the value as it was given,</span>
+<div class="viewcode-block" id="sppasBaseOption.get_untypedvalue"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.get_untypedvalue">[docs]</a>    <span class="k">def</span> <span class="nf">get_untypedvalue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the value as it was given.</span>
+
 <span class="sd">        i.e. without taking the given type into account.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -142,9 +144,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasBaseOption.get_value"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasBaseOption.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the typed-value or None if the type is unknown. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasBaseOption.get_value"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the typed-value or None if the type is unknown.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="s2">&quot;bool&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
@@ -169,33 +170,30 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasBaseOption.get_name"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasBaseOption.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the name of to this option. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasBaseOption.get_name"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the name of to this option.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasBaseOption.get_text"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasBaseOption.get_text">[docs]</a>    <span class="k">def</span> <span class="nf">get_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the brief text which describes the option. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasBaseOption.get_text"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.get_text">[docs]</a>    <span class="k">def</span> <span class="nf">get_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the brief text which describes the option.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasBaseOption.get_description"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasBaseOption.get_description">[docs]</a>    <span class="k">def</span> <span class="nf">get_description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the long text which describes the option. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasBaseOption.get_description"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.get_description">[docs]</a>    <span class="k">def</span> <span class="nf">get_description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the long text which describes the option.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
     <span class="c1"># Setters</span>
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasBaseOption.set"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasBaseOption.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set self from another instance.</span>
+<div class="viewcode-block" id="sppasBaseOption.set"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set self from another instance.</span>
 
-<span class="sd">        :param other: (sppasBaseOption) The option from which to get information.</span>
+<span class="sd">        :param other: (sppasBaseOption) The option from which to get info.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
@@ -206,21 +204,26 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasBaseOption.set_type"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasBaseOption.set_type">[docs]</a>    <span class="k">def</span> <span class="nf">set_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_type</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set a new type.</span>
+<div class="viewcode-block" id="sppasBaseOption.set_type"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.set_type">[docs]</a>    <span class="k">def</span> <span class="nf">set_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set a new type.</span>
 
-<span class="sd">        :param option_type: (str) Type of the option (i.e. &#39;int&#39;, &#39;bool&#39;, &#39;float&#39;, ...).</span>
-<span class="sd">        If the option_type is not valid, type will be set to &#39;str&#39;.</span>
+<span class="sd">        Possible types are: &#39;int&#39;, &#39;bool&#39;, &#39;float&#39;, &#39;str&#39;.</span>
+<span class="sd">        If the given type is not valid, it will be set to &#39;str&#39;.</span>
+
+<span class="sd">        :param option_type: (str) Type of the option</span>
 <span class="sd">        :returns: True if option_type is valid and set.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">option_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">option_type</span><span class="p">)</span>
         <span class="n">option_type</span> <span class="o">=</span> <span class="n">option_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">option_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;bool&#39;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s2">&quot;bool&quot;</span>
             <span class="k">return</span> <span class="kc">True</span>
 
-        <span class="k">elif</span> <span class="n">option_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">option_type</span> <span class="o">==</span> <span class="s1">&#39;long&#39;</span> <span class="ow">or</span> <span class="n">option_type</span> <span class="o">==</span> <span class="s1">&#39;short&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">option_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span> <span class="ow">or</span> \
+                <span class="n">option_type</span> <span class="o">==</span> <span class="s1">&#39;long&#39;</span> <span class="ow">or</span> \
+                <span class="n">option_type</span> <span class="o">==</span> <span class="s1">&#39;short&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="s2">&quot;int&quot;</span>
             <span class="k">return</span> <span class="kc">True</span>
 
@@ -242,8 +245,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasBaseOption.set_value"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasBaseOption.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set a new value.</span>
+<div class="viewcode-block" id="sppasBaseOption.set_value"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set a new value.</span>
 
 <span class="sd">        :param value: (any type) Un-typed value of the option.</span>
 
@@ -252,8 +255,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasBaseOption.set_name"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasBaseOption.set_name">[docs]</a>    <span class="k">def</span> <span class="nf">set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set a name to describe the option.</span>
+<div class="viewcode-block" id="sppasBaseOption.set_name"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.set_name">[docs]</a>    <span class="k">def</span> <span class="nf">set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set a name to describe the option.</span>
 
 <span class="sd">        :param name: (str) Option description.</span>
 
@@ -262,8 +265,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasBaseOption.set_text"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasBaseOption.set_text">[docs]</a>    <span class="k">def</span> <span class="nf">set_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set a brief text to describe the option.</span>
+<div class="viewcode-block" id="sppasBaseOption.set_text"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.set_text">[docs]</a>    <span class="k">def</span> <span class="nf">set_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set a brief text to describe the option.</span>
 
 <span class="sd">        :param text: (str) Option description.</span>
 
@@ -272,8 +275,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasBaseOption.set_description"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasBaseOption.set_description">[docs]</a>    <span class="k">def</span> <span class="nf">set_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set a long text to describe the option.</span>
+<div class="viewcode-block" id="sppasBaseOption.set_description"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasBaseOption.set_description">[docs]</a>    <span class="k">def</span> <span class="nf">set_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set a long text to describe the option.</span>
 
 <span class="sd">        :param description: (str) Option description.</span>
 
@@ -283,18 +286,19 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasOption"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasOption">[docs]</a><span class="k">class</span> <span class="nc">sppasOption</span><span class="p">(</span><span class="n">sppasBaseOption</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasOption"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasOption">[docs]</a><span class="k">class</span> <span class="nc">sppasOption</span><span class="p">(</span><span class="n">sppasBaseOption</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Adds a key to a sppasBaseOption.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Adds a key to a sppasBaseOption.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasOption.__init__"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasOption.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_key</span><span class="p">,</span> <span class="n">option_type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span> <span class="n">option_value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasOption instance.</span>
+
+<div class="viewcode-block" id="sppasOption.__init__"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasOption.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_key</span><span class="p">,</span> <span class="n">option_type</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">,</span> <span class="n">option_value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasOption instance.</span>
 
 <span class="sd">        :param option_key: (any type) An identifier for that option.</span>
 <span class="sd">        :param option_type: (str) Type of the option (i.e. &#39;int&#39;, &#39;bool&#39;,</span>
@@ -303,14 +307,13 @@
 <span class="sd">        :param option_value: (str) The value of the option.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">sppasBaseOption</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_type</span><span class="p">,</span> <span class="n">option_value</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasOption</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">option_type</span><span class="p">,</span> <span class="n">option_value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">option_key</span></div>
 
     <span class="c1"># ----------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasOption.get_key"><a class="viewcode-back" href="../../rst/structs.html#structs.sppasOption.get_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the key of that option. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasOption.get_key"><a class="viewcode-back" href="../../rst/structs.html#structs.baseoption.sppasOption.get_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the key of that option.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span></div></div>
 </pre></div>
 

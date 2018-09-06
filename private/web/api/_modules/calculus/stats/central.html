@@ -72,23 +72,14 @@
 
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
-<span class="sd">    A collection of basic statistical functions for python.</span>
-
-<span class="sd">    Function list</span>
-<span class="sd">    =============</span>
-
-<span class="sd">        - fsum</span>
-<span class="sd">        - fmult</span>
-<span class="sd">        - fgeometricmean</span>
-<span class="sd">        - fharmonicmean</span>
-<span class="sd">        - fmean</span>
-<span class="sd">        - fmedian</span>
+<span class="sd">A collection of basic statistical functions for python.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 
@@ -96,7 +87,7 @@
 
 
 <div class="viewcode-block" id="fsum"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.fsum">[docs]</a><span class="k">def</span> <span class="nf">fsum</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Estimates the sum of a list of data values.</span>
+    <span class="sd">&quot;&quot;&quot;Estimate the sum of a list of data values.</span>
 
 <span class="sd">    :param items: (list) list of data values</span>
 <span class="sd">    :returns: (float)</span>
@@ -108,7 +99,7 @@
 
 
 <div class="viewcode-block" id="fmult"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.fmult">[docs]</a><span class="k">def</span> <span class="nf">fmult</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Estimates the product of a list of data values.</span>
+    <span class="sd">&quot;&quot;&quot;Estimate the product of a list of data values.</span>
 
 <span class="sd">    :param items: (list) list of data values</span>
 <span class="sd">    :returns: (float)</span>
@@ -120,7 +111,8 @@
 
 
 <div class="viewcode-block" id="fgeometricmean"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.fgeometricmean">[docs]</a><span class="k">def</span> <span class="nf">fgeometricmean</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the geometric mean of the data values:</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the geometric mean of the data values.</span>
+
 <span class="sd">    n-th root of (x1 * x2 * ... * xn).</span>
 
 <span class="sd">    :param items: (list) list of data values</span>
@@ -141,7 +133,8 @@
 
 
 <div class="viewcode-block" id="fharmonicmean"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.fharmonicmean">[docs]</a><span class="k">def</span> <span class="nf">fharmonicmean</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the harmonic mean of the data values:</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the harmonic mean of the data values.</span>
+
 <span class="sd">    C{n / (1/x1 + 1/x2 + ... + 1/xn)}.</span>
 
 <span class="sd">    :param items: (list) list of data values</span>
@@ -162,7 +155,8 @@
 
 
 <div class="viewcode-block" id="fmean"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.fmean">[docs]</a><span class="k">def</span> <span class="nf">fmean</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the arithmetic mean of the data values:</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the arithmetic mean of the data values.</span>
+
 <span class="sd">    sum(items)/len(items)</span>
 
 <span class="sd">    :param items: (list) list of data values</span>
@@ -178,8 +172,10 @@
 
 
 <div class="viewcode-block" id="fmedian"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.fmedian">[docs]</a><span class="k">def</span> <span class="nf">fmedian</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the &#39;middle&#39; score of the data values. If there is an even</span>
-<span class="sd">    number of scores, the mean of the 2 middle scores is returned.</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the &#39;middle&#39; score of the data values.</span>
+
+<span class="sd">    If there is an even number of scores, the mean of the 2 middle scores</span>
+<span class="sd">    is returned.</span>
 
 <span class="sd">    :param items: (list) list of data values</span>
 <span class="sd">    :returns: (float)</span>
@@ -199,7 +195,7 @@
 
 
 <div class="viewcode-block" id="fmin"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.fmin">[docs]</a><span class="k">def</span> <span class="nf">fmin</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return the minimum of the data values.</span>
+    <span class="sd">&quot;&quot;&quot;Return the minimum of the data values.</span>
 
 <span class="sd">    :param items: (list) list of data values</span>
 <span class="sd">    :returns: (float)</span>
@@ -214,7 +210,7 @@
 
 
 <div class="viewcode-block" id="fmax"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.fmax">[docs]</a><span class="k">def</span> <span class="nf">fmax</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return the maximum of the data values.</span>
+    <span class="sd">&quot;&quot;&quot;Return the maximum of the data values.</span>
 
 <span class="sd">    :param items: (list) list of data values</span>
 <span class="sd">    :returns: (float)</span>

@@ -67,8 +67,8 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.anndata.hierarchy.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    anndata.hierarchy.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
@@ -83,15 +83,15 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasHierarchy"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy">[docs]</a><span class="k">class</span> <span class="nc">sppasHierarchy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    :author:       Brigitte Bigi, Jibril Saffi</span>
+<div class="viewcode-block" id="sppasHierarchy"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy">[docs]</a><span class="k">class</span> <span class="nc">sppasHierarchy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generic representation of a hierarchy between tiers.</span>
+<span class="sd">    </span>
+<span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Generic representation of a hierarchy between tiers.</span>
-
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
+<span class="sd">    </span>
 <span class="sd">    Two types of hierarchy are considered:</span>
 
 <span class="sd">      - TimeAssociation:</span>
@@ -121,7 +121,6 @@
 <span class="sd">        - A parent can have as many children as wanted.</span>
 <span class="sd">        - A hierarchy is a tree, not a graph.</span>
 
-
 <span class="sd">    Todo is to consider a time association that is not fully completed:</span>
 
 <span class="sd">            | parent:  Tokens     | l&#39; |  âne  | euh | euh | est |  là   | @ |</span>
@@ -130,8 +129,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">types</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;TimeAssociation&quot;</span><span class="p">,</span> <span class="s2">&quot;TimeAlignment&quot;</span><span class="p">}</span>
 
-<div class="viewcode-block" id="sppasHierarchy.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Creates a new sppasHierarchy instance. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasHierarchy.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new sppasHierarchy instance.&quot;&quot;&quot;</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">sppasHierarchy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -142,10 +141,10 @@
     <span class="c1"># Getters</span>
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasHierarchy.get_parent"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy.get_parent">[docs]</a>    <span class="k">def</span> <span class="nf">get_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the parent tier for a given child tier.</span>
+<div class="viewcode-block" id="sppasHierarchy.get_parent"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.get_parent">[docs]</a>    <span class="k">def</span> <span class="nf">get_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the parent tier for a given child tier.</span>
 
-<span class="sd">        :param child_tier: (Tier) The child tier to found</span>
+<span class="sd">        :param child_tier: (sppasTier) The child tier to found</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">child_tier</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -156,8 +155,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasHierarchy.get_hierarchy_type"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy.get_hierarchy_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_hierarchy_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the hierarchy type between a child tier and its parent.</span>
+<div class="viewcode-block" id="sppasHierarchy.get_hierarchy_type"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.get_hierarchy_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_hierarchy_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the hierarchy type between a child tier and its parent.</span>
 
 <span class="sd">        :returns: (str) one of the hierarchy type</span>
 
@@ -170,17 +169,18 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasHierarchy.get_children"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy.get_children">[docs]</a>    <span class="k">def</span> <span class="nf">get_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">link_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the list of children of a tier, for a given type.</span>
+<div class="viewcode-block" id="sppasHierarchy.get_children"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.get_children">[docs]</a>    <span class="k">def</span> <span class="nf">get_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">link_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the list of children of a tier, for a given type.</span>
 
-<span class="sd">        :param parent_tier: (Tier) The child tier to found</span>
+<span class="sd">        :param parent_tier: (sppasTier) The child tier to found</span>
 <span class="sd">        :param link_type: (str) The type of hierarchy</span>
 <span class="sd">        :returns: List of tiers</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">link_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">link_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sppasHierarchy</span><span class="o">.</span><span class="n">types</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">link_type</span><span class="p">,</span> <span class="s2">&quot;TimeAssociation, TimeAlignment&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">AnnDataTypeError</span><span class="p">(</span><span class="n">link_type</span><span class="p">,</span> 
+                                       <span class="s2">&quot;TimeAssociation, TimeAlignment&quot;</span><span class="p">)</span>
 
         <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">child_tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -193,12 +193,11 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasHierarchy.get_ancestors"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy.get_ancestors">[docs]</a>    <span class="k">def</span> <span class="nf">get_ancestors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return all the direct ancestors of a tier.</span>
-<span class="sd">         Returns a list with parent, grand-parent, grand-grand-parent...</span>
+<div class="viewcode-block" id="sppasHierarchy.get_ancestors"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.get_ancestors">[docs]</a>    <span class="k">def</span> <span class="nf">get_ancestors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return all the direct ancestors of a tier.</span>
 
-<span class="sd">        :param child_tier: (Tier)</span>
-<span class="sd">        :returns: List of tiers</span>
+<span class="sd">        :param child_tier: (sppasTier)</span>
+<span class="sd">        :returns: List of tiers with parent, grand-parent, grand-grand-parent...</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">child_tier</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -216,42 +215,46 @@
     <span class="c1"># Validators</span>
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasHierarchy.validate_time_alignment"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy.validate_time_alignment">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="sppasHierarchy.validate_time_alignment"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.validate_time_alignment">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">validate_time_alignment</span><span class="p">(</span><span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Validate a time alignment hierarchy link between 2 tiers.</span>
+        <span class="sd">&quot;&quot;&quot;Validate a time alignment hierarchy link between 2 tiers.</span>
 
-<span class="sd">        :param parent_tier: (Tier) The parent tier</span>
-<span class="sd">        :param child_tier: (Tier) The child tier to be linked to reftier</span>
+<span class="sd">        :param parent_tier: (sppasTier) The parent tier</span>
+<span class="sd">        :param child_tier: (sppasTier) The child tier to be linked to parent</span>
 <span class="sd">        :raises: HierarchyAlignmentError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">parent_tier</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">child_tier</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">HierarchyAlignmentError</span><span class="p">(</span><span class="n">parent_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">child_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span></div>
+            <span class="k">raise</span> <span class="n">HierarchyAlignmentError</span><span class="p">(</span><span class="n">parent_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span>
+                                          <span class="n">child_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasHierarchy.validate_time_association"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy.validate_time_association">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="sppasHierarchy.validate_time_association"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.validate_time_association">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">validate_time_association</span><span class="p">(</span><span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Validate a time association hierarchy link between 2 tiers.</span>
+        <span class="sd">&quot;&quot;&quot;Validate a time association hierarchy link between 2 tiers.</span>
 
-<span class="sd">        :param parent_tier: (Tier) The parent tier</span>
-<span class="sd">        :param child_tier: (Tier) The child tier to be linked to the parent</span>
+<span class="sd">        :param parent_tier: (sppasTier) The parent tier</span>
+<span class="sd">        :param child_tier: (sppasTier) The child tier to be linked to the parent</span>
 <span class="sd">        :raises: HierarchyAssociationError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">parent_tier</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">child_tier</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="n">child_tier</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">parent_tier</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">HierarchyAssociationError</span><span class="p">(</span><span class="n">parent_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">child_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span></div>
+        <span class="k">if</span> <span class="n">parent_tier</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">child_tier</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> \
+           <span class="n">child_tier</span><span class="o">.</span><span class="n">is_superset</span><span class="p">(</span><span class="n">parent_tier</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">HierarchyAssociationError</span><span class="p">(</span><span class="n">parent_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span>
+                                            <span class="n">child_tier</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasHierarchy.validate_link"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy.validate_link">[docs]</a>    <span class="k">def</span> <span class="nf">validate_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link_type</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Validate a hierarchy link between 2 tiers.</span>
+<div class="viewcode-block" id="sppasHierarchy.validate_link"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.validate_link">[docs]</a>    <span class="k">def</span> <span class="nf">validate_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link_type</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Validate a hierarchy link between 2 tiers.</span>
 
 <span class="sd">        :param link_type: (constant) One of the hierarchy types</span>
-<span class="sd">        :param parent_tier: (Tier) The parent tier</span>
-<span class="sd">        :param child_tier: (Tier) The child tier to be linked to reftier</span>
-<span class="sd">        :raises: AnnDataTypeError, HierarchyParentTierError, HierarchyChildTierError, \</span>
-<span class="sd">        HierarchyAncestorTierError, HierarchyAlignmentError, HierarchyAssociationError</span>
+<span class="sd">        :param parent_tier: (sppasTier) The parent tier</span>
+<span class="sd">        :param child_tier: (sppasTier) The child tier to be linked to parent</span>
+<span class="sd">        :raises: AnnDataTypeError, HierarchyParentTierError, \</span>
+<span class="sd">        HierarchyChildTierError, HierarchyAncestorTierError, \</span>
+<span class="sd">        HierarchyAlignmentError, HierarchyAssociationError</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">link_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sppasHierarchy</span><span class="o">.</span><span class="n">types</span><span class="p">:</span>
@@ -293,12 +296,12 @@
     <span class="c1"># Setters</span>
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasHierarchy.add_link"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy.add_link">[docs]</a>    <span class="k">def</span> <span class="nf">add_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link_type</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Validate and add a hierarchy link between 2 tiers.</span>
+<div class="viewcode-block" id="sppasHierarchy.add_link"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.add_link">[docs]</a>    <span class="k">def</span> <span class="nf">add_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link_type</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Validate and add a hierarchy link between 2 tiers.</span>
 
 <span class="sd">        :param link_type: (constant) One of the hierarchy types</span>
-<span class="sd">        :param parent_tier: (Tier) The parent tier</span>
-<span class="sd">        :param child_tier: (Tier) The child tier to be linked to reftier</span>
+<span class="sd">        :param parent_tier: (sppasTier) The parent tier</span>
+<span class="sd">        :param child_tier: (sppasTier) The child tier to be linked to parent</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">validate_link</span><span class="p">(</span><span class="n">link_type</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">)</span>
@@ -306,10 +309,10 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasHierarchy.remove_child"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy.remove_child">[docs]</a>    <span class="k">def</span> <span class="nf">remove_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove a hierarchy link between a parent and a child.</span>
+<div class="viewcode-block" id="sppasHierarchy.remove_child"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.remove_child">[docs]</a>    <span class="k">def</span> <span class="nf">remove_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_tier</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove a hierarchy link between a parent and a child.</span>
 
-<span class="sd">        :param child_tier: (Tier) The tier linked to a reference</span>
+<span class="sd">        :param child_tier: (sppasTier) The tier linked to a reference</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">child_tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hierarchy</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -317,10 +320,10 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasHierarchy.remove_parent"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy.remove_parent">[docs]</a>    <span class="k">def</span> <span class="nf">remove_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove all hierarchy links between a parent and its children.</span>
+<div class="viewcode-block" id="sppasHierarchy.remove_parent"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.remove_parent">[docs]</a>    <span class="k">def</span> <span class="nf">remove_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_tier</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove all hierarchy links between a parent and its children.</span>
 
-<span class="sd">        :param parent_tier: (Tier) The parent tier</span>
+<span class="sd">        :param parent_tier: (sppasTier) The parent tier</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">to_remove</span> <span class="o">=</span> <span class="p">[]</span>
@@ -334,10 +337,10 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasHierarchy.remove_tier"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy.remove_tier">[docs]</a>    <span class="k">def</span> <span class="nf">remove_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove all occurrences of a tier inside the hierarchy.</span>
+<div class="viewcode-block" id="sppasHierarchy.remove_tier"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.remove_tier">[docs]</a>    <span class="k">def</span> <span class="nf">remove_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tier</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove all occurrences of a tier inside the hierarchy.</span>
 
-<span class="sd">        :param tier: (Tier) The tier to remove as parent or child.</span>
+<span class="sd">        :param tier: (sppasTier) The tier to remove as parent or child.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">to_remove</span> <span class="o">=</span> <span class="p">[]</span>
@@ -351,8 +354,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasHierarchy.copy"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns a deep copy of the hierarchy. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasHierarchy.copy"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a deep copy of the hierarchy.&quot;&quot;&quot;</span>
 
         <span class="n">h</span> <span class="o">=</span> <span class="n">sppasHierarchy</span><span class="p">()</span>
 
@@ -367,9 +370,9 @@
     <span class="c1"># Automatic hierarchy</span>
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasHierarchy.infer_hierarchy_type"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasHierarchy.infer_hierarchy_type">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="sppasHierarchy.infer_hierarchy_type"><a class="viewcode-back" href="../../rst/anndata.html#anndata.hierarchy.sppasHierarchy.infer_hierarchy_type">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">infer_hierarchy_type</span><span class="p">(</span><span class="n">tier1</span><span class="p">,</span> <span class="n">tier2</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Test if tier1 can be a parent tier for tier2.</span>
+        <span class="sd">&quot;&quot;&quot;Test if tier1 can be a parent tier for tier2.</span>
 
 <span class="sd">        :returns: One of hierarchy types or an empty string</span>
 

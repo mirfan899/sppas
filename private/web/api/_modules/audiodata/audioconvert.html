@@ -83,21 +83,21 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
 <span class="sd">    :summary:      An utility to convert data formats.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasAudioConverter.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioconvert.sppasAudioConverter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasAudioConverter instance. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasAudioConverter instance.&quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasAudioConverter.unpack_data"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioconvert.sppasAudioConverter.unpack_data">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">unpack_data</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">samples_width</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Turn frames into samples.</span>
+        <span class="sd">&quot;&quot;&quot;Turn frames into samples.</span>
 <span class="sd">        Unpack the data frames depending on their sample width.</span>
 
 <span class="sd">        :param frames: (str) Audio frames</span>
@@ -135,7 +135,7 @@
 
 <div class="viewcode-block" id="sppasAudioConverter.samples2frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioconvert.sppasAudioConverter.samples2frames">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">samples2frames</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">samples_width</span><span class="p">,</span> <span class="n">nchannels</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Turn samples into frames.</span>
+        <span class="sd">&quot;&quot;&quot;Turn samples into frames.</span>
 
 <span class="sd">        :param samples: (int[][]) samples list,</span>
 <span class="sd">        first index is the index of the channel, second is the index of the sample.</span>
@@ -176,7 +176,7 @@
 
 <div class="viewcode-block" id="sppasAudioConverter.hz2mel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioconvert.sppasAudioConverter.hz2mel">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">hz2mel</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the equivalent value in a mel scale, from a frequency value.</span>
+        <span class="sd">&quot;&quot;&quot;Return the equivalent value in a mel scale, from a frequency value.</span>
 
 <span class="sd">        Mel is a unit of pitch proposed by Stevens, Volkmann and Newmann in</span>
 <span class="sd">        1937. The mel scale is a scale of pitches judged by listeners to be</span>
@@ -194,7 +194,7 @@
 
 <div class="viewcode-block" id="sppasAudioConverter.mel2hz"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioconvert.sppasAudioConverter.mel2hz">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">mel2hz</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the equivalent value in frequency, from a mel value.</span>
+        <span class="sd">&quot;&quot;&quot;Return the equivalent value in frequency, from a mel value.</span>
 
 <span class="sd">        :param value: (int) the value in mel to convert</span>
 <span class="sd">        :returns: (int) the value in dB</span>
@@ -206,7 +206,7 @@
 
 <div class="viewcode-block" id="sppasAudioConverter.amp2db"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audioconvert.sppasAudioConverter.amp2db">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">amp2db</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the equivalent value in a dB scale, from an amplitude value.</span>
+        <span class="sd">&quot;&quot;&quot;Return the equivalent value in a dB scale, from an amplitude value.</span>
 
 <span class="sd">        Decibels express a power ratio, not an amount. They tell how many times</span>
 <span class="sd">        more (positive dB) or less (negative dB) but not how much in absolute terms.</span>

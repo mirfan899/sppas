@@ -73,7 +73,14 @@
 <span class="sd">    Exceptions for plugins package.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">t</span>
+
+<span class="kn">from</span> <span class="nn">sppas.src.config</span> <span class="k">import</span> <span class="n">plugins_translation</span>
+
+<span class="c1"># -----------------------------------------------------------------------</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">plugins_translation</span><span class="o">.</span><span class="n">gettext</span>
+
+<span class="c1"># -----------------------------------------------------------------------</span>
 
 <span class="n">CFG_FILE_ERROR</span> <span class="o">=</span> <span class="s2">&quot;:ERROR 4010: &quot;</span>
 <span class="n">SECT_CFG_FILE_ERROR</span> <span class="o">=</span> <span class="s2">&quot;:ERROR 4014: &quot;</span>
@@ -92,10 +99,14 @@
 
 
 <div class="viewcode-block" id="PluginConfigFileError"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginConfigFileError">[docs]</a><span class="k">class</span> <span class="nc">PluginConfigFileError</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; :ERROR 4010: Missing plugin configuration file. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;:ERROR 4010:.</span>
+
+<span class="sd">    Missing plugin configuration file.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PluginConfigFileError.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginConfigFileError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">CFG_FILE_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="n">CFG_FILE_ERROR</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">CFG_FILE_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">CFG_FILE_ERROR</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">)</span></div>
@@ -104,10 +115,15 @@
 
 
 <div class="viewcode-block" id="PluginSectionConfigFileError"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginSectionConfigFileError">[docs]</a><span class="k">class</span> <span class="nc">PluginSectionConfigFileError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; :ERROR 4014: Missing section {section_name} in the configuration file. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;:ERROR 4014:.</span>
+
+<span class="sd">    Missing section {section_name} in the configuration file.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PluginSectionConfigFileError.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginSectionConfigFileError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_name</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">SECT_CFG_FILE_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="n">SECT_CFG_FILE_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">section_name</span><span class="o">=</span><span class="n">section_name</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">SECT_CFG_FILE_ERROR</span> <span class="o">+</span> \
+                         <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">SECT_CFG_FILE_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">section_name</span><span class="o">=</span><span class="n">section_name</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">)</span></div>
@@ -116,10 +132,17 @@
 
 
 <div class="viewcode-block" id="PluginOptionConfigFileError"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginOptionConfigFileError">[docs]</a><span class="k">class</span> <span class="nc">PluginOptionConfigFileError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; :ERROR 4016: Missing option {:s} in section {:s} of the configuration file. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;:ERROR 4016:.</span>
+
+<span class="sd">    Missing option {:s} in section {:s} of the configuration file.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PluginOptionConfigFileError.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginOptionConfigFileError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_name</span><span class="p">,</span> <span class="n">option_name</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">OPT_CFG_FILE_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="n">OPT_CFG_FILE_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">section_name</span><span class="o">=</span><span class="n">section_name</span><span class="p">,</span> <span class="n">option_name</span><span class="o">=</span><span class="n">option_name</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">OPT_CFG_FILE_ERROR</span> <span class="o">+</span> \
+                         <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">OPT_CFG_FILE_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                             <span class="n">section_name</span><span class="o">=</span><span class="n">section_name</span><span class="p">,</span>
+                             <span class="n">option_name</span><span class="o">=</span><span class="n">option_name</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">)</span></div>
@@ -128,10 +151,14 @@
 
 
 <div class="viewcode-block" id="PluginArchiveFileError"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginArchiveFileError">[docs]</a><span class="k">class</span> <span class="nc">PluginArchiveFileError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; :ERROR 4020: Unsupported plugin file type. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;:ERROR 4020:.</span>
+
+<span class="sd">    Unsupported plugin file type.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PluginArchiveFileError.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginArchiveFileError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">ARCHIVE_FILE_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="n">ARCHIVE_FILE_ERROR</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">ARCHIVE_FILE_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">ARCHIVE_FILE_ERROR</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">)</span></div>
@@ -140,10 +167,14 @@
 
 
 <div class="viewcode-block" id="PluginArchiveIOError"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginArchiveIOError">[docs]</a><span class="k">class</span> <span class="nc">PluginArchiveIOError</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; :ERROR 4024: Unsupported plugin file type. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;:ERROR 4024:.</span>
+
+<span class="sd">    Unsupported plugin file type.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PluginArchiveIOError.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginArchiveIOError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">ARCHIVE_IO_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="n">ARCHIVE_IO_ERROR</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">ARCHIVE_IO_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">ARCHIVE_IO_ERROR</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">)</span></div>
@@ -152,10 +183,15 @@
 
 
 <div class="viewcode-block" id="PluginDuplicateError"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginDuplicateError">[docs]</a><span class="k">class</span> <span class="nc">PluginDuplicateError</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; :ERROR 4030: A plugin with the same name is already existing in the plugins folder. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;:ERROR 4030:.</span>
+
+<span class="sd">     A plugin with the same name is already existing in the plugins</span>
+<span class="sd">     folder.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PluginDuplicateError.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginDuplicateError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">DUPLICATE_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="n">DUPLICATE_ERROR</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">DUPLICATE_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">DUPLICATE_ERROR</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">)</span></div>
@@ -164,10 +200,16 @@
 
 
 <div class="viewcode-block" id="PluginIdError"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginIdError">[docs]</a><span class="k">class</span> <span class="nc">PluginIdError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; :ERROR 4040: No plugin with identifier {plugin_id} is available. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;:ERROR 4040:.</span>
+
+<span class="sd">    No plugin with identifier {plugin_id} is available.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PluginIdError.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginIdError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_id</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">PLUGIN_ID_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="n">PLUGIN_ID_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plugin_id</span><span class="o">=</span><span class="n">plugin_id</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">PLUGIN_ID_ERROR</span> <span class="o">+</span> \
+                         <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">PLUGIN_ID_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                             <span class="n">plugin_id</span><span class="o">=</span><span class="n">plugin_id</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">)</span></div>
@@ -176,10 +218,16 @@
 
 
 <div class="viewcode-block" id="PluginFolderError"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginFolderError">[docs]</a><span class="k">class</span> <span class="nc">PluginFolderError</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; :ERROR 4050: No such plugin folder: {:s}. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;:ERROR 4050:.</span>
+
+<span class="sd">    No such plugin folder: {:s}.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PluginFolderError.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginFolderError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_folder</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">PLUGIN_FOLDER_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="n">PLUGIN_FOLDER_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plugin_folder</span><span class="o">=</span><span class="n">plugin_folder</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">PLUGIN_FOLDER_ERROR</span> <span class="o">+</span> \
+                         <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">PLUGIN_FOLDER_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                             <span class="n">plugin_folder</span><span class="o">=</span><span class="n">plugin_folder</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">)</span></div>
@@ -188,10 +236,15 @@
 
 
 <div class="viewcode-block" id="PluginKeyError"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginKeyError">[docs]</a><span class="k">class</span> <span class="nc">PluginKeyError</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; :ERROR 4060: A plugin with the same key is already existing or plugin already loaded. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;:ERROR 4060:.</span>
+
+<span class="sd">    A plugin with the same key is already existing or plugin already</span>
+<span class="sd">    loaded.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="PluginKeyError.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.PluginKeyError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">PLUGIN_KEY_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="n">PLUGIN_KEY_ERROR</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">PLUGIN_KEY_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">PLUGIN_KEY_ERROR</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">)</span></div>
@@ -200,10 +253,16 @@
 
 
 <div class="viewcode-block" id="CommandExecError"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.CommandExecError">[docs]</a><span class="k">class</span> <span class="nc">CommandExecError</span><span class="p">(</span><span class="ne">OSError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; :ERROR 4070: {command_name} is not a valid command on your operating system. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;:ERROR 4070:.</span>
+
+<span class="sd">    {command_name} is not a valid command on your operating system.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CommandExecError.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.CommandExecError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command_name</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">CMD_EXEC_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="n">CMD_EXEC_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command_name</span><span class="o">=</span><span class="n">command_name</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">CMD_EXEC_ERROR</span> <span class="o">+</span> \
+                         <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">CMD_EXEC_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                             <span class="n">command_name</span><span class="o">=</span><span class="n">command_name</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">)</span></div>
@@ -212,11 +271,19 @@
 
 
 <div class="viewcode-block" id="CommandSystemError"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.CommandSystemError">[docs]</a><span class="k">class</span> <span class="nc">CommandSystemError</span><span class="p">(</span><span class="ne">OSError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; :ERROR 4075: No command was defined for the system: {:s}. Supported systems of this plugin are: {:s}.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;:ERROR 4075:.</span>
+
+<span class="sd">    No command was defined for the system: {:s}.</span>
+<span class="sd">    Supported systems of this plugin are: {:s}.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CommandSystemError.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.CommandSystemError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_system</span><span class="p">,</span> <span class="n">supported_systems</span><span class="o">=</span><span class="p">[]):</span>
         <span class="n">systems</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">supported_systems</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">CMD_SYSTEM_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="n">CMD_SYSTEM_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">current_system</span><span class="o">=</span><span class="n">current_system</span><span class="p">,</span> <span class="n">supported_systems</span><span class="o">=</span><span class="n">systems</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">CMD_SYSTEM_ERROR</span> <span class="o">+</span> \
+                         <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">CMD_SYSTEM_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">current_system</span><span class="o">=</span><span class="n">current_system</span><span class="p">,</span>
+                            <span class="n">supported_systems</span><span class="o">=</span><span class="n">systems</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">)</span></div>
@@ -225,15 +292,18 @@
 
 
 <div class="viewcode-block" id="OptionKeyError"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.OptionKeyError">[docs]</a><span class="k">class</span> <span class="nc">OptionKeyError</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; :ERROR 4080: No option with key {:s}. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;:ERROR 4080:.</span>
+
+<span class="sd">    No option with key {:s}.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="OptionKeyError.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.pluginsexc.OptionKeyError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">OPTION_KEY_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="n">OPTION_KEY_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">OPTION_KEY_ERROR</span> <span class="o">+</span> \
+                         <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">OPTION_KEY_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">)</span></div>
-
-<span class="c1"># -----------------------------------------------------------------------</span>
 </pre></div>
 
           </div>

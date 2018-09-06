@@ -37,7 +37,7 @@
             
   <h1>Source code for anndata.media</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
-<span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    ..</span>
 <span class="sd">        ---------------------------------------------------------------------</span>
@@ -68,8 +68,8 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.anndata.media.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    anndata.media.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">mimetypes</span>
@@ -81,8 +81,8 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasMedia"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMedia">[docs]</a><span class="k">class</span> <span class="nc">sppasMedia</span><span class="p">(</span><span class="n">sppasMetaData</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Generic representation of a media file.</span>
+<div class="viewcode-block" id="sppasMedia"><a class="viewcode-back" href="../../rst/anndata.html#anndata.media.sppasMedia">[docs]</a><span class="k">class</span> <span class="nc">sppasMedia</span><span class="p">(</span><span class="n">sppasMetaData</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generic representation of a media file.</span>
 
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
@@ -91,8 +91,8 @@
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasMedia.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMedia.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">media_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mime_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Creates a new sppasMedia instance.</span>
+<div class="viewcode-block" id="sppasMedia.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.media.sppasMedia.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">media_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mime_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new sppasMedia instance.</span>
 
 <span class="sd">        :param filename: (str) File name of the media</span>
 <span class="sd">        :param media_id: (str) Identifier of the media</span>
@@ -118,29 +118,26 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMedia.get_filename"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMedia.get_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the URL of the media. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasMedia.get_filename"><a class="viewcode-back" href="../../rst/anndata.html#anndata.media.sppasMedia.get_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the URL of the media.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__url</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMedia.get_mime_type"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMedia.get_mime_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_mime_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the mime type of the media. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasMedia.get_mime_type"><a class="viewcode-back" href="../../rst/anndata.html#anndata.media.sppasMedia.get_mime_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_mime_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the mime type of the media.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mime</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMedia.get_content"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMedia.get_content">[docs]</a>    <span class="k">def</span> <span class="nf">get_content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the content of the media. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasMedia.get_content"><a class="viewcode-back" href="../../rst/anndata.html#anndata.media.sppasMedia.get_content">[docs]</a>    <span class="k">def</span> <span class="nf">get_content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the content of the media.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__content</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMedia.set_content"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMedia.set_content">[docs]</a>    <span class="k">def</span> <span class="nf">set_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the content of the media.</span>
+<div class="viewcode-block" id="sppasMedia.set_content"><a class="viewcode-back" href="../../rst/anndata.html#anndata.media.sppasMedia.set_content">[docs]</a>    <span class="k">def</span> <span class="nf">set_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the content of the media.</span>
 
 <span class="sd">        :param content: (str)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -156,7 +153,7 @@
                <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">__url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mime</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if other is strictly identical to self (even the id). &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return True if other is strictly identical to self (even id).&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">sppasMedia</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>

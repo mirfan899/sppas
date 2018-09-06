@@ -69,12 +69,6 @@
 <span class="sd">    src.resources.unigram.py</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
-<span class="sd">    An unigram is commonly a data structure with tokens and their probabilities,</span>
-<span class="sd">    and a back-off value. Is is a statistical language model.</span>
-<span class="sd">    This class is a simplified version with only tokens and their occurrences.</span>
-
-<span class="sd">    Notice that tokens are case-sensitive.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">codecs</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -88,20 +82,28 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasUnigram"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasUnigram">[docs]</a><span class="k">class</span> <span class="nc">sppasUnigram</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasUnigram"><a class="viewcode-back" href="../../rst/resources.html#resources.unigram.sppasUnigram">[docs]</a><span class="k">class</span> <span class="nc">sppasUnigram</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to represent a simple unigram: a set of token/count.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Class to represent a simple unigram: a set of token/count.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
+
+<span class="sd">    An unigram is commonly a data structure with tokens and their</span>
+<span class="sd">    probabilities, and a back-off value. Is is a statistical language model.</span>
+<span class="sd">    This class is a simplified version with only tokens and their occurrences.</span>
+
+<span class="sd">    Notice that tokens are case-sensitive.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasUnigram.__init__"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasUnigram.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodump</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasUnigram instance.</span>
 
-<span class="sd">        :param filename: (str) Name of the file with words and counts (2 columns)</span>
+<div class="viewcode-block" id="sppasUnigram.__init__"><a class="viewcode-back" href="../../rst/resources.html#resources.unigram.sppasUnigram.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodump</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasUnigram instance.</span>
+
+<span class="sd">        :param filename: (str) Name of the file with words and counts \</span>
+<span class="sd">        (2 columns)</span>
 <span class="sd">        :param nodump: (bool) Disable the creation of a dump file</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -113,11 +115,14 @@
             <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">dp</span> <span class="o">=</span> <span class="n">sppasDumpFile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
-            <span class="c1"># Try first to get the dict from a dump file (at least 2 times faster)</span>
+            <span class="c1"># Try first to get the dict from a dump file</span>
+            <span class="c1"># (at least 2 times faster)</span>
             <span class="k">if</span> <span class="n">nodump</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="n">dp</span><span class="o">.</span><span class="n">load_from_dump</span><span class="p">()</span>
 
-            <span class="c1"># Load from ascii if: 1st load, or, dump load error, or dump older than ascii</span>
+            <span class="c1"># Load from ascii if: 1st load,</span>
+            <span class="c1"># or, dump load error,</span>
+            <span class="c1"># or dump older than ascii</span>
             <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">load_from_ascii</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">nodump</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
@@ -127,8 +132,8 @@
 
     <span class="c1"># -------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasUnigram.add"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasUnigram.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add or increment a token in the unigram.</span>
+<div class="viewcode-block" id="sppasUnigram.add"><a class="viewcode-back" href="../../rst/resources.html#resources.unigram.sppasUnigram.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add or increment a token in the unigram.</span>
 
 <span class="sd">        :param entry: (str) String of the token to add</span>
 <span class="sd">        :param value: (int) Value to increment the count</span>
@@ -147,8 +152,8 @@
 
     <span class="c1"># -------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasUnigram.get_count"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasUnigram.get_count">[docs]</a>    <span class="k">def</span> <span class="nf">get_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the count of a token.</span>
+<div class="viewcode-block" id="sppasUnigram.get_count"><a class="viewcode-back" href="../../rst/resources.html#resources.unigram.sppasUnigram.get_count">[docs]</a>    <span class="k">def</span> <span class="nf">get_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the count of a token.</span>
 
 <span class="sd">        :param token: (str) The string of the token</span>
 
@@ -158,24 +163,22 @@
 
     <span class="c1"># -------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasUnigram.get_sum"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasUnigram.get_sum">[docs]</a>    <span class="k">def</span> <span class="nf">get_sum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the sum of all counts (of all tokens). &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasUnigram.get_sum"><a class="viewcode-back" href="../../rst/resources.html#resources.unigram.sppasUnigram.get_sum">[docs]</a>    <span class="k">def</span> <span class="nf">get_sum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the sum of all counts (of all tokens).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__sum</span></div>
 
     <span class="c1"># -------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasUnigram.get_tokens"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasUnigram.get_tokens">[docs]</a>    <span class="k">def</span> <span class="nf">get_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return a list with all tokens. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasUnigram.get_tokens"><a class="viewcode-back" href="../../rst/resources.html#resources.unigram.sppasUnigram.get_tokens">[docs]</a>    <span class="k">def</span> <span class="nf">get_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a list with all tokens.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__entries</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
     <span class="c1"># File</span>
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasUnigram.load_from_ascii"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasUnigram.load_from_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">load_from_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Load a unigram from a file with two columns: word count.</span>
+<div class="viewcode-block" id="sppasUnigram.load_from_ascii"><a class="viewcode-back" href="../../rst/resources.html#resources.unigram.sppasUnigram.load_from_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">load_from_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load a unigram from a file with two columns: word count.</span>
 
 <span class="sd">        :param filename: (str) Name of the unigram ASCII file to read</span>
 
@@ -199,8 +202,8 @@
 
     <span class="c1"># -------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasUnigram.save_as_ascii"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasUnigram.save_as_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">save_as_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Save a unigram into a file with two columns: word freq.</span>
+<div class="viewcode-block" id="sppasUnigram.save_as_ascii"><a class="viewcode-back" href="../../rst/resources.html#resources.unigram.sppasUnigram.save_as_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">save_as_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save a unigram into a file with two columns: word freq.</span>
 
 <span class="sd">        :param filename: (str) Name of the unigram ASCII file to write</span>
 <span class="sd">        :returns: (bool)</span>
@@ -208,10 +211,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">entry</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__entries</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+
+                <span class="k">for</span> <span class="n">entry</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__entries</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
+                                           <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
                     <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2"> </span><span class="si">{:d}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Save file failed due to the following error: </span><span class="si">{:s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Save file failed due to the following error: </span><span class="si">{:s}</span><span class="s1">&#39;</span>
+                         <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>

@@ -70,10 +70,6 @@
 <span class="sd">    src.resources.patterns.py</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
-<span class="sd">    Pattern matching aims at checking a given sequence of tokens for the</span>
-<span class="sd">    presence of the constituents of some pattern. In contrast to pattern</span>
-<span class="sd">    recognition, the match usually has to be exact.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
@@ -84,27 +80,31 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasPatterns"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasPatterns">[docs]</a><span class="k">class</span> <span class="nc">sppasPatterns</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPatterns"><a class="viewcode-back" href="../../rst/resources.html#resources.patterns.sppasPatterns">[docs]</a><span class="k">class</span> <span class="nc">sppasPatterns</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Pattern matching.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Pattern matching.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
+
+<span class="sd">    Pattern matching aims at checking a given sequence of tokens for the</span>
+<span class="sd">    presence of the constituents of some pattern. In contrast to pattern</span>
+<span class="sd">    recognition, the match usually has to be exact.</span>
 
 <span class="sd">    Several pattern matching algorithms are implemented in this class.</span>
 <span class="sd">    They allow to find an hypothesis pattern in a reference.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">MAX_GAP</span> <span class="o">=</span> <span class="mi">4</span>
     <span class="n">MAX_NGRAM</span> <span class="o">=</span> <span class="mi">8</span>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPatterns.__init__"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasPatterns.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a new Pattern instance. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasPatterns.__init__"><a class="viewcode-back" href="../../rst/resources.html#resources.patterns.sppasPatterns.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new Pattern instance.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ngram</span> <span class="o">=</span> <span class="mi">3</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_score</span> <span class="o">=</span> <span class="mf">1.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gap</span> <span class="o">=</span> <span class="mi">2</span>
@@ -114,24 +114,24 @@
     <span class="c1"># Getters</span>
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPatterns.get_score"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasPatterns.get_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the score value (float). &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPatterns.get_score"><a class="viewcode-back" href="../../rst/resources.html#resources.patterns.sppasPatterns.get_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the score value (float).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span></div>
 
-<div class="viewcode-block" id="sppasPatterns.get_ngram"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasPatterns.get_ngram">[docs]</a>    <span class="k">def</span> <span class="nf">get_ngram</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the n value for n-grams (int). &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPatterns.get_ngram"><a class="viewcode-back" href="../../rst/resources.html#resources.patterns.sppasPatterns.get_ngram">[docs]</a>    <span class="k">def</span> <span class="nf">get_ngram</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the n value for n-grams (int).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ngram</span></div>
 
-<div class="viewcode-block" id="sppasPatterns.get_gap"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasPatterns.get_gap">[docs]</a>    <span class="k">def</span> <span class="nf">get_gap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the gap value (int). &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPatterns.get_gap"><a class="viewcode-back" href="../../rst/resources.html#resources.patterns.sppasPatterns.get_gap">[docs]</a>    <span class="k">def</span> <span class="nf">get_gap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the gap value (int).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gap</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
     <span class="c1"># Setters</span>
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPatterns.set_ngram"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasPatterns.set_ngram">[docs]</a>    <span class="k">def</span> <span class="nf">set_ngram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the value of n of the n-grams.</span>
+<div class="viewcode-block" id="sppasPatterns.set_ngram"><a class="viewcode-back" href="../../rst/resources.html#resources.patterns.sppasPatterns.set_ngram">[docs]</a>    <span class="k">def</span> <span class="nf">set_ngram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fix the value of n of the n-grams.</span>
 
 <span class="sd">        :param n: (int) Value of n (1&lt;n&lt;MAX_NGRAM)</span>
 <span class="sd">        :raises: NgramRangeError</span>
@@ -145,8 +145,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPatterns.set_gap"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasPatterns.set_gap">[docs]</a>    <span class="k">def</span> <span class="nf">set_gap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the value of the gap.</span>
+<div class="viewcode-block" id="sppasPatterns.set_gap"><a class="viewcode-back" href="../../rst/resources.html#resources.patterns.sppasPatterns.set_gap">[docs]</a>    <span class="k">def</span> <span class="nf">set_gap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fix the value of the gap.</span>
 
 <span class="sd">        :param g: (int) Value of the gap (0&lt;g&lt;MAX_GAP)</span>
 <span class="sd">        :raises: GapRangeError</span>
@@ -161,8 +161,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPatterns.set_score"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasPatterns.set_score">[docs]</a>    <span class="k">def</span> <span class="nf">set_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the value of the score.</span>
+<div class="viewcode-block" id="sppasPatterns.set_score"><a class="viewcode-back" href="../../rst/resources.html#resources.patterns.sppasPatterns.set_score">[docs]</a>    <span class="k">def</span> <span class="nf">set_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fix the value of the score.</span>
 
 <span class="sd">        :param s: (float) Value of the score (0&lt;s&lt;1)</span>
 <span class="sd">        :raises: ScoreRangeError</span>
@@ -178,8 +178,9 @@
     <span class="c1"># Matching search methods</span>
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPatterns.ngram_matches"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasPatterns.ngram_matches">[docs]</a>    <span class="k">def</span> <span class="nf">ngram_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">hyp</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; n-gram matches between ref and hyp.</span>
+<div class="viewcode-block" id="sppasPatterns.ngram_matches"><a class="viewcode-back" href="../../rst/resources.html#resources.patterns.sppasPatterns.ngram_matches">[docs]</a>    <span class="k">def</span> <span class="nf">ngram_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">hyp</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;n-gram matches between ref and hyp.</span>
+
 <span class="sd">        Search for common n-gram sequences of hyp in ref.</span>
 
 <span class="sd">        :param ref: (list of tokens) List of references</span>
@@ -206,7 +207,6 @@
             <span class="c1"># or ORs if there are more than one speaker in the audiofile)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">match_idxa</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">idxm</span> <span class="o">=</span> <span class="n">match_idxa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">previdxm</span> <span class="o">=</span> <span class="n">idxm</span><span class="o">+</span><span class="mi">1</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ngram</span><span class="p">):</span>
                     <span class="n">_matches</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">idxm</span><span class="o">+</span><span class="n">i</span><span class="p">,</span> <span class="n">idxa</span><span class="o">+</span><span class="n">i</span><span class="p">))</span>
 
@@ -214,8 +214,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPatterns.ngram_alignments"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasPatterns.ngram_alignments">[docs]</a>    <span class="k">def</span> <span class="nf">ngram_alignments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">hyp</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; n-gram alignment of ref and hyp.</span>
+<div class="viewcode-block" id="sppasPatterns.ngram_alignments"><a class="viewcode-back" href="../../rst/resources.html#resources.patterns.sppasPatterns.ngram_alignments">[docs]</a>    <span class="k">def</span> <span class="nf">ngram_alignments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">hyp</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;n-gram alignment of ref and hyp.</span>
 
 <span class="sd">        The algorithm is based on the finding of matching n-grams, in the</span>
 <span class="sd">        range of a given gap. If 1-gram, keep only hypothesis items with a</span>
@@ -261,7 +261,7 @@
             <span class="c1"># matching</span>
             <span class="k">if</span> <span class="n">idxm</span> <span class="o">&lt;</span> <span class="n">lastidxm</span> <span class="ow">and</span> <span class="n">nasr</span><span class="p">[</span><span class="n">idxa</span><span class="p">]</span> <span class="o">==</span> <span class="n">nman</span><span class="p">[</span><span class="n">idxm</span><span class="p">]:</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ngram</span><span class="p">):</span>
-                    <span class="n">alignment</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">idxm</span><span class="o">+</span><span class="n">i</span><span class="p">,</span><span class="n">idxa</span><span class="o">+</span><span class="n">i</span><span class="p">))</span>
+                    <span class="n">alignment</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">idxm</span><span class="o">+</span><span class="n">i</span><span class="p">,</span> <span class="n">idxa</span><span class="o">+</span><span class="n">i</span><span class="p">))</span>
                 <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
 
             <span class="c1"># matching, supposing deletions in hyp</span>
@@ -298,8 +298,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPatterns.dp_matching"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasPatterns.dp_matching">[docs]</a>    <span class="k">def</span> <span class="nf">dp_matching</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">hyp</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Dynamic Programming alignment of ref and hyp.</span>
+<div class="viewcode-block" id="sppasPatterns.dp_matching"><a class="viewcode-back" href="../../rst/resources.html#resources.patterns.sppasPatterns.dp_matching">[docs]</a>    <span class="k">def</span> <span class="nf">dp_matching</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">hyp</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Dynamic Programming alignment of ref and hyp.</span>
 
 <span class="sd">        The DP alignment algorithm performs a global minimization of a</span>
 <span class="sd">        Levenshtein distance function which weights the cost of correct words,</span>
@@ -318,7 +318,7 @@
     <span class="c1"># ------------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_create_ngrams</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">hyp</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create ngrams of the reference and the hypothesis.</span>
+        <span class="sd">&quot;&quot;&quot;Create ngrams of the reference and the hypothesis.</span>
 
 <span class="sd">        :param ref: (list of tokens) List of references</span>
 <span class="sd">        :param hyp: (list of tuples) List of hypothesis with their scores</span>
@@ -330,7 +330,7 @@
         <span class="c1"># create n-gram sequences of the hypothesis</span>
         <span class="c1"># if ngram=1, keep only items with a high confidence score</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ngram</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">tab</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span> <span class="k">for</span> <span class="p">(</span><span class="n">token</span><span class="p">,</span><span class="n">score</span><span class="p">)</span> <span class="ow">in</span> <span class="n">hyp</span><span class="p">]</span>
+            <span class="n">tab</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span> <span class="k">for</span> <span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span> <span class="ow">in</span> <span class="n">hyp</span><span class="p">]</span>
             <span class="n">nasr</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">tab</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ngram</span><span class="p">)]))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">nasr</span> <span class="o">=</span> <span class="p">[]</span>

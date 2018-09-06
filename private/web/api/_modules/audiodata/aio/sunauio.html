@@ -83,21 +83,20 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:      Nicolas Chazeau, Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
 <span class="sd">    :summary:      A Sun AU file open/save utility class.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="SunauIO.__init__"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.sunauio.SunauIO.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Constructor. &quot;&quot;&quot;</span>
-
-        <span class="n">sppasAudioPCM</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="sd">&quot;&quot;&quot;Constructor.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SunauIO</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="SunauIO.open"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.sunauio.SunauIO.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get an audio from a Audio Interchange File Format file.</span>
+        <span class="sd">&quot;&quot;&quot;Get an audio from a Audio Interchange File Format file.</span>
 
 <span class="sd">        :param filename: (str) input file name.</span>
 
@@ -109,7 +108,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="SunauIO.save"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.sunauio.SunauIO.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write an audio content as a Audio Interchange File Format file.</span>
+        <span class="sd">&quot;&quot;&quot;Write an audio content as a Audio Interchange File Format file.</span>
 
 <span class="sd">        :param filename: (str) output filename.</span>
 
@@ -152,7 +151,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="SunauIO.save_fragment"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.sunauio.SunauIO.save_fragment">[docs]</a>    <span class="k">def</span> <span class="nf">save_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">frames</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write an audio content as a Audio Interchange File Format file.</span>
+        <span class="sd">&quot;&quot;&quot;Write an audio content as a Audio Interchange File Format file.</span>
 
 <span class="sd">        :param filename: (str) output filename.</span>
 <span class="sd">        :param frames: (str) the frames to write</span>

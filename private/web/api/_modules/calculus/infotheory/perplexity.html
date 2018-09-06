@@ -68,17 +68,7 @@
 <span class="sd">        ---------------------------------------------------------------------</span>
 
 <span class="sd">    src.calculus.infotheory.perplexity.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-
-<span class="sd">    Perplexity is a measurement of how well a probability distribution or</span>
-<span class="sd">    probability model predicts a sample.</span>
-<span class="sd">    The perplexity of a discrete probability distribution p is defined as:</span>
-<span class="sd">    2^{H(p)}=2^{-\sum_x p(x)\log_2 p(x)}</span>
-<span class="sd">    where H(p) is the entropy of the distribution and x ranges over events.</span>
-
-<span class="sd">    Perplexity is commonly used to compare models on the same list of</span>
-<span class="sd">    symbols - this list of symbols is &quot;representing&quot; the problem we are</span>
-<span class="sd">    facing one. The higher perplexity, the better model.</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">..calculusexc</span> <span class="k">import</span> <span class="n">EmptyError</span><span class="p">,</span> <span class="n">InsideIntervalError</span>
@@ -90,14 +80,24 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="Perplexity"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.infotheory.perplexity.Perplexity">[docs]</a><span class="k">class</span> <span class="nc">Perplexity</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPerplexity"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.infotheory.perplexity.sppasPerplexity">[docs]</a><span class="k">class</span> <span class="nc">sppasPerplexity</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Perplexity estimator.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Perplexity estimator.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
+
+<span class="sd">    Perplexity is a measurement of how well a probability distribution or</span>
+<span class="sd">    probability model predicts a sample.</span>
+<span class="sd">    The perplexity of a discrete probability distribution p is defined as:</span>
+<span class="sd">    2^{H(p)}=2^{-\sum_x p(x)\log_2 p(x)}</span>
+<span class="sd">    where H(p) is the entropy of the distribution and x ranges over events.</span>
+
+<span class="sd">    Perplexity is commonly used to compare models on the same list of</span>
+<span class="sd">    symbols - this list of symbols is &quot;representing&quot; the problem we are</span>
+<span class="sd">    facing one. The higher perplexity, the better model.</span>
 
 <span class="sd">    A model is represented as a distribution of probabilities: the key is</span>
 <span class="sd">    representing the symbol and the value is the the probability.</span>
@@ -107,7 +107,7 @@
 <span class="sd">    &gt;&gt;&gt;model[&quot;pineapple&quot;] = 0.2</span>
 <span class="sd">    &gt;&gt;&gt;model[&quot;tomato&quot;] = 0.3</span>
 <span class="sd">    &gt;&gt;&gt;model[&quot;apple&quot;] = 0.4</span>
-<span class="sd">    &gt;&gt;&gt;pp = Perplexity(model)</span>
+<span class="sd">    &gt;&gt;&gt;pp = sppasPerplexity(model)</span>
 
 <span class="sd">    The observation on which the perplexity must be estimated on is</span>
 <span class="sd">    represented as a list:</span>
@@ -129,10 +129,13 @@
 <span class="sd">    &gt;&gt;&gt;2.62034217479</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">DEFAULT_EPSILON</span> <span class="o">=</span> <span class="mf">0.000001</span>
 
-<div class="viewcode-block" id="Perplexity.__init__"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.infotheory.perplexity.Perplexity.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">ngram</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Creates a Perplexity instance with a list of symbols.</span>
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasPerplexity.__init__"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.infotheory.perplexity.sppasPerplexity.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">ngram</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a Perplexity instance with a list of symbols.</span>
 
 <span class="sd">        :param model: (dict) a dictionary with key=item, value=probability</span>
 <span class="sd">        :param ngram: (int) the n value, in the range 1..8</span>
@@ -140,16 +143,16 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ngram</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon</span> <span class="o">=</span> <span class="n">Perplexity</span><span class="o">.</span><span class="n">DEFAULT_EPSILON</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon</span> <span class="o">=</span> <span class="n">sppasPerplexity</span><span class="o">.</span><span class="n">DEFAULT_EPSILON</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_ngram</span><span class="p">(</span><span class="n">ngram</span><span class="p">)</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="Perplexity.set_epsilon"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.infotheory.perplexity.Perplexity.set_epsilon">[docs]</a>    <span class="k">def</span> <span class="nf">set_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set a value for epsilon.</span>
-<span class="sd">        </span>
+<div class="viewcode-block" id="sppasPerplexity.set_epsilon"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.infotheory.perplexity.sppasPerplexity.set_epsilon">[docs]</a>    <span class="k">def</span> <span class="nf">set_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set a value for epsilon.</span>
+
 <span class="sd">        This value must be significantly lower than the minimum value in the</span>
 <span class="sd">        model.</span>
 
@@ -174,11 +177,13 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="Perplexity.set_model"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.infotheory.perplexity.Perplexity.set_model">[docs]</a>    <span class="k">def</span> <span class="nf">set_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the probability distribution to the model.</span>
+<div class="viewcode-block" id="sppasPerplexity.set_model"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.infotheory.perplexity.sppasPerplexity.set_model">[docs]</a>    <span class="k">def</span> <span class="nf">set_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the probability distribution to the model.</span>
+
 <span class="sd">        Notice that the epsilon value is re-assigned.</span>
 
-<span class="sd">        :param model: (dict) Dictionary with symbols as keys and values as probabilities.</span>
+<span class="sd">        :param model: (dict) Dictionary with symbols as keys and values as</span>
+<span class="sd">        probabilities.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># check the model before assigning to the member</span>
@@ -198,8 +203,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="Perplexity.set_ngram"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.infotheory.perplexity.Perplexity.set_ngram">[docs]</a>    <span class="k">def</span> <span class="nf">set_ngram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the n value of n-grams.</span>
+<div class="viewcode-block" id="sppasPerplexity.set_ngram"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.infotheory.perplexity.sppasPerplexity.set_ngram">[docs]</a>    <span class="k">def</span> <span class="nf">set_ngram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the n value of n-grams.</span>
 
 <span class="sd">        :param n: (int) Value ranging from 1 to MAX_GRAM</span>
 
@@ -212,8 +217,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="Perplexity.eval_pp"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.infotheory.perplexity.Perplexity.eval_pp">[docs]</a>    <span class="k">def</span> <span class="nf">eval_pp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbols</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Estimates the perplexity of a list of symbols.</span>
+<div class="viewcode-block" id="sppasPerplexity.eval_pp"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.infotheory.perplexity.sppasPerplexity.eval_pp">[docs]</a>    <span class="k">def</span> <span class="nf">eval_pp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbols</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Estimate the perplexity of a list of symbols.</span>
 
 <span class="sd">        :returns: float value</span>
 

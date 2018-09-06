@@ -81,14 +81,14 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Nicolas Chazeau, Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
 <span class="sd">    :summary:      A channel formatter class.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasChannelFormatter.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasChannelFormatter instance.</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasChannelFormatter instance.</span>
 
 <span class="sd">        :param channel: (sppasChannel) The channel to work on.</span>
 
@@ -102,14 +102,14 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFormatter.get_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.get_channel">[docs]</a>    <span class="k">def</span> <span class="nf">get_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the sppasChannel. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the sppasChannel.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFormatter.get_framerate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.get_framerate">[docs]</a>    <span class="k">def</span> <span class="nf">get_framerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the expected frame rate for the channel.</span>
+        <span class="sd">&quot;&quot;&quot;Return the expected frame rate for the channel.</span>
 <span class="sd">        Notice that while convert is not applied, it can be different of the</span>
 <span class="sd">        current one of the channel.</span>
 
@@ -121,7 +121,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFormatter.get_sampwidth"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.get_sampwidth">[docs]</a>    <span class="k">def</span> <span class="nf">get_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the expected sample width for the channel.</span>
+        <span class="sd">&quot;&quot;&quot;Return the expected sample width for the channel.</span>
 <span class="sd">        Notice that while convert is not applied, it can be different of the</span>
 <span class="sd">        current one  of the channel.</span>
 
@@ -135,7 +135,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFormatter.set_framerate"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.set_framerate">[docs]</a>    <span class="k">def</span> <span class="nf">set_framerate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">framerate</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the expected frame rate for the channel.</span>
+        <span class="sd">&quot;&quot;&quot;Fix the expected frame rate for the channel.</span>
 <span class="sd">        Notice that while convert is not applied, it can be different of the</span>
 <span class="sd">        current one  of the channel.</span>
 
@@ -147,7 +147,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFormatter.set_sampwidth"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.set_sampwidth">[docs]</a>    <span class="k">def</span> <span class="nf">set_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampwidth</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the expected sample width for the channel.</span>
+        <span class="sd">&quot;&quot;&quot;Fix the expected sample width for the channel.</span>
 <span class="sd">        Notice that while convert is not applied, it can be different of the</span>
 <span class="sd">        current one  of the channel.</span>
 
@@ -159,7 +159,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFormatter.convert"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.convert">[docs]</a>    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert the channel.</span>
+        <span class="sd">&quot;&quot;&quot;Convert the channel.</span>
 <span class="sd">        Convert to the expected (already) given sample width and frame rate.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -175,7 +175,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFormatter.bias"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.bias">[docs]</a>    <span class="k">def</span> <span class="nf">bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bias_value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert the channel with a bias added to each frame.</span>
+        <span class="sd">&quot;&quot;&quot;Convert the channel with a bias added to each frame.</span>
 <span class="sd">        Samples wrap around in case of overflow.</span>
 
 <span class="sd">        :param bias_value: (int) the value to bias the frames</span>
@@ -194,7 +194,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFormatter.mul"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.mul">[docs]</a>    <span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert the channel.</span>
+        <span class="sd">&quot;&quot;&quot;Convert the channel.</span>
 <span class="sd">        All frames in the original channel are multiplied by the floating-</span>
 <span class="sd">        point value factor.</span>
 <span class="sd">        Samples are truncated in case of overflow.</span>
@@ -215,7 +215,7 @@
     <span class="c1"># ----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFormatter.remove_offset"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.remove_offset">[docs]</a>    <span class="k">def</span> <span class="nf">remove_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert the channel by removing the offset in the channel. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Convert the channel by removing the offset in the channel.&quot;&quot;&quot;</span>
 
         <span class="n">new_channel</span> <span class="o">=</span> <span class="n">sppasChannel</span><span class="p">()</span>
         <span class="n">new_channel</span><span class="o">.</span><span class="n">set_sampwidth</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sampwidth</span><span class="p">)</span>
@@ -229,7 +229,7 @@
     <span class="c1"># ----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFormatter.sync"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.sync">[docs]</a>    <span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert the channel with the parameters from the channel put in input.</span>
+        <span class="sd">&quot;&quot;&quot;Convert the channel with the parameters from the channel put in input.</span>
 
 <span class="sd">        :param channel: (sppasChannel) the channel used as a model</span>
 
@@ -244,7 +244,7 @@
     <span class="c1"># ----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFormatter.remove_frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.remove_frames">[docs]</a>    <span class="k">def</span> <span class="nf">remove_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert the channel by removing frames.</span>
+        <span class="sd">&quot;&quot;&quot;Convert the channel by removing frames.</span>
 
 <span class="sd">        :param begin: (int) the position of the beginning of the frames to remove</span>
 <span class="sd">        :param end: (int) the position of the end of the frames to remove</span>
@@ -264,7 +264,7 @@
     <span class="c1"># ----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFormatter.add_frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.add_frames">[docs]</a>    <span class="k">def</span> <span class="nf">add_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert the channel by adding frames.</span>
+        <span class="sd">&quot;&quot;&quot;Convert the channel by adding frames.</span>
 
 <span class="sd">        :param frames: (str)</span>
 <span class="sd">        :param position: (int) the position where the frames will be inserted</span>
@@ -282,7 +282,7 @@
     <span class="c1"># ----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelFormatter.append_frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelformatter.sppasChannelFormatter.append_frames">[docs]</a>    <span class="k">def</span> <span class="nf">append_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert the channel by appending frames.</span>
+        <span class="sd">&quot;&quot;&quot;Convert the channel by appending frames.</span>
 
 <span class="sd">        :param frames: (str) the frames to append</span>
 
@@ -300,7 +300,7 @@
     <span class="c1"># ----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__convert_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Convert frames to the expected sample width and frame rate.</span>
+        <span class="sd">&quot;&quot;&quot;Convert frames to the expected sample width and frame rate.</span>
 
 <span class="sd">        :param frames: (str) the frames to convert</span>
 

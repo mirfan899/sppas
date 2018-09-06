@@ -84,14 +84,14 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
 <span class="sd">    :summary:      A channel utility class to mix several channels in one.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasChannelMixer.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsmixer.sppasChannelMixer.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a ChannelMixer instance. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Create a ChannelMixer instance.&quot;&quot;&quot;</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">_channels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_factors</span> <span class="o">=</span> <span class="p">[]</span></div>
@@ -99,7 +99,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelMixer.get_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsmixer.sppasChannelMixer.get_channel">[docs]</a>    <span class="k">def</span> <span class="nf">get_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the channel of a given index.</span>
+        <span class="sd">&quot;&quot;&quot;Return the channel of a given index.</span>
 
 <span class="sd">        :param idx: (int) the index of the channel to return</span>
 <span class="sd">        :returns: (sppasChannel)</span>
@@ -110,7 +110,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelMixer.append_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsmixer.sppasChannelMixer.append_channel">[docs]</a>    <span class="k">def</span> <span class="nf">append_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Append a channel and the corresponding factor for a mix.</span>
+        <span class="sd">&quot;&quot;&quot;Append a channel and the corresponding factor for a mix.</span>
 
 <span class="sd">        :param channel: (Channel object) the channel to append</span>
 <span class="sd">        :param factor: (float) the factor associated to the channel</span>
@@ -122,7 +122,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelMixer.check_channels"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsmixer.sppasChannelMixer.check_channels">[docs]</a>    <span class="k">def</span> <span class="nf">check_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Checking the conformity of the channels. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Checking the conformity of the channels.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_channels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">MixChannelError</span>
@@ -146,7 +146,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_sample_calculator</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">sampwidth</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">attenuator</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the sample value, applying a factor and an attenuator.</span>
+        <span class="sd">&quot;&quot;&quot;Return the sample value, applying a factor and an attenuator.</span>
 
 <span class="sd">        :param channels: (Channel[]) the list of channels</span>
 <span class="sd">        :param pos: (int) the position of the sample to calculate</span>
@@ -182,7 +182,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelMixer.mix"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsmixer.sppasChannelMixer.mix">[docs]</a>    <span class="k">def</span> <span class="nf">mix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attenuator</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Mix the channels of the list in one.</span>
+        <span class="sd">&quot;&quot;&quot;Mix the channels of the list in one.</span>
 
 <span class="sd">        :param attenuator: (float) the factor to apply to each sample calculated</span>
 <span class="sd">        :returns: the result Channel</span>
@@ -212,7 +212,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelMixer.get_minmax"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsmixer.sppasChannelMixer.get_minmax">[docs]</a>    <span class="k">def</span> <span class="nf">get_minmax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return a tuple with the minimum and the maximum samples values.</span>
+        <span class="sd">&quot;&quot;&quot;Return a tuple with the minimum and the maximum samples values.</span>
 
 <span class="sd">        :returns: the tuple (minvalue, maxvalue)</span>
 
@@ -235,7 +235,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasChannelMixer.norm_length"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.channelsmixer.sppasChannelMixer.norm_length">[docs]</a>    <span class="k">def</span> <span class="nf">norm_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Normalize the number of frames of all the channels,</span>
+        <span class="sd">&quot;&quot;&quot;Normalize the number of frames of all the channels,</span>
 <span class="sd">        by appending silence at the end.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>

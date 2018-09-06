@@ -82,12 +82,12 @@
 
 <span class="kn">from</span> <span class="nn">..media</span> <span class="k">import</span> <span class="n">sppasMedia</span>
 <span class="kn">from</span> <span class="nn">..ctrlvocab</span> <span class="k">import</span> <span class="n">sppasCtrlVocab</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
-<span class="kn">from</span> <span class="nn">..annlocation.disjoint</span> <span class="k">import</span> <span class="n">sppasDisjoint</span>
-<span class="kn">from</span> <span class="nn">..annlabel.label</span> <span class="k">import</span> <span class="n">sppasLabel</span>
-<span class="kn">from</span> <span class="nn">..annlabel.tag</span> <span class="k">import</span> <span class="n">sppasTag</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasDisjoint</span>
+<span class="kn">from</span> <span class="nn">..ann.annlabel</span> <span class="k">import</span> <span class="n">sppasLabel</span>
+<span class="kn">from</span> <span class="nn">..ann.annlabel</span> <span class="k">import</span> <span class="n">sppasTag</span>
 
 <span class="kn">from</span> <span class="nn">.basetrs</span> <span class="k">import</span> <span class="n">sppasBaseIO</span>
 
@@ -95,20 +95,20 @@
 
 
 <div class="viewcode-block" id="sppasXRA"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xra.sppasXRA">[docs]</a><span class="k">class</span> <span class="nc">sppasXRA</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SPPAS XRA reader and writer.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS XRA reader and writer.</span>
 
 <span class="sd">    xra files are the native file format of the GPL tool SPPAS.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasXRA.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xra.sppasXRA.detect">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check whether a file is of XRA format or not.</span>
+        <span class="sd">&quot;&quot;&quot;Check whether a file is of XRA format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
 <span class="sd">        :returns: (bool)</span>
@@ -129,14 +129,16 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasXRA.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xra.sppasXRA.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new XRA instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new XRA instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
-        <span class="n">sppasBaseIO</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasXRA</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;xra&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="kc">True</span>
@@ -153,13 +155,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">__format</span> <span class="o">=</span> <span class="s2">&quot;1.4&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;xra&quot;</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__format</span> <span class="o">=</span> <span class="s2">&quot;1.4&quot;</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasXRA.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xra.sppasXRA.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read an XRA file and fill the Transcription.</span>
+        <span class="sd">&quot;&quot;&quot;Read an XRA file and fill the Transcription.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
@@ -196,7 +197,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_metadata</span><span class="p">(</span><span class="n">meta_object</span><span class="p">,</span> <span class="n">metadata_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read any kind of metadata. </span>
+        <span class="sd">&quot;&quot;&quot;Read any kind of metadata.</span>
 <span class="sd">        </span>
 <span class="sd">        :param meta_object: (sppasMetadata)</span>
 <span class="sd">        :param metadata_root: (ET) XML Element tree root.</span>
@@ -216,7 +217,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_tier</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tier_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a &#39;Tier&#39; element to create a sppasTier().</span>
+        <span class="sd">&quot;&quot;&quot;Parse a &#39;Tier&#39; element to create a sppasTier().</span>
 
 <span class="sd">        :param tier_root: (ET) XML Element tree root.</span>
 
@@ -246,7 +247,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_annotation</span><span class="p">(</span><span class="n">tier</span><span class="p">,</span> <span class="n">annotation_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse an &#39;Annotation&#39; element and create a sppasAnnotation().</span>
+        <span class="sd">&quot;&quot;&quot;Parse an &#39;Annotation&#39; element and create a sppasAnnotation().</span>
 
 <span class="sd">        :param tier: (sppasTier) Tier to add the newly created annotation.</span>
 <span class="sd">        :param annotation_root: (ET) XML Element tree root.</span>
@@ -274,7 +275,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_location</span><span class="p">(</span><span class="n">location_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a &#39;Location&#39; element an create a sppasLocation().</span>
+        <span class="sd">&quot;&quot;&quot;Parse a &#39;Location&#39; element an create a sppasLocation().</span>
 
 <span class="sd">        :param location_root: (ET) XML Element tree root.</span>
 <span class="sd">        :returns: (sppasLocation)</span>
@@ -301,7 +302,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_localization</span><span class="p">(</span><span class="n">localization_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a &#39;Localization&#39; element and create a sppasLocalization().</span>
+        <span class="sd">&quot;&quot;&quot;Parse a &#39;Localization&#39; element and create a sppasLocalization().</span>
 
 <span class="sd">        :param localization_root: (ET) XML Element tree root.</span>
 <span class="sd">        :returns: (sppasLocalization)</span>
@@ -326,7 +327,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_point</span><span class="p">(</span><span class="n">point_node</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a &#39;Point&#39; element and create a sppasPoint().</span>
+        <span class="sd">&quot;&quot;&quot;Parse a &#39;Point&#39; element and create a sppasPoint().</span>
 
 <span class="sd">        :param point_node: (ET) XML Element node.</span>
 <span class="sd">        :returns: (sppasPoint)</span>
@@ -367,7 +368,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_interval</span><span class="p">(</span><span class="n">interval_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse an &#39;Interval&#39; element and create a sppasInterval().</span>
+        <span class="sd">&quot;&quot;&quot;Parse an &#39;Interval&#39; element and create a sppasInterval().</span>
 
 <span class="sd">        :param interval_root: (ET) XML Element tree root.</span>
 <span class="sd">        :returns: (sppasInterval)</span>
@@ -391,7 +392,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_disjoint</span><span class="p">(</span><span class="n">disjoint_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a &#39;Disjoint&#39; element and create a sppasDisjoint().</span>
+        <span class="sd">&quot;&quot;&quot;Parse a &#39;Disjoint&#39; element and create a sppasDisjoint().</span>
 
 <span class="sd">        :param disjoint_root: (ET) XML Element tree root.</span>
 <span class="sd">        :returns: (sppasDisjoint)</span>
@@ -423,7 +424,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_label</span><span class="p">(</span><span class="n">label_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a &#39;Label&#39; element and return it.</span>
+        <span class="sd">&quot;&quot;&quot;Parse a &#39;Label&#39; element and return it.</span>
 
 <span class="sd">        :param label_root: (ET) XML Element tree root.</span>
 <span class="sd">        :returns: (sppasLabel)</span>
@@ -453,7 +454,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_tag</span><span class="p">(</span><span class="n">tag_node</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a &#39;Tag&#39; element and create a sppasTag().</span>
+        <span class="sd">&quot;&quot;&quot;Parse a &#39;Tag&#39; element and create a sppasTag().</span>
 
 <span class="sd">        :param tag_node: (ET) XML Element node.</span>
 <span class="sd">        :returns: (sppasTag)</span>
@@ -480,7 +481,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_media</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a &#39;Media&#39; element and add create a sppasMedia().</span>
+        <span class="sd">&quot;&quot;&quot;Parse a &#39;Media&#39; element and add create a sppasMedia().</span>
 
 <span class="sd">        :param media_root: (ET) XML Element tree root.</span>
 
@@ -511,7 +512,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_hierarchy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hierarchy_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a &#39;Hierarchy&#39; element and set it.</span>
+        <span class="sd">&quot;&quot;&quot;Parse a &#39;Hierarchy&#39; element and set it.</span>
 
 <span class="sd">        :param hierarchy_root: (ET) XML Element tree root.</span>
 
@@ -545,7 +546,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_parse_vocabulary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocabulary_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a &#39;Vocabulary&#39; element and set it.</span>
+        <span class="sd">&quot;&quot;&quot;Parse a &#39;Vocabulary&#39; element and set it.</span>
 
 <span class="sd">        :param hierarchy_root: (ET) XML Element tree root.</span>
 
@@ -593,7 +594,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasXRA.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xra.sppasXRA.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write an XRA file.</span>
+        <span class="sd">&quot;&quot;&quot;Write an XRA file.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
@@ -606,13 +607,13 @@
         <span class="n">root</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
 
         <span class="n">metadata_root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;Metadata&#39;</span><span class="p">)</span>
-        <span class="n">sppasXRA</span><span class="o">.</span><span class="n">_format_metadata</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">sppasXRA</span><span class="o">.</span><span class="n">format_metadata</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">metadata_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;Entry&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">root</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">tier</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="n">tier_root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;Tier&#39;</span><span class="p">)</span>
-            <span class="n">sppasXRA</span><span class="o">.</span><span class="n">_format_tier</span><span class="p">(</span><span class="n">tier_root</span><span class="p">,</span> <span class="n">tier</span><span class="p">)</span>
+            <span class="n">sppasXRA</span><span class="o">.</span><span class="n">format_tier</span><span class="p">(</span><span class="n">tier_root</span><span class="p">,</span> <span class="n">tier</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">media</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_media_list</span><span class="p">():</span>
             <span class="n">media_root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;Media&#39;</span><span class="p">)</span>
@@ -631,9 +632,9 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_format_metadata</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">,</span> <span class="n">meta_object</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[]):</span>
-        <span class="sd">&quot;&quot;&quot; Add &#39;Metadata&#39; element in the tree from a sppasMetaData().</span>
+<div class="viewcode-block" id="sppasXRA.format_metadata"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xra.sppasXRA.format_metadata">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">format_metadata</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">,</span> <span class="n">meta_object</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&quot;&quot;&quot;Add &#39;Metadata&#39; element in the tree from a sppasMetaData().</span>
 
 <span class="sd">        :param metadata_root: (ET) XML Element tree root.</span>
 <span class="sd">        :param meta_object: (sppasMetadata)</span>
@@ -646,13 +647,13 @@
 
                 <span class="n">entry</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">,</span> <span class="s1">&#39;Entry&#39;</span><span class="p">)</span>
                 <span class="n">entry</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-                <span class="n">entry</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="n">entry</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">value</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_format_tier</span><span class="p">(</span><span class="n">tier_root</span><span class="p">,</span> <span class="n">tier</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add a &#39;Tier&#39; object in the tree from a sppasTier().</span>
+<div class="viewcode-block" id="sppasXRA.format_tier"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xra.sppasXRA.format_tier">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">format_tier</span><span class="p">(</span><span class="n">tier_root</span><span class="p">,</span> <span class="n">tier</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a &#39;Tier&#39; object in the tree from a sppasTier().</span>
 
 <span class="sd">        :param tier_root: (ET) XML Element tree root.</span>
 <span class="sd">        :param tier: (sppasTier)</span>
@@ -667,20 +668,20 @@
 
         <span class="c1"># Tier Metadata</span>
         <span class="n">metadata_root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">tier_root</span><span class="p">,</span> <span class="s1">&#39;Metadata&#39;</span><span class="p">)</span>
-        <span class="n">sppasXRA</span><span class="o">.</span><span class="n">_format_metadata</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">,</span> <span class="n">tier</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="n">sppasXRA</span><span class="o">.</span><span class="n">format_metadata</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">,</span> <span class="n">tier</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">metadata_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;Entry&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">tier_root</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">)</span>
 
         <span class="c1"># Tier annotations list</span>
         <span class="k">for</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="n">tier</span><span class="p">:</span>
             <span class="n">annotation_root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">tier_root</span><span class="p">,</span> <span class="s1">&#39;Annotation&#39;</span><span class="p">)</span>
-            <span class="n">sppasXRA</span><span class="o">.</span><span class="n">_format_annotation</span><span class="p">(</span><span class="n">annotation_root</span><span class="p">,</span> <span class="n">annotation</span><span class="p">)</span>
+            <span class="n">sppasXRA</span><span class="o">.</span><span class="n">format_annotation</span><span class="p">(</span><span class="n">annotation_root</span><span class="p">,</span> <span class="n">annotation</span><span class="p">)</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_format_annotation</span><span class="p">(</span><span class="n">annotation_root</span><span class="p">,</span> <span class="n">annotation</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add an &#39;Annotation&#39; element in the tree from a sppasAnnotation().</span>
+<div class="viewcode-block" id="sppasXRA.format_annotation"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xra.sppasXRA.format_annotation">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">format_annotation</span><span class="p">(</span><span class="n">annotation_root</span><span class="p">,</span> <span class="n">annotation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add an &#39;Annotation&#39; element in the tree from a sppasAnnotation().</span>
 
 <span class="sd">        :param annotation_root: (ET) XML Element tree root.</span>
 <span class="sd">        :param annotation: (sppasAnnotation)</span>
@@ -694,22 +695,22 @@
 
         <span class="c1"># Elements:</span>
         <span class="n">metadata_root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">annotation_root</span><span class="p">,</span> <span class="s1">&#39;Metadata&#39;</span><span class="p">)</span>
-        <span class="n">sppasXRA</span><span class="o">.</span><span class="n">_format_metadata</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">,</span> <span class="n">annotation</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="n">sppasXRA</span><span class="o">.</span><span class="n">format_metadata</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">,</span> <span class="n">annotation</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">metadata_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;Entry&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">annotation_root</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">)</span>
 
         <span class="n">location_root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">annotation_root</span><span class="p">,</span> <span class="s1">&#39;Location&#39;</span><span class="p">)</span>
-        <span class="n">sppasXRA</span><span class="o">.</span><span class="n">_format_location</span><span class="p">(</span><span class="n">location_root</span><span class="p">,</span> <span class="n">annotation</span><span class="o">.</span><span class="n">get_location</span><span class="p">())</span>
+        <span class="n">sppasXRA</span><span class="o">.</span><span class="n">format_location</span><span class="p">(</span><span class="n">location_root</span><span class="p">,</span> <span class="n">annotation</span><span class="o">.</span><span class="n">get_location</span><span class="p">())</span>
 
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">annotation</span><span class="o">.</span><span class="n">get_labels</span><span class="p">():</span>
             <span class="n">label_root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">annotation_root</span><span class="p">,</span> <span class="s1">&#39;Label&#39;</span><span class="p">)</span>
-            <span class="n">sppasXRA</span><span class="o">.</span><span class="n">_format_label</span><span class="p">(</span><span class="n">label_root</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+            <span class="n">sppasXRA</span><span class="o">.</span><span class="n">format_label</span><span class="p">(</span><span class="n">label_root</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_format_location</span><span class="p">(</span><span class="n">location_root</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add a &#39;Location&#39; element in the tree from a sppasLocation().</span>
+<div class="viewcode-block" id="sppasXRA.format_location"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xra.sppasXRA.format_location">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">format_location</span><span class="p">(</span><span class="n">location_root</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a &#39;Location&#39; element in the tree from a sppasLocation().</span>
 
 <span class="sd">        :param location_root: (ET) XML Element tree root.</span>
 <span class="sd">        :param location: (sppasLocation)</span>
@@ -732,13 +733,13 @@
                 <span class="n">disjoint_root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">location_root</span><span class="p">,</span> <span class="s1">&#39;Disjoint&#39;</span><span class="p">)</span>
                 <span class="n">sppasXRA</span><span class="o">.</span><span class="n">_format_disjoint</span><span class="p">(</span><span class="n">disjoint_root</span><span class="p">,</span> <span class="n">localization</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">score</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">disjoint_root</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="n">u</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">score</span><span class="p">)))</span>
+                    <span class="n">disjoint_root</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="n">u</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">score</span><span class="p">)))</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_point</span><span class="p">(</span><span class="n">point_node</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add a &#39;Point&#39; element in the tree from a sppasPoint().</span>
+        <span class="sd">&quot;&quot;&quot;Add a &#39;Point&#39; element in the tree from a sppasPoint().</span>
 
 <span class="sd">        :param point_node: (ET) XML Element node.</span>
 <span class="sd">        :param point: (sppasPoint)</span>
@@ -752,7 +753,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_interval</span><span class="p">(</span><span class="n">interval_root</span><span class="p">,</span> <span class="n">interval</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add an &#39;Interval&#39; element in the tree from a sppasInterval().</span>
+        <span class="sd">&quot;&quot;&quot;Add an &#39;Interval&#39; element in the tree from a sppasInterval().</span>
 
 <span class="sd">        :param interval_root: (ET) XML Element node.</span>
 <span class="sd">        :param interval: (sppasInterval)</span>
@@ -768,7 +769,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_disjoint</span><span class="p">(</span><span class="n">disjoint_root</span><span class="p">,</span> <span class="n">disjoint</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add a &#39;Disjoint&#39; element in the tree from a sppasDisjoint().</span>
+        <span class="sd">&quot;&quot;&quot;Add a &#39;Disjoint&#39; element in the tree from a sppasDisjoint().</span>
 
 <span class="sd">        :param disjoint_root: (ET) XML Element node.</span>
 <span class="sd">        :param disjoint: (sppasDisjoint)</span>
@@ -780,9 +781,9 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_format_label</span><span class="p">(</span><span class="n">label_root</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add a &#39;Label&#39; element in the tree from a sppasLabel().</span>
+<div class="viewcode-block" id="sppasXRA.format_label"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xra.sppasXRA.format_label">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">format_label</span><span class="p">(</span><span class="n">label_root</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a &#39;Label&#39; element in the tree from a sppasLabel().</span>
 
 <span class="sd">        :param label_root: (ET) XML Element tree root.</span>
 <span class="sd">        :param label: (sppasLabel)</span>
@@ -792,13 +793,13 @@
             <span class="n">tag_node</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">label_root</span><span class="p">,</span> <span class="s1">&#39;Tag&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">score</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">tag_node</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;score&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">score</span><span class="p">))</span>
-            <span class="n">sppasXRA</span><span class="o">.</span><span class="n">_format_tag</span><span class="p">(</span><span class="n">tag_node</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
+            <span class="n">sppasXRA</span><span class="o">.</span><span class="n">_format_tag</span><span class="p">(</span><span class="n">tag_node</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_format_tag</span><span class="p">(</span><span class="n">tag_node</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add a &#39;Tag&#39; element in the tree from a sppasTag().</span>
+        <span class="sd">&quot;&quot;&quot;Add a &#39;Tag&#39; element in the tree from a sppasTag().</span>
 
 <span class="sd">        :param tag_node: (ET) XML Element node.</span>
 <span class="sd">        :param tag: (sppasTag)</span>
@@ -811,7 +812,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_format_media</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_root</span><span class="p">,</span> <span class="n">media</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add a &#39;Media&#39; element in the tree from a sppasMedia.</span>
+        <span class="sd">&quot;&quot;&quot;Add a &#39;Media&#39; element in the tree from a sppasMedia.</span>
 
 <span class="sd">        :param media_root: (ET) XML Element tree root.</span>
 <span class="sd">        :param media: (sppasMedia)</span>
@@ -833,7 +834,7 @@
         <span class="c1"># Element Metadata (except &#39;id&#39;)</span>
         <span class="n">metadata_root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">media_root</span><span class="p">,</span> <span class="s1">&#39;Metadata&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">media</span><span class="o">.</span><span class="n">get_meta_keys</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">sppasXRA</span><span class="o">.</span><span class="n">_format_metadata</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">,</span> <span class="n">media</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+            <span class="n">sppasXRA</span><span class="o">.</span><span class="n">format_metadata</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">,</span> <span class="n">media</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">metadata_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;Entry&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">media_root</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">)</span>
 
@@ -845,7 +846,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_format_hierarchy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hierarchy_root</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add a &#39;Hierarchy&#39; element in the tree from a sppasHierarchy().</span>
+        <span class="sd">&quot;&quot;&quot;Add a &#39;Hierarchy&#39; element in the tree from a sppasHierarchy().</span>
 
 <span class="sd">        :param hierarchy_root: (ET) XML Element tree root.</span>
 
@@ -863,7 +864,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_format_vocabulary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocabulary_root</span><span class="p">,</span> <span class="n">vocabulary</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add a &#39;Vocabulary&#39; element in the tree from a sppasVocabulary().</span>
+        <span class="sd">&quot;&quot;&quot;Add a &#39;Vocabulary&#39; element in the tree from a sppasVocabulary().</span>
 
 <span class="sd">         :param vocabulary_root: (ET) XML Element tree root.</span>
 <span class="sd">         :param vocabulary: (sppasCtrlVocab)</span>
@@ -891,7 +892,7 @@
 
         <span class="c1"># Element Metadata (except &#39;id&#39;)</span>
         <span class="n">metadata_root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">vocabulary_root</span><span class="p">,</span> <span class="s1">&#39;Metadata&#39;</span><span class="p">)</span>
-        <span class="n">sppasXRA</span><span class="o">.</span><span class="n">_format_metadata</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">,</span> <span class="n">vocabulary</span><span class="p">)</span>
+        <span class="n">sppasXRA</span><span class="o">.</span><span class="n">format_metadata</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">,</span> <span class="n">vocabulary</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">metadata_root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;Entry&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">vocabulary_root</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">metadata_root</span><span class="p">)</span>
 
@@ -899,7 +900,7 @@
 
 <div class="viewcode-block" id="sppasXRA.indent"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xra.sppasXRA.indent">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">indent</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Pretty indent.</span>
+        <span class="sd">&quot;&quot;&quot;Pretty indent.</span>
 <span class="sd">        http://effbot.org/zone/element-lib.htm#prettyprint</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>

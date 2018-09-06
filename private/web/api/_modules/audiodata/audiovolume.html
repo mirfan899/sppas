@@ -83,20 +83,20 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
 <span class="sd">    :summary:      A class to estimates the volume of an audio file.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasAudioVolume.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audiovolume.sppasAudioVolume.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span> <span class="n">win_len</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasAudioVolume instance.</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasAudioVolume instance.</span>
 
 <span class="sd">        :param audio: (sppasAudioPCM) The audio to work on.</span>
 <span class="sd">        :param win_len: (float) Window length to estimate the volume.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">sppasBaseVolume</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">win_len</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasAudioVolume</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">win_len</span><span class="p">)</span>
 
         <span class="c1"># Remember current position</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="n">audio</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>

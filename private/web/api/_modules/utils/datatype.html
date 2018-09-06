@@ -67,10 +67,8 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.utils.sppasType.py</span>
+<span class="sd">    utils.datatype.py</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~</span>
-
-<span class="sd">    Utilities to check data types.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -79,25 +77,70 @@
 <span class="c1"># ---------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasTime"><a class="viewcode-back" href="../../rst/utils.html#utils.datatype.sppasTime">[docs]</a><span class="k">class</span> <span class="nc">sppasTime</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="bidict"><a class="viewcode-back" href="../../rst/utils.html#utils.datatype.bidict">[docs]</a><span class="k">class</span> <span class="nc">bidict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A simple bidirectional dictionary.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      Utility class to check date time.</span>
+
+<span class="sd">    Implements a 1:1 dictionary.</span>
+<span class="sd">    It implies that two keys can&#39;t have the same value.</span>
+
+<span class="sd">    &gt;&gt;&gt; relation = bidict()</span>
+<span class="sd">    &gt;&gt;&gt; relation[&#39;Alice&#39;] = &#39;Bob&#39;</span>
+<span class="sd">    &gt;&gt;&gt; print(relation[&#39;Bob&#39;])</span>
+<span class="sd">    &gt;&gt;&gt; &#39;Alice&#39;</span>
+<span class="sd">    &gt;&gt;&gt; print(relation[&#39;Alice&#39;])</span>
+<span class="sd">    &gt;&gt;&gt; &#39;Bob&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="bidict.__init__"><a class="viewcode-back" href="../../rst/utils.html#utils.datatype.bidict.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">bidict</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># add all value=key in the dictionary</span>
+        <span class="n">inverse</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">inverse</span><span class="p">[</span><span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">inverse</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">bidict</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">bidict</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">bidict</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">bidict</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="sppasTime"><a class="viewcode-back" href="../../rst/utils.html#utils.datatype.sppasTime">[docs]</a><span class="k">class</span> <span class="nc">sppasTime</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utility class to represent date time with a string.</span>
+
+<span class="sd">    :author:       Brigitte Bigi</span>
+<span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
+<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :license:      GPL, v3</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
 <span class="sd">    How SPPAS works with the date...</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="sppasTime.__init__"><a class="viewcode-back" href="../../rst/utils.html#utils.datatype.sppasTime.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">now</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasTime() instance.</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasTime() instance.</span>
 
 <span class="sd">        :param now: (str) String representing the current time, formatted</span>
 <span class="sd">        like: &#39;%Y-%m-%dT%H:%M:%S{:0=+3d}:{:0=2d}&#39;</span>
 
-<span class="sd">        Example:</span>
+<span class="sd">        :Example:</span>
 
 <span class="sd">        &gt;&gt;&gt; p = sppasTime(&#39;2018-04-09T15:00:37+02:00&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; p.now</span>
@@ -110,16 +153,17 @@
         <span class="k">if</span> <span class="n">now</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">ctz</span> <span class="o">=</span> <span class="o">-</span><span class="n">time</span><span class="o">.</span><span class="n">altzone</span> <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span><span class="o">.</span><span class="n">tm_isdst</span> <span class="ow">and</span> \
                                    <span class="n">time</span><span class="o">.</span><span class="n">daylight</span> <span class="k">else</span> <span class="o">-</span><span class="n">time</span><span class="o">.</span><span class="n">timezone</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%S</span><span class="si">{:0=+3d}</span><span class="s1">:</span><span class="si">{:0=2d}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ctz</span> <span class="o">//</span> <span class="mi">3600</span><span class="p">,</span> <span class="n">ctz</span> <span class="o">%</span> <span class="mi">3600</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%S</span><span class="si">{:0=+3d}</span><span class="s1">:</span><span class="si">{:0=2d}</span><span class="s1">&#39;</span>
+                                     <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ctz</span> <span class="o">//</span> <span class="mi">3600</span><span class="p">,</span> <span class="n">ctz</span> <span class="o">%</span> <span class="mi">3600</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">now</span> <span class="o">=</span> <span class="n">now</span>
 
         <span class="c1"># Fix other members from now</span>
         <span class="k">if</span> <span class="s1">&#39;T&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span> <span class="ow">or</span> \
            <span class="s1">&#39;-&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span> <span class="ow">or</span> \
-           <span class="s2">&quot;:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span> <span class="ow">or</span> \
-           <span class="s1">&#39;+&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">UtilsDataTypeError</span><span class="p">(</span><span class="s2">&quot;sppasTime(now)&quot;</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S</span><span class="si">{:0=+3d}</span><span class="s2">:</span><span class="si">{:0=2d}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
+           <span class="s2">&quot;:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UtilsDataTypeError</span><span class="p">(</span><span class="s2">&quot;sppasTime(now)&quot;</span><span class="p">,</span>
+                                     <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S</span><span class="si">{:0=+3d}</span><span class="s2">:</span><span class="si">{:0=2d}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -127,27 +171,29 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">day</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hours</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">[</span><span class="o">-</span><span class="mi">8</span><span class="p">:</span><span class="o">-</span><span class="mi">6</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">gmt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">:]</span>
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">UtilsDataTypeError</span><span class="p">(</span><span class="s2">&quot;sppasTime(now)&quot;</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S</span><span class="si">{:0=+3d}</span><span class="s2">:</span><span class="si">{:0=2d}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span></div></div>
+            <span class="k">raise</span> <span class="n">UtilsDataTypeError</span><span class="p">(</span><span class="s2">&quot;sppasTime(now)&quot;</span><span class="p">,</span>
+                                     <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S</span><span class="si">{:0=+3d}</span><span class="s2">:</span><span class="si">{:0=2d}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span></div></div>
 
 <span class="c1"># ---------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="sppasType"><a class="viewcode-back" href="../../rst/utils.html#utils.datatype.sppasType">[docs]</a><span class="k">class</span> <span class="nc">sppasType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Utility class to check data type.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      Utility class to check data type.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="sppasType.is_bool"><a class="viewcode-back" href="../../rst/utils.html#utils.datatype.sppasType.is_bool">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">is_bool</span><span class="p">(</span><span class="n">entry</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check if the entry is boolean.</span>
+        <span class="sd">&quot;&quot;&quot;Check if the entry is boolean.</span>
 
 <span class="sd">        :param entry: (any type)</span>
 <span class="sd">        :returns: (bool)</span>
@@ -159,7 +205,7 @@
 
 <div class="viewcode-block" id="sppasType.is_number"><a class="viewcode-back" href="../../rst/utils.html#utils.datatype.sppasType.is_number">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">is_number</span><span class="p">(</span><span class="n">entry</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check if the entry is numeric.</span>
+        <span class="sd">&quot;&quot;&quot;Check if the entry is numeric.</span>
 
 <span class="sd">        :param entry: (any type)</span>
 <span class="sd">        :returns: (bool)</span>
@@ -184,7 +230,7 @@
 
 <div class="viewcode-block" id="sppasType.is_dict"><a class="viewcode-back" href="../../rst/utils.html#utils.datatype.sppasType.is_dict">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">is_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check if the entry is of any type of dictionary.</span>
+        <span class="sd">&quot;&quot;&quot;Check if the entry is of any type of dictionary.</span>
 
 <span class="sd">        :param entry: (any type)</span>
 <span class="sd">        :returns: (bool)</span>

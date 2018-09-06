@@ -67,8 +67,8 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.anndata.metadata.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    anndata.metadata.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
@@ -80,31 +80,38 @@
 <span class="c1"># ---------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasMetaData"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMetaData">[docs]</a><span class="k">class</span> <span class="nc">sppasMetaData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasMetaData"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData">[docs]</a><span class="k">class</span> <span class="nc">sppasMetaData</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Dictionary of meta data.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      Dictionary of meta data.</span>
 
 <span class="sd">    Meta data keys and values are unicode strings.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasMetaData.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMetaData.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasMetaData instance.</span>
+
+<div class="viewcode-block" id="sppasMetaData.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasMetaData instance.</span>
+
 <span class="sd">        Add a GUID in the dictionary of metadata, with key &quot;id&quot;.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Dictionary with key and value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sppasGUID</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaData.is_meta_key"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMetaData.is_meta_key">[docs]</a>    <span class="k">def</span> <span class="nf">is_meta_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check if an entry is a key in the list of metadata.</span>
+<div class="viewcode-block" id="sppasMetaData.gen_id"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.gen_id">[docs]</a>    <span class="k">def</span> <span class="nf">gen_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Re-generate an &#39;id&#39;.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sppasGUID</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasMetaData.is_meta_key"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.is_meta_key">[docs]</a>    <span class="k">def</span> <span class="nf">is_meta_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if an entry is a key in the list of metadata.</span>
 
 <span class="sd">        :param entry: (str) Entry to check</span>
 <span class="sd">        :returns: (Boolean)</span>
@@ -114,28 +121,27 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaData.get_meta"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMetaData.get_meta">[docs]</a>    <span class="k">def</span> <span class="nf">get_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the value of the given key.</span>
-<span class="sd">        Return an empty string if the given entry if not a key of metadata.</span>
+<div class="viewcode-block" id="sppasMetaData.get_meta"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.get_meta">[docs]</a>    <span class="k">def</span> <span class="nf">get_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the value of the given key.</span>
 
 <span class="sd">        :param entry: (str) Entry to be checked as a key.</span>
 <span class="sd">        :param default: (str) Default value to return if entry is not a key.</span>
-<span class="sd">        :returns: (str)</span>
+<span class="sd">        :returns: (str) meta data value or default value</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaData.get_meta_keys"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMetaData.get_meta_keys">[docs]</a>    <span class="k">def</span> <span class="nf">get_meta_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the list of metadata keys. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasMetaData.get_meta_keys"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.get_meta_keys">[docs]</a>    <span class="k">def</span> <span class="nf">get_meta_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the list of metadata keys.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaData.set_meta"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMetaData.set_meta">[docs]</a>    <span class="k">def</span> <span class="nf">set_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set or update a metadata.</span>
+<div class="viewcode-block" id="sppasMetaData.set_meta"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.set_meta">[docs]</a>    <span class="k">def</span> <span class="nf">set_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set or update a metadata.</span>
 
 <span class="sd">        :param key: (str) The key of the metadata.</span>
 <span class="sd">        :param value: (str) The value assigned to the key.</span>
@@ -153,8 +159,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaData.pop_meta"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMetaData.pop_meta">[docs]</a>    <span class="k">def</span> <span class="nf">pop_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove a metadata from its key.</span>
+<div class="viewcode-block" id="sppasMetaData.pop_meta"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.pop_meta">[docs]</a>    <span class="k">def</span> <span class="nf">pop_meta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove a metadata from its key.</span>
 
 <span class="sd">        :param key: (str)</span>
 
@@ -166,17 +172,19 @@
     <span class="c1"># Add default metadata</span>
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaData.add_license_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMetaData.add_license_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_license_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add metadata about the license applied to the object (GPLv3). &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasMetaData.add_license_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.add_license_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_license_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add metadata about the license applied to the object (GPLv3).&quot;&quot;&quot;</span>
 
         <span class="c1"># Elan</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;file_license_text_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;GNU GPL V3&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;file_license_url_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;https://www.gnu.org/licenses/gpl-3.0.en.html&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;file_license_text_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">idx</span><span class="p">,</span>
+                      <span class="s1">&#39;GNU GPL V3&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;file_license_url_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">idx</span><span class="p">,</span>
+                      <span class="s1">&#39;https://www.gnu.org/licenses/gpl-3.0.en.html&#39;</span><span class="p">)</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaData.add_software_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMetaData.add_software_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_software_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add metadata about SPPAS software. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasMetaData.add_software_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.add_software_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_software_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add metadata about this software.&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;software_name&#39;</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;software_version&#39;</span><span class="p">,</span> <span class="n">sg</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
@@ -187,8 +195,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaData.add_language_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMetaData.add_language_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_language_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add metadata about the language (und). &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasMetaData.add_language_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.add_language_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_language_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add metadata about the language (und).&quot;&quot;&quot;</span>
 
         <span class="c1"># Elan</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;language_iso&#39;</span><span class="p">,</span> <span class="s2">&quot;iso639-3&quot;</span><span class="p">)</span>
@@ -198,9 +206,12 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaData.add_project_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMetaData.add_project_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_project_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add metadata about the project this object is included-in. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasMetaData.add_project_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.add_project_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_project_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add metadata about the project this object is included-in.</span>
 
+<span class="sd">        Currently do not assign any value.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># annotation pro</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;project_description&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;project_corpus_owner&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -213,8 +224,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMetaData.add_annotator_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasMetaData.add_annotator_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_annotator_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">version_date</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add metadata about an annotator. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasMetaData.add_annotator_metadata"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasMetaData.add_annotator_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">add_annotator_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">version_date</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add metadata about an annotator.&quot;&quot;&quot;</span>
 
         <span class="c1"># subtitle, transcriber, elan</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;annotator_name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
@@ -229,14 +240,14 @@
 <span class="c1"># ---------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasDefaultMeta"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasDefaultMeta">[docs]</a><span class="k">class</span> <span class="nc">sppasDefaultMeta</span><span class="p">(</span><span class="n">sppasMetaData</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasDefaultMeta"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasDefaultMeta">[docs]</a><span class="k">class</span> <span class="nc">sppasDefaultMeta</span><span class="p">(</span><span class="n">sppasMetaData</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Dictionary of default meta data in SPPAS.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      Dictionary of default meta data in SPPAS.</span>
 
 <span class="sd">    Many annotation tools are using metadata... Moreover, each annotation</span>
 <span class="sd">    tool is encoding data with its own formalism. SPPAS aio API enables</span>
@@ -246,15 +257,15 @@
 <span class="sd">    kind of &quot;generic&quot; metadata names are fixed.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasDefaultMeta.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasDefaultMeta.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Instantiate a default set of meta data. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="sppasDefaultMeta.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasDefaultMeta.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Instantiate a default set of meta data.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">sppasDefaultMeta</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDefaultMeta.speaker"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasDefaultMeta.speaker">[docs]</a>    <span class="k">def</span> <span class="nf">speaker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add metadata related to a speaker. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasDefaultMeta.speaker"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasDefaultMeta.speaker">[docs]</a>    <span class="k">def</span> <span class="nf">speaker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add metadata related to a speaker.&quot;&quot;&quot;</span>
         <span class="c1"># sclite, transcriber</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;speaker_id&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
@@ -289,8 +300,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDefaultMeta.tier"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasDefaultMeta.tier">[docs]</a>    <span class="k">def</span> <span class="nf">tier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add metadata related to a tier. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasDefaultMeta.tier"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasDefaultMeta.tier">[docs]</a>    <span class="k">def</span> <span class="nf">tier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add metadata related to a tier.&quot;&quot;&quot;</span>
 
         <span class="c1"># audacity, annotation pro</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;tier_is_closed&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -303,8 +314,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDefaultMeta.media"><a class="viewcode-back" href="../../rst/anndata.html#anndata.sppasDefaultMeta.media">[docs]</a>    <span class="k">def</span> <span class="nf">media</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add metadata related to a media. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasDefaultMeta.media"><a class="viewcode-back" href="../../rst/anndata.html#anndata.metadata.sppasDefaultMeta.media">[docs]</a>    <span class="k">def</span> <span class="nf">media</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add metadata related to a media.&quot;&quot;&quot;</span>
 
         <span class="c1"># sclite, xtrans</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s2">&quot;media_channel&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>

@@ -70,37 +70,6 @@
 <span class="sd">    src.calculus.infotheory.kullbackleibler.py</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
-<span class="sd">    In probability theory and information theory, the Kullback–Leibler</span>
-<span class="sd">    divergence (also called relative entropy) is a measure of the difference</span>
-<span class="sd">    between two probability distributions P and Q. It is not symmetric in P</span>
-<span class="sd">    and Q.</span>
-<span class="sd">    Specifically, the Kullback–Leibler divergence of Q from P, denoted DKL(P‖Q),</span>
-<span class="sd">    is a measure of the information gained when one revises ones beliefs from</span>
-<span class="sd">    the prior probability distribution Q to the posterior probability</span>
-<span class="sd">    distribution P.</span>
-
-<span class="sd">    However, the sppasKullbackLeibler class estimates the KL distance, i.e. the</span>
-<span class="sd">    *symmetric Kullback-Leibler divergence*.</span>
-
-<span class="sd">    This sppasKullbackLeibler class implements the distance estimation</span>
-<span class="sd">    between a model and the content of a moving window on data,</span>
-<span class="sd">    as described in:</span>
-
-<span class="sd">        | Brigitte Bigi, Renato De Mori, Marc El-Bèze, Thierry Spriet (1997).</span>
-<span class="sd">        | *Combined models for topic spotting and topic-dependent language modeling*</span>
-<span class="sd">        | IEEE Workshop on Automatic Speech Recognition and Understanding Proceedings</span>
-<span class="sd">        | (ASRU), Edited by S. Furui, B. H. Huang and Wu Chu, IEEE Signal Processing</span>
-<span class="sd">        | Society Publ, NY, pages 535-542.</span>
-
-<span class="sd">    This KL distance can also be used to estimate the distance between</span>
-<span class="sd">    documents for text categorization, as proposed in:</span>
-
-<span class="sd">        | Brigitte Bigi (2003).</span>
-<span class="sd">        | Using Kullback-Leibler Distance for Text Categorization.</span>
-<span class="sd">        | Lecture Notes in Computer Science, Advances in Information Retrieval,</span>
-<span class="sd">        | ISSN 0302-9743, Fabrizio Sebastiani (Editor), Springer-Verlag (Publisher), </span>
-<span class="sd">        | pages 305--319, Pisa (Italy).</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">..calculusexc</span> <span class="k">import</span> <span class="n">EmptyError</span><span class="p">,</span> <span class="n">InsideIntervalError</span>
 <span class="kn">from</span> <span class="nn">..calculusexc</span> <span class="k">import</span> <span class="n">SumProbabilityError</span><span class="p">,</span> <span class="n">ProbabilityError</span>
@@ -110,13 +79,47 @@
 
 
 <div class="viewcode-block" id="sppasKullbackLeibler"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.sppasKullbackLeibler">[docs]</a><span class="k">class</span> <span class="nc">sppasKullbackLeibler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sa">u</span><span class="sd">&quot;&quot;&quot;Kullback-Leibler distance estimator.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Kullback-Leibler distance estimator.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
+
+<span class="sd">    In probability theory and information theory, the Kullback–Leibler</span>
+<span class="sd">    divergence (also called relative entropy) is a measure of the difference</span>
+<span class="sd">    between two probability distributions P and Q. It is not symmetric in P</span>
+<span class="sd">    and Q.</span>
+
+<span class="sd">    Specifically, the Kullback–Leibler divergence of Q from P, denoted</span>
+<span class="sd">    DKL(P‖Q), is a measure of the information gained when one revises ones</span>
+<span class="sd">    beliefs from the prior probability distribution Q to the posterior</span>
+<span class="sd">    probability distribution P.</span>
+
+<span class="sd">    However, the sppasKullbackLeibler class estimates the KL distance, i.e. the</span>
+<span class="sd">    *symmetric Kullback-Leibler divergence*.</span>
+
+<span class="sd">    This sppasKullbackLeibler class implements the distance estimation</span>
+<span class="sd">    between a model and the content of a moving window on data,</span>
+<span class="sd">    as described in:</span>
+
+<span class="sd">    Brigitte Bigi, Renato De Mori, Marc El-Bèze, Thierry Spriet (1997).</span>
+<span class="sd">    *Combined models for topic spotting and topic-dependent language modeling*</span>
+<span class="sd">    IEEE Workshop on Automatic Speech Recognition and Understanding Proceedings</span>
+<span class="sd">    (ASRU), Edited by S. Furui, B. H. Huang and Wu Chu, IEEE Signal Processing</span>
+<span class="sd">    Society Publ, NY, pages 535-542.</span>
+
+<span class="sd">    This KL distance can also be used to estimate the distance between</span>
+<span class="sd">    documents for text categorization, as proposed in:</span>
+
+<span class="sd">    Brigitte Bigi (2003).</span>
+<span class="sd">    Using Kullback-Leibler Distance for Text Categorization.</span>
+<span class="sd">    Lecture Notes in Computer Science, Advances in Information Retrieval,</span>
+<span class="sd">    ISSN 0302-9743, Fabrizio Sebastiani (Editor), Springer-Verlag (Publisher),</span>
+<span class="sd">    pages 305--319, Pisa (Italy).</span>
+
+<span class="sd">    In this class...</span>
 
 <span class="sd">    A model is a dictionary with:</span>
 
@@ -126,10 +129,13 @@
 <span class="sd">    The window of observed symbols is represented as a list of n-grams.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">DEFAULT_EPSILON</span> <span class="o">=</span> <span class="mf">0.000001</span>
 
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasKullbackLeibler.__init__"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.sppasKullbackLeibler.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">observations</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasKullbackLeibler instance from a list of symbols.</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasKullbackLeibler instance from a list of symbols.</span>
 
 <span class="sd">        :param model: (dict) a dictionary with key=item, value=probability</span>
 <span class="sd">        :param observations: list ob observed items</span>
@@ -146,8 +152,20 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
+<div class="viewcode-block" id="sppasKullbackLeibler.get_epsilon"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.sppasKullbackLeibler.get_epsilon">[docs]</a>    <span class="k">def</span> <span class="nf">get_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the epsilon value.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="sppasKullbackLeibler.get_model"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.sppasKullbackLeibler.get_model">[docs]</a>    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the model.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span></div>
+
+    <span class="c1"># -----------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="sppasKullbackLeibler.set_model"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.sppasKullbackLeibler.set_model">[docs]</a>    <span class="k">def</span> <span class="nf">set_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the model.</span>
+        <span class="sd">&quot;&quot;&quot;Set the model.</span>
 
 <span class="sd">        :param model: (dict) Probability distribution of the model.</span>
 
@@ -169,7 +187,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasKullbackLeibler.set_model_from_data"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.sppasKullbackLeibler.set_model_from_data">[docs]</a>    <span class="k">def</span> <span class="nf">set_model_from_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the model from a given set of observations.</span>
+        <span class="sd">&quot;&quot;&quot;Set the model from a given set of observations.</span>
 
 <span class="sd">        :param data: (list) List of observed items.</span>
 
@@ -182,16 +200,15 @@
             <span class="k">if</span> <span class="n">obs</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span>
                 <span class="n">model</span><span class="p">[</span><span class="n">obs</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="n">model</span><span class="p">:</span>
-            <span class="n">model</span><span class="p">[</span><span class="n">obs</span><span class="p">]</span> <span class="o">/=</span> <span class="nb">float</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="n">obs</span><span class="p">])</span> <span class="o">/</span> <span class="n">n</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">model</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="p">[</span><span class="n">obs</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="n">obs</span><span class="p">])</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasKullbackLeibler.set_observations"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.sppasKullbackLeibler.set_observations">[docs]</a>    <span class="k">def</span> <span class="nf">set_observations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observations</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the set of observed items.</span>
+        <span class="sd">&quot;&quot;&quot;Fix the set of observed items.</span>
 
 <span class="sd">        :param observations: (list) The list of observed items.</span>
 
@@ -204,8 +221,8 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasKullbackLeibler.set_epsilon"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.sppasKullbackLeibler.set_epsilon">[docs]</a>    <span class="k">def</span> <span class="nf">set_epsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the linear back-off value for unknown observations.</span>
-<span class="sd">        </span>
+        <span class="sd">&quot;&quot;&quot;Fix the linear back-off value for unknown observations.</span>
+
 <span class="sd">        The optimal value for this coefficient is the product of the size</span>
 <span class="sd">        of both model and observations to estimate the KL. This value must</span>
 <span class="sd">        be significantly lower than the minimum value in the model.</span>
@@ -232,7 +249,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasKullbackLeibler.eval_kld"><a class="viewcode-back" href="../../../rst/calculus.infotheory.html#calculus.sppasKullbackLeibler.eval_kld">[docs]</a>    <span class="k">def</span> <span class="nf">eval_kld</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Estimates the KL distance between a model and observations.</span>
+        <span class="sd">&quot;&quot;&quot;Estimate the KL distance between a model and observations.</span>
 
 <span class="sd">        :returns: float value</span>
 
@@ -251,8 +268,10 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">na</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="p">(</span><span class="n">na</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon</span><span class="p">)</span>  <span class="c1"># coefficient applied to the model</span>
-        <span class="n">beta</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="p">(</span><span class="n">nb</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon</span><span class="p">)</span>   <span class="c1"># coefficient applied to the observed n-grams</span>
+        <span class="c1"># coefficient applied to the model</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="p">(</span><span class="n">na</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon</span><span class="p">)</span>
+        <span class="c1"># coefficient applied to the observed n-grams</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="p">(</span><span class="n">nb</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__distance</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span></div>
 
@@ -261,7 +280,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Kullback-Leibler Distance between the model and observations.</span>
+        <span class="sd">&quot;&quot;&quot;Kullback-Leibler Distance between the model and observations.</span>
 
 <span class="sd">        We expect a model, observations and epsilon already estimated properly.</span>
 
@@ -276,7 +295,8 @@
             <span class="n">proba_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon</span>
             <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="p">:</span>
                 <span class="n">proba_model</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
-            <span class="n">proba_ngram</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="p">)))</span>
+            <span class="n">proba_ngram</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span>
+                                  <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="p">)))</span>
             <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">proba_model</span> <span class="o">-</span> <span class="n">proba_ngram</span><span class="p">)</span> <span class="o">*</span> <span class="n">log2</span><span class="p">(</span><span class="n">proba_model</span> <span class="o">/</span> <span class="n">proba_ngram</span><span class="p">)</span>
             <span class="n">dist</span> <span class="o">+=</span> <span class="n">d</span>
 
@@ -284,7 +304,8 @@
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observations</span><span class="p">:</span>
                 <span class="n">proba_model</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
-                <span class="n">dist</span> <span class="o">+=</span> <span class="p">((</span><span class="n">proba_model</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon</span><span class="p">)</span> <span class="o">*</span> <span class="n">log2</span><span class="p">(</span><span class="n">proba_model</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon</span><span class="p">))</span>
+                <span class="n">dist</span> <span class="o">+=</span> <span class="p">((</span><span class="n">proba_model</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon</span><span class="p">)</span> <span class="o">*</span>
+                         <span class="n">log2</span><span class="p">(</span><span class="n">proba_model</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">dist</span></div>
 </pre></div>

@@ -67,10 +67,8 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.anndata.aio.basetrs.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-
-<span class="sd">    Base object for readers and writers of annotated data.</span>
+<span class="sd">    anndata.aio.basetrs.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">..transcription</span> <span class="k">import</span> <span class="n">sppasTranscription</span>
@@ -80,24 +78,26 @@
 
 
 <div class="viewcode-block" id="sppasBaseIO"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO">[docs]</a><span class="k">class</span> <span class="nc">sppasBaseIO</span><span class="p">(</span><span class="n">sppasTranscription</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Base object for readers and writers of annotated data.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      Base object for readers and writers of annotated data.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    
 <div class="viewcode-block" id="sppasBaseIO.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.detect">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check whether a file is of the appropriate format or not.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.is_number"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.is_number">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">is_number</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check whether a string is a number or not.</span>
+        <span class="sd">&quot;&quot;&quot;Check whether a string is a number or not.</span>
 
 <span class="sd">        :param s: (str or unicode)</span>
 <span class="sd">        :returns: (bool)</span>
@@ -121,15 +121,14 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new Transcription reader-writer instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new Transcription reader-writer instance.</span>
 
 <span class="sd">        :param name: (str) A transcription name.</span>
-<span class="sd">        :param multi_tiers: (bool) The IO supports (or not) to read and write</span>
-<span class="sd">        several tiers.</span>
-<span class="sd">        :param no_tiers: (bool) The IO supports (or not) to write no tiers.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">sppasTranscription</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasBaseIO</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_multi_tiers</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_no_tiers</span> <span class="o">=</span> <span class="kc">False</span>
@@ -144,8 +143,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_alt_tag</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_radius</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accept_gaps</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_accept_overlaps</span> <span class="o">=</span> <span class="kc">False</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
@@ -153,8 +150,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.multi_tiers_support"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.multi_tiers_support">[docs]</a>    <span class="k">def</span> <span class="nf">multi_tiers_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if this reader-writer supports to read and write</span>
-<span class="sd">        several tiers.</span>
+        <span class="sd">&quot;&quot;&quot;Return True if it supports to read and write several tiers.</span>
 
 <span class="sd">        :returns: boolean</span>
 
@@ -164,7 +160,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.no_tiers_support"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.no_tiers_support">[docs]</a>    <span class="k">def</span> <span class="nf">no_tiers_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if this reader-writer supports to write no tier.</span>
+        <span class="sd">&quot;&quot;&quot;Return True if it supports to write no tier.</span>
 
 <span class="sd">        :returns: boolean</span>
 
@@ -174,8 +170,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.metadata_support"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.metadata_support">[docs]</a>    <span class="k">def</span> <span class="nf">metadata_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if this reader-writer supports to read and write</span>
-<span class="sd">        metadata.</span>
+        <span class="sd">&quot;&quot;&quot;Return True if it supports to read and write metadata.</span>
 
 <span class="sd">        :returns: boolean</span>
 
@@ -185,8 +180,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.ctrl_vocab_support"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.ctrl_vocab_support">[docs]</a>    <span class="k">def</span> <span class="nf">ctrl_vocab_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if this reader-writer supports to read and write</span>
-<span class="sd">        a controlled vocabulary.</span>
+        <span class="sd">&quot;&quot;&quot;Return True if it supports to read and write a controlled vocab.</span>
 
 <span class="sd">        :returns: boolean</span>
 
@@ -196,8 +190,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.media_support"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.media_support">[docs]</a>    <span class="k">def</span> <span class="nf">media_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if this reader-writer supports to read and write</span>
-<span class="sd">        a link to a media.</span>
+        <span class="sd">&quot;&quot;&quot;Return True if it supports to read and write a link to a media.</span>
 
 <span class="sd">        :returns: boolean</span>
 
@@ -207,8 +200,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.hierarchy_support"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.hierarchy_support">[docs]</a>    <span class="k">def</span> <span class="nf">hierarchy_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if this reader-writer supports to read and write</span>
-<span class="sd">        a hierarchy between tiers.</span>
+        <span class="sd">&quot;&quot;&quot;Return True if it supports a hierarchy between tiers.</span>
 
 <span class="sd">        :returns: boolean</span>
 
@@ -218,8 +210,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.point_support"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.point_support">[docs]</a>    <span class="k">def</span> <span class="nf">point_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if this reader-writer supports to read and write</span>
-<span class="sd">        tiers with localizations as points.</span>
+        <span class="sd">&quot;&quot;&quot;Return True if it supports tiers with localizations as points.</span>
 
 <span class="sd">        :returns: boolean</span>
 
@@ -229,8 +220,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.interval_support"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.interval_support">[docs]</a>    <span class="k">def</span> <span class="nf">interval_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if this reader-writer supports to read and write</span>
-<span class="sd">        tiers with localizations as intervals.</span>
+        <span class="sd">&quot;&quot;&quot;Return True if it supports tiers with localizations as intervals.</span>
 
 <span class="sd">        :returns: boolean</span>
 
@@ -240,8 +230,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.disjoint_support"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.disjoint_support">[docs]</a>    <span class="k">def</span> <span class="nf">disjoint_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if this reader-writer supports to read and write</span>
-<span class="sd">        tiers with localizations as disjoint intervals.</span>
+        <span class="sd">&quot;&quot;&quot;Return True if it supports tiers with localizations as disjoint.</span>
 
 <span class="sd">        :returns: boolean</span>
 
@@ -251,8 +240,9 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.alternative_localization_support"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.alternative_localization_support">[docs]</a>    <span class="k">def</span> <span class="nf">alternative_localization_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if this reader-writer supports to read and write</span>
-<span class="sd">        alternative localizations (with a score or not).</span>
+        <span class="sd">&quot;&quot;&quot;Return True if it supports to alternative localizations.</span>
+
+<span class="sd">        If support with or without a score, it returns true.</span>
 
 <span class="sd">        :returns: boolean</span>
 
@@ -262,8 +252,9 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.alternative_tag_support"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.alternative_tag_support">[docs]</a>    <span class="k">def</span> <span class="nf">alternative_tag_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if this reader-writer supports to read and write</span>
-<span class="sd">        alternative tags (with a score or not).</span>
+        <span class="sd">&quot;&quot;&quot;Return True if it supports alternative tags.</span>
+
+<span class="sd">        If support with or without a score, it returns true.</span>
 
 <span class="sd">        :returns: boolean</span>
 
@@ -273,8 +264,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.radius_support"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.radius_support">[docs]</a>    <span class="k">def</span> <span class="nf">radius_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if this reader-writer supports to read and write</span>
-<span class="sd">        the radius value (the vagueness or a point).</span>
+        <span class="sd">&quot;&quot;&quot;Return True if it supports the radius value.</span>
 
 <span class="sd">        :returns: boolean</span>
 
@@ -284,8 +274,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.gaps_support"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.gaps_support">[docs]</a>    <span class="k">def</span> <span class="nf">gaps_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if this reader-writer supports gaps between</span>
-<span class="sd">        annotations of a tier (i.e. gaps = holes).</span>
+        <span class="sd">&quot;&quot;&quot;Return True if it supports gaps between annotations of a tier.</span>
 
 <span class="sd">        :returns: boolean</span>
 
@@ -295,8 +284,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.overlaps_support"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.overlaps_support">[docs]</a>    <span class="k">def</span> <span class="nf">overlaps_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if this reader-writer supports overlaps between</span>
-<span class="sd">        annotations of a tier.</span>
+        <span class="sd">&quot;&quot;&quot;Return True if it supports overlaps between annotations of a tier.</span>
 
 <span class="sd">        :returns: boolean</span>
 
@@ -308,7 +296,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.set"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set self with other content.</span>
+        <span class="sd">&quot;&quot;&quot;Set self with other content.</span>
 
 <span class="sd">        :param other: (sppasTranscription)</span>
 
@@ -327,7 +315,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read a file and fill the Transcription.</span>
+        <span class="sd">&quot;&quot;&quot;Read a file and fill the transcription.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
@@ -337,7 +325,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseIO.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.basetrs.sppasBaseIO.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write the transcription into a file.</span>
+        <span class="sd">&quot;&quot;&quot;Write the transcription into a file.</span>
 
 <span class="sd">        :param filename: (str)</span>
 

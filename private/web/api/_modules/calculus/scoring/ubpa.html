@@ -72,11 +72,11 @@
 
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
-<span class="sd">    Estimates the Unit Boundary Positioning Accuracy.</span>
+<span class="sd">Estimates the Unit Boundary Positioning Accuracy.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -97,7 +97,7 @@
 
 
 <div class="viewcode-block" id="ubpa"><a class="viewcode-back" href="../../../rst/calculus.scoring.html#calculus.ubpa">[docs]</a><span class="k">def</span> <span class="nf">ubpa</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">delta_max</span><span class="o">=</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Estimates the Unit Boundary Positioning Accuracy.</span>
+    <span class="sd">&quot;&quot;&quot;Estimate the Unit Boundary Positioning Accuracy.</span>
 
 <span class="sd">    :param vector: contains the list of the delta values.</span>
 <span class="sd">    :param text: one of &quot;Duration&quot;, &quot;Position Start&quot;, ...</span>
@@ -145,7 +145,8 @@
             <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> (</span><span class="si">%.2f%%</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">percent</span><span class="p">))</span>
             <span class="n">percentsum</span> <span class="o">+=</span> <span class="n">percent</span>
     <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;|--------------------------------------------| </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;| Total: </span><span class="si">{0:.2f}</span><span class="s2"> %                           | </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">percentsum</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;| Total: </span><span class="si">{0:.2f}</span><span class="s2"> %                           | </span><span class="se">\n</span><span class="s2">&quot;</span>
+             <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">percentsum</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
     <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;|--------------------------------------------| </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 </pre></div>

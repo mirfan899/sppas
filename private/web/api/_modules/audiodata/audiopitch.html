@@ -78,14 +78,14 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:       Nicolas Chazeau, Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
 <span class="sd">    :summary:      A pitch audio utility class. NOT IMPLEMENTED!!!!</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="AudioPitch.__init__"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audiopitch.AudioPitch.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a new AudioPitch instance. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Create a new AudioPitch instance.&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pitch</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span></div>
@@ -93,7 +93,7 @@
     <span class="c1"># ------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="AudioPitch.get_pitch"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audiopitch.AudioPitch.get_pitch">[docs]</a>    <span class="k">def</span> <span class="nf">get_pitch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the pitch value at a given time.</span>
+        <span class="sd">&quot;&quot;&quot;Return the pitch value at a given time.</span>
 
 <span class="sd">        :param time: a float value representing the time in seconds.</span>
 <span class="sd">        :returns: float</span>
@@ -108,21 +108,21 @@
     <span class="c1"># ------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="AudioPitch.get_pitch_list"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audiopitch.AudioPitch.get_pitch_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_pitch_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return pitch values. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return pitch values.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pitch</span></div>
 
     <span class="c1"># ------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="AudioPitch.get_pitch_delta"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audiopitch.AudioPitch.get_pitch_delta">[docs]</a>    <span class="k">def</span> <span class="nf">get_pitch_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the delta time used to estimate pitch. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Return the delta time used to estimate pitch.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta</span></div>
 
     <span class="c1"># ------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="AudioPitch.eval_pitch"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.audiopitch.AudioPitch.eval_pitch">[docs]</a>    <span class="k">def</span> <span class="nf">eval_pitch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; WILL evaluate pitch values...</span>
+        <span class="sd">&quot;&quot;&quot;WILL evaluate pitch values...</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>

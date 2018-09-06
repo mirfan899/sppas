@@ -1,12 +1,21 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
-  <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <link rel="stylesheet" href="./etc/styles/sppas.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>50_title</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+      q { quotes: "“" "”" "‘" "’"; }
+  </style>
+  <link rel="stylesheet" href=".\\etc\styles\sppas.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
       <title>Documentation</title>
       <link rel="icon" href="./etc/icons/sppas.png" />
   
@@ -79,7 +88,7 @@
 <p>The analysis tools are useful for the analyses of annotated files: display the automatic alignments with the audio signal, estimates statistics on the annotations, filter the annotated data to get only the annotations you are interested in, etc.</p>
 <p>To execute a specific analysis tool, select file(s) in the file explorer of the main frame, then click on the button of the tool. It will open the window of the tool, and add the file(s) in its file manager.</p>
 <figure>
-<img src="./etc/screenshots/CCP.png" alt="The analysis tools" /><figcaption>The analysis tools</figcaption>
+<img src="etc/screenshots/CCP.png" alt="The analysis tools" /><figcaption>The analysis tools</figcaption>
 </figure>
 <p>Six tools are available:</p>
 <ol type="1">
@@ -88,7 +97,7 @@
 <li><code>IPUscriber</code> is useful to perform manual orthographic transcription.</li>
 <li><code>Visualizer</code> displays audio files and annotated files, and is very useful to take a screenshot! Easy way to zoom/scroll, change colours, choose the tiers to display, etc;</li>
 <li><code>DataFilter</code> allows to select a sub-set of annotations: fix a set of filters to create new tiers with only the annotations you are interested in!</li>
-<li><code>Statistics</code> estimates the number of occurrences, the duration, etc. of the annotations, and allows to save in CSV (for Excel, OpenOffice, R, MatLab,...).</li>
+<li><code>Statistics</code> estimates the number of occurrences, the duration, etc. of the annotations, and allows to save in CSV (for Excel, OpenOffice, R, MatLab,…).</li>
 </ol>
 <p>All of such tools share the same look with:</p>
 <ul>
@@ -100,7 +109,7 @@
 <h2 id="dataroamer">DataRoamer</h2>
 <p><code>DataRoamer</code> displays detailed information about annotated files and allows to manage the tiers: cut/copy/paste/rename/duplicate tiers, move a tier from one file to another one, etc.</p>
 <figure>
-<img src="./etc/screenshots/DataRoamer.png" alt="DataRoamer: explore annotated files" /><figcaption>DataRoamer: explore annotated files</figcaption>
+<img src="etc/screenshots/DataRoamer.png" alt="DataRoamer: explore annotated files" /><figcaption>DataRoamer: explore annotated files</figcaption>
 </figure>
 <p>When an annotated file is checked in the list of files, the file is opened in a new panel of the current tab of the notebook and information about this file are displayed. At top, the name of the file is in dark green color. It is turned to blue color if some changes were applied. Below the name of the file, each tier is represented in a row of a spreadsheet:</p>
 <ul>
@@ -109,7 +118,7 @@
 <li>3rd column indicated the name of the tier;</li>
 <li>4th column indicates the lower time value of the annotations;</li>
 <li>5th column indicates the higher time values of the annotations;</li>
-<li>6th column is the type of the tier: either &quot;Interval&quot; or &quot;Point&quot;;</li>
+<li>6th column is the type of the tier: either <q>Interval</q> or <q>Point</q>;</li>
 <li>last column is the number of annotations in the tier.</li>
 </ul>
 <p>The buttons of the toolbar can be applied on the tier(s) selected in the same tab of the notebook. For example, it is possible to copy a tier of a file and to paste it in another file only if they are both open in the same tab.</p>
@@ -122,13 +131,13 @@
 <li>Duplicate: Duplicate the selected tier in the file. A number is automatically appended to the end of name of the copy.</li>
 <li>Move Up: Move the selected tier up in the list of tiers of the file.</li>
 <li>Move Down: Move the selected tier down in the list of tiers of the file.</li>
-<li>Radius: Fix the radius value of each localization of each annotation. A radius value indicates the vagueness around the point. It is commonly ranging from 1ms for very (very) precise annotations up to 40ms for annotations of videos for example. This value is safely saved only in XRA format. Other formats don't consider vagueness.</li>
+<li>Radius: Fix the radius value of each localization of each annotation. A radius value indicates the vagueness around the point. It is commonly ranging from 1ms for very (very) precise annotations up to 40ms for annotations of videos for example. This value is safely saved only in XRA format. Other formats don’t consider vagueness.</li>
 <li>View: Open a window and display the annotations of the tier.</li>
 </ul>
 <p>Only the <code>Delete</code> and <code>Radius</code> actions can be applied on several selected tiers at a time. The other actions can be applied only on one selected tier.</p>
 <h2 id="audioroamer">AudioRoamer</h2>
 <p><code>AudioRoamer</code> allows to play audio files, to display general information about a digitalized audio-PCM file and to manipulate the file.</p>
-<p>Pulse-code modulation (PCM) is a method used to digitally represent sampled analog signals. In a PCM stream, the amplitude of the analog signal is sampled regularly at uniform intervals. A PCM stream has two basic properties that determine the stream's fidelity to the original analog signal:</p>
+<p>Pulse-code modulation (PCM) is a method used to digitally represent sampled analog signals. In a PCM stream, the amplitude of the analog signal is sampled regularly at uniform intervals. A PCM stream has two basic properties that determine the stream’s fidelity to the original analog signal:</p>
 <ol type="1">
 <li>the sampling rate, which is the number of times per second that samples are taken;</li>
 <li>the bit depth, which determines the number of possible digital values that can be used to represent each sample.</li>
@@ -136,11 +145,11 @@
 <p>Common sampling frequencies are 48 kHz as used with DVD format videos, or 44.1 kHz that was used in Compact discs. Common sample depths is 16 bits per sample: it allows values to range from -32768 to 32767.</p>
 <p>Support for multichannel audio depends on file format and relies on interweaving or synchronization of streams.</p>
 <figure>
-<img src="./etc/screenshots/AudioRoamer.png" alt="AudioRoamer: play and manage audio files" /><figcaption>AudioRoamer: play and manage audio files</figcaption>
+<img src="etc/screenshots/AudioRoamer.png" alt="AudioRoamer: play and manage audio files" /><figcaption>AudioRoamer: play and manage audio files</figcaption>
 </figure>
-<p>When an audio file is checked in the list of files, a new page is opened in the notebook. The main information about the audio file are then displayed in the panel at the middle and a player is displayed at bottom. The audio file is not loaded in memory, so event very long audio files can be displayed. At the top of the page, a button &quot;Want more?&quot; can be clicked: the audio file will then be fully read and analyzed, then a new window will be opened to display detailed information. It will also allow to change some properties of the audio file, extract a channel, etc.</p>
+<p>When an audio file is checked in the list of files, a new page is opened in the notebook. The main information about the audio file are then displayed in the panel at the middle and a player is displayed at bottom. The audio file is not loaded in memory, so event very long audio files can be displayed. At the top of the page, a button <q>Want more?</q> can be clicked: the audio file will then be fully read and analyzed, then a new window will be opened to display detailed information. It will also allow to change some properties of the audio file, extract a channel, etc.</p>
 <h3 id="properties-of-the-audio-file">Properties of the audio file</h3>
-<p>The main properties of any audio file are displayed. SPPAS can open audio files of type &quot;Waveform Audio&quot; file format (WAVE), a Microsoft and IBM audio file format standard and &quot;SunAu&quot; file format, an audio file format introduced by Sun Microsystems. The following information are extracted or deducted of the header of the audio file:</p>
+<p>The main properties of any audio file are displayed. SPPAS can open audio files of type <q>Waveform Audio</q> file format (WAVE), a Microsoft and IBM audio file format standard and <q>SunAu</q> file format, an audio file format introduced by Sun Microsystems. The following information are extracted or deducted of the header of the audio file:</p>
 <ul>
 <li>the duration given in seconds with a maximum of 3 digits;</li>
 <li>the frame rate given in Hz;</li>
@@ -163,15 +172,15 @@
 <li>F8: Next</li>
 </ul>
 <h3 id="want-more">Want more?</h3>
-<p><code>AudioRoamer</code> allows to display a large amount of information for each channel. For a long audio file, it can take a while to estimate such information... For example, a mono-audio file of 243 seconds (21.5Mb) is loaded in 20 seconds. <strong>So be patient! It's worth it!</strong></p>
+<p><code>AudioRoamer</code> allows to display a large amount of information for each channel. For a long audio file, it can take a while to estimate such information… For example, a mono-audio file of 243 seconds (21.5Mb) is loaded in 20 seconds. <strong>So be patient! It’s worth it!</strong></p>
 <figure>
-<img src="./etc/screenshots/AudioRoamer-more.png" alt="AudioRoamer if you want more" /><figcaption>AudioRoamer if you want more</figcaption>
+<img src="etc/screenshots/AudioRoamer-more.png" alt="AudioRoamer if you want more" /><figcaption>AudioRoamer if you want more</figcaption>
 </figure>
 <p>There are 3 main columns of information, related to amplitude, clipping and volume.</p>
 <p>At the bottom of the window, it is possible to click on buttons to:</p>
 <ol type="1">
 <li>Save the channel currently displayed;</li>
-<li>Save a portion (from...to...) of the channel;</li>
+<li>Save a portion (from…to…) of the channel;</li>
 <li>Save the displayed information in a text file;</li>
 <li>Close the window.</li>
 </ol>
@@ -179,7 +188,7 @@
 <p>The amplitude is a variable characterizing the sinusoidal oscillation of the digital-audio recording. It gives the deflection of a physical quantity from its neutral position (zero point) up to a positive or negative value. With sound waves, it is the extent to which air particles are displaced, and this amplitude of sound or sound amplitude is experienced as the loudness of sound. The loudness perception of a sound is determined by the amplitude of the sound waves − the higher the amplitude, the louder the sound or the noise.</p>
 <p>The first column of <code>AudioRoamer</code> Data Manager gives amplitude values of each channel of the PCM file:</p>
 <ul>
-<li>Number of frames: the number of samples, i.e. the number of amplitude values;</li>
+<li>Number of frames: the number of samples, i.e. the number of amplitude values;</li>
 <li>Min/Max values: minimum and maximum amplitude values in the channel;</li>
 <li>Zero crossings: number of times continuous values are crossing the 0 value.</li>
 </ul>
@@ -199,9 +208,9 @@
 <h5 id="automatic-detection-of-silences">Automatic detection of silences:</h5>
 <p>Finally, the result of an automatic detection of silences is given. This information is given for information only: It is estimated with default parameters which should be adapted!</p>
 <h2 id="ipuscriber">IPUscriber</h2>
-<p><code>IPUscriber</code> is useful to perform manual orthographic transcription. When an audio file is checked in the list of files, the program search for a file with the IPUs Segmentation, i.e. a file with the same name (in the same directory) with a known extension like .xra, .TextGrid, etc. If this file is not found, an error message is displayed. Otherwise, the audio file is opened and the annotated file is loaded in a new page of the notebook.</p>
+<p><code>IPUscriber</code> is useful to perform manual orthographic transcription. When an audio file is checked in the list of files, the program search for a file with the IPUs Segmentation, i.e. a file with the same name (in the same directory) with a known extension like .xra, .TextGrid, etc. If this file is not found, an error message is displayed. Otherwise, the audio file is opened and the annotated file is loaded in a new page of the notebook.</p>
 <figure>
-<img src="./etc/screenshots/IPUscriber.png" alt="IPUscriber: for manual orthographic transcription" /><figcaption>IPUscriber: for manual orthographic transcription</figcaption>
+<img src="etc/screenshots/IPUscriber.png" alt="IPUscriber: for manual orthographic transcription" /><figcaption>IPUscriber: for manual orthographic transcription</figcaption>
 </figure>
 <p>Silences are hidden and the IPUs are displayed in a list of boxes with:</p>
 <ul>
@@ -221,9 +230,9 @@
 <h2 id="visualizer">Visualizer</h2>
 <p><code>Visualizer</code> displays speech files and annotated files, and is very useful to take a nice screenshot.</p>
 <figure>
-<img src="./etc/screenshots/SppasEdit.png" alt="Visualizer: displays audio files and annotated files" /><figcaption>Visualizer: displays audio files and annotated files</figcaption>
+<img src="etc/screenshots/SppasEdit.png" alt="Visualizer: displays audio files and annotated files" /><figcaption>Visualizer: displays audio files and annotated files</figcaption>
 </figure>
-<p>This tool is still under-development, some &quot;troubles/crashes&quot; can occur while using it... however the data will never been corrupted!</p>
+<p>This tool is still under-development, some <q>troubles/crashes</q> can occur while using it… however the data will never been corrupted!</p>
 <p>When a file is checked on the file of files, it is opened and displayed in the currently opened tab of the notebook. There is not limit on the number of audio files that can be displayed nor on the number of annotated files. To select a displayed file, click anywhere of the displayed part.</p>
 <p>At the bottom of the tab, 3 series of buttons are available:</p>
 <ul>
@@ -246,7 +255,7 @@
 <li>move at right (show next data)</li>
 <li>move at the end of the file</li>
 <li>show the selection. Selected part is the one between the blue arrows of the rule</li>
-<li>display a specific time period (from... to...)</li>
+<li>display a specific time period (from… to…)</li>
 <li>zoom in: show a smaller period</li>
 <li>zoom out: show a higher period</li>
 <li>vertical zoom in</li>
@@ -256,12 +265,12 @@
 <h2 id="datafilter">DataFilter</h2>
 <p><code>DataFilter</code> allows to select annotations: define a set of filters to create new tiers with only the annotations you are interested in! This system is based on the creation of 2 different types of filters:</p>
 <ol type="1">
-<li>single filters, i.e. search in a/several tier(s) depending on the data content, the time values or the duration of each annotation;</li>
-<li>relation filters, i.e. search on annotations of a/several tier(s) in time-relation with annotations of another one.</li>
+<li>single filters, i.e. search in a/several tier(s) depending on the data content, the time values or the duration of each annotation;</li>
+<li>relation filters, i.e. search on annotations of a/several tier(s) in time-relation with annotations of another one.</li>
 </ol>
-<p>These later are applied on tiers of many kind of input files (TextGrid, eaf, trs, csv...). The filtering process results in a new tier, that can re-filtered and so on.</p>
+<p>These later are applied on tiers of many kind of input files (TextGrid, eaf, trs, csv…). The filtering process results in a new tier, that can re-filtered and so on.</p>
 <figure>
-<img src="./etc/screenshots/DataFilter.png" alt="DataFilter: select annotations" /><figcaption>DataFilter: select annotations</figcaption>
+<img src="etc/screenshots/DataFilter.png" alt="DataFilter: select annotations" /><figcaption>DataFilter: select annotations</figcaption>
 </figure>
 <h3 id="filtering-annotations-of-a-tier-singlefilter">Filtering annotations of a tier: SingleFilter</h3>
 <p>Pattern selection is an important part to extract data of a corpus and is obviously and important part of any filtering system. Thus, if the label of an annotation is a string, the following filters are proposed in DataFilter:</p>
@@ -276,53 +285,53 @@
 <p>A multiple pattern selection can be expressed in both ways:</p>
 <ul>
 <li>enter multiple patterns at the same time (separated by commas) to mention the system to retrieve either one pattern or the other, etc.</li>
-<li>enter one pattern at a time and choose the appropriate button: &quot;Apply All&quot; or &quot;Apply any&quot;.</li>
+<li>enter one pattern at a time and choose the appropriate button: <q>Apply All</q> or <q>Apply any</q>.</li>
 </ul>
 <figure>
-<img src="./etc/screenshots/DataFilter-label.png" alt="Frame to create a filter on annotation labels. In that case, filtering annotations that exactly match either a, @ or E" /><figcaption>Frame to create a filter on annotation labels. In that case, filtering annotations that exactly match either a, @ or E</figcaption>
+<img src="etc/screenshots/DataFilter-label.png" alt="Frame to create a filter on annotation labels. In that case, filtering annotations that exactly match either a, @ or E" /><figcaption>Frame to create a filter on annotation labels. In that case, filtering annotations that exactly match either a, @ or E</figcaption>
 </figure>
 <p>Another important feature for a filtering system is the possibility to retrieve annotated data of a certain duration, and in a certain range of time in the timeline.</p>
 <figure>
-<img src="./etc/screenshots/DataFilter-duration.png" alt="Frame to create a filter on annotation durations. In that case, filtering annotations that are during more that 80 ms" /><figcaption>Frame to create a filter on annotation durations. In that case, filtering annotations that are during more that 80 ms</figcaption>
+<img src="etc/screenshots/DataFilter-duration.png" alt="Frame to create a filter on annotation durations. In that case, filtering annotations that are during more that 80 ms" /><figcaption>Frame to create a filter on annotation durations. In that case, filtering annotations that are during more that 80 ms</figcaption>
 </figure>
 <p>Search can also starts and/or ends at specific time values in a tier.</p>
 <figure>
-<img src="./etc/screenshots/DataFilter-time.png" alt="Frame to create a filter on annotation time values. In that case, filtering annotations that are starting after the 5th minute." /><figcaption>Frame to create a filter on annotation time values. In that case, filtering annotations that are starting after the 5th minute.</figcaption>
+<img src="etc/screenshots/DataFilter-time.png" alt="Frame to create a filter on annotation time values. In that case, filtering annotations that are starting after the 5th minute." /><figcaption>Frame to create a filter on annotation time values. In that case, filtering annotations that are starting after the 5th minute.</figcaption>
 </figure>
-<p>All the given filters are then summarized in the &quot;SingleFilter&quot; frame. To complete the filtering process, it must be clicked on one of the apply buttons and the new resulting tiers are added in the annotation file(s).</p>
+<p>All the given filters are then summarized in the <q>SingleFilter</q> frame. To complete the filtering process, it must be clicked on one of the apply buttons and the new resulting tiers are added in the annotation file(s).</p>
 <p>In the given example:</p>
 <ul>
-<li>click on &quot;Apply All&quot; to get either a, @ or E vowels during more than 80ms, after the 5th minute.</li>
-<li>click on &quot;Apply Any&quot; to get a, @ or E vowels, and all annotations during more than 80 ms, and all annotations after the 5th minute.</li>
+<li>click on <q>Apply All</q> to get either a, @ or E vowels during more than 80ms, after the 5th minute.</li>
+<li>click on <q>Apply Any</q> to get a, @ or E vowels, and all annotations during more than 80 ms, and all annotations after the 5th minute.</li>
 </ul>
 <figure>
-<img src="./etc/screenshots/DataFilter-single.png" alt="DataFilter: SingleFilter frame" /><figcaption>DataFilter: SingleFilter frame</figcaption>
+<img src="etc/screenshots/DataFilter-single.png" alt="DataFilter: SingleFilter frame" /><figcaption>DataFilter: SingleFilter frame</figcaption>
 </figure>
 <h3 id="filtering-on-time-relations-between-two-tiers">Filtering on time-relations between two tiers</h3>
-<p>Regarding the searching problem, linguists are typically interested in locating patterns on specific tiers, with the possibility to relate different annotations a tier from another. The proposed system offers a powerful way to request/extract data, with the help of Allen's interval algebra.</p>
+<p>Regarding the searching problem, linguists are typically interested in locating patterns on specific tiers, with the possibility to relate different annotations a tier from another. The proposed system offers a powerful way to request/extract data, with the help of Allen’s interval algebra.</p>
 <p>In 1983 James F. Allen published a paper in which he proposed 13 basic relations between time intervals that are distinct, exhaustive, and qualitative:</p>
 <ul>
 <li>distinct because no pair of definite intervals can be related by more than one of the relationships;</li>
 <li>exhaustive because any pair of definite intervals are described by one of the relations;</li>
 <li>qualitative (rather than quantitative) because no numeric time spans are considered.</li>
 </ul>
-<p>These relations and the operations on them form Allen's interval algebra. These relations were extended to Interval-Tiers as Point-Tiers to be used to find/select/filter annotations of any kind of time-aligned tiers.</p>
-<p>For the sake of simplicity, only the 13 relations of the Allen's algebra are available in the GUI. But actually, we implemented the 25 relations proposed Pujari and al. (1999) in the INDU model. This model is fixing constraints on INtervals (with Allen's relations) and on DUration (duration are equals, one is less/greater than the other). Such relations are available while requesting with Python.</p>
-<p>At a first stage, the user must select the tiers to be filtered and click on &quot;RelationFilter&quot;. The second stage is to select the tier that will be used for time-relations.</p>
+<p>These relations and the operations on them form Allen’s interval algebra. These relations were extended to Interval-Tiers as Point-Tiers to be used to find/select/filter annotations of any kind of time-aligned tiers.</p>
+<p>For the sake of simplicity, only the 13 relations of the Allen’s algebra are available in the GUI. But actually, we implemented the 25 relations proposed Pujari and al. (1999) in the INDU model. This model is fixing constraints on INtervals (with Allen’s relations) and on DUration (duration are equals, one is less/greater than the other). Such relations are available while requesting with Python.</p>
+<p>At a first stage, the user must select the tiers to be filtered and click on <q>RelationFilter</q>. The second stage is to select the tier that will be used for time-relations.</p>
 <figure>
-<img src="./etc/screenshots/DataFilter-relationY.png" alt="Fix time-relation tier name" /><figcaption>Fix time-relation tier name</figcaption>
+<img src="etc/screenshots/DataFilter-relationY.png" alt="Fix time-relation tier name" /><figcaption>Fix time-relation tier name</figcaption>
 </figure>
-<p>The next step consists in checking the Allen's relations that will be applied. The last stage is to fix the name of the resulting tier. The above screenshots illustrates how to select the first phoneme of each token, except for tokens that are containing only one phoneme (in this later case, the &quot;equal&quot; relation should be checked).</p>
+<p>The next step consists in checking the Allen’s relations that will be applied. The last stage is to fix the name of the resulting tier. The above screenshots illustrates how to select the first phoneme of each token, except for tokens that are containing only one phoneme (in this later case, the <q>equal</q> relation should be checked).</p>
 <figure>
-<img src="./etc/screenshots/DataFilter-relation.png" alt="DataFilter: RelationFilter frame" /><figcaption>DataFilter: RelationFilter frame</figcaption>
+<img src="etc/screenshots/DataFilter-relation.png" alt="DataFilter: RelationFilter frame" /><figcaption>DataFilter: RelationFilter frame</figcaption>
 </figure>
-<p>To complete the filtering process, it must be clicked on the &quot;Apply&quot; button and the new resulting tiers are added in the annotation file(s).</p>
+<p>To complete the filtering process, it must be clicked on the <q>Apply</q> button and the new resulting tiers are added in the annotation file(s).</p>
 <h2 id="statistics">Statistics</h2>
 <figure>
-<img src="./etc/screenshots/Statistics.png" alt="Statistics: descriptive statistics and TGA" /><figcaption>Statistics: descriptive statistics and TGA</figcaption>
+<img src="etc/screenshots/Statistics.png" alt="Statistics: descriptive statistics and TGA" /><figcaption>Statistics: descriptive statistics and TGA</figcaption>
 </figure>
 <h3 id="descriptive-statistics">Descriptive statistics</h3>
-<p>It allows to estimate the number of occurrences, the duration, etc. of the annotations of a set of selected tiers, and allows to save in CSV (for Excel, OpenOffice, R, MatLab,...). It offers a serie of sheets organized in a notebook. The first tab is displaying a summary of descriptive statistics of the set of given tiers. The other tabs are indicating one of the statistics over the given tiers. The followings are estimated:</p>
+<p>It allows to estimate the number of occurrences, the duration, etc. of the annotations of a set of selected tiers, and allows to save in CSV (for Excel, OpenOffice, R, MatLab,…). It offers a serie of sheets organized in a notebook. The first tab is displaying a summary of descriptive statistics of the set of given tiers. The other tabs are indicating one of the statistics over the given tiers. The followings are estimated:</p>
 <ul>
 <li>occurrences: the number of observations</li>
 <li>total durations: the sum of the durations</li>
@@ -330,15 +339,15 @@
 <li>median durations: the median value of the distribution of durations</li>
 <li>std dev. durations: the standard deviation value of the distribution of durations</li>
 </ul>
-<p>All of them can be estimated on a single annotation label or on a serie of them. The length of this context can be optionally changed while fixing the &quot;N-gram&quot; value (available from 1 to 5), just above the sheets.</p>
-<p>Each displayed sheet can be saved as a CSV file, which is a useful file format to be read by R, Excel, OpenOffice, LibreOffice, and so... To do so, display the sheet you want to save and click on the button &quot;Save sheet&quot;, just below the sheets. If you plan to open this CSV file with Excel under Windows, it is recommended to change the encoding to UTF-16. For the other cases, UTF-8 is probably the most relevant.</p>
-<p>The annotation durations are commonly estimated on the Midpoint value, without taking the radius into account; see (Bigi et al, 2012) for explanations about the Midpoint/Radius. Optionally, the duration can either be estimated by taking the vagueness into account, then check &quot;Add the radius value&quot; button, or by ignoring the vagueness and estimating only on the central part of the annotation, then check &quot;Deduct the radius value&quot;.</p>
-<p>For those who are estimating statistics on XRA files, you can either estimate stats only on the best label (the label with the higher score) or on all labels, i.e. the best label and all its alternatives (if any).</p>
+<p>All of them can be estimated on a single annotation label or on a serie of them. The length of this context can be optionally changed while fixing the <q>N-gram</q> value (available from 1 to 5), just above the sheets.</p>
+<p>Each displayed sheet can be saved as a CSV file, which is a useful file format to be read by R, Excel, OpenOffice, LibreOffice, and so… To do so, display the sheet you want to save and click on the button <q>Save sheet</q>, just below the sheets. If you plan to open this CSV file with Excel under Windows, it is recommended to change the encoding to UTF-16. For the other cases, UTF-8 is probably the most relevant.</p>
+<p>The annotation durations are commonly estimated on the Midpoint value, without taking the radius into account; see (Bigi et al, 2012) for explanations about the Midpoint/Radius. Optionally, the duration can either be estimated by taking the vagueness into account, then check <q>Add the radius value</q> button, or by ignoring the vagueness and estimating only on the central part of the annotation, then check <q>Deduct the radius value</q>.</p>
+<p>For those who are estimating statistics on XRA files, you can either estimate stats only on the best label (the label with the higher score) or on all labels, i.e. the best label and all its alternatives (if any).</p>
 <figure>
-<img src="./etc/screenshots/Statistics-descriptives.png" alt="Descriptive statistics" /><figcaption>Descriptive statistics</figcaption>
+<img src="etc/screenshots/Statistics-descriptives.png" alt="Descriptive statistics" /><figcaption>Descriptive statistics</figcaption>
 </figure>
 <h3 id="user-agreement">User agreement</h3>
-<p>SPPAS implements the estimation of the Cohen's Kappa. It is currently limited to the evaluation of this user agreement between labels of 2 tiers with the same number of intervals. It is under-development...</p>
+<p>SPPAS implements the estimation of the Cohen’s Kappa. It is currently limited to the evaluation of this user agreement between labels of 2 tiers with the same number of intervals. It is under-development…</p>
 
     </div>
     </div>

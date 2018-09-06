@@ -1,0 +1,722 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>anndata.ann package &#8212; SPPAS 1.9.8 documentation</title>
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="anndata.ann.annlabel package" href="anndata.ann.annlabel.html" />
+    <link rel="prev" title="anndata.aio package" href="anndata.aio.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="anndata.ann.annlabel.html" title="anndata.ann.annlabel package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="anndata.aio.html" title="anndata.aio package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="anndata.html" accesskey="U">anndata package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="anndata-ann-package">
+<h1>anndata.ann package<a class="headerlink" href="#anndata-ann-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="anndata.ann.annlabel.html">anndata.ann.annlabel package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlabel.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlabel.html#module-anndata.ann.annlabel.label">anndata.ann.annlabel.label module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="anndata.ann.annlabel.html#anndata-ann-annlabel-label-py">anndata.ann.annlabel.label.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlabel.html#module-anndata.ann.annlabel.tag">anndata.ann.annlabel.tag module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="anndata.ann.annlabel.html#anndata-ann-annlabel-tag-py">anndata.ann.annlabel.tag.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlabel.html#module-anndata.ann.annlabel.tagcompare">anndata.ann.annlabel.tagcompare module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="anndata.ann.annlabel.html#anndata-ann-annlabel-tagcompare-py">anndata.ann.annlabel.tagcompare.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlabel.html#module-anndata.ann.annlabel">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="anndata.ann.annlabel.html#anndata-annlabel">anndata.annlabel</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="anndata.ann.annlocation.html">anndata.ann.annlocation package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlocation.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlocation.html#module-anndata.ann.annlocation.disjoint">anndata.ann.annlocation.disjoint module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="anndata.ann.annlocation.html#anndata-annloc-disjoint-py">anndata.annloc.disjoint.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlocation.html#module-anndata.ann.annlocation.duration">anndata.ann.annlocation.duration module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="anndata.ann.annlocation.html#anndata-annloc-duration-py">anndata.annloc.duration.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlocation.html#module-anndata.ann.annlocation.durationcompare">anndata.ann.annlocation.durationcompare module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="anndata.ann.annlocation.html#anndata-annlocation-durationcompare-py">anndata.annlocation.durationcompare.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlocation.html#module-anndata.ann.annlocation.interval">anndata.ann.annlocation.interval module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="anndata.ann.annlocation.html#anndata-annloc-interval-py">anndata.annloc.interval.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlocation.html#module-anndata.ann.annlocation.intervalcompare">anndata.ann.annlocation.intervalcompare module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="anndata.ann.annlocation.html#anndata-annlocation-intervalcompare-py">anndata.annlocation.intervalcompare.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlocation.html#module-anndata.ann.annlocation.localization">anndata.ann.annlocation.localization module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="anndata.ann.annlocation.html#anndata-annloc-localization-py">anndata.annloc.localization.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlocation.html#module-anndata.ann.annlocation.localizationcompare">anndata.ann.annlocation.localizationcompare module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="anndata.ann.annlocation.html#anndata-annlocation-localizationcompare-py">anndata.annlocation.localizationcompare.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlocation.html#module-anndata.ann.annlocation.location">anndata.ann.annlocation.location module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="anndata.ann.annlocation.html#anndata-annloc-location-py">anndata.annloc.location.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlocation.html#module-anndata.ann.annlocation.point">anndata.ann.annlocation.point module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="anndata.ann.annlocation.html#anndata-annloc-point-py">anndata.annloc.point.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="anndata.ann.annlocation.html#module-anndata.ann.annlocation">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="anndata.ann.annlocation.html#anndata-annloc">anndata.annloc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-anndata.ann.annotation">
+<span id="anndata-ann-annotation-module"></span><h2>anndata.ann.annotation module<a class="headerlink" href="#module-anndata.ann.annotation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="anndata-annotation-py">
+<h3>anndata.annotation.py<a class="headerlink" href="#anndata-annotation-py" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="anndata.ann.annotation.sppasAnnotation">
+<em class="property">class </em><code class="descclassname">anndata.ann.annotation.</code><code class="descname">sppasAnnotation</code><span class="sig-paren">(</span><em>location</em>, <em>labels=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="anndata.html#anndata.metadata.sppasMetaData" title="anndata.metadata.sppasMetaData"><code class="xref py py-class docutils literal notranslate"><span class="pre">anndata.metadata.sppasMetaData</span></code></a></p>
+<p>Represents an annotation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
+<p>A sppasAnnotation() is defined as a container for:</p>
+<blockquote>
+<div><ul class="simple">
+<li>a sppasLocation()</li>
+<li>a list of sppasLabel()</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">location</span> <span class="o">=</span> <span class="n">sppasLocation</span><span class="p">(</span><span class="n">sppasPoint</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.01</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">sppasLabel</span><span class="p">(</span><span class="n">sppasTag</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ann</span> <span class="o">=</span> <span class="n">sppasAnnotation</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>location</em>, <em>labels=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new sppasAnnotation instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>location</strong> – (sppasLocation) the location(s) where the annotation        happens</li>
+<li><strong>labels</strong> – (sppasLabel, list) the label(s) to stamp this        annotation, or a list of them.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.add_tag">
+<code class="descname">add_tag</code><span class="sig-paren">(</span><em>tag</em>, <em>score=None</em>, <em>label_idx=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.add_tag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.add_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append an alternative tag in a label.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tag</strong> – (sppasTag)</li>
+<li><strong>score</strong> – (float)</li>
+<li><strong>label_idx</strong> – (int)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">AnnDataTypeError, IndexError</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.append_label">
+<code class="descname">append_label</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.append_label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.append_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a label into the list of labels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>label</strong> – (sppasLabel)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.contains_localization">
+<code class="descname">contains_localization</code><span class="sig-paren">(</span><em>localization</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.contains_localization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.contains_localization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the given localization is in the location.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.contains_tag">
+<code class="descname">contains_tag</code><span class="sig-paren">(</span><em>tag</em>, <em>function='exact'</em>, <em>reverse=False</em>, <em>label_idx=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.contains_tag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.contains_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the given tag is in the label.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>tag</strong> – (sppasTag)</li>
+<li><strong>function</strong> – Search function</li>
+<li><strong>reverse</strong> – Reverse the function.</li>
+<li><strong>label_idx</strong> – (int)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a full copy of the annotation.</p>
+<p>The location, the labels and the metadata are all copied. The ‘id’
+of the returned annotation is then the same.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">sppasAnnotation()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.get_all_points">
+<code class="descname">get_all_points</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.get_all_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.get_all_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of a copy of all points of this annotation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.get_best_tag">
+<code class="descname">get_best_tag</code><span class="sig-paren">(</span><em>label_idx=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.get_best_tag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.get_best_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the tag with the highest score of a label or an empty str.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>label_idx</strong> – (int)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.get_highest_localization">
+<code class="descname">get_highest_localization</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.get_highest_localization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.get_highest_localization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the sppasPoint with the highest loc.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.get_labels">
+<code class="descname">get_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.get_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.get_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of sppasLabel() of this annotation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.get_labels_best_tag">
+<code class="descname">get_labels_best_tag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.get_labels_best_tag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.get_labels_best_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list with the best tag of each label.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.get_location">
+<code class="descname">get_location</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.get_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.get_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the sppasLocation() of this annotation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.get_lowest_localization">
+<code class="descname">get_lowest_localization</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.get_lowest_localization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.get_lowest_localization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the sppasPoint with the lowest localization.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.get_score">
+<code class="descname">get_score</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.get_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.get_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the score of this annotation or None if no score is set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">score: (float)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.is_labelled">
+<code class="descname">is_labelled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.is_labelled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.is_labelled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if at least a sppasTag exists and is not None.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.label_is_bool">
+<code class="descname">label_is_bool</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.label_is_bool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.label_is_bool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the type of the labels is ‘bool’.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.label_is_filled">
+<code class="descname">label_is_filled</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.label_is_filled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.label_is_filled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if at least one BEST tag is filled.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.label_is_float">
+<code class="descname">label_is_float</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.label_is_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.label_is_float" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the type of the labels is ‘float’.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.label_is_int">
+<code class="descname">label_is_int</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.label_is_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.label_is_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the type of the labels is ‘int’.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.label_is_string">
+<code class="descname">label_is_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.label_is_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.label_is_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the type of the labels is ‘str’.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.location_is_disjoint">
+<code class="descname">location_is_disjoint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.location_is_disjoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.location_is_disjoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the location is made of sppasDisjoint locs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.location_is_interval">
+<code class="descname">location_is_interval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.location_is_interval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.location_is_interval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the location is made of sppasInterval locs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.location_is_point">
+<code class="descname">location_is_point</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.location_is_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.location_is_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if the location is made of sppasPoint locs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.remove_tag">
+<code class="descname">remove_tag</code><span class="sig-paren">(</span><em>tag</em>, <em>label_idx=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.remove_tag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.remove_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an alternative tag of the label.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>tag</strong> – (sppasTag) the tag to be removed of the list.</li>
+<li><strong>label_idx</strong> – (int)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.serialize_labels">
+<code class="descname">serialize_labels</code><span class="sig-paren">(</span><em>separator='\n'</em>, <em>empty=''</em>, <em>alt=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.serialize_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.serialize_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert labels into a string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>separator</strong> – (str) String to separate labels.</li>
+<li><strong>empty</strong> – (str) The text to return if a tag is empty or not set.</li>
+<li><strong>alt</strong> – (bool) Include alternative tags</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(str)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.set_best_localization">
+<code class="descname">set_best_localization</code><span class="sig-paren">(</span><em>localization</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.set_best_localization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.set_best_localization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the best localization of the location.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>localization</strong> – (sppasBaseLocalization)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.set_labels">
+<code class="descname">set_labels</code><span class="sig-paren">(</span><em>labels=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.set_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.set_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fix/reset the list of labels of this annotation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>labels</strong> – (sppasLabel, list) the label(s) to stamp this         annotation, or a list of them.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">AnnDataTypeError, TypeError, CtrlVocabContainsError,         HierarchyContainsError, HierarchyTypeError</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.set_parent">
+<code class="descname">set_parent</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.set_parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.set_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a parent tier.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parent</strong> – (sppasTier) The parent tier of this annotation.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">CtrlVocabContainsError, HierarchyContainsError,         HierarchyTypeError</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.set_score">
+<code class="descname">set_score</code><span class="sig-paren">(</span><em>score=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.set_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.set_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or reset the score to this annotation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>score</strong> – (float)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.validate">
+<code class="descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate the annotation.</p>
+<p>Check if the labels and location match the requirements.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">TypeError, CtrlVocabContainsError, HierarchyContainsError,         HierarchyTypeError</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.validate_label">
+<code class="descname">validate_label</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.validate_label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.validate_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate the label.</p>
+<p>Check if the label matches the requirements of this annotation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">CtrlVocabContainsError, TypeError</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annotation.sppasAnnotation.validate_location">
+<code class="descname">validate_location</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annotation.html#sppasAnnotation.validate_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annotation.sppasAnnotation.validate_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate the location of the annotation.</p>
+<p>:raises:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-anndata.ann.annset">
+<span id="anndata-ann-annset-module"></span><h2>anndata.ann.annset module<a class="headerlink" href="#module-anndata.ann.annset" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="anndata-ann-annset-py">
+<h3>anndata.ann.annset.py<a class="headerlink" href="#anndata-ann-annset-py" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="anndata.ann.annset.sppasAnnSet">
+<em class="property">class </em><code class="descclassname">anndata.ann.annset.</code><code class="descname">sppasAnnSet</code><a class="reference internal" href="../_modules/anndata/ann/annset.html#sppasAnnSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annset.sppasAnnSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manager for a set of annotations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
+<p>Mainly used with the data that are the result of the filter system.
+A sppasAnnSet() manages a dictionary with:</p>
+<blockquote>
+<div><ul class="simple">
+<li>key: an annotation</li>
+<li>value: a list of strings</li>
+</ul>
+</div></blockquote>
+<dl class="method">
+<dt id="anndata.ann.annset.sppasAnnSet.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annset.html#sppasAnnSet.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annset.sppasAnnSet.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sppasAnnSet instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annset.sppasAnnSet.append">
+<code class="descname">append</code><span class="sig-paren">(</span><em>ann</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annset.html#sppasAnnSet.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annset.sppasAnnSet.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append an annotation in the data set, with the given value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ann</strong> – (sppasAnnotation)</li>
+<li><strong>value</strong> – (list of str) List of any string.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annset.sppasAnnSet.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annset.html#sppasAnnSet.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annset.sppasAnnSet.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a deep copy of self.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annset.sppasAnnSet.get_value">
+<code class="descname">get_value</code><span class="sig-paren">(</span><em>ann</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annset.html#sppasAnnSet.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annset.sppasAnnSet.get_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value corresponding to an annotation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ann</strong> – (sppasAnnotation)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(list of str) the value corresponding to the annotation.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annset.sppasAnnSet.remove">
+<code class="descname">remove</code><span class="sig-paren">(</span><em>ann</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annset.html#sppasAnnSet.remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annset.sppasAnnSet.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the annotation of the data set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ann</strong> – (sppasAnnotation)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="anndata.ann.annset.sppasAnnSet.to_tier">
+<code class="descname">to_tier</code><span class="sig-paren">(</span><em>name='AnnSet'</em>, <em>annot_value=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/anndata/ann/annset.html#sppasAnnSet.to_tier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#anndata.ann.annset.sppasAnnSet.to_tier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a tier from the data set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> – (str) Name of the tier to be returned</li>
+<li><strong>annot_value</strong> – (bool) format of the resulting annotation label.             By default, the label of the annotation is used. Instead,             its value in the data set is used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(sppasTier)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-anndata.ann">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-anndata.ann" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">anndata.ann package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-anndata.ann.annotation">anndata.ann.annotation module</a><ul>
+<li><a class="reference internal" href="#anndata-annotation-py">anndata.annotation.py</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-anndata.ann.annset">anndata.ann.annset module</a><ul>
+<li><a class="reference internal" href="#anndata-ann-annset-py">anndata.ann.annset.py</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-anndata.ann">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="anndata.aio.html"
+                        title="previous chapter">anndata.aio package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="anndata.ann.annlabel.html"
+                        title="next chapter">anndata.ann.annlabel package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/rst/anndata.ann.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="anndata.ann.annlabel.html" title="anndata.ann.annlabel package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="anndata.aio.html" title="anndata.aio package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">SPPAS 1.9.8 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="anndata.html" >anndata package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright Copyright (C) 2011-2018 Brigitte Bigi.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+    </div>
+  </body>
+</html>

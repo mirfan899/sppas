@@ -70,11 +70,6 @@
 <span class="sd">    src.resources.dumpfile.py</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
-<span class="sd">    Class to manage dump files.</span>
-<span class="sd">    A dump file is a binary version of an ASCII file. Its size is greater</span>
-<span class="sd">    than the original ASCII one but the time to load it is divided by two</span>
-<span class="sd">    or three.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">codecs</span>
@@ -87,21 +82,26 @@
 
 
 <div class="viewcode-block" id="sppasDumpFile"><a class="viewcode-back" href="../../rst/resources.html#resources.dumpfile.sppasDumpFile">[docs]</a><span class="k">class</span> <span class="nc">sppasDumpFile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Class to manage dump files.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Manager for dump files.</span>
+
+<span class="sd">    A dump file is a binary version of an ASCII file. Its size is greater</span>
+<span class="sd">    than the original ASCII one but the time to load it is divided by two</span>
+<span class="sd">    or three.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">DUMP_FILENAME_EXT</span> <span class="o">=</span> <span class="s2">&quot;.dump&quot;</span>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasDumpFile.__init__"><a class="viewcode-back" href="../../rst/resources.html#resources.dumpfile.sppasDumpFile.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">dump_extension</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasDumpFile instance.</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasDumpFile instance.</span>
 
 <span class="sd">        :param filename: (str) Name of the ASCII file.</span>
 <span class="sd">        :param dump_extension: (str) Extension of the dump file.</span>
@@ -116,7 +116,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasDumpFile.set_filename"><a class="viewcode-back" href="../../rst/resources.html#resources.dumpfile.sppasDumpFile.set_filename">[docs]</a>    <span class="k">def</span> <span class="nf">set_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the name of the ASCII file.</span>
+        <span class="sd">&quot;&quot;&quot;Fix the name of the ASCII file.</span>
 
 <span class="sd">        :param filename: (str) Name of the ASCII file.</span>
 
@@ -126,12 +126,15 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasDumpFile.set_dump_extension"><a class="viewcode-back" href="../../rst/resources.html#resources.dumpfile.sppasDumpFile.set_dump_extension">[docs]</a>    <span class="k">def</span> <span class="nf">set_dump_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the extension of the dump file.</span>
+        <span class="sd">&quot;&quot;&quot;Fix the extension of the dump file.</span>
+
 <span class="sd">        Set to the default extension if the given extension is an empty</span>
 <span class="sd">        string.</span>
 
-<span class="sd">        :param extension: (str) Extension of the dump file (starting with or without the .).</span>
-<span class="sd">        :raises: DumpExtensionError if extension of the dump file is the same as the ASCII file.</span>
+<span class="sd">        :param extension: (str) Extension of the dump file \</span>
+<span class="sd">        (starting with or without the dot).</span>
+<span class="sd">        :raises: DumpExtensionError if extension of the dump file is \</span>
+<span class="sd">        the same as the ASCII file.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">extension</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
@@ -151,14 +154,13 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasDumpFile.get_dump_extension"><a class="viewcode-back" href="../../rst/resources.html#resources.dumpfile.sppasDumpFile.get_dump_extension">[docs]</a>    <span class="k">def</span> <span class="nf">get_dump_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the extension of the dump version of filename. &quot;&quot;&quot;</span>
-
+        <span class="sd">&quot;&quot;&quot;Return the extension of the dump version of filename.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dump_ext</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasDumpFile.get_dump_filename"><a class="viewcode-back" href="../../rst/resources.html#resources.dumpfile.sppasDumpFile.get_dump_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_dump_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the file name of the dump version of filename.</span>
+        <span class="sd">&quot;&quot;&quot;Return the file name of the dump version of filename.</span>
 
 <span class="sd">        :returns: name of the dump file</span>
 
@@ -169,7 +171,7 @@
     <span class="c1"># ----------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasDumpFile.has_dump"><a class="viewcode-back" href="../../rst/resources.html#resources.dumpfile.sppasDumpFile.has_dump">[docs]</a>    <span class="k">def</span> <span class="nf">has_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Test if a dump file exists for filename and if it is up-to-date.</span>
+        <span class="sd">&quot;&quot;&quot;Test if a dump file exists for filename and if it is up-to-date.</span>
 
 <span class="sd">        :returns: (bool)</span>
 
@@ -188,7 +190,7 @@
     <span class="c1"># ----------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasDumpFile.load_from_dump"><a class="viewcode-back" href="../../rst/resources.html#resources.dumpfile.sppasDumpFile.load_from_dump">[docs]</a>    <span class="k">def</span> <span class="nf">load_from_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Load the file from a dumped file.</span>
+        <span class="sd">&quot;&quot;&quot;Load the file from a dumped file.</span>
 
 <span class="sd">        :returns: loaded data or None</span>
 
@@ -211,7 +213,7 @@
     <span class="c1"># ----------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasDumpFile.save_as_dump"><a class="viewcode-back" href="../../rst/resources.html#resources.dumpfile.sppasDumpFile.save_as_dump">[docs]</a>    <span class="k">def</span> <span class="nf">save_as_dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Save the data as a dumped file.</span>
+        <span class="sd">&quot;&quot;&quot;Save the data as a dumped file.</span>
 
 <span class="sd">        :param data: The data to save</span>
 <span class="sd">        :returns: (bool)</span>

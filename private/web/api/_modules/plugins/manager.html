@@ -66,11 +66,8 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.plugins.manager.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~</span>
-
-<span class="sd">    A manager for the set of plugins of a software: load, install, apply,</span>
-<span class="sd">    delete, etc.</span>
+<span class="sd">    plugins.manager.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -81,9 +78,9 @@
 <span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
 
 <span class="kn">from</span> <span class="nn">sppas.src.config</span> <span class="k">import</span> <span class="n">paths</span>
-<span class="kn">from</span> <span class="nn">sppas.src.utils.fileutils</span> <span class="k">import</span> <span class="n">sppasDirUtils</span>
+<span class="kn">from</span> <span class="nn">sppas.src.config</span> <span class="k">import</span> <span class="n">plugins_translation</span>
 <span class="kn">from</span> <span class="nn">sppas.src.utils.makeunicode</span> <span class="k">import</span> <span class="n">u</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">get_info</span>
+<span class="kn">from</span> <span class="nn">sppas.src.utils.fileutils</span> <span class="k">import</span> <span class="n">sppasDirUtils</span>
 <span class="kn">from</span> <span class="nn">.pluginsexc</span> <span class="k">import</span> <span class="n">PluginArchiveFileError</span>
 <span class="kn">from</span> <span class="nn">.pluginsexc</span> <span class="k">import</span> <span class="n">PluginArchiveIOError</span>
 <span class="kn">from</span> <span class="nn">.pluginsexc</span> <span class="k">import</span> <span class="n">PluginDuplicateError</span>
@@ -97,19 +94,26 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasPluginsManager"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginsManager">[docs]</a><span class="k">class</span> <span class="nc">sppasPluginsManager</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="info"><a class="viewcode-back" href="../../rst/plugins.html#plugins.manager.info">[docs]</a><span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="n">msg_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the info message from gettext.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">plugins_translation</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="s2">&quot;:INFO &quot;</span> <span class="o">+</span> <span class="n">msg_id</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span><span class="p">))</span></div>
+
+<span class="c1"># ----------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="sppasPluginsManager"><a class="viewcode-back" href="../../rst/plugins.html#plugins.manager.sppasPluginsManager">[docs]</a><span class="k">class</span> <span class="nc">sppasPluginsManager</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to manage the list of plugins into SPPAS.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Class to manage the list of plugins into SPPAS.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasPluginsManager.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginsManager.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Instantiate the sppasPluginsManager and load the current plugins. &quot;&quot;&quot;</span>
 
+<div class="viewcode-block" id="sppasPluginsManager.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.manager.sppasPluginsManager.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Instantiate the sppasPluginsManager and load the current plugins.&quot;&quot;&quot;</span>
         <span class="n">Thread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="c1"># Load the installed plugins</span>
@@ -125,8 +129,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginsManager.get_plugin_ids"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginsManager.get_plugin_ids">[docs]</a>    <span class="k">def</span> <span class="nf">get_plugin_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the list of plugin identifiers.</span>
+<div class="viewcode-block" id="sppasPluginsManager.get_plugin_ids"><a class="viewcode-back" href="../../rst/plugins.html#plugins.manager.sppasPluginsManager.get_plugin_ids">[docs]</a>    <span class="k">def</span> <span class="nf">get_plugin_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the list of plugin identifiers.</span>
 
 <span class="sd">        :returns: List of plugin identifiers.</span>
 
@@ -135,8 +139,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginsManager.get_plugin"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginsManager.get_plugin">[docs]</a>    <span class="k">def</span> <span class="nf">get_plugin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the sppasPluginParam from a plugin identifier.</span>
+<div class="viewcode-block" id="sppasPluginsManager.get_plugin"><a class="viewcode-back" href="../../rst/plugins.html#plugins.manager.sppasPluginsManager.get_plugin">[docs]</a>    <span class="k">def</span> <span class="nf">get_plugin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the sppasPluginParam from a plugin identifier.</span>
 
 <span class="sd">        :returns: sppasPluginParam matching the plugin_id or None</span>
 
@@ -145,8 +149,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginsManager.set_progress"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginsManager.set_progress">[docs]</a>    <span class="k">def</span> <span class="nf">set_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the progress system to be used while executing a plugin.</span>
+<div class="viewcode-block" id="sppasPluginsManager.set_progress"><a class="viewcode-back" href="../../rst/plugins.html#plugins.manager.sppasPluginsManager.set_progress">[docs]</a>    <span class="k">def</span> <span class="nf">set_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fix the progress system to be used while executing a plugin.</span>
 
 <span class="sd">        :param progress: (TextProgress or ProcessProgressDialog)</span>
 
@@ -155,8 +159,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginsManager.load"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginsManager.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Load all installed plugins in the SPPAS directory.</span>
+<div class="viewcode-block" id="sppasPluginsManager.load"><a class="viewcode-back" href="../../rst/plugins.html#plugins.manager.sppasPluginsManager.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load all installed plugins in the SPPAS directory.</span>
 
 <span class="sd">        A plugin is not loaded if:</span>
 
@@ -169,15 +173,18 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plugin_folder</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Plugin </span><span class="si">{:s}</span><span class="s2"> loading error: </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plugin_folder</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span></div>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Plugin </span><span class="si">{:s}</span><span class="s2"> loading error: </span><span class="si">{:s}</span><span class="s2">&quot;</span>
+                             <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plugin_folder</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginsManager.install"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginsManager.install">[docs]</a>    <span class="k">def</span> <span class="nf">install</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_archive</span><span class="p">,</span> <span class="n">plugin_folder</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Install a plugin into the plugin directory.</span>
+<div class="viewcode-block" id="sppasPluginsManager.install"><a class="viewcode-back" href="../../rst/plugins.html#plugins.manager.sppasPluginsManager.install">[docs]</a>    <span class="k">def</span> <span class="nf">install</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_archive</span><span class="p">,</span> <span class="n">plugin_folder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Install a plugin into the plugin directory.</span>
 
-<span class="sd">        :param plugin_archive: (str) File name of the plugin to be installed (ZIP).</span>
-<span class="sd">        :param plugin_folder: (str) Destination folder name of the plugin to be installed.</span>
+<span class="sd">        :param plugin_archive: (str) File name of the plugin to be</span>
+<span class="sd">        installed (ZIP).</span>
+<span class="sd">        :param plugin_folder: (str) Destination folder name of the plugin</span>
+<span class="sd">        to be installed.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">is_zipfile</span><span class="p">(</span><span class="n">plugin_archive</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
@@ -205,8 +212,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginsManager.delete"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginsManager.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Delete a plugin of the plugins directory.</span>
+<div class="viewcode-block" id="sppasPluginsManager.delete"><a class="viewcode-back" href="../../rst/plugins.html#plugins.manager.sppasPluginsManager.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete a plugin of the plugins directory.</span>
 
 <span class="sd">        :param plugin_id: (str) Identifier of the plugin to delete.</span>
 
@@ -220,8 +227,9 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginsManager.append"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginsManager.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_folder</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Append a plugin in the list of plugins.</span>
+<div class="viewcode-block" id="sppasPluginsManager.append"><a class="viewcode-back" href="../../rst/plugins.html#plugins.manager.sppasPluginsManager.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_folder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Append a plugin in the list of plugins.</span>
+
 <span class="sd">        It is supposed that the given plugin folder name is a folder of the</span>
 <span class="sd">        plugin directory.</span>
 
@@ -251,11 +259,12 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginsManager.run_plugin"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginsManager.run_plugin">[docs]</a>    <span class="k">def</span> <span class="nf">run_plugin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_id</span><span class="p">,</span> <span class="n">file_names</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Apply a given plugin on a list of files.</span>
+<div class="viewcode-block" id="sppasPluginsManager.run_plugin"><a class="viewcode-back" href="../../rst/plugins.html#plugins.manager.sppasPluginsManager.run_plugin">[docs]</a>    <span class="k">def</span> <span class="nf">run_plugin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugin_id</span><span class="p">,</span> <span class="n">file_names</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply a given plugin on a list of files.</span>
 
 <span class="sd">        :param plugin_id: (str) Identifier of the plugin to apply.</span>
-<span class="sd">        :param file_names: (list) List of files on which the plugin has to be applied.</span>
+<span class="sd">        :param file_names: (list) List of files on which the plugin has to</span>
+<span class="sd">        be applied.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -271,8 +280,9 @@
 
             <span class="c1"># Indicate the file to be processed</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">pfile</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; (&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">total</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
-            <span class="n">output_lines</span> <span class="o">+=</span> <span class="n">get_info</span><span class="p">(</span><span class="s2">&quot;4010&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">pfile</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">pfile</span><span class="p">)</span> <span class="o">+</span>
+                                        <span class="s2">&quot; (&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">total</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
+            <span class="n">output_lines</span> <span class="o">+=</span> <span class="n">info</span><span class="p">(</span><span class="s2">&quot;4010&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">pfile</span><span class="p">)</span>
 
             <span class="c1"># Apply the plugin</span>
             <span class="n">process</span> <span class="o">=</span> <span class="n">sppasPluginProcess</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plugins</span><span class="p">[</span><span class="n">plugin_id</span><span class="p">])</span>
@@ -282,12 +292,12 @@
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">output_lines</span> <span class="o">+=</span> <span class="n">get_info</span><span class="p">(</span><span class="s2">&quot;4015&quot;</span><span class="p">)</span>
+                <span class="n">output_lines</span> <span class="o">+=</span> <span class="n">info</span><span class="p">(</span><span class="s2">&quot;4015&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">output_lines</span> <span class="o">+=</span> <span class="n">u</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="n">output_lines</span> <span class="o">+=</span> <span class="n">get_info</span><span class="p">(</span><span class="s2">&quot;4100&quot;</span><span class="p">)</span>
+                    <span class="n">output_lines</span> <span class="o">+=</span> <span class="n">info</span><span class="p">(</span><span class="s2">&quot;4100&quot;</span><span class="p">)</span>
                     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
                     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
@@ -298,7 +308,7 @@
 
         <span class="c1"># Indicate completed!</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">get_info</span><span class="p">(</span><span class="s2">&quot;4020&quot;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">info</span><span class="p">(</span><span class="s2">&quot;4020&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">set_header</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">output_lines</span></div>
@@ -309,8 +319,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__init_plugin_dir</span><span class="p">():</span>
-        <span class="sd">&quot;&quot;&quot; Create the plugin directory if any. &quot;&quot;&quot;</span>
-
+        <span class="sd">&quot;&quot;&quot;Create the plugin directory if any.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">paths</span><span class="o">.</span><span class="n">plugins</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">try</span><span class="p">:</span>
@@ -324,8 +333,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__get_plugins</span><span class="p">():</span>
-        <span class="sd">&quot;&quot;&quot; Return a list of plugin folders. &quot;&quot;&quot;</span>
-
+        <span class="sd">&quot;&quot;&quot;Return a list of plugin folders.&quot;&quot;&quot;</span>
         <span class="n">folders</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">paths</span><span class="o">.</span><span class="n">plugins</span><span class="p">):</span>
             <span class="n">entry_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">paths</span><span class="o">.</span><span class="n">plugins</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
@@ -338,8 +346,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__get_config_file</span><span class="p">(</span><span class="n">plugin_dir</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the config file of a given plugin. &quot;&quot;&quot;</span>
-
+        <span class="sd">&quot;&quot;&quot;Return the config file of a given plugin.&quot;&quot;&quot;</span>
         <span class="n">sd</span> <span class="o">=</span> <span class="n">sppasDirUtils</span><span class="p">(</span><span class="n">plugin_dir</span><span class="p">)</span>
         <span class="n">files</span> <span class="o">=</span> <span class="n">sd</span><span class="o">.</span><span class="n">get_files</span><span class="p">(</span><span class="n">extension</span><span class="o">=</span><span class="s2">&quot;.ini&quot;</span><span class="p">,</span> <span class="n">recurs</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="c1"># Find a file with the extension .ini, and only one</span>

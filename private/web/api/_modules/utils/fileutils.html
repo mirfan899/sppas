@@ -67,12 +67,11 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.utils.fileutils.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    utils.fileutils.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~</span>
 
-<span class="sd">    Utility classes to manage files and directories.</span>
-<span class="sd">    </span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -85,8 +84,8 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="setup_logging"><a class="viewcode-back" href="../../rst/utils.html#utils.setup_logging">[docs]</a><span class="k">def</span> <span class="nf">setup_logging</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Setup default logger to log to stderr or and possible also to a file.</span>
+<div class="viewcode-block" id="setup_logging"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.setup_logging">[docs]</a><span class="k">def</span> <span class="nf">setup_logging</span><span class="p">(</span><span class="n">log_level</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Setup default logger to log to stderr or and possible also to a file.</span>
 
 <span class="sd">    :param log_level: Sets the threshold for this logger. Logging messages</span>
 <span class="sd">    which are less severe than this value will be ignored. When NOTSET is</span>
@@ -104,6 +103,7 @@
 <span class="sd">        - NOTSET 	 0</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">formatmsg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> [</span><span class="si">%(levelname)s</span><span class="s2">] </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
     <span class="k">if</span> <span class="n">log_level</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">log_level</span> <span class="o">=</span> <span class="mi">15</span>
@@ -122,19 +122,20 @@
         <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">console_handler</span><span class="p">)</span>
 
     <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Logging set up level=</span><span class="si">{:d}</span><span class="s2">, filename=</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">log_level</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span></div>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Logging set up level=</span><span class="si">{:d}</span><span class="s2">, &quot;</span>
+                 <span class="s2">&quot;filename=</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">log_level</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span></div>
 
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasGUID"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasGUID">[docs]</a><span class="k">class</span> <span class="nc">sppasGUID</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasGUID"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasGUID">[docs]</a><span class="k">class</span> <span class="nc">sppasGUID</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utility tool to generate an id.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Utility tool to generate an id.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
 <span class="sd">    This class is a manager for GUID - globally unique identifier.</span>
 
@@ -143,74 +144,25 @@
 <span class="sd">    such as {21EC2020-3AEA-4069-A2DD-08002B30309D}.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasGUID.__init__"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasGUID.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__guid</span> <span class="o">=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">generates</span><span class="p">()</span></div>
+<div class="viewcode-block" id="sppasGUID.__init__"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasGUID.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__guid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span></div>
 
     <span class="c1"># ---------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasGUID.get"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasGUID.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__guid</span></div>
-
-    <span class="c1"># ---------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasGUID.random_hexachar"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasGUID.random_hexachar">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">random_hexachar</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">lowercase</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="s1">&#39;abcdef&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
-        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="s1">&#39;ABCDEF&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y</span><span class="p">))</span></div>
-
-    <span class="c1"># ---------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasGUID.random_int"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasGUID.random_int">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">random_int</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y</span><span class="p">))</span></div>
-
-    <span class="c1"># ---------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="sppasGUID.generates"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasGUID.generates">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">generates</span><span class="p">():</span>
-        <span class="sd">&quot;&quot;&quot; Generate a GUID - globally unique identifier. &quot;&quot;&quot;</span>
-
-        <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_hexachar</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_hexachar</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_hexachar</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;-&quot;</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_hexachar</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;-&quot;</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_hexachar</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;-&quot;</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_hexachar</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;-&quot;</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_hexachar</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_hexachar</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">+=</span> <span class="n">sppasGUID</span><span class="o">.</span><span class="n">random_hexachar</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">s</span></div></div>
+<div class="viewcode-block" id="sppasGUID.get"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasGUID.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__guid</span><span class="p">)</span></div></div>
 
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasFileUtils"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasFileUtils">[docs]</a><span class="k">class</span> <span class="nc">sppasFileUtils</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasFileUtils"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasFileUtils">[docs]</a><span class="k">class</span> <span class="nc">sppasFileUtils</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utility file manager for SPPAS.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Utility file manager for SPPAS.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
 <span class="sd">    &gt;&gt;&gt; sf = sppasFileUtils(&quot;path/myfile.txt&quot;)</span>
 <span class="sd">    &gt;&gt;&gt; print(sf.exists())</span>
@@ -220,8 +172,9 @@
 <span class="sd">    &gt;&gt;&gt; fn = sf.get_filename() + &quot;.txt&quot;</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasFileUtils.__init__"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasFileUtils.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasFileUtils instance.</span>
+
+<div class="viewcode-block" id="sppasFileUtils.__init__"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasFileUtils.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasFileUtils instance.</span>
 
 <span class="sd">        :param filename: (str) Name of the current file</span>
 
@@ -230,15 +183,15 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasFileUtils.get_filename"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasFileUtils.get_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns the current filename. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasFileUtils.get_filename"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasFileUtils.get_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the current filename.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filename</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasFileUtils.set_random"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasFileUtils.set_random">[docs]</a>    <span class="k">def</span> <span class="nf">set_random</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="s2">&quot;sppas_tmp&quot;</span><span class="p">,</span> <span class="n">add_today</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">add_pid</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set randomly a basename, i.e. a filename without extension.</span>
+<div class="viewcode-block" id="sppasFileUtils.set_random"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasFileUtils.set_random">[docs]</a>    <span class="k">def</span> <span class="nf">set_random</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="s2">&quot;sppas_tmp&quot;</span><span class="p">,</span> <span class="n">add_today</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">add_pid</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set randomly a basename, i.e. a filename without extension.</span>
 
 <span class="sd">        :param root: (str) String to start the filename</span>
 <span class="sd">        :param add_today: (bool) Add today&#39;s information to the filename</span>
@@ -262,7 +215,8 @@
                 <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span> <span class="o">+</span> <span class="n">pid</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span>
 
             <span class="c1"># random float value</span>
-            <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="si">{:06d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">999999</span><span class="p">))</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="si">{:06d}</span><span class="s1">&#39;</span> \
+                                  <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">999999</span><span class="p">))</span>
 
             <span class="c1"># final file name is path/filename</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempdir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
@@ -272,13 +226,13 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasFileUtils.exists"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasFileUtils.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check if the file exists, or exists in a given directory.</span>
+<div class="viewcode-block" id="sppasFileUtils.exists"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasFileUtils.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if the file exists, or exists in a given directory.</span>
 <span class="sd">        Case-insensitive test on all platforms.</span>
 
 <span class="sd">        :param directory: (str) Optional directory to test if a file exists.</span>
 <span class="sd">        :returns: the filename (including directory) or None</span>
-<span class="sd">    </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">)</span>
@@ -291,8 +245,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasFileUtils.clear_whitespace"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasFileUtils.clear_whitespace">[docs]</a>    <span class="k">def</span> <span class="nf">clear_whitespace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set filename without whitespace.</span>
+<div class="viewcode-block" id="sppasFileUtils.clear_whitespace"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasFileUtils.clear_whitespace">[docs]</a>    <span class="k">def</span> <span class="nf">clear_whitespace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set filename without whitespace.</span>
 
 <span class="sd">        :returns: new filename with spaces replaced by underscores.</span>
 
@@ -303,10 +257,10 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasFileUtils.to_ascii"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasFileUtils.to_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">to_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set filename with only US-ASCII characters.</span>
+<div class="viewcode-block" id="sppasFileUtils.to_ascii"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasFileUtils.to_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">to_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set filename with only US-ASCII characters.</span>
 
-<span class="sd">        :returns: new filename with non-ASCII characters replaced by underscores.</span>
+<span class="sd">        :returns: new filename with non-ASCII chars replaced by underscores.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">sp</span> <span class="o">=</span> <span class="n">sppasUnicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filename</span><span class="p">)</span>
@@ -315,10 +269,11 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasFileUtils.format"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasFileUtils.format">[docs]</a>    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set filename without whitespace and with only US-ASCII characters.</span>
+<div class="viewcode-block" id="sppasFileUtils.format"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasFileUtils.format">[docs]</a>    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set filename without whitespace and with only US-ASCII characters.</span>
 
-<span class="sd">        :returns: new filename with non-ASCII characters and spaces replaced by underscores.</span>
+<span class="sd">        :returns: new filename with non-ASCII characters and spaces\</span>
+<span class="sd">        replaced by underscores.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_whitespace</span><span class="p">()</span>
@@ -328,21 +283,22 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasDirUtils"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasDirUtils">[docs]</a><span class="k">class</span> <span class="nc">sppasDirUtils</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasDirUtils"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasDirUtils">[docs]</a><span class="k">class</span> <span class="nc">sppasDirUtils</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utility directory manager for SPPAS.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      Utility directory manager for SPPAS.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
 <span class="sd">    &gt;&gt;&gt; sd = sppasDirUtils(&quot;my-path&quot;)</span>
 <span class="sd">    &gt;&gt;&gt; print(sd.get_files())</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasDirUtils.__init__"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasDirUtils.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dirname</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasDirUtils instance.</span>
+
+<div class="viewcode-block" id="sppasDirUtils.__init__"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasDirUtils.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dirname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasDirUtils instance.</span>
 
 <span class="sd">        :param dirname: (str) Name of the current directory</span>
 
@@ -351,10 +307,10 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDirUtils.get_files"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasDirUtils.get_files">[docs]</a>    <span class="k">def</span> <span class="nf">get_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extension</span><span class="p">,</span> <span class="n">recurs</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns the list of files of the directory.</span>
+<div class="viewcode-block" id="sppasDirUtils.get_files"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasDirUtils.get_files">[docs]</a>    <span class="k">def</span> <span class="nf">get_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extension</span><span class="p">,</span> <span class="n">recurs</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the list of files of the directory.</span>
 
-<span class="sd">        :param extension: (str) extension of files to filter the directory content</span>
+<span class="sd">        :param extension: (str) extension of files to filter the dir content</span>
 <span class="sd">        :param recurs: (bool) Find files recursively</span>
 <span class="sd">        :returns: a list of files</span>
 <span class="sd">        :raises: IOError</span>
@@ -370,9 +326,9 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDirUtils.dir_entries"><a class="viewcode-back" href="../../rst/utils.html#utils.sppasDirUtils.dir_entries">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="sppasDirUtils.dir_entries"><a class="viewcode-back" href="../../rst/utils.html#utils.fileutils.sppasDirUtils.dir_entries">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">dir_entries</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">extension</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subdir</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return a list of file names found in directory &#39;dir_name&#39;.</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of file names found in directory &#39;dir_name&#39;.</span>
 
 <span class="sd">        If &#39;subdir&#39; is True, recursively access subdirectories under</span>
 <span class="sd">        &#39;dir_name&#39;. Additional argument, if any, is file extension to</span>
@@ -396,7 +352,8 @@
                         <span class="n">file_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dirfile</span><span class="p">)</span>
             <span class="c1"># recursively access file names in subdirectories</span>
             <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">dirfile</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">subdir</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">file_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sppasDirUtils</span><span class="o">.</span><span class="n">dir_entries</span><span class="p">(</span><span class="n">dirfile</span><span class="p">,</span> <span class="n">extension</span><span class="p">,</span> <span class="n">subdir</span><span class="p">))</span>
+                <span class="n">file_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                    <span class="n">sppasDirUtils</span><span class="o">.</span><span class="n">dir_entries</span><span class="p">(</span><span class="n">dirfile</span><span class="p">,</span> <span class="n">extension</span><span class="p">,</span> <span class="n">subdir</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">file_list</span></div></div>
 </pre></div>

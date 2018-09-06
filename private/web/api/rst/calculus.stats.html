@@ -15,7 +15,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="plugins package" href="plugins.html" />
+    <link rel="next" title="config package" href="config.html" />
     <link rel="prev" title="calculus.scoring package" href="calculus.scoring.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="plugins.html" title="plugins package"
+          <a href="config.html" title="config package"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="calculus.scoring.html" title="calculus.scoring package"
@@ -48,44 +48,14 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-calculus.stats.central">
-<span id="calculus-stats-central-module"></span><h2>calculus.stats.central module<a class="headerlink" href="#module-calculus.stats.central" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="src-calculus-stats-central-py">
-<h3>src.calculus.stats.central.py<a class="headerlink" href="#src-calculus-stats-central-py" title="Permalink to this headline">¶</a></h3>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
-</tr>
-</tbody>
-</table>
+<div class="section" id="calculus-stats-central-module">
+<h2>calculus.stats.central module<a class="headerlink" href="#calculus-stats-central-module" title="Permalink to this headline">¶</a></h2>
 <p>A collection of basic statistical functions for python.</p>
-<div class="section" id="function-list">
-<h4>Function list<a class="headerlink" href="#function-list" title="Permalink to this headline">¶</a></h4>
-<blockquote>
-<div><ul class="simple">
-<li>fsum</li>
-<li>fmult</li>
-<li>fgeometricmean</li>
-<li>fharmonicmean</li>
-<li>fmean</li>
-<li>fmedian</li>
-</ul>
-</div></blockquote>
 <dl class="function">
 <dt id="calculus.stats.central.fgeometricmean">
 <code class="descclassname">calculus.stats.central.</code><code class="descname">fgeometricmean</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/central.html#fgeometricmean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.central.fgeometricmean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the geometric mean of the data values:
-n-th root of (x1 * x2 * … * xn).</p>
+<dd><p>Calculate the geometric mean of the data values.</p>
+<p>n-th root of (x1 * x2 * … * xn).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -101,8 +71,8 @@ n-th root of (x1 * x2 * … * xn).</p>
 <dl class="function">
 <dt id="calculus.stats.central.fharmonicmean">
 <code class="descclassname">calculus.stats.central.</code><code class="descname">fharmonicmean</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/central.html#fharmonicmean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.central.fharmonicmean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the harmonic mean of the data values:
-C{n / (1/x1 + 1/x2 + … + 1/xn)}.</p>
+<dd><p>Calculate the harmonic mean of the data values.</p>
+<p>C{n / (1/x1 + 1/x2 + … + 1/xn)}.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -133,8 +103,8 @@ C{n / (1/x1 + 1/x2 + … + 1/xn)}.</p>
 <dl class="function">
 <dt id="calculus.stats.central.fmean">
 <code class="descclassname">calculus.stats.central.</code><code class="descname">fmean</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/central.html#fmean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.central.fmean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the arithmetic mean of the data values:
-sum(items)/len(items)</p>
+<dd><p>Calculate the arithmetic mean of the data values.</p>
+<p>sum(items)/len(items)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -150,8 +120,9 @@ sum(items)/len(items)</p>
 <dl class="function">
 <dt id="calculus.stats.central.fmedian">
 <code class="descclassname">calculus.stats.central.</code><code class="descname">fmedian</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/central.html#fmedian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.central.fmedian" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the ‘middle’ score of the data values. If there is an even
-number of scores, the mean of the 2 middle scores is returned.</p>
+<dd><p>Calculate the ‘middle’ score of the data values.</p>
+<p>If there is an even number of scores, the mean of the 2 middle scores
+is returned.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -183,7 +154,7 @@ number of scores, the mean of the 2 middle scores is returned.</p>
 <dl class="function">
 <dt id="calculus.stats.central.fmult">
 <code class="descclassname">calculus.stats.central.</code><code class="descname">fmult</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/central.html#fmult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.central.fmult" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the product of a list of data values.</p>
+<dd><p>Estimate the product of a list of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -199,7 +170,7 @@ number of scores, the mean of the 2 middle scores is returned.</p>
 <dl class="function">
 <dt id="calculus.stats.central.fsum">
 <code class="descclassname">calculus.stats.central.</code><code class="descname">fsum</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/central.html#fsum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.central.fsum" title="Permalink to this definition">¶</a></dt>
-<dd><p>Estimates the sum of a list of data values.</p>
+<dd><p>Estimate the sum of a list of data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -213,42 +184,209 @@ number of scores, the mean of the 2 middle scores is returned.</p>
 </dd></dl>
 
 </div>
-</div>
-</div>
-<div class="section" id="module-calculus.stats.frequency">
-<span id="calculus-stats-frequency-module"></span><h2>calculus.stats.frequency module<a class="headerlink" href="#module-calculus.stats.frequency" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="src-calculus-stats-frequency-py">
-<h3>src.calculus.stats.frequency.py<a class="headerlink" href="#src-calculus-stats-frequency-py" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-calculus.stats.descriptivesstats">
+<span id="calculus-stats-descriptivesstats-module"></span><h2>calculus.stats.descriptivesstats module<a class="headerlink" href="#module-calculus.stats.descriptivesstats" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="src-calculus-descriptivestats-py">
+<h3>src.calculus.descriptivestats.py<a class="headerlink" href="#src-calculus-descriptivestats-py" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="calculus.stats.descriptivesstats.sppasDescriptiveStatistics">
+<em class="property">class </em><code class="descclassname">calculus.stats.descriptivesstats.</code><code class="descname">sppasDescriptiveStatistics</code><span class="sig-paren">(</span><em>dict_items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/descriptivesstats.html#sppasDescriptiveStatistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.descriptivesstats.sppasDescriptiveStatistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Descriptive statistics estimator class.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+<tr class="field-odd field"><th class="field-name">Organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+<tr class="field-even field"><th class="field-name">License:</th><td class="field-body">GPL, v3</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
 </tr>
-<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+<tr class="field-even field"><th class="field-name">Author:</th><td class="field-body">Brigitte Bigi</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+<tr class="field-odd field"><th class="field-name">Contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 </tbody>
 </table>
-<p>A collection of basic frequency functions for python.</p>
-<div class="section" id="id1">
-<h4>Function list<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>This class estimates descriptive statistics on a set of data values,
+stored in a dictionary:</p>
 <blockquote>
 <div><ul class="simple">
-<li>frequency</li>
-<li>percentage</li>
-<li>hapax</li>
-<li>occranks</li>
-<li>ranks</li>
-<li>zipf</li>
-<li>tfidf</li>
+<li>the key is the name of the data set;</li>
+<li>the value is the list of data values for this data set.</li>
 </ul>
 </div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;apples&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;peers&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">sppasDescriptiveStatistics</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">total</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">total</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">((</span><span class="s1">&#39;peers&#39;</span><span class="p">,</span> <span class="mf">13.0</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;apples&#39;</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="calculus.stats.descriptivesstats.sppasDescriptiveStatistics.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>dict_items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/descriptivesstats.html#sppasDescriptiveStatistics.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.descriptivesstats.sppasDescriptiveStatistics.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Descriptive statistics.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dict_items</strong> – a dict of tuples (key, [values])</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.stats.descriptivesstats.sppasDescriptiveStatistics.coefvariation">
+<code class="descname">coefvariation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/descriptivesstats.html#sppasDescriptiveStatistics.coefvariation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.descriptivesstats.sppasDescriptiveStatistics.coefvariation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the coefficient of variation of data values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(dict) a dictionary of (key, coefvariation) of float</td>
+</tr>
+</tbody>
+</table>
+<p>values (given as a percentage).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.stats.descriptivesstats.sppasDescriptiveStatistics.len">
+<code class="descname">len</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/descriptivesstats.html#sppasDescriptiveStatistics.len"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.descriptivesstats.sppasDescriptiveStatistics.len" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the number of occurrences of data values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(dict) a dictionary of tuples (key, len)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.stats.descriptivesstats.sppasDescriptiveStatistics.max">
+<code class="descname">max</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/descriptivesstats.html#sppasDescriptiveStatistics.max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.descriptivesstats.sppasDescriptiveStatistics.max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the maximum of data values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(dict) a dictionary of (key, max) of float values</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.stats.descriptivesstats.sppasDescriptiveStatistics.mean">
+<code class="descname">mean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/descriptivesstats.html#sppasDescriptiveStatistics.mean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.descriptivesstats.sppasDescriptiveStatistics.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the arithmetic mean of data values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(dict) a dictionary of (key, mean) of float values</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.stats.descriptivesstats.sppasDescriptiveStatistics.median">
+<code class="descname">median</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/descriptivesstats.html#sppasDescriptiveStatistics.median"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.descriptivesstats.sppasDescriptiveStatistics.median" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the ‘middle’ score of the data values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(dict) a dictionary of (key, mean) of float values</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.stats.descriptivesstats.sppasDescriptiveStatistics.min">
+<code class="descname">min</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/descriptivesstats.html#sppasDescriptiveStatistics.min"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.descriptivesstats.sppasDescriptiveStatistics.min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the minimum of data values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(dict) a dictionary of (key, min) of float values</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.stats.descriptivesstats.sppasDescriptiveStatistics.stdev">
+<code class="descname">stdev</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/descriptivesstats.html#sppasDescriptiveStatistics.stdev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.descriptivesstats.sppasDescriptiveStatistics.stdev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the standard deviation of data values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(dict) a dictionary of (key, stddev) of float values</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.stats.descriptivesstats.sppasDescriptiveStatistics.total">
+<code class="descname">total</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/descriptivesstats.html#sppasDescriptiveStatistics.total"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.descriptivesstats.sppasDescriptiveStatistics.total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the sum of data values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(dict) a dictionary of tuples (key, total) of float values</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.stats.descriptivesstats.sppasDescriptiveStatistics.variance">
+<code class="descname">variance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/descriptivesstats.html#sppasDescriptiveStatistics.variance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.descriptivesstats.sppasDescriptiveStatistics.variance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the unbiased sample variance of data values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(dict) a dictionary of (key, variance) of float values</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="calculus.stats.descriptivesstats.sppasDescriptiveStatistics.zscore">
+<code class="descname">zscore</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/descriptivesstats.html#sppasDescriptiveStatistics.zscore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.descriptivesstats.sppasDescriptiveStatistics.zscore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the z-scores of data values.</p>
+<p>The z-score determines the relative location of a data value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(dict) a dictionary of (key, [z-scores]) of float values</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="calculus-stats-frequency-module">
+<h2>calculus.stats.frequency module<a class="headerlink" href="#calculus-stats-frequency-module" title="Permalink to this headline">¶</a></h2>
+<p>A collection of basic frequency functions for python.</p>
 <dl class="function">
 <dt id="calculus.stats.frequency.freq">
 <code class="descclassname">calculus.stats.frequency.</code><code class="descname">freq</code><span class="sig-paren">(</span><em>mylist</em>, <em>item</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/frequency.html#freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.frequency.freq" title="Permalink to this definition">¶</a></dt>
@@ -326,7 +464,7 @@ number of scores, the mean of the 2 middle scores is returned.</p>
 <dl class="function">
 <dt id="calculus.stats.frequency.percentile">
 <code class="descclassname">calculus.stats.frequency.</code><code class="descname">percentile</code><span class="sig-paren">(</span><em>mylist</em>, <em>p=(25</em>, <em>50</em>, <em>75)</em>, <em>sort=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/frequency.html#percentile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.frequency.percentile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the pth percentile of an unsorted or sorted numeric list.</p>
+<dd><p>Return the pth percentile of an unsorted or sorted numeric list.</p>
 <p>This is equivalent to calling quantile(mylist, p/100.0).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">round</span><span class="p">(</span><span class="n">percentile</span><span class="p">([</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="mi">40</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
 <span class="go">26.0</span>
@@ -361,7 +499,7 @@ number of scores, the mean of the 2 middle scores is returned.</p>
 <dl class="function">
 <dt id="calculus.stats.frequency.quantile">
 <code class="descclassname">calculus.stats.frequency.</code><code class="descname">quantile</code><span class="sig-paren">(</span><em>mylist</em>, <em>q=(0.25</em>, <em>0.5</em>, <em>0.75)</em>, <em>sort=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/frequency.html#quantile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.frequency.quantile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the qth quantile of an unsorted or sorted numeric list.</p>
+<dd><p>Return the qth quantile of an unsorted or sorted numeric list.</p>
 <blockquote>
 <div><p>Calculates a rank n as q(N+1), where N is the number of items in mylist,
 then splits n into its integer component k and decimal component d.
@@ -411,8 +549,8 @@ mylist[k-1] and mylist[k] using a factor d.</p>
 <dl class="function">
 <dt id="calculus.stats.frequency.tfidf">
 <code class="descclassname">calculus.stats.frequency.</code><code class="descname">tfidf</code><span class="sig-paren">(</span><em>documents</em>, <em>item</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/frequency.html#tfidf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.frequency.tfidf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the tf.idf of an item.
-Term frequency–inverse document frequency, is a numerical statistic
+<dd><p>Return the tf.idf of an item.</p>
+<p>Term frequency–inverse document frequency, is a numerical statistic
 that is intended to reflect how important a word is to a document in a
 collection or corpus. The tf.idf value increases proportionally to the
 number of times a word appears in the document, but is offset by the
@@ -438,8 +576,8 @@ that some words are generally more common than others.</p>
 <dl class="function">
 <dt id="calculus.stats.frequency.zipf">
 <code class="descclassname">calculus.stats.frequency.</code><code class="descname">zipf</code><span class="sig-paren">(</span><em>dict_ranks</em>, <em>item</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/frequency.html#zipf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.frequency.zipf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the Zipf Law value of an item.
-Zipf’s law states that given some corpus of natural language utterances,
+<dd><p>Return the Zipf Law value of an item.</p>
+<p>Zipf’s law states that given some corpus of natural language utterances,
 the frequency of any word is inversely proportional to its rank in the
 frequency table. Thus the most frequent word will occur approximately
 twice as often as the second most frequent word, three times as often
@@ -462,45 +600,17 @@ as the third most frequent word, etc.</p>
 </dd></dl>
 
 </div>
-</div>
-</div>
-<div class="section" id="module-calculus.stats.linregress">
-<span id="calculus-stats-linregress-module"></span><h2>calculus.stats.linregress module<a class="headerlink" href="#module-calculus.stats.linregress" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="src-calculus-stats-linregress-py">
-<h3>src.calculus.stats.linregress.py<a class="headerlink" href="#src-calculus-stats-linregress-py" title="Permalink to this headline">¶</a></h3>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
-</tr>
-</tbody>
-</table>
+<div class="section" id="calculus-stats-linregress-module">
+<h2>calculus.stats.linregress module<a class="headerlink" href="#calculus-stats-linregress-module" title="Permalink to this headline">¶</a></h2>
 <p>The goal of linear regression is to fit a line to a set of points.
 Equation of the line is y = mx + b
 where m is slope, b is y-intercept.</p>
-<div class="section" id="id2">
-<h4>Function list<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
-<blockquote>
-<div><ul class="simple">
-<li>gradient_descent_linear_regression</li>
-<li>tga_linear_regression</li>
-<li>tansey_linear_regression</li>
-</ul>
-</div></blockquote>
 <dl class="function">
 <dt id="calculus.stats.linregress.compute_error_for_line_given_points">
 <code class="descclassname">calculus.stats.linregress.</code><code class="descname">compute_error_for_line_given_points</code><span class="sig-paren">(</span><em>b</em>, <em>m</em>, <em>points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/linregress.html#compute_error_for_line_given_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.linregress.compute_error_for_line_given_points" title="Permalink to this definition">¶</a></dt>
-<dd><p>Error function (also called a cost function) measures how “good” a
-given line is. This function will take in a (m,b) pair and return an
+<dd><p>Error function (also called a cost function).</p>
+<p>It measures how “good” a given line is.</p>
+<p>This function will take in a (m,b) pair and return an
 error value based on how well the line fits our data.
 To compute this error for a given line, we’ll iterate through each (x,y)
 point in our data set and sum the square distances between each point’s y
@@ -512,8 +622,8 @@ function) will result in lower error values.</p>
 <dl class="function">
 <dt id="calculus.stats.linregress.gradient_descent">
 <code class="descclassname">calculus.stats.linregress.</code><code class="descname">gradient_descent</code><span class="sig-paren">(</span><em>points</em>, <em>starting_b</em>, <em>starting_m</em>, <em>learning_rate</em>, <em>num_iterations</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/linregress.html#gradient_descent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.linregress.gradient_descent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gradient descent is an algorithm that minimizes functions.
-Given a function defined by a set of parameters, gradient descent starts
+<dd><p>Gradient descent is an algorithm that minimizes functions.</p>
+<p>Given a function defined by a set of parameters, gradient descent starts
 with an initial set of parameter values and iteratively moves toward a set
 of parameter values that minimize the function. This iterative minimization
 is achieved using calculus, taking steps in the negative direction of
@@ -522,9 +632,17 @@ the function gradient.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> – a list of tuples (x,y) of float values.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points</strong> – a list of tuples (x,y) of float values.</li>
+<li><strong>starting_b</strong> – (float)</li>
+<li><strong>starting_m</strong> – (float)</li>
+<li><strong>learning_rate</strong> – (float)</li>
+<li><strong>num_iterations</strong> – (int)</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">intercept, slope</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">intercept, slope</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -556,7 +674,8 @@ the function gradient.</p>
 <dl class="function">
 <dt id="calculus.stats.linregress.step_gradient">
 <code class="descclassname">calculus.stats.linregress.</code><code class="descname">step_gradient</code><span class="sig-paren">(</span><em>b_current</em>, <em>m_current</em>, <em>points</em>, <em>learning_rate</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/linregress.html#step_gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.linregress.step_gradient" title="Permalink to this definition">¶</a></dt>
-<dd><p>To run gradient descent on an error function, we first need to compute
+<dd><p>One step of a gradient linear regression.</p>
+<p>To run gradient descent on an error function, we first need to compute
 its gradient. The gradient will act like a compass and always point us
 downhill. To compute it, we will need to differentiate our error function.
 Since our function is defined by two parameters (m and b), we will need
@@ -572,8 +691,8 @@ iterations to arrive at the minimum.</p>
 <dl class="function">
 <dt id="calculus.stats.linregress.tansey_linear_regression">
 <code class="descclassname">calculus.stats.linregress.</code><code class="descname">tansey_linear_regression</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/linregress.html#tansey_linear_regression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.linregress.tansey_linear_regression" title="Permalink to this definition">¶</a></dt>
-<dd><p>Linear regression, as proposed in AnnotationPro.
-<a class="reference external" href="http://annotationpro.org/">http://annotationpro.org/</a></p>
+<dd><p>Linear regression, as proposed in AnnotationPro.</p>
+<p><a class="reference external" href="http://annotationpro.org/">http://annotationpro.org/</a></p>
 <p>Translated from C# code from here:
 <a class="reference external" href="https://gist.github.com/tansey/1375526">https://gist.github.com/tansey/1375526</a></p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -591,8 +710,8 @@ iterations to arrive at the minimum.</p>
 <dl class="function">
 <dt id="calculus.stats.linregress.tga_linear_regression">
 <code class="descclassname">calculus.stats.linregress.</code><code class="descname">tga_linear_regression</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/linregress.html#tga_linear_regression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.linregress.tga_linear_regression" title="Permalink to this definition">¶</a></dt>
-<dd><p>Linear regression as proposed in TGA, by Dafydd Gibbon.
-<a class="reference external" href="http://wwwhomes.uni-bielefeld.de/gibbon/TGA/">http://wwwhomes.uni-bielefeld.de/gibbon/TGA/</a></p>
+<dd><p>Linear regression as proposed in TGA, by Dafydd Gibbon.</p>
+<p><a class="reference external" href="http://wwwhomes.uni-bielefeld.de/gibbon/TGA/">http://wwwhomes.uni-bielefeld.de/gibbon/TGA/</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -606,43 +725,13 @@ iterations to arrive at the minimum.</p>
 </dd></dl>
 
 </div>
-</div>
-</div>
-<div class="section" id="module-calculus.stats.moment">
-<span id="calculus-stats-moment-module"></span><h2>calculus.stats.moment module<a class="headerlink" href="#module-calculus.stats.moment" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="src-calculus-stats-moment-py">
-<h3>src.calculus.stats.moment.py<a class="headerlink" href="#src-calculus-stats-moment-py" title="Permalink to this headline">¶</a></h3>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
-</tr>
-</tbody>
-</table>
+<div class="section" id="calculus-stats-moment-module">
+<h2>calculus.stats.moment module<a class="headerlink" href="#calculus-stats-moment-module" title="Permalink to this headline">¶</a></h2>
 <p>A collection of basic statistical functions for python.</p>
-<div class="section" id="id3">
-<h4>Function List<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
-<blockquote>
-<div><ul class="simple">
-<li>lmoment</li>
-<li>lvariation</li>
-<li>lskew</li>
-<li>lkurtosis</li>
-</ul>
-</div></blockquote>
 <dl class="function">
 <dt id="calculus.stats.moment.lkurtosis">
 <code class="descclassname">calculus.stats.moment.</code><code class="descname">lkurtosis</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/moment.html#lkurtosis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.moment.lkurtosis" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the kurtosis of a distribution.</p>
+<dd><p>Return the kurtosis of a distribution.</p>
 <p>The kurtosis represents a measure of the “peakedness”: a high kurtosis
 distribution has a sharper peak and fatter tails, while a low kurtosis
 distribution has a more rounded peak and thinner tails.</p>
@@ -661,7 +750,7 @@ distribution has a more rounded peak and thinner tails.</p>
 <dl class="function">
 <dt id="calculus.stats.moment.lmoment">
 <code class="descclassname">calculus.stats.moment.</code><code class="descname">lmoment</code><span class="sig-paren">(</span><em>items</em>, <em>moment=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/moment.html#lmoment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.moment.lmoment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the r-th moment about the mean for a sample.</p>
+<dd><p>Calculate the r-th moment about the mean for a sample.</p>
 <p>1/n * SUM((items(i)-mean)**r)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -683,7 +772,7 @@ distribution has a more rounded peak and thinner tails.</p>
 <dl class="function">
 <dt id="calculus.stats.moment.lskew">
 <code class="descclassname">calculus.stats.moment.</code><code class="descname">lskew</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/moment.html#lskew"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.moment.lskew" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the skewness of a distribution.</p>
+<dd><p>Calculate the skewness of a distribution.</p>
 <p>The skewness represents a measure of the asymmetry: an understanding
 of the skewness of the dataset indicates whether deviations from the
 mean are going to be positive or negative.</p>
@@ -702,7 +791,7 @@ mean are going to be positive or negative.</p>
 <dl class="function">
 <dt id="calculus.stats.moment.lvariation">
 <code class="descclassname">calculus.stats.moment.</code><code class="descname">lvariation</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/moment.html#lvariation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.moment.lvariation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the coefficient of variation of data values.</p>
+<dd><p>Calculate the coefficient of variation of data values.</p>
 <p>It shows the extent of variability in relation to the mean. It’s a
 standardized measure of dispersion: stdev / mean and returned as a
 percentage.</p>
@@ -719,45 +808,13 @@ percentage.</p>
 </dd></dl>
 
 </div>
-</div>
-</div>
-<div class="section" id="module-calculus.stats.variability">
-<span id="calculus-stats-variability-module"></span><h2>calculus.stats.variability module<a class="headerlink" href="#module-calculus.stats.variability" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="src-calculus-stats-variability-py">
-<h3>src.calculus.stats.variability.py<a class="headerlink" href="#src-calculus-stats-variability-py" title="Permalink to this headline">¶</a></h3>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
-</tr>
-<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
-</tr>
-</tbody>
-</table>
+<div class="section" id="calculus-stats-variability-module">
+<h2>calculus.stats.variability module<a class="headerlink" href="#calculus-stats-variability-module" title="Permalink to this headline">¶</a></h2>
 <p>A collection of basic statistical functions for python.</p>
-<div class="section" id="id4">
-<h4>Function List<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
-<blockquote>
-<div><ul class="simple">
-<li>lvariance, lunbiasedvariance</li>
-<li>lstdev, lunbiasedstdev</li>
-<li>lsterr</li>
-<li>lz</li>
-<li>lzs</li>
-<li>rPVI, nPVI</li>
-</ul>
-</div></blockquote>
 <dl class="function">
 <dt id="calculus.stats.variability.lstdev">
 <code class="descclassname">calculus.stats.variability.</code><code class="descname">lstdev</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/variability.html#lstdev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.variability.lstdev" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the standard deviation of the data values, for a population.</p>
+<dd><p>Calculate the standard deviation of the data values, for a population.</p>
 <p>The standard deviation is the positive square root of the variance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -774,7 +831,7 @@ percentage.</p>
 <dl class="function">
 <dt id="calculus.stats.variability.lsterr">
 <code class="descclassname">calculus.stats.variability.</code><code class="descname">lsterr</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/variability.html#lsterr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.variability.lsterr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the standard error of the data values.</p>
+<dd><p>Calculate the standard error of the data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -790,7 +847,7 @@ percentage.</p>
 <dl class="function">
 <dt id="calculus.stats.variability.lunbiasedstdev">
 <code class="descclassname">calculus.stats.variability.</code><code class="descname">lunbiasedstdev</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/variability.html#lunbiasedstdev"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.variability.lunbiasedstdev" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the standard deviation of the data values, for a sample.</p>
+<dd><p>Calculate the standard deviation of the data values, for a sample.</p>
 <p>The standard deviation is the positive square root of the variance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -807,9 +864,9 @@ percentage.</p>
 <dl class="function">
 <dt id="calculus.stats.variability.lunbiasedvariance">
 <code class="descclassname">calculus.stats.variability.</code><code class="descname">lunbiasedvariance</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/variability.html#lunbiasedvariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.variability.lunbiasedvariance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the unbiased sample variance of the data values, for a sample.
-It means that the estimation is using N-1 for the denominator.</p>
-<p>The variance is a measure of dispersion near the mean.</p>
+<dd><p>Calculate the unbiased sample variance of the data values, for a sample.</p>
+<p>It means that the estimation is using N-1 for the denominator.
+The variance is a measure of dispersion near the mean.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -825,9 +882,9 @@ It means that the estimation is using N-1 for the denominator.</p>
 <dl class="function">
 <dt id="calculus.stats.variability.lvariance">
 <code class="descclassname">calculus.stats.variability.</code><code class="descname">lvariance</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/variability.html#lvariance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.variability.lvariance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the variance of the data values, for a population.
-It means that the estimation is using N for the denominator.</p>
-<p>The variance is a measure of dispersion near the mean.</p>
+<dd><p>Calculate the variance of the data values, for a population.</p>
+<p>It means that the estimation is using N for the denominator.
+The variance is a measure of dispersion near the mean.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -843,8 +900,8 @@ It means that the estimation is using N for the denominator.</p>
 <dl class="function">
 <dt id="calculus.stats.variability.lz">
 <code class="descclassname">calculus.stats.variability.</code><code class="descname">lz</code><span class="sig-paren">(</span><em>items</em>, <em>score</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/variability.html#lz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.variability.lz" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the z-score for a given input score,
-given that score and the data values from which that score came.</p>
+<dd><p>Calculate the z-score for a given input score.</p>
+<p>given that score and the data values from which that score came.</p>
 <p>The z-score determines the relative location of a data value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -866,7 +923,7 @@ given that score and the data values from which that score came.</p>
 <dl class="function">
 <dt id="calculus.stats.variability.lzs">
 <code class="descclassname">calculus.stats.variability.</code><code class="descname">lzs</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/variability.html#lzs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.variability.lzs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates a list of z-scores, one for each score in the data values.</p>
+<dd><p>Calculate a list of z-scores, one for each score in the data values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -882,7 +939,7 @@ given that score and the data values from which that score came.</p>
 <dl class="function">
 <dt id="calculus.stats.variability.nPVI">
 <code class="descclassname">calculus.stats.variability.</code><code class="descname">nPVI</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/variability.html#nPVI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.variability.nPVI" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the Normalized Pairwise Variability Index.</p>
+<dd><p>Calculate the Normalized Pairwise Variability Index.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -898,7 +955,7 @@ given that score and the data values from which that score came.</p>
 <dl class="function">
 <dt id="calculus.stats.variability.rPVI">
 <code class="descclassname">calculus.stats.variability.</code><code class="descname">rPVI</code><span class="sig-paren">(</span><em>items</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/calculus/stats/variability.html#rPVI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#calculus.stats.variability.rPVI" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the Raw Pairwise Variability Index.</p>
+<dd><p>Calculate the Raw Pairwise Variability Index.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -911,8 +968,6 @@ given that score and the data values from which that score came.</p>
 </table>
 </dd></dl>
 
-</div>
-</div>
 </div>
 <div class="section" id="module-calculus.stats">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-calculus.stats" title="Permalink to this headline">¶</a></h2>
@@ -929,41 +984,15 @@ given that score and the data values from which that score came.</p>
   <ul>
 <li><a class="reference internal" href="#">calculus.stats package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-calculus.stats.central">calculus.stats.central module</a><ul>
-<li><a class="reference internal" href="#src-calculus-stats-central-py">src.calculus.stats.central.py</a><ul>
-<li><a class="reference internal" href="#function-list">Function list</a></li>
+<li><a class="reference internal" href="#calculus-stats-central-module">calculus.stats.central module</a></li>
+<li><a class="reference internal" href="#module-calculus.stats.descriptivesstats">calculus.stats.descriptivesstats module</a><ul>
+<li><a class="reference internal" href="#src-calculus-descriptivestats-py">src.calculus.descriptivestats.py</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-calculus.stats.frequency">calculus.stats.frequency module</a><ul>
-<li><a class="reference internal" href="#src-calculus-stats-frequency-py">src.calculus.stats.frequency.py</a><ul>
-<li><a class="reference internal" href="#id1">Function list</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-calculus.stats.linregress">calculus.stats.linregress module</a><ul>
-<li><a class="reference internal" href="#src-calculus-stats-linregress-py">src.calculus.stats.linregress.py</a><ul>
-<li><a class="reference internal" href="#id2">Function list</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-calculus.stats.moment">calculus.stats.moment module</a><ul>
-<li><a class="reference internal" href="#src-calculus-stats-moment-py">src.calculus.stats.moment.py</a><ul>
-<li><a class="reference internal" href="#id3">Function List</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-calculus.stats.variability">calculus.stats.variability module</a><ul>
-<li><a class="reference internal" href="#src-calculus-stats-variability-py">src.calculus.stats.variability.py</a><ul>
-<li><a class="reference internal" href="#id4">Function List</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li><a class="reference internal" href="#calculus-stats-frequency-module">calculus.stats.frequency module</a></li>
+<li><a class="reference internal" href="#calculus-stats-linregress-module">calculus.stats.linregress module</a></li>
+<li><a class="reference internal" href="#calculus-stats-moment-module">calculus.stats.moment module</a></li>
+<li><a class="reference internal" href="#calculus-stats-variability-module">calculus.stats.variability module</a></li>
 <li><a class="reference internal" href="#module-calculus.stats">Module contents</a></li>
 </ul>
 </li>
@@ -973,8 +1002,8 @@ given that score and the data values from which that score came.</p>
   <p class="topless"><a href="calculus.scoring.html"
                         title="previous chapter">calculus.scoring package</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="plugins.html"
-                        title="next chapter">plugins package</a></p>
+  <p class="topless"><a href="config.html"
+                        title="next chapter">config package</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -1008,7 +1037,7 @@ given that score and the data values from which that score came.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="plugins.html" title="plugins package"
+          <a href="config.html" title="config package"
              >next</a> |</li>
         <li class="right" >
           <a href="calculus.scoring.html" title="calculus.scoring package"

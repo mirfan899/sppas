@@ -67,22 +67,21 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.annotations.dag.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-
-<span class="sd">    Implementation of a Direct Acyclic Graph.</span>
+<span class="sd">    annotations.dag.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="DAG"><a class="viewcode-back" href="../../rst/structs.html#structs.dag.DAG">[docs]</a><span class="k">class</span> <span class="nc">DAG</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Direct Acyclic Graph.</span>
+    <span class="sd">&quot;&quot;&quot;Direct Acyclic Graph.</span>
 
 <span class="sd">    Implementation inspired from: http://www.python.org/doc/essays/graphs/</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="DAG.__init__"><a class="viewcode-back" href="../../rst/structs.html#structs.dag.DAG.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a new DAG instance.</span>
+        <span class="sd">&quot;&quot;&quot;Create a new DAG instance.</span>
 
 <span class="sd">        This class represents the DAG as a dictionary.</span>
 <span class="sd">        For example:</span>
@@ -110,19 +109,19 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="DAG.add_node"><a class="viewcode-back" href="../../rst/structs.html#structs.dag.DAG.add_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add a new node (not added if already in the DAG). &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Add a new node (not added if already in the DAG).&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__graph</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__graph</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DAG.add_edge"><a class="viewcode-back" href="../../rst/structs.html#structs.dag.DAG.add_edge">[docs]</a>    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add a new edge to a node. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Add a new edge to a node.&quot;&quot;&quot;</span>
 
         <span class="c1"># TODO. Must check if no cycle...</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__graph</span><span class="p">[</span><span class="n">src</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DAG.remove_node"><a class="viewcode-back" href="../../rst/structs.html#structs.dag.DAG.remove_node">[docs]</a>    <span class="k">def</span> <span class="nf">remove_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove a node. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Remove a node.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__graph</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">__graph</span><span class="p">[</span><span class="n">node</span><span class="p">]</span></div>
@@ -133,7 +132,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="DAG.find_path"><a class="viewcode-back" href="../../rst/structs.html#structs.dag.DAG.find_path">[docs]</a>    <span class="k">def</span> <span class="nf">find_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="p">[]):</span>
-        <span class="sd">&quot;&quot;&quot; Determine a path between two nodes.</span>
+        <span class="sd">&quot;&quot;&quot;Determine a path between two nodes.</span>
 
 <span class="sd">        It takes a graph and the start and end nodes as arguments. It</span>
 <span class="sd">        will return a list of nodes (including the start and end nodes)</span>
@@ -153,7 +152,7 @@
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__graph</span><span class="p">[</span><span class="n">start</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
                 <span class="n">new_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_path</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_path</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_path</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">new_path</span>
         <span class="k">return</span> <span class="p">[]</span></div>
 
@@ -202,11 +201,13 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of nodes: </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__graph</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__graph</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__graph</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Node </span><span class="si">{}</span><span class="s2"> has edge to --&gt; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__graph</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Node </span><span class="si">{}</span><span class="s2"> has edge to --&gt; </span><span class="si">{}</span><span class="s2">&quot;</span>
+                      <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__graph</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Node </span><span class="si">{}</span><span class="s2"> has no edge &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the length of the DAG.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__graph</span><span class="p">)</span></div>
 </pre></div>
 

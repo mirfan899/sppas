@@ -70,27 +70,27 @@
 <span class="sd">    src.plugins.cfgparser.py</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
-<span class="sd">    A config file consists of one or more named sections, each of which can</span>
-<span class="sd">    contain individual options with names and values.</span>
+<span class="sd">A config file consists of one or more named sections, each of which can</span>
+<span class="sd">contain individual options with names and values.</span>
 
-<span class="sd">    Config file sections are identified by looking for lines starting with</span>
-<span class="sd">    [ and ending with ]. The value between the square brackets is the section</span>
-<span class="sd">    name, and can contain any characters except square brackets.</span>
+<span class="sd">Config file sections are identified by looking for lines starting with</span>
+<span class="sd">[ and ending with ]. The value between the square brackets is the section</span>
+<span class="sd">name, and can contain any characters except square brackets.</span>
 
-<span class="sd">    Options are listed one per line within a section. The line starts with</span>
-<span class="sd">    the name of the option, which is separated from the value by a colon (:)</span>
-<span class="sd">    or equal sign (=).</span>
-<span class="sd">    Whitespace around the separator is ignored when the file is parsed.</span>
+<span class="sd">Options are listed one per line within a section. The line starts with</span>
+<span class="sd">the name of the option, which is separated from the value by a colon (:)</span>
+<span class="sd">or equal sign (=).</span>
+<span class="sd">Whitespace around the separator is ignored when the file is parsed.</span>
 
-<span class="sd">    A config file may include comments, prefixed by specific characters</span>
-<span class="sd">    (# and ;).</span>
+<span class="sd">A config file may include comments, prefixed by specific characters</span>
+<span class="sd">(# and ;).</span>
 
-<span class="sd">    Here is an example with a comment, a section definition and two options:</span>
+<span class="sd">Here is an example with a comment, a section definition and two options:</span>
 
-<span class="sd">        | # This is a comment in a configuration file</span>
-<span class="sd">        | [Section]</span>
-<span class="sd">        | option1 = value1</span>
-<span class="sd">        | option2 = value2</span>
+<span class="sd">    | # This is a comment in a configuration file</span>
+<span class="sd">    | [Section]</span>
+<span class="sd">    | option1 = value1</span>
+<span class="sd">    | option2 = value2</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="k">try</span><span class="p">:</span>  <span class="c1"># python 3</span>
@@ -110,14 +110,14 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasPluginConfigParser"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginConfigParser">[docs]</a><span class="k">class</span> <span class="nc">sppasPluginConfigParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasPluginConfigParser"><a class="viewcode-back" href="../../rst/plugins.html#plugins.cfgparser.sppasPluginConfigParser">[docs]</a><span class="k">class</span> <span class="nc">sppasPluginConfigParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to parse a plugin configuration file.</span>
+
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
 <span class="sd">    :author:       Brigitte Bigi</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
-<span class="sd">    :summary:      Class to read a plugin configuration file.</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 
 <span class="sd">    The required section &quot;Configuration&quot; includes an id, a name and a</span>
 <span class="sd">    description, as for example:</span>
@@ -151,8 +151,9 @@
 <span class="sd">        - options</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasPluginConfigParser.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginConfigParser.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a parser.</span>
+
+<div class="viewcode-block" id="sppasPluginConfigParser.__init__"><a class="viewcode-back" href="../../rst/plugins.html#plugins.cfgparser.sppasPluginConfigParser.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a parser.</span>
 
 <span class="sd">        :param filename: (string) the file name of the plugin configuration.</span>
 
@@ -164,8 +165,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginConfigParser.get_config"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginConfigParser.get_config">[docs]</a>    <span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the &#39;Configuration&#39; section content.</span>
+<div class="viewcode-block" id="sppasPluginConfigParser.get_config"><a class="viewcode-back" href="../../rst/plugins.html#plugins.cfgparser.sppasPluginConfigParser.get_config">[docs]</a>    <span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the &#39;Configuration&#39; section content.</span>
 
 <span class="sd">        :returns: dictionary.</span>
 
@@ -184,8 +185,8 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginConfigParser.get_command"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginConfigParser.get_command">[docs]</a>    <span class="k">def</span> <span class="nf">get_command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the &#39;Command&#39; section content.</span>
+<div class="viewcode-block" id="sppasPluginConfigParser.get_command"><a class="viewcode-back" href="../../rst/plugins.html#plugins.cfgparser.sppasPluginConfigParser.get_command">[docs]</a>    <span class="k">def</span> <span class="nf">get_command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the &#39;Command&#39; section content.</span>
 
 <span class="sd">        :returns: dictionary.</span>
 
@@ -201,8 +202,9 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginConfigParser.get_options"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginConfigParser.get_options">[docs]</a>    <span class="k">def</span> <span class="nf">get_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return all the &#39;Option&#39; section contents.</span>
+<div class="viewcode-block" id="sppasPluginConfigParser.get_options"><a class="viewcode-back" href="../../rst/plugins.html#plugins.cfgparser.sppasPluginConfigParser.get_options">[docs]</a>    <span class="k">def</span> <span class="nf">get_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return all the &#39;Option&#39; section contents.</span>
+
 <span class="sd">        The section name is used as key. Values are of type &quot;Option&quot;.</span>
 
 <span class="sd">        :returns: ordered dictionary.</span>
@@ -219,10 +221,10 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginConfigParser.set_options"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginConfigParser.set_options">[docs]</a>    <span class="k">def</span> <span class="nf">set_options</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Re-set all the &#39;Option&#39; section.</span>
+<div class="viewcode-block" id="sppasPluginConfigParser.set_options"><a class="viewcode-back" href="../../rst/plugins.html#plugins.cfgparser.sppasPluginConfigParser.set_options">[docs]</a>    <span class="k">def</span> <span class="nf">set_options</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Re-set all the &#39;Option&#39; section.</span>
 
-<span class="sd">        :param options: (ordered dictionary) with key=section name, and \</span>
+<span class="sd">        :param options: (ordered dictionary) with key=section name, and</span>
 <span class="sd">        value is of type &quot;Option&quot; (with at least a &quot;key&quot;).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -241,8 +243,9 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginConfigParser.parse"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginConfigParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse a configuration file.</span>
+<div class="viewcode-block" id="sppasPluginConfigParser.parse"><a class="viewcode-back" href="../../rst/plugins.html#plugins.cfgparser.sppasPluginConfigParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse a configuration file.</span>
+
 <span class="sd">        This will forget all previous configurations (if any).</span>
 
 <span class="sd">        :param filename: (string) Configuration file name.</span>
@@ -265,8 +268,9 @@
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasPluginConfigParser.save"><a class="viewcode-back" href="../../rst/plugins.html#plugins.sppasPluginConfigParser.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backup</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Save the configuration file.</span>
+<div class="viewcode-block" id="sppasPluginConfigParser.save"><a class="viewcode-back" href="../../rst/plugins.html#plugins.cfgparser.sppasPluginConfigParser.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backup</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save the configuration file.</span>
+
 <span class="sd">        Copy the old one into a backup file.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -285,7 +289,8 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">__parse_option</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Parse an option.</span>
+        <span class="sd">&quot;&quot;&quot;Parse an option.</span>
+
 <span class="sd">        Convert an &quot;Option&quot; section of the parser into an &quot;Option&quot; instance.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -318,8 +323,10 @@
     <span class="c1"># ------------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">__set_option</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_name</span><span class="p">,</span> <span class="n">option</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set an option.</span>
-<span class="sd">        Convert a &quot;sppasOption&quot; instance into an &quot;Option&quot; section of the parser.</span>
+        <span class="sd">&quot;&quot;&quot;Set an option.</span>
+
+<span class="sd">        Convert a &quot;sppasOption&quot; instance into an &quot;Option&quot; section of the</span>
+<span class="sd">        parser.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="n">section_name</span><span class="p">)</span>

@@ -85,9 +85,9 @@
 
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AioLineFormatError</span>
 <span class="kn">from</span> <span class="nn">..anndataexc</span> <span class="k">import</span> <span class="n">AnnDataTypeError</span>
-<span class="kn">from</span> <span class="nn">..annlocation.location</span> <span class="k">import</span> <span class="n">sppasLocation</span>
-<span class="kn">from</span> <span class="nn">..annlocation.point</span> <span class="k">import</span> <span class="n">sppasPoint</span>
-<span class="kn">from</span> <span class="nn">..annlocation.interval</span> <span class="k">import</span> <span class="n">sppasInterval</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasLocation</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasPoint</span>
+<span class="kn">from</span> <span class="nn">..ann.annlocation</span> <span class="k">import</span> <span class="n">sppasInterval</span>
 
 <span class="kn">from</span> <span class="nn">.text</span> <span class="k">import</span> <span class="n">sppasBaseText</span>
 <span class="kn">from</span> <span class="nn">.aioutils</span> <span class="k">import</span> <span class="n">load</span>
@@ -97,15 +97,15 @@
 
 
 <div class="viewcode-block" id="sppasTDF"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xtrans.sppasTDF">[docs]</a><span class="k">class</span> <span class="nc">sppasTDF</span><span class="p">(</span><span class="n">sppasBaseText</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;SPPAS TDF reader.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      SPPAS TDF reader and writer.</span>
 
-<span class="sd">    This class implements only a TDF reader, not a writer.</span>
+<span class="sd">    This class implements a TDF reader, but not a writer.</span>
 <span class="sd">    TDF is a Tab-Delimited Format. It contains 13 columns but SPPAS only</span>
 <span class="sd">    extracts 8 of them.</span>
 
@@ -123,7 +123,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="sppasTDF.detect"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xtrans.sppasTDF.detect">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">detect</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Check whether a file is of TDF format or not.</span>
+        <span class="sd">&quot;&quot;&quot;Check whether a file is of TDF format or not.</span>
 
 <span class="sd">        :param filename: (str) Name of the file to check.</span>
 <span class="sd">        :returns: (bool)</span>
@@ -155,7 +155,7 @@
 
 <div class="viewcode-block" id="sppasTDF.make_point"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xtrans.sppasTDF.make_point">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">make_point</span><span class="p">(</span><span class="n">midpoint</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; The localization is a time value, so always a float. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;The localization is a time value, so always a float.&quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">midpoint</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">midpoint</span><span class="p">)</span>
@@ -167,15 +167,15 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasTDF.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xtrans.sppasTDF.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Initialize a new sppasTDF instance.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a new sppasTDF instance.</span>
 
 <span class="sd">        :param name: (str) This transcription name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasTDF</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="n">sppasBaseText</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_extension</span> <span class="o">=</span> <span class="s2">&quot;tdf&quot;</span>
 
         <span class="c1"># override all</span>
@@ -197,7 +197,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasTDF.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.aio.xtrans.sppasTDF.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read a raw file and fill the Transcription.</span>
+        <span class="sd">&quot;&quot;&quot;Read a raw file and fill the Transcription.</span>
 <span class="sd">        It creates a tier for each speaker-channel observed in the file.</span>
 
 <span class="sd">        :param filename: (str)</span>
@@ -215,7 +215,7 @@
     <span class="c1"># -----------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">_extract_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_line</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Extract the content of the TDF file.</span>
+        <span class="sd">&quot;&quot;&quot;Extract the content of the TDF file.</span>
 
 <span class="sd">        :param first_line: The first line of the TDF file (name of the columns)</span>
 <span class="sd">        :param lines: the content of the file</span>

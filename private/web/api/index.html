@@ -52,6 +52,7 @@ the Laboratoire Parole et Langage, in Aix-en-Provence, France.</p>
 <li class="toctree-l1"><a class="reference internal" href="rst/anndata.html"> anndata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst/audiodata.html"> audiodata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst/calculus.html"> calculus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rst/config.html"> config</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst/plugins.html"> plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst/resources.html"> resources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rst/structs.html"> structs</a></li>
@@ -59,10 +60,10 @@ the Laboratoire Parole et Langage, in Aix-en-Provence, France.</p>
 </ul>
 </div>
 </div>
-<div class="section" id="module-anndata">
-<span id="quick-overview-on-the-modules"></span><h2>Quick overview on the modules<a class="headerlink" href="#module-anndata" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="anndata">
-<h3>anndata<a class="headerlink" href="#anndata" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="quick-overview-on-the-modules">
+<h2>Quick overview on the modules<a class="headerlink" href="#quick-overview-on-the-modules" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="anndata-manage-transcribed-data">
+<h3>anndata: Manage transcribed data.<a class="headerlink" href="#anndata-manage-transcribed-data" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -71,7 +72,7 @@ the Laboratoire Parole et Langage, in Aix-en-Provence, France.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
 </tr>
@@ -79,10 +80,21 @@ the Laboratoire Parole et Langage, in Aix-en-Provence, France.</p>
 </tr>
 </tbody>
 </table>
-<p>Management of transcribed data. old version.</p>
+<p>anndata is a free and open source Python library to access and
+search data from annotated data. It can convert file formats like Elan’s EAF,
+Praat’s TextGrid and others into a sppasTranscription() object and convert
+into any of these formats. Those objects allow unified access to linguistic
+data from a wide range sources.</p>
+<p>anndata requires the following other packages:</p>
+<blockquote>
+<div><ul class="simple">
+<li>config;</li>
+<li>utils.</li>
+</ul>
+</div></blockquote>
 </div>
-<span class="target" id="module-audiodata"></span><div class="section" id="audiodata">
-<h3>audiodata<a class="headerlink" href="#audiodata" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="audiodata-manage-of-digital-audio-data">
+<h3>audiodata: Manage of digital audio data.<a class="headerlink" href="#audiodata-manage-of-digital-audio-data" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -91,18 +103,17 @@ the Laboratoire Parole et Langage, in Aix-en-Provence, France.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
 </tbody>
 </table>
-<p>Management of digital audio data.</p>
 </div>
-<span class="target" id="module-calculus"></span><div class="section" id="calculus">
-<h3>calculus<a class="headerlink" href="#calculus" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="calculus-perform-some-math-on-data">
+<h3>calculus: perform some math on data.<a class="headerlink" href="#calculus-perform-some-math-on-data" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -111,20 +122,17 @@ the Laboratoire Parole et Langage, in Aix-en-Provence, France.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
 </tbody>
 </table>
-<p>calculus is a free and open source Python library to perform some math
-on data. Basically, calculus package was created to estimates descriptive
-statistics on annotated data.</p>
 </div>
-<span class="target" id="module-plugins"></span><div class="section" id="plugins">
-<h3>plugins<a class="headerlink" href="#plugins" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="config-sppas-configuration-for-global-things">
+<h3>config: SPPAS configuration for global things.<a class="headerlink" href="#config-sppas-configuration-for-global-things" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -133,20 +141,38 @@ statistics on annotated data.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
 </tbody>
 </table>
-<p>plugins is a free and open source Python library to access and manage
-external programs to plug into SPPAS.</p>
+</div>
+<div class="section" id="plugins-access-and-manage-external-programs-to-plug-into-sppas">
+<h3>plugins: access and manage external programs to plug into SPPAS.<a class="headerlink" href="#plugins-access-and-manage-external-programs-to-plug-into-sppas" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a plugin manager (it will explore the installed plugins).</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">manager</span> <span class="o">=</span> <span class="n">sppasPluginsManager</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Install a plugin</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plugin_id</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="n">plugin_zip_filename</span><span class="p">,</span> <span class="n">plugin_destination_folder_name</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plugin_id</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="n">plugin_zip_filename</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                            <span class="n">plugin_destination_folder_name</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get a plugin</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">get_plugin</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply a plugin on a list of files</span>
@@ -157,13 +183,8 @@ external programs to plug into SPPAS.</p>
 </pre></div>
 </div>
 </div>
-<span class="target" id="module-resources"></span><div class="section" id="resources">
-<h3>resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h3>
-<p>resources is a free and open source Python library to access and manage
-linguistic resources like lexicons, dictionaries, etc.</p>
-</div>
-<span class="target" id="module-structs"></span><div class="section" id="structs">
-<h3>structs<a class="headerlink" href="#structs" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="resources-access-and-manage-linguistic-resources-like-lexicons-etc">
+<h3>resources: access and manage linguistic resources like lexicons, etc.<a class="headerlink" href="#resources-access-and-manage-linguistic-resources-like-lexicons-etc" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -172,19 +193,17 @@ linguistic resources like lexicons, dictionaries, etc.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
 </tbody>
 </table>
-<p>structs is a free and open source Python library to access and manage
-data structures used into SPPAS.</p>
 </div>
-<span class="target" id="module-utils"></span><div class="section" id="utils">
-<h3>utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="structs-access-and-manage-data-structures-used-into-sppas">
+<h3>structs: access and manage data structures used into SPPAS.<a class="headerlink" href="#structs-access-and-manage-data-structures-used-into-sppas" title="Permalink to this headline">¶</a></h3>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -193,16 +212,33 @@ data structures used into SPPAS.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:brigitte&#46;bigi&#37;&#52;&#48;gmail&#46;com">brigitte<span>&#46;</span>bigi<span>&#64;</span>gmail<span>&#46;</span>com</a></td>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2017  Brigitte Bigi</td>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
 </tr>
 </tbody>
 </table>
-<p>utils is a free and open source Python library implementing utility
-functions used into SPPAS.</p>
+</div>
+<div class="section" id="utils-utility-functions-used-into-sppas">
+<h3>utils: utility functions used into SPPAS.<a class="headerlink" href="#utils-utility-functions-used-into-sppas" title="Permalink to this headline">¶</a></h3>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Brigitte Bigi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">organization:</th><td class="field-body">Laboratoire Parole et Langage, Aix-en-Provence, France</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">contact:</th><td class="field-body"><a class="reference external" href="mailto:develop&#37;&#52;&#48;sppas&#46;org">develop<span>&#64;</span>sppas<span>&#46;</span>org</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GPL, v3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Copyright (C) 2011-2018  Brigitte Bigi</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -225,14 +261,15 @@ functions used into SPPAS.</p>
   <ul>
 <li><a class="reference internal" href="#">Welcome to SPPAS’s API documentation</a><ul>
 <li><a class="reference internal" href="#access-the-modules">Access the modules</a></li>
-<li><a class="reference internal" href="#module-anndata">Quick overview on the modules</a><ul>
-<li><a class="reference internal" href="#anndata">anndata</a></li>
-<li><a class="reference internal" href="#audiodata">audiodata</a></li>
-<li><a class="reference internal" href="#calculus">calculus</a></li>
-<li><a class="reference internal" href="#plugins">plugins</a></li>
-<li><a class="reference internal" href="#resources">resources</a></li>
-<li><a class="reference internal" href="#structs">structs</a></li>
-<li><a class="reference internal" href="#utils">utils</a></li>
+<li><a class="reference internal" href="#quick-overview-on-the-modules">Quick overview on the modules</a><ul>
+<li><a class="reference internal" href="#anndata-manage-transcribed-data">anndata: Manage transcribed data.</a></li>
+<li><a class="reference internal" href="#audiodata-manage-of-digital-audio-data">audiodata: Manage of digital audio data.</a></li>
+<li><a class="reference internal" href="#calculus-perform-some-math-on-data">calculus: perform some math on data.</a></li>
+<li><a class="reference internal" href="#config-sppas-configuration-for-global-things">config: SPPAS configuration for global things.</a></li>
+<li><a class="reference internal" href="#plugins-access-and-manage-external-programs-to-plug-into-sppas">plugins: access and manage external programs to plug into SPPAS.</a></li>
+<li><a class="reference internal" href="#resources-access-and-manage-linguistic-resources-like-lexicons-etc">resources: access and manage linguistic resources like lexicons, etc.</a></li>
+<li><a class="reference internal" href="#structs-access-and-manage-data-structures-used-into-sppas">structs: access and manage data structures used into SPPAS.</a></li>
+<li><a class="reference internal" href="#utils-utility-functions-used-into-sppas">utils: utility functions used into SPPAS.</a></li>
 </ul>
 </li>
 </ul>

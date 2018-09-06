@@ -67,10 +67,8 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.anndata.aio.readwrite.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
-
-<span class="sd">    Readers and writers of annotated data.</span>
+<span class="sd">    anndata.aio.readwrite.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
@@ -110,15 +108,18 @@
 
 
 <div class="viewcode-block" id="sppasRW"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.sppasRW">[docs]</a><span class="k">class</span> <span class="nc">sppasRW</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Main parser of annotated data.</span>
+<span class="sd">    </span>
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      Main parser of annotated data.</span>
+
+<span class="sd">    Readers and writers of annotated data.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="n">TRANSCRIPTION_TYPES</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
     <span class="n">TRANSCRIPTION_TYPES</span><span class="p">[</span><span class="n">sppasXRA</span><span class="p">()</span><span class="o">.</span><span class="n">default_extension</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">sppasXRA</span>
     <span class="n">TRANSCRIPTION_TYPES</span><span class="p">[</span><span class="n">sppasTextGrid</span><span class="p">()</span><span class="o">.</span><span class="n">default_extension</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">sppasTextGrid</span>
@@ -147,14 +148,13 @@
 
 <div class="viewcode-block" id="sppasRW.extensions"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.sppasRW.extensions">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">extensions</span><span class="p">():</span>
-        <span class="sd">&quot;&quot;&quot; Return the list of supported extensions in lower case. &quot;&quot;&quot;</span>
-
+        <span class="sd">&quot;&quot;&quot;Return the list of supported extensions in lower case.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">sppasRW</span><span class="o">.</span><span class="n">TRANSCRIPTION_TYPES</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasRW.__init__"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.sppasRW.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a Transcription reader-writer.</span>
+        <span class="sd">&quot;&quot;&quot;Create a Transcription reader-writer.</span>
 
 <span class="sd">        :param filename: (str)</span>
 
@@ -164,14 +164,13 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasRW.get_filename"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.sppasRW.get_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the filename. &quot;&quot;&quot;</span>
-
+        <span class="sd">&quot;&quot;&quot;Return the filename.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__filename</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasRW.set_filename"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.sppasRW.set_filename">[docs]</a>    <span class="k">def</span> <span class="nf">set_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set a new filename. </span>
+        <span class="sd">&quot;&quot;&quot;Set a new filename. </span>
 
 <span class="sd">        :param filename: (str)</span>
 
@@ -181,10 +180,10 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasRW.read"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.sppasRW.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">heuristic</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Read a transcription from a file.</span>
+        <span class="sd">&quot;&quot;&quot;Read a transcription from a file.</span>
 
-<span class="sd">        :param heuristic: (bool) if the extension of the file is unknown,</span>
-<span class="sd">        use an heuristic to detect the format, then to choose the reader-writer.</span>
+<span class="sd">        :param heuristic: (bool) if the extension of the file is unknown, use</span>
+<span class="sd">        an heuristic to detect the format, then to choose the reader-writer.</span>
 <span class="sd">        :returns: sppasTranscription reader-writer</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -218,7 +217,8 @@
 
 <div class="viewcode-block" id="sppasRW.create_trs_from_extension"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.sppasRW.create_trs_from_extension">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">create_trs_from_extension</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return a transcription according to a given filename.</span>
+        <span class="sd">&quot;&quot;&quot;Return a transcription according to a given filename.</span>
+
 <span class="sd">        Only the extension of the filename is used.</span>
 
 <span class="sd">        :param filename: (str)</span>
@@ -236,7 +236,8 @@
 
 <div class="viewcode-block" id="sppasRW.create_trs_from_heuristic"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.sppasRW.create_trs_from_heuristic">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">create_trs_from_heuristic</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return a transcription according to a given filename.</span>
+        <span class="sd">&quot;&quot;&quot;Return a transcription according to a given filename.</span>
+
 <span class="sd">        The given file is opened and an heuristic allows to fix the format.</span>
 
 <span class="sd">        :param filename: (str)</span>
@@ -254,7 +255,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasRW.write"><a class="viewcode-back" href="../../../rst/anndata.aio.html#anndata.sppasRW.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transcription</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write a transcription into a file.</span>
+        <span class="sd">&quot;&quot;&quot;Write a transcription into a file.</span>
 
 <span class="sd">        :param transcription: (sppasTranscription)</span>
 
@@ -267,12 +268,9 @@
         <span class="n">trs_rw</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;file_name&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__filename</span><span class="p">))</span>
         <span class="n">trs_rw</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;file_path&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__filename</span><span class="p">))</span>
         <span class="n">trs_rw</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;file_ext&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__filename</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%M-</span><span class="si">%d</span><span class="s2"> %H:%M&quot;</span><span class="p">)</span>
-        <span class="n">trs_rw</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;file_write_date&#39;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">now</span><span class="p">))</span>
+        <span class="n">trs_rw</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;file_write_date&#39;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sppasTime</span><span class="p">()</span><span class="o">.</span><span class="n">now</span><span class="p">))</span>
         <span class="n">file_version</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">trs_rw</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s2">&quot;file_version&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="n">trs_rw</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;file_version&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_version</span><span class="p">))</span>
-        <span class="n">file_created_date</span> <span class="o">=</span> <span class="n">trs_rw</span><span class="o">.</span><span class="n">get_meta</span><span class="p">(</span><span class="s2">&quot;file_created_date&quot;</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
-        <span class="n">trs_rw</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="s1">&#39;file_created_date&#39;</span><span class="p">,</span> <span class="n">file_created_date</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">trs_rw</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__filename</span><span class="p">)</span>

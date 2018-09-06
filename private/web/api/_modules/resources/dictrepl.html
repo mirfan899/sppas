@@ -69,8 +69,6 @@
 <span class="sd">    src.resources.dictrepl.py</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
 
-<span class="sd">    A dictionary to manage automated replacements.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">codecs</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -83,15 +81,16 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasDictRepl"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl">[docs]</a><span class="k">class</span> <span class="nc">sppasDictRepl</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasDictRepl"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl">[docs]</a><span class="k">class</span> <span class="nc">sppasDictRepl</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A dictionary to manage automated replacements.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      A dictionary with specific features for language resources.</span>
-<span class="sd">    </span>
+
+<span class="sd">    A dictionary with specific features for language resources.</span>
 <span class="sd">    The main feature is that values are &quot;accumulated&quot;.</span>
 
 <span class="sd">    &gt;&gt;&gt;d = sppasDictRepl()</span>
@@ -105,12 +104,13 @@
 <span class="sd">    &gt;&gt;&gt;False</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">REPLACE_SEPARATOR</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.__init__"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodump</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasDictRepl instance.</span>
+<div class="viewcode-block" id="sppasDictRepl.__init__"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodump</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasDictRepl instance.</span>
 
 <span class="sd">        :param dict_filename: (str) The dictionary file name (2 columns)</span>
 <span class="sd">        :param nodump: (bool) Disable the creation of a dump file</span>
@@ -128,11 +128,14 @@
             <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">dp</span> <span class="o">=</span> <span class="n">sppasDumpFile</span><span class="p">(</span><span class="n">dict_filename</span><span class="p">)</span>
 
-            <span class="c1"># Try first to get the dict from a dump file (at least 2 times faster)</span>
+            <span class="c1"># Try first to get the dict from a dump file</span>
+            <span class="c1"># (at least 2 times faster)</span>
             <span class="k">if</span> <span class="n">nodump</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="n">dp</span><span class="o">.</span><span class="n">load_from_dump</span><span class="p">()</span>
 
-            <span class="c1"># Load from ascii if: 1st load, or dump load error, or dump older than ascii</span>
+            <span class="c1"># Load from ascii if: 1st load,</span>
+            <span class="c1"># or dump load error,</span>
+            <span class="c1"># or dump older than ascii</span>
             <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">load_from_ascii</span><span class="p">(</span><span class="n">dict_filename</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">nodump</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
@@ -142,16 +145,16 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.get_filename"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.get_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the name of the file from which the vocab comes from. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasDictRepl.get_filename"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.get_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the name of the file from which the vocab comes from.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__filename</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
     <span class="c1"># Getters</span>
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.is_key"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.is_key">[docs]</a>    <span class="k">def</span> <span class="nf">is_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if entry is exactly a key in the dictionary.</span>
+<div class="viewcode-block" id="sppasDictRepl.is_key"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.is_key">[docs]</a>    <span class="k">def</span> <span class="nf">is_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if entry is exactly a key in the dictionary.</span>
 <span class="sd">        This method can sometimes return a different value compared to &quot;in&quot;.</span>
 
 <span class="sd">        &gt;&gt;&gt;d = sppasMapping()</span>
@@ -168,12 +171,13 @@
 <span class="sd">        :param entry: (str) Unicode string.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dict</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.is_value"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.is_value">[docs]</a>    <span class="k">def</span> <span class="nf">is_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if entry is a value in the dictionary.</span>
+<div class="viewcode-block" id="sppasDictRepl.is_value"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.is_value">[docs]</a>    <span class="k">def</span> <span class="nf">is_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if entry is a value in the dictionary.</span>
 
 <span class="sd">        :param entry: (str) Unicode string.</span>
 
@@ -190,8 +194,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.is_value_of"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.is_value_of">[docs]</a>    <span class="k">def</span> <span class="nf">is_value_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if entry is a value of a given key in the dictionary.</span>
+<div class="viewcode-block" id="sppasDictRepl.is_value_of"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.is_value_of">[docs]</a>    <span class="k">def</span> <span class="nf">is_value_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if entry is a value of a given key in the dictionary.</span>
 
 <span class="sd">        :param key: (str) Unicode string.</span>
 <span class="sd">        :param entry: (str) Unicode string.</span>
@@ -208,8 +212,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.is_unk"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.is_unk">[docs]</a>    <span class="k">def</span> <span class="nf">is_unk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if entry is not a key in the dictionary.</span>
+<div class="viewcode-block" id="sppasDictRepl.is_unk"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.is_unk">[docs]</a>    <span class="k">def</span> <span class="nf">is_unk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if entry is not a key in the dictionary.</span>
 
 <span class="sd">        :param entry: (str) Unicode string.</span>
 
@@ -219,18 +223,18 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.is_empty"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.is_empty">[docs]</a>    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return True if there is no entry in the dictionary. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasDictRepl.is_empty"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.is_empty">[docs]</a>    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return True if there is no entry in the dictionary.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.get"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">substitution</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the value of a key of the dictionary or substitution.</span>
+<div class="viewcode-block" id="sppasDictRepl.get"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">substitution</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the value of a key of the dictionary or substitution.</span>
 
 <span class="sd">        :param entry: (str) A token to find in the dictionary</span>
-<span class="sd">        :param substitution: (str) String to return if token is missing of the dict</span>
+<span class="sd">        :param substitution: (str) String to return if token is missing</span>
+<span class="sd">        of the dict</span>
 <span class="sd">        :returns: unicode of the replacement or the substitution.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -239,17 +243,18 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.replace"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.replace">[docs]</a>    <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the value of a key or None if key has no replacement. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasDictRepl.replace"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.replace">[docs]</a>    <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the value of a key or None if key has no replacement.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.replace_reversed"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.replace_reversed">[docs]</a>    <span class="k">def</span> <span class="nf">replace_reversed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the key(s) of a value or an empty string if value does not exists.</span>
+<div class="viewcode-block" id="sppasDictRepl.replace_reversed"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.replace_reversed">[docs]</a>    <span class="k">def</span> <span class="nf">replace_reversed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the key(s) of a value or an empty string.</span>
 
-<span class="sd">        :returns: a unicode string with all keys, separated by &#39;_&#39;.</span>
+<span class="sd">        :param value: (str) value to search</span>
+<span class="sd">        :returns: a unicode string with all keys, separated by &#39;_&#39;, or an</span>
+<span class="sd">        empty string if value does not exists.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">sppasDictRepl</span><span class="o">.</span><span class="n">format_token</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
@@ -268,9 +273,9 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.format_token"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.format_token">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="sppasDictRepl.format_token"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.format_token">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">format_token</span><span class="p">(</span><span class="n">entry</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove the CR/LF, tabs, multiple spaces and others... and lowerise.</span>
+        <span class="sd">&quot;&quot;&quot;Remove the CR/LF, tabs, multiple spaces and others... and lower.</span>
 
 <span class="sd">        :param entry: (str) a token</span>
 <span class="sd">        :returns: formatted token</span>
@@ -282,9 +287,11 @@
     <span class="c1"># Setters</span>
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.add"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">repl</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Add a new key,value into the dict, or append value to the existing</span>
-<span class="sd">        one with a &quot;|&quot; used as separator.</span>
+<div class="viewcode-block" id="sppasDictRepl.add"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">repl</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a new key,value into the dict.</span>
+
+<span class="sd">        Add as a new pair or append the value to the existing one with</span>
+<span class="sd">        a &quot;|&quot; used as separator.</span>
 
 <span class="sd">        :param token: (str) string of the token to add</span>
 <span class="sd">        :param repl: (str) the replacement token</span>
@@ -305,8 +312,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.remove"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove an entry, as key or value.</span>
+<div class="viewcode-block" id="sppasDictRepl.remove"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove an entry, as key or value.</span>
 
 <span class="sd">        :param entry: (str) unicode string of the entry to remove</span>
 
@@ -324,8 +331,8 @@
     <span class="c1"># File</span>
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.load_from_ascii"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.load_from_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">load_from_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Load a replacement dictionary from an ascii file.</span>
+<div class="viewcode-block" id="sppasDictRepl.load_from_ascii"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.load_from_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">load_from_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load a replacement dictionary from an ascii file.</span>
 
 <span class="sd">        :param filename: (str) Replacement dictionary file name</span>
 
@@ -355,8 +362,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasDictRepl.save_as_ascii"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasDictRepl.save_as_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">save_as_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Save the replacement dictionary.</span>
+<div class="viewcode-block" id="sppasDictRepl.save_as_ascii"><a class="viewcode-back" href="../../rst/resources.html#resources.dictrepl.sppasDictRepl.save_as_ascii">[docs]</a>    <span class="k">def</span> <span class="nf">save_as_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save the replacement dictionary.</span>
 
 <span class="sd">        :param filename: (str)</span>
 <span class="sd">        :returns: (bool)</span>
@@ -364,12 +371,16 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">sg</span><span class="o">.</span><span class="n">__encoding__</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">entry</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+
+                <span class="k">for</span> <span class="n">entry</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dict</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
+                                           <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
                     <span class="n">values</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sppasDictRepl</span><span class="o">.</span><span class="n">REPLACE_SEPARATOR</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
-                        <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
+                        <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2"> </span><span class="si">{:s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
+
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Saving file failed due to the following error: </span><span class="si">{:s}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Saving file failed due to the following error: </span><span class="si">{:s}</span><span class="s1">&#39;</span>
+                         <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>

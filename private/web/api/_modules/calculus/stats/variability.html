@@ -72,23 +72,14 @@
 
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
-<span class="sd">    A collection of basic statistical functions for python.</span>
-
-<span class="sd">    Function List</span>
-<span class="sd">    =============</span>
-
-<span class="sd">        - lvariance, lunbiasedvariance</span>
-<span class="sd">        - lstdev, lunbiasedstdev</span>
-<span class="sd">        - lsterr</span>
-<span class="sd">        - lz</span>
-<span class="sd">        - lzs</span>
-<span class="sd">        - rPVI, nPVI</span>
+<span class="sd">A collection of basic statistical functions for python.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">math</span>
 
 <span class="kn">from</span> <span class="nn">.central</span> <span class="k">import</span> <span class="n">fmean</span>
@@ -98,10 +89,9 @@
 
 
 <div class="viewcode-block" id="lunbiasedvariance"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.lunbiasedvariance">[docs]</a><span class="k">def</span> <span class="nf">lunbiasedvariance</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the unbiased sample variance of the data values, for a sample.</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the unbiased sample variance of the data values, for a sample.</span>
+
 <span class="sd">    It means that the estimation is using N-1 for the denominator.</span>
-
-
 <span class="sd">    The variance is a measure of dispersion near the mean.</span>
 
 <span class="sd">    :param items: (list) list of data values</span>
@@ -118,9 +108,9 @@
 
 
 <div class="viewcode-block" id="lvariance"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.lvariance">[docs]</a><span class="k">def</span> <span class="nf">lvariance</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the variance of the data values, for a population.</span>
-<span class="sd">    It means that the estimation is using N for the denominator.</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the variance of the data values, for a population.</span>
 
+<span class="sd">    It means that the estimation is using N for the denominator.</span>
 <span class="sd">    The variance is a measure of dispersion near the mean.</span>
 
 <span class="sd">    :param items: (list) list of data values</span>
@@ -137,7 +127,7 @@
 
 
 <div class="viewcode-block" id="lunbiasedstdev"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.lunbiasedstdev">[docs]</a><span class="k">def</span> <span class="nf">lunbiasedstdev</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the standard deviation of the data values, for a sample.</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the standard deviation of the data values, for a sample.</span>
 
 <span class="sd">    The standard deviation is the positive square root of the variance.</span>
 
@@ -154,7 +144,7 @@
 
 
 <div class="viewcode-block" id="lstdev"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.lstdev">[docs]</a><span class="k">def</span> <span class="nf">lstdev</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the standard deviation of the data values, for a population.</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the standard deviation of the data values, for a population.</span>
 
 <span class="sd">    The standard deviation is the positive square root of the variance.</span>
 
@@ -171,7 +161,7 @@
 
 
 <div class="viewcode-block" id="lsterr"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.lsterr">[docs]</a><span class="k">def</span> <span class="nf">lsterr</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the standard error of the data values.</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the standard error of the data values.</span>
 
 <span class="sd">    :param items: (list) list of data values</span>
 <span class="sd">    :returns: (float)</span>
@@ -183,7 +173,8 @@
 
 
 <div class="viewcode-block" id="lz"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.lz">[docs]</a><span class="k">def</span> <span class="nf">lz</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the z-score for a given input score,</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the z-score for a given input score.</span>
+
 <span class="sd">    given that score and the data values from which that score came.</span>
 
 <span class="sd">    The z-score determines the relative location of a data value.</span>
@@ -202,19 +193,19 @@
 
 
 <div class="viewcode-block" id="lzs"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.lzs">[docs]</a><span class="k">def</span> <span class="nf">lzs</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates a list of z-scores, one for each score in the data values.</span>
+    <span class="sd">&quot;&quot;&quot;Calculate a list of z-scores, one for each score in the data values.</span>
 
 <span class="sd">    :param items: (list) list of data values</span>
 <span class="sd">    :returns: (list)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">[</span> <span class="n">lz</span><span class="p">(</span><span class="n">items</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span> <span class="p">]</span></div>
+    <span class="k">return</span> <span class="p">[</span><span class="n">lz</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span></div>
 
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
 <div class="viewcode-block" id="rPVI"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.rPVI">[docs]</a><span class="k">def</span> <span class="nf">rPVI</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the Raw Pairwise Variability Index.</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the Raw Pairwise Variability Index.</span>
 
 <span class="sd">    :param items: (list) list of data values</span>
 <span class="sd">    :returns: (float)</span>
@@ -231,7 +222,7 @@
 
 
 <div class="viewcode-block" id="nPVI"><a class="viewcode-back" href="../../../rst/calculus.stats.html#calculus.nPVI">[docs]</a><span class="k">def</span> <span class="nf">nPVI</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Calculates the Normalized Pairwise Variability Index.</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the Normalized Pairwise Variability Index.</span>
 
 <span class="sd">    :param items: (list) list of data values</span>
 <span class="sd">    :returns: (float)</span>

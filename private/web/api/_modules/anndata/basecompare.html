@@ -67,32 +67,33 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.anndata.basecompare.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="sd">    anndata.basecompare.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">.anndataexc</span> <span class="k">import</span> <span class="n">AnnDataValueError</span>
 
 
 <div class="viewcode-block" id="sppasBaseCompare"><a class="viewcode-back" href="../../rst/anndata.html#anndata.basecompare.sppasBaseCompare">[docs]</a><span class="k">class</span> <span class="nc">sppasBaseCompare</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Base class for comparisons.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
 <span class="sd">    :contact:      contact@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
-<span class="sd">    :summary:      Base class for comparisons.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="sppasBaseCompare.__init__"><a class="viewcode-back" href="../../rst/anndata.html#anndata.basecompare.sppasBaseCompare.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a sppasBaseCompare instance. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Create a sppasBaseCompare instance.&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">methods</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseCompare.get"><a class="viewcode-back" href="../../rst/anndata.html#anndata.basecompare.sppasBaseCompare.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the function of the given name.</span>
+        <span class="sd">&quot;&quot;&quot;Return the function of the given name.</span>
 
 <span class="sd">        :param name: (str) Simple name of a method of this class</span>
 
@@ -104,8 +105,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="sppasBaseCompare.get_function_names"><a class="viewcode-back" href="../../rst/anndata.html#anndata.basecompare.sppasBaseCompare.get_function_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_function_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the list of comparison functions. &quot;&quot;&quot;</span>
-
+        <span class="sd">&quot;&quot;&quot;Return the list of comparison functions.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div></div>
 </pre></div>
 

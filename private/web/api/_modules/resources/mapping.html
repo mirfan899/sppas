@@ -70,8 +70,6 @@
 <span class="sd">    src.resources.mapping.py</span>
 <span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~~</span>
 
-<span class="sd">    Class to manage mapping tables.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
@@ -84,44 +82,45 @@
 <span class="c1"># ----------------------------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="sppasMapping"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasMapping">[docs]</a><span class="k">class</span> <span class="nc">sppasMapping</span><span class="p">(</span><span class="n">sppasDictRepl</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="sppasMapping"><a class="viewcode-back" href="../../rst/resources.html#resources.mapping.sppasMapping">[docs]</a><span class="k">class</span> <span class="nc">sppasMapping</span><span class="p">(</span><span class="n">sppasDictRepl</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to manage mapping tables.</span>
+
 <span class="sd">    :author:       Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
-<span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
-<span class="sd">    :summary:      A mapping is an extended replacement dictionary.</span>
+<span class="sd">    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi</span>
 
+<span class="sd">    A mapping is an extended replacement dictionary.</span>
 <span class="sd">    sppasMapping is used for the management of a mapping table of any set</span>
 <span class="sd">    of strings.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="sppasMapping.__init__"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasMapping.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a new sppasMapping instance.</span>
 
-<span class="sd">        :param dict_name: (str) is the file name with the mapping data (2 columns)</span>
+<div class="viewcode-block" id="sppasMapping.__init__"><a class="viewcode-back" href="../../rst/resources.html#resources.mapping.sppasMapping.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new sppasMapping instance.</span>
+
+<span class="sd">        :param dict_name: (str) file name with the mapping data (2 columns)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">sppasDictRepl</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_name</span><span class="p">,</span> <span class="n">nodump</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">sppasMapping</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">dict_name</span><span class="p">,</span> <span class="n">nodump</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_keep_miss</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># remove or not missing values</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_reverse</span> <span class="o">=</span> <span class="kc">False</span>   <span class="c1"># will replace value by key instead of replacing key by value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reverse</span> <span class="o">=</span> <span class="kc">False</span>   <span class="c1"># will replace value by key instead of by value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_miss_symbol</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># Symbol to be used if keep_miss is False</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMapping.get_reverse"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasMapping.get_reverse">[docs]</a>    <span class="k">def</span> <span class="nf">get_reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the boolean value of reverse member. &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="sppasMapping.get_reverse"><a class="viewcode-back" href="../../rst/resources.html#resources.mapping.sppasMapping.get_reverse">[docs]</a>    <span class="k">def</span> <span class="nf">get_reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the boolean value of reverse member.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reverse</span></div>
 
     <span class="c1"># -----------------------------------------------------------------------</span>
     <span class="c1"># Methods to fix options</span>
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMapping.set_keep_miss"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasMapping.set_keep_miss">[docs]</a>    <span class="k">def</span> <span class="nf">set_keep_miss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keep_miss</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the keep_miss option.</span>
+<div class="viewcode-block" id="sppasMapping.set_keep_miss"><a class="viewcode-back" href="../../rst/resources.html#resources.mapping.sppasMapping.set_keep_miss">[docs]</a>    <span class="k">def</span> <span class="nf">set_keep_miss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keep_miss</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fix the keep_miss option.</span>
 
 <span class="sd">        :param keep_miss: (bool) If keep_miss is set to True, each missing</span>
 <span class="sd">        entry is kept without change; instead each missing entry is replaced</span>
@@ -132,8 +131,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMapping.set_reverse"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasMapping.set_reverse">[docs]</a>    <span class="k">def</span> <span class="nf">set_reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reverse</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the reverse option.</span>
+<div class="viewcode-block" id="sppasMapping.set_reverse"><a class="viewcode-back" href="../../rst/resources.html#resources.mapping.sppasMapping.set_reverse">[docs]</a>    <span class="k">def</span> <span class="nf">set_reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reverse</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fix the reverse option.</span>
 
 <span class="sd">        :param reverse: (bool) If replace is set to True, the mapping will</span>
 <span class="sd">        replace value by key instead of replacing key by value.</span>
@@ -143,8 +142,8 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMapping.set_miss_symbol"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasMapping.set_miss_symbol">[docs]</a>    <span class="k">def</span> <span class="nf">set_miss_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Fix the symbol to be used if keep_miss is False.</span>
+<div class="viewcode-block" id="sppasMapping.set_miss_symbol"><a class="viewcode-back" href="../../rst/resources.html#resources.mapping.sppasMapping.set_miss_symbol">[docs]</a>    <span class="k">def</span> <span class="nf">set_miss_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fix the symbol to be used if keep_miss is False.</span>
 
 <span class="sd">        :param symbol: (str) US-ASCII symbol to be used in case of a symbol</span>
 <span class="sd">        is missing of the mapping table.</span>
@@ -156,10 +155,10 @@
     <span class="c1"># Mapping entries</span>
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMapping.map_entry"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasMapping.map_entry">[docs]</a>    <span class="k">def</span> <span class="nf">map_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Map an entry (a key or a value).</span>
+<div class="viewcode-block" id="sppasMapping.map_entry"><a class="viewcode-back" href="../../rst/resources.html#resources.mapping.sppasMapping.map_entry">[docs]</a>    <span class="k">def</span> <span class="nf">map_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Map an entry (a key or a value).</span>
 
-<span class="sd">        :param entry: (str) is the input string to map</span>
+<span class="sd">        :param entry: (str) input string to map</span>
 <span class="sd">        :returns: mapped entry is a string</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -181,11 +180,11 @@
 
     <span class="c1"># -----------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="sppasMapping.map"><a class="viewcode-back" href="../../rst/resources.html#resources.sppasMapping.map">[docs]</a>    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mstr</span><span class="p">,</span> <span class="n">delimiters</span><span class="o">=</span><span class="n">DEFAULT_SEP</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Run the Mapping process on an input string.</span>
+<div class="viewcode-block" id="sppasMapping.map"><a class="viewcode-back" href="../../rst/resources.html#resources.mapping.sppasMapping.map">[docs]</a>    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mstr</span><span class="p">,</span> <span class="n">delimiters</span><span class="o">=</span><span class="n">DEFAULT_SEP</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run the Mapping process on an input string.</span>
 
-<span class="sd">        :param mstr: is the input string to map</span>
-<span class="sd">        :param delimiters: (list) list of character delimiters. Default is:</span>
+<span class="sd">        :param mstr: input string to map</span>
+<span class="sd">        :param delimiters: (list) list of character delimiters. Default is:\</span>
 <span class="sd">               [&#39;;&#39;, &#39;,&#39;, &#39; &#39;, &#39;.&#39;, &#39;|&#39;, &#39;+&#39;, &#39;-&#39;]</span>
 <span class="sd">        :returns: a string</span>
 

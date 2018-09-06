@@ -84,7 +84,7 @@
 
 
 <div class="viewcode-block" id="frames2times"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.autils.frames2times">[docs]</a><span class="k">def</span> <span class="nf">frames2times</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">framerate</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Convert a list of frame&#39; into a list of time&#39; values.</span>
+    <span class="sd">&quot;&quot;&quot;Convert a list of frame&#39; into a list of time&#39; values.</span>
 
 <span class="sd">    :param frames: (list) tuples (from_pos,to_pos)</span>
 <span class="sd">    :returns: a list of tuples (from_time,to_time)</span>
@@ -104,7 +104,7 @@
 
 
 <div class="viewcode-block" id="times2frames"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.autils.times2frames">[docs]</a><span class="k">def</span> <span class="nf">times2frames</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">framerate</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Convert a list of time&#39; into a list of frame&#39; values.</span>
+    <span class="sd">&quot;&quot;&quot;Convert a list of time&#39; into a list of frame&#39; values.</span>
 
 <span class="sd">    :param listframes: (list) tuples (from_time,to_time)</span>
 <span class="sd">    :returns: a list of tuples (from_pos,to_pos)</span>
@@ -123,7 +123,7 @@
 
 
 <div class="viewcode-block" id="extract_audio_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.autils.extract_audio_channel">[docs]</a><span class="k">def</span> <span class="nf">extract_audio_channel</span><span class="p">(</span><span class="n">input_audio</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return the channel of a specific index from an audio file name.</span>
+    <span class="sd">&quot;&quot;&quot;Return the channel of a specific index from an audio file name.</span>
 
 <span class="sd">    :param inputaudio: (str) Audio file name.</span>
 <span class="sd">    :param idx: (int) Channel index</span>
@@ -141,7 +141,7 @@
 
 
 <div class="viewcode-block" id="extract_channel_fragment"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.autils.extract_channel_fragment">[docs]</a><span class="k">def</span> <span class="nf">extract_channel_fragment</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">fromtime</span><span class="p">,</span> <span class="n">totime</span><span class="p">,</span> <span class="n">silence</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Extract a fragment of a channel in the interval [fromtime,totime].</span>
+    <span class="sd">&quot;&quot;&quot;Extract a fragment of a channel in the interval [fromtime,totime].</span>
 <span class="sd">    Eventually, surround it by silences.</span>
 
 <span class="sd">    :param channel:  (sppasChannel)</span>
@@ -172,7 +172,7 @@
 
 
 <div class="viewcode-block" id="search_channel_speech"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.autils.search_channel_speech">[docs]</a><span class="k">def</span> <span class="nf">search_channel_speech</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">winlenght</span><span class="o">=</span><span class="mf">0.010</span><span class="p">,</span> <span class="n">minsildur</span><span class="o">=</span><span class="mf">0.200</span><span class="p">,</span> <span class="n">mintrackdur</span><span class="o">=</span><span class="mf">0.300</span><span class="p">,</span> <span class="n">shiftdurstart</span><span class="o">=</span><span class="mf">0.010</span><span class="p">,</span> <span class="n">shiftdurend</span><span class="o">=</span><span class="mf">0.010</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return a list of tracks (i.e. speech intervals where energy is high enough).</span>
+    <span class="sd">&quot;&quot;&quot;Return a list of tracks (i.e. speech intervals where energy is high enough).</span>
 <span class="sd">    Use only default parameters.</span>
 
 <span class="sd">    :param channel: (sppasChannel) The channel we&#39;ll try to find tracks</span>
@@ -192,7 +192,7 @@
 
 
 <div class="viewcode-block" id="format_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.autils.format_channel">[docs]</a><span class="k">def</span> <span class="nf">format_channel</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">framerate</span><span class="p">,</span> <span class="n">sampwith</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return a channel with the requested framerate and sampwidth.</span>
+    <span class="sd">&quot;&quot;&quot;Return a channel with the requested framerate and sampwidth.</span>
 
 <span class="sd">    :param channel: (sppasChannel)</span>
 
@@ -212,7 +212,7 @@
 
 
 <div class="viewcode-block" id="write_channel"><a class="viewcode-back" href="../../rst/audiodata.html#audiodata.autils.write_channel">[docs]</a><span class="k">def</span> <span class="nf">write_channel</span><span class="p">(</span><span class="n">audioname</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Write a channel as an audio file.</span>
+    <span class="sd">&quot;&quot;&quot;Write a channel as an audio file.</span>
 
 <span class="sd">    :param audioname: (str) Audio file name to write</span>
 <span class="sd">    :param channel: (sppasChannel) Channel to be saved</span>

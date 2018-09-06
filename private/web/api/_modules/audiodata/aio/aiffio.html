@@ -89,21 +89,20 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :author:      Nicolas Chazeau, Brigitte Bigi</span>
 <span class="sd">    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France</span>
-<span class="sd">    :contact:      contact@sppas.org</span>
+<span class="sd">    :contact:      develop@sppas.org</span>
 <span class="sd">    :license:      GPL, v3</span>
 <span class="sd">    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi</span>
 <span class="sd">    :summary:      An AIFF/AIFC file open/save utility class.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="AiffIO.__init__"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.aiffio.AiffIO.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Constructor. &quot;&quot;&quot;</span>
-
-        <span class="n">sppasAudioPCM</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="sd">&quot;&quot;&quot;Constructor.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">AiffIO</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
 
     <span class="c1"># ------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="AiffIO.open"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.aiffio.AiffIO.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get an audio from an Audio Interchange File Format file.</span>
+        <span class="sd">&quot;&quot;&quot;Get an audio from an Audio Interchange File Format file.</span>
 
 <span class="sd">        :param filename: (str) input file name.</span>
 
@@ -121,7 +120,7 @@
     <span class="c1"># ----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="AiffIO.read_frames"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.aiffio.AiffIO.read_frames">[docs]</a>    <span class="k">def</span> <span class="nf">read_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nframes</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Specific frame reader for aiff files.</span>
+        <span class="sd">&quot;&quot;&quot;Specific frame reader for aiff files.</span>
 
 <span class="sd">        AIFF data is in big endian and we need little endian.</span>
 
@@ -148,7 +147,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_write_frames</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Specific writer for aiff files.</span>
+        <span class="sd">&quot;&quot;&quot;Specific writer for aiff files.</span>
 
 <span class="sd">        Data is in little endian and aiff files need big endian.</span>
 
@@ -170,7 +169,7 @@
     <span class="c1"># ----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="AiffIO.save"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.aiffio.AiffIO.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write an audio content as a Audio Interchange File Format file.</span>
+        <span class="sd">&quot;&quot;&quot;Write an audio content as a Audio Interchange File Format file.</span>
 
 <span class="sd">        :param filename: (str) output filename.</span>
 
@@ -216,7 +215,7 @@
     <span class="c1"># -----------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="AiffIO.save_fragment"><a class="viewcode-back" href="../../../rst/audiodata.aio.html#audiodata.aio.aiffio.AiffIO.save_fragment">[docs]</a>    <span class="k">def</span> <span class="nf">save_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">frames</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write an audio content as a Audio Interchange File Format file.</span>
+        <span class="sd">&quot;&quot;&quot;Write an audio content as a Audio Interchange File Format file.</span>
 
 <span class="sd">        :param filename (str) output filename.</span>
 <span class="sd">        :param frames (str) the frames to write</span>

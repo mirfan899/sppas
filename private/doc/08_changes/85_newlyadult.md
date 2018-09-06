@@ -308,3 +308,28 @@ A few tutorials are available on the web site.
 - updated chapter 6: scripting with Python and SPPAS. 
   It is now based on `anndata` API instead of `annotationdata`.
 
+
+### SPPAS 1.9.8
+
+(2018, 06th September)
+
+e-mail contact is changed to: 
+
+- *contact@sppas.org* for general questions of users
+- *develop@sppas.org* for developer questions or for a bug alert
+
+#### Development
+
+- bug correction for GMT with a negative value, like GMT-4.
+- most of the scripts are based on `anndata` API instead of `annotationdata`
+- new solution to work with global variables with the new package `config` and
+the new classes like `sppasGlobalSettings`, `sppasPathSettings`, ...
+- translation management moved in package `config`
+- better way to work with imports
+- increased pep8 and pep257 compatibility (should be continued)
+- `anndata` is used in DataRoamer, Visualizer, DataFilter
+- new script trsshift.py to shift the transcription of a delay in time
+
+#### Documentation
+
+The API documentation is based on Sphinx <http://www.sphinx-doc.org>.

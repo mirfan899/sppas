@@ -66,14 +66,15 @@
 
 <span class="sd">        ---------------------------------------------------------------------</span>
 
-<span class="sd">    src.utils.utilsexc.py</span>
-<span class="sd">    ~~~~~~~~~~~~~~~~~~~~~~</span>
-
-<span class="sd">    Exceptions for utils package.</span>
+<span class="sd">    utils.utilsexc.py</span>
+<span class="sd">    ~~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">.maketext</span> <span class="k">import</span> <span class="n">translate</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">translate</span><span class="p">(</span><span class="s2">&quot;utils&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sppas.src.config</span> <span class="k">import</span> <span class="n">utils_translation</span>
+
+<span class="c1"># -----------------------------------------------------------------------</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">utils_translation</span><span class="o">.</span><span class="n">gettext</span>
 
 <span class="c1"># -----------------------------------------------------------------------</span>
 
@@ -84,15 +85,18 @@
 
 
 <div class="viewcode-block" id="UtilsDataTypeError"><a class="viewcode-back" href="../../rst/utils.html#utils.utilsexc.UtilsDataTypeError">[docs]</a><span class="k">class</span> <span class="nc">UtilsDataTypeError</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; :ERROR 7010: DATA_TYPE_ERROR</span>
+    <span class="sd">&quot;&quot;&quot;:ERROR 7010: DATA_TYPE_ERROR.</span>
+
 <span class="sd">    Expected a {data_name} of type {expected_type}. Got {data_type} instead.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="UtilsDataTypeError.__init__"><a class="viewcode-back" href="../../rst/utils.html#utils.utilsexc.UtilsDataTypeError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_name</span><span class="p">,</span> <span class="n">expected_type</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">DATA_TYPE_ERROR</span> <span class="o">+</span> \
-                         <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="n">DATA_TYPE_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data_name</span><span class="o">=</span><span class="n">data_name</span><span class="p">,</span>
-                                                             <span class="n">expected_type</span><span class="o">=</span><span class="n">expected_type</span><span class="p">,</span>
-                                                             <span class="n">data_type</span><span class="o">=</span><span class="n">data_type</span><span class="p">)</span></div>
+                         <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">DATA_TYPE_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                             <span class="n">data_name</span><span class="o">=</span><span class="n">data_name</span><span class="p">,</span>
+                             <span class="n">expected_type</span><span class="o">=</span><span class="n">expected_type</span><span class="p">,</span>
+                             <span class="n">data_type</span><span class="o">=</span><span class="n">data_type</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">)</span></div>
@@ -101,11 +105,15 @@
 
 
 <div class="viewcode-block" id="NoDirectoryError"><a class="viewcode-back" href="../../rst/utils.html#utils.utilsexc.NoDirectoryError">[docs]</a><span class="k">class</span> <span class="nc">NoDirectoryError</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; :ERROR 1210: NO_DIR_ERROR</span>
-<span class="sd">    The directory {dirname} does not exist. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;:ERROR 1210: NO_DIR_ERROR.</span>
+
+<span class="sd">    The directory {dirname} does not exist.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="NoDirectoryError.__init__"><a class="viewcode-back" href="../../rst/utils.html#utils.utilsexc.NoDirectoryError.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dirname</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">NO_DIR_ERROR</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">gettext</span><span class="p">(</span><span class="n">NO_DIR_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="n">dirname</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">NO_DIR_ERROR</span> <span class="o">+</span> \
+                         <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="n">NO_DIR_ERROR</span><span class="p">))</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="n">dirname</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">)</span></div>
