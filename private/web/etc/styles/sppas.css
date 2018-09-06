@@ -128,13 +128,13 @@ body {
 /*==================================  MENU  ===============================*/
 
 nav {
-    font-family: 'Century Gothic', 'Source code pro', Verdana, serif;
+    font-family:    'Century Gothic', 'Source code pro', Verdana, serif;
     font-size:      120%;
     width:          100%;
     background-color: #424558;
-    display: block;
-    text-align:center;
-    margin-bottom: 10px;
+    display:        block;
+    text-align:     center;
+    margin-bottom:  10px;
 }
 
 nav > ul {
@@ -186,8 +186,8 @@ nav li.nav:hover .submenu{
 }
 .submenu li.nav a.nav {
     padding: 15px 30px;
-    font-size: 13px;
-    color:#222538;
+    font-size: 12px;
+    color: #222538;
     width: 270px;
 }
 nav > ul > li.nav:hover a.nav {
@@ -260,11 +260,12 @@ nav > ul > li.nav:hover a.nav {
 .menu-faq .submenu li:hover{
     background-color: RGB(180, 25, 40);
 }
+
 .menu-mobile {
 	color: #fff;
-    background-color: rgba(29, 197, 151, 0.97);
-	text-align: center;
-	padding: 12px 0;
+    background-color: #424558;   /* idem normal menu */
+	text-align: left;
+	padding: 10px 0px 10px 10px;
 	display: none;
 }
 nav input[type=checkbox]{
@@ -273,23 +274,29 @@ nav input[type=checkbox]{
 nav input[type=checkbox]:checked ~ ul{
     display: block;
 }
-@media screen and (max-width : 970px){
+
+@media screen and (max-width : 820px){
     .menu-mobile {
-	display:block;
+	    display:block;
     }
     nav ul{
-	display: none;
+	    display: none;
     }
     nav ul li, nav ul li a {
-	width: 100%;
+	    width: 50%;
         text-align: center;
     }
     nav ul li a, nav ul li:hover a{
         padding: 10px 0px 10px 0px;
     }
-    nav li:hover .submenu{
+
+    nav li:hover{
         display: block;
         position: static;
+    }
+
+    .submenu li.nav a.nav {
+        width: 200px;
     }
 }
 
