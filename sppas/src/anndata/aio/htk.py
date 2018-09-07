@@ -32,6 +32,12 @@
     src.anndata.aio.htk.py
     ~~~~~~~~~~~~~~~~~~~~~~~
 
+The Hidden Markov Model Toolkit (HTK) is a portable toolkit for building
+and manipulating hidden Markov models.
+
+The first version of the HTK Hidden Markov Model Toolkit was developed at
+the Speech Vision and Robotics Group of the Cambridge University Engineering
+Department (CUED) in 1989 by Steve Young.
 
 """
 import codecs
@@ -67,6 +73,7 @@ class sppasBaseHTK(sppasBaseIO):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, name=None):
         """Initialize a new sppasMLF instance.
 
@@ -113,7 +120,6 @@ class sppasBaseHTK(sppasBaseIO):
     @staticmethod
     def _format_time(second_count):
         """Convert a time in seconds into HTK format."""
-
         return int(1. / TIME_UNIT * float(second_count))
 
     # -----------------------------------------------------------------------
@@ -134,8 +140,10 @@ class sppasBaseHTK(sppasBaseIO):
         if ann.get_location().is_point():
             raise AioLocationTypeError('HTK Label', 'points')
 
-        begin = sppasBaseHTK._format_time(ann.get_lowest_localization().get_midpoint())
-        end = sppasBaseHTK._format_time(ann.get_highest_localization().get_midpoint())
+        begin = sppasBaseHTK._format_time(
+            ann.get_lowest_localization().get_midpoint())
+        end = sppasBaseHTK._format_time(
+            ann.get_highest_localization().get_midpoint())
 
         if ' ' not in text:
             location = "{:d} {:d}".format(begin, end)
@@ -186,6 +194,7 @@ class sppasLab(sppasBaseHTK):
     *************  Only simple transcription is implemented yet.  ***********
 
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of HTK-Lab format or not.
@@ -250,8 +259,10 @@ class sppasLab(sppasBaseHTK):
 
             if has_begin and has_end:
                 if len(text) > 0:
-                    time = sppasInterval(prev_end, sppasBaseHTK.make_point(line[0]))
-                    tier.create_annotation(sppasLocation(time), sppasLabel(sppasTag(text)))
+                    time = sppasInterval(prev_end,
+                                         sppasBaseHTK.make_point(line[0]))
+                    tier.create_annotation(sppasLocation(time),
+                                           sppasLabel(sppasTag(text)))
 
                 time = sppasInterval(sppasBaseHTK.make_point(line[0]),
                                      sppasBaseHTK.make_point(line[1]))
@@ -265,7 +276,8 @@ class sppasLab(sppasBaseHTK):
                         # todo: auxiliary labels or comment
                         pass
 
-                tier.create_annotation(sppasLocation(time), sppasLabel(sppasTag(text), score))
+                tier.create_annotation(sppasLocation(time),
+                                       sppasLabel(sppasTag(text), score))
                 text = ""
                 prev_end = sppasBaseHTK.make_point(line[1])
 
@@ -287,7 +299,7 @@ class sppasLab(sppasBaseHTK):
         if len(self) != 1:
             raise AioMultiTiersError("HTK Label")
 
-        with codecs.open(filename, 'w', sg.__encoding__, buffering=8096) as fp:
+        with codecs.open(filename, 'w', sg.__encoding__) as fp:
 
             if self.is_empty() is False:
                 for ann in self[0]:

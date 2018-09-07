@@ -32,13 +32,14 @@
     src.anndata.aio.phonedit.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    PHONEDIT Signaix is a software for the analysis of sound, aerodynamic,
-    articulatory and electro-physiological signals developed by the Parole
-    et Langage Laboratory, Aix-en-Provence, France.
-    It provides a complete environment for the recording, the playback, the
-    display, the analysis, the labeling of multi-parametric data.
+PHONEDIT Signaix is a software for the analysis of sound, aerodynamic,
+articulatory and electro-physiological signals developed by the Parole
+et Langage Laboratory, Aix-en-Provence, France.
 
-    http://www.lpl-aix.fr/~lpldev/phonedit/
+It provides a complete environment for the recording, the playback, the
+display, the analysis, the labeling of multi-parametric data.
+
+http://www.lpl-aix.fr/~lpldev/phonedit/
 
 """
 import codecs
@@ -79,6 +80,7 @@ class sppasBasePhonedit(sppasBaseIO):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, name=None):
         """Initialize a new sppasBasePhonedit instance.
 
@@ -169,6 +171,7 @@ class sppasMRK(sppasBasePhonedit):
     The new MRK format includes sections for time slots.
 
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of CTM format or not.
@@ -219,7 +222,6 @@ class sppasMRK(sppasBasePhonedit):
     @staticmethod
     def format_point(second_count):
         """Convert a time in seconds into MRK format."""
-
         try:
             second_count = float(second_count)
         except ValueError:
@@ -242,7 +244,8 @@ class sppasMRK(sppasBasePhonedit):
         # Extract metadata and create tiers
         for section_name in parser.sections():
             if section_name == "Information":
-                sppasBasePhonedit._parse_metadata(parser.items(section_name), self)
+                sppasBasePhonedit._parse_metadata(parser.items(section_name),
+                                                  self)
             if "DSC_LEVEL_" in section_name:
                 self._parse_level(parser.items(section_name), section_name)
 
@@ -254,7 +257,8 @@ class sppasMRK(sppasBasePhonedit):
     # -----------------------------------------------------------------------
 
     def _parse_level(self, data_list, level_id):
-        """Parse a section DSC_LEVEL_ .
+        """Parse a section DSC_LEVEL_.
+
         Creates a tier with the level name and add metadata.
 
         """
@@ -278,7 +282,6 @@ class sppasMRK(sppasBasePhonedit):
     @staticmethod
     def _format_text(text):
         """Remove the " at the beginning and at the end of the string."""
-
         text = text.strip()
 
         if text.endswith('"'):
@@ -292,7 +295,6 @@ class sppasMRK(sppasBasePhonedit):
 
     def _parse_labels(self, data_list):
         """Parse labels of a section LBL_LEVEL_ ."""
-
         for entry in data_list:
             key = entry[0].upper()
             line = entry[1]
@@ -306,7 +308,7 @@ class sppasMRK(sppasBasePhonedit):
                     tier = t
                     break
             if tier is None:
-                # something went wrong... 
+                # something went wrong...
                 tier = self.create_tier(key)
 
             # Extract the content of the annotation
@@ -329,7 +331,7 @@ class sppasMRK(sppasBasePhonedit):
             # Create/Add the annotation into the tier
             ann = tier.create_annotation(sppasLocation(localization),
                                          labels)
-    
+
             # override the default "id" by the name of the attribute
             ann.set_meta("id", key)
 
@@ -358,24 +360,34 @@ class sppasMRK(sppasBasePhonedit):
 
                 # Write information about the tier
                 fp.write("[DSC_{:s}]\n".format(level))
-                fp.write("DSC_LEVEL_NAME=\"{:s}\"\n".format(tier.get_name()))
-                fp.write("DSC_LEVEL_SOFTWARE={:s} {:s}\n".format(sg.__name__, sg.__version__))
-                fp.write("DSC_LEVEL_LASTMODIF_DATE={:s}\n".format(last_modified))
+                fp.write("DSC_LEVEL_NAME=\"{:s}\"\n"
+                         "".format(tier.get_name()))
+                fp.write("DSC_LEVEL_SOFTWARE={:s} {:s}\n"
+                         "".format(sg.__name__, sg.__version__))
+                fp.write("DSC_LEVEL_LASTMODIF_DATE={:s}\n"
+                         "".format(last_modified))
 
                 # Write annotations
                 fp.write("[LBL_{:s}]\n".format(level))
                 for index_ann, ann in enumerate(tier):
 
-                    text = ann.serialize_labels(separator=" ", empty="", alt=True)
-                    fp.write("LBL_{:s}_{:06d}=\"{:s}\"".format(level, index_ann, text))
+                    text = ann.serialize_labels(separator=" ",
+                                                empty="",
+                                                alt=True)
+                    fp.write("LBL_{:s}_{:06d}=\"{:s}\""
+                             "".format(level, index_ann, text))
 
                     if point:
-                        # Phonedit supports degenerated intervals (instead of points)
-                        b = sppasMRK.format_point(ann.get_lowest_localization().get_midpoint())
+                        # Phonedit supports degenerated intervals
+                        # (instead of points)
+                        b = sppasMRK.format_point(
+                            ann.get_lowest_localization().get_midpoint())
                         e = b
                     else:
-                        b = sppasMRK.format_point(ann.get_lowest_localization().get_midpoint())
-                        e = sppasMRK.format_point(ann.get_highest_localization().get_midpoint())
+                        b = sppasMRK.format_point(
+                            ann.get_lowest_localization().get_midpoint())
+                        e = sppasMRK.format_point(
+                            ann.get_highest_localization().get_midpoint())
                     fp.write(" {:s} {:s}\n".format(str(b), str(e)))
 
             fp.close()
@@ -393,6 +405,7 @@ class sppasSignaix(sppasBaseIO):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of CTM format or not.
@@ -517,10 +530,12 @@ class sppasSignaix(sppasBaseIO):
                                 tier[i-1].get_location().get_best().get_midpoint()
                 current_delta = round(current_delta, 6)
                 if delta != current_delta:
-                    raise AnnDataTypeError(tier.get_name(), "points in delta range")
+                    raise AnnDataTypeError(tier.get_name(),
+                                           "points in delta range")
 
         # ok. write the data into the file.
         with open(filename, "w", buffering=8096) as fp:
             for ann in tier:
-                fp.write("{:s}\n".format(ann.get_labels()[0].get_best().get_content()))
+                fp.write("{:s}\n"
+                         "".format(ann.get_labels()[0].get_best().get_content()))
             fp.close()

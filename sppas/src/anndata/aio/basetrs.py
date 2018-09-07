@@ -49,7 +49,7 @@ class sppasBaseIO(sppasTranscription):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
-    
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of the appropriate format or not."""

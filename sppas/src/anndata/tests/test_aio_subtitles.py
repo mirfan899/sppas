@@ -99,7 +99,8 @@ class TestBaseSubtitle(unittest.TestCase):
     def test_serialize_location(self):
         """Test location -> timestamps."""
 
-        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.), sppasPoint(3.5))))
+        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.),
+                                                         sppasPoint(3.5))))
         self.assertEqual(sppasSubRip._serialize_location(a1),
                          "00:00:01,000 --> 00:00:03,500\n")
 
@@ -107,13 +108,20 @@ class TestBaseSubtitle(unittest.TestCase):
         self.assertEqual(sppasSubRip._serialize_location(a2),
                          "00:00:01,000 --> 00:00:02,000\n")
 
-        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(3))))
+        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1),
+                                                         sppasPoint(3))))
         self.assertEqual(sppasSubRip._serialize_location(a1),
                          "00:00:01,000 --> 00:00:03,000\n")
 
         a2 = sppasAnnotation(sppasLocation(sppasPoint(1)))
         self.assertEqual(sppasSubRip._serialize_location(a2),
                          "00:00:01,000 --> 00:00:02,000\n")
+
+        # precision is 1 ms by default:
+        a1 = sppasAnnotation(sppasLocation(sppasInterval(sppasPoint(1.23456789),
+                                                         sppasPoint(3.56719))))
+        self.assertEqual(sppasSubRip._serialize_location(a1),
+                         "00:00:01,235 --> 00:00:03,567\n")
 
 # ---------------------------------------------------------------------
 

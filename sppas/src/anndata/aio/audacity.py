@@ -32,11 +32,11 @@
     src.anndata.aio.audacity.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Audacity is a multi-platform, free, easy-to-use, multi-track audio editor
-    and recorder. Audacity is free software, developed by a group of
-    volunteers and distributed under the GNU General Public License (GPL).
+Audacity is a multi-platform, free, easy-to-use, multi-track audio editor
+and recorder. Audacity is free software, developed by a group of
+volunteers and distributed under the GNU General Public License (GPL).
 
-    See: http://www.audacityteam.org/
+See: http://www.audacityteam.org/
 
 """
 import codecs

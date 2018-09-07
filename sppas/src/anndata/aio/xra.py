@@ -32,7 +32,7 @@
     src.anndata.aio.xra.py
     ~~~~~~~~~~~~~~~~~~~~~~
 
-    SPPAS native XRA reader and writer.
+SPPAS native XRA reader and writer.
 
 """
 import logging
@@ -68,6 +68,7 @@ class sppasXRA(sppasBaseIO):
     xra files are the native file format of the GPL tool SPPAS.
 
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of XRA format or not.
@@ -129,14 +130,21 @@ class sppasXRA(sppasBaseIO):
         """
         tree = ET.parse(filename)
         root = tree.getroot()
+
         if "name" in root.attrib:
             self.set_name(root.attrib['name'])
+
         if "version" in root.attrib:
-            self.set_meta('file_created_format_version', root.attrib['version'])
+            self.set_meta('file_created_format_version',
+                          root.attrib['version'])
+
         if "date" in root.attrib:
-            self.set_meta('file_created_date', root.attrib['date'])
+            self.set_meta('file_created_date',
+                          root.attrib['date'])
+
         if "author" in root.attrib:
-            self.set_meta('file_created_author', root.attrib['author'])
+            self.set_meta('file_created_author',
+                          root.attrib['author'])
 
         metadata_root = root.find('Metadata')
         if metadata_root is not None:
@@ -160,10 +168,10 @@ class sppasXRA(sppasBaseIO):
     @staticmethod
     def _parse_metadata(meta_object, metadata_root):
         """Read any kind of metadata.
-        
+
         :param meta_object: (sppasMetadata)
         :param metadata_root: (ET) XML Element tree root.
-        
+
         """
         if metadata_root is not None:
             for entry_node in metadata_root.findall('Entry'):
@@ -499,10 +507,12 @@ class sppasXRA(sppasBaseIO):
                     child_tier = tier
 
             try:
-                self.add_hierarchy_link(hierarchy_type, parent_tier, child_tier)
+                self.add_hierarchy_link(hierarchy_type,
+                                        parent_tier,
+                                        child_tier)
             except Exception as e:
                 # print(e)
-                logging.info("Corrupted hierarchy link: %s" % str(e))
+                logging.error("Corrupted hierarchy link: {:s}".format(str(e)))
                 pass
 
     # -----------------------------------------------------------------------
@@ -590,7 +600,10 @@ class sppasXRA(sppasBaseIO):
 
         sppasXRA.indent(root)
         tree = ET.ElementTree(root)
-        tree.write(filename, encoding=sg.__encoding__, method="xml", xml_declaration=True)
+        tree.write(filename,
+                   encoding=sg.__encoding__,
+                   method="xml",
+                   xml_declaration=True)
 
     # -----------------------------------------------------------------------
 
@@ -841,10 +854,13 @@ class sppasXRA(sppasBaseIO):
         for entry in vocabulary:
             entry_node = ET.SubElement(vocabulary_root, 'Entry')
             entry_node.text = entry.get_content()
+
             if entry.get_type() != "str":
                 entry_node.set('type', entry.get_type())
+
             if len(vocabulary.get_tag_description(entry)) > 0:
-                entry_node.set('description', vocabulary.get_tag_description(entry))
+                entry_node.set('description',
+                               vocabulary.get_tag_description(entry))
 
         # Element Tier
         for tier in self:
@@ -863,6 +879,7 @@ class sppasXRA(sppasBaseIO):
     @staticmethod
     def indent(elem, level=0):
         """Pretty indent.
+
         http://effbot.org/zone/element-lib.htm#prettyprint
 
         """

@@ -32,8 +32,19 @@
     src.anndata.aio.annotationpro.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Annotation Pro is a tool for annotation of audio and text files:
+
+| Klessa, K., Karpiński, M., Wagner, A. (2013).
+| Annotation Pro – a new software tool for annotation of linguistic and
+| paralinguistic features.
+| In D. Hirst & B. Bigi (Eds.)
+| Proceedings of the Tools and Resources for the Analysis of Speech Prosody
+| (TRASP) Workshop, Aix en Provence, 51-54.
+
+http://annotationpro.org/
+
 """
-import os.path
+import os
 import zipfile
 import shutil
 import random
@@ -61,7 +72,6 @@ from .aioutils import format_labels
 
 def pick_random_color(v1=0, v2=255):
     """Return a random RGB color."""
-
     c = [random.uniform(v1, v2) for _ in range(5)]
     random.shuffle(c)
     return int(c[0]), int(c[1]), int(c[2])
@@ -69,7 +79,6 @@ def pick_random_color(v1=0, v2=255):
 
 def rgb_to_color(r, g, b):
     """Convert a RGB color into ANTX decimal color."""
-
     r = int(r)
     g = int(g)
     b = int(b)
@@ -83,7 +92,6 @@ def rgb_to_color(r, g, b):
 
 def color_to_rgb(color):
     """Convert an ANTX decimal color into RGB."""
-
     hexa = hex((color-1)*-1)
     l = ['0']*6
     for i in range(len(hexa) - 2):
@@ -107,9 +115,8 @@ class sppasANTX(sppasBaseIO):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    http://annotationpro.org/
-
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of ANTX format or not.
@@ -135,7 +142,6 @@ class sppasANTX(sppasBaseIO):
     @staticmethod
     def make_point(midpoint, sample_rate=44100):
         """The localization is a frame value, so an integer."""
-
         try:
             midpoint = int(midpoint)
             midpoint = float(midpoint) / float(sample_rate)
@@ -173,7 +179,8 @@ class sppasANTX(sppasBaseIO):
         self._accept_gaps = True
         self._accept_overlaps = False
 
-        # Information that are both used by AnnotationPro and another software tool
+        # Information that are both used by AnnotationPro and
+        # another software tool
         self._map_meta = bidict()
         self._map_meta['Id'] = 'id'
         self._map_meta['Created'] = 'file_created_date'
@@ -218,6 +225,7 @@ class sppasANTX(sppasBaseIO):
 
     def _parse_configuration(self, configuration_root, uri=""):
         """Get the elements 'Configuration'.
+
         Fill metadata of the sppasANTX instance.
 
         :param configuration_root: (ET) Configuration root.
@@ -237,6 +245,7 @@ class sppasANTX(sppasBaseIO):
 
     def _parse_audiofile(self, audio_root, uri=""):
         """Get the elements 'AudioFile'.
+
         Create a sppasMedia instance and add it.
 
         :param audio_root: (ET) AudioFile root.
@@ -255,7 +264,8 @@ class sppasANTX(sppasBaseIO):
             media = sppasMedia(media_url)
             media.set_meta("id", media_id)
             media.set_meta('media_source', 'primary')
-            media.set_meta("media_sample_rate", self.get_meta("media_sample_rate", "44100"))
+            media.set_meta("media_sample_rate",
+                           self.get_meta("media_sample_rate", "44100"))
             self.elt_to_meta(audio_root, media, uri)
             self.add_media(media)
 
@@ -321,8 +331,9 @@ class sppasANTX(sppasBaseIO):
                                      labels)
 
         # fix other information in metadata
-        self.elt_to_meta(annotation_root, ann, uri,
-                         ['IdLayer', 'Start', 'Duration', 'Label', 'IsSelected'])
+        self.elt_to_meta(
+            annotation_root, ann, uri,
+            ['IdLayer', 'Start', 'Duration', 'Label', 'IsSelected'])
 
         is_selected = annotation_root.find(uri + 'IsSelected')
         if is_selected is not None:
@@ -332,7 +343,6 @@ class sppasANTX(sppasBaseIO):
 
     def elt_to_meta(self, root, meta_object, uri, exclude_list=[]):
         """Add nodes of root in meta_object."""
-
         for node in root:
             if node.text is not None:
                 key = node.tag.replace(uri, '')
@@ -343,7 +353,8 @@ class sppasANTX(sppasBaseIO):
                 if 'Color' in key:
                     color = meta_object.get_meta(key)
                     r, g, b = color_to_rgb(int(color))
-                    meta_object.set_meta(key, ",".join([str(r), str(g), str(b)]))
+                    meta_object.set_meta(key,
+                                         ",".join([str(r), str(g), str(b)]))
 
     # ----------------------------------------------------------------------
     # Writer
@@ -388,7 +399,10 @@ class sppasANTX(sppasBaseIO):
 
         sppasANTX.indent(root)
         tree = ET.ElementTree(root)
-        tree.write(filename, encoding=sg.__encoding__, xml_declaration=True, method="xml")
+        tree.write(filename,
+                   encoding=sg.__encoding__,
+                   xml_declaration=True,
+                   method="xml")
         # we should add 'standalone="yes"' in the declaration
         # (but not available with ElementTree)
 
@@ -427,7 +441,6 @@ class sppasANTX(sppasBaseIO):
 
     def _format_configuration(self, root):
         """Add 'Configuration' into the ElementTree."""
-
         now = datetime.now().strftime("%Y-%M-%d %H:%M")
 
         # File format version
@@ -440,29 +453,32 @@ class sppasANTX(sppasBaseIO):
         # FileVersion
         sppasANTX._add_configuration(root,
                                      self._map_meta["file_version"],
-                                     self.get_meta("file_version", "1"))
+                                     self.get_meta("file_version",
+                                                   "1"))
 
         # Samplerate
         sppasANTX._add_configuration(root,
                                      self._map_meta["media_sample_rate"],
-                                     self.get_meta("media_sample_rate", "44100"))
+                                     self.get_meta("media_sample_rate",
+                                                   "44100"))
 
         # Created
         sppasANTX._add_configuration(root,
                                      self._map_meta["file_created_date"],
-                                     self.get_meta("file_created_date", now))
+                                     self.get_meta("file_created_date",
+                                                   now))
 
         # Modified
         sppasANTX._add_configuration(root,
                                      self._map_meta["file_write_date"],
-                                     self.get_meta("file_write_date", now))
+                                     self.get_meta("file_write_date",
+                                                   now))
 
     # -----------------------------------------------------------------------
 
     @staticmethod
     def _add_configuration(root, key, value):
         """Add a new 'Configuration' key/value element in root."""
-
         conf_root = ET.SubElement(root, 'Configuration')
         child_key = ET.SubElement(conf_root, 'Key')
         child_key.text = key
@@ -474,7 +490,6 @@ class sppasANTX(sppasBaseIO):
     @staticmethod
     def _format_tier(root, tier):
         """Add 'Layer' and its content into the ElementTree."""
-
         tier_root = ET.SubElement(root, 'Layer')
 
         # Write all the elements SPPAS has interpreted
@@ -512,8 +527,8 @@ class sppasANTX(sppasBaseIO):
         child = ET.SubElement(tier_root, 'IsClosed')
         child.text = tier.get_meta("tier_is_closed", "false")
 
-        # for each element key, assign either the stored value (in the metadata),
-        # or the default one.
+        # for each element key, assign either the stored value
+        # (in the metadata), or the default one.
         elt_opt_layer = {'CoordinateControlStyle': "0",
                          'IsLocked': "false",
                          'ShowOnSpectrogram': "false",
@@ -536,7 +551,6 @@ class sppasANTX(sppasBaseIO):
 
     def _format_segment(self, root, tier, ann):
         """Add 'Segment' into the ElementTree."""
-
         segment_root = ET.SubElement(root, 'Segment')
         is_point = tier.is_point()
 
@@ -568,10 +582,12 @@ class sppasANTX(sppasBaseIO):
         child_id_dur.text = str(duration)
 
         # Segment required elements
-        fore_r, fore_g, fore_b = tier.get_meta('ForeColor', '0,0,0').split(',')
-        back_r, back_g, back_b = tier.get_meta('BackColor', '255,255,255').split(',')
-        elt_segment = {'ForeColor': rgb_to_color(fore_r, fore_g, fore_b),   # black
-                       'BackColor': rgb_to_color(back_r, back_g, back_b),   # white
+        fore_r, fore_g, fore_b = tier.get_meta('ForeColor',
+                                               '0,0,0').split(',')
+        back_r, back_g, back_b = tier.get_meta('BackColor',
+                                               '255,255,255').split(',')
+        elt_segment = {'ForeColor': rgb_to_color(fore_r, fore_g, fore_b),
+                       'BackColor': rgb_to_color(back_r, back_g, back_b),
                        'BorderColor': '-8355172',  # grey
                        'IsSelected': 'false'}
 
@@ -585,13 +601,16 @@ class sppasANTX(sppasBaseIO):
         # Segment optional elements
 
         elt_opt_segment = {'Feature': None, 'Group': None, 'Name': None,
-                           'Parameter1': None, 'Parameter2': None, 'Parameter3': None,
-                           'IsMarker': "false", 'Marker': None, 'RScript': None}
+                           'Parameter1': None, 'Parameter2': None,
+                           'Parameter3': None, 'IsMarker': "false",
+                           'Marker': None, 'RScript': None}
 
-        # in SPPAS, the language can be defined at any level (trs, tier, annotation).
+        # in SPPAS, the language can be defined at any level
+        # (trs, tier, annotation).
         meta_key_language = self._map_meta['Language']
-        elt_opt_segment['Language'] = tier.get_meta(meta_key_language,
-                                                    self.get_meta(meta_key_language, None))
+        elt_opt_segment['Language'] = tier.get_meta(
+            meta_key_language,
+            self.get_meta(meta_key_language, None))
 
         for key in elt_opt_segment:
             child = ET.SubElement(segment_root, key)
@@ -639,6 +658,7 @@ class sppasANT(sppasBaseIO):
     An ANT file is a ZIPPED directory.
 
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of ANT format or not.
