@@ -1,6 +1,8 @@
 import wx
 import logging
-import os.path
+import os
+import json
+import traceback
 from argparse import ArgumentParser
 
 try:
@@ -12,7 +14,7 @@ except ImportError:
 
 """
 
-A clean solution to use global settings.
+An extended solution to use global settings, saved in a json file.
 
 """
 
@@ -22,7 +24,7 @@ A clean solution to use global settings.
 
 
 class sppasBaseSettings(object):
-    """Base class to manage any kind of settings, represented in a dictionary.
+    """A dictionary of settings stored in a JSON file.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -30,23 +32,40 @@ class sppasBaseSettings(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    :Example:
-
-        >>>with sppasBaseSettings() as settings:
-        >>>    settings.newKey = 'myNewValue'
-        >>>    print(settings.newKey)
+    Base class to manage any kind of settings, represented in a dictionary.
+    A configuration file can be loaded when init and saved when exit.
 
     """
-    def __init__(self):
-        """Create the dictionary of settings."""
 
+    def __init__(self):
+        """Create the dictionary.
+
+        :param _config_location: Name of the file for settings.
+
+        """
         self.__dict__ = dict()
+        self.load()
+
+    # -----------------------------------------------------------------------
 
     def __enter__(self):
         return self
 
+    # -----------------------------------------------------------------------
+
     def __exit__(self, exc_type, exc_value, traceback):
-        """to be overridden, if any."""
+        self.save()
+
+    # -----------------------------------------------------------------------
+
+    def load(self):
+        """Load the dictionary of settings from a file."""
+        pass
+
+    # -----------------------------------------------------------------------
+
+    def save(self):
+        """Save the dictionary of settings in a file."""
         pass
 
 # ---------------------------------------------------------------------------
@@ -55,7 +74,9 @@ class sppasBaseSettings(object):
 
 
 class WxAppConfig(sppasBaseSettings):
-    """Manage the application global settings, represented in a dictionary.
+    """Manage the application global settings.
+
+    Config is represented in a non-iterable dictionary.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -76,8 +97,10 @@ class WxAppConfig(sppasBaseSettings):
 # ---------------------------------------------------------------------------
 
 
-class WxAppSettings(object):
+class WxAppSettings(sppasBaseSettings):
     """Manage wx global settings, represented in a dictionary.
+
+    Settings are represented in an iterable dictionary.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -86,66 +109,79 @@ class WxAppSettings(object):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
-    _config_location = "settings.json"
-
     def __init__(self):
-        """Create the dictionary of wx settings."""
-        self.__dict__ = dict()
-        try:
-            self.load()
-        except:
-            logging.info('The file with settings was not loaded.')
-            self.reset()
-            self.save()
+        """Create the dictionary of settings."""
+        super(WxAppSettings, self).__init__()
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        self.save()
-
-    def reset(self):
-            # fix default values
-            title_font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
-            title_font = title_font.Bold()
-            title_font = title_font.Scale(2.)
-
-            button_font = wx.Font(12,  # point size
-                                  wx.FONTFAMILY_DEFAULT,  # family,
-                                  wx.FONTSTYLE_NORMAL,    # style,
-                                  wx.FONTWEIGHT_NORMAL,   # weight,
-                                  underline=False,
-                                  faceName="Calibri",
-                                  encoding=wx.FONTENCODING_SYSTEM)
-
-            self.__dict__ = dict(
-                frame_style=wx.DEFAULT_FRAME_STYLE | wx.CLOSE_BOX,
-                frame_width=640,
-                frame_height=480,
-                fg_color=wx.Colour(250, 250, 240, alpha=wx.ALPHA_OPAQUE),
-                bg_color=wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE),
-                title_height=64,
-                title_fg_color=wx.Colour(65, 65, 60, alpha=wx.ALPHA_OPAQUE),
-                title_bg_color=wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE),
-                title_text_font=title_font,
-                button_text_font=button_font,
-                button_fg_color=wx.Colour(250, 250, 240, alpha=wx.ALPHA_OPAQUE),
-                button_bg_color=wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE),
-            )
-
-        
-    def save(self):
-        # wx objects are not serializable. so we can't simply use:
-        # json.dump(self.__dict__, open(self._config_location, 'w'))
-        # we will write our own 'dump' here
-        logging.debug('Settings save method. File: {:s}'.format(self._config_location))
-        
+    # -----------------------------------------------------------------------
 
     def load(self):
-        # self.__dict__ = json.load(open(self._config_location))
-        logging.debug('Settings load method. File: {:s}'.format(self._config_location))
-        raise NotImplementedError
-    
+        """Load the dictionary of settings from a json file."""
+        self.reset()
+        try:
+            config = json.load(open("settings.json"))
+            self.__dict__ = dict(
+                frame_style=config['frame_style'],
+                frame_width=config['frame_size'][0],
+                frame_height=config['frame_size'][1]
+            )
+        except FileNotFoundError:
+            logging.warning('File with settings not found.')
+            return
+        except:
+            print(traceback.format_exc())
+            logging.warning('File with settings not loaded.')
+            return
+
+    # -----------------------------------------------------------------------
+
+    def save(self):
+        """Save the dictionary of settings in a json file.
+
+        To override if necessary (for example when the data of the
+        dict can't be saved into a json file, like 'wx' objects).
+
+        """
+        print("SELF DICT:")
+        print(self.__dict__)
+        config = dict()
+        config['frame_style'] = self.__dict__['frame_style']
+        config['frame_size'] = (self.__dict__['frame_width'],
+                                self.__dict__['frame_height'])
+
+        json.dump(config, open("settings.json", 'w'))
+
+    # -----------------------------------------------------------------------
+
+    def reset(self):
+        # fix default values
+        title_font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        title_font = title_font.Bold()
+        title_font = title_font.Scale(2.)
+
+        button_font = wx.Font(12,  # point size
+                              wx.FONTFAMILY_DEFAULT,  # family,
+                              wx.FONTSTYLE_NORMAL,    # style,
+                              wx.FONTWEIGHT_NORMAL,   # weight,
+                              underline=False,
+                              faceName="Calibri",
+                              encoding=wx.FONTENCODING_SYSTEM)
+
+        self.__dict__ = dict(
+            frame_style=wx.DEFAULT_FRAME_STYLE | wx.CLOSE_BOX,
+            frame_width=640,
+            frame_height=480,
+            fg_color=wx.Colour(250, 250, 240, alpha=wx.ALPHA_OPAQUE),
+            bg_color=wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE),
+            title_height=64,
+            title_fg_color=wx.Colour(65, 65, 60, alpha=wx.ALPHA_OPAQUE),
+            title_bg_color=wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE),
+            title_text_font=title_font,
+            button_text_font=button_font,
+            button_fg_color=wx.Colour(250, 250, 240, alpha=wx.ALPHA_OPAQUE),
+            button_bg_color=wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE),
+        )
+
 # ---------------------------------------------------------------------------
 
 
