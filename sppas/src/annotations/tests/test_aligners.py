@@ -121,6 +121,7 @@ class TestBaseAligner(unittest.TestCase):
 
 
 class TestBasicAlign(unittest.TestCase):
+    """Basic automatic alignment system."""
 
     def setUp(self):
         self._aligner = BasicAligner()
@@ -128,46 +129,31 @@ class TestBasicAlign(unittest.TestCase):
     def test_run_basic(self):
 
         self._aligner.set_phones("")
-        a = self._aligner.run_basic(0.)
-        self.assertEquals(a, [(0, 0, "")])
-
-        a = self._aligner.run_basic(0.01)
-        self.assertEquals(a, [(0, 1, "")])
-
-        a = self._aligner.run_basic(0.02)
-        self.assertEquals(a, [(0, 2, "")])
-
-        a = self._aligner.run_basic(0.2)
-        self.assertEquals(a, [(0, 20, "")])
-
-        a = self._aligner.run_basic(10.)
-        self.assertEquals(a, [(0, 1000, "")])
+        self.assertEquals([(0, 0, "")], self._aligner.run_basic(0.))
+        self.assertEquals([(0, 1, "")], self._aligner.run_basic(0.01))
+        self.assertEquals([(0, 2, "")], self._aligner.run_basic(0.02))
+        self.assertEquals([(0, 20, "")], self._aligner.run_basic(0.2))
+        self.assertEquals([(0, 1000, "")], self._aligner.run_basic(10.))
 
         self._aligner.set_phones("a")
-        a = self._aligner.run_basic(0.)
-        self.assertEquals(a, [(0, 0, "")])
-
-        a = self._aligner.run_basic(0.02)
-        self.assertEquals(a, [(0, 1, "a")])
-
-        a = self._aligner.run_basic(0.02)
-        self.assertEquals(a, [(0, 1, "a")])
+        self.assertEquals([(0, 0, "")], self._aligner.run_basic(0.))
+        self.assertEquals([(0, 1, "a")], self._aligner.run_basic(0.02))
+        self.assertEquals([(0, 1, "a")], self._aligner.run_basic(0.02))
 
         self._aligner.set_phones("a b c")
-        a = self._aligner.run_basic(0.02)
-        self.assertEquals(a, [(0, 2, "")])
+        self.assertEquals([(0, 2, "")], self._aligner.run_basic(0.02))
 
         self._aligner.set_phones("a b")
-        a = self._aligner.run_basic(0.2)
-        self.assertEquals(a, [(0, 9, "a"),(10, 19, "b")])
+        self.assertEquals([(0, 9, "a"), (10, 19, "b")],
+                          self._aligner.run_basic(0.2))
 
         self._aligner.set_phones("a|aa b|bb")
-        a = self._aligner.run_basic(0.2)
-        self.assertEquals(a, [(0, 9, "a"),(10, 19, "b")])
+        self.assertEquals([(0, 9, "a"), (10, 19, "b")],
+                          self._aligner.run_basic(0.2))
 
         self._aligner.set_phones("a|A b|B")
-        a = self._aligner.run_basic(0.2)
-        self.assertEquals(a, [(0, 9, "a"),(10, 19, "b")])
+        self.assertEquals([(0, 9, "a"), (10, 19, "b")],
+                          self._aligner.run_basic(0.2))
 
 # ---------------------------------------------------------------------------
 

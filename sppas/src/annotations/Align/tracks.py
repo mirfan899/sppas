@@ -242,7 +242,6 @@ class TracksReader(Transcription):
 
         """
         super(TracksReader, self).__init__(name, mintime, maxtime)
-        self.alignerio = AlignerIO()
         self._radius = 0.005
         self._tracknames = TrackNamesGenerator()
 
@@ -275,7 +274,7 @@ class TracksReader(Transcription):
             unitstart, unitend = units[track]
 
             basename = self._tracknames.align_filename(dirname, track+1)
-            _phonannots,_wordannots = self.alignerio.read_aligned(basename)
+            _phonannots,_wordannots = AlignerIO.read_aligned(basename)
 
             # Append alignments in tiers
             self._append_tuples(itemp, _phonannots, unitstart, unitend)

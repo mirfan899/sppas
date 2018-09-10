@@ -209,12 +209,9 @@ class TestAnchorTier(unittest.TestCase):
 
 class TestTracksAlign(unittest.TestCase):
 
-    def setUp(self):
-        self._alignerio = AlignerIO()
-
     def test_matching(self):
         filename = os.path.join(DATA, "track_000000")
-        wordalign = self._alignerio.read_aligned(filename)[1]
+        wordalign = AlignerIO.read_aligned(filename)[1]
         self.assertEqual(len(wordalign), 21)
 
         ref = [u"好", u"感", u"啦 @", u"好似", u"梁", u"安", u"琪", u"咁", u"係", u"啦", u"係", u"我",
