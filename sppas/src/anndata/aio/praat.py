@@ -32,15 +32,15 @@
     src.anndata.aio.praat.py
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Praat - Doing phonetic with computers, is a GPL tool developed by:
+Praat - Doing phonetic with computers, is a GPL tool developed by:
 
-        | Paul Boersma and David Weenink
-        | Phonetic Sciences, University of Amsterdam
-        | Spuistraat 210
-        | 1012VT Amsterdam
-        | The Netherlands
+| Paul Boersma and David Weenink
+| Phonetic Sciences, University of Amsterdam
+| Spuistraat 210
+| 1012VT Amsterdam
+| The Netherlands
 
-    See: http://www.fon.hum.uva.nl/praat/
+See: http://www.fon.hum.uva.nl/praat/
 
 """
 import codecs
@@ -83,9 +83,8 @@ class sppasBasePraat(sppasBaseIO):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    Try first to open the file with the default sppas encoding, then UTF-16.
-
     """
+
     @staticmethod
     def make_point(midpoint, radius=0.0005):
         """The localization is a time value, so a float.
@@ -221,16 +220,22 @@ class sppasBasePraat(sppasBaseIO):
     @staticmethod
     def _serialize_labels_text(annotation):
         """Convert the annotation labels into a string."""
-
         text = annotation.serialize_labels(separator="\n", empty="", alt=True)
 
         if '"' in text:
             text = re.sub('([^"])["]([^"])', '\\1""\\2', text)
-            text = re.sub('([^"])["]([^"])', '\\1""\\2',
-                          text)  # miss occurrences if 2 " are separated by only 1 character
-            text = re.sub('([^"])["]$', '\\1""', text)  # miss occurrences if " is at the end of the label!
-            text = re.sub('^["]([^"])', '""\\1', text)  # miss occurrences if " is at the beginning of the label
+
+            text = re.sub('([^"])["]([^"])', '\\1""\\2', text)
+            # it misses occurrences if 2 " are separated by only 1 character
+
+            text = re.sub('([^"])["]$', '\\1""', text)
+            # it misses occurrences if " is at the end of the label!
+
+            text = re.sub('^["]([^"])', '""\\1', text)
+            # it misses occurrences if " is at the beginning of the label
+
             text = re.sub('^""$', '""""', text)
+
             text = re.sub('^"$', '""', text)
 
         return '\t\t\ttext = "{:s}"\n'.format(text)
@@ -240,7 +245,6 @@ class sppasBasePraat(sppasBaseIO):
     @staticmethod
     def _serialize_labels_value(labels):
         """Convert a label with a numerical value into a string."""
-
         if len(labels) == 0:
             TagValueError('empty label')
         if len(labels) > 1:
@@ -280,13 +284,15 @@ class sppasTextGrid(sppasBasePraat):
     TextGrid does not support hierarchy.
     TextGrid does not support metadata.
     TextGrid does not support media assignment.
-    TextGrid supports points and intervals. It does not support disjoint intervals.
+    TextGrid supports points and intervals.
+    TextGrid does not support disjoint intervals.
     TextGrid does not support alternative tags (here called "text").
     TextGrid does not support radius.
 
     Both "short TextGrid" and "long TextGrid" file formats are supported.
 
     """
+
     @staticmethod
     def _detect(fp):
         line = fp.readline()
@@ -298,6 +304,9 @@ class sppasTextGrid(sppasBasePraat):
     @staticmethod
     def detect(filename):
         """Check whether a file is of TextGrid format or not.
+
+        Try first to open the file with the default sppas encoding,
+        then UTF-16.
 
         :param filename: (str) Name of the file to check.
         :returns: (bool)
@@ -382,7 +391,7 @@ class sppasTextGrid(sppasBasePraat):
 
         :param lines: the contents of the file.
         :param start_line: index in lines when the tier content starts.
-        :param is_long: A boolean which is false if the TextGrid is in short form.
+        :param is_long: (bool) False if the TextGrid is in short form.
         :returns: (int) Number of lines of this tier
 
         """
@@ -409,7 +418,9 @@ class sppasTextGrid(sppasBasePraat):
             # with the interval number between the brackets
             if is_long is True:
                 start_line += 1
-            ann, start_line = self._parse_annotation(lines, start_line, is_interval)
+            ann, start_line = self._parse_annotation(lines,
+                                                     start_line,
+                                                     is_interval)
             tier.add(ann)
 
         return start_line
@@ -418,7 +429,7 @@ class sppasTextGrid(sppasBasePraat):
 
     @staticmethod
     def _parse_annotation(lines, start_line, is_interval):
-        """Read an annotation from an IntervalTier in the contents of a TextGrid file.
+        """Read an annotation from an IntervalTier in the content of lines.
 
         :param lines: (list) the contents of the file.
         :param start_line: (int) index in lines when the tier content starts.
@@ -445,8 +456,7 @@ class sppasTextGrid(sppasBasePraat):
 
     @staticmethod
     def _parse_localization(lines, start_line, is_interval):
-        """Parse the localization (point or interval).  """
-
+        """Parse the localization (point or interval)."""
         midpoint = sppasBasePraat._parse_float(lines[start_line], start_line+1)
         start_line += 1
         if is_interval is True:
@@ -516,9 +526,10 @@ class sppasTextGrid(sppasBasePraat):
         with codecs.open(filename, 'w', sg.__encoding__, buffering=8096) as fp:
 
             # Write the header
-            fp.write(sppasTextGrid._serialize_textgrid_header(min_time_point.get_midpoint(),
-                                                              max_time_point.get_midpoint(),
-                                                              len(self)))
+            fp.write(sppasTextGrid._serialize_textgrid_header(
+                min_time_point.get_midpoint(),
+                max_time_point.get_midpoint(),
+                len(self)))
 
             # Write each tier
             for i, tier in enumerate(self):
@@ -533,7 +544,8 @@ class sppasTextGrid(sppasBasePraat):
 
                 # Write the header of the tier
                 try:
-                    fp.write(sppasTextGrid._serialize_tier_header(new_tier, i+1))
+                    fp.write(sppasTextGrid._serialize_tier_header(new_tier,
+                                                                  i+1))
                 except:
                     fp.close()
                     raise
@@ -542,9 +554,11 @@ class sppasTextGrid(sppasBasePraat):
                 is_point = new_tier.is_point()
                 for a, annotation in enumerate(new_tier):
                     if is_point is True:
-                        fp.write(sppasTextGrid._serialize_point_annotation(annotation, a+1))
+                        fp.write(sppasTextGrid._serialize_point_annotation(
+                            annotation, a+1))
                     else:
-                        fp.write(sppasTextGrid._serialize_interval_annotation(annotation, a+1))
+                        fp.write(sppasTextGrid._serialize_interval_annotation(
+                            annotation, a+1))
 
             fp.close()
 
@@ -556,7 +570,6 @@ class sppasTextGrid(sppasBasePraat):
     @staticmethod
     def _serialize_textgrid_header(xmin, xmax, size):
         """Create a string with the header of the textgrid."""
-
         content = sppasBasePraat._serialize_header("TextGrid", xmin, xmax)
         content += 'tiers? <exists>\n'
         content += 'size = {:d}\n'.format(size)
@@ -568,15 +581,18 @@ class sppasTextGrid(sppasBasePraat):
     @staticmethod
     def _serialize_tier_header(tier, tier_number):
         """Create the string with the header for a new tier."""
-
         if len(tier) == 0:
             raise AioEmptyTierError("TextGrid", tier.get_name())
 
         content = '\titem [{:d}]:\n'.format(tier_number)
-        content += '\t\tclass = "{:s}"\n'.format('IntervalTier' if tier.is_interval() else 'TextTier')
+        content += '\t\tclass = "{:s}"\n'.format('IntervalTier'
+                                                 if tier.is_interval()
+                                                 else 'TextTier')
         content += '\t\tname = "{:s}"\n'.format(tier.get_name())
-        content += '\t\txmin = {}\n'.format(tier.get_first_point().get_midpoint())
-        content += '\t\txmax = {}\n'.format(tier.get_last_point().get_midpoint())
+        content += '\t\txmin = {}\n'.format(
+            tier.get_first_point().get_midpoint())
+        content += '\t\txmax = {}\n'.format(
+            tier.get_last_point().get_midpoint())
         content += '\t\tintervals: size = {:d}\n'.format(len(tier))
         return content
 
@@ -584,7 +600,7 @@ class sppasTextGrid(sppasBasePraat):
 
     @staticmethod
     def _serialize_interval_annotation(annotation, number):
-        """Converts an annotation consisting of intervals to the TextGrid format.
+        """Convert an annotation consisting of intervals to the TextGrid format.
 
         A time value can be written with a maximum of 18 digits, like in Praat.
 
@@ -594,8 +610,10 @@ class sppasTextGrid(sppasBasePraat):
 
         """
         content = '\t\tintervals [{:d}]:\n'.format(number)
-        content += '\t\t\txmin = {}\n'.format(annotation.get_lowest_localization().get_midpoint())
-        content += '\t\t\txmax = {}\n'.format(annotation.get_highest_localization().get_midpoint())
+        content += '\t\t\txmin = {}\n'.format(
+            annotation.get_lowest_localization().get_midpoint())
+        content += '\t\t\txmax = {}\n'.format(
+            annotation.get_highest_localization().get_midpoint())
         content += sppasBasePraat._serialize_labels_text(annotation)
         return u(content)
 
@@ -603,7 +621,7 @@ class sppasTextGrid(sppasBasePraat):
 
     @staticmethod
     def _serialize_point_annotation(annotation, number):
-        """Converts an annotation consisting of points to the TextGrid format.
+        """Convert an annotation consisting of points to the TextGrid format.
 
         :param annotation: (sppasAnnotation)
         :param number: (int) the index of the annotation in the tier + 1.
@@ -614,7 +632,8 @@ class sppasTextGrid(sppasBasePraat):
         text = text.replace("text =", "mark =")
 
         content = '\t\t\tpoints [{:d}]:\n'.format(number)
-        content += '\t\t\ttime = {}\n'.format(annotation.get_lowest_localization().get_midpoint())
+        content += '\t\t\ttime = {}\n'.format(
+            annotation.get_lowest_localization().get_midpoint())
         content += text
         return u(content)
 
@@ -634,6 +653,7 @@ class sppasBaseNumericalTier(sppasBasePraat):
     pitch, intensity, etc.
 
     """
+
     def __init__(self, name=None):
         """Initialize a new sppasBaseNumericalTier instance.
 
@@ -689,7 +709,8 @@ class sppasBaseNumericalTier(sppasBasePraat):
                     raise AioLineFormatError(cur_line, lines[-1])
 
             # Parse the localization
-            midpoint = sppasBasePraat._parse_float(lines[cur_line], cur_line + 1)
+            midpoint = sppasBasePraat._parse_float(
+                lines[cur_line], cur_line + 1)
             localization = sppasBasePraat.make_point(midpoint)
             cur_line += 1
             if cur_line >= len(lines):
@@ -709,7 +730,8 @@ class sppasBaseNumericalTier(sppasBasePraat):
         """Write a file of the given file type.
 
         :param filename: (str)
-        :param file_type: (str) Name of the file type (PitchTier, IntensityTier...)
+        :param file_type: (str) Name of the file type
+        (PitchTier, IntensityTier...)
 
         """
         if self.is_empty():
@@ -738,17 +760,21 @@ class sppasBaseNumericalTier(sppasBasePraat):
         with codecs.open(filename, 'w', sg.__encoding__, buffering=8096) as fp:
 
             # Write the header
-            fp.write(sppasBasePraat._serialize_header(file_type,
-                                                      min_time_point.get_midpoint(),
-                                                      max_time_point.get_midpoint()))
-            fp.write("points: size = {:d}\n".format(len(tier)))
+            fp.write(sppasBasePraat._serialize_header(
+                file_type,
+                min_time_point.get_midpoint(),
+                max_time_point.get_midpoint()))
+            fp.write(
+                "points: size = {:d}\n".format(len(tier)))
 
             # Write the annotations
             for a, annotation in enumerate(tier):
 
                 content = 'points [{:d}]:\n'.format(a+1)
-                content += '\tnumber = {}\n'.format(annotation.get_lowest_localization().get_midpoint())
-                content += sppasBasePraat._serialize_labels_value(annotation.get_labels())
+                content += '\tnumber = {}\n'.format(
+                    annotation.get_lowest_localization().get_midpoint())
+                content += sppasBasePraat._serialize_labels_value(
+                    annotation.get_labels())
                 fp.write(content)
 
             fp.close()
@@ -766,6 +792,7 @@ class sppasPitchTier(sppasBaseNumericalTier):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of PitchTier format or not.
@@ -779,7 +806,8 @@ class sppasPitchTier(sppasBaseNumericalTier):
                 file_type = sppasBasePraat._parse_string(fp.readline())
                 object_class = sppasBasePraat._parse_string(fp.readline())
                 fp.close()
-                return file_type == "ooTextFile" and object_class == "PitchTier"
+                return file_type == "ooTextFile" and \
+                       object_class == "PitchTier"
         except IOError:
             return False
         except UnicodeDecodeError:
@@ -832,6 +860,7 @@ class sppasIntensityTier(sppasPitchTier):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of IntensityTier format or not.
@@ -845,7 +874,8 @@ class sppasIntensityTier(sppasPitchTier):
                 file_type = sppasBasePraat._parse_string(fp.readline())
                 object_class = sppasBasePraat._parse_string(fp.readline())
                 fp.close()
-                return file_type == "ooTextFile" and object_class == "IntensityTier"
+                return file_type == "ooTextFile" \
+                       and object_class == "IntensityTier"
         except IOError:
             return False
         except UnicodeDecodeError:

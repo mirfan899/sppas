@@ -32,13 +32,11 @@
     src.anndata.aio.xtrans.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Xtrans reader and writer.
+XTrans is a multi-platform, multilingual, multi-channel transcription tool
+that supports manual transcription and annotation of audio recordings.
+Last version of Xtrans was released in 2009.
 
-    https://www.ldc.upenn.edu/language-resources/tools/xtrans
-
-    XTrans is a multi-platform, multilingual, multi-channel transcription tool
-    that supports manual transcription and annotation of audio recordings.
-    Last version of Xtrans was released in 2009.
+https://www.ldc.upenn.edu/language-resources/tools/xtrans
 
 """
 import codecs
@@ -83,6 +81,7 @@ class sppasTDF(sppasBaseText):
     TDF does not support radius.
 
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of TDF format or not.
@@ -113,12 +112,11 @@ class sppasTDF(sppasBaseText):
 
         return True
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def make_point(midpoint):
         """The localization is a time value, so always a float."""
-
         try:
             midpoint = float(midpoint)
         except ValueError:
@@ -126,7 +124,7 @@ class sppasTDF(sppasBaseText):
 
         return sppasPoint(midpoint, radius=0.005)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __init__(self, name=None):
         """Initialize a new sppasTDF instance.
@@ -156,10 +154,11 @@ class sppasTDF(sppasBaseText):
         self._accept_gaps = True
         self._accept_overlaps = True
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def read(self, filename):
-        """Read a raw file and fill the Transcription.
+        """Read a raw file and fill the sppasTranscription.
+
         It creates a tier for each speaker-channel observed in the file.
 
         :param filename: (str)
@@ -174,12 +173,12 @@ class sppasTDF(sppasBaseText):
         lines.pop(0)
         self._extract_lines(first_line, lines)
 
-    # -----------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _extract_lines(self, first_line, lines):
         """Extract the content of the TDF file.
 
-        :param first_line: The first line of the TDF file (name of the columns)
+        :param first_line: The first line of the TDF file (column' names)
         :param lines: the content of the file
 
         """
@@ -224,7 +223,8 @@ class sppasTDF(sppasBaseText):
             if tier is None:
 
                 # Create the media linked to the tier
-                media = sppasBaseText.create_media(line[media_url].strip(), self)
+                media = sppasBaseText.create_media(line[media_url].strip(),
+                                                   self)
 
                 # Create the tier and set metadata
                 tier = self.create_tier(tier_name, media=media)
@@ -234,8 +234,9 @@ class sppasTDF(sppasBaseText):
                 tier.set_meta("speaker_dialect", line[speaker_dialect])
 
             # Add the new annotation
-            location = sppasLocation(sppasInterval(sppasTDF.make_point(line[begin]),
-                                                   sppasTDF.make_point(line[end])))
+            location = sppasLocation(sppasInterval(
+                sppasTDF.make_point(line[begin]),
+                sppasTDF.make_point(line[end])))
             labels = format_labels(line[tag])
 
             tier.create_annotation(location, labels)
