@@ -59,54 +59,44 @@ class BasicAligner(BaseAligner):
     selected.
 
     """
-    def __init__(self, modeldir):
+    def __init__(self, model_dir=None):
         """Create a BasicAligner instance.
 
         This class allows to align one inter-pausal unit with the same
         duration for each phoneme. It selects the shortest in case of variants.
 
-        :param modeldir: (str) Name of the directory of the acoustic model
+        :param model_dir: (str) Ignored.
 
         """
-        super(BasicAligner, self).__init__(modeldir)
-        self._outext = DEFAULT_EXT_OUT
+        super(BasicAligner, self).__init__()
+
+        self._extensions = ["palign"]
+        self._outext = self._extensions[0]
+        self._name = "basic"
 
     # -----------------------------------------------------------------------
 
-    def set_outext(self, ext):
-        """Set the extension for output files.
-
-        :param ext: (str)
-
-        """
-        ext = ext.lower()
-        if not ext in BasicAligner.BASIC_EXT_OUT:
-            raise ValueError("%s is not a valid file extension for BasicAligner" % ext)
-
-        self._outext = ext
-
-    # -----------------------------------------------------------------------
-
-    def run_alignment(self, inputwav, outputalign):
+    def run_alignment(self, input_wav, output_align):
         """Perform the speech segmentation.
+
         Assign the same duration to each phoneme.
 
-        :param inputwav: (str or float) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits; or its duration
-        :param outputalign: (str) the output file name
+        :param input_wav: (str/float) audio input file name, or its duration
+        :param output_align: (str) the output file name
 
         :returns: Empty string.
 
         """
-        if isinstance(inputwav, float) is True:
-            duration = inputwav
+        if isinstance(input_wav, float) is True:
+            duration = input_wav
         else:
             try:
-                wavspeech = sppas.src.audiodata.aio.open(inputwav)
-                duration = wavspeech.get_duration()
-            except Exception:
+                wav_speech = sppas.src.audiodata.aio.open(input_wav)
+                duration = wav_speech.get_duration()
+            except:
                 duration = 0.
 
-        self.run_basic(duration, outputalign)
+        self.run_basic(duration, output_align)
 
         return ""
 

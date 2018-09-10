@@ -31,6 +31,8 @@
     src.annotations.Align.aligners.hvitealign.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+http://htk.eng.cam.ac.uk/links/asr_tool.shtml
+
 """
 import os
 import codecs
@@ -41,9 +43,6 @@ from sppas.src.resources.dictpron import sppasDictPron
 
 from .basealigner import BaseAligner
 
-# ----------------------------------------------------------------------------
-HVITE_EXT_OUT = ["mlf"]
-DEFAULT_EXT_OUT = HVITE_EXT_OUT[0]
 # ----------------------------------------------------------------------------
 
 
@@ -56,10 +55,9 @@ class HviteAligner(BaseAligner):
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :summary:      HVite automatic alignment system.
 
-    http://htk.eng.cam.ac.uk/links/asr_tool.shtml
-
     """
-    def __init__(self, modeldir):
+
+    def __init__(self, model_dir=None):
         """Create a HViteAligner instance.
 
         This class allows to align one inter-pausal unit with with the
@@ -72,25 +70,14 @@ class HviteAligner(BaseAligner):
             - a paragraph...
         no longer than a few seconds.
 
-        :param modeldir: (str) Name of the directory of the acoustic model
+        :param model_dir: (str) Name of the directory of the acoustic model
 
         """
-        super(HviteAligner, self).__init__(modeldir)
-        self._outext = DEFAULT_EXT_OUT
+        super(HviteAligner, self).__init__(model_dir)
 
-    # -----------------------------------------------------------------------
-
-    def set_outext(self, ext):
-        """Set the extension for output files.
-
-        :param ext: (str)
-
-        """
-        ext = ext.lower()
-        if ext not in HVITE_EXT_OUT:
-            raise ValueError("%s is not a valid file extension for HVitesAligner" % ext)
-
-        self._outext = ext
+        self._extensions = ["mlf"]
+        self._outext = self._extensions[0]
+        self._name = "julius"
 
     # -----------------------------------------------------------------------
 
@@ -199,23 +186,25 @@ class HviteAligner(BaseAligner):
 
     # -----------------------------------------------------------------------
 
-    def run_alignment(self, inputwav, outputalign):
+    def run_alignment(self, input_wav, output_align):
         """Execute the external program `HVite` to align.
 
-        :param inputwav: (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
-        :param outputalign: (str) the output file name
+        :param input_wav: (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
+        :param output_align: (str) the output file name
 
         :returns: (str) An empty string.
 
         """
-        outputalign = outputalign + "." + self._outext
+        output_align = output_align + "." + self._outext
 
-        message = self.run_hvite(inputwav, outputalign)
+        message = self.run_hvite(input_wav, output_align)
 
-        if os.path.isfile(outputalign):
-            with codecs.open(outputalign, 'r', sg.__encoding__) as f:
+        if os.path.isfile(output_align):
+            with codecs.open(output_align, 'r', sg.__encoding__) as f:
                 lines = f.readlines()
-                if len(lines) == 1:
-                    raise Exception(message+"\n"+lines[0])
+                f.close()
+
+            if len(lines) == 1:
+                raise IOError(message + "\n" + lines[0])
 
         return ""

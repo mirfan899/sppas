@@ -38,9 +38,7 @@ from sppas.src.config import sg
 from sppas.src.config import annotations_translation
 from sppas.src.utils.makeunicode import sppasUnicode
 
-from .aligners import DEFAULT_ALIGNER
-from .aligners import instantiate as aligners_instantiate
-from .aligners import check as aligners_check
+from .aligners import sppasAligners
 
 # ----------------------------------------------------------------------------
 
@@ -54,13 +52,13 @@ MSG_EMPTY_INTERVAL = (_(":INFO 1222: "))
 
 
 class AlignTrack(object):
-    """
+    """Automatic segmentation of a segment of speech.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Automatic segmentation of a segment of speech.
 
     Speech segmentation of a unit of speech (an IPU/utterance/sentence/segment)
     at phones and tokens levels.
@@ -77,7 +75,11 @@ class AlignTrack(object):
         - both the tokenization and phonetization contain the same number of words.
 
     """
-    def __init__(self, model, alignername=DEFAULT_ALIGNER):
+
+    aligners = sppasAligners()
+    DEFAULT_ALIGNER = aligners.default_aligner_name()
+
+    def __init__(self, model, aligner_name=DEFAULT_ALIGNER):
         """Create a AlignTrack instance.
 
         :param model: (str) Name of the directory of the acoustic model.
@@ -87,7 +89,7 @@ class AlignTrack(object):
             - monophones.repl file;
             - config file.
         Any other file will be ignored.
-        :param alignername: (str) The identifier name of the aligner.
+        :param aligner_name: (str) The identifier name of the aligner.
 
         """
         # Options, must be fixed before to instantiate the aligner
@@ -102,8 +104,8 @@ class AlignTrack(object):
         #   - when the track segment does not contain phonemes.
         self._alignerid = None
         self._aligner = None
-        self.set_aligner(alignername)
-        self._basicaligner = aligners_instantiate(None)
+        self.set_aligner(aligner_name)
+        self._basicaligner = AlignTrack.aligners.instantiate(None)
         self._instantiate_aligner()
 
     # ------------------------------------------------------------------------
@@ -119,14 +121,14 @@ class AlignTrack(object):
 
     # ----------------------------------------------------------------------
 
-    def set_aligner(self, alignername):
+    def set_aligner(self, aligner_name):
         """Fix the name of the aligner, one of aligners.ALIGNERS_TYPES.
 
-        :param alignername: (str) Case-insensitive name of an aligner system.
+        :param aligner_name: (str) Case-insensitive name of an aligner system.
 
         """
-        alignername = aligners_check(alignername)
-        self._alignerid = alignername
+        aligner_name = AlignTrack.aligners.check(aligner_name)
+        self._alignerid = aligner_name
         self._instantiate_aligner()
 
     # ----------------------------------------------------------------------
@@ -220,8 +222,7 @@ class AlignTrack(object):
 
     def _instantiate_aligner(self):
         """Instantiate self._aligner to the appropriate Aligner system."""
-
-        self._aligner = aligners_instantiate(self._modeldir, self._alignerid)
+        self._aligner = AlignTrack.aligners.instantiate(self._modeldir, self._alignerid)
         self._aligner.set_infersp(self._infersp)
 
     # ------------------------------------------------------------------------

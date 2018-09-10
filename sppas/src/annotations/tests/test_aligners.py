@@ -1,13 +1,44 @@
 # -*- coding: utf8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.annotations.tests.test_aligners.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import unittest
 import os.path
 
 from sppas.src.config import paths
 
-from ..Align.aligners import instantiate as aligners_instantiate
-from ..Align.aligners import check as aligners_check
-from ..Align.aligners import aligner_names
+from ..Align.aligners import sppasAligners
 from ..Align.aligners.basealigner import BaseAligner
 from ..Align.aligners.basicalign import BasicAligner
 from ..Align.aligners.juliusalign import JuliusAligner
@@ -21,15 +52,41 @@ sample_1 = os.path.join(paths.samples, "samples-eng", "oriana1.wav")  # mono; 16
 # ---------------------------------------------------------------------------
 
 
+class TestAligners(unittest.TestCase):
+    """Manager of the aligners implemented in the package."""
+
+    def test_check(self):
+        """Check whether the aligner name is known or not."""
+        aligners = sppasAligners()
+        for a in aligners.names():
+            self.assertEqual(a, aligners.check(a))
+
+        with self.assertRaises(ValueError):
+            aligners.check("invalid")
+
+    # -----------------------------------------------------------------------
+
+    def test_instantiate(self):
+        """Instantiate an aligner to the appropriate Aligner system."""
+        aligners = sppasAligners()
+        for a in aligners.names():
+            aligner = aligners.instantiate(None, a)
+            self.assertTrue(isinstance(aligner,
+                                       aligners.classes(a)))
+
+# ---------------------------------------------------------------------------
+
+
 class TestBaseAligner(unittest.TestCase):
+    """Base class for any automatic alignment system."""
 
     def setUp(self):
-        self._aligner = BaseAligner(None)
+        self._aligner = BaseAligner()
 
-    def test_outext(self):
-        self.assertEqual(self._aligner.get_outext(),"")
-        with self.assertRaises(NotImplementedError):
-            self._aligner.set_outext("palign")
+    def test_get_members(self):
+        self.assertEqual("", self._aligner.outext())
+        self.assertEqual(list(), self._aligner.extensions())
+        self.assertEqual("", self._aligner.name())
 
     def test_infersp(self):
         self.assertFalse(self._aligner.get_infersp())
@@ -38,14 +95,27 @@ class TestBaseAligner(unittest.TestCase):
         self._aligner.set_infersp("ejzkjreg")
         self.assertFalse(self._aligner.get_infersp())
 
-    def test_options(self):
-        self.assertFalse(self._aligner.get_infersp())
-        self._aligner.set_infersp(True)
-        self.assertTrue(self._aligner.get_infersp())
-        self._aligner.set_infersp(False)
-        self.assertFalse(self._aligner.get_infersp())
+    def test_norun(self):
         with self.assertRaises(NotImplementedError):
             self._aligner.run_alignment("audio", "output")
+
+    def test_set_data(self):
+        # tokens and phones must be strings
+        with self.assertRaises(Exception):
+            self._aligner.set_phones(3)
+        with self.assertRaises(Exception):
+            self._aligner.set_tokens(3)
+
+        # tokens matching phones
+        self._aligner.set_phones("a b c")
+        self._aligner.set_tokens("w1 w2 w3")
+        self.assertEqual("", self._aligner.check_data())  # no error msg
+        self.assertEqual("w1 w2 w3", self._aligner._tokens)
+
+        # tokens not matching phones
+        self._aligner.set_tokens("w1www")
+        self.assertTrue(len(self._aligner.check_data()) > 20)  # error msg
+        self.assertEqual("w_0 w_1 w_2", self._aligner._tokens)
 
 # ---------------------------------------------------------------------------
 
@@ -53,7 +123,7 @@ class TestBaseAligner(unittest.TestCase):
 class TestBasicAlign(unittest.TestCase):
 
     def setUp(self):
-        self._aligner = BasicAligner(None)
+        self._aligner = BasicAligner()
 
     def test_run_basic(self):
 
@@ -116,18 +186,3 @@ class TestHviteAlign(unittest.TestCase):
     def setUp(self):
         self._modeldir = os.path.join(MODELDIR, "models-fra")
         self._aligner = HviteAligner(self._modeldir)
-
-# ---------------------------------------------------------------------------
-
-
-class TestAlignersPackage(unittest.TestCase):
-
-    def test_check(self):
-        for a in aligner_names():
-            self.assertEqual(aligners_check(a), a)
-        with self.assertRaises(ValueError):
-            aligners_check("invalid")
-
-    def test_instantiate(self):
-        aligner = aligners_instantiate(None,"basic")
-        self.assertTrue(isinstance(aligner, BasicAligner))

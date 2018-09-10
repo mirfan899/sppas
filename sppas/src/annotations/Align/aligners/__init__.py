@@ -28,94 +28,32 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Align.aligners.__init__.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    annotations.Align.aligners.__init__.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How to get the list of supported aligner names?
+
+>>> a = sppasAligners()
+>>> a.default_aligner_name()
+>>> a.aligner_names()
+
+How to get an instance of a given aligner?
+
+>>> a1 = sppasAligners().instantiate(model_dir, "julius")
+>>> a2 = JuliusAligner(model_dir)
 
 """
+from .aligner import sppasAligners
 from .basicalign import BasicAligner
 from .juliusalign import JuliusAligner
 from .hvitealign import HviteAligner
 
-from .basicalign import BASIC_EXT_OUT
-from .juliusalign import JULIUS_EXT_OUT
-from .hvitealign import HVITE_EXT_OUT
-
 # ---------------------------------------------------------------------------
 
-__all__ = [
-'JuliusAligner',
-'HviteAligner',
-'BasicAligner'
-]
+__all__ = (
+    'sppasAligners',
+    'JuliusAligner',
+    'HviteAligner',
+    'BasicAligner'
+)
 
-# ---------------------------------------------------------------------------
-
-# List of supported aligner and related class name
-ALIGNERS_TYPES = {
-    "basic": BasicAligner,
-    "julius": JuliusAligner,
-    "hvite": HviteAligner
-}
-
-# List of supported aligner and related class name
-TRACKS_ALIGNERS_TYPES = {
-    "julius": JuliusAligner,
-}
-
-# Identifier name of the default aligner
-DEFAULT_ALIGNER = "basic"
-
-# Identifier name of the default aligner
-DEFAULT_TRACK_ALIGNER = "julius"
-
-# List of extensions each aligner is able to write
-ALIGNERS_EXT_OUT = {
-    "basic": BASIC_EXT_OUT,
-    "julius": JULIUS_EXT_OUT,
-    "hvite": HVITE_EXT_OUT
-}
-
-# ---------------------------------------------------------------------------
-
-
-def aligner_names():
-    """Return the list of aligner names."""
-
-    return ALIGNERS_TYPES.keys()
-
-# ---------------------------------------------------------------------------
-
-
-def check(alignername):
-    """Check whether the aligner name is known or not.
-
-    :param alignername: (str) Name of the aligner. Expect one of the ALIGNERS list.
-    :returns: formatted alignername
-
-    """
-    alignername = alignername.lower()
-    if alignername not in ALIGNERS_TYPES.keys():
-        raise ValueError('Unknown aligner name %s.' % alignername)
-
-    return alignername
-
-# ---------------------------------------------------------------------------
-
-
-def instantiate(modeldir, alignername=DEFAULT_ALIGNER):
-    """Instantiate an aligner to the appropriate Aligner system from its name.
-    If an error occurred, the basic aligner is returned.
-
-    :param alignername: (str) Name of the aligner. Expect one of the ALIGNERS list.
-    :param modeldir: (str) Directory of the acoustic model
-    :returns: an Aligner instance.
-
-    """
-    alignername = alignername.lower()
-
-    try:
-        a = ALIGNERS_TYPES[alignername](modeldir)
-    except KeyError:
-        a = BasicAligner(None)
-
-    return a
