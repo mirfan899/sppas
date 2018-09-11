@@ -57,8 +57,23 @@ try:
 except ImportError:
     exit_error("WxPython is not installed on your system\n."
                "The Graphical User Interface of SPPAS can't work.")
-from sppas.bin.checkwx import get_wx_version
 
+# ---------------------------------------------------------------------------
+# If Phoenix is installed...
+# ---------------------------------------------------------------------------
+
+v = wx.version().split()[0][0]
+if v == '4':
+    from sppas.src.ui.phoenix import sppasApp
+
+    # Create and run the application
+    app = sppasApp()
+    app.run()
+    sys.exit()
+
+# ---------------------------------------------------------------------------
+# If wxPython3 is installed...
+# ---------------------------------------------------------------------------
 
 try:
     from sppas.src.ui import SETTINGS_FILE
@@ -71,10 +86,6 @@ except ImportError:
     exit_error("An unexpected error occurred.\n"
                "Verify the SPPAS installation and try again. "
                "The error message is: %s" % traceback.format_exc())
-
-# ---------------------------------------------------------------------------
-# Main application
-# ---------------------------------------------------------------------------
 
 # Arguments
 # ---------------------------------------------------------------------------
@@ -116,8 +127,7 @@ if prefsIO.Read() is False:
     prefsIO.SetTheme(sppasTheme())
 
 # Tests
-v = get_wx_version()
-if v < 3:
+if v == '2':
     message = "The version of WxPython is too old.\n" \
               "The Graphical User Interface will not display properly.\n"
     ShowInformation(None, prefsIO, message, style=wx.ICON_WARNING)

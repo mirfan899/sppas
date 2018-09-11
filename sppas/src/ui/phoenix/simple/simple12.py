@@ -38,11 +38,7 @@ class sppasBaseSettings(object):
     """
 
     def __init__(self):
-        """Create the dictionary.
-
-        :param _config_location: Name of the file for settings.
-
-        """
+        """Create the dictionary and load config file if any."""
         self.__dict__ = dict()
         self.load()
 
@@ -92,15 +88,14 @@ class WxAppConfig(sppasBaseSettings):
         self.__dict__ = dict(
             __name__="Simple wx app",
             splash_delay=10,
+            save_on_exit=True,
         )
 
 # ---------------------------------------------------------------------------
 
 
 class WxAppSettings(sppasBaseSettings):
-    """Manage wx global settings, represented in a dictionary.
-
-    Settings are represented in an iterable dictionary.
+    """Manage the application modifiable global settings.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -120,41 +115,112 @@ class WxAppSettings(sppasBaseSettings):
         self.reset()
         try:
             config = json.load(open("settings.json"))
-            self.__dict__ = dict(
-                frame_style=config['frame_style'],
-                frame_width=config['frame_size'][0],
-                frame_height=config['frame_size'][1]
-            )
         except FileNotFoundError:
             logging.warning('File with settings not found.')
             return
         except:
             print(traceback.format_exc())
-            logging.warning('File with settings not loaded.')
+            logging.error('File with settings not loaded.')
             return
+        else:
+            for key in config:
+                value = config[key]
+
+                if value[0] == 'wx.Colour':
+                    self.__dict__[key] = self.__parse_color(config, key)
+
+                elif value[0] == 'wx.Font':
+                    self.__dict__[key] = self.__parse_font(config, key)
+
+                else:
+                    self.__dict__[key] = value[1]
+            logging.debug("Application settings loaded successfully.")
+
+    # -----------------------------------------------------------------------
+
+    def __parse_color(self, cfg, key):
+        """Return a wx.Colour() from the config dict."""
+        if len(cfg[key]) < 4:
+            return wx.Colour(0, 0, 0)
+        r = cfg[key][1]
+        g = cfg[key][2]
+        b = cfg[key][3]
+        a = cfg[key][4]
+        return wx.Colour(r, g, b, a)
+
+    # -----------------------------------------------------------------------
+
+    def __parse_font(self, cfg, key):
+        """Return a wx.Font() from the config dict."""
+        if len(cfg[key]) < 7:
+            return wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        size = cfg[key][1]
+        family = cfg[key][2]
+        style = cfg[key][3]
+        weight = cfg[key][4]
+        u = cfg[key][5]
+        face = cfg[key][6]
+        enc = cfg[key][7]
+        return wx.Font(size, family, style, weight, u, face, enc)
+
+    # -----------------------------------------------------------------------
+
+    def __serialize_color(self, color):
+        """Return a tuple of values from a wx.Colour()."""
+        r = color.Red()
+        g = color.Green()
+        b = color.Blue()
+        a = color.Alpha()
+        return 'wx.Colour', r, g, b, a
+
+    # -----------------------------------------------------------------------
+
+    def __serialize_font(self, font):
+        """Return a tuple of values from a wx.Font()."""
+        size = font.GetPointSize()
+        family = font.GetFamily()
+        style = font.GetStyle()
+        weight = font.GetWeight()
+        underline = font.GetUnderlined()
+        face = font.GetFaceName()
+        enc = font.GetEncoding()
+        return 'wx.Font', size, family, style, weight, underline, face, enc
 
     # -----------------------------------------------------------------------
 
     def save(self):
         """Save the dictionary of settings in a json file.
 
-        To override if necessary (for example when the data of the
-        dict can't be saved into a json file, like 'wx' objects).
+        Because wx objects are not serializable by the json library, we have
+        to do it before saving.
 
         """
-        print("SELF DICT:")
-        print(self.__dict__)
         config = dict()
-        config['frame_style'] = self.__dict__['frame_style']
-        config['frame_size'] = (self.__dict__['frame_width'],
-                                self.__dict__['frame_height'])
+        for key in self.__dict__:
+            value = self.__dict__[key]
 
-        json.dump(config, open("settings.json", 'w'))
+            if isinstance(value, wx.Colour):
+               config[key] = self.__serialize_color(value)
+
+            elif isinstance(value, wx.Font):
+               config[key] = self.__serialize_font(value)
+
+            else:
+                config[key] = str(type(value)), value
+
+        try:
+            json.dump(config, open("settings.json", 'w'))
+        except:
+            print(traceback.format_exc())
+            logging.error('Settings not saved in a file.')
+            return
+        else:
+            logging.debug("Application settings saved successfully.")
 
     # -----------------------------------------------------------------------
 
     def reset(self):
-        # fix default values
+        """Fill the dictionary with the default values."""
         title_font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
         title_font = title_font.Bold()
         title_font = title_font.Scale(2.)
@@ -343,7 +409,8 @@ class myFrame(wx.Frame):
 
         event_name = event.GetEventObject().GetName()
         event_id = event.GetEventObject().GetId()
-        logging.debug("Received event id {:d} of {:s}".format(event_id, event_name))
+        logging.debug("Received event id {:d} of {:s}"
+                      "".format(event_id, event_name))
 
         if event_name == "exit":
             self.exit()
@@ -369,7 +436,8 @@ class myFrame(wx.Frame):
         """Switch to the expected panel. Hide the current."""
 
         if panel_name not in self.panels:
-            logging.warning("Unknown panel name '{:s}' to switch on.".format(panel_name))
+            logging.warning("Unknown panel name '{:s}' to switch on."
+                            "".format(panel_name))
             return
 
         logging.debug("Switch to panel '{:s}'.".format(panel_name))
@@ -377,9 +445,11 @@ class myFrame(wx.Frame):
             # hide the current
             for p in self.panels:
                 if self.panels[p].IsShown() is True:
-                    self.panels[p].HideWithEffect(wx.SHOW_EFFECT_SLIDE_TO_BOTTOM, timeout=400)
+                    self.panels[p].HideWithEffect(wx.SHOW_EFFECT_SLIDE_TO_BOTTOM,
+                                                  timeout=400)
             # show the expected
-            self.panels[panel_name].ShowWithEffect(wx.SHOW_EFFECT_SLIDE_TO_BOTTOM, timeout=400)
+            self.panels[panel_name].ShowWithEffect(wx.SHOW_EFFECT_SLIDE_TO_BOTTOM,
+                                                   timeout=400)
 
         self.Layout()
         self.Refresh()
@@ -637,9 +707,9 @@ class myApp(wx.App):
 
     def process_command_line_args(self):
         """This is an opportunity for users to fix some args."""
-
-        parser = ArgumentParser(usage="%s" % os.path.basename(__file__), 
-                        description="... a program to do something.")
+        parser = ArgumentParser(
+            usage="{:s}".format(os.path.basename(__file__)),
+            description="... a program to do something.")
         # add arguments here
         # then parse
         args = parser.parse_args()
@@ -649,8 +719,7 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def background_initialization(self):
-
-        # Initialize the application
+        """Initialize the application. """
         #   here we could read some config file, load some resources, etc
         #   while we show the Splash window
         # for this example, we simply create a dictionary with the config
@@ -665,7 +734,6 @@ class myApp(wx.App):
 
     def create_application(self):
         """Create the main frame of the application and show it."""
-
         frm = myFrame()
         self.SetTopWindow(frm)
         if self.splash:
@@ -675,10 +743,15 @@ class myApp(wx.App):
     # -----------------------------------------------------------------------
 
     def show_splash_screen(self, delay=10):
-        """Create and show the splash image during 10 seconds."""
-        
-        bitmap = wx.Bitmap('splash.png', wx.BITMAP_TYPE_PNG)
+        """Create and show the splash image during a delay.
 
+        :param delay: (int) Seconds
+
+        """
+        if delay <= 0:
+            return
+
+        bitmap = wx.Bitmap('splash.png', wx.BITMAP_TYPE_PNG)
         self.splash = wx.adv.SplashScreen(
           bitmap,
           wx.adv.SPLASH_CENTRE_ON_SCREEN | wx.adv.SPLASH_TIMEOUT,
@@ -694,16 +767,18 @@ class myApp(wx.App):
 
     def OnExit(self):
         """Optional. Override the already existing method to kill the app.
+
         This method is invoked when the user:
 
-            - clicks on the X button of the frame manager
+            - clicks on the [X] button of the frame manager
             - does "ALT-F4" (Windows) or CTRL+X (Unix)
 
         """
         # do whatever you want here (save session, ...)
         logging.debug("OnExit method invoked.")
 
-        self.settings.save()
+        if self.cfg.save_on_exit is True:
+            self.settings.save()
     
         # then it will exit. Nothing special to do. Return the exit status.
         return 0
@@ -717,5 +792,5 @@ if __name__ == '__main__':
     app = myApp()
     app.run()
 
-    # do some job after (the application is stopped)
-    logging.info("Bye bye")
+    # do some job after the application is stopped.
+    logging.info("Application terminated.")
