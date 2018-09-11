@@ -40,7 +40,8 @@ Create and run the application:
 """
 import wx
 import logging
-import os
+from os import path, getcwd
+from argparse import ArgumentParser
 
 from sppas.src.config import sg
 from sppas.src.config import sppasBaseSettings
@@ -68,7 +69,13 @@ class WxAppConfig(sppasBaseSettings):
 
         self.__dict__ = dict(
             name=sg.__name__ + " " + sg.__version__,
+            log_level=15,
+            log_file=None,
         )
+
+    def set(self, key, value):
+        """Set a new value to a key."""
+        self.__dict__[key] = value
 
 # ---------------------------------------------------------------------------
 
@@ -188,15 +195,36 @@ class sppasFrame(wx.Frame):
         :param event: (wx.Event)
 
         """
-        event_name = event.GetEventObject().GetName()
-        event_id = event.GetEventObject().GetId()
-        logging.debug("Received event id {:d} of {:s}"
+        event_obj = event.GetEventObject()
+        event_name = event_obj.GetName()
+        event_id = event_obj.GetId()
+
+        wx.LogMessage("Received event id {:d} of {:s}"
                       "".format(event_id, event_name))
 
         if event_name == "exit":
             self.exit()
+        elif event_name == "log":
+            self.enable_log(event_obj)
         else:
             event.Skip()
+
+    # -----------------------------------------------------------------------
+
+    def enable_log(self, button):
+        """Show/Hide the log frame.
+
+        :param button: (wx.Button) Action button to show/hide the log window
+
+        """
+        if button.GetLabel() == "Show Log":
+            button.SetLabel("Hide Log")
+            button.Refresh()
+            wx.GetApp().log_window.Show(True)
+        else:
+            button.SetLabel("Show Log")
+            button.Refresh()
+            wx.GetApp().log_window.Show(False)
 
     # -----------------------------------------------------------------------
 
@@ -257,11 +285,20 @@ class sppasMessagePanel(wx.Panel):
         self.SetBackgroundColour(settings.bg_color)
 
         message = \
-            "wxpython version 3 is required; but version 4 is installed.\n"\
-            "The Graphical User Interface of SPPAS can't work."
+            "Welcome to {:s}!\n\n"\
+            "{:s} requires wxpython version 3 but version 4 is installed.\n"\
+            "The Graphical User Interface can't work. See the installation "\
+            "web page for details: {:s}." \
+            "".format(sg.__longname__, sg.__name__, sg.__url__)
+        text_style = wx.TAB_TRAVERSAL|\
+                     wx.TE_MULTILINE|\
+                     wx.TE_READONLY|\
+                     wx.TE_BESTWRAP|\
+                     wx.TE_AUTO_URL|\
+                     wx.NO_BORDER
         txt = wx.TextCtrl(self, wx.ID_ANY,
                           value=message,
-                          style=wx.TE_READONLY|wx.NO_BORDER)
+                          style=text_style)
         font = settings.text_font
         txt.SetFont(font)
         txt.SetForegroundColour(settings.fg_color)
@@ -285,7 +322,7 @@ class sppasButton(wx.Button):
                            parent,
                            wx.ID_ANY,
                            label,
-                           style=wx.NO_BORDER,
+                           style=wx.BORDER_NONE,
                            name=name)
 
         settings = wx.GetApp().settings
@@ -298,7 +335,7 @@ class sppasButton(wx.Button):
 
 
 class sppasActionPanel(wx.Panel):
-    """Create my own panel with 3 action buttons: exit, open, save.
+    """Create my own panel with some action buttons.
 
     """
     def __init__(self, parent):
@@ -310,12 +347,16 @@ class sppasActionPanel(wx.Panel):
         self.SetBackgroundColour(settings.bg_color)
 
         exit_btn = sppasButton(self, "Exit", name="exit")
+        log_btn = sppasButton(self, "Show Log", name="log")
 
         action_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        action_sizer.Add(exit_btn, 1, wx.ALL | wx.EXPAND, 0)
+        action_sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 0)
+        action_sizer.Add(wx.StaticLine(self, style=wx.LI_VERTICAL), 0, wx.ALL | wx.EXPAND, 0)
+        action_sizer.Add(log_btn, 1, wx.ALL | wx.EXPAND, 0)
         self.SetSizer(action_sizer)
 
         self.Bind(wx.EVT_BUTTON, self.OnAction, exit_btn)
+        self.Bind(wx.EVT_BUTTON, self.OnAction, log_btn)
 
     # -----------------------------------------------------------------------
 
@@ -330,33 +371,188 @@ class sppasActionPanel(wx.Panel):
 # ---------------------------------------------------------------------------
 
 
+class sppasLogTarget(wx.Log):
+    """Allows to manage wx log targets.
+
+    wx.Log messages are also printed in the python logging console.
+
+    """
+    WXLOG_TO_PYLOG = {
+        wx.LOG_FatalError: logging.critical,
+        wx.LOG_Error: logging.error,
+        wx.LOG_Warning: logging.warning,
+        wx.LOG_Message: logging.info,
+        wx.LOG_Status: logging.info,
+        wx.LOG_Info: logging.info,
+        wx.LOG_Debug: logging.debug,
+    }
+
+    def DoLogRecord(self, level, msg, info=None):
+        sppasLogTarget.WXLOG_TO_PYLOG[level]('[wx] ' + msg)
+
+# ---------------------------------------------------------------------------
+
+
+class sppasLogFrame(wx.Frame):
+    """Create my own log frame. Inherited from the wx.Frame."""
+
+    def __init__(self, parent, title):
+        super(sppasLogFrame, self).__init__(
+            parent,
+            title=title,
+            style=wx.DEFAULT_FRAME_STYLE | wx.CLOSE_BOX)
+        self.SetMinSize((300, 200))
+        self.SetSize(wx.Size(640, 480))
+
+        settings = wx.GetApp().settings
+        text_style = wx.TAB_TRAVERSAL|\
+                     wx.TE_MULTILINE|\
+                     wx.TE_READONLY|\
+                     wx.TE_BESTWRAP|\
+                     wx.TE_AUTO_URL|\
+                     wx.NO_BORDER
+        self.txt = wx.TextCtrl(self, wx.ID_ANY, value="",
+                               style=text_style)
+        font = settings.text_font
+        self.txt.SetFont(font)
+        self.txt.SetForegroundColour(settings.fg_color)
+        self.txt.SetBackgroundColour(settings.bg_color)
+
+        # Associate a handler function with the EVT_BUTTON event.
+        # That means that when a button is clicked then the process
+        # handler function will be called.
+        self.Bind(wx.EVT_CLOSE, self.on_exit)
+        self.Show(False)
+
+    def get_logtextctrl(self):
+        return self.txt
+
+    def on_exit(self, event):
+        pass
+
+class sppasLogTextCtrl(wx.LogTextCtrl):
+    WXLOG_TO_PYLOG = {
+        wx.LOG_FatalError: logging.critical,
+        wx.LOG_Error: logging.error,
+        wx.LOG_Warning: logging.warning,
+        wx.LOG_Message: logging.info,
+        wx.LOG_Status: logging.info,
+        wx.LOG_Info: logging.info,
+        wx.LOG_Debug: logging.debug,
+    }
+
+    def __init__(self, textctrl):
+        super(sppasLogTextCtrl, self).__init__(textctrl)
+
+    def DoLogRecord(self, level, msg, info=None):
+        """Override."""
+        # Send the message to the python logging
+        msg = '[wxPython] ' + msg
+        sppasLogTextCtrl.WXLOG_TO_PYLOG[level](msg)
+        # Show the message into the wx.TextCtrl
+        wx.LogTextCtrl.DoLogRecord(self, level, msg, info)
+
+# ---------------------------------------------------------------------------
+
+
 class sppasApp(wx.App):
     """Create the SPPAS Phoenix application."""
 
     def __init__(self):
 
         # Create members
-        self.app_dir = os.path.dirname(os.path.realpath(__file__))
         self.cfg = WxAppConfig()
         self.settings = None
-        self.log_file = None
-        self.log_level = 10
+        self.log_window = None
+        self.frame = None
 
         # Initialize the wx application
         wx.App.__init__(self,
                         redirect=False,
-                        filename=self.log_file,
+                        filename=self.cfg.log_file,
                         useBestVisual=True,
                         clearSigInt=True)
 
         self.SetAppName(self.cfg.name)
         self.SetAppDisplayName(self.cfg.name)
 
-        wx.Log.EnableLogging(True)
-        wx.Log.SetLogLevel(20)
-
+        # Fix language and translation
         lang = wx.LANGUAGE_DEFAULT
         self.locale = wx.Locale(lang)
+
+        # Fix wx settings and logging
+        self.settings = WxAppSettings()
+        self.process_command_line_args()
+        self.setup_logging()
+
+    # -----------------------------------------------------------------------
+
+    def process_command_line_args(self):
+        """Process the command line...
+
+        This is an opportunity for users to fix some args: a list of files.
+
+        """
+        # create a parser for the command-line arguments
+        parser = ArgumentParser(
+            usage="{:s}".format(path.basename(__file__)),
+            description="... " + sg.__longname__)
+
+        # add arguments here
+        parser.add_argument("files", nargs="*", help='Input audio file name(s)')
+        parser.add_argument("-l", "--log_level",
+                            required=False,
+                            type=int,
+                            default=self.cfg.log_level,
+                            help='Log level (default=15).')
+
+        # then parse
+        args = parser.parse_args()
+
+        # and do things with arguments
+        if args.log_level:
+            self.cfg.set('log_level', args.log_level)
+
+        filenames = []
+        for f in args.files:
+            p, b = path.split(f)
+            if not p:
+                p = getcwd()
+            filenames.append(path.abspath(path.join(p, b)))
+
+        return filenames
+
+    # -----------------------------------------------------------------------
+
+    def setup_logging(self):
+        """Setup the logging.
+
+        Fix the level of messages and where to redirect them.
+
+        """
+        # Fix the format of the messages
+        formatmsg = "%(asctime)s [%(levelname)s] %(message)s"
+
+        # Setup logging to stderr
+        handler = logging.StreamHandler()
+        handler.setFormatter(logging.Formatter(formatmsg))
+        handler.setLevel(self.cfg.log_level)
+        logging.getLogger().addHandler(handler)
+        logging.getLogger().setLevel(self.cfg.log_level)
+
+        # Show a welcome!
+        logging.info("Logging set up level={:d}".format(self.cfg.log_level))
+
+        # Fix wx log messages
+        wx.Log.EnableLogging(True)
+        wx.Log.SetLogLevel(self.cfg.log_level)
+
+        # a background log window: it collects all log messages in the log
+        # frame which it manages but also passes them on to the log target
+        # which was active at the moment of its creation.
+        self.log_window = sppasLogFrame(None,
+                                        '{:s} Log Window'.format(sg.__name__))
+        wx.Log.SetActiveTarget(sppasLogTextCtrl(self.log_window.get_logtextctrl()))
 
     # -----------------------------------------------------------------------
 
@@ -365,7 +561,6 @@ class sppasApp(wx.App):
         #  - is first launch? No? so create config! and/or display a welcome msg!
         #  - fix config dir,
         #  - etc
-        self.settings = WxAppSettings()
         self.create_application()
         self.MainLoop()
 
@@ -373,9 +568,9 @@ class sppasApp(wx.App):
 
     def create_application(self):
         """Create the main frame of the application and show it."""
-        frm = sppasFrame()
-        self.SetTopWindow(frm)
-        frm.Show()
+        self.frame = sppasFrame()
+        self.SetTopWindow(self.frame)
+        self.frame.Show(True)
 
     # -----------------------------------------------------------------------
 
@@ -388,17 +583,6 @@ class sppasApp(wx.App):
             - does "ALT-F4" (Windows) or CTRL+X (Unix)
 
         """
+        logging.debug('OnExit the wx.App.')
         # then it will exit. Nothing special to do. Return the exit status.
         return 0
-
-# ---------------------------------------------------------------------------
-
-
-if __name__ == '__main__':
-
-    # Create and run the application
-    app = sppasApp()
-    app.run()
-
-    # do some job after the application is stopped.
-    logging.info("Application terminated.")

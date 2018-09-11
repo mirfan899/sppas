@@ -61,6 +61,7 @@ class sppasGlobalSettings(sppasBaseSettings):
             __license__="GNU Public License, version 3",
             __docformat__='reStructedText en',
             __name__="SPPAS",
+            __longname__="SPPAS: the automatic annotation and analysis of speech",
             __url__="http://www.sppas.org/",
             __summary__="SPPAS produces automatically annotations\n\
         from a recorded speech sound and its transcription\n\

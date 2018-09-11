@@ -49,7 +49,6 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas.src.config import sg
-from sppas.src.annotations import DEFAULT_OUTPUT_EXTENSION
 from sppas.src.annotations.param import sppasParam
 from sppas.src.annotations.manager import sppasAnnotationsManager
 from sppas.src.anndata.aio import extensions_out
@@ -77,7 +76,7 @@ parser.add_argument("-l",
                     help='Input language, using iso639-3 code')
 
 parser.add_argument("-e",
-                    default=DEFAULT_OUTPUT_EXTENSION,
+                    default=".xra",
                     metavar="extension",
                     help='Output extension. One of: {:s}'
                          ''.format(" ".join(extensions_out)))
