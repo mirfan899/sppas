@@ -50,7 +50,7 @@ PROGRAM = path.abspath(__file__)
 SPPAS = path.dirname(path.dirname(path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 from sppas.bin import exit_error, check_python, check_aligner
-check_python()
+#check_python()
 
 try:
     import wx

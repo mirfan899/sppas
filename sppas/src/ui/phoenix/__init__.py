@@ -32,7 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from .main import sppasApp
+from .main_app import sppasApp
 
 __all__ = (
     'sppasApp'

@@ -92,7 +92,7 @@ class MyFrame(wx.Frame):
 
     def on_clic(self, evt):
         wx.LogMessage('clic from wx.LogMessage')
-        # logging.info('info from logging.info')
+        logging.info('info from logging.info')
 
 # -----------------------------------------------------------------------
 
