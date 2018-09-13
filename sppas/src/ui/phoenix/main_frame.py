@@ -33,11 +33,11 @@
 
 """
 import wx
-import logging
 
 from sppas.src.config import sg
 
 from .main_log import sppasLogFrame
+from .controls.buttons import sppasBitmapTextButton
 
 # ---------------------------------------------------------------------------
 
@@ -46,18 +46,16 @@ class sppasFrame(wx.Frame):
     """Create my own frame. Inherited from the wx.Frame."""
 
     def __init__(self):
-        wx.Frame.__init__(self,
-                          None,
-                          title=wx.GetApp().GetAppDisplayName(),
-                          style=wx.DEFAULT_FRAME_STYLE | wx.CLOSE_BOX)
+        super(sppasFrame, self).__init__(
+            parent=None,
+            title=wx.GetApp().GetAppDisplayName(),
+            style=wx.DEFAULT_FRAME_STYLE | wx.CLOSE_BOX)
         self.SetMinSize((300, 200))
-        self.SetSize(wx.Size(640, 480))
+        self.SetSize(wx.Size(640, 480))  # wx.GetApp().settings.frame_size
 
         # Create the log frame of the application and show it.
         self.log_window = sppasLogFrame(self,
                                         wx.GetApp().cfg.log_level)
-        if wx.GetApp().cfg.log_level < 30:
-            self.log_window.Show(True)
 
         # create a sizer to add and organize objects
         top_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -94,6 +92,8 @@ class sppasFrame(wx.Frame):
         self.SetAutoLayout(True)
         self.SetSizer(top_sizer)
         self.Layout()
+        self.CenterOnScreen()
+        self.Show(True)
 
     # -----------------------------------------------------------------------
     # Events
@@ -129,8 +129,8 @@ class sppasFrame(wx.Frame):
 
         if event_name == "exit":
             self.exit()
-        elif event_name == "log":
-            self.show_log()
+        elif event_name == "view_log":
+            self.log_window.focus()
         else:
             event.Skip()
 
@@ -150,13 +150,6 @@ class sppasFrame(wx.Frame):
 
     # -----------------------------------------------------------------------
 
-    def show_log(self):
-        logging.debug(' debug === Click on log button.')
-        logging.info(' info *** Click on log button.')
-        self.log_window.SetFocus()
-
-    # -----------------------------------------------------------------------
-
     def exit(self):
         """Close the frame, terminating the application."""
         # Stop redirecting logging to this application
@@ -171,7 +164,10 @@ class sppasFrame(wx.Frame):
 class sppasTitleText(wx.StaticText):
     """Create a title."""
     def __init__(self, parent, label):
-        super(sppasTitleText, self).__init__(parent, label=label, style=wx.ALIGN_CENTER)
+        super(sppasTitleText, self).__init__(
+            parent,
+            label=label,
+            style=wx.ALIGN_CENTER)
 
         # Fix Look&Feel
         settings = wx.GetApp().settings
@@ -197,7 +193,7 @@ class sppasMenuPanel(wx.Panel):
 
         menu_sizer = wx.BoxSizer(wx.HORIZONTAL)
         st = sppasTitleText(self, "Installation error...")
-        menu_sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=10)
+        menu_sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
 
         self.SetSizer(menu_sizer)
         self.SetAutoLayout(True)
@@ -247,26 +243,6 @@ class sppasMessagePanel(wx.Panel):
 # ---------------------------------------------------------------------------
 
 
-class sppasButton(wx.Button):
-    """Create a button. Inherited from the wx.Button."""
-    def __init__(self, parent, label, name):
-
-        wx.Button.__init__(self,
-                           parent,
-                           wx.ID_ANY,
-                           label,
-                           style=wx.BORDER_NONE,
-                           name=name)
-
-        settings = wx.GetApp().settings
-        # Fix Look&Feel
-        self.SetForegroundColour(settings.button_fg_color)
-        self.SetBackgroundColour(settings.button_bg_color)
-        self.SetFont(settings.button_text_font)
-
-# ---------------------------------------------------------------------------
-
-
 class sppasActionPanel(wx.Panel):
     """Create my own panel with some action buttons.
 
@@ -276,26 +252,14 @@ class sppasActionPanel(wx.Panel):
         wx.Panel.__init__(self, parent)
 
         settings = wx.GetApp().settings
-        self.SetMinSize((-1, 32))
+        self.SetMinSize((-1, settings.action_height))
         self.SetBackgroundColour(settings.bg_color)
 
-        exit_btn = sppasButton(self, "Exit", name="exit")
-        log_btn = sppasButton(self, "Log", name="log")
+        exit_btn = sppasBitmapTextButton(self, "Exit", name="exit")
+        log_btn = sppasBitmapTextButton(self, "View logs", name="view_log")
 
         action_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        action_sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 0)
+        action_sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 1)
         action_sizer.Add(wx.StaticLine(self, style=wx.LI_VERTICAL), 0, wx.ALL | wx.EXPAND, 0)
-        action_sizer.Add(log_btn, 1, wx.ALL | wx.EXPAND, 0)
+        action_sizer.Add(log_btn, 1, wx.ALL | wx.EXPAND, 1)
         self.SetSizer(action_sizer)
-
-        self.Bind(wx.EVT_BUTTON, self.OnAction, exit_btn)
-
-    # -----------------------------------------------------------------------
-
-    def OnAction(self, event):
-        """A button was clicked.
-
-        Here we just send the event to the parent.
-
-        """
-        wx.PostEvent(self.GetTopLevelParent(), event)

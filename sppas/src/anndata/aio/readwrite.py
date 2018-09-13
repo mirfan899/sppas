@@ -34,7 +34,6 @@
 
 """
 import os.path
-from datetime import datetime
 from collections import OrderedDict
 
 from sppas.src.utils.makeunicode import u

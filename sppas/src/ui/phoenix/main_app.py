@@ -139,8 +139,6 @@ class sppasApp(wx.App):
         # Create the main frame of the application and show it.
         frame = sppasFrame()
         self.SetTopWindow(frame)
-        frame.Show(True)
-
         self.MainLoop()
 
     # -----------------------------------------------------------------------

@@ -32,11 +32,19 @@
     ~~~~~~~~~~~~~~~~~~~~~
 
 """
+import os
+import platform
 import wx
 import wx.lib.newevent
 import logging
+from datetime import date
 
 from sppas.src.config import sg
+from sppas.src.config import paths
+from sppas.src.utils.datatype import sppasTime
+
+from .controls.buttons import sppasBitmapTextButton
+from .controls.texts import sppasTitleText
 
 # ---------------------------------------------------------------------------
 
@@ -46,13 +54,24 @@ wxLogEvent, EVT_WX_LOG_EVENT = wx.lib.newevent.NewEvent()
 # style of the frame (disable 'Close')
 frame_style = wx.DEFAULT_FRAME_STYLE & ~wx.CLOSE_BOX
 
+# match between wx log levels and python log level names
+match_levels = {
+    wx.LOG_FatalError: 'CRITICAL',
+    wx.LOG_Error: 'ERROR',
+    wx.LOG_Warning: 'WARNING',
+    wx.LOG_Info: 'INFO',
+    wx.LOG_Message: 'INFO',
+    wx.LOG_Debug: 'DEBUG'
+}
+
 # ---------------------------------------------------------------------------
 
 
 def log_level_to_wx(log_level):
     """Convert a python logging log level to a wx one.
 
-    From:
+    From python logging log levels:
+
         50 - CRITICAL
         40 - ERROR
         30 - WARNING
@@ -60,7 +79,8 @@ def log_level_to_wx(log_level):
         10 - DEBUG
         0 - NOTSET
 
-    To:
+    To wx log levels:
+
         0 - LOG_FatalError 	program can’t continue, abort immediately
         1 - LOG_Error 	a serious error, user must be informed about it
         2 - LOG_Warning user is normally informed about it but may be ignored
@@ -73,11 +93,11 @@ def log_level_to_wx(log_level):
         100 - LOG_User 	user defined levels start here
         10000 LOG_Max
 
-    :param log_level: (int)
-    :return: (int)
+    :param log_level: (int) python logging log level
+    :return: (int) wx log level
 
     """
-    if log_level == 0:
+    if log_level == logging.CRITICAL:
         return wx.LOG_Message
     if log_level <= 10:
         return wx.LOG_Debug
@@ -88,6 +108,70 @@ def log_level_to_wx(log_level):
     if log_level <= 40:
         return wx.LOG_Error
     return wx.LOG_FatalError
+
+# ---------------------------------------------------------------------------
+
+
+class sppasLogFile(object):
+    """Utility file name manager for wx logs.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    """
+
+    def __init__(self):
+        """Create a sppasLogFile instance.
+
+        Create the log directory if not already existing then fix the
+        log filename with increment=0.
+
+        """
+        log_dir = paths.logs
+        if os.path.exists(log_dir) is False:
+            os.mkdir(log_dir)
+
+        self.__filename = "{:s}_log_".format(sg.__name__)
+        self.__filename += str(date.today()) + "_"
+        self.__filename += str(os.getpid()) + "_"
+        self.__current = 0
+
+    # -----------------------------------------------------------------------
+
+    def get_filename(self):
+        """Return the current log filename."""
+        fn = os.path.join(paths.logs, self.__filename)
+        fn += "{0:04d}".format(self.__current)
+        return fn + ".txt"
+
+    # -----------------------------------------------------------------------
+
+    def increment(self):
+        """Increment the current log filename."""
+        self.__current += 1
+
+    # -----------------------------------------------------------------------
+
+    def get_header(self):
+        """Return a string with an header for log files."""
+        header = "-"*78
+        header += "\n\n"
+        header += " {:s} {:s}".format(sg.__name__, sg.__version__)
+        header += "\n"
+        header += " {:s}".format(sppasTime().now)
+        header += "\n"
+        header += " {:s}".format(platform.platform())
+        header += "\n"
+        header += " python {:s}".format(platform.python_version())
+        header += "\n"
+        header += " wxpython {:s}".format(wx.version())
+        header += "\n\n"
+        header += "-"*78
+        header += "\n\n"
+        return header
 
 # ---------------------------------------------------------------------------
 
@@ -175,42 +259,94 @@ class sppasLogFrame(wx.Frame):
         """
         super(sppasLogFrame, self).__init__(
             parent=parent,
-            title='{:s} Log Window'.format(sg.__name__),
+            title='{:s} Log'.format(sg.__name__),
             style=frame_style)
 
         # Members
         self.handler = sppasHandlerToWx(self)
         self.txt = None
+        self.log_file = sppasLogFile()
 
         # Fix frame properties
-        self.SetMinSize((300, 200))
+        self.SetMinSize((320, 200))
         self.SetSize(wx.Size(640, 480))
-        self.SetName('{:s} Log Window'.format(sg.__name__))
+        self.SetName('{:s}-log'.format(sg.__name__))
 
         # Fix frame content and actions
         self.create_content()
         self.setup_wx_logging(log_level)
         self.setup_events()
+        self.Show(True)
 
     # -----------------------------------------------------------------------
 
     def create_content(self):
-        """Create the content of the frame."""
-        settings = wx.GetApp().settings
-        text_style = wx.TAB_TRAVERSAL | \
-                     wx.TE_MULTILINE | \
-                     wx.TE_READONLY | \
-                     wx.TE_BESTWRAP | \
-                     wx.TE_AUTO_URL | \
-                     wx.NO_BORDER
-        self.txt = wx.TextCtrl(self, wx.ID_ANY,
-                               value="",
-                               style=text_style)
-        font = settings.text_font
-        self.txt.SetFont(font)
-        self.txt.SetForegroundColour(settings.fg_color)
-        self.txt.SetBackgroundColour(settings.bg_color)
+        """Create the content of the frame.
 
+        Content is made of a title, the log textctrl and action buttons.
+
+        """
+        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+
+        # create a sizer to add and organize objects
+        top_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        # add a customized title and separate title and the rest with a line
+        title = sppasLogTitlePanel(self)
+        top_sizer.Add(title, 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
+        line_top = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
+        top_sizer.Add(line_top, 0, wx.ALL | wx.EXPAND, 0)
+
+        # add a panel for the messages
+        msg_panel = sppasLogMessagePanel(
+            parent=self,
+            header=self.log_file.get_header())
+        top_sizer.Add(msg_panel, 3, wx.ALL | wx.EXPAND, 0)
+        self.txt = msg_panel.txt
+
+        # separate top and the rest with a line
+        line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
+        top_sizer.Add(line, 0, wx.ALL | wx.EXPAND, 0)
+
+        # add some action buttons
+        actions = sppasLogActionPanel(self)
+        top_sizer.Add(actions, 0,
+                      wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
+
+        # Layout the content
+        self.SetAutoLayout(True)
+        self.SetSizer(top_sizer)
+        self.Layout()
+
+    # -----------------------------------------------------------------------
+
+    def setup_wx_logging(self, log_level):
+        """Setup the logging.
+
+        Fix the level of messages and where to redirect them.
+
+        :param log_level: (int) Python logging log level.
+
+        """
+        # python log level
+        self.handler.setLevel(log_level)
+
+        # fix wx log messages
+        wx.Log.EnableLogging(True)
+        wx.Log.SetLogLevel(log_level_to_wx(log_level))
+        wx.Log.SetActiveTarget(sppasLogTextCtrl(self.txt))
+
+        # redirect python logging messages to wx.Log
+        self.redirect_logging()
+
+        # test if everything is ok
+        logging.debug('This is how a debug message looks like. ')
+        logging.info('This is how an information message looks like.')
+        logging.warning('This is how a warning message looks like.')
+        logging.error('This is how an error message looks like.')
+
+    # -----------------------------------------------------------------------
+    # Events
     # -----------------------------------------------------------------------
 
     def setup_events(self):
@@ -226,50 +362,59 @@ class sppasLogFrame(wx.Frame):
         # Bind the log event
         self.Bind(EVT_WX_LOG_EVENT, self.on_log_event)
 
+        # Bind all events from our buttons
+        self.Bind(wx.EVT_BUTTON, self.process_event)
+
     # -----------------------------------------------------------------------
 
-    def setup_wx_logging(self, log_level):
-        """Setup the logging.
+    def process_event(self, event):
+        """Process any kind of events.
 
-        Fix the level of messages and where to redirect them.
-
-        :param log_level: (int) Python logging log level.
+        :param event: (wx.Event)
 
         """
-        # Fix the format and level of python logging messages
-        format_msg = "[%(levelname)s] %(message)s"
-        self.handler.setFormatter(logging.Formatter(format_msg))
-        self.handler.setLevel(log_level)
+        event_obj = event.GetEventObject()
+        event_name = event_obj.GetName()
+        event_id = event_obj.GetId()
 
-        # Fix wx log messages
-        wx_log_level = log_level_to_wx(log_level)
-        wx.Log.EnableLogging(True)
-        wx.Log.SetLogLevel(wx_log_level)
-        wx.Log.SetTimestamp('%Y-%m-%d %H:%M:%S')
-        wx.Log.SetActiveTarget(sppasLogTextCtrl(self.txt))
-        # todo: Set a wx.LogFormatter to wx.Log (to see the level name!)
+        wx.LogMessage("Log frame received event id {:d} of {:s}"
+                      "".format(event_id, event_name))
 
-        # Redirect python logging messages to wx.Log
-        self.redirect_logging()
+        if event_name == "save_log":
+            self.save()
+        elif event_name == "broom":
+            self.clear()
+        else:
+            event.Skip()
 
-        # test if everything is ok
-        logging.info('++ info. Appears to both sppasLogFrame and stderr.')
-        logging.debug('-- debug. Appears to stderr but not in sppasLogFrame.')
-        wx.LogMessage('++ wxinfo. Appears to sppasLogFrame.')
-        wx.LogDebug('-- wxdebug. Do not appear anywhere.')
+    # -----------------------------------------------------------------------
+    # Override existing methods in wx.Frame
+    # -----------------------------------------------------------------------
 
+    def Show(self, show=True):
+        """Override. Disable the availability to Hide()."""
+        wx.Frame.Show(self, True)
+
+    # -----------------------------------------------------------------------
+    # Callbacks to events
     # -----------------------------------------------------------------------
 
     def on_close(self, event):
-        """Cancel the availability to close the frame."""
+        """Cancel the availability to close the frame, iconize instead.
+
+        :param event: (wxEvent) unused
+
+        """
         wx.LogMessage("Attempt to close {:s}.".format(self.GetName()))
+        self.Iconize(True)
 
     # -----------------------------------------------------------------------
 
     def on_log_event(self, event):
-        """Add event.message to text window.
+        """Add event.message to the textctrl.
 
         :param event: (wxLogEvent)
+
         """
         levels = {
             'DEBUG': wx.LogDebug,
@@ -278,33 +423,73 @@ class sppasLogFrame(wx.Frame):
             'ERROR': wx.LogError,
             'CRITICAL': wx.LogFatalError
         }
-        msg = self.handler.format(event.record)
-        levels[event.record.levelname](msg)
+        levels[event.record.levelname](event.record.message)
         event.Skip()
 
     # -----------------------------------------------------------------------
     # Public methods
     # -----------------------------------------------------------------------
 
-    def redirect_logging(self, value=True):
+    def redirect_logging(self, redirect=True):
         """Stop/Start the python logging redirection to this frame.
 
-        :param value: (bool) redirect python logging to wx, or not
+        :param redirect: (bool) redirect python logging to wx, or not
 
         """
-        if value is False:
+        if redirect is False:
             logging.getLogger().removeHandler(self.handler)
+            logging.info('Python logging messages are directed to stderr.')
         else:
             logging.getLogger().addHandler(self.handler)
+            logging.info('Python logging messages are redirected to wxLog.')
+
+    # -----------------------------------------------------------------------
+
+    def focus(self):
+        """Assign the focus to the log frame."""
+        if self.IsIconized():
+            self.Iconize(False)
+        self.SetFocus()
+
+    # -----------------------------------------------------------------------
+
+    def save(self):
+        """Save the messages in the current log file."""
+        self.txt.SaveFile(self.log_file.get_filename())
+        self.clear()
+        self.txt.AppendText('Previous messages were saved in : {:s}\n'
+                            ''.format(self.log_file.get_filename()))
+        self.log_file.increment()
+
+    # -----------------------------------------------------------------------
+
+    def clear(self):
+        """Clear all messages (irreversible, the messages are deleted)."""
+        self.txt.Clear()
+        self.txt.AppendText(self.log_file.get_header())
 
 # ---------------------------------------------------------------------------
 
 
 class sppasLogTextCtrl(wx.LogTextCtrl):
+    """Create a textctrl to display log messages.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    """
 
     def __init__(self, textctrl):
+        """Initialize a sppasLogTextCtrl."""
         super(sppasLogTextCtrl, self).__init__(textctrl)
         self.textctrl = textctrl
+        # here we could create various styles (one for debug messages, one
+        # for information, one for errors, etc).
+
+    # -----------------------------------------------------------------------
 
     def DoLogRecord(self, level, msg, info=None):
         """Override. Called to log a new record.
@@ -313,8 +498,142 @@ class sppasLogTextCtrl(wx.LogTextCtrl):
         :param msg: (string)
         :param info: (wx.LogRecordInfo)
 
+        Display the message with colors.
+
         """
-        #if level == wx.LOG_Info:
-        self.textctrl.SetDefaultStyle(wx.TextAttr(wx.RED))
-        # Show the message into the wx.TextCtrl
-        wx.LogTextCtrl.DoLogRecord(self, level, msg, info)
+        # Display time with the default color
+        self.textctrl.SetDefaultStyle(
+            wx.TextAttr(wx.GetApp().settings.fg_color))
+        self.textctrl.write("{:s} ".format(sppasTime().now[:-6]))
+
+        # Display the log level name and message with colors
+        if level == wx.LOG_Error or level == wx.LOG_FatalError:
+            self.textctrl.SetDefaultStyle(wx.TextAttr(wx.RED))
+        elif level == wx.LOG_Warning:
+            self.textctrl.SetDefaultStyle(wx.TextAttr(wx.YELLOW))
+        elif level in (wx.LOG_Info, wx.LOG_Message, wx.LOG_Status):
+            self.textctrl.SetDefaultStyle(wx.TextAttr(wx.WHITE))
+        else:
+            self.textctrl.SetDefaultStyle(wx.TextAttr(wx.LIGHT_GREY))
+
+        level_name = "[{:s}]".format(match_levels[level])
+        self.textctrl.write("{0: <10}".format(level_name))
+        self.textctrl.write("{:s}\n".format(msg))
+
+# ---------------------------------------------------------------------------
+# Panels
+# ---------------------------------------------------------------------------
+
+
+class sppasLogTitlePanel(wx.Panel):
+    """Create a panel to include the frame title.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    """
+
+    def __init__(self, parent):
+        super(sppasLogTitlePanel, self).__init__(
+            parent,
+            style=wx.TAB_TRAVERSAL | wx.BORDER_NONE | wx.CLIP_CHILDREN)
+
+        # Fix Look&Feel
+        settings = wx.GetApp().settings
+        self.SetBackgroundColour(settings.title_bg_color)
+        self.SetMinSize((-1, settings.title_height))
+
+        # Create the title
+        title = '{:s} Log Window'.format(sg.__name__)
+        st = sppasTitleText(self, title)
+
+        # Put the title in a sizer
+        title_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        title_sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
+        self.SetSizer(title_sizer)
+        self.SetAutoLayout(True)
+
+# ---------------------------------------------------------------------------
+
+
+class sppasLogMessagePanel(wx.Panel):
+    """Create the panel to display log messages.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    """
+
+    def __init__(self, parent, header=""):
+        super(sppasLogMessagePanel, self).__init__(
+            parent,
+            style=wx.TAB_TRAVERSAL | wx.BORDER_NONE | wx.CLIP_CHILDREN)
+
+        # fix this panel look&feel
+        settings = wx.GetApp().settings
+        self.SetBackgroundColour(settings.bg_color)
+        self.SetMinSize((-1, 128))
+
+        # create a log message, i.e. a wx textctrl
+        text_style = wx.TAB_TRAVERSAL | \
+                     wx.TE_MULTILINE | \
+                     wx.TE_READONLY | \
+                     wx.TE_BESTWRAP | \
+                     wx.TE_AUTO_URL | \
+                     wx.NO_BORDER | wx.TE_RICH
+        self.txt = wx.TextCtrl(self, wx.ID_ANY,
+                               value=header,
+                               style=text_style)
+        self.txt.SetFont(settings.mono_text_font)
+        self.txt.SetForegroundColour(settings.fg_color)
+        self.txt.SetBackgroundColour(settings.bg_color)
+
+        # put the text in a sizer to expand it
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer.Add(self.txt, 1, wx.ALL | wx.EXPAND, border=10)
+        self.SetSizer(sizer)
+        self.SetAutoLayout(True)
+
+# ---------------------------------------------------------------------------
+
+
+class sppasLogActionPanel(wx.Panel):
+    """Create a panel with some action buttons to manage log messages.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    """
+
+    def __init__(self, parent):
+        super(sppasLogActionPanel, self).__init__(
+            parent,
+            style=wx.TAB_TRAVERSAL | wx.BORDER_NONE | \
+                  wx.WANTS_CHARS | wx.CLIP_CHILDREN)
+
+        # fix this panel look&feel
+        settings = wx.GetApp().settings
+        self.SetMinSize((-1, settings.action_height))
+        self.SetBackgroundColour(settings.bg_color)
+
+        # create action buttons
+        clear_btn = sppasBitmapTextButton(self, "Clear", name="broom")
+        save_btn = sppasBitmapTextButton(self, "Save", name="save_log")
+
+        # organize buttons in a sizer
+        line = wx.StaticLine(self, style=wx.LI_VERTICAL)
+        action_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        action_sizer.Add(clear_btn, 2, wx.ALL | wx.EXPAND, 1)
+        action_sizer.Add(line, 0, wx.ALL | wx.EXPAND, 0)
+        action_sizer.Add(save_btn, 2, wx.ALL | wx.EXPAND, 1)
+        self.SetSizer(action_sizer)
+        self.SetAutoLayout(True)

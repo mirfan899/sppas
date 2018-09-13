@@ -33,8 +33,9 @@
 
 """
 import wx
+import os
 
-from sppas.src.config import sg
+from sppas.src.config import sg, paths
 from sppas.src.config import sppasBaseSettings
 
 # ---------------------------------------------------------------------------
@@ -59,7 +60,8 @@ class WxAppConfig(sppasBaseSettings):
         self.__dict__ = dict(
             name=sg.__name__ + " " + sg.__version__,
             log_level=15,
-            log_file=None
+            log_file=None,
+            icons_path=os.path.join(paths.etc, "icons")
         )
 
     def set(self, key, value):
@@ -93,30 +95,71 @@ class WxAppSettings(sppasBaseSettings):
 
     def reset(self):
         """Fill the dictionary with the default values."""
+        font_height = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPixelSize()[1]
+
+        self.__dict__ = dict(
+            frame_style=wx.DEFAULT_FRAME_STYLE | wx.CLOSE_BOX,
+            frame_size=self.__frame_size(),
+
+            icons_theme="Refine",
+
+            fg_color=wx.Colour(240, 240, 240, alpha=wx.ALPHA_OPAQUE),
+            title_fg_color=wx.Colour(128, 128, 128, alpha=wx.ALPHA_OPAQUE),
+            button_fg_color=wx.Colour(128, 128, 128, alpha=wx.ALPHA_OPAQUE),
+
+            bg_color=wx.Colour(20, 20, 20, alpha=wx.ALPHA_OPAQUE),
+            title_bg_color=wx.Colour(40, 40, 40, alpha=wx.ALPHA_OPAQUE),
+            button_bg_color=wx.Colour(30, 30, 30, alpha=wx.ALPHA_OPAQUE),
+
+            title_text_font=self.__title_font(),
+            button_text_font=self.__button_font(),
+            text_font=self.__text_font(),
+            mono_text_font=self.__mono_font(),
+
+            title_height=font_height*5,
+            action_height=font_height*3,
+        )
+
+    # -----------------------------------------------------------------------
+
+    def __text_font(self):
+        text_font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        return text_font
+
+    # -----------------------------------------------------------------------
+
+    def __title_font(self):
         title_font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
         title_font = title_font.Bold()
         title_font = title_font.Scale(2.)
+        return title_font
 
-        button_font = wx.Font(12,  # point size
+    # -----------------------------------------------------------------------
+
+    def __button_font(self):
+        system_font_size = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize()
+        button_font = wx.Font(system_font_size,       # point size
                               wx.FONTFAMILY_DEFAULT,  # family,
                               wx.FONTSTYLE_NORMAL,    # style,
                               wx.FONTWEIGHT_NORMAL,   # weight,
                               underline=False,
                               faceName="Calibri",
                               encoding=wx.FONTENCODING_SYSTEM)
+        button_font.Scale(1.2)
+        return button_font
 
-        self.__dict__ = dict(
-            frame_style=wx.DEFAULT_FRAME_STYLE | wx.CLOSE_BOX,
-            frame_width=640,
-            frame_height=480,
-            fg_color=wx.Colour(250, 250, 240, alpha=wx.ALPHA_OPAQUE),
-            bg_color=wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE),
-            title_height=64,
-            title_fg_color=wx.Colour(95, 95, 90, alpha=wx.ALPHA_OPAQUE),
-            title_bg_color=wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE),
-            title_text_font=title_font,
-            button_text_font=button_font,
-            button_fg_color=wx.Colour(250, 250, 240, alpha=wx.ALPHA_OPAQUE),
-            button_bg_color=wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE),
-            text_font=wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
-        )
+    # -----------------------------------------------------------------------
+
+    def __mono_font(self):
+        mono_font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        mono_font.SetFamily(wx.FONTFAMILY_MODERN)
+        mono_font.Scale(0.9)
+        return mono_font
+
+    # -----------------------------------------------------------------------
+
+    def __frame_size(self):
+        (w, h) = wx.GetDisplaySize()
+        w *= 0.6
+        h = min(0.9*h, w*9/16)
+        return wx.Size(max(int(w), 640), max(int(h), 480))
