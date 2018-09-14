@@ -38,14 +38,21 @@ Create and run the application:
 >>> app.run()
 
 """
+import time
 import wx
 import logging
 from os import path
 from argparse import ArgumentParser
+try:
+    import wx.adv
+    adv_import = True
+except ImportError:
+    adv_import = False
 
 from sppas.src.config import sg
 from .main_config import WxAppConfig, WxAppSettings
 from .main_frame import sppasFrame
+from .tools import sppasSwissKnife
 
 # ---------------------------------------------------------------------------
 
@@ -71,7 +78,7 @@ class sppasApp(wx.App):
                         useBestVisual=True,
                         clearSigInt=True)
 
-        self.SetAppName(self.cfg.name)
+        self.SetAppName(sg.__name__)
         self.SetAppDisplayName(self.cfg.name)
 
         # Fix language and translation
@@ -108,8 +115,7 @@ class sppasApp(wx.App):
         args = parser.parse_args()
 
         # and do things with arguments
-        if args.log_level:
-            self.cfg.set('log_level', args.log_level)
+        self.cfg.set('log_level', args.log_level)
 
     # -----------------------------------------------------------------------
 
@@ -130,7 +136,42 @@ class sppasApp(wx.App):
 
     # -----------------------------------------------------------------------
 
+    def show_splash_screen(self):
+        """Create and show the splash image."""
+        delay = self.settings.splash_delay
+        if delay <= 0:
+            return
+
+        bitmap = sppasSwissKnife.get_bmp_image('splash')
+        splash = wx.adv.SplashScreen(
+            bitmap,
+            wx.adv.SPLASH_CENTRE_ON_SCREEN | wx.adv.SPLASH_TIMEOUT,
+            delay*100,
+            None,
+            -1,
+            wx.DefaultPosition,
+            wx.DefaultSize,
+            wx.BORDER_SIMPLE | wx.STAY_ON_TOP)
+        self.Yield()
+        return splash
+
+    # -----------------------------------------------------------------------
+
+    def background_initialization(self):
+        """Initialize the application. """
+        # here we could load some resources, etc. while we show the Splash.
+        # for this example, we sleep some time to simulate we're doing something.
+        time.sleep(1)
+
+    # -----------------------------------------------------------------------
+
     def run(self):
+        """Run the application and starts the main loop."""
+        splash = None
+        if adv_import:
+            splash = self.show_splash_screen()
+        self.background_initialization()
+
         # here we could fix things like:
         #  - is first launch? No? so create config! and/or display a welcome msg!
         #  - fix config dir,
@@ -139,6 +180,8 @@ class sppasApp(wx.App):
         # Create the main frame of the application and show it.
         frame = sppasFrame()
         self.SetTopWindow(frame)
+        if splash:
+            splash.Close()
         self.MainLoop()
 
     # -----------------------------------------------------------------------
@@ -152,6 +195,6 @@ class sppasApp(wx.App):
             - does "ALT-F4" (Windows) or CTRL+X (Unix)
 
         """
-        logging.info('OnExit the wx.App.')
+        logging.info('Exit the wx.App() of {:s}.'.format(sg.__name__))
         # then it will exit. Nothing special to do. Return the exit status.
         return 0

@@ -33,9 +33,8 @@
 
 """
 import wx
-import os
 
-from sppas.src.config import sg, paths
+from sppas.src.config import sg
 from sppas.src.config import sppasBaseSettings
 
 # ---------------------------------------------------------------------------
@@ -61,7 +60,6 @@ class WxAppConfig(sppasBaseSettings):
             name=sg.__name__ + " " + sg.__version__,
             log_level=15,
             log_file=None,
-            icons_path=os.path.join(paths.etc, "icons")
         )
 
     def set(self, key, value):
@@ -98,6 +96,7 @@ class WxAppSettings(sppasBaseSettings):
         font_height = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPixelSize()[1]
 
         self.__dict__ = dict(
+            splash_delay=3,
             frame_style=wx.DEFAULT_FRAME_STYLE | wx.CLOSE_BOX,
             frame_size=self.__frame_size(),
 

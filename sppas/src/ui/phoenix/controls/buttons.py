@@ -60,7 +60,7 @@ class sppasBitmapTextButton(GenBitmapTextButton):
         super(sppasBitmapTextButton, self).__init__(
             parent,
             id=wx.NewId(),
-            bitmap=sppasSwissKnife.get_bitmap(name, height=btn_height),
+            bitmap=sppasSwissKnife.get_bmp_icon(name, height=btn_height),
             label="   "+label,
             style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS,
             name=name

@@ -51,9 +51,6 @@ from .controls.texts import sppasTitleText
 # event used to send a logging record to a wx object
 wxLogEvent, EVT_WX_LOG_EVENT = wx.lib.newevent.NewEvent()
 
-# style of the frame (disable 'Close')
-frame_style = wx.DEFAULT_FRAME_STYLE & ~wx.CLOSE_BOX
-
 # match between wx log levels and python log level names
 match_levels = {
     wx.LOG_FatalError: 'CRITICAL',
@@ -260,7 +257,7 @@ class sppasLogFrame(wx.Frame):
         super(sppasLogFrame, self).__init__(
             parent=parent,
             title='{:s} Log'.format(sg.__name__),
-            style=frame_style)
+            style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_TOOL_WINDOW)
 
         # Members
         self.handler = sppasHandlerToWx(self)

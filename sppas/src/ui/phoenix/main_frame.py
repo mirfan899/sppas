@@ -38,49 +38,76 @@ from sppas.src.config import sg
 
 from .main_log import sppasLogFrame
 from .controls.buttons import sppasBitmapTextButton
+from .controls.texts import sppasTitleText
+from .panels import sppasWelcomePanel
 
 # ---------------------------------------------------------------------------
 
 
 class sppasFrame(wx.Frame):
-    """Create my own frame. Inherited from the wx.Frame."""
+    """Create the main frame of SPPAS.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    """
 
     def __init__(self):
         super(sppasFrame, self).__init__(
             parent=None,
             title=wx.GetApp().GetAppDisplayName(),
-            style=wx.DEFAULT_FRAME_STYLE | wx.CLOSE_BOX)
-        self.SetMinSize((300, 200))
-        self.SetSize(wx.Size(640, 480))  # wx.GetApp().settings.frame_size
+            style=wx.DEFAULT_FRAME_STYLE)
+
+        # Fix frame properties
+        self.SetMinSize((640, 480))
+        self.SetSize(wx.Size(800, 600))  # wx.GetApp().settings.frame_size
+        self.SetName('{:s}'.format(sg.__name__))
+        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        self.SetFont(wx.GetApp().settings.text_font)
 
         # Create the log frame of the application and show it.
-        self.log_window = sppasLogFrame(self,
-                                        wx.GetApp().cfg.log_level)
+        self.log_window = sppasLogFrame(self, wx.GetApp().cfg.log_level)
 
+        # Fix this frame content and properties
+        self.create_content()
+        self.setup_events()
+        self.CenterOnScreen()
+        self.Show(True)
+
+    # -----------------------------------------------------------------------
+
+    def create_content(self):
+        """Create the content of the frame.
+
+        Content is made of a menu, an area for panels and action buttons.
+
+        """
         # create a sizer to add and organize objects
         top_sizer = wx.BoxSizer(wx.VERTICAL)
 
         # add a customized menu (instead of a traditional menu+toolbar)
-        menus = sppasMenuPanel(self)
-        top_sizer.Add(menus, 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
+        # menus = sppasMenuPanel(self)
+        # top_sizer.Add(menus, 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
 
         # separate menu and the rest with a line
-        line_top = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-        top_sizer.Add(line_top, 0, wx.ALL | wx.EXPAND, 0)
+        # line_top = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
+        # top_sizer.Add(line_top, 0, wx.ALL | wx.EXPAND, 0)
 
-        # add a panel for the message
-        msg_panel = sppasMessagePanel(self)
-        top_sizer.Add(msg_panel, 3, wx.ALL | wx.EXPAND, 0)
+        # add a panel with a welcome message
+        msg_panel = sppasWelcomePanel(self)
+        top_sizer.Add(msg_panel, 3, wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 0)
 
-        # separate top and the rest with a line
+        # separate with a line
         line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
         top_sizer.Add(line, 0, wx.ALL | wx.EXPAND, 0)
 
         # add some action buttons
-        actions = sppasActionPanel(self)
+        actions = sppasActionsPanel(self)
         top_sizer.Add(actions, 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
-
-        self.setup_events()
 
         # Since Layout doesn't happen until there is a size event, you will
         # sometimes have to force the issue by calling Layout yourself. For
@@ -92,8 +119,6 @@ class sppasFrame(wx.Frame):
         self.SetAutoLayout(True)
         self.SetSizer(top_sizer)
         self.Layout()
-        self.CenterOnScreen()
-        self.Show(True)
 
     # -----------------------------------------------------------------------
     # Events
@@ -102,7 +127,7 @@ class sppasFrame(wx.Frame):
     def setup_events(self):
         """Associate a handler function with the events.
 
-        That means that when an event occurs then the process handler function
+        It means that when an event occurs then the process handler function
         will be called.
 
         """
@@ -161,23 +186,6 @@ class sppasFrame(wx.Frame):
 # ---------------------------------------------------------------------------
 
 
-class sppasTitleText(wx.StaticText):
-    """Create a title."""
-    def __init__(self, parent, label):
-        super(sppasTitleText, self).__init__(
-            parent,
-            label=label,
-            style=wx.ALIGN_CENTER)
-
-        # Fix Look&Feel
-        settings = wx.GetApp().settings
-        self.SetFont(settings.title_text_font)
-        self.SetBackgroundColour(parent.GetBackgroundColour())
-        self.SetForegroundColour(settings.title_fg_color)
-
-# ---------------------------------------------------------------------------
-
-
 class sppasMenuPanel(wx.Panel):
     """Create my own menu panel with several action buttons.
     It aims to replace the old-style menus.
@@ -192,7 +200,7 @@ class sppasMenuPanel(wx.Panel):
         self.SetMinSize((-1, settings.title_height))
 
         menu_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        st = sppasTitleText(self, "Installation error...")
+        st = sppasTitleText(self, "SPPAS")
         menu_sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
 
         self.SetSizer(menu_sizer)
@@ -202,48 +210,7 @@ class sppasMenuPanel(wx.Panel):
 # ---------------------------------------------------------------------------
 
 
-class sppasMessagePanel(wx.Panel):
-    """Create my own panel to work with files.
-
-    """
-    def __init__(self, parent):
-        super(sppasMessagePanel, self).__init__(parent)
-
-        # Fix Look&Feel
-        settings = wx.GetApp().settings
-        self.SetBackgroundColour(settings.bg_color)
-
-        message = \
-            "Welcome to {:s}!\n\n"\
-            "{:s} requires wxpython version 3 but version 4 is installed.\n"\
-            "The Graphical User Interface can't work. See the installation "\
-            "web page for details: {:s}." \
-            "".format(sg.__longname__, sg.__name__, sg.__url__)
-        text_style = wx.TAB_TRAVERSAL|\
-                     wx.TE_MULTILINE|\
-                     wx.TE_READONLY|\
-                     wx.TE_BESTWRAP|\
-                     wx.TE_AUTO_URL|\
-                     wx.NO_BORDER
-        txt = wx.TextCtrl(self, wx.ID_ANY,
-                          value=message,
-                          style=text_style)
-        font = settings.text_font
-        txt.SetFont(font)
-        txt.SetForegroundColour(settings.fg_color)
-        txt.SetBackgroundColour(settings.bg_color)
-
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(txt, 1, wx.ALL|wx.EXPAND, border=10)
-
-        self.SetSizer(sizer)
-        self.SetAutoLayout(True)
-        self.Show(True)
-
-# ---------------------------------------------------------------------------
-
-
-class sppasActionPanel(wx.Panel):
+class sppasActionsPanel(wx.Panel):
     """Create my own panel with some action buttons.
 
     """
