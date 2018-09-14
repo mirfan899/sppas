@@ -223,8 +223,8 @@ class sppasHandlerToWx(logging.Handler):
 # ---------------------------------------------------------------------------
 
 
-class sppasLogFrame(wx.Frame):
-    """Create a log frame for SPPAS.
+class sppasLogWindow(wx.TopLevelWindow):
+    """Create a log window for SPPAS.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -254,7 +254,7 @@ class sppasLogFrame(wx.Frame):
             - NOTSET 	0
 
         """
-        super(sppasLogFrame, self).__init__(
+        super(sppasLogWindow, self).__init__(
             parent=parent,
             title='{:s} Log'.format(sg.__name__),
             style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_TOOL_WINDOW)
@@ -270,14 +270,14 @@ class sppasLogFrame(wx.Frame):
         self.SetName('{:s}-log'.format(sg.__name__))
 
         # Fix frame content and actions
-        self.create_content()
-        self.setup_wx_logging(log_level)
+        self._create_content()
+        self._setup_wx_logging(log_level)
         self.setup_events()
         self.Show(True)
 
     # -----------------------------------------------------------------------
 
-    def create_content(self):
+    def _create_content(self):
         """Create the content of the frame.
 
         Content is made of a title, the log textctrl and action buttons.
@@ -317,7 +317,7 @@ class sppasLogFrame(wx.Frame):
 
     # -----------------------------------------------------------------------
 
-    def setup_wx_logging(self, log_level):
+    def _setup_wx_logging(self, log_level):
         """Setup the logging.
 
         Fix the level of messages and where to redirect them.

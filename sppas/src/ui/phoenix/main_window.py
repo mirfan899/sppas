@@ -33,18 +33,20 @@
 
 """
 import wx
+import logging
 
 from sppas.src.config import sg
 
-from .main_log import sppasLogFrame
+from .main_log import sppasLogWindow
 from .controls.buttons import sppasBitmapTextButton
 from .controls.texts import sppasTitleText
 from .panels import sppasWelcomePanel
+from .tools import sppasSwissKnife
 
 # ---------------------------------------------------------------------------
 
 
-class sppasFrame(wx.Frame):
+class sppasWindow(wx.TopLevelWindow):
     """Create the main frame of SPPAS.
 
     :author:       Brigitte Bigi
@@ -56,31 +58,55 @@ class sppasFrame(wx.Frame):
     """
 
     def __init__(self):
-        super(sppasFrame, self).__init__(
+        super(sppasWindow, self).__init__(
             parent=None,
             title=wx.GetApp().GetAppDisplayName(),
             style=wx.DEFAULT_FRAME_STYLE)
 
+        # Members
+        self._init_infos()
+        self.panels = list()
+
+        # Create the log window of the application and show it.
+        self.log_window = sppasLogWindow(self, wx.GetApp().cfg.log_level)
+
+        # Fix this frame content
+        self._create_content()
+        self.setup_events()
+
+        self.Enable()
+        self.SetFocus()
+        self.CenterOnScreen()
+        self.Show(True)
+
+    # ------------------------------------------------------------------------
+    # Private methods to create the GUI and initialize members
+    # ------------------------------------------------------------------------
+
+    def _init_infos(self):
+        """Initialize the main frame.
+
+        Set the title, the icon and the properties of the frame.
+
+        """
         # Fix frame properties
         self.SetMinSize((640, 480))
         self.SetSize(wx.Size(800, 600))  # wx.GetApp().settings.frame_size
         self.SetName('{:s}'.format(sg.__name__))
+
+        # icon
+        _icon = wx.EmptyIcon()
+        _icon.CopyFromBitmap(sppasSwissKnife.get_bmp_icon("sppas"))
+        self.SetIcon(_icon)
+
+        # colors & font
         self.SetBackgroundColour(wx.GetApp().settings.bg_color)
         self.SetForegroundColour(wx.GetApp().settings.fg_color)
         self.SetFont(wx.GetApp().settings.text_font)
 
-        # Create the log frame of the application and show it.
-        self.log_window = sppasLogFrame(self, wx.GetApp().cfg.log_level)
-
-        # Fix this frame content and properties
-        self.create_content()
-        self.setup_events()
-        self.CenterOnScreen()
-        self.Show(True)
-
     # -----------------------------------------------------------------------
 
-    def create_content(self):
+    def _create_content(self):
         """Create the content of the frame.
 
         Content is made of a menu, an area for panels and action buttons.
@@ -90,12 +116,12 @@ class sppasFrame(wx.Frame):
         top_sizer = wx.BoxSizer(wx.VERTICAL)
 
         # add a customized menu (instead of a traditional menu+toolbar)
-        # menus = sppasMenuPanel(self)
-        # top_sizer.Add(menus, 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
+        menus = sppasMenuPanel(self)
+        top_sizer.Add(menus, 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
 
         # separate menu and the rest with a line
-        # line_top = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-        # top_sizer.Add(line_top, 0, wx.ALL | wx.EXPAND, 0)
+        line_top = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
+        top_sizer.Add(line_top, 0, wx.ALL | wx.EXPAND, 0)
 
         # add a panel with a welcome message
         msg_panel = sppasWelcomePanel(self)
@@ -174,6 +200,31 @@ class sppasFrame(wx.Frame):
             self.exit()
 
     # -----------------------------------------------------------------------
+    # Public methods
+    # -----------------------------------------------------------------------
+
+    def switch_to_panel(self, panel_name):
+        """Switch to the expected panel. Hide the current."""
+        if panel_name not in self.panels:
+            logging.warning("Unknown panel name '{:s}' to switch on."
+                            "".format(panel_name))
+            return
+
+        logging.debug("Switch to panel '{:s}'.".format(panel_name))
+        if self.panels[panel_name].IsShown() is False:
+            # hide the current
+            for p in self.panels:
+                if self.panels[p].IsShown() is True:
+                    self.panels[p].HideWithEffect(wx.SHOW_EFFECT_SLIDE_TO_BOTTOM,
+                                                  timeout=400)
+            # show the expected
+            self.panels[panel_name].ShowWithEffect(wx.SHOW_EFFECT_SLIDE_TO_BOTTOM,
+                                                   timeout=400)
+
+        self.Layout()
+        self.Refresh()
+
+    # -----------------------------------------------------------------------
 
     def exit(self):
         """Close the frame, terminating the application."""
@@ -200,7 +251,7 @@ class sppasMenuPanel(wx.Panel):
         self.SetMinSize((-1, settings.title_height))
 
         menu_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        st = sppasTitleText(self, "SPPAS")
+        st = sppasTitleText(self, "Area for menu+toolbar")
         menu_sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
 
         self.SetSizer(menu_sizer)
@@ -226,7 +277,8 @@ class sppasActionsPanel(wx.Panel):
         log_btn = sppasBitmapTextButton(self, "View logs", name="view_log")
 
         action_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        action_sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 1)
-        action_sizer.Add(wx.StaticLine(self, style=wx.LI_VERTICAL), 0, wx.ALL | wx.EXPAND, 0)
         action_sizer.Add(log_btn, 1, wx.ALL | wx.EXPAND, 1)
+        action_sizer.Add(wx.StaticLine(self, style=wx.LI_VERTICAL), 0, wx.ALL | wx.EXPAND, 0)
+        action_sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 1)
+
         self.SetSizer(action_sizer)

@@ -53,7 +53,7 @@ class sppasWelcomePanel(wx.Panel):
     """
 
     def __init__(self, parent):
-        super(sppasWelcomePanel, self).__init__(parent)
+        super(sppasWelcomePanel, self).__init__(parent, name="welcome")
         self.SetBackgroundColour(parent.GetBackgroundColour())
 
         # Create a title and a message

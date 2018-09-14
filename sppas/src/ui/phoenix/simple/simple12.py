@@ -350,9 +350,6 @@ class myFrame(wx.Frame):
         self.SetMinSize((300, 200))
         self.SetSize(wx.Size(settings.frame_width, settings.frame_height))
 
-        # Store all panels in a dictionary with key=name, value=object
-        self.panels = dict()
-
         # create a sizer to add and organize objects
         top_sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -365,16 +362,16 @@ class myFrame(wx.Frame):
         top_sizer.Add(line_top, 0, wx.ALL | wx.EXPAND, 0)
 
         # add a 1st panel for files
-        self.panels["files"] = myFilePanel(self)
-        top_sizer.Add(self.panels["files"], 3, wx.ALL | wx.EXPAND, 0)
+        p1 = myFilePanel(self, "files_panel")
+        top_sizer.Add(p1, 3, wx.ALL | wx.EXPAND, 0)
 
         # add a 2nd panel for annotations
-        self.panels["annotate"] = myAnnotatePanel(self)
-        top_sizer.Add(self.panels["annotate"], 3, wx.ALL | wx.EXPAND, 0)
+        p2 = myAnnotatePanel(self, "annotate_panel")
+        top_sizer.Add(p2, 3, wx.ALL | wx.EXPAND, 0)
 
         # add a 3rd panel for analysis
-        self.panels["analyze"] = myAnalyzePanel(self)
-        top_sizer.Add(self.panels["analyze"], 3, wx.ALL | wx.EXPAND, 0)
+        p3 = myAnalyzePanel(self, "analyze_panel")
+        top_sizer.Add(p3, 3, wx.ALL | wx.EXPAND, 0)
 
         # separate the rest and the action buttons with a line
         line_bottom = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
@@ -419,7 +416,7 @@ class myFrame(wx.Frame):
         elif event_name == "open":
             pass
         elif event_name in ["files", "annotate", "analyze"]:
-            self.switch_to_panel(event_name)
+            self.switch_to_panel(event_name + "_panel")
         else:
             event.Skip()
 
@@ -427,28 +424,26 @@ class myFrame(wx.Frame):
 
     def exit(self):
         """Close the frame, terminating the application."""
-
         self.Close(True)
 
     # -----------------------------------------------------------------------
 
     def switch_to_panel(self, panel_name):
         """Switch to the expected panel. Hide the current."""
-
-        if panel_name not in self.panels:
-            logging.warning("Unknown panel name '{:s}' to switch on."
-                            "".format(panel_name))
-            return
+        p = self.FindWindow(panel_name)
+        l = ["analyze_panel", "annotate_panel", "files_panel"]
+        l.remove(panel_name)
 
         logging.debug("Switch to panel '{:s}'.".format(panel_name))
-        if self.panels[panel_name].IsShown() is False:
+        if p.IsShown() is False:
             # hide the current
-            for p in self.panels:
-                if self.panels[p].IsShown() is True:
-                    self.panels[p].HideWithEffect(wx.SHOW_EFFECT_SLIDE_TO_BOTTOM,
+            for pn in l:
+                pp = self.FindWindow(pn)
+                if pp.IsShown() is True:
+                    pp.HideWithEffect(wx.SHOW_EFFECT_SLIDE_TO_BOTTOM,
                                                   timeout=400)
             # show the expected
-            self.panels[panel_name].ShowWithEffect(wx.SHOW_EFFECT_SLIDE_TO_BOTTOM,
+            p.ShowWithEffect(wx.SHOW_EFFECT_SLIDE_TO_BOTTOM,
                                                    timeout=400)
 
         self.Layout()
@@ -575,8 +570,8 @@ class myContentPanel(wx.Panel):
     """Create my own panel for the content of the frame.
 
     """
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+    def __init__(self, parent, name):
+        wx.Panel.__init__(self, parent, name=name)
 
         settings = wx.GetApp().settings
         self.SetBackgroundColour(settings.bg_color)
@@ -588,8 +583,8 @@ class myFilePanel(myContentPanel):
     """Create my own panel to work with files.
 
     """
-    def __init__(self, parent):
-        myContentPanel.__init__(self, parent)
+    def __init__(self, parent, name):
+        myContentPanel.__init__(self, parent, name)
 
         settings = wx.GetApp().settings
 
@@ -608,10 +603,10 @@ class myAnnotatePanel(myContentPanel):
     """Create my own panel to annotate files.
 
     """
-    def __init__(self, parent):
-
-        myContentPanel.__init__(self, parent)
+    def __init__(self, parent, name):
+        myContentPanel.__init__(self, parent, name)
         self.SetBackgroundColour(wx.Colour(10, 10, 5))
+
         settings = wx.GetApp().settings
 
         st = wx.StaticText(self, wx.ID_ANY, label="Annotate panel", pos=(25, 25))
@@ -629,9 +624,9 @@ class myAnalyzePanel(myContentPanel):
     """Create my own panel to analyze files.
 
     """
-    def __init__(self, parent):
+    def __init__(self, parent, name):
 
-        myContentPanel.__init__(self, parent)
+        myContentPanel.__init__(self, parent, name)
         self.SetBackgroundColour(wx.Colour(80, 80, 75))
         settings = wx.GetApp().settings
 

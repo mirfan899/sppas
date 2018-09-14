@@ -51,7 +51,7 @@ except ImportError:
 
 from sppas.src.config import sg
 from .main_config import WxAppConfig, WxAppSettings
-from .main_frame import sppasFrame
+from .main_window import sppasWindow
 from .tools import sppasSwissKnife
 
 # ---------------------------------------------------------------------------
@@ -178,8 +178,8 @@ class sppasApp(wx.App):
         #  - etc
 
         # Create the main frame of the application and show it.
-        frame = sppasFrame()
-        self.SetTopWindow(frame)
+        window = sppasWindow()
+        self.SetTopWindow(window)
         if splash:
             splash.Close()
         self.MainLoop()
