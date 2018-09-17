@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -45,6 +46,7 @@ from sppas.src.utils.datatype import sppasTime
 
 from .controls.buttons import sppasBitmapTextButton
 from .controls.texts import sppasTitleText
+from .tools import sppasSwissKnife
 
 # ---------------------------------------------------------------------------
 
@@ -236,6 +238,8 @@ class sppasLogWindow(wx.TopLevelWindow):
     frame which it manages but also collect them from the log target
     which was active at the moment of its creation.
 
+    This window does not receive EVT_CLOSE.
+
     """
 
     def __init__(self, parent, log_level=0):
@@ -257,23 +261,48 @@ class sppasLogWindow(wx.TopLevelWindow):
         super(sppasLogWindow, self).__init__(
             parent=parent,
             title='{:s} Log'.format(sg.__name__),
-            style=wx.DEFAULT_FRAME_STYLE | wx.FRAME_TOOL_WINDOW)
+            style=wx.DEFAULT_FRAME_STYLE & ~wx.CLOSE_BOX)
 
         # Members
         self.handler = sppasHandlerToWx(self)
         self.txt = None
         self.log_file = sppasLogFile()
-
-        # Fix frame properties
-        self.SetMinSize((320, 200))
-        self.SetSize(wx.Size(640, 480))
-        self.SetName('{:s}-log'.format(sg.__name__))
+        self._init_infos()
 
         # Fix frame content and actions
         self._create_content()
         self._setup_wx_logging(log_level)
-        self.setup_events()
+        self._setup_events()
         self.Show(True)
+
+    # ------------------------------------------------------------------------
+    # Private methods to create the GUI and initialize members
+    # ------------------------------------------------------------------------
+
+    def _init_infos(self):
+        """Initialize the log frame.
+
+        Set the title, the icon and the properties of the frame.
+
+        """
+        # Fix frame properties
+        self.SetMinSize((320, 200))
+        w = int(wx.GetApp().settings.frame_size[0] * 0.75)
+        h = int(wx.GetApp().settings.frame_size[1] * 0.75)
+        self.SetSize(wx.Size(w, h))
+
+        self.SetSize(wx.Size(640, 480))
+        self.SetName('{:s}-log'.format(sg.__name__))
+
+        # icon
+        _icon = wx.Icon()
+        _icon.CopyFromBitmap(sppasSwissKnife.get_bmp_icon("sppas"))
+        self.SetIcon(_icon)
+
+        # colors & font
+        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        self.SetFont(wx.GetApp().settings.text_font)
 
     # -----------------------------------------------------------------------
 
@@ -283,8 +312,6 @@ class sppasLogWindow(wx.TopLevelWindow):
         Content is made of a title, the log textctrl and action buttons.
 
         """
-        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
-
         # create a sizer to add and organize objects
         top_sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -346,7 +373,7 @@ class sppasLogWindow(wx.TopLevelWindow):
     # Events
     # -----------------------------------------------------------------------
 
-    def setup_events(self):
+    def _setup_events(self):
         """Associate a handler function with the events.
 
         It means that when an event occurs then the process handler function
@@ -360,11 +387,11 @@ class sppasLogWindow(wx.TopLevelWindow):
         self.Bind(EVT_WX_LOG_EVENT, self.on_log_event)
 
         # Bind all events from our buttons
-        self.Bind(wx.EVT_BUTTON, self.process_event)
+        self.Bind(wx.EVT_BUTTON, self._process_event)
 
     # -----------------------------------------------------------------------
 
-    def process_event(self, event):
+    def _process_event(self, event):
         """Process any kind of events.
 
         :param event: (wx.Event)
@@ -385,14 +412,6 @@ class sppasLogWindow(wx.TopLevelWindow):
             event.Skip()
 
     # -----------------------------------------------------------------------
-    # Override existing methods in wx.Frame
-    # -----------------------------------------------------------------------
-
-    def Show(self, show=True):
-        """Override. Disable the availability to Hide()."""
-        wx.Frame.Show(self, True)
-
-    # -----------------------------------------------------------------------
     # Callbacks to events
     # -----------------------------------------------------------------------
 
@@ -404,6 +423,7 @@ class sppasLogWindow(wx.TopLevelWindow):
         """
         wx.LogMessage("Attempt to close {:s}.".format(self.GetName()))
         self.Iconize(True)
+        event.StopPropagation()
 
     # -----------------------------------------------------------------------
 
@@ -550,6 +570,7 @@ class sppasLogTitlePanel(wx.Panel):
         # Put the title in a sizer
         title_sizer = wx.BoxSizer(wx.HORIZONTAL)
         title_sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
+
         self.SetSizer(title_sizer)
         self.SetAutoLayout(True)
 
@@ -575,7 +596,7 @@ class sppasLogMessagePanel(wx.Panel):
         # fix this panel look&feel
         settings = wx.GetApp().settings
         self.SetBackgroundColour(settings.bg_color)
-        self.SetMinSize((-1, 128))
+        # self.SetMinSize((-1, 128))
 
         # create a log message, i.e. a wx textctrl
         text_style = wx.TAB_TRAVERSAL | \
@@ -594,6 +615,7 @@ class sppasLogMessagePanel(wx.Panel):
         # put the text in a sizer to expand it
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(self.txt, 1, wx.ALL | wx.EXPAND, border=10)
+
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
 
@@ -632,5 +654,6 @@ class sppasLogActionPanel(wx.Panel):
         action_sizer.Add(clear_btn, 2, wx.ALL | wx.EXPAND, 1)
         action_sizer.Add(line, 0, wx.ALL | wx.EXPAND, 0)
         action_sizer.Add(save_btn, 2, wx.ALL | wx.EXPAND, 1)
+
         self.SetSizer(action_sizer)
         self.SetAutoLayout(True)

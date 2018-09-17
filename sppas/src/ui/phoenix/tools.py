@@ -1,5 +1,6 @@
 import os
 import wx
+
 from sppas.src.config import paths
 
 # -----------------------------------------------------------------------
@@ -26,7 +27,11 @@ class sppasSwissKnife:
         # create an image with the appropriate size
         img = wx.Image(icon_name, wx.BITMAP_TYPE_ANY)
         img.Rescale(height, height, wx.IMAGE_QUALITY_HIGH)
-        img.Replace(0, 0, 0, 128, 128, 128)
+        button_color = wx.GetApp().settings.button_fg_color
+        img.Replace(0, 0, 0,
+                    button_color.Red(),
+                    button_color.Green(),
+                    button_color.Blue())
 
         return wx.Bitmap(img)
 

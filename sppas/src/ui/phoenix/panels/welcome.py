@@ -60,19 +60,18 @@ class sppasWelcomePanel(wx.Panel):
         st = sppasTitleText(self, "Installation issue...")
 
         message = \
-            "Welcome to {:s}!\n\n" \
             "The Graphical User Interface can't work because "\
             "{:s} requires WxPython version 3 but version 4 is installed.\n" \
             "Yet the Command-Line User Interface still works.\n\n"\
             "For any help, see the web page for installation instructions " \
             "and chapter 2 of the documentation.\n\n"\
-            "{:s}".format(sg.__longname__, sg.__name__, sg.__url__)
-        text_style = wx.TAB_TRAVERSAL|\
-                     wx.TE_MULTILINE|\
-                     wx.TE_READONLY|\
-                     wx.TE_BESTWRAP|\
-                     wx.TE_AUTO_URL|\
-                     wx.TE_CENTRE|\
+            "{:s}".format(sg.__name__, sg.__url__)
+        text_style = wx.TAB_TRAVERSAL |\
+                     wx.TE_MULTILINE |\
+                     wx.TE_READONLY |\
+                     wx.TE_BESTWRAP |\
+                     wx.TE_AUTO_URL |\
+                     wx.TE_CENTRE |\
                      wx.NO_BORDER
         txt = wx.TextCtrl(self, wx.ID_ANY,
                           value=message,

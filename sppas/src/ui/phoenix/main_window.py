@@ -46,7 +46,7 @@ from .tools import sppasSwissKnife
 # ---------------------------------------------------------------------------
 
 
-class sppasWindow(wx.TopLevelWindow):
+class sppasMainWindow(wx.Dialog):
     """Create the main frame of SPPAS.
 
     :author:       Brigitte Bigi
@@ -55,24 +55,28 @@ class sppasWindow(wx.TopLevelWindow):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
+    This class:
+        - does not inherit of wx.TopLevelWindow because we need EVT_CLOSE
+        - does not inherit of wx.Frame because we don't need neither a
+        status bar, nor a toolbar, nor a menu.
+
     """
 
     def __init__(self):
-        super(sppasWindow, self).__init__(
+        super(sppasMainWindow, self).__init__(
             parent=None,
             title=wx.GetApp().GetAppDisplayName(),
-            style=wx.DEFAULT_FRAME_STYLE)
+            style=wx.DEFAULT_FRAME_STYLE | wx.DIALOG_NO_PARENT)
 
         # Members
         self._init_infos()
-        self.panels = list()
 
         # Create the log window of the application and show it.
         self.log_window = sppasLogWindow(self, wx.GetApp().cfg.log_level)
 
         # Fix this frame content
         self._create_content()
-        self.setup_events()
+        self._setup_events()
 
         self.Enable()
         self.SetFocus()
@@ -90,12 +94,12 @@ class sppasWindow(wx.TopLevelWindow):
 
         """
         # Fix frame properties
-        self.SetMinSize((640, 480))
-        self.SetSize(wx.Size(800, 600))  # wx.GetApp().settings.frame_size
+        self.SetMinSize(wx.Size(640, 480))
+        self.SetSize(wx.GetApp().settings.frame_size)
         self.SetName('{:s}'.format(sg.__name__))
 
         # icon
-        _icon = wx.EmptyIcon()
+        _icon = wx.Icon()
         _icon.CopyFromBitmap(sppasSwissKnife.get_bmp_icon("sppas"))
         self.SetIcon(_icon)
 
@@ -150,7 +154,7 @@ class sppasWindow(wx.TopLevelWindow):
     # Events
     # -----------------------------------------------------------------------
 
-    def setup_events(self):
+    def _setup_events(self):
         """Associate a handler function with the events.
 
         It means that when an event occurs then the process handler function
@@ -161,11 +165,13 @@ class sppasWindow(wx.TopLevelWindow):
         self.Bind(wx.EVT_CLOSE, self.on_exit)
 
         # Bind all events from our buttons (including 'exit')
-        self.Bind(wx.EVT_BUTTON, self.process_event)
+        self.Bind(wx.EVT_BUTTON, self._process_event)
+
+        self.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
 
     # -----------------------------------------------------------------------
 
-    def process_event(self, event):
+    def _process_event(self, event):
         """Process any kind of events.
 
         :param event: (wx.Event)
@@ -187,6 +193,21 @@ class sppasWindow(wx.TopLevelWindow):
 
     # -----------------------------------------------------------------------
 
+    def _process_key_event(self, event):
+        """Process a key event.
+
+        :param event: (wx.Event)
+
+        """
+        key_code = event.GetKeyCode()
+
+        if key_code == wx.WXK_F4 and event.AltDown():
+            self.on_exit(event)
+        else:
+            event.Skip()
+
+    # -----------------------------------------------------------------------
+
     def on_exit(self, event):
         """Makes sure the user was intending to exit the application."""
         dialog = wx.MessageDialog(
@@ -203,29 +224,6 @@ class sppasWindow(wx.TopLevelWindow):
     # Public methods
     # -----------------------------------------------------------------------
 
-    def switch_to_panel(self, panel_name):
-        """Switch to the expected panel. Hide the current."""
-        if panel_name not in self.panels:
-            logging.warning("Unknown panel name '{:s}' to switch on."
-                            "".format(panel_name))
-            return
-
-        logging.debug("Switch to panel '{:s}'.".format(panel_name))
-        if self.panels[panel_name].IsShown() is False:
-            # hide the current
-            for p in self.panels:
-                if self.panels[p].IsShown() is True:
-                    self.panels[p].HideWithEffect(wx.SHOW_EFFECT_SLIDE_TO_BOTTOM,
-                                                  timeout=400)
-            # show the expected
-            self.panels[panel_name].ShowWithEffect(wx.SHOW_EFFECT_SLIDE_TO_BOTTOM,
-                                                   timeout=400)
-
-        self.Layout()
-        self.Refresh()
-
-    # -----------------------------------------------------------------------
-
     def exit(self):
         """Close the frame, terminating the application."""
         # Stop redirecting logging to this application
@@ -234,11 +232,36 @@ class sppasWindow(wx.TopLevelWindow):
         self.DestroyChildren()
         self.Destroy()
 
+    # ---------------------------------------------------------------------------
+    # Override existing but un-useful methods
+    # ---------------------------------------------------------------------------
+
+    def CreateButtonSizer(self, flags):
+        """Override to disable."""
+        pass
+
+    def CreateSeparatedButtonSizer(self, flags):
+        """Override to disable."""
+        pass
+
+    def CreateSeparatedSizer(self, sizer):
+        """Override to disable."""
+        pass
+
+    def CreateStdDialogButtonSizer(self, flags):
+        """Override to disable."""
+        pass
+
+    def CreateTextSizer(self, message):
+        """Override to disable."""
+        pass
+
 # ---------------------------------------------------------------------------
 
 
 class sppasMenuPanel(wx.Panel):
     """Create my own menu panel with several action buttons.
+
     It aims to replace the old-style menus.
 
     """
@@ -251,18 +274,23 @@ class sppasMenuPanel(wx.Panel):
         self.SetMinSize((-1, settings.title_height))
 
         menu_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        st = sppasTitleText(self, "Area for menu+toolbar")
+        st = sppasTitleText(self, "{:s}".format(sg.__longname__))
         menu_sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
 
         self.SetSizer(menu_sizer)
         self.SetAutoLayout(True)
-        self.Show(True)
 
 # ---------------------------------------------------------------------------
 
 
 class sppasActionsPanel(wx.Panel):
     """Create my own panel with some action buttons.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
     def __init__(self, parent):
@@ -277,8 +305,8 @@ class sppasActionsPanel(wx.Panel):
         log_btn = sppasBitmapTextButton(self, "View logs", name="view_log")
 
         action_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        action_sizer.Add(log_btn, 1, wx.ALL | wx.EXPAND, 1)
+        action_sizer.Add(log_btn, 1, wx.ALL | wx.EXPAND, 2)
         action_sizer.Add(wx.StaticLine(self, style=wx.LI_VERTICAL), 0, wx.ALL | wx.EXPAND, 0)
-        action_sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 1)
+        action_sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 2)
 
         self.SetSizer(action_sizer)

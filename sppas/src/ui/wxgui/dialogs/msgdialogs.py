@@ -109,7 +109,7 @@ class YesNoQuestion(spBaseMessageDialog):
         return self.CreateButtonBox([no], [yes])
 
     def _on_no(self, evt):
-        #self.Destroy() # does not work on MacOS
+        # self.Destroy() # does not work on MacOS
         self.Close()
         self.SetReturnCode(wx.ID_NO)
 

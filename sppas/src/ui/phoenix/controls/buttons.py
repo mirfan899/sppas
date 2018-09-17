@@ -39,7 +39,7 @@ class sppasTextButton(GenButton):
 
 
 class sppasBitmapTextButton(GenBitmapTextButton):
-    """Create a simple text button. Inherited from the wx.Button.
+    """Create a simple text button.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France

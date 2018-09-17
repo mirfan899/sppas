@@ -104,7 +104,7 @@ class WxAppSettings(sppasBaseSettings):
 
             fg_color=wx.Colour(240, 240, 240, alpha=wx.ALPHA_OPAQUE),
             title_fg_color=wx.Colour(128, 128, 128, alpha=wx.ALPHA_OPAQUE),
-            button_fg_color=wx.Colour(128, 128, 128, alpha=wx.ALPHA_OPAQUE),
+            button_fg_color=wx.Colour(128, 128, 128),
 
             bg_color=wx.Colour(20, 20, 20, alpha=wx.ALPHA_OPAQUE),
             title_bg_color=wx.Colour(40, 40, 40, alpha=wx.ALPHA_OPAQUE),

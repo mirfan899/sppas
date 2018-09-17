@@ -33,7 +33,11 @@
 
 """
 from .main_app import sppasApp
+from .main_config import WxAppSettings
+from .main_config import WxAppConfig
 
 __all__ = (
-    'sppasApp'
+    'sppasApp',
+    'WxAppSettings',
+    'WxAppConfig'
 )

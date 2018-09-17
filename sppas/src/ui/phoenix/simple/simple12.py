@@ -334,19 +334,22 @@ class myButton(wx.Button):
 # ---------------------------------------------------------------------------
 
 
-class myFrame(wx.Frame):
-    """Create my own frame. Inherited from the wx.Frame.
+class myMainWindow(wx.Dialog):
+    """Create my own frame.
+
+    Inherited from the wx.Dialog because it doesn't need a menu, a statusbar
+    and a toolbar. However, it can't inherit from wx.TopLevelWindow because
+    we want wx.EVT_CLOSE.
 
     """
     def __init__(self):
 
-        settings = wx.GetApp().settings
+        super(myMainWindow, self).__init__(
+              parent=None,
+              title=wx.GetApp().GetAppDisplayName(),
+              style=wx.GetApp().settings.frame_style)
 
-        title = wx.GetApp().GetAppDisplayName()
-        wx.Frame.__init__(self,
-                          None,
-                          title=title,
-                          style=settings.frame_style)
+        settings = wx.GetApp().settings
         self.SetMinSize((300, 200))
         self.SetSize(wx.Size(settings.frame_width, settings.frame_height))
 
@@ -729,7 +732,7 @@ class myApp(wx.App):
 
     def create_application(self):
         """Create the main frame of the application and show it."""
-        frm = myFrame()
+        frm = myMainWindow()
         self.SetTopWindow(frm)
         if self.splash:
             self.splash.Close()
