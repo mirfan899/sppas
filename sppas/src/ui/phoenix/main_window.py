@@ -192,10 +192,7 @@ class sppasMainWindow(sppasDialog):
         :param event: (wx.Event) Un-used.
 
         """
-        dialog = YesNoQuestion(
-            "Confirm you want to exit {:s}...".format(sg.__name__))
-        response = dialog.ShowModal()
-        dialog.Destroy()
+        response = YesNoQuestion("Confirm exit of {:s}...".format(sg.__name__))
         if response == wx.ID_YES:
             self.exit()
 

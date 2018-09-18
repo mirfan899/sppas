@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.dialogs.basedialog.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.ui.phoenix.dialogs.messages.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import wx
@@ -98,8 +98,8 @@ class sppasBaseMessageDialog(sppasDialog):
 # ---------------------------------------------------------------------------
 
 
-class YesNoQuestion(sppasBaseMessageDialog):
-    """Display a message with a yes-no question.
+class sppasYesNoDialog(sppasBaseMessageDialog):
+    """Create a message in a wx.Dialog with a yes-no question.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -110,7 +110,7 @@ class YesNoQuestion(sppasBaseMessageDialog):
     wx.ID_YES or wx.ID_NO is returned if a button is clicked.
     wx.ID_CANCEL is returned if the dialog is destroyed.
 
-    >>> dialog = YesNoQuestion("Confirm exit...")
+    >>> dialog = sppasYesNoDialog("Confirm exit...")
     >>> response = dialog.ShowModal()
     >>> dialog.Destroy()
     >>> if response == wx.ID_YES:
@@ -119,7 +119,7 @@ class YesNoQuestion(sppasBaseMessageDialog):
     """
 
     def __init__(self, message):
-        super(YesNoQuestion, self).__init__(
+        super(sppasYesNoDialog, self).__init__(
             parent=None,
             message=message,
             style=wx.YES_NO)
@@ -129,7 +129,6 @@ class YesNoQuestion(sppasBaseMessageDialog):
     def _create_buttons(self):
         self.CreateButtons([wx.ID_NO, wx.ID_YES])
         self.Bind(wx.EVT_BUTTON, self._process_event)
-        self.Bind(wx.EVT_CLOSE, self._process_event)
         self.SetAffirmativeId(wx.ID_YES)
 
     # -----------------------------------------------------------------------
@@ -150,3 +149,81 @@ class YesNoQuestion(sppasBaseMessageDialog):
 
 # ---------------------------------------------------------------------------
 
+
+class sppasInformationDialog(sppasBaseMessageDialog):
+    """Create a message in a wx.Dialog with an information.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    wx.ID_OK is returned if the button is clicked.
+    wx.ID_CANCEL is returned if the dialog is destroyed.
+
+    >>> dialog = sppasInformationDialog("you are here")
+    >>> dialog.ShowModal()
+    >>> dialog.Destroy()
+
+    """
+
+    def __init__(self, message):
+        super(sppasInformationDialog, self).__init__(
+            parent=None,
+            message=message,
+            style=wx.ICON_INFORMATION)
+
+    # -----------------------------------------------------------------------
+
+    def _create_buttons(self):
+        self.CreateButtons([wx.ID_OK])
+        self.SetAffirmativeId(wx.ID_OK)
+
+# ---------------------------------------------------------------------------
+# Ready-to-use functions to display messages
+# ---------------------------------------------------------------------------
+
+
+def YesNoQuestion(message):
+    """Display a yes-no question.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    :param message: (str) The question to ask
+    :returns: the response
+
+    wx.ID_YES or wx.ID_NO is returned if a button is clicked.
+    wx.ID_CANCEL is returned if the dialog is destroyed.
+
+    """
+    dialog = sppasYesNoDialog(message)
+    response = dialog.ShowModal()
+    dialog.Destroy()
+    return response
+
+
+def Information(message):
+    """Display an information.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    :param message: (str) The question to ask
+    :returns: the response
+
+    wx.ID_OK is returned if a button is clicked.
+    wx.ID_CANCEL is returned if the dialog is destroyed.
+
+    """
+    dialog = sppasInformationDialog(message)
+    response = dialog.ShowModal()
+    dialog.Destroy()
+    return response

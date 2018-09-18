@@ -6,7 +6,10 @@ SPPAS = path.dirname(path.dirname(path.dirname(path.dirname(path.dirname(path.di
 sys.path.append(SPPAS)
 
 from sppas.src.ui.phoenix.dialogs.basedialog import sppasDialog
-from sppas.src.ui.phoenix.dialogs.messages import YesNoQuestion
+from sppas.src.ui.phoenix.dialogs.messages import sppasYesNoDialog
+from sppas.src.ui.phoenix.dialogs.messages import sppasInformationDialog
+from sppas.src.ui.phoenix.dialogs.feedback import sppasFeedbackDialog
+
 from sppas.src.ui.phoenix import WxAppConfig, WxAppSettings
 
 # ---------------------------------------------------------------------------
@@ -46,14 +49,23 @@ app = testApp()
 # demo.ShowModal()
 # demo.Destroy()
 
-demo = YesNoQuestion("This is a question?")
-r = demo.ShowModal()
-if r == wx.ID_YES:
-    print("Click on Yes")
-elif r == wx.ID_NO:
-    print("Click on No")
-else:
-    print('Nothing clicked on. {:d}'.format(r))
+# demo = sppasYesNoDialog("This is a question?")
+# r = demo.ShowModal()
+# if r == wx.ID_YES:
+#     print("Click on Yes")
+# elif r == wx.ID_NO:
+#     print("Click on No")
+# else:
+#     print('Nothing clicked on. {:d}'.format(r))
+# demo.Destroy()
+
+# demo = sppasInformationDialog("This is an information!")
+# demo.ShowModal()
+# demo.Destroy()
+
+demo = sppasFeedbackDialog(None)
+demo.ShowModal()
 demo.Destroy()
+
 app.SetTopWindow(demo)
 app.MainLoop()

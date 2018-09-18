@@ -239,7 +239,8 @@ class sppasDialog(wx.Dialog):
         :param event: (wx.Event)
 
         """
-        raise NotImplementedError
+        event.Skip()
+        #raise NotImplementedError
 
     # ---------------------------------------------------------------------------
     # Put the whole content of the dialog in a sizer

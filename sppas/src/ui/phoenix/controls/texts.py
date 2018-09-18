@@ -3,6 +3,34 @@ import wx
 # ---------------------------------------------------------------------------
 
 
+class sppasStaticText(wx.StaticText):
+    """Create a static text.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    Font and foreground color are taken from the application settings but
+    background color is the one of the parent.
+
+    """
+
+    def __init__(self, parent, label):
+        super(sppasStaticText, self).__init__(
+            parent,
+            label=label,
+            style=wx.ALIGN_CENTER)
+
+        # Fix Look&Feel
+        settings = wx.GetApp().settings
+        self.SetFont(settings.text_font)
+        self.SetBackgroundColour(parent.GetBackgroundColour())
+        self.SetForegroundColour(settings.fg_color)
+
+# ---------------------------------------------------------------------------
+
 class sppasTitleText(wx.StaticText):
     """Create a title.
 
