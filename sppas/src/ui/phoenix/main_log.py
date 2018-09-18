@@ -285,10 +285,12 @@ class sppasLogWindow(wx.TopLevelWindow):
         Set the title, the icon and the properties of the frame.
 
         """
+        settings = wx.GetApp().settings
+
         # Fix frame properties
         self.SetMinSize((320, 200))
-        w = int(wx.GetApp().settings.frame_size[0] * 0.75)
-        h = int(wx.GetApp().settings.frame_size[1] * 0.75)
+        w = int(settings.frame_size[0] * 0.75)
+        h = int(settings.frame_size[1] * 0.75)
         self.SetSize(wx.Size(w, h))
 
         self.SetSize(wx.Size(640, 480))
@@ -296,13 +298,14 @@ class sppasLogWindow(wx.TopLevelWindow):
 
         # icon
         _icon = wx.Icon()
-        _icon.CopyFromBitmap(sppasSwissKnife.get_bmp_icon("sppas"))
+        bmp = sppasSwissKnife.get_bmp_icon("sppas_32", height=32, colorize=False)
+        _icon.CopyFromBitmap(bmp)
         self.SetIcon(_icon)
 
         # colors & font
-        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        self.SetForegroundColour(wx.GetApp().settings.fg_color)
-        self.SetFont(wx.GetApp().settings.text_font)
+        self.SetBackgroundColour(settings.bg_color)
+        self.SetForegroundColour(settings.fg_color)
+        self.SetFont(settings.text_font)
 
     # -----------------------------------------------------------------------
 

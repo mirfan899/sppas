@@ -34,13 +34,14 @@
 
 """
 import wx
+from ..controls.texts import sppasMessageText
 from .basedialog import sppasDialog
 
 # ----------------------------------------------------------------------------
 
 
 class sppasBaseMessageDialog(sppasDialog):
-    """
+    """Base class to create message dialogs.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -63,40 +64,59 @@ class sppasBaseMessageDialog(sppasDialog):
             title="Message",
             style=wx.DEFAULT_FRAME_STYLE | wx.DIALOG_NO_PARENT)
 
+        self._create_content(style, message)
+        self._create_buttons()
+        self.LayoutComponents()
+        self.CenterOnParent()
+
+    # -----------------------------------------------------------------------
+
+    def _create_content(self, style, message):
+        """Create the content of the message dialog."""
+        # Create the header
         if style == wx.ICON_ERROR:
             self.CreateHeader("Error")
         elif style == wx.ICON_WARNING:
             self.CreateHeader("Warning")
         elif style == wx.YES_NO:
-            self.CreateHeader("Question")
+            self.CreateHeader("Question", icon_name="question")
         else:
             self.CreateHeader("Information")
 
-        self._create_content(message)
-        self._create_buttons()
-        self.LayoutComponents()
+        # Create the message content
+        txt = sppasMessageText(self, message)
+        txt.SetName("content")
 
-    def _create_content(self, message):
-        txt = wx.TextCtrl(
-            self,
-            wx.ID_ANY,
-            value=message,
-            style=wx.TE_MULTILINE | wx.NO_BORDER | wx.TE_NO_VSCROLL | wx.TE_WORDWRAP,
-            name="content"
-        )
-        font = wx.GetApp().settings.text_font
-        txt.SetFont(font)
-        txt.SetForegroundColour(self.GetForegroundColour())
-        txt.SetBackgroundColour(self.GetBackgroundColour())
-        # txt.SetMinSize((300, -1))
+    # -----------------------------------------------------------------------
 
     def _create_buttons(self):
+        """Override to create the buttons and bind events."""
         raise NotImplementedError
 
+# ---------------------------------------------------------------------------
+# Message dialogs
 # ---------------------------------------------------------------------------
 
 
 class YesNoQuestion(sppasBaseMessageDialog):
+    """Display a message with a yes-no question.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    wx.ID_YES or wx.ID_NO is returned if a button is clicked.
+    wx.ID_CANCEL is returned if the dialog is destroyed.
+
+    >>> dialog = YesNoQuestion("Confirm exit...")
+    >>> response = dialog.ShowModal()
+    >>> dialog.Destroy()
+    >>> if response == wx.ID_YES:
+    >>>     # do something here
+
+    """
 
     def __init__(self, message):
         super(YesNoQuestion, self).__init__(
@@ -104,11 +124,15 @@ class YesNoQuestion(sppasBaseMessageDialog):
             message=message,
             style=wx.YES_NO)
 
+    # -----------------------------------------------------------------------
+
     def _create_buttons(self):
-        self.CreateButtons([wx.ID_NO], [wx.ID_YES])
+        self.CreateButtons([wx.ID_NO, wx.ID_YES])
         self.Bind(wx.EVT_BUTTON, self._process_event)
         self.Bind(wx.EVT_CLOSE, self._process_event)
         self.SetAffirmativeId(wx.ID_YES)
+
+    # -----------------------------------------------------------------------
 
     def _process_event(self, event):
         """Process any kind of events.
@@ -123,3 +147,6 @@ class YesNoQuestion(sppasBaseMessageDialog):
             self.Close()
         else:
             event.Skip()
+
+# ---------------------------------------------------------------------------
+

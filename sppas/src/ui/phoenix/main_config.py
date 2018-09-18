@@ -102,7 +102,7 @@ class WxAppSettings(sppasBaseSettings):
 
             icons_theme="Refine",
 
-            fg_color=wx.Colour(240, 240, 240, alpha=wx.ALPHA_OPAQUE),
+            fg_color=wx.Colour(230, 230, 230, alpha=wx.ALPHA_OPAQUE),
             title_fg_color=wx.Colour(128, 128, 128, alpha=wx.ALPHA_OPAQUE),
             button_fg_color=wx.Colour(128, 128, 128),
 

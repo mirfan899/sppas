@@ -35,7 +35,7 @@
 import wx
 
 from sppas.src.config import sg
-from ..controls.texts import sppasTitleText
+from ..controls.texts import sppasTitleText, sppasMessageText
 from ..tools import sppasSwissKnife
 
 # ---------------------------------------------------------------------------
@@ -53,12 +53,16 @@ class sppasWelcomePanel(wx.Panel):
     """
 
     def __init__(self, parent):
-        super(sppasWelcomePanel, self).__init__(parent, name="welcome")
+        super(sppasWelcomePanel, self).__init__(
+            parent=parent,
+            name="welcome"
+        )
         self.SetBackgroundColour(parent.GetBackgroundColour())
 
-        # Create a title and a message
+        # Create a title
         st = sppasTitleText(self, "Installation issue...")
 
+        # Create the welcome message
         message = \
             "The Graphical User Interface can't work because "\
             "{:s} requires WxPython version 3 but version 4 is installed.\n" \
@@ -66,36 +70,17 @@ class sppasWelcomePanel(wx.Panel):
             "For any help, see the web page for installation instructions " \
             "and chapter 2 of the documentation.\n\n"\
             "{:s}".format(sg.__name__, sg.__url__)
-        text_style = wx.TAB_TRAVERSAL |\
-                     wx.TE_MULTILINE |\
-                     wx.TE_READONLY |\
-                     wx.TE_BESTWRAP |\
-                     wx.TE_AUTO_URL |\
-                     wx.TE_CENTRE |\
-                     wx.NO_BORDER
-        txt = wx.TextCtrl(self, wx.ID_ANY,
-                          value=message,
-                          style=text_style)
-        font = parent.GetFont()
-        font.Scale(1.2)
-        txt.SetFont(font)
-        txt.SetForegroundColour(parent.GetForegroundColour())
-        txt.SetBackgroundColour(parent.GetBackgroundColour())
+        txt = sppasMessageText(self, message)
 
         bmp = sppasSwissKnife.get_bmp_image('splash_transparent', 100)
         sbmp = wx.StaticBitmap(self, wx.ID_ANY, bmp)
         sbmp.SetBackgroundColour(parent.GetBackgroundColour())
 
         # Organize the title and message
-
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.AddStretchSpacer(1)
         sizer.Add(sbmp, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.AddStretchSpacer(1)
-        sizer.Add(st, 1, wx.LEFT | wx.RIGHT | wx.EXPAND, border=10)
-        sizer.Add(txt, 2, wx.LEFT | wx.RIGHT | wx.EXPAND, border=10)
-        sizer.AddStretchSpacer(1)
+        sizer.Add(st, 1, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(txt, 2, wx.ALL | wx.EXPAND, 0)
 
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
-        self.Show(True)

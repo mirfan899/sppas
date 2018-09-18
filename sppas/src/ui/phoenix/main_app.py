@@ -193,8 +193,15 @@ class sppasApp(wx.App):
 
             - clicks on the [X] button of the frame manager
             - does "ALT-F4" (Windows) or CTRL+X (Unix)
+            - click on a custom 'exit' button
+
+        In case of crash or SIGKILL (or bug!) this method is not invoked.
 
         """
         logging.info('Exit the wx.App() of {:s}.'.format(sg.__name__))
+
+        # Save settings
+        self.settings.save()
+
         # then it will exit. Nothing special to do. Return the exit status.
         return 0

@@ -84,7 +84,8 @@ class sppasDialog(wx.Dialog):
 
         # icon
         _icon = wx.Icon()
-        _icon.CopyFromBitmap(sppasSwissKnife.get_bmp_icon("sppas"))
+        bmp = sppasSwissKnife.get_bmp_icon("sppas_32", height=32, colorize=False)
+        _icon.CopyFromBitmap(bmp)
         self.SetIcon(_icon)
 
         # colors & font
@@ -154,7 +155,9 @@ class sppasDialog(wx.Dialog):
 
         # Add the icon, at left
         if icon_name is not None:
-            bitmap = sppasSwissKnife.get_bmp_icon(icon_name)
+            bitmap = sppasSwissKnife.get_bmp_icon(
+                icon_name,
+                height=settings.title_height * 0.6)
             sBmp = wx.StaticBitmap(header, wx.ID_ANY, bitmap)
             sizer.Add(sBmp, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, border=4)
 
@@ -172,7 +175,6 @@ class sppasDialog(wx.Dialog):
 
         # This header panel properties
         header.SetSizer(sizer)
-        header.SetAutoLayout(True)
 
     # -----------------------------------------------------------------------
 
@@ -182,7 +184,7 @@ class sppasDialog(wx.Dialog):
 
     # -----------------------------------------------------------------------
 
-    def CreateButtons(self, left_flags, right_flags):
+    def CreateButtons(self, left_flags, right_flags=[]):
         """Create a customized buttons panel.
 
         flags is a bit list of the following flags:
@@ -202,16 +204,17 @@ class sppasDialog(wx.Dialog):
 
         # Create the action panel and sizer
         actions = wx.Panel(self, name="actions")
-        actions.SetMinSize((-1, settings.action_height))
+        actions.SetMinSize(wx.Size(-1, settings.action_height))
         actions.SetBackgroundColour(settings.button_bg_color)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         if len(left_flags) > 0:
-            for flag in left_flags:
+            for i, flag in enumerate(left_flags):
                 button = self.__create_button(actions, flag)
                 sizer.Add(button, 2, flag=wx.LEFT | wx.EXPAND, border=0)
-                line = wx.StaticLine(actions, style=wx.LI_VERTICAL)
-                sizer.Add(line, 0, wx.EXPAND, 0)
+                if len(right_flags) > 0 or i+1 < len(left_flags):
+                    line = wx.StaticLine(actions, style=wx.LI_VERTICAL)
+                    sizer.Add(line, 0, wx.EXPAND, 0)
 
         if len(right_flags) > 0:
             if len(left_flags) > 0:
@@ -225,7 +228,77 @@ class sppasDialog(wx.Dialog):
 
         # This action panel properties
         actions.SetSizer(sizer)
+
+    # ---------------------------------------------------------------------------
+
+    def _process_event(self, event):
+        """Must be overriden to process any kind of events.
+
+        This method is invoked when a button is clicked.
+
+        :param event: (wx.Event)
+
+        """
+        raise NotImplementedError
+
+    # ---------------------------------------------------------------------------
+    # Put the whole content of the dialog in a sizer
+    # ---------------------------------------------------------------------------
+
+    def LayoutComponents(self):
+        """Layout the components of the dialog.
+
+            - header at the top
+            - then eventually the toolbar
+            - then a panel with name 'content' (if any)
+            - and eventually a button box at the bottom.
+
+        """
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+        # Add header
+        header = self.FindWindow("header")
+        if header is not None:
+            sizer.Add(header, 1, flag=wx.ALL | wx.EXPAND, border=0)
+            h_line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
+            sizer.Add(h_line, 0, wx.ALL | wx.EXPAND, 0)
+
+        # Add toolbar
+        toolbar = self.FindWindow("toolbar")
+        if toolbar is not None:
+            sizer.Add(toolbar, 1, flag=wx.LEFT | wx.RIGHT | wx.EXPAND, border=0)
+            h_line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
+            sizer.Add(h_line, 0, wx.ALL | wx.EXPAND, 0)
+
+        # Add content
+        content = self.FindWindow("content")
+        if content is not None:
+            sizer.Add(content, 8, flag=wx.ALL | wx.EXPAND, border=10)
+        else:
+            sizer.AddSpacer(2)
+
+        # Add action buttons
+        actions = self.FindWindow("actions")
+        if actions is not None:
+            h_line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
+            sizer.Add(h_line, 0, wx.ALL | wx.EXPAND, 0)
+            # proportion is 0 to ask the sizer to never hide the buttons
+            sizer.Add(actions, 0, flag=wx.ALL | wx.EXPAND, border=2)
+
+        # Since Layout doesn't happen until there is a size event, you will
+        # sometimes have to force the issue by calling Layout yourself. For
+        # example, if a frame is given its size when it is created, and then
+        # you add child windows to it, and then a sizer, and finally Show it,
+        # then it may not receive another size event (depending on platform)
+        # in order to do the initial layout. Simply calling self.Layout from
+        # the end of the frame's __init__ method will usually resolve this.
         self.SetAutoLayout(True)
+        self.SetSizer(sizer)
+        self.Layout()
+
+    # ---------------------------------------------------------------------------
+    # Private
+    # ---------------------------------------------------------------------------
 
     def __create_button(self, parent, flag):
         btns = {
@@ -253,53 +326,3 @@ class sppasDialog(wx.Dialog):
             btn.SetDefault()
 
         return btn
-
-    def _process_event(self, event):
-        """Process any kind of events.
-
-        :param event: (wx.Event)
-
-        """
-        raise NotImplementedError
-
-    # ---------------------------------------------------------------------------
-    # Put the whole content of the dialog in a sizer
-    # ---------------------------------------------------------------------------
-
-    def LayoutComponents(self):
-        """Layout the components of the dialog.
-
-            - header at the top
-            - then eventually the toolbar
-            - then a panel with name 'content' (if any)
-            - and eventually a button box at the bottom.
-
-        """
-        sizer = wx.BoxSizer(wx.VERTICAL)
-
-        # Add header
-        header = self.FindWindow("header")
-        if header is not None:
-            sizer.Add(header, 1, flag=wx.ALL | wx.EXPAND, border=0)
-            sizer.Add(wx.StaticLine(self, style=wx.LI_HORIZONTAL), 0, wx.ALL | wx.EXPAND, 0)
-
-        # Add toolbar
-        toolbar = self.FindWindow("toolbar")
-        if toolbar is not None:
-            sizer.Add(toolbar, 1, flag=wx.LEFT | wx.RIGHT | wx.EXPAND, border=0)
-
-        # Add content
-        content = self.FindWindow("content")
-        if content is not None:
-            sizer.Add(content, 6, flag=wx.ALL | wx.EXPAND, border=10)
-        else:
-            sizer.AddSpacer(2)
-
-        # Add button box
-        buttons = self.FindWindow("actions")
-        if buttons is not None:
-            sizer.Add(wx.StaticLine(self, style=wx.LI_HORIZONTAL), 0, wx.ALL | wx.EXPAND, 0)
-            sizer.Add(buttons, 1, flag=wx.ALL | wx.EXPAND, border=2)
-
-        self.SetSizer(sizer)
-        self.Layout()

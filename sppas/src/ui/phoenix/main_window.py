@@ -41,13 +41,13 @@ from .main_log import sppasLogWindow
 from .controls.buttons import sppasBitmapTextButton
 from .controls.texts import sppasTitleText
 from .panels import sppasWelcomePanel
-from .tools import sppasSwissKnife
 from .dialogs import sppasDialog
+from .dialogs import YesNoQuestion
 
 # ---------------------------------------------------------------------------
 
 
-class sppasMainWindow(wx.Dialog):
+class sppasMainWindow(sppasDialog):
     """Create the main frame of SPPAS.
 
     :author:       Brigitte Bigi
@@ -79,6 +79,7 @@ class sppasMainWindow(wx.Dialog):
         self._create_content()
         self._setup_events()
 
+        # Fix this frame properties
         self.Enable()
         self.SetFocus()
         self.CenterOnScreen()
@@ -94,20 +95,12 @@ class sppasMainWindow(wx.Dialog):
         Set the title, the icon and the properties of the frame.
 
         """
-        # Fix frame properties
+        sppasDialog._init_infos(self)
+
+        # Fix other frame properties
         self.SetMinSize(wx.Size(640, 480))
         self.SetSize(wx.GetApp().settings.frame_size)
         self.SetName('{:s}'.format(sg.__name__))
-
-        # icon
-        _icon = wx.Icon()
-        _icon.CopyFromBitmap(sppasSwissKnife.get_bmp_icon("sppas"))
-        self.SetIcon(_icon)
-
-        # colors & font
-        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        self.SetForegroundColour(wx.GetApp().settings.fg_color)
-        self.SetFont(wx.GetApp().settings.text_font)
 
     # -----------------------------------------------------------------------
 
@@ -117,42 +110,23 @@ class sppasMainWindow(wx.Dialog):
         Content is made of a menu, an area for panels and action buttons.
 
         """
-        # create a sizer to add and organize objects
-        top_sizer = wx.BoxSizer(wx.VERTICAL)
-
-        # add a customized menu (instead of a traditional menu+toolbar)
+        # add a customized menu (instead of an header+toolbar)
         menus = sppasMenuPanel(self)
-        top_sizer.Add(menus, 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
-
-        # separate menu and the rest with a line
-        line_top = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-        top_sizer.Add(line_top, 0, wx.ALL | wx.EXPAND, 0)
+        menus.SetName('header')
 
         # add a panel with a welcome message
         msg_panel = sppasWelcomePanel(self)
-        top_sizer.Add(msg_panel, 3, wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL | wx.EXPAND, 0)
-
-        # separate with a line
-        line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-        top_sizer.Add(line, 0, wx.ALL | wx.EXPAND, 0)
+        msg_panel.SetName("content")
 
         # add some action buttons
         actions = sppasActionsPanel(self)
-        top_sizer.Add(actions, 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
+        actions.SetName('actions')
 
-        # Since Layout doesn't happen until there is a size event, you will
-        # sometimes have to force the issue by calling Layout yourself. For
-        # example, if a frame is given its size when it is created, and then
-        # you add child windows to it, and then a sizer, and finally Show it,
-        # then it may not receive another size event (depending on platform)
-        # in order to do the initial layout. Simply calling self.Layout from
-        # the end of the frame's __init__ method will usually resolve this.
-        self.SetAutoLayout(True)
-        self.SetSizer(top_sizer)
-        self.Layout()
+        # organize the content and lays out.
+        self.LayoutComponents()
 
     # -----------------------------------------------------------------------
-    # Events
+    # Events management
     # -----------------------------------------------------------------------
 
     def _setup_events(self):
@@ -168,6 +142,7 @@ class sppasMainWindow(wx.Dialog):
         # Bind all events from our buttons (including 'exit')
         self.Bind(wx.EVT_BUTTON, self._process_event)
 
+        # Capture keys
         self.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
 
     # -----------------------------------------------------------------------
@@ -208,16 +183,19 @@ class sppasMainWindow(wx.Dialog):
             event.Skip()
 
     # -----------------------------------------------------------------------
+    # Callbaks to events
+    # -----------------------------------------------------------------------
 
     def on_exit(self, event):
-        """Makes sure the user was intending to exit the application."""
-        dialog = wx.MessageDialog(
-            self,
-            message="Are you sure you want to exit {:s}?".format(sg.__name__),
-            caption="Confirm exit...",
-            style=wx.YES_NO,
-            pos=wx.DefaultPosition)
+        """Makes sure the user was intending to exit the application.
+
+        :param event: (wx.Event) Un-used.
+
+        """
+        dialog = YesNoQuestion(
+            "Confirm you want to exit {:s}...".format(sg.__name__))
         response = dialog.ShowModal()
+        dialog.Destroy()
         if response == wx.ID_YES:
             self.exit()
 
@@ -226,36 +204,12 @@ class sppasMainWindow(wx.Dialog):
     # -----------------------------------------------------------------------
 
     def exit(self):
-        """Close the frame, terminating the application."""
+        """Destroy the frame, terminating the application."""
         # Stop redirecting logging to this application
         self.log_window.redirect_logging(False)
         # Terminate all frames
         self.DestroyChildren()
         self.Destroy()
-
-    # ---------------------------------------------------------------------------
-    # Override existing but un-useful methods
-    # ---------------------------------------------------------------------------
-
-    def CreateButtonSizer(self, flags):
-        """Override to disable."""
-        pass
-
-    def CreateSeparatedButtonSizer(self, flags):
-        """Override to disable."""
-        pass
-
-    def CreateSeparatedSizer(self, sizer):
-        """Override to disable."""
-        pass
-
-    def CreateStdDialogButtonSizer(self, flags):
-        """Override to disable."""
-        pass
-
-    def CreateTextSizer(self, message):
-        """Override to disable."""
-        pass
 
 # ---------------------------------------------------------------------------
 
@@ -267,19 +221,20 @@ class sppasMenuPanel(wx.Panel):
 
     """
     def __init__(self, parent):
-        super(sppasMenuPanel, self).__init__(parent)
+        super(sppasMenuPanel, self).__init__(
+            parent=parent,
+            name="header")
 
         # Fix Look&Feel
         settings = wx.GetApp().settings
         self.SetBackgroundColour(settings.title_bg_color)
-        self.SetMinSize((-1, settings.title_height))
+        self.SetMinSize(wx.Size(-1, settings.title_height))
 
-        menu_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
         st = sppasTitleText(self, "{:s}".format(sg.__longname__))
-        menu_sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
+        sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
 
-        self.SetSizer(menu_sizer)
-        self.SetAutoLayout(True)
+        self.SetSizer(sizer)
 
 # ---------------------------------------------------------------------------
 
@@ -296,18 +251,23 @@ class sppasActionsPanel(wx.Panel):
     """
     def __init__(self, parent):
 
-        wx.Panel.__init__(self, parent)
+        super(sppasActionsPanel, self).__init__(
+            parent=parent,
+            name="actions")
 
         settings = wx.GetApp().settings
-        self.SetMinSize((-1, settings.action_height))
-        self.SetBackgroundColour(settings.bg_color)
+
+        # Create the action panel and sizer
+        self.SetMinSize(wx.Size(-1, settings.action_height))
+        self.SetBackgroundColour(settings.button_bg_color)
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         exit_btn = sppasBitmapTextButton(self, "Exit", name="exit")
         log_btn = sppasBitmapTextButton(self, "View logs", name="view_log")
+        vertical_line = wx.StaticLine(self, style=wx.LI_VERTICAL)
 
-        action_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        action_sizer.Add(log_btn, 1, wx.ALL | wx.EXPAND, 2)
-        action_sizer.Add(wx.StaticLine(self, style=wx.LI_VERTICAL), 0, wx.ALL | wx.EXPAND, 0)
-        action_sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 2)
+        sizer.Add(log_btn, 1, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(vertical_line, 0, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 0)
 
-        self.SetSizer(action_sizer)
+        self.SetSizer(sizer)
