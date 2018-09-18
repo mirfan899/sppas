@@ -5,7 +5,8 @@ PROGRAM = path.abspath(__file__)
 SPPAS = path.dirname(path.dirname(path.dirname(path.dirname(path.dirname(path.dirname(PROGRAM))))))
 sys.path.append(SPPAS)
 
-from sppas.src.ui.phoenix.dialogs.basedialog import sppasDialog, YesNoQuestion
+from sppas.src.ui.phoenix.dialogs.basedialog import sppasDialog
+from sppas.src.ui.phoenix.dialogs.messages import YesNoQuestion
 from sppas.src.ui.phoenix import WxAppConfig, WxAppSettings
 
 # ---------------------------------------------------------------------------

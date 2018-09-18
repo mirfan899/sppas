@@ -42,6 +42,7 @@ from .controls.buttons import sppasBitmapTextButton
 from .controls.texts import sppasTitleText
 from .panels import sppasWelcomePanel
 from .tools import sppasSwissKnife
+from .dialogs import sppasDialog
 
 # ---------------------------------------------------------------------------
 
