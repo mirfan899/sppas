@@ -75,6 +75,7 @@ class sppasBaseAbout(wx.lib.scrolledpanel.ScrolledPanel):
         self.license = ""
         self.license_text = ""
         self.icon = ""
+        self.logo = ""
 
     # ------------------------------------------------------------------------
 

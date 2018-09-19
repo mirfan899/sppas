@@ -43,6 +43,7 @@ from .controls.texts import sppasTitleText
 from .panels import sppasWelcomePanel
 from .dialogs import sppasDialog
 from .dialogs import YesNoQuestion
+from .dialogs import About
 
 # ---------------------------------------------------------------------------
 
@@ -162,8 +163,13 @@ class sppasMainWindow(sppasDialog):
 
         if event_name == "exit":
             self.exit()
+
         elif event_name == "view_log":
             self.log_window.focus()
+
+        elif event_name == "about":
+            About(self)
+
         else:
             event.Skip()
 
@@ -260,11 +266,16 @@ class sppasActionsPanel(wx.Panel):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         exit_btn = sppasBitmapTextButton(self, "Exit", name="exit")
+        about_btn = sppasBitmapTextButton(self, "About", name="about")
         log_btn = sppasBitmapTextButton(self, "View logs", name="view_log")
-        vertical_line = wx.StaticLine(self, style=wx.LI_VERTICAL)
+
+        vertical_line_1 = wx.StaticLine(self, style=wx.LI_VERTICAL)
+        vertical_line_2 = wx.StaticLine(self, style=wx.LI_VERTICAL)
 
         sizer.Add(log_btn, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(vertical_line, 0, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(vertical_line_1, 0, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(about_btn, 1, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(vertical_line_2, 0, wx.ALL | wx.EXPAND, 0)
         sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 0)
 
         self.SetSizer(sizer)
