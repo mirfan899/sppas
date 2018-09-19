@@ -77,7 +77,7 @@ class sppasFeedbackDialog(sppasDialog):
             title='{:s} Feedback'.format(sg.__name__),
             style=wx.DEFAULT_FRAME_STYLE)
 
-        self.CreateHeader("Send e-mail", icon_name="mail-at")
+        self.CreateHeader("Send e-mail...", icon_name="mail-at")
         self._create_content()
         self._create_buttons()
 
@@ -135,7 +135,7 @@ class sppasFeedbackDialog(sppasDialog):
     # -----------------------------------------------------------------------
 
     def _create_buttons(self):
-        """Override to create the buttons and bind events."""
+        """Create the buttons and bind events."""
 
         settings = wx.GetApp().settings
         panel = wx.Panel(self, name="actions")

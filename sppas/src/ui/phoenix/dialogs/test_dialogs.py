@@ -10,6 +10,7 @@ from sppas.src.ui.phoenix.dialogs.messages import sppasYesNoDialog
 from sppas.src.ui.phoenix.dialogs.messages import sppasInformationDialog
 from sppas.src.ui.phoenix.dialogs.feedback import sppasFeedbackDialog
 from sppas.src.ui.phoenix.dialogs.about import sppasAboutDialog
+from sppas.src.ui.phoenix.dialogs.settings import sppasSettingsDialog
 
 from sppas.src.ui.phoenix import WxAppConfig, WxAppSettings
 
@@ -68,7 +69,11 @@ app = testApp()
 # demo.ShowModal()
 # demo.Destroy()
 
-demo = sppasAboutDialog(None)
+# demo = sppasAboutDialog(None)
+# demo.ShowModal()
+# demo.Destroy()
+
+demo = sppasSettingsDialog(None)
 demo.ShowModal()
 demo.Destroy()
 

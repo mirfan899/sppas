@@ -162,3 +162,9 @@ class WxAppSettings(sppasBaseSettings):
         w *= 0.6
         h = min(0.9*h, w*9/16)
         return wx.Size(max(int(w), 640), max(int(h), 480))
+
+    # -----------------------------------------------------------------------
+
+    def set(self, key, value):
+        """Set a new value to a key."""
+        self.__dict__[key] = value

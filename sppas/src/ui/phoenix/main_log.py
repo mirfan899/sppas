@@ -578,7 +578,7 @@ class sppasLogTitlePanel(wx.Panel):
         self.SetMinSize((-1, settings.title_height))
 
         # Create the title
-        title = '{:s} Log Window'.format(sg.__name__)
+        title = '{:s} Log Window...'.format(sg.__name__)
         st = sppasTitleText(parent=self, label=title)
 
         # Put the title in a sizer

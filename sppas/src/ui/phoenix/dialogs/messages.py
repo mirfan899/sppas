@@ -53,7 +53,6 @@ class sppasBaseMessageDialog(sppasDialog):
     def __init__(self, parent, message, style=wx.ICON_INFORMATION):
         """Create a dialog with a message.
 
-
         :param parent: (wx.Window)
         :param message: (str) the file to display in this frame.
         :param style: ONE of wx.ICON_INFORMATION, wx.ICON_ERROR, wx.ICON_EXCLAMATION, wx.YES_NO
