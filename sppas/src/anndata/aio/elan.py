@@ -663,7 +663,9 @@ class sppasEAF(sppasBaseIO):
         :param tier: (sppasTier) The tier to add the annotation
         :param time_slots: (dict)
         :param removed_annotations: (dict) Alignable annotations
-        without time values.
+        without time values. key=id of the removed annotation,
+        value=id of the aligned-annotation for which the removed one
+        is attached (in the same tier).
 
         """
         # Some time slots don't have a time value, so some annotations do not
@@ -711,8 +713,8 @@ class sppasEAF(sppasBaseIO):
 
                 # update
                 for a in removed:
-                    ann_id = a.attrib['ANNOTATION_ID']
-                    removed_annotations[ann_id] = ann.get_meta('id')
+                    a_id = a.attrib['ANNOTATION_ID']
+                    removed_annotations[a_id] = ann.get_meta('id')
 
                 # prepare for the next annotation
                 begin_time = None
@@ -808,7 +810,8 @@ class sppasEAF(sppasBaseIO):
                 annotation_root,
                 tier,
                 'REF_ANNOTATION')
-            ann_ref_id = ref_ann_root.attrib['ANNOTATION_REF']
+            ann_id = ref_ann_root.attrib['ANNOTATION_ID']  # this new ann id
+            ann_ref_id = ref_ann_root.attrib['ANNOTATION_REF']  # parent ann id
 
             ann_ref = parent_tier.get_annotation(
                 removed_annotations.get(ann_ref_id, ann_ref_id))
@@ -817,6 +820,7 @@ class sppasEAF(sppasBaseIO):
                                      ''.format(tier.get_name(), ann_ref_id))
             label = sppasLabel(sppasTag(
                 ref_ann_root.find('ANNOTATION_VALUE').text))
+            location = ann_ref.get_location().copy()
 
             if ann_ref_id in removed_annotations:
                 # we append the label like it's done into the reference,
@@ -829,11 +833,30 @@ class sppasEAF(sppasBaseIO):
                 logging.info('Label {:s} appended to annotation {:s}.'
                              ''.format(label.get_best().get_content(),
                                        tier[-1].get_meta('id')))
+                removed_annotations[ann_id] = tier[-1].get_meta('id')
+
             else:
-                location = ann_ref.get_location().copy()
-                new_ann = sppasAnnotation(location, label)
-                tier.append(new_ann)
-                sppasEAF.__add_meta_in_ann(ref_ann_root, new_ann)
+                # several annotation references can share the same parent!
+                # perhaps we already have add such annotation
+                if 'PREVIOUS_ANNOTATION' in ref_ann_root.attrib:
+                    tier[-1].append_label(label)
+                    logging.info('Label {:s} appended to annotation {:s}.'
+                                 ''.format(label.get_best().get_content(),
+                                           tier[-1].get_meta('id')))
+                    removed_annotations[ann_id] = tier[-1].get_meta('id')
+
+                else:
+                    new_ann = sppasAnnotation(location, label)
+                    new_ann.set_meta('ann_parent_ref', ann_ref_id)
+                    try:
+                        tier.append(new_ann)
+                    except:
+                        logging.error('Tier: {:s}, ann_id={:s}, ann_ref_id: {:s}'
+                                      ''.format(tier.get_name(), ann_id, ann_ref_id))
+                        logging.error('Previous ann: {:s}'.format(tier[-1]))
+                        logging.error('New ann: {:s}'.format(new_ann))
+                        raise
+                    sppasEAF.__add_meta_in_ann(ref_ann_root, new_ann)
 
     # -----------------------------------------------------------------------
     # writer
