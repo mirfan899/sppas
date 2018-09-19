@@ -60,7 +60,11 @@ class sppasWelcomePanel(wx.Panel):
         self.SetBackgroundColour(parent.GetBackgroundColour())
 
         # Create a title
-        st = sppasTitleText(self, "Installation issue...")
+        st = sppasTitleText(
+            parent=self,
+            label="Installation issue...",
+            style=wx.ALIGN_CENTER_HORIZONTAL)
+        st.SetBackgroundColour(parent.GetBackgroundColour())
 
         # Create the welcome message
         message = \
@@ -78,9 +82,11 @@ class sppasWelcomePanel(wx.Panel):
 
         # Organize the title and message
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(sbmp, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(st, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(txt, 2, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(sbmp, 2, wx.ALL | wx.EXPAND, 0)
+        sizer.AddStretchSpacer(1)
+        sizer.Add(st, 0, wx.ALL | wx.EXPAND, 0)
+        sizer.AddStretchSpacer(1)
+        sizer.Add(txt, 6, wx.ALL | wx.EXPAND, 0)
 
         self.SetSizer(sizer)
         self.SetAutoLayout(True)

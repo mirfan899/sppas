@@ -79,7 +79,10 @@ class sppasDialog(wx.Dialog):
 
         """
         # Fix frame properties
-        self.SetMinSize(wx.Size(320, 200))
+        self.SetMinSize((320, 200))
+        w = int(wx.GetApp().settings.frame_size[0] * 0.7)
+        h = int(wx.GetApp().settings.frame_size[1] * 0.8)
+        self.SetSize(wx.Size(w, h))
         self.SetName('{:s}-{:d}'.format(sg.__name__, self.GetId()))
 
         # icon
@@ -308,7 +311,7 @@ class sppasDialog(wx.Dialog):
             wx.ID_YES: ("Yes", "yes"),
             wx.ID_NO: ("No", "no"),
             wx.ID_APPLY: ("Apply", "apply"),
-            wx.ID_CLOSE: ("Close", "close"),
+            wx.ID_CLOSE: ("Close", "close-window"),
             wx.ID_SAVE: ("Save", "save"),
         }
         btn = sppasBitmapTextButton(parent, btns[flag][0], btns[flag][1])
@@ -317,12 +320,15 @@ class sppasDialog(wx.Dialog):
 
         if flag == wx.CANCEL:
             self.SetAffirmativeId(wx.ID_CANCEL)
+
         elif flag in (wx.CLOSE, wx.OK):
             btn.SetDefault()
             btn.SetFocus()
             self.SetAffirmativeId(flag)
+
         elif flag == wx.YES:
             self.SetAffirmativeId(wx.ID_YES)
+
         elif flag == wx.OK:
             btn.SetDefault()
 

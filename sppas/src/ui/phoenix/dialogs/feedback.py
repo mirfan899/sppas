@@ -43,7 +43,7 @@ except ImportError:
 from sppas.src.config import sg
 
 from ..controls.buttons import sppasBitmapTextButton
-from ..controls.texts import sppasMessageText, sppasStaticText
+from ..controls.texts import sppasStaticText, sppasTextCtrl
 from .basedialog import sppasDialog
 from .messages import Information
 
@@ -52,49 +52,6 @@ from .messages import Information
 # -------------------------------------------------------------------------
 
 DESCRIBE_TEXT = "Your message here..."
-
-# -------------------------------------------------------------------------
-
-
-class FeedbackForm(object):
-    """Create a form to send an e-mail, and do it.
-
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      develop@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-
-    Data of the form are picked up from a feedback dialog.
-
-    """
-    def __init__(self, dialog, web_browser):
-        self.dialog = dialog
-        self.web_browser = web_browser
-
-    # -----------------------------------------------------------------------
-
-    def SendWithDefault(self):
-        text = self.dialog.GetBodyText()
-        text = text.strip()
-        self.web_browser.open("mailto:%s?subject=%s&body=%s" % (
-            quote(self.dialog.GetToText()),
-            quote(self.dialog.GetSubjectText()),
-            quote(text.encode('utf-8'))))
-
-    # -----------------------------------------------------------------------
-
-    def SendWithGmail(self):
-        self.web_browser.open("https://mail.google.com/mail/?compose=1&view=cm&fs=1&to=%s&su=%s&body=%s" % (
-            quote(self.dialog.GetToText()),
-            quote(self.dialog.GetSubjectText()),
-            quote(self.dialog.GetBodyText())))
-
-    # -----------------------------------------------------------------------
-
-    def SendWithOther(self):
-        Information("Copy and paste this email into your favorite email "
-                    "client and send it from there.")
 
 # ----------------------------------------------------------------------------
 
@@ -115,14 +72,12 @@ class sppasFeedbackDialog(sppasDialog):
         :param parent: (wx.Window)
 
         """
-        super(sppasDialog, self).__init__(
+        super(sppasFeedbackDialog, self).__init__(
             parent=parent,
-            title="Feedback",
+            title='{:s} Feedback'.format(sg.__name__),
             style=wx.DEFAULT_FRAME_STYLE)
-        self.controller = FeedbackForm(self, webbrowser)
 
-        # Create the header
-        self.CreateHeader("Send feedback to the author", icon_name="mail-at")
+        self.CreateHeader("Send e-mail", icon_name="mail-at")
         self._create_content()
         self._create_buttons()
 
@@ -136,52 +91,45 @@ class sppasFeedbackDialog(sppasDialog):
         """Create the content of the message dialog."""
 
         panel = wx.Panel(self, name="content")
-        panel.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        panel.SetBackgroundColour(self.GetBackgroundColour())
 
-        # Create the message content
+        to = sppasStaticText(panel, label="To: ")
+        self.to_text = sppasStaticText(
+            parent=panel,
+            label=sg.__contact__)
 
-        body_style = wx.TAB_TRAVERSAL | \
-                     wx.TE_BESTWRAP | \
-                     wx.TE_AUTO_URL | \
-                     wx.TE_LEFT | \
-                     wx.BORDER_SIMPLE
-        feed_style = body_style | wx.TE_MULTILINE | wx.TE_READONLY
+        subject = sppasStaticText(panel, label="Subject: ")
+        self.subject_text = sppasStaticText(
+            parent=panel,
+            label=sg.__name__ + " " + sg.__version__ + " - Feedback...")
 
-        # -----------------------------------------------------------------------
-
-        self.to_text = wx.TextCtrl(panel, value=sg.__contact__, style=feed_style)
-        self.to_text.SetForegroundColour(wx.GetApp().settings.fg_color)
-        self.to_text.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        self.to_text.SetFont(wx.GetApp().settings.text_font)
-
-        self.subject_text = wx.TextCtrl(panel,
-                                        value=sg.__name__ +
-                                              " " +
-                                              sg.__version__ +
-                                              " - Feedback...",
-                                        style=feed_style)
-        self.subject_text.SetForegroundColour(wx.GetApp().settings.fg_color)
-        self.subject_text.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        self.subject_text.SetFont(wx.GetApp().settings.text_font)
-
-        self.body_text = wx.TextCtrl(panel, value=DESCRIBE_TEXT, style=body_style)
-        self.body_text.SetForegroundColour(wx.GetApp().settings.fg_color)
-        self.body_text.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        self.body_text.SetFont(wx.GetApp().settings.text_font)
-        self.body_text.SetMinSize((300, 200))
+        body = sppasStaticText(panel, label="Body: ")
+        body_style = wx.TAB_TRAVERSAL | wx.TE_BESTWRAP |\
+                     wx.TE_MULTILINE | wx.BORDER_STATIC
+        self.body_text = sppasTextCtrl(
+            parent=panel,
+            value=DESCRIBE_TEXT,
+            style=body_style)
         self.body_text.Bind(wx.EVT_CHAR, self._on_char, self.body_text)
         self.body_text.SetSelection(0, len(DESCRIBE_TEXT))
 
         grid = wx.FlexGridSizer(4, 2, 5, 5)
         grid.AddGrowableCol(1)
         grid.AddGrowableRow(2)
-        grid.Add(sppasStaticText(panel, label="To: "), flag=wx.ALIGN_CENTER_VERTICAL)
-        grid.Add(self.to_text, 0, flag=wx.EXPAND)
-        grid.Add(sppasStaticText(panel, label="Subject: "), flag=wx.ALIGN_CENTER_VERTICAL)
-        grid.Add(self.subject_text, 0, flag=wx.EXPAND)
-        grid.Add(sppasStaticText(panel, label="Body: "), flag=wx.TOP)
-        grid.Add(self.body_text, 1, flag=wx.EXPAND)
 
+        grid.Add(to, 0)
+        grid.Add(self.to_text, 0, flag=wx.EXPAND)
+
+        grid.Add(subject, 0)
+        grid.Add(self.subject_text, 0, flag=wx.EXPAND)
+
+        grid.Add(body, 0, flag=wx.TOP)
+        grid.Add(self.body_text, 2, flag=wx.EXPAND)
+
+        s = sppasStaticText(panel, label="Send with: ")
+        grid.Add(s, 0)
+
+        panel.SetAutoLayout(True)
         panel.SetSizer(grid)
 
     # -----------------------------------------------------------------------
@@ -191,22 +139,31 @@ class sppasFeedbackDialog(sppasDialog):
 
         settings = wx.GetApp().settings
         panel = wx.Panel(self, name="actions")
+        panel.SetMinSize(wx.Size(-1, settings.action_height))
+        panel.SetBackgroundColour(settings.button_bg_color)
 
-        # Create the action panel and sizer
-        self.SetMinSize(wx.Size(-1, settings.action_height))
-        self.SetBackgroundColour(settings.button_bg_color)
+        # Create the buttons
+        gmail_btn = sppasBitmapTextButton(panel, "Gmail", name="gmail")
+        default_btn = sppasBitmapTextButton(panel, "E-mail", name="email-window")
+        other_btn = sppasBitmapTextButton(panel, "Other", name="at")
+        close_btn = sppasBitmapTextButton(panel, "Close", name="close-window")
+
+        # Create vertical lines to separate buttons
+        vertical_line_1 = wx.StaticLine(panel, style=wx.LI_VERTICAL)
+        vertical_line_2 = wx.StaticLine(panel, style=wx.LI_VERTICAL)
+        vertical_line_3 = wx.StaticLine(panel, style=wx.LI_VERTICAL)
+
+        # Organize buttons in a sizer
         sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer.Add(gmail_btn, 1, wx.EXPAND, 0)
+        sizer.Add(vertical_line_1, 0, wx.EXPAND, 0)
+        sizer.Add(default_btn, 1, wx.EXPAND, 0)
+        sizer.Add(vertical_line_2, 0, wx.EXPAND, 0)
+        sizer.Add(other_btn, 1, wx.EXPAND, 0)
+        sizer.Add(vertical_line_3, 0, wx.EXPAND, 0)
+        sizer.Add(close_btn, 2, wx.EXPAND, border=0)
 
-        exit_btn = sppasBitmapTextButton(panel, "Close", name="close")
-        exit_btn.Bind(wx.EVT_BUTTON, self._process_event, exit_btn)
-
-        #log_btn = sppasBitmapTextButton(self, "View logs", name="view_log")
-        vertical_line = wx.StaticLine(panel, style=wx.LI_VERTICAL)
-
-        #sizer.Add(log_btn, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(vertical_line, 0, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 0)
-
+        self.Bind(wx.EVT_BUTTON, self._process_event)
         panel.SetSizer(sizer)
 
     # ------------------------------------------------------------------------
@@ -223,55 +180,82 @@ class sppasFeedbackDialog(sppasDialog):
         event_name = event_obj.GetName()
         print("event:"+event_name)
 
-        if event_name == "close":
+        if event_name == "close-window":
             self.SetReturnCode(wx.ID_CLOSE)
             self.Close()
+
+        elif event_name == "email-window":
+            self.SendWithDefault()
+
+        elif event_name == "gmail":
+            self.SendWithGmail()
+
+        elif event_name == "at":
+            Information("Copy and paste the message into your favorite email "
+                        "client and send it from there.")
         else:
             event.Skip()
 
     # -----------------------------------------------------------------------
 
     def _on_char(self, evt):
+
         if self.body_text.GetValue().strip() == DESCRIBE_TEXT:
             self.body_text.SetForegroundColour(wx.GetApp().settings.bg_color)
             self.body_text.SetValue('')
-        if self._ctrl_a(evt):
+
+        if evt.ControlDown() and evt.KeyCode == 1:
+            # Ctrl+A
             self.body_text.SelectAll()
+
         else:
             evt.Skip()
-
-    def _ctrl_a(self, evt):
-        KEY_CODE_A = 1
-        return evt.ControlDown() and evt.KeyCode == KEY_CODE_A
-
-    def _on_send(self, event):
-        idb = event.GetId()
-        if idb == self.btn_default.GetId():
-            self.controller.SendWithDefault()
-        elif idb == self.btn_gmail.GetId():
-            self.controller.SendWithGmail()
-        elif idb == self.btn_other.GetId():
-            self.controller.SendWithOther()
-        else:
-            event.Skip()
 
     # ------------------------------------------------------------------------
     # Public methods
     # ------------------------------------------------------------------------
 
     def GetToText(self):
-        return self.to_text.GetValue()
+        return self.to_text.GetLabelText()
 
     def GetSubjectText(self):
-        return self.subject_text.GetValue()
+        return self.subject_text.GetLabelText()
 
     def GetBodyText(self):
         return self.body_text.GetValue()
 
+    # -----------------------------------------------------------------------
+
+    def SetBodyText(self, text):
+        self.body_text.WriteText(text)
+        self.body_text.SetInsertionPoint(0)
+
+    # -----------------------------------------------------------------------
+
+    def SendWithDefault(self):
+        text = self.GetBodyText().strip()
+        webbrowser.open(
+            "mailto:{to}?subject={subject}&body={body}".format(
+                to=quote(self.GetToText()),
+                subject=quote(self.GetSubjectText()),
+                body=quote(text.encode('utf-8'))))
+
+    # -----------------------------------------------------------------------
+
+    def SendWithGmail(self):
+        text = self.GetBodyText()
+        text = text.strip()
+        webbrowser.open(
+            "https://mail.google.com/mail/?compose=1&view=cm&fs=1&to=%s&su=%s&body=%s" % (
+            quote(self.GetToText()),
+            quote(self.GetSubjectText()),
+            quote(text))
+        )
+
 # -------------------------------------------------------------------------
 
 
-def Feedback(parent):
+def Feedback(parent, text=None):
     """Display a dialog to send feedback.
 
     :author:       Brigitte Bigi
@@ -280,15 +264,17 @@ def Feedback(parent):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    :param message: (str) The question to ask
+    :param parent: (wx.Window)
+    :param text: (str) the text to send in the body of the e-mail.
     :returns: the response
 
-    wx.ID_CANCEL is returned if the dialog is destroyed or no e-mail
+    wx.ID_CANCEL is returned if the dialog is destroyed or if no e-mail
     was sent.
 
     """
     dialog = sppasFeedbackDialog(parent)
-    dialog.controller.Populate(None)
+    if text is not None:
+        dialog.SetBodyText(text)
     response = dialog.ShowModal()
     dialog.Destroy()
     return response

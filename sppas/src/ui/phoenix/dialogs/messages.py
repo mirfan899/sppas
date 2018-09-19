@@ -81,7 +81,7 @@ class sppasBaseMessageDialog(sppasDialog):
         elif style == wx.YES_NO:
             self.CreateHeader("Question", icon_name="question")
         else:
-            self.CreateHeader("Information")
+            self.CreateHeader("Information", icon_name="information")
 
         # Create the message content
         txt = sppasMessageText(self, message)

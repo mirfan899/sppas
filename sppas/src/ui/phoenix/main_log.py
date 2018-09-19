@@ -47,6 +47,7 @@ from sppas.src.utils.datatype import sppasTime
 from .controls.buttons import sppasBitmapTextButton
 from .controls.texts import sppasTitleText
 from .tools import sppasSwissKnife
+from .dialogs import Feedback
 
 # ---------------------------------------------------------------------------
 
@@ -289,11 +290,9 @@ class sppasLogWindow(wx.TopLevelWindow):
 
         # Fix frame properties
         self.SetMinSize((320, 200))
-        w = int(settings.frame_size[0] * 0.75)
-        h = int(settings.frame_size[1] * 0.75)
+        w = int(settings.frame_size[0] * 0.7)
+        h = int(settings.frame_size[1] * 0.8)
         self.SetSize(wx.Size(w, h))
-
-        self.SetSize(wx.Size(640, 480))
         self.SetName('{:s}-log'.format(sg.__name__))
 
         # icon
@@ -409,8 +408,13 @@ class sppasLogWindow(wx.TopLevelWindow):
 
         if event_name == "save_log":
             self.save()
+
         elif event_name == "broom":
             self.clear()
+
+        elif event_name == "mail-at":
+            self.feedback()
+
         else:
             event.Skip()
 
@@ -487,6 +491,13 @@ class sppasLogWindow(wx.TopLevelWindow):
         """Clear all messages (irreversible, the messages are deleted)."""
         self.txt.Clear()
         self.txt.AppendText(self.log_file.get_header())
+
+    # -----------------------------------------------------------------------
+
+    def feedback(self):
+        """Send log messages to the author."""
+        text = "Add comments here...\n\n" + self.txt.GetValue()
+        Feedback(self, text)
 
 # ---------------------------------------------------------------------------
 
@@ -568,7 +579,7 @@ class sppasLogTitlePanel(wx.Panel):
 
         # Create the title
         title = '{:s} Log Window'.format(sg.__name__)
-        st = sppasTitleText(self, title)
+        st = sppasTitleText(parent=self, label=title)
 
         # Put the title in a sizer
         title_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -650,13 +661,17 @@ class sppasLogActionPanel(wx.Panel):
         # create action buttons
         clear_btn = sppasBitmapTextButton(self, "Clear", name="broom")
         save_btn = sppasBitmapTextButton(self, "Save", name="save_log")
+        send_btn = sppasBitmapTextButton(self, "Send", name="mail-at")
 
         # organize buttons in a sizer
-        line = wx.StaticLine(self, style=wx.LI_VERTICAL)
+        line1 = wx.StaticLine(self, style=wx.LI_VERTICAL)
+        line2 = wx.StaticLine(self, style=wx.LI_VERTICAL)
         action_sizer = wx.BoxSizer(wx.HORIZONTAL)
         action_sizer.Add(clear_btn, 2, wx.ALL | wx.EXPAND, 1)
-        action_sizer.Add(line, 0, wx.ALL | wx.EXPAND, 0)
+        action_sizer.Add(line1, 0, wx.ALL | wx.EXPAND, 0)
         action_sizer.Add(save_btn, 2, wx.ALL | wx.EXPAND, 1)
+        action_sizer.Add(line2, 0, wx.ALL | wx.EXPAND, 0)
+        action_sizer.Add(send_btn, 2, wx.ALL | wx.EXPAND, 1)
 
         self.SetSizer(action_sizer)
         self.SetAutoLayout(True)

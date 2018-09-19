@@ -228,7 +228,7 @@ class sppasMenuPanel(wx.Panel):
         self.SetMinSize(wx.Size(-1, settings.title_height))
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        st = sppasTitleText(self, "{:s}".format(sg.__longname__))
+        st = sppasTitleText(parent=self, label="{:s}".format(sg.__longname__))
         sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
 
         self.SetSizer(sizer)
