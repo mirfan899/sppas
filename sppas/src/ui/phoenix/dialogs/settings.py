@@ -36,7 +36,7 @@
 import wx
 import logging
 
-from ..controls.windows import sppasPanel
+from ..panels.basepanel import sppasPanel
 from ..controls.windows import sppasNotebook
 from ..controls.buttons import sppasBitmapTextButton
 from ..tools import sppasSwissKnife
@@ -139,7 +139,7 @@ class sppasSettingsDialog(sppasDialog):
         panel.SetMinSize(wx.Size(-1, settings.action_height))
         panel.SetBackgroundColour(settings.button_bg_color)
 
-        close_btn = sppasBitmapTextButton(panel, "Okay", name="okay")
+        close_btn = sppasBitmapTextButton(panel, "Okay", name="ok")
         cancel_btn = sppasBitmapTextButton(panel, "Cancel", name="cancel")
         apply_btn = sppasBitmapTextButton(panel, "Test", name="apply")
         line_1 = wx.StaticLine(panel, style=wx.LI_VERTICAL)

@@ -36,12 +36,13 @@ import wx
 
 from sppas.src.config import sg
 from ..controls.texts import sppasTitleText, sppasMessageText
+from ..panels.basepanel import sppasPanel
 from ..tools import sppasSwissKnife
 
 # ---------------------------------------------------------------------------
 
 
-class sppasWelcomePanel(wx.Panel):
+class sppasWelcomePanel(sppasPanel):
     """Create a panel to display a welcome message.
 
     :author:       Brigitte Bigi
@@ -55,16 +56,29 @@ class sppasWelcomePanel(wx.Panel):
     def __init__(self, parent):
         super(sppasWelcomePanel, self).__init__(
             parent=parent,
-            name="welcome"
+            name="welcome",
+            style=wx.BORDER_NONE
         )
-        self.SetBackgroundColour(parent.GetBackgroundColour())
+        self._create_content()
+        self.SetAutoLayout(True)
+
+        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        self.SetFont(wx.GetApp().settings.text_font)
+
+    # ------------------------------------------------------------------------
+
+    def _create_content(self):
+        """"""
+        # create a banner
+        bmp = sppasSwissKnife.get_bmp_image('splash_transparent', 100)
+        sbmp = wx.StaticBitmap(self, wx.ID_ANY, bmp)
 
         # Create a title
         st = sppasTitleText(
             parent=self,
-            label="Installation issue...",
-            style=wx.ALIGN_CENTER_HORIZONTAL)
-        st.SetBackgroundColour(parent.GetBackgroundColour())
+            label="Installation issue...")
+        st.SetName("title")
 
         # Create the welcome message
         message = \
@@ -76,17 +90,17 @@ class sppasWelcomePanel(wx.Panel):
             "{:s}".format(sg.__name__, sg.__url__)
         txt = sppasMessageText(self, message)
 
-        bmp = sppasSwissKnife.get_bmp_image('splash_transparent', 100)
-        sbmp = wx.StaticBitmap(self, wx.ID_ANY, bmp)
-        sbmp.SetBackgroundColour(parent.GetBackgroundColour())
-
         # Organize the title and message
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(sbmp, 2, wx.ALL | wx.EXPAND, 0)
-        sizer.AddStretchSpacer(1)
-        sizer.Add(st, 0, wx.ALL | wx.EXPAND, 0)
-        sizer.AddStretchSpacer(1)
-        sizer.Add(txt, 6, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(sbmp, 2, wx.TOP | wx.EXPAND, 15)
+        sizer.Add(st, 0, wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_HORIZONTAL, 15)
+        sizer.Add(txt, 6, wx.LEFT | wx.RIGHT | wx.EXPAND, 10)
 
         self.SetSizer(sizer)
-        self.SetAutoLayout(True)
+
+    # -----------------------------------------------------------------------
+
+    def SetFont(self, font):
+        sppasPanel.SetFont(self, font)
+        self.FindWindow("title").SetFont(wx.GetApp().settings.title_text_font)
+        self.Layout()

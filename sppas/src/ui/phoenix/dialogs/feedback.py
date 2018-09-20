@@ -42,7 +42,7 @@ except ImportError:
 
 from sppas.src.config import sg
 
-from ..controls.windows import sppasPanel
+from ..panels.basepanel import sppasPanel
 from ..controls.buttons import sppasBitmapTextButton
 from ..controls.texts import sppasTextCtrl
 from .basedialog import sppasDialog

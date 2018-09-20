@@ -44,6 +44,7 @@ from sppas.src.config import sg
 from sppas.src.config import paths
 from sppas.src.utils.datatype import sppasTime
 
+from .panels.basepanel import sppasPanel
 from .controls.buttons import sppasBitmapTextButton
 from .controls.texts import sppasTitleText
 from .tools import sppasSwissKnife
@@ -297,7 +298,7 @@ class sppasLogWindow(wx.TopLevelWindow):
 
         # icon
         _icon = wx.Icon()
-        bmp = sppasSwissKnife.get_bmp_icon("sppas_32", height=32, colorize=False)
+        bmp = sppasSwissKnife.get_bmp_icon("sppas_32", height=32)
         _icon.CopyFromBitmap(bmp)
         self.SetIcon(_icon)
 
@@ -514,11 +515,14 @@ class sppasLogTextCtrl(wx.LogTextCtrl):
     """
 
     def __init__(self, textctrl):
-        """Initialize a sppasLogTextCtrl."""
+        """Initialize a sppasLogTextCtrl.
+
+        :param textctrl: (sppasMessageTextCtrl) a wx.TextCtrl with
+        some specific styles to display logs.
+
+        """
         super(sppasLogTextCtrl, self).__init__(textctrl)
         self.textctrl = textctrl
-        # here we could create various styles (one for debug messages, one
-        # for information, one for errors, etc).
 
     # -----------------------------------------------------------------------
 
@@ -533,19 +537,21 @@ class sppasLogTextCtrl(wx.LogTextCtrl):
 
         """
         # Display time with the default color
-        self.textctrl.SetDefaultStyle(
-            wx.TextAttr(wx.GetApp().settings.fg_color))
+        self.textctrl.SetDefaultStyle(self.textctrl.default)
         self.textctrl.write("{:s} ".format(sppasTime().now[:-6]))
 
         # Display the log level name and message with colors
         if level == wx.LOG_Error or level == wx.LOG_FatalError:
-            self.textctrl.SetDefaultStyle(wx.TextAttr(wx.RED))
+            self.textctrl.SetDefaultStyle(self.textctrl.error)
+
         elif level == wx.LOG_Warning:
-            self.textctrl.SetDefaultStyle(wx.TextAttr(wx.YELLOW))
+            self.textctrl.SetDefaultStyle(self.textctrl.warning)
+
         elif level in (wx.LOG_Info, wx.LOG_Message, wx.LOG_Status):
-            self.textctrl.SetDefaultStyle(wx.TextAttr(wx.WHITE))
+            self.textctrl.SetDefaultStyle(self.textctrl.default)
+
         else:
-            self.textctrl.SetDefaultStyle(wx.TextAttr(wx.LIGHT_GREY))
+            self.textctrl.SetDefaultStyle(self.textctrl.debug)
 
         level_name = "[{:s}]".format(match_levels[level])
         self.textctrl.write("{0: <10}".format(level_name))
@@ -591,7 +597,69 @@ class sppasLogTitlePanel(wx.Panel):
 # ---------------------------------------------------------------------------
 
 
-class sppasLogMessagePanel(wx.Panel):
+class sppasMessageTextCtrl(wx.TextCtrl):
+    """Create a static text.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    Font, foreground and background are taken from the application settings.
+
+    """
+    text_style = wx.TAB_TRAVERSAL | \
+                 wx.TE_MULTILINE | \
+                 wx.TE_READONLY | \
+                 wx.TE_BESTWRAP | \
+                 wx.TE_AUTO_URL | \
+                 wx.NO_BORDER | wx.TE_RICH
+
+    def __init__(self, parent, value):
+        super(sppasMessageTextCtrl, self).__init__(
+            parent=parent,
+            value=value,
+            style=sppasMessageTextCtrl.text_style
+        )
+        self.SetStyles()
+
+    # -----------------------------------------------------------------------
+
+    def SetStyles(self):
+        # here we could create various styles (one for debug messages, one
+        # for information, one for errors, etc).
+        settings = wx.GetApp().settings
+
+        # Fix Look&Feel for the new text to be added
+        self.default = wx.TextAttr()
+        self.default.SetTextColour(settings.fg_color)
+        self.default.SetBackgroundColour(settings.bg_color)
+        self.default.SetFont(settings.mono_text_font)
+        self.SetDefaultStyle(self.default)
+
+        # Fix Look&Feel for errors
+        self.error = wx.TextAttr()
+        self.error.SetTextColour(wx.RED)
+        self.error.SetBackgroundColour(settings.bg_color)
+        self.error.SetFont(settings.mono_text_font)
+
+        # Fix Look&Feel for warnings
+        self.warning = wx.TextAttr()
+        self.warning.SetTextColour(wx.YELLOW)
+        self.warning.SetBackgroundColour(settings.bg_color)
+        self.warning.SetFont(settings.mono_text_font)
+
+        # Fix Look&Feel for debug messages
+        self.debug = wx.TextAttr()
+        self.debug.SetTextColour(wx.LIGHT_GREY)
+        self.debug.SetBackgroundColour(settings.bg_color)
+        self.debug.SetFont(settings.mono_text_font)
+
+# ---------------------------------------------------------------------------
+
+
+class sppasLogMessagePanel(sppasPanel):
     """Create the panel to display log messages.
 
     :author:       Brigitte Bigi
@@ -604,34 +672,40 @@ class sppasLogMessagePanel(wx.Panel):
 
     def __init__(self, parent, header=""):
         super(sppasLogMessagePanel, self).__init__(
-            parent,
-            style=wx.TAB_TRAVERSAL | wx.BORDER_NONE | wx.CLIP_CHILDREN)
+            parent=parent,
+            style=wx.TAB_TRAVERSAL | wx.BORDER_NONE | wx.CLIP_CHILDREN,
+            name="content")
 
-        # fix this panel look&feel
         settings = wx.GetApp().settings
-        self.SetBackgroundColour(settings.bg_color)
-        # self.SetMinSize((-1, 128))
 
         # create a log message, i.e. a wx textctrl
-        text_style = wx.TAB_TRAVERSAL | \
-                     wx.TE_MULTILINE | \
-                     wx.TE_READONLY | \
-                     wx.TE_BESTWRAP | \
-                     wx.TE_AUTO_URL | \
-                     wx.NO_BORDER | wx.TE_RICH
-        self.txt = wx.TextCtrl(self, wx.ID_ANY,
-                               value=header,
-                               style=text_style)
-        self.txt.SetFont(settings.mono_text_font)
-        self.txt.SetForegroundColour(settings.fg_color)
-        self.txt.SetBackgroundColour(settings.bg_color)
+        self.txt = sppasMessageTextCtrl(self, value="")
+        self.txt.AppendText(header)
 
         # put the text in a sizer to expand it
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(self.txt, 1, wx.ALL | wx.EXPAND, border=10)
 
+        # fix this panel look&feel
+        self.SetBackgroundColour(settings.bg_color)
+        self.SetForegroundColour(settings.fg_color)
+
         self.SetSizer(sizer)
         self.SetAutoLayout(True)
+
+    # -----------------------------------------------------------------------
+
+    def SetFont(self, font):
+        """Override. Do nothing."""
+        pass
+
+    # -----------------------------------------------------------------------
+
+    def SetForegroundColour(self, colour):
+        """Override."""
+        # reset the existing styles...
+        self.txt.SetStyles()
+        self.txt.SetStyle(0, len(self.txt.GetValue()), self.txt.GetDefaultStyle())
 
 # ---------------------------------------------------------------------------
 

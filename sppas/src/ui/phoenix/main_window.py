@@ -214,8 +214,14 @@ class sppasMainWindow(sppasDialog):
         if response == wx.ID_CANCEL:
             return
 
-        # settings changed. We apply new (or not) 'wx' values.
+        # settings was changed. We apply new (or not) 'wx' values.
         p = self.FindWindow("content")
+        p.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        p.SetForegroundColour(wx.GetApp().settings.fg_color)
+        p.SetFont(wx.GetApp().settings.text_font)
+        self.Refresh()
+
+        p = self.log_window.FindWindow("content")
         p.SetBackgroundColour(wx.GetApp().settings.bg_color)
         p.SetForegroundColour(wx.GetApp().settings.fg_color)
         p.SetFont(wx.GetApp().settings.text_font)
