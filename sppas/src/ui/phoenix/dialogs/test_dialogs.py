@@ -1,10 +1,13 @@
 import wx
 import sys
+import logging
+
 from os import path
 PROGRAM = path.abspath(__file__)
 SPPAS = path.dirname(path.dirname(path.dirname(path.dirname(path.dirname(path.dirname(PROGRAM))))))
 sys.path.append(SPPAS)
 
+from sppas.src.utils.fileutils import setup_logging
 from sppas.src.ui.phoenix.dialogs.basedialog import sppasDialog
 from sppas.src.ui.phoenix.dialogs.messages import sppasYesNoDialog
 from sppas.src.ui.phoenix.dialogs.messages import sppasInformationDialog
@@ -41,6 +44,7 @@ class testApp(wx.App):
 
 # ---------------------------------------------------------------------------
 
+setup_logging(0, None)
 
 app = testApp()
 
@@ -66,16 +70,19 @@ app = testApp()
 # demo.Destroy()
 
 # demo = sppasFeedbackDialog(None)
-# demo.ShowModal()
+# response = demo.ShowModal()
 # demo.Destroy()
+# logging.info('Response: {:d}'.format(response))
 
-# demo = sppasAboutDialog(None)
-# demo.ShowModal()
-# demo.Destroy()
-
-demo = sppasSettingsDialog(None)
-demo.ShowModal()
+demo = sppasAboutDialog(None)
+response = demo.ShowModal()
 demo.Destroy()
+logging.info('Response: {:d}'.format(response))
+
+# demo = sppasSettingsDialog(None)
+# response = demo.ShowModal()
+# demo.Destroy()
+# logging.info('Response: {:d}'.format(response))
 
 app.SetTopWindow(demo)
 app.MainLoop()

@@ -4,6 +4,7 @@ from .messages import Information
 from .feedback import Feedback
 from .about import About
 from .about import AboutPlugin
+from .settings import Settings
 
 __all__ = (
     'sppasDialog',
@@ -11,5 +12,6 @@ __all__ = (
     'Information',
     'Feedback',
     'About',
-    'AboutPlugin'
+    'AboutPlugin',
+    'Settings'
 )

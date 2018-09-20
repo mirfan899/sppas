@@ -34,12 +34,40 @@
 
 """
 import wx
+import logging
 
+from ..controls.windows import sppasPanel
+from ..controls.windows import sppasNotebook
 from ..controls.buttons import sppasBitmapTextButton
-from ..controls.texts import sppasStaticText
 from ..tools import sppasSwissKnife
 
 from .basedialog import sppasDialog
+
+# ---------------------------------------------------------------------------
+
+
+def GetColour(parent):
+    """Return the color choose by the user.
+
+    :param parent: (wx.Window)
+
+    """
+    # open the dialog
+    dlg = wx.ColourDialog(parent)
+
+    # Ensure the full colour dialog is displayed,
+    # not the abbreviated version.
+    dlg.GetColourData().SetChooseFull(True)
+
+    c = None
+    if dlg.ShowModal() == wx.ID_OK:
+        color = dlg.GetColourData().GetColour()
+        r = color.Red()
+        g = color.Green()
+        b = color.Blue()
+        c = wx.Colour(r, g, b)
+    dlg.Destroy()
+    return c
 
 # ----------------------------------------------------------------------------
 
@@ -52,6 +80,8 @@ class sppasSettingsDialog(sppasDialog):
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    Returns either wx.ID_CANCEL or wx.ID_OK if ShowModal().
 
     """
     def __init__(self, parent):
@@ -67,6 +97,9 @@ class sppasSettingsDialog(sppasDialog):
 
         self._back_up = dict()
         self._backup_settings()
+
+        # Bind close event from the close dialog 'x' on the frame
+        self.Bind(wx.EVT_CLOSE, self.on_cancel)
 
         self.CreateHeader("Settings...", "settings")
         self._create_content()
@@ -88,7 +121,7 @@ class sppasSettingsDialog(sppasDialog):
 
     def _create_content(self):
         """Create the content of the message dialog."""
-        notebook = wx.Notebook(self, name="content")
+        notebook = sppasNotebook(self, name="content")
         page1 = WxSettingsPanel(notebook)
         # page2 = PrefsThemePanel(self.notebook, self.preferences)
         # page3 = PrefsAnnotationPanel(self.notebook, self.preferences)
@@ -106,10 +139,9 @@ class sppasSettingsDialog(sppasDialog):
         panel.SetMinSize(wx.Size(-1, settings.action_height))
         panel.SetBackgroundColour(settings.button_bg_color)
 
-        close_btn = sppasBitmapTextButton(panel, "Close", name="close-window")
+        close_btn = sppasBitmapTextButton(panel, "Okay", name="okay")
         cancel_btn = sppasBitmapTextButton(panel, "Cancel", name="cancel")
-        apply_btn = sppasBitmapTextButton(panel, "Apply", name="apply")
-
+        apply_btn = sppasBitmapTextButton(panel, "Test", name="apply")
         line_1 = wx.StaticLine(panel, style=wx.LI_VERTICAL)
         line_2 = wx.StaticLine(panel, style=wx.LI_VERTICAL)
 
@@ -120,6 +152,10 @@ class sppasSettingsDialog(sppasDialog):
         sizer.Add(line_2, 0, wx.EXPAND, 0)
         sizer.Add(close_btn, 2, wx.EXPAND, border=0)
         self.Bind(wx.EVT_BUTTON, self._process_event)
+
+        self.SetAffirmativeId(close_btn.GetId())
+        self.SetEscapeId(cancel_btn.GetId())
+
         panel.SetSizer(sizer)
 
     # ------------------------------------------------------------------------
@@ -134,17 +170,9 @@ class sppasSettingsDialog(sppasDialog):
         """
         event_obj = event.GetEventObject()
         event_name = event_obj.GetName()
-        print("event:"+event_name)
 
-        if event_name == "close-window":
-            self._apply()
-            self.SetReturnCode(wx.ID_CLOSE)
-            self.Close()
-
-        elif event_name == "cancel":
-            self._restore()
-            self.SetReturnCode(wx.ID_CANCEL)
-            self.Close()
+        if event_name == "cancel":
+            self.on_cancel(event)
 
         elif event_name == "apply":
             self._apply()
@@ -154,31 +182,30 @@ class sppasSettingsDialog(sppasDialog):
 
     # ------------------------------------------------------------------------
 
-    def _apply(self):
-        """Apply new settings to the settings dialog."""
-        # self.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        # self.SetForegroundColour(wx.GetApp().settings.fg_color)
-        # self.SetFont(wx.GetApp().settings.text_font)
-        # for child in self.GetChildren():
-        #     if child.GetName() == "content":
-        #         child.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        #         child.SetForegroundColour(wx.GetApp().settings.fg_color)
-        #         child.SetFont(wx.GetApp().settings.text_font)
-        pass
-
-    # ------------------------------------------------------------------------
-
-    def _restore(self):
-        """Restore initial settings and apply to current windows."""
+    def on_cancel(self, event):
+        """Restore initial settings and close dialog."""
+        # Get initial settings from our backup: set to settings
         settings = wx.GetApp().settings
         for k in self._back_up:
             settings.set(k, self._back_up[k])
-        self._apply()
+        # close the dialog with a wx.ID_CANCEL response
+        self.SetReturnCode(wx.ID_CANCEL)
+        event.Skip()
+
+    # ------------------------------------------------------------------------
+
+    def _apply(self):
+        """Apply new settings to the dialog."""
+        p = self.FindWindow("content")
+        p.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        p.SetForegroundColour(wx.GetApp().settings.fg_color)
+        p.SetFont(wx.GetApp().settings.text_font)
+        self.Refresh()
 
 # ----------------------------------------------------------------------------
 
 
-class WxSettingsPanel(wx.Panel):
+class WxSettingsPanel(sppasPanel):
     """Settings for wx objects: background, foreground, font, etc.
 
     :author:       Brigitte Bigi
@@ -189,23 +216,27 @@ class WxSettingsPanel(wx.Panel):
 
     """
     def __init__(self, parent):
-        super(WxSettingsPanel, self).__init__(parent, style=wx.BORDER_NONE)
+        super(WxSettingsPanel, self).__init__(
+            parent=parent,
+            style=wx.BORDER_NONE
+        )
+        self._create_content()
+        self.SetAutoLayout(True)
+
         self.SetBackgroundColour(wx.GetApp().settings.bg_color)
-
-        gbs = self.__create_sizer()
-
-        self.SetSizer(gbs)
+        self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        self.SetFont(wx.GetApp().settings.text_font)
 
     # ------------------------------------------------------------------------
 
-    def __create_sizer(self):
-
+    def _create_content(self):
+        """"""
         flag = wx.ALL | wx.ALIGN_CENTER_VERTICAL
-        gbs = wx.GridBagSizer(hgap=5, vgap=5)
+        gbs = wx.GridBagSizer(hgap=10, vgap=10)
 
         # ---------- Background color
 
-        txt_bg = sppasStaticText(self, -1, "Background color: ")
+        txt_bg = wx.StaticText(self, -1, "Background color: ")
         gbs.Add(txt_bg, (0, 0), flag=flag, border=5)
 
         bmp = sppasSwissKnife.get_bmp_icon("bg_color", height=24)
@@ -216,7 +247,7 @@ class WxSettingsPanel(wx.Panel):
         # ---------- Foreground color
 
         bmp = sppasSwissKnife.get_bmp_icon("fg_color", height=24)
-        txt_fg = sppasStaticText(self, -1, "Foreground color: ")
+        txt_fg = wx.StaticText(self, -1, "Foreground color: ")
         gbs.Add(txt_fg, (1, 0), flag=flag, border=5)
 
         self.btn_color_fg = wx.BitmapButton(self, -1, bmp, name="fg_color")
@@ -225,7 +256,7 @@ class WxSettingsPanel(wx.Panel):
 
         # ---------- Font
 
-        txt_font = sppasStaticText(self, -1, "Font: ")
+        txt_font = wx.StaticText(self, -1, "Font: ")
         gbs.Add(txt_font, (2, 0), flag=flag, border=5)
 
         bmp = sppasSwissKnife.get_bmp_icon("font", height=24)
@@ -246,8 +277,7 @@ class WxSettingsPanel(wx.Panel):
         # ----------
 
         gbs.AddGrowableCol(1)
-
-        return gbs
+        self.SetSizer(gbs)
 
     # -----------------------------------------------------------------------
     # Callbacks to event
@@ -256,29 +286,36 @@ class WxSettingsPanel(wx.Panel):
     def on_color_dialog(self, event):
         """Open a dialog to choose a color, then fix it.
 
+        :param event: (wx.Event)
+
         """
-        # get the button that was clicked
-        button = event.GetEventObject()
+        color = GetColour(self)
+        if color is not None:
 
-        # open the dialog
-        dlg = wx.ColourDialog(self)
+            # get the button that was clicked on
+            button = event.GetEventObject()
+            name = button.GetName()
 
-        # Ensure the full colour dialog is displayed,
-        # not the abbreviated version.
-        dlg.GetColourData().SetChooseFull(True)
-
-        if dlg.ShowModal() == wx.ID_OK:
             # fix new value in the settings
-            wx.GetApp().settings.set(
-                button.GetName(),
-                dlg.GetColourData().GetColour()
-            )
-        dlg.Destroy()
+            wx.GetApp().settings.set(name, color)
+            if name == "bg_color":
+                logging.debug('New {:s}: ({:d}, {:d}, {:d})'.format(
+                    name,
+                    wx.GetApp().settings.bg_color.Red(),
+                    wx.GetApp().settings.bg_color.Green(),
+                    wx.GetApp().settings.bg_color.Blue()))
+            if name == "fg_color":
+                logging.debug('New fg color: ({:d}, {:d}, {:d})'.format(
+                    wx.GetApp().settings.fg_color.Red(),
+                    wx.GetApp().settings.fg_color.Green(),
+                    wx.GetApp().settings.fg_color.Blue()))
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def on_select_font(self, event):
         """Open a dialog to choose a font, then fix it.
+
+        :param event: (wx.Event)
 
         """
         data = wx.FontData()
@@ -291,7 +328,31 @@ class WxSettingsPanel(wx.Panel):
         if dlg.ShowModal() == wx.ID_OK:
             data = dlg.GetFontData()
             font = data.GetChosenFont()
-            color = data.GetColour()
             wx.GetApp().settings.set('text_font', font)
-            wx.GetApp().settings.set('fg_color', color)
+            logging.debug('New text font: {:s}'.format(wx.GetApp().settings.text_font.GetFaceName()))
+
         dlg.Destroy()
+
+# ---------------------------------------------------------------------------
+
+
+def Settings(parent):
+    """Display a dialog to fix new settings.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    :param parent: (wx.Window)
+    :returns: the response
+
+    Returns wx.ID_CANCEL if the dialog is destroyed or wx.ID_OK if some
+    settings changed.
+
+    """
+    dialog = sppasSettingsDialog(parent)
+    response = dialog.ShowModal()
+    dialog.Destroy()
+    return response

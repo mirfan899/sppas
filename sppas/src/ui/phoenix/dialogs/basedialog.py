@@ -256,7 +256,7 @@ class sppasDialog(wx.Dialog):
         # Add header
         header = self.FindWindow("header")
         if header is not None:
-            sizer.Add(header, 1, flag=wx.ALL | wx.EXPAND, border=0)
+            sizer.Add(header, 1, flag=wx.EXPAND, border=0)
             h_line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
             sizer.Add(h_line, 0, wx.ALL | wx.EXPAND, 0)
 
@@ -270,7 +270,7 @@ class sppasDialog(wx.Dialog):
         # Add content
         content = self.FindWindow("content")
         if content is not None:
-            sizer.Add(content, 8, flag=wx.ALL | wx.EXPAND, border=10)
+            sizer.Add(content, 8, flag=wx.EXPAND, border=0)
         else:
             sizer.AddSpacer(2)
 
@@ -280,7 +280,7 @@ class sppasDialog(wx.Dialog):
             h_line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
             sizer.Add(h_line, 0, wx.ALL | wx.EXPAND, 0)
             # proportion is 0 to ask the sizer to never hide the buttons
-            sizer.Add(actions, 0, flag=wx.ALL | wx.EXPAND, border=2)
+            sizer.Add(actions, 0, flag=wx.EXPAND, border=0)
 
         # Since Layout doesn't happen until there is a size event, you will
         # sometimes have to force the issue by calling Layout yourself. For

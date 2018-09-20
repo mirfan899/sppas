@@ -35,19 +35,20 @@
 """
 import os
 import wx
-import wx.lib.scrolledpanel as sc
 import webbrowser
 
 from sppas.src.config import sg
+
 from ..tools import sppasSwissKnife
+from ..controls.windows import sppasScrolledPanel
+
 from . import sppasDialog
-from ..controls.texts import sppasStaticText
 
 # ----------------------------------------------------------------------------
 
 
-class sppasBaseAbout(sc.ScrolledPanel):
-    """About panel including main information about a software.
+class sppasBaseAbout(sppasScrolledPanel):
+    """An about base panel to include main information about a software.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -62,7 +63,6 @@ class sppasBaseAbout(sc.ScrolledPanel):
             style=wx.NO_BORDER,
             name="content"
         )
-        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
 
         self.program = ""
         self.version = ""
@@ -84,12 +84,11 @@ class sppasBaseAbout(sc.ScrolledPanel):
         if len(self.logo) > 0:
             bitmap = sppasSwissKnife.get_bmp_image(self.logo, height=48)
             sbmp = wx.StaticBitmap(self, wx.ID_ANY, bitmap)
-            sbmp.SetBackgroundColour(self.GetBackgroundColour())
             sizer.Add(sbmp, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 8)
 
         # Program name
         if len(self.program) > 0:
-            text = sppasStaticText(self, -1, self.program + " " + sg.__version__)
+            text = wx.StaticText(self, -1, self.program + " " + sg.__version__)
             font = text.GetFont()
             font_size = font.GetPointSize()
             font.SetPointSize(font_size + 4)
@@ -99,12 +98,12 @@ class sppasBaseAbout(sc.ScrolledPanel):
 
         # Description
         if len(self.brief) > 0:
-            text = sppasStaticText(self, -1, self.brief)
+            text = wx.StaticText(self, -1, self.brief)
             sizer.Add(text, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 2)
 
         # Copyright
         if len(self.copyright) > 0:
-            text = sppasStaticText(self, -1, self.copyright)
+            text = wx.StaticText(self, -1, self.copyright)
             font = text.GetFont()
             font.SetWeight(wx.FONTWEIGHT_BOLD)
             text.SetFont(font)
@@ -112,23 +111,35 @@ class sppasBaseAbout(sc.ScrolledPanel):
 
         # URL
         if len(self.url) > 0:
-            text = sppasStaticText(self, -1, self.url)
-            text.SetForegroundColour(wx.Colour(80, 100, 220))
+            text = wx.StaticText(self, -1, self.url, name="url")
             text.Bind(wx.EVT_LEFT_UP, self.on_link, text)
             sizer.Add(text, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 2)
 
         # License
         if len(self.license) > 0:
-            text = sppasStaticText(self, -1, self.license)
+            text = wx.StaticText(self, -1, self.license)
             sizer.Add(text, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 2)
 
         # License text content
         if len(self.license_text) > 0:
-            text = sppasStaticText(self, -1, self.license_text)
+            text = wx.StaticText(self, -1, self.license_text)
             sizer.Add(text, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 2)
 
         self.SetSizerAndFit(sizer)
         self.SetupScrolling(scroll_x=True, scroll_y=True)
+
+        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        self.SetFont(wx.GetApp().settings.text_font)
+
+    # ------------------------------------------------------------------------
+
+    def SetForegroundColour(self, colour):
+        """Override. Apply the foreground color change except on the url."""
+        sppasScrolledPanel.SetForegroundColour(self, colour)
+        url_text = self.FindWindow('url')
+        if url_text is not None:
+            url_text.SetForegroundColour(wx.Colour(80, 100, 220))
 
     # ------------------------------------------------------------------------
 

@@ -44,6 +44,7 @@ from .panels import sppasWelcomePanel
 from .dialogs import sppasDialog
 from .dialogs import YesNoQuestion
 from .dialogs import About
+from .dialogs import Settings
 
 # ---------------------------------------------------------------------------
 
@@ -170,6 +171,9 @@ class sppasMainWindow(sppasDialog):
         elif event_name == "about":
             About(self)
 
+        elif event_name == "settings":
+            self.on_settings()
+
         else:
             event.Skip()
 
@@ -201,6 +205,21 @@ class sppasMainWindow(sppasDialog):
         response = YesNoQuestion("Confirm exit of {:s}...".format(sg.__name__))
         if response == wx.ID_YES:
             self.exit()
+
+    # -----------------------------------------------------------------------
+
+    def on_settings(self):
+        """Open settings dialog and apply changes."""
+        response = Settings(self)
+        if response == wx.ID_CANCEL:
+            return
+
+        # settings changed. We apply new (or not) 'wx' values.
+        p = self.FindWindow("content")
+        p.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        p.SetForegroundColour(wx.GetApp().settings.fg_color)
+        p.SetFont(wx.GetApp().settings.text_font)
+        self.Refresh()
 
     # -----------------------------------------------------------------------
     # Public methods
@@ -267,15 +286,19 @@ class sppasActionsPanel(wx.Panel):
 
         exit_btn = sppasBitmapTextButton(self, "Exit", name="exit")
         about_btn = sppasBitmapTextButton(self, "About", name="about")
+        settings_btn = sppasBitmapTextButton(self, "Settings", name="settings")
         log_btn = sppasBitmapTextButton(self, "View logs", name="view_log")
 
         vertical_line_1 = wx.StaticLine(self, style=wx.LI_VERTICAL)
         vertical_line_2 = wx.StaticLine(self, style=wx.LI_VERTICAL)
+        vertical_line_3 = wx.StaticLine(self, style=wx.LI_VERTICAL)
 
         sizer.Add(log_btn, 1, wx.ALL | wx.EXPAND, 0)
         sizer.Add(vertical_line_1, 0, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(about_btn, 1, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(settings_btn, 1, wx.ALL | wx.EXPAND, 0)
         sizer.Add(vertical_line_2, 0, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(about_btn, 1, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(vertical_line_3, 0, wx.ALL | wx.EXPAND, 0)
         sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 0)
 
         self.SetSizer(sizer)

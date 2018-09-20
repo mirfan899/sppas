@@ -167,4 +167,4 @@ class WxAppSettings(sppasBaseSettings):
 
     def set(self, key, value):
         """Set a new value to a key."""
-        self.__dict__[key] = value
+        setattr(self, key, value)

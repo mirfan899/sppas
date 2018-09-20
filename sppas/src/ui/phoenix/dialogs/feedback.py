@@ -42,8 +42,9 @@ except ImportError:
 
 from sppas.src.config import sg
 
+from ..controls.windows import sppasPanel
 from ..controls.buttons import sppasBitmapTextButton
-from ..controls.texts import sppasStaticText, sppasTextCtrl
+from ..controls.texts import sppasTextCtrl
 from .basedialog import sppasDialog
 from .messages import Information
 
@@ -89,29 +90,27 @@ class sppasFeedbackDialog(sppasDialog):
 
     def _create_content(self):
         """Create the content of the message dialog."""
+        panel = sppasPanel(self, name="content")
 
-        panel = wx.Panel(self, name="content")
-        panel.SetBackgroundColour(self.GetBackgroundColour())
-
-        to = sppasStaticText(panel, label="To: ")
-        self.to_text = sppasStaticText(
+        to = wx.StaticText(panel, label="To: ")
+        self.to_text = wx.StaticText(
             parent=panel,
             label=sg.__contact__)
 
-        subject = sppasStaticText(panel, label="Subject: ")
-        self.subject_text = sppasStaticText(
+        subject = wx.StaticText(panel, label="Subject: ")
+        self.subject_text = wx.StaticText(
             parent=panel,
             label=sg.__name__ + " " + sg.__version__ + " - Feedback...")
 
-        body = sppasStaticText(panel, label="Body: ")
+        body = wx.StaticText(panel, label="Body: ")
         body_style = wx.TAB_TRAVERSAL | wx.TE_BESTWRAP |\
                      wx.TE_MULTILINE | wx.BORDER_STATIC
         self.body_text = sppasTextCtrl(
             parent=panel,
             value=DESCRIBE_TEXT,
             style=body_style)
-        self.body_text.Bind(wx.EVT_CHAR, self._on_char, self.body_text)
         self.body_text.SetSelection(0, len(DESCRIBE_TEXT))
+        self.body_text.Bind(wx.EVT_CHAR, self._on_char, self.body_text)
 
         grid = wx.FlexGridSizer(4, 2, 5, 5)
         grid.AddGrowableCol(1)
@@ -126,9 +125,12 @@ class sppasFeedbackDialog(sppasDialog):
         grid.Add(body, 0, flag=wx.TOP)
         grid.Add(self.body_text, 2, flag=wx.EXPAND)
 
-        s = sppasStaticText(panel, label="Send with: ")
+        s = wx.StaticText(panel, label="Send with: ")
         grid.Add(s, 0)
 
+        panel.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        panel.SetForegroundColour(wx.GetApp().settings.fg_color)
+        panel.SetFont(wx.GetApp().settings.text_font)
         panel.SetAutoLayout(True)
         panel.SetSizer(grid)
 
