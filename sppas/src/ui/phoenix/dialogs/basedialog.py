@@ -38,6 +38,7 @@ import wx
 from sppas.src.config import sg
 from ..tools import sppasSwissKnife
 from ..controls import sppasBitmapTextButton
+from ..panels import sppasPanel
 
 # ---------------------------------------------------------------------------
 
@@ -80,7 +81,7 @@ class sppasDialog(wx.Dialog):
 
         # icon
         _icon = wx.Icon()
-        bmp = sppasSwissKnife.get_bmp_icon("sppas_32", height=32, colorize=False)
+        bmp = sppasSwissKnife.get_bmp_icon("sppas_32", height=32)
         _icon.CopyFromBitmap(bmp)
         self.SetIcon(_icon)
 
@@ -144,39 +145,30 @@ class sppasDialog(wx.Dialog):
         settings = wx.GetApp().settings
 
         # Create the header panel and sizer
-        header = wx.Panel(self, name="header")
-        header.SetMinSize((-1, settings.title_height))
-        header.SetBackgroundColour(settings.title_bg_color)
+        panel = sppasPanel(self, name="header")
+        panel.SetMinSize((-1, settings.title_height))
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         # Add the icon, at left
         if icon_name is not None:
-            bitmap = sppasSwissKnife.get_bmp_icon(
-                icon_name,
-                height=settings.title_height * 0.6)
-            sBmp = wx.StaticBitmap(header, wx.ID_ANY, bitmap)
-            sizer.Add(sBmp, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, border=4)
+            bmp = sppasBitmapTextButton(panel, title, icon_name)
+            bmp.Enable(False)
+            sizer.Add(bmp, 0, wx.ALIGN_CENTER_VERTICAL)
 
         # Add the title, in a panel (required for vertical centering)
-        panel_text = wx.Panel(header, style=wx.NO_BORDER, name="headertext")
-        panel_text.SetBackgroundColour(header.GetBackgroundColour())
-        sizer_text = wx.BoxSizer()
-        text = wx.StaticText(panel_text, label=title, style=wx.ALIGN_CENTER)
-        text.SetFont(settings.title_text_font)
-        text.SetBackgroundColour(settings.title_bg_color)
-        text.SetForegroundColour(settings.title_fg_color)
-        sizer_text.Add(text, 0, wx.ALIGN_CENTER_VERTICAL, 0)
-        panel_text.SetSizer(sizer_text)
-        sizer.Add(panel_text, 1, wx.EXPAND | wx.LEFT, border=10)
+        # panel_text = sppasPanel(panel, style=wx.NO_BORDER, name="headertext")
+        # sizer_text = wx.BoxSizer()
+        # text = wx.StaticText(panel_text, label=title, style=wx.ALIGN_CENTER)
+        # sizer_text.Add(text, 0, wx.ALIGN_CENTER_VERTICAL)
+        # panel_text.SetSizer(sizer_text)
+        # sizer.Add(panel_text, 1, wx.EXPAND | wx.LEFT, border=10)
+
+        panel.SetBackgroundColour(wx.GetApp().settings.header_bg_color)
+        panel.SetForegroundColour(wx.GetApp().settings.header_fg_color)
+        panel.SetFont(wx.GetApp().settings.header_text_font)
 
         # This header panel properties
-        header.SetSizer(sizer)
-
-    # -----------------------------------------------------------------------
-
-    def CreateToolbar(self):
-        """Create a customized toolbar panel."""
-        pass
+        panel.SetSizer(sizer)
 
     # -----------------------------------------------------------------------
 
@@ -199,17 +191,17 @@ class sppasDialog(wx.Dialog):
         settings = wx.GetApp().settings
 
         # Create the action panel and sizer
-        actions = wx.Panel(self, name="actions")
-        actions.SetMinSize(wx.Size(-1, settings.action_height))
-        actions.SetBackgroundColour(settings.button_bg_color)
+        panel = sppasPanel(self, name="actions")
+        panel.SetMinSize(wx.Size(-1, settings.action_height))
+
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         if len(left_flags) > 0:
             for i, flag in enumerate(left_flags):
-                button = self.__create_button(actions, flag)
+                button = self.__create_button(panel, flag)
                 sizer.Add(button, 2, flag=wx.LEFT | wx.EXPAND, border=0)
                 if len(right_flags) > 0 or i+1 < len(left_flags):
-                    line = wx.StaticLine(actions, style=wx.LI_VERTICAL)
+                    line = wx.StaticLine(panel, style=wx.LI_VERTICAL)
                     sizer.Add(line, 0, wx.EXPAND, 0)
 
         if len(right_flags) > 0:
@@ -217,13 +209,17 @@ class sppasDialog(wx.Dialog):
                 sizer.AddStretchSpacer(1)
 
             for flag in right_flags:
-                button = self.__create_button(actions, flag)
-                line = wx.StaticLine(actions, style=wx.LI_VERTICAL)
+                button = self.__create_button(panel, flag)
+                line = wx.StaticLine(panel, style=wx.LI_VERTICAL)
                 sizer.Add(line, 0, wx.EXPAND, 0)
                 sizer.Add(button, 2, flag=wx.RIGHT | wx.EXPAND, border=0)
 
+        panel.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
+        panel.SetForegroundColour(wx.GetApp().settings.action_fg_color)
+        panel.SetFont(wx.GetApp().settings.action_text_font)
+
         # This action panel properties
-        actions.SetSizer(sizer)
+        panel.SetSizer(sizer)
 
     # ---------------------------------------------------------------------------
 

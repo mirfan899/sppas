@@ -34,11 +34,13 @@
 
 """
 import wx
+from wx.lib.buttons import GenBitmapTextButton
 import logging
 
 from ..panels.basepanel import sppasPanel
 from ..controls.windows import sppasNotebook
 from ..controls.buttons import sppasBitmapTextButton
+from ..controls.buttons import sppasBitmapButton
 from ..tools import sppasSwissKnife
 
 from .basedialog import sppasDialog
@@ -98,8 +100,9 @@ class sppasSettingsDialog(sppasDialog):
         self._back_up = dict()
         self._backup_settings()
 
-        # Bind close event from the close dialog 'x' on the frame
+        # Bind events
         self.Bind(wx.EVT_CLOSE, self.on_cancel)
+        self.Bind(wx.EVT_BUTTON, self._process_event)
 
         self.CreateHeader("Settings...", "settings")
         self._create_content()
@@ -121,40 +124,47 @@ class sppasSettingsDialog(sppasDialog):
 
     def _create_content(self):
         """Create the content of the message dialog."""
+        # Make the notebook and an image list
         notebook = sppasNotebook(self, name="content")
+        il = wx.ImageList(16, 16)
+        idx1 = il.Add(sppasSwissKnife.get_bmp_icon("font_color", height=16))
+        notebook.AssignImageList(il)
+
         page1 = WxSettingsPanel(notebook)
         # page2 = PrefsThemePanel(self.notebook, self.preferences)
         # page3 = PrefsAnnotationPanel(self.notebook, self.preferences)
         # add the pages to the notebook with the label to show on the tab
-        notebook.AddPage(page1, "General")
+
+        notebook.AddPage(page1, "Fonts and Colors")
         # self.notebook.AddPage(page2, "Icons Theme")
         # self.notebook.AddPage(page3, "Annotation")
+
+        # put an image on the first tab
+        notebook.SetPageImage(0, idx1)
 
     # -----------------------------------------------------------------------
 
     def _create_buttons(self):
         """Create the buttons and bind events."""
         settings = wx.GetApp().settings
-        panel = wx.Panel(self, name="actions")
+        panel = sppasPanel(self, name="actions")
         panel.SetMinSize(wx.Size(-1, settings.action_height))
-        panel.SetBackgroundColour(settings.button_bg_color)
 
         close_btn = sppasBitmapTextButton(panel, "Okay", name="ok")
         cancel_btn = sppasBitmapTextButton(panel, "Cancel", name="cancel")
-        apply_btn = sppasBitmapTextButton(panel, "Test", name="apply")
         line_1 = wx.StaticLine(panel, style=wx.LI_VERTICAL)
-        line_2 = wx.StaticLine(panel, style=wx.LI_VERTICAL)
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(apply_btn, 2, wx.EXPAND, border=0)
-        sizer.Add(line_1, 0, wx.EXPAND, 0)
         sizer.Add(cancel_btn, 2, wx.EXPAND, border=0)
-        sizer.Add(line_2, 0, wx.EXPAND, 0)
+        sizer.Add(line_1, 0, wx.EXPAND, 0)
         sizer.Add(close_btn, 2, wx.EXPAND, border=0)
-        self.Bind(wx.EVT_BUTTON, self._process_event)
 
         self.SetAffirmativeId(close_btn.GetId())
         self.SetEscapeId(cancel_btn.GetId())
+
+        panel.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
+        panel.SetForegroundColour(wx.GetApp().settings.action_fg_color)
+        panel.SetFont(wx.GetApp().settings.action_text_font)
 
         panel.SetSizer(sizer)
 
@@ -184,13 +194,19 @@ class sppasSettingsDialog(sppasDialog):
 
     def on_cancel(self, event):
         """Restore initial settings and close dialog."""
+        self._restore()
+        # close the dialog with a wx.ID_CANCEL response
+        self.SetReturnCode(wx.ID_CANCEL)
+        event.Skip()
+
+    # ------------------------------------------------------------------------
+
+    def _restore(self):
+        """Restore initial settings."""
         # Get initial settings from our backup: set to settings
         settings = wx.GetApp().settings
         for k in self._back_up:
             settings.set(k, self._back_up[k])
-        # close the dialog with a wx.ID_CANCEL response
-        self.SetReturnCode(wx.ID_CANCEL)
-        event.Skip()
 
     # ------------------------------------------------------------------------
 
@@ -200,6 +216,17 @@ class sppasSettingsDialog(sppasDialog):
         p.SetBackgroundColour(wx.GetApp().settings.bg_color)
         p.SetForegroundColour(wx.GetApp().settings.fg_color)
         p.SetFont(wx.GetApp().settings.text_font)
+
+        p = self.FindWindow("header")
+        p.SetBackgroundColour(wx.GetApp().settings.header_bg_color)
+        p.SetForegroundColour(wx.GetApp().settings.header_fg_color)
+        p.SetFont(wx.GetApp().settings.header_text_font)
+
+        p = self.FindWindow("actions")
+        p.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
+        p.SetForegroundColour(wx.GetApp().settings.action_fg_color)
+        p.SetFont(wx.GetApp().settings.action_text_font)
+
         self.Refresh()
 
 # ----------------------------------------------------------------------------
@@ -223,6 +250,8 @@ class WxSettingsPanel(sppasPanel):
         self._create_content()
         self.SetAutoLayout(True)
 
+        self.Bind(wx.EVT_BUTTON, self._process_event)
+
         self.SetBackgroundColour(wx.GetApp().settings.bg_color)
         self.SetForegroundColour(wx.GetApp().settings.fg_color)
         self.SetFont(wx.GetApp().settings.text_font)
@@ -231,39 +260,20 @@ class WxSettingsPanel(sppasPanel):
 
     def _create_content(self):
         """"""
-        flag = wx.ALL | wx.ALIGN_CENTER_VERTICAL
-        gbs = wx.GridBagSizer(hgap=10, vgap=10)
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer_top = self._create_content_colors_fonts()
+        sizer.Add(sizer_top, 3, wx.EXPAND)
 
-        # ---------- Background color
+        #apply_btn = sppasBitmapTextButton(self, "Test", name="apply")
+        btn = sppasBitmapTextButton(
+            parent=self,
+            name="apply",
+            label="Test on this window",
+            style=wx.BORDER_SIMPLE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS)
+        btn.SetSize((-1, wx.GetApp().settings.action_height))
+        sizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL)
 
-        txt_bg = wx.StaticText(self, -1, "Background color: ")
-        gbs.Add(txt_bg, (0, 0), flag=flag, border=5)
-
-        bmp = sppasSwissKnife.get_bmp_icon("bg_color", height=24)
-        self.btn_color_bg = wx.BitmapButton(self, -1, bmp, name="bg_color")
-        self.btn_color_bg.Bind(wx.EVT_BUTTON, self.on_color_dialog, self.btn_color_bg)
-        gbs.Add(self.btn_color_bg, (0, 1), flag=flag, border=5)
-
-        # ---------- Foreground color
-
-        bmp = sppasSwissKnife.get_bmp_icon("fg_color", height=24)
-        txt_fg = wx.StaticText(self, -1, "Foreground color: ")
-        gbs.Add(txt_fg, (1, 0), flag=flag, border=5)
-
-        self.btn_color_fg = wx.BitmapButton(self, -1, bmp, name="fg_color")
-        self.btn_color_fg.Bind(wx.EVT_BUTTON, self.on_color_dialog, self.btn_color_fg)
-        gbs.Add(self.btn_color_fg, (1, 1), flag=flag, border=5)
-
-        # ---------- Font
-
-        txt_font = wx.StaticText(self, -1, "Font: ")
-        gbs.Add(txt_font, (2, 0), flag=flag, border=5)
-
-        bmp = sppasSwissKnife.get_bmp_icon("font", height=24)
-        btn_font = wx.BitmapButton(self, -1, bmp)
-        self.Bind(wx.EVT_BUTTON, self.on_select_font, btn_font)
-        gbs.Add(btn_font, (2, 1), flag=flag, border=5)
-
+        sizer.AddStretchSpacer(1)
         # ---------- tips
         #
         # txt_tips = wx.StaticText(self, -1, "Show tips at start-up: ")
@@ -275,9 +285,65 @@ class WxSettingsPanel(sppasPanel):
         # gbs.Add(btn_tips, (4,1), flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
 
         # ----------
+        self.SetSizer(sizer)
 
-        gbs.AddGrowableCol(1)
-        self.SetSizer(gbs)
+    # -----------------------------------------------------------------------
+
+    def _create_content_colors_fonts(self):
+        """"""
+
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        # Colors&Fonts of the header panel
+        p = sppasColoursFontPanel(
+            parent=self,
+            style=wx.BORDER_SUNKEN,
+            name="colors_font_header",
+            title="Header: ")
+        sizer.Add(p, 1, wx.EXPAND | wx.ALL, border=10)
+
+        # Colors&Fonts of the main panel
+        p = sppasColoursFontPanel(
+            parent=self,
+            style=wx.BORDER_SUNKEN,
+            name="colors_font_content",
+            title="Main content: ")
+        sizer.Add(p, 1, wx.EXPAND | wx.ALL, border=10)
+
+        # Colors&Fonts of the actions panel
+        p = sppasColoursFontPanel(
+            parent=self,
+            style=wx.BORDER_SUNKEN,
+            name="colors_font_actions",
+            title="Buttons at bottom: ")
+        sizer.Add(p, 1, wx.EXPAND | wx.ALL, border=10)
+
+        return sizer
+
+    # -----------------------------------------------------------------------
+
+    def _process_event(self, event):
+        """Process any kind of events.
+
+        :param event: (wx.Event)
+
+        """
+        event_obj = event.GetEventObject()
+        event_name = event_obj.GetName()
+        event_id = event_obj.GetId()
+
+        wx.LogMessage("Received event id {:d} of {:s}"
+                      "".format(event_id, event_name))
+
+        if "color" in event_name:
+            self.on_color_dialog(event)
+
+        elif "font" in event_name:
+            self.on_select_font(event)
+
+        else:
+            event.Skip()
+
 
     # -----------------------------------------------------------------------
     # Callbacks to event
@@ -296,19 +362,15 @@ class WxSettingsPanel(sppasPanel):
             button = event.GetEventObject()
             name = button.GetName()
 
-            # fix new value in the settings
-            wx.GetApp().settings.set(name, color)
-            if name == "bg_color":
-                logging.debug('New {:s}: ({:d}, {:d}, {:d})'.format(
-                    name,
-                    wx.GetApp().settings.bg_color.Red(),
-                    wx.GetApp().settings.bg_color.Green(),
-                    wx.GetApp().settings.bg_color.Blue()))
-            if name == "fg_color":
-                logging.debug('New fg color: ({:d}, {:d}, {:d})'.format(
-                    wx.GetApp().settings.fg_color.Red(),
-                    wx.GetApp().settings.fg_color.Green(),
-                    wx.GetApp().settings.fg_color.Blue()))
+            # new value in the settings for which panel?
+            if "content" in button.GetParent().GetName():
+                wx.GetApp().settings.set(name, color)
+
+            elif "header" in button.GetParent().GetName():
+                wx.GetApp().settings.set("header_"+name, color)
+
+            elif "action" in button.GetParent().GetName():
+                wx.GetApp().settings.set("action_"+name, color)
 
     # -----------------------------------------------------------------------
 
@@ -318,6 +380,8 @@ class WxSettingsPanel(sppasPanel):
         :param event: (wx.Event)
 
         """
+        button = event.GetEventObject()
+
         data = wx.FontData()
         data.EnableEffects(True)
         data.SetColour(wx.GetApp().settings.fg_color)
@@ -328,10 +392,95 @@ class WxSettingsPanel(sppasPanel):
         if dlg.ShowModal() == wx.ID_OK:
             data = dlg.GetFontData()
             font = data.GetChosenFont()
-            wx.GetApp().settings.set('text_font', font)
-            logging.debug('New text font: {:s}'.format(wx.GetApp().settings.text_font.GetFaceName()))
+
+            if "content" in button.GetParent().GetName():
+                wx.GetApp().settings.set('text_font', font)
+
+            elif "header" in button.GetParent().GetName():
+                wx.GetApp().settings.set('header_text_font', font)
+
+            elif "action" in button.GetParent().GetName():
+                wx.GetApp().settings.set('action_text_font', font)
 
         dlg.Destroy()
+
+
+# ---------------------------------------------------------------------------
+
+
+class sppasColoursFontPanel(sppasPanel):
+    """Panel to propose the change of colors and font.
+
+    """
+
+    def __init__(self, *args, title, **kw):
+        super(sppasColoursFontPanel, self).__init__(*args, **kw)
+
+        flag = wx.ALL | wx.ALIGN_CENTER_VERTICAL
+        gbs = wx.GridBagSizer(hgap=10, vgap=10)
+
+        # ---------- Title
+
+        txt = wx.StaticText(self, -1, title, name="title")
+        gbs.Add(txt, (0, 0), flag=flag, border=5)
+
+
+        # ---------- Background color
+
+        txt_bg = wx.StaticText(self, -1, "Background color: ")
+        gbs.Add(txt_bg, (1, 0), flag=flag, border=5)
+
+        btn_color_bg = sppasBitmapButton(
+            parent=self,
+            name="bg_color",
+            style=wx.BORDER_SIMPLE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS)
+        btn_color_bg.SetSize((wx.GetApp().settings.action_height,
+                              wx.GetApp().settings.action_height))
+        gbs.Add(btn_color_bg, (1, 1), flag=flag, border=5)
+
+        # ---------- Foreground color
+
+        txt_fg = wx.StaticText(self, -1, "Foreground color: ")
+        gbs.Add(txt_fg, (2, 0), flag=flag, border=5)
+
+        btn_color_fg = sppasBitmapButton(
+            parent=self,
+            name="fg_color",
+            style=wx.BORDER_SIMPLE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS)
+        btn_color_fg.SetSize((wx.GetApp().settings.action_height,
+                              wx.GetApp().settings.action_height))
+        gbs.Add(btn_color_fg, (2, 1), flag=flag, border=5)
+
+        # ---------- Font
+
+        txt_font = wx.StaticText(self, -1, "Font: ")
+        gbs.Add(txt_font, (3, 0), flag=flag, border=5)
+
+        btn_font = sppasBitmapButton(
+            parent=self,
+            name="font",
+            style=wx.BORDER_SIMPLE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS)
+        btn_font.SetSize((wx.GetApp().settings.action_height,
+                          wx.GetApp().settings.action_height))
+        gbs.Add(btn_font, (3, 1), flag=flag, border=5)
+
+        gbs.AddGrowableCol(1)
+        self.SetSizer(gbs)
+
+    # -----------------------------------------------------------------------
+
+    def SetFont(self, font):
+        """Override."""
+        sppasPanel.SetFont(self, font)
+        current = wx.GetApp().settings.text_font
+        f = wx.Font(int(current.GetPointSize() * 1.2),
+                    wx.FONTFAMILY_SWISS,   # family,
+                    wx.FONTSTYLE_NORMAL,   # style,
+                    wx.FONTWEIGHT_BOLD,    # weight,
+                    underline=False,
+                    faceName=current.GetFaceName(),
+                    encoding=wx.FONTENCODING_SYSTEM)
+        self.FindWindow("title").SetFont(f)
 
 # ---------------------------------------------------------------------------
 

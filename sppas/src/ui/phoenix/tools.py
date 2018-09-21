@@ -9,12 +9,11 @@ from sppas.src.config import paths
 class sppasSwissKnife:
 
     @staticmethod
-    def get_bmp_icon(name, height=None, colorize=True):
+    def get_bmp_icon(name, height=None):
         """Return the bitmap corresponding to the name of an icon.
 
         :param name: (str) Name of an icon.
         :param height: (int) Height/Width of the bitmap.
-        :param colorize: (bool) Convert black to the button foreground color
         :return: (wx.Bitmap)
 
         """
@@ -29,12 +28,6 @@ class sppasSwissKnife:
         img = wx.Image(icon_name, wx.BITMAP_TYPE_ANY)
         if height is not None:
             img.Rescale(height, height, wx.IMAGE_QUALITY_HIGH)
-        if colorize is True:
-            button_color = wx.GetApp().settings.button_fg_color
-            img.Replace(0, 0, 0,
-                        button_color.Red(),
-                        button_color.Green(),
-                        button_color.Blue())
 
         return wx.Bitmap(img)
 

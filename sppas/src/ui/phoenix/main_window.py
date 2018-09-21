@@ -41,6 +41,7 @@ from .main_log import sppasLogWindow
 from .controls.buttons import sppasBitmapTextButton
 from .controls.texts import sppasTitleText
 from .panels import sppasWelcomePanel
+from .panels import sppasPanel
 from .dialogs import sppasDialog
 from .dialogs import YesNoQuestion
 from .dialogs import About
@@ -202,7 +203,8 @@ class sppasMainWindow(sppasDialog):
         :param event: (wx.Event) Un-used.
 
         """
-        response = YesNoQuestion("Confirm exit of {:s}...".format(sg.__name__))
+        response = YesNoQuestion("Confirm exit of {:s}..."
+                                 "".format(sg.__name__))
         if response == wx.ID_YES:
             self.exit()
 
@@ -214,18 +216,33 @@ class sppasMainWindow(sppasDialog):
         if response == wx.ID_CANCEL:
             return
 
-        # settings was changed. We apply new (or not) 'wx' values.
-        p = self.FindWindow("content")
-        p.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        p.SetForegroundColour(wx.GetApp().settings.fg_color)
-        p.SetFont(wx.GetApp().settings.text_font)
-        self.Refresh()
+        self.__apply_setting(self)
+        self.__apply_setting(self.log_window)
 
-        p = self.log_window.FindWindow("content")
+    # -----------------------------------------------------------------------
+
+    def __apply_setting(self, dlg):
+        """Apply settings on a dialog."""
+        # apply new (or not) 'wx' values to content.
+        p = dlg.FindWindow("content")
         p.SetBackgroundColour(wx.GetApp().settings.bg_color)
         p.SetForegroundColour(wx.GetApp().settings.fg_color)
         p.SetFont(wx.GetApp().settings.text_font)
-        self.Refresh()
+        dlg.Refresh()
+
+        # apply new (or not) 'wx' values to header.
+        p = dlg.FindWindow("header")
+        p.SetBackgroundColour(wx.GetApp().settings.header_bg_color)
+        p.SetForegroundColour(wx.GetApp().settings.header_fg_color)
+        p.SetFont(wx.GetApp().settings.header_text_font)
+        dlg.Refresh()
+
+        # apply new (or not) 'wx' values to actions.
+        p = dlg.FindWindow("actions")
+        p.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
+        p.SetForegroundColour(wx.GetApp().settings.action_fg_color)
+        p.SetFont(wx.GetApp().settings.action_text_font)
+        dlg.Refresh()
 
     # -----------------------------------------------------------------------
     # Public methods
@@ -242,7 +259,7 @@ class sppasMainWindow(sppasDialog):
 # ---------------------------------------------------------------------------
 
 
-class sppasMenuPanel(wx.Panel):
+class sppasMenuPanel(sppasPanel):
     """Create my own menu panel with several action buttons.
 
     It aims to replace the old-style menus.
@@ -255,19 +272,22 @@ class sppasMenuPanel(wx.Panel):
 
         # Fix Look&Feel
         settings = wx.GetApp().settings
-        self.SetBackgroundColour(settings.title_bg_color)
         self.SetMinSize(wx.Size(-1, settings.title_height))
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        st = sppasTitleText(parent=self, label="{:s}".format(sg.__longname__))
+        st = wx.StaticText(parent=self, label="{:s}".format(sg.__longname__))
         sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
+
+        self.SetBackgroundColour(wx.GetApp().settings.header_bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.header_fg_color)
+        self.SetFont(wx.GetApp().settings.header_text_font)
 
         self.SetSizer(sizer)
 
 # ---------------------------------------------------------------------------
 
 
-class sppasActionsPanel(wx.Panel):
+class sppasActionsPanel(sppasPanel):
     """Create my own panel with some action buttons.
 
     :author:       Brigitte Bigi
@@ -287,7 +307,6 @@ class sppasActionsPanel(wx.Panel):
 
         # Create the action panel and sizer
         self.SetMinSize(wx.Size(-1, settings.action_height))
-        self.SetBackgroundColour(settings.button_bg_color)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         exit_btn = sppasBitmapTextButton(self, "Exit", name="exit")
@@ -306,5 +325,9 @@ class sppasActionsPanel(wx.Panel):
         sizer.Add(about_btn, 1, wx.ALL | wx.EXPAND, 0)
         sizer.Add(vertical_line_3, 0, wx.ALL | wx.EXPAND, 0)
         sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 0)
+
+        self.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.action_fg_color)
+        self.SetFont(wx.GetApp().settings.action_text_font)
 
         self.SetSizer(sizer)

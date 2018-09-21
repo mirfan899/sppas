@@ -98,9 +98,9 @@ class sppasTitleText(wx.StaticText):
 
         # Fix Look&Feel
         settings = wx.GetApp().settings
-        self.SetFont(settings.title_text_font)
-        self.SetBackgroundColour(settings.title_bg_color)
-        self.SetForegroundColour(settings.title_fg_color)
+        self.SetFont(settings.header_text_font)
+        self.SetBackgroundColour(settings.header_bg_color)
+        self.SetForegroundColour(settings.header_fg_color)
 
 # ---------------------------------------------------------------------------
 

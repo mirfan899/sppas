@@ -320,25 +320,27 @@ class sppasLogWindow(wx.TopLevelWindow):
 
         # add a customized title and separate title and the rest with a line
         title = sppasLogTitlePanel(self)
-        top_sizer.Add(title, 0, wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
+        title.SetName('header')
+        top_sizer.Add(title, 0, wx.EXPAND, 0)
         line_top = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-        top_sizer.Add(line_top, 0, wx.ALL | wx.EXPAND, 0)
+        top_sizer.Add(line_top, 0, wx.EXPAND, 0)
 
         # add a panel for the messages
         msg_panel = sppasLogMessagePanel(
             parent=self,
             header=self.log_file.get_header())
-        top_sizer.Add(msg_panel, 3, wx.ALL | wx.EXPAND, 0)
+        msg_panel.SetName('content')
+        top_sizer.Add(msg_panel, 3, wx.EXPAND, 0)
         self.txt = msg_panel.txt
 
         # separate top and the rest with a line
         line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-        top_sizer.Add(line, 0, wx.ALL | wx.EXPAND, 0)
+        top_sizer.Add(line, 0, wx.EXPAND, 0)
 
         # add some action buttons
         actions = sppasLogActionPanel(self)
-        top_sizer.Add(actions, 0,
-                      wx.ALIGN_LEFT | wx.ALIGN_RIGHT | wx.EXPAND, 0)
+        actions.SetName('actions')
+        top_sizer.Add(actions, 0, wx.EXPAND, 0)
 
         # Layout the content
         self.SetAutoLayout(True)
@@ -562,7 +564,7 @@ class sppasLogTextCtrl(wx.LogTextCtrl):
 # ---------------------------------------------------------------------------
 
 
-class sppasLogTitlePanel(wx.Panel):
+class sppasLogTitlePanel(sppasPanel):
     """Create a panel to include the frame title.
 
     :author:       Brigitte Bigi
@@ -580,19 +582,21 @@ class sppasLogTitlePanel(wx.Panel):
 
         # Fix Look&Feel
         settings = wx.GetApp().settings
-        self.SetBackgroundColour(settings.title_bg_color)
         self.SetMinSize((-1, settings.title_height))
 
         # Create the title
         title = '{:s} Log Window...'.format(sg.__name__)
-        st = sppasTitleText(parent=self, label=title)
+        st = wx.StaticText(parent=self, label=title)
 
         # Put the title in a sizer
-        title_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        title_sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
 
-        self.SetSizer(title_sizer)
-        self.SetAutoLayout(True)
+        self.SetBackgroundColour(wx.GetApp().settings.header_bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.header_fg_color)
+        self.SetFont(wx.GetApp().settings.header_text_font)
+
+        self.SetSizer(sizer)
 
 # ---------------------------------------------------------------------------
 
@@ -705,12 +709,13 @@ class sppasLogMessagePanel(sppasPanel):
         """Override."""
         # reset the existing styles...
         self.txt.SetStyles()
-        self.txt.SetStyle(0, len(self.txt.GetValue()), self.txt.GetDefaultStyle())
+        self.txt.SetStyle(0, len(self.txt.GetValue()),
+                          self.txt.GetDefaultStyle())
 
 # ---------------------------------------------------------------------------
 
 
-class sppasLogActionPanel(wx.Panel):
+class sppasLogActionPanel(sppasPanel):
     """Create a panel with some action buttons to manage log messages.
 
     :author:       Brigitte Bigi
@@ -730,7 +735,6 @@ class sppasLogActionPanel(wx.Panel):
         # fix this panel look&feel
         settings = wx.GetApp().settings
         self.SetMinSize((-1, settings.action_height))
-        self.SetBackgroundColour(settings.bg_color)
 
         # create action buttons
         clear_btn = sppasBitmapTextButton(self, "Clear", name="broom")
@@ -747,5 +751,8 @@ class sppasLogActionPanel(wx.Panel):
         action_sizer.Add(line2, 0, wx.ALL | wx.EXPAND, 0)
         action_sizer.Add(send_btn, 2, wx.ALL | wx.EXPAND, 1)
 
+        self.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.action_fg_color)
+        self.SetFont(wx.GetApp().settings.action_text_font)
+
         self.SetSizer(action_sizer)
-        self.SetAutoLayout(True)

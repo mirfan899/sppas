@@ -1,6 +1,6 @@
 import wx
 
-from wx.lib.buttons import GenBitmapTextButton, GenButton
+from wx.lib.buttons import GenBitmapTextButton, GenButton, GenBitmapButton
 from ..tools import sppasSwissKnife
 
 # ---------------------------------------------------------------------------
@@ -25,11 +25,7 @@ class sppasTextButton(GenButton):
            style=wx.BORDER_NONE,
            name=name)
 
-        # Fix Look&Feel
-        settings = wx.GetApp().settings
-        self.SetForegroundColour(settings.button_fg_color)
-        self.SetBackgroundColour(settings.button_bg_color)
-        self.SetFont(settings.button_text_font)
+        self.ShouldInheritColours()
         self.SetInitialSize()
         self.Enable(True)
         self.SetBezelWidth(0)
@@ -54,22 +50,56 @@ class sppasBitmapTextButton(GenBitmapTextButton):
 
     """
 
-    def __init__(self, parent, label, name):
-        settings = wx.GetApp().settings
-        btn_height = int(settings.action_height * 0.6)
+    def __init__(self, parent, label, name, style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS):
+
+        btn_height = int(parent.GetSize()[1])
         super(sppasBitmapTextButton, self).__init__(
             parent,
             id=wx.NewId(),
             bitmap=sppasSwissKnife.get_bmp_icon(name, height=btn_height),
-            label="   "+label,
-            style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS,
+            label=" "+label+" ",
+            style=style,
             name=name
         )
-
-        self.SetBackgroundColour(settings.button_bg_color)
-        self.SetForegroundColour(settings.button_fg_color)
-        self.SetFont(settings.button_text_font)
+        self.ShouldInheritColours()
         self.SetInitialSize()
         self.Enable(True)
         self.SetBezelWidth(0)
         self.SetUseFocusIndicator(False)
+
+
+# ---------------------------------------------------------------------------
+
+
+class sppasBitmapButton(GenBitmapButton):
+    """Create a simple text button.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    Create a button with bitmap. A tooltip can optionally be added.
+
+    >>> button = sppasBitmapButton(None, "exit")
+    >>> button.SetToolTipString("Quit the application")
+
+    """
+
+    def __init__(self, parent, name, style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS):
+
+        btn_height = int(parent.GetSize()[1])
+        super(sppasBitmapButton, self).__init__(
+            parent,
+            id=wx.NewId(),
+            bitmap=sppasSwissKnife.get_bmp_icon(name, height=btn_height),
+            style=style,
+            name=name
+        )
+        self.ShouldInheritColours()
+        self.SetInitialSize()
+        self.Enable(True)
+        self.SetBezelWidth(0)
+        self.SetUseFocusIndicator(False)
+

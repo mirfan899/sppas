@@ -103,16 +103,16 @@ class WxAppSettings(sppasBaseSettings):
             icons_theme="Refine",
 
             fg_color=wx.Colour(230, 230, 230, alpha=wx.ALPHA_OPAQUE),
-            title_fg_color=wx.Colour(128, 128, 128, alpha=wx.ALPHA_OPAQUE),
-            button_fg_color=wx.Colour(128, 128, 128),
+            header_fg_color=wx.Colour(128, 128, 128, alpha=wx.ALPHA_OPAQUE),
+            action_fg_color=wx.Colour(128, 128, 128),
 
             bg_color=wx.Colour(20, 20, 20, alpha=wx.ALPHA_OPAQUE),
-            title_bg_color=wx.Colour(40, 40, 40, alpha=wx.ALPHA_OPAQUE),
-            button_bg_color=wx.Colour(30, 30, 30, alpha=wx.ALPHA_OPAQUE),
+            header_bg_color=wx.Colour(40, 40, 40, alpha=wx.ALPHA_OPAQUE),
+            action_bg_color=wx.Colour(30, 30, 30, alpha=wx.ALPHA_OPAQUE),
 
-            title_text_font=self.__title_font(),
-            button_text_font=self.__button_font(),
             text_font=self.__text_font(),
+            header_text_font=self.__title_font(),
+            action_text_font=self.__button_font(),
             mono_text_font=self.__mono_font(),
 
             title_height=font_height*5,

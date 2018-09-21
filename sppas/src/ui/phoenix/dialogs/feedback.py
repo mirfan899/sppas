@@ -42,9 +42,9 @@ except ImportError:
 
 from sppas.src.config import sg
 
-from ..panels.basepanel import sppasPanel
 from ..controls.buttons import sppasBitmapTextButton
 from ..controls.texts import sppasTextCtrl
+from ..panels import sppasPanel
 from .basedialog import sppasDialog
 from .messages import Information
 
@@ -140,9 +140,8 @@ class sppasFeedbackDialog(sppasDialog):
         """Create the buttons and bind events."""
 
         settings = wx.GetApp().settings
-        panel = wx.Panel(self, name="actions")
+        panel = sppasPanel(self, name="actions")
         panel.SetMinSize(wx.Size(-1, settings.action_height))
-        panel.SetBackgroundColour(settings.button_bg_color)
 
         # Create the buttons
         gmail_btn = sppasBitmapTextButton(panel, "Gmail", name="gmail")
@@ -164,6 +163,10 @@ class sppasFeedbackDialog(sppasDialog):
         sizer.Add(other_btn, 1, wx.EXPAND, 0)
         sizer.Add(vertical_line_3, 0, wx.EXPAND, 0)
         sizer.Add(close_btn, 2, wx.EXPAND, border=0)
+
+        panel.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
+        panel.SetForegroundColour(wx.GetApp().settings.action_fg_color)
+        panel.SetFont(wx.GetApp().settings.action_text_font)
 
         self.Bind(wx.EVT_BUTTON, self._process_event)
         panel.SetSizer(sizer)

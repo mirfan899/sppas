@@ -74,15 +74,15 @@ app = testApp()
 # demo.Destroy()
 # logging.info('Response: {:d}'.format(response))
 
-demo = sppasAboutDialog(None)
-response = demo.ShowModal()
-demo.Destroy()
-logging.info('Response: {:d}'.format(response))
-
-# demo = sppasSettingsDialog(None)
+# demo = sppasAboutDialog(None)
 # response = demo.ShowModal()
 # demo.Destroy()
 # logging.info('Response: {:d}'.format(response))
+
+demo = sppasSettingsDialog(None)
+response = demo.ShowModal()
+demo.Destroy()
+logging.info('Response: {:d}'.format(response))
 
 app.SetTopWindow(demo)
 app.MainLoop()

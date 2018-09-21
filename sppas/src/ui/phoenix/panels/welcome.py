@@ -102,5 +102,5 @@ class sppasWelcomePanel(sppasPanel):
 
     def SetFont(self, font):
         sppasPanel.SetFont(self, font)
-        self.FindWindow("title").SetFont(wx.GetApp().settings.title_text_font)
+        self.FindWindow("title").SetFont(wx.GetApp().settings.header_text_font)
         self.Layout()
