@@ -95,6 +95,20 @@ class sppasSimplebook(wx.Simplebook):
         - sppasSimplebook(parent, id=ID_ANY, pos=DefaultPosition,
             size=DefaultSize, style=0, name=NotebookNameStr)
 
+    Possible effects:
+        - wx.SHOW_EFFECT_NONE 	No effect.
+        - wx.SHOW_EFFECT_ROLL_TO_LEFT 	Roll window to the left.
+        - wx.SHOW_EFFECT_ROLL_TO_RIGHT 	Roll window to the right.
+        - wx.SHOW_EFFECT_ROLL_TO_TOP 	Roll window to the top.
+        - wx.SHOW_EFFECT_ROLL_TO_BOTTOM 	Roll window to the bottom.
+        - wx.SHOW_EFFECT_SLIDE_TO_LEFT 	Slide window to the left.
+        - wx.SHOW_EFFECT_SLIDE_TO_RIGHT 	Slide window to the right.
+        - wx.SHOW_EFFECT_SLIDE_TO_TOP 	Slide window to the top.
+        - wx.SHOW_EFFECT_SLIDE_TO_BOTTOM 	Slide window to the bottom.
+        - wx.SHOW_EFFECT_BLEND 	Fade in or out effect.
+        - wx.SHOW_EFFECT_EXPAND 	Expanding or collapsing effect.
+        - wx.SHOW_EFFECT_MAX
+
     >>> n = sppasSimplebook()
     >>> n.ShowNewPage(page)
 
@@ -105,8 +119,9 @@ class sppasSimplebook(wx.Simplebook):
         self.SetBackgroundColour(s.bg_color)
         self.SetForegroundColour(s.fg_color)
         self.SetFont(s.text_font)
-        # self.SetEffects(showEffect, hideEffect)
-        # self.SetEffectsTimeouts(showTimeout, hideTimeout)
+        self.SetEffects(showEffect=wx.SHOW_EFFECT_SLIDE_TO_LEFT,
+                        hideEffect=wx.SHOW_EFFECT_SLIDE_TO_LEFT)
+        self.SetEffectsTimeouts(400, 400)
 
     # -----------------------------------------------------------------------
 
