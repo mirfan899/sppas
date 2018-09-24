@@ -46,7 +46,6 @@ from sppas.src.utils.datatype import sppasTime
 
 from .panels.basepanel import sppasPanel
 from .controls.buttons import sppasBitmapTextButton
-from .controls.texts import sppasTitleText
 from .tools import sppasSwissKnife
 from .dialogs import Feedback
 
@@ -501,6 +500,32 @@ class sppasLogWindow(wx.TopLevelWindow):
         """Send log messages to the author."""
         text = "Add comments here...\n\n" + self.txt.GetValue()
         Feedback(self, text)
+
+    # -----------------------------------------------------------------------
+    # GUI
+    # -----------------------------------------------------------------------
+
+    def UpdateUI(self):
+        """Apply settings to all panels and refresh."""
+        # apply new (or not) 'wx' values to content.
+        p = self.FindWindow("content")
+        p.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        p.SetForegroundColour(wx.GetApp().settings.fg_color)
+        p.SetFont(wx.GetApp().settings.text_font)
+
+        # apply new (or not) 'wx' values to header.
+        p = self.FindWindow("header")
+        p.SetBackgroundColour(wx.GetApp().settings.header_bg_color)
+        p.SetForegroundColour(wx.GetApp().settings.header_fg_color)
+        p.SetFont(wx.GetApp().settings.header_text_font)
+
+        # apply new (or not) 'wx' values to actions.
+        p = self.FindWindow("actions")
+        p.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
+        p.SetForegroundColour(wx.GetApp().settings.action_fg_color)
+        p.SetFont(wx.GetApp().settings.action_text_font)
+
+        self.Refresh()
 
 # ---------------------------------------------------------------------------
 

@@ -39,7 +39,6 @@ from sppas.src.config import sg
 
 from .main_log import sppasLogWindow
 from .controls.buttons import sppasBitmapTextButton
-from .controls.texts import sppasTitleText
 from .panels import sppasWelcomePanel
 from .panels import sppasPanel
 from .dialogs import sppasDialog
@@ -115,15 +114,15 @@ class sppasMainWindow(sppasDialog):
         """
         # add a customized menu (instead of an header+toolbar)
         menus = sppasMenuPanel(self)
-        menus.SetName('header')
+        self.SetHeader(menus)
 
         # add a panel with a welcome message
         msg_panel = sppasWelcomePanel(self)
-        msg_panel.SetName("content")
+        self.SetContent(msg_panel)
 
         # add some action buttons
         actions = sppasActionsPanel(self)
-        actions.SetName('actions')
+        self.SetActions(actions)
 
         # organize the content and lays out.
         self.LayoutComponents()
@@ -216,33 +215,8 @@ class sppasMainWindow(sppasDialog):
         if response == wx.ID_CANCEL:
             return
 
-        self.__apply_setting(self)
-        self.__apply_setting(self.log_window)
-
-    # -----------------------------------------------------------------------
-
-    def __apply_setting(self, dlg):
-        """Apply settings on a dialog."""
-        # apply new (or not) 'wx' values to content.
-        p = dlg.FindWindow("content")
-        p.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        p.SetForegroundColour(wx.GetApp().settings.fg_color)
-        p.SetFont(wx.GetApp().settings.text_font)
-        dlg.Refresh()
-
-        # apply new (or not) 'wx' values to header.
-        p = dlg.FindWindow("header")
-        p.SetBackgroundColour(wx.GetApp().settings.header_bg_color)
-        p.SetForegroundColour(wx.GetApp().settings.header_fg_color)
-        p.SetFont(wx.GetApp().settings.header_text_font)
-        dlg.Refresh()
-
-        # apply new (or not) 'wx' values to actions.
-        p = dlg.FindWindow("actions")
-        p.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
-        p.SetForegroundColour(wx.GetApp().settings.action_fg_color)
-        p.SetFont(wx.GetApp().settings.action_text_font)
-        dlg.Refresh()
+        self.UpdateUI()
+        self.log_window.UpdateUI()
 
     # -----------------------------------------------------------------------
     # Public methods
@@ -277,10 +251,6 @@ class sppasMenuPanel(sppasPanel):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         st = wx.StaticText(parent=self, label="{:s}".format(sg.__longname__))
         sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
-
-        self.SetBackgroundColour(wx.GetApp().settings.header_bg_color)
-        self.SetForegroundColour(wx.GetApp().settings.header_fg_color)
-        self.SetFont(wx.GetApp().settings.header_text_font)
 
         self.SetSizer(sizer)
 
@@ -325,9 +295,5 @@ class sppasActionsPanel(sppasPanel):
         sizer.Add(about_btn, 1, wx.ALL | wx.EXPAND, 0)
         sizer.Add(vertical_line_3, 0, wx.ALL | wx.EXPAND, 0)
         sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 0)
-
-        self.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
-        self.SetForegroundColour(wx.GetApp().settings.action_fg_color)
-        self.SetFont(wx.GetApp().settings.action_text_font)
 
         self.SetSizer(sizer)

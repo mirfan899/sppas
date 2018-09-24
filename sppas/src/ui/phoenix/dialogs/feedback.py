@@ -128,11 +128,9 @@ class sppasFeedbackDialog(sppasDialog):
         s = wx.StaticText(panel, label="Send with: ")
         grid.Add(s, 0)
 
-        panel.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        panel.SetForegroundColour(wx.GetApp().settings.fg_color)
-        panel.SetFont(wx.GetApp().settings.text_font)
         panel.SetAutoLayout(True)
         panel.SetSizer(grid)
+        self.SetContent(panel)
 
     # -----------------------------------------------------------------------
 
@@ -164,12 +162,9 @@ class sppasFeedbackDialog(sppasDialog):
         sizer.Add(vertical_line_3, 0, wx.EXPAND, 0)
         sizer.Add(close_btn, 2, wx.EXPAND, border=0)
 
-        panel.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
-        panel.SetForegroundColour(wx.GetApp().settings.action_fg_color)
-        panel.SetFont(wx.GetApp().settings.action_text_font)
-
         self.Bind(wx.EVT_BUTTON, self._process_event)
         panel.SetSizer(sizer)
+        self.SetActions(panel)
 
     # ------------------------------------------------------------------------
     # Callback to events
@@ -206,7 +201,7 @@ class sppasFeedbackDialog(sppasDialog):
     def _on_char(self, evt):
 
         if self.body_text.GetValue().strip() == DESCRIBE_TEXT:
-            self.body_text.SetForegroundColour(wx.GetApp().settings.bg_color)
+            self.body_text.SetForegroundColour(wx.GetApp().settings.fg_color)
             self.body_text.SetValue('')
 
         if evt.ControlDown() and evt.KeyCode == 1:

@@ -34,8 +34,6 @@
 
 """
 import wx
-from wx.lib.buttons import GenBitmapTextButton
-import logging
 
 from ..panels.basepanel import sppasPanel
 from ..controls.windows import sppasNotebook
@@ -106,7 +104,7 @@ class sppasSettingsDialog(sppasDialog):
 
         self.CreateHeader("Settings...", "settings")
         self._create_content()
-        self._create_buttons()
+        self.CreateButtons([wx.ID_CANCEL, wx.ID_OK])
         self.LayoutComponents()
         self.CenterOnParent()
 
@@ -141,32 +139,7 @@ class sppasSettingsDialog(sppasDialog):
 
         # put an image on the first tab
         notebook.SetPageImage(0, idx1)
-
-    # -----------------------------------------------------------------------
-
-    def _create_buttons(self):
-        """Create the buttons and bind events."""
-        settings = wx.GetApp().settings
-        panel = sppasPanel(self, name="actions")
-        panel.SetMinSize(wx.Size(-1, settings.action_height))
-
-        close_btn = sppasBitmapTextButton(panel, "Okay", name="ok")
-        cancel_btn = sppasBitmapTextButton(panel, "Cancel", name="cancel")
-        line_1 = wx.StaticLine(panel, style=wx.LI_VERTICAL)
-
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(cancel_btn, 2, wx.EXPAND, border=0)
-        sizer.Add(line_1, 0, wx.EXPAND, 0)
-        sizer.Add(close_btn, 2, wx.EXPAND, border=0)
-
-        self.SetAffirmativeId(close_btn.GetId())
-        self.SetEscapeId(cancel_btn.GetId())
-
-        panel.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
-        panel.SetForegroundColour(wx.GetApp().settings.action_fg_color)
-        panel.SetFont(wx.GetApp().settings.action_text_font)
-
-        panel.SetSizer(sizer)
+        self.SetContent(notebook)
 
     # ------------------------------------------------------------------------
     # Callback to events
@@ -185,7 +158,7 @@ class sppasSettingsDialog(sppasDialog):
             self.on_cancel(event)
 
         elif event_name == "apply":
-            self._apply()
+            self.UpdateUI()
 
         else:
             event.Skip()
@@ -207,27 +180,6 @@ class sppasSettingsDialog(sppasDialog):
         settings = wx.GetApp().settings
         for k in self._back_up:
             settings.set(k, self._back_up[k])
-
-    # ------------------------------------------------------------------------
-
-    def _apply(self):
-        """Apply new settings to the dialog."""
-        p = self.FindWindow("content")
-        p.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        p.SetForegroundColour(wx.GetApp().settings.fg_color)
-        p.SetFont(wx.GetApp().settings.text_font)
-
-        p = self.FindWindow("header")
-        p.SetBackgroundColour(wx.GetApp().settings.header_bg_color)
-        p.SetForegroundColour(wx.GetApp().settings.header_fg_color)
-        p.SetFont(wx.GetApp().settings.header_text_font)
-
-        p = self.FindWindow("actions")
-        p.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
-        p.SetForegroundColour(wx.GetApp().settings.action_fg_color)
-        p.SetFont(wx.GetApp().settings.action_text_font)
-
-        self.Refresh()
 
 # ----------------------------------------------------------------------------
 
@@ -344,7 +296,6 @@ class WxSettingsPanel(sppasPanel):
         else:
             event.Skip()
 
-
     # -----------------------------------------------------------------------
     # Callbacks to event
     # -----------------------------------------------------------------------
@@ -423,7 +374,6 @@ class sppasColoursFontPanel(sppasPanel):
 
         txt = wx.StaticText(self, -1, title, name="title")
         gbs.Add(txt, (0, 0), flag=flag, border=5)
-
 
         # ---------- Background color
 

@@ -102,17 +102,17 @@ class WxAppSettings(sppasBaseSettings):
 
             icons_theme="Refine",
 
-            fg_color=wx.Colour(230, 230, 230, alpha=wx.ALPHA_OPAQUE),
-            header_fg_color=wx.Colour(128, 128, 128, alpha=wx.ALPHA_OPAQUE),
-            action_fg_color=wx.Colour(128, 128, 128),
+            fg_color=wx.Colour(230, 230, 230),
+            header_fg_color=wx.Colour(160, 160, 160),
+            action_fg_color=wx.Colour(130, 130, 130),
 
             bg_color=wx.Colour(20, 20, 20, alpha=wx.ALPHA_OPAQUE),
             header_bg_color=wx.Colour(40, 40, 40, alpha=wx.ALPHA_OPAQUE),
             action_bg_color=wx.Colour(30, 30, 30, alpha=wx.ALPHA_OPAQUE),
 
             text_font=self.__text_font(),
-            header_text_font=self.__title_font(),
-            action_text_font=self.__button_font(),
+            header_text_font=self.__header_font(),
+            action_text_font=self.__action_font(),
             mono_text_font=self.__mono_font(),
 
             title_height=font_height*5,
@@ -122,37 +122,52 @@ class WxAppSettings(sppasBaseSettings):
     # -----------------------------------------------------------------------
 
     def __text_font(self):
-        text_font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        s = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize()
+        text_font = wx.Font(s,                      # point size
+                            wx.FONTFAMILY_DEFAULT,  # family,
+                            wx.FONTSTYLE_NORMAL,    # style,
+                            wx.FONTWEIGHT_NORMAL,   # weight,
+                            underline=False,
+                            faceName="Calibri",
+                            encoding=wx.FONTENCODING_SYSTEM)
         return text_font
 
     # -----------------------------------------------------------------------
 
-    def __title_font(self):
-        title_font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
-        title_font = title_font.Bold()
-        title_font = title_font.Scale(2.)
+    def __header_font(self):
+        s = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize()
+        title_font = wx.Font(s*2,                    # point size
+                             wx.FONTFAMILY_DEFAULT,  # family,
+                             wx.FONTSTYLE_NORMAL,    # style,
+                             wx.FONTWEIGHT_BOLD,     # weight,
+                             underline=False,
+                             faceName="Calibri",
+                             encoding=wx.FONTENCODING_SYSTEM)
         return title_font
 
     # -----------------------------------------------------------------------
 
-    def __button_font(self):
-        system_font_size = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize()
-        button_font = wx.Font(system_font_size,       # point size
+    def __action_font(self):
+        s = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize()
+        button_font = wx.Font(int(s*1.2),             # point size
                               wx.FONTFAMILY_DEFAULT,  # family,
                               wx.FONTSTYLE_NORMAL,    # style,
                               wx.FONTWEIGHT_NORMAL,   # weight,
                               underline=False,
                               faceName="Calibri",
                               encoding=wx.FONTENCODING_SYSTEM)
-        button_font.Scale(1.2)
         return button_font
 
     # -----------------------------------------------------------------------
 
     def __mono_font(self):
-        mono_font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
-        mono_font.SetFamily(wx.FONTFAMILY_MODERN)
-        mono_font.Scale(0.9)
+        s = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize()
+        mono_font = wx.Font(int(s * 0.9),           # point size
+                            wx.FONTFAMILY_MODERN,   # family,
+                            wx.FONTSTYLE_NORMAL,    # style,
+                            wx.FONTWEIGHT_NORMAL,   # weight,
+                            underline=False,
+                            encoding=wx.FONTENCODING_SYSTEM)
         return mono_font
 
     # -----------------------------------------------------------------------

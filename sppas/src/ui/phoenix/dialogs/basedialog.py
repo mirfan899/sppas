@@ -38,6 +38,7 @@ import wx
 from sppas.src.config import sg
 from ..tools import sppasSwissKnife
 from ..controls import sppasBitmapTextButton
+from ..controls import sppasStaticBitmap
 from ..panels import sppasPanel
 
 # ---------------------------------------------------------------------------
@@ -50,14 +51,25 @@ class sppasDialog(wx.Dialog):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, *args, **kw):
         """Create a dialog.
 
-        :param parent: (wx.Window)
-        :param title: String to append to the title of the dialog frame.
+        Possible constructors:
+
+            - Dialog()
+            - Dialog(parent, id=ID_ANY, title="", pos=DefaultPosition,
+                     size=DefaultSize, style=DEFAULT_DIALOG_STYLE,
+                     name=DialogNameStr)
+
+        A sppasDialog is made of 3 (optional) wx.Window() with name:
+
+            - at top: "header"
+            - at middle: "content"
+            - at bottom: "actions"
 
         """
         super(sppasDialog, self).__init__(*args, **kw)
@@ -111,14 +123,7 @@ class sppasDialog(wx.Dialog):
         pass
 
     def CreateTextSizer(self, message):
-        """Override to disable.
-        
-        Splits text up at newlines and places the lines into wx.StaticText 
-        objects in a vertical wx.BoxSizer.
-            Parameters:	message (string) –
-            Return type:	wx.Sizer
-        
-        """
+        """Override to disable."""
         pass
 
     # -----------------------------------------------------------------------
@@ -132,50 +137,66 @@ class sppasDialog(wx.Dialog):
         return self.FindWindow("content")
 
     # -----------------------------------------------------------------------
-    # Methods to add header/toolbar/buttons
+    # Methods to add/set the header, content, actions
     # -----------------------------------------------------------------------
 
     def CreateHeader(self, title, icon_name=None):
-        """Create a panel including a nice bold-title with an optional icon.
+        """Create a panel including a title with an optional icon.
 
         :param title: (str) The message in the header
-        :param icon_name: (str) Name of the icon.
+        :param icon_name: (str) Base name of the icon.
 
         """
-        settings = wx.GetApp().settings
-
         # Create the header panel and sizer
         panel = sppasPanel(self, name="header")
-        panel.SetMinSize((-1, settings.title_height))
+        panel.SetMinSize((-1, wx.GetApp().settings.title_height))
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        # Add the icon, at left
+        # Add the icon, at left, with its title
         if icon_name is not None:
-            bmp = sppasBitmapTextButton(panel, title, icon_name)
-            bmp.Enable(False)
-            sizer.Add(bmp, 0, wx.ALIGN_CENTER_VERTICAL)
+            static_bmp = sppasStaticBitmap(panel, icon_name)
+            sizer.Add(static_bmp, 0,
+                      wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER_VERTICAL, 10)
 
-        # Add the title, in a panel (required for vertical centering)
-        # panel_text = sppasPanel(panel, style=wx.NO_BORDER, name="headertext")
-        # sizer_text = wx.BoxSizer()
-        # text = wx.StaticText(panel_text, label=title, style=wx.ALIGN_CENTER)
-        # sizer_text.Add(text, 0, wx.ALIGN_CENTER_VERTICAL)
-        # panel_text.SetSizer(sizer_text)
-        # sizer.Add(panel_text, 1, wx.EXPAND | wx.LEFT, border=10)
-
-        panel.SetBackgroundColour(wx.GetApp().settings.header_bg_color)
-        panel.SetForegroundColour(wx.GetApp().settings.header_fg_color)
-        panel.SetFont(wx.GetApp().settings.header_text_font)
+        txt = wx.StaticText(panel, label=title)
+        sizer.Add(txt, 0, wx.ALIGN_CENTER_VERTICAL)
 
         # This header panel properties
         panel.SetSizer(sizer)
+        self.SetHeader(panel)
+
+    # -----------------------------------------------------------------------
+
+    def SetHeader(self, window):
+        """Assign the header window to this dialog.
+
+        :param window: (wx.Window) Any kind of wx.Window, wx.Panel, ...
+
+        """
+        window.SetName("header")
+        window.SetBackgroundColour(wx.GetApp().settings.header_bg_color)
+        window.SetForegroundColour(wx.GetApp().settings.header_fg_color)
+        window.SetFont(wx.GetApp().settings.header_text_font)
+
+    # -----------------------------------------------------------------------
+
+    def SetContent(self, window):
+        """Assign the content window to this dialog.
+
+        :param window: (wx.Window) Any kind of wx.Window, wx.Panel, ...
+
+        """
+        window.SetName("content")
+        window.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        window.SetForegroundColour(wx.GetApp().settings.fg_color)
+        window.SetFont(wx.GetApp().settings.text_font)
 
     # -----------------------------------------------------------------------
 
     def CreateButtons(self, left_flags, right_flags=[]):
-        """Create a customized buttons panel.
+        """Create the actions panel.
 
-        flags is a bit list of the following flags:
+        Flags is a bit list of the following flags:
             - wx.ID_OK,
             - wx.ID_CANCEL,
             - wx.ID_YES,
@@ -188,18 +209,16 @@ class sppasDialog(wx.Dialog):
         :param right_flags: (list) Buttons to put at right
 
         """
-        settings = wx.GetApp().settings
-
         # Create the action panel and sizer
         panel = sppasPanel(self, name="actions")
-        panel.SetMinSize(wx.Size(-1, settings.action_height))
+        panel.SetMinSize(wx.Size(-1, wx.GetApp().settings.action_height))
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         if len(left_flags) > 0:
             for i, flag in enumerate(left_flags):
                 button = self.__create_button(panel, flag)
-                sizer.Add(button, 2, flag=wx.LEFT | wx.EXPAND, border=0)
+                sizer.Add(button, 2, wx.LEFT | wx.EXPAND, 0)
                 if len(right_flags) > 0 or i+1 < len(left_flags):
                     line = wx.StaticLine(panel, style=wx.LI_VERTICAL)
                     sizer.Add(line, 0, wx.EXPAND, 0)
@@ -212,14 +231,24 @@ class sppasDialog(wx.Dialog):
                 button = self.__create_button(panel, flag)
                 line = wx.StaticLine(panel, style=wx.LI_VERTICAL)
                 sizer.Add(line, 0, wx.EXPAND, 0)
-                sizer.Add(button, 2, flag=wx.RIGHT | wx.EXPAND, border=0)
-
-        panel.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
-        panel.SetForegroundColour(wx.GetApp().settings.action_fg_color)
-        panel.SetFont(wx.GetApp().settings.action_text_font)
+                sizer.Add(button, 2, wx.RIGHT | wx.EXPAND, 0)
 
         # This action panel properties
         panel.SetSizer(sizer)
+        self.SetActions(panel)
+
+    # -----------------------------------------------------------------------
+
+    def SetActions(self, window):
+        """Assign the actions window to this dialog.
+
+        :param window: (wx.Window) Any kind of wx.Window, wx.Panel, ...
+
+        """
+        window.SetName("actions")
+        window.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
+        window.SetForegroundColour(wx.GetApp().settings.action_fg_color)
+        window.SetFont(wx.GetApp().settings.action_text_font)
 
     # ---------------------------------------------------------------------------
 
@@ -239,34 +268,20 @@ class sppasDialog(wx.Dialog):
     # ---------------------------------------------------------------------------
 
     def LayoutComponents(self):
-        """Layout the components of the dialog.
-
-            - header at the top
-            - then eventually the toolbar
-            - then a panel with name 'content' (if any)
-            - and eventually a button box at the bottom.
-
-        """
+        """Layout the components of the dialog."""
         sizer = wx.BoxSizer(wx.VERTICAL)
 
         # Add header
         header = self.FindWindow("header")
         if header is not None:
-            sizer.Add(header, 1, flag=wx.EXPAND, border=0)
-            h_line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-            sizer.Add(h_line, 0, wx.ALL | wx.EXPAND, 0)
-
-        # Add toolbar
-        toolbar = self.FindWindow("toolbar")
-        if toolbar is not None:
-            sizer.Add(toolbar, 1, flag=wx.LEFT | wx.RIGHT | wx.EXPAND, border=0)
+            sizer.Add(header, 1, wx.EXPAND, 0)
             h_line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
             sizer.Add(h_line, 0, wx.ALL | wx.EXPAND, 0)
 
         # Add content
         content = self.FindWindow("content")
         if content is not None:
-            sizer.Add(content, 8, flag=wx.EXPAND, border=0)
+            sizer.Add(content, 8, wx.EXPAND, 0)
         else:
             sizer.AddSpacer(2)
 
@@ -276,7 +291,7 @@ class sppasDialog(wx.Dialog):
             h_line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
             sizer.Add(h_line, 0, wx.ALL | wx.EXPAND, 0)
             # proportion is 0 to ask the sizer to never hide the buttons
-            sizer.Add(actions, 0, flag=wx.EXPAND, border=0)
+            sizer.Add(actions, 0, wx.EXPAND, 0)
 
         # Since Layout doesn't happen until there is a size event, you will
         # sometimes have to force the issue by calling Layout yourself. For
@@ -288,6 +303,38 @@ class sppasDialog(wx.Dialog):
         self.SetAutoLayout(True)
         self.SetSizer(sizer)
         self.Layout()
+
+    # -----------------------------------------------------------------------
+
+    def UpdateUI(self):
+        """Apply settings to all panels and refresh."""
+        # colors & font
+        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        self.SetFont(wx.GetApp().settings.text_font)
+
+        # apply new (or not) 'wx' values to content.
+        p = self.FindWindow("content")
+        if p is not None:
+            p.SetBackgroundColour(wx.GetApp().settings.bg_color)
+            p.SetForegroundColour(wx.GetApp().settings.fg_color)
+            p.SetFont(wx.GetApp().settings.text_font)
+
+        # apply new (or not) 'wx' values to header.
+        p = self.FindWindow("header")
+        if p is not None:
+            p.SetBackgroundColour(wx.GetApp().settings.header_bg_color)
+            p.SetForegroundColour(wx.GetApp().settings.header_fg_color)
+            p.SetFont(wx.GetApp().settings.header_text_font)
+
+        # apply new (or not) 'wx' values to actions.
+        p = self.FindWindow("actions")
+        if p is not None:
+            p.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
+            p.SetForegroundColour(wx.GetApp().settings.action_fg_color)
+            p.SetFont(wx.GetApp().settings.action_text_font)
+
+        self.Refresh()
 
     # ---------------------------------------------------------------------------
     # Private

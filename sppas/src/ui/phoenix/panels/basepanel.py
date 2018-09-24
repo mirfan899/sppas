@@ -35,7 +35,6 @@
 """
 import wx
 import wx.lib.scrolledpanel as sc
-from wx.lib.buttons import GenBitmapTextButton
 
 # ---------------------------------------------------------------------------
 
@@ -72,19 +71,6 @@ class sppasPanel(wx.Panel):
         wx.Panel.SetForegroundColour(self, colour)
         for c in self.GetChildren():
             c.SetForegroundColour(colour)
-            if isinstance(c, GenBitmapTextButton):
-                try:
-                    bmp = c.GetBitmapLabel()
-                    img = bmp.ConvertToImage()
-                    # todo: Replace the hard rgb(0,0,0) by real values of the image
-                    img.Replace(0, 0, 0,
-                                colour.Red(),
-                                colour.Green(),
-                                colour.Blue())
-                    c.SetBitmapLabel(wx.Bitmap(img))
-                except:
-                    print('un bouton mais pas d image ou erreur')
-
 
     # -----------------------------------------------------------------------
 
