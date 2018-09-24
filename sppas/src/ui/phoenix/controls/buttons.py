@@ -1,3 +1,38 @@
+# -*- coding: UTF-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
+
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.ui.phoenix.controls.buttons.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import wx
 import logging
 
@@ -23,7 +58,6 @@ class sppasTextButton(GenButton):
 
     """
     def __init__(self, parent, label, name):
-
         super(sppasTextButton, self).__init__(
            parent,
            wx.ID_ANY,
@@ -56,7 +90,6 @@ class sppasBitmapTextButton(GenBitmapTextButton):
     """
 
     def __init__(self, parent, label, name, style=DEFAULT_STYLE):
-
         btn_height = int(parent.GetSize()[1])
         super(sppasBitmapTextButton, self).__init__(
             parent,
@@ -66,6 +99,7 @@ class sppasBitmapTextButton(GenBitmapTextButton):
             style=style,
             name=name
         )
+
         self.SetInitialSize()
         self.Enable(True)
         self.SetBezelWidth(0)
@@ -95,7 +129,7 @@ class sppasBitmapTextButton(GenBitmapTextButton):
 
 
 class sppasBitmapButton(GenBitmapButton):
-    """Create a simple text button.
+    """Create a simple bitmap button.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -120,6 +154,7 @@ class sppasBitmapButton(GenBitmapButton):
             style=style,
             name=name
         )
+
         self.SetInitialSize()
         self.Enable(True)
         self.SetBezelWidth(0)

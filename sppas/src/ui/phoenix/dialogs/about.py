@@ -40,8 +40,7 @@ import webbrowser
 from sppas.src.config import sg
 
 from ..tools import sppasSwissKnife
-from ..panels.basepanel import sppasScrolledPanel
-
+from ..panels import sppasScrolledPanel
 from . import sppasDialog
 
 # ----------------------------------------------------------------------------
@@ -60,8 +59,7 @@ class sppasBaseAbout(sppasScrolledPanel):
     def __init__(self, parent):
         super(sppasBaseAbout, self).__init__(
             parent=parent,
-            style=wx.NO_BORDER,
-            name="content"
+            style=wx.NO_BORDER
         )
 
         self.program = ""
@@ -74,6 +72,8 @@ class sppasBaseAbout(sppasScrolledPanel):
         self.license_text = ""
         self.icon = ""
         self.logo = 'sppas'
+
+        self.SetAutoLayout(True)
 
     # -----------------------------------------------------------------------
 
@@ -135,7 +135,13 @@ class sppasBaseAbout(sppasScrolledPanel):
     # ------------------------------------------------------------------------
 
     def SetForegroundColour(self, colour):
-        """Override. Apply the foreground color change except on the url."""
+        """Override.
+
+        :param colour: (wx.Colour)
+
+        Apply the foreground color change except on the url.
+
+        """
         sppasScrolledPanel.SetForegroundColour(self, colour)
         url_text = self.FindWindow('url')
         if url_text is not None:
@@ -144,6 +150,11 @@ class sppasBaseAbout(sppasScrolledPanel):
     # ------------------------------------------------------------------------
 
     def on_link(self, event):
+        """Called when url was clicked.
+
+        :param event: (wx.Event) Un-used
+
+        """
         try:
             webbrowser.open(sg.__url__, 1)
         except:
@@ -165,6 +176,7 @@ class AboutSPPASPanel(sppasBaseAbout):
     def __init__(self, parent):
         super(AboutSPPASPanel, self).__init__(parent)
 
+        # Fix members
         self.program = sg.__name__
         self.version = sg.__version__
         self.author = sg.__author__
@@ -199,8 +211,8 @@ Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 ------------------------------------------------------------
 """
+        # Create the panel
         self.create()
-        self.SetAutoLayout(True)
 
 # ------------------------------------------------------------------------
 
@@ -233,7 +245,7 @@ class AboutPluginPanel(sppasBaseAbout):
             try:
                 with open(readme, "r") as f:
                     self.license_text = f.read()
-            except Exception:
+            except:
                 pass
 
         self.create()
@@ -259,8 +271,9 @@ class sppasAboutDialog(sppasDialog):
             style=wx.DEFAULT_FRAME_STYLE)
 
         self.CreateHeader("About SPPAS...", 'about')
-        AboutSPPASPanel(self)
-        self.CreateButtons([wx.ID_OK])
+        p = AboutSPPASPanel(self)
+        self.SetContent(p)
+        self.CreateActions([wx.ID_OK])
         self.LayoutComponents()
 
         w = self.GetFont().GetPixelSize()[1]
@@ -286,8 +299,9 @@ class sppasAboutPluginDialog(sppasDialog):
             style=wx.DEFAULT_FRAME_STYLE)
 
         self.CreateHeader("About" + plugin.get_key() + "...", 'about')
-        AboutPluginPanel(self, plugin)
-        self.CreateButtons([wx.ID_OK])
+        p = AboutPluginPanel(self, plugin)
+        self.SetContent(p)
+        self.CreateActions([wx.ID_OK])
         self.LayoutComponents()
 
         w = self.GetFont().GetPixelSize()[1]

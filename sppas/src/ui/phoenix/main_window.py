@@ -28,17 +28,16 @@
 
         ---------------------------------------------------------------------
 
-    ui.phoenix.main_frame.py
+    ui.phoenix.main_window.py
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import wx
-import logging
 
 from sppas.src.config import sg
 
 from .main_log import sppasLogWindow
-from .controls.buttons import sppasBitmapTextButton
+from .controls import sppasBitmapTextButton
 from .panels import sppasWelcomePanel
 from .panels import sppasPanel
 from .dialogs import sppasDialog

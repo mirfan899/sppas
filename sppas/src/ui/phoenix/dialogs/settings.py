@@ -104,7 +104,7 @@ class sppasSettingsDialog(sppasDialog):
 
         self.CreateHeader("Settings...", "settings")
         self._create_content()
-        self.CreateButtons([wx.ID_CANCEL, wx.ID_OK])
+        self.CreateActions([wx.ID_CANCEL, wx.ID_OK])
         self.LayoutComponents()
         self.CenterOnParent()
 
@@ -157,7 +157,7 @@ class sppasSettingsDialog(sppasDialog):
         if event_name == "cancel":
             self.on_cancel(event)
 
-        elif event_name == "apply":
+        elif "color" in event_name or "font" in event_name:
             self.UpdateUI()
 
         else:
@@ -215,26 +215,14 @@ class WxSettingsPanel(sppasPanel):
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer_top = self._create_content_colors_fonts()
         sizer.Add(sizer_top, 3, wx.EXPAND)
-
-        #apply_btn = sppasBitmapTextButton(self, "Test", name="apply")
-        btn = sppasBitmapTextButton(
-            parent=self,
-            name="apply",
-            label="Test on this window",
-            style=wx.BORDER_SIMPLE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS)
-        btn.SetSize((-1, wx.GetApp().settings.action_height))
-        sizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL)
-
-        sizer.AddStretchSpacer(1)
-        # ---------- tips
-        #
-        # txt_tips = wx.StaticText(self, -1, "Show tips at start-up: ")
-        # gbs.Add(txt_tips, (4,0), flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
-        #
-        # btn_tips = wx.CheckBox(self, -1, "")
-        # btn_tips.SetValue( self.preferences.GetValue('M_TIPS'))
-        # self.Bind(wx.EVT_CHECKBOX, self.onTipsChecked, btn_tips)
-        # gbs.Add(btn_tips, (4,1), flag=wx.ALL|wx.ALIGN_CENTER_VERTICAL, border=5)
+        # btn = sppasBitmapTextButton(
+        #     parent=self,
+        #     name="apply",
+        #     label="Test on this window",
+        #     style=wx.BORDER_SIMPLE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS)
+        # btn.SetSize((-1, wx.GetApp().settings.action_height))
+        # sizer.Add(btn, 0, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL)
+        # sizer.AddStretchSpacer(1)
 
         # ----------
         self.SetSizer(sizer)
@@ -289,9 +277,11 @@ class WxSettingsPanel(sppasPanel):
 
         if "color" in event_name:
             self.on_color_dialog(event)
+            event.Skip()
 
         elif "font" in event_name:
             self.on_select_font(event)
+            event.Skip()
 
         else:
             event.Skip()

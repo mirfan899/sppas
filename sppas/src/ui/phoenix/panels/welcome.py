@@ -60,7 +60,6 @@ class sppasWelcomePanel(sppasPanel):
             style=wx.BORDER_NONE
         )
         self._create_content()
-        self.SetAutoLayout(True)
 
         self.SetBackgroundColour(wx.GetApp().settings.bg_color)
         self.SetForegroundColour(wx.GetApp().settings.fg_color)

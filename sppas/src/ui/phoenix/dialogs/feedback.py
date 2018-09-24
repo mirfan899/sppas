@@ -136,10 +136,8 @@ class sppasFeedbackDialog(sppasDialog):
 
     def _create_buttons(self):
         """Create the buttons and bind events."""
-
-        settings = wx.GetApp().settings
         panel = sppasPanel(self, name="actions")
-        panel.SetMinSize(wx.Size(-1, settings.action_height))
+        panel.SetMinSize(wx.Size(-1, wx.GetApp().settings.action_height))
 
         # Create the buttons
         gmail_btn = sppasBitmapTextButton(panel, "Gmail", name="gmail")

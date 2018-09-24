@@ -41,9 +41,7 @@ from sppas.src.config import sppasBaseSettings
 
 
 class WxAppConfig(sppasBaseSettings):
-    """Manage the application global settings.
-
-    Config is represented in a dictionary.
+    """Manage the application global configuration.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -51,20 +49,25 @@ class WxAppConfig(sppasBaseSettings):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
+    Config is represented in the dictionary of the class
+
     """
     def __init__(self):
-        """Create the dictionary of wx settings."""
+        """Create the dictionary of key/value configuration."""
         super(WxAppConfig, self).__init__()
 
         self.__dict__ = dict(
             name=sg.__name__ + " " + sg.__version__,
             log_level=15,
             log_file=None,
+            splash_delay=3,
         )
+
+    # -----------------------------------------------------------------------
 
     def set(self, key, value):
         """Set a new value to a key."""
-        self.__dict__[key] = value
+        setattr(self, key, value)
 
 # ---------------------------------------------------------------------------
 
@@ -93,10 +96,10 @@ class WxAppSettings(sppasBaseSettings):
 
     def reset(self):
         """Fill the dictionary with the default values."""
-        font_height = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPixelSize()[1]
+        font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        font_height = font.GetPixelSize()[1]
 
         self.__dict__ = dict(
-            splash_delay=3,
             frame_style=wx.DEFAULT_FRAME_STYLE | wx.CLOSE_BOX,
             frame_size=self.__frame_size(),
 
@@ -119,6 +122,14 @@ class WxAppSettings(sppasBaseSettings):
             action_height=font_height*3,
         )
 
+    # -----------------------------------------------------------------------
+
+    def set(self, key, value):
+        """Set a new value to a key."""
+        setattr(self, key, value)
+
+    # -----------------------------------------------------------------------
+    # Private
     # -----------------------------------------------------------------------
 
     def __text_font(self):
@@ -177,9 +188,3 @@ class WxAppSettings(sppasBaseSettings):
         w *= 0.6
         h = min(0.9*h, w*9/16)
         return wx.Size(max(int(w), 640), max(int(h), 480))
-
-    # -----------------------------------------------------------------------
-
-    def set(self, key, value):
-        """Set a new value to a key."""
-        setattr(self, key, value)

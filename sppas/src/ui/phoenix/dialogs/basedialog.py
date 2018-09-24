@@ -180,20 +180,23 @@ class sppasDialog(wx.Dialog):
 
     # -----------------------------------------------------------------------
 
-    def SetContent(self, window):
+    def SetContent(self, object):
         """Assign the content window to this dialog.
 
         :param window: (wx.Window) Any kind of wx.Window, wx.Panel, ...
 
         """
-        window.SetName("content")
-        window.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        window.SetForegroundColour(wx.GetApp().settings.fg_color)
-        window.SetFont(wx.GetApp().settings.text_font)
+        try:
+            object.SetName("content")
+        except:
+            pass  # logging.info('')
+        object.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        object.SetForegroundColour(wx.GetApp().settings.fg_color)
+        object.SetFont(wx.GetApp().settings.text_font)
 
     # -----------------------------------------------------------------------
 
-    def CreateButtons(self, left_flags, right_flags=[]):
+    def CreateActions(self, left_flags, right_flags=()):
         """Create the actions panel.
 
         Flags is a bit list of the following flags:
@@ -251,19 +254,6 @@ class sppasDialog(wx.Dialog):
         window.SetFont(wx.GetApp().settings.action_text_font)
 
     # ---------------------------------------------------------------------------
-
-    def _process_event(self, event):
-        """Must be overriden to process any kind of events.
-
-        This method is invoked when a button is clicked.
-
-        :param event: (wx.Event)
-
-        """
-        event.Skip()
-        #raise NotImplementedError
-
-    # ---------------------------------------------------------------------------
     # Put the whole content of the dialog in a sizer
     # ---------------------------------------------------------------------------
 
@@ -300,14 +290,13 @@ class sppasDialog(wx.Dialog):
         # then it may not receive another size event (depending on platform)
         # in order to do the initial layout. Simply calling self.Layout from
         # the end of the frame's __init__ method will usually resolve this.
-        self.SetAutoLayout(True)
         self.SetSizer(sizer)
         self.Layout()
 
     # -----------------------------------------------------------------------
 
     def UpdateUI(self):
-        """Apply settings to all panels and refresh."""
+        """Assign settings to self and children, then refresh."""
         # colors & font
         self.SetBackgroundColour(wx.GetApp().settings.bg_color)
         self.SetForegroundColour(wx.GetApp().settings.fg_color)
@@ -341,6 +330,12 @@ class sppasDialog(wx.Dialog):
     # ---------------------------------------------------------------------------
 
     def __create_button(self, parent, flag):
+        """Create a button from a flag and return it.
+
+        :param parent: (wx.Window)
+        :param flag: (int)
+
+        """
         btns = {
             wx.ID_OK: ("Okay", "ok"),
             wx.ID_CANCEL: ("Cancel", "cancel"),
@@ -352,7 +347,6 @@ class sppasDialog(wx.Dialog):
         }
         btn = sppasBitmapTextButton(parent, btns[flag][0], btns[flag][1])
         btn.SetId(flag)
-        btn.Bind(wx.EVT_BUTTON, self._process_event, btn)
 
         if flag == wx.CANCEL:
             self.SetAffirmativeId(wx.ID_CANCEL)

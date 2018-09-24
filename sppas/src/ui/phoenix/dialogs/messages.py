@@ -126,7 +126,7 @@ class sppasYesNoDialog(sppasBaseMessageDialog):
     # -----------------------------------------------------------------------
 
     def _create_buttons(self):
-        self.CreateButtons([wx.ID_NO, wx.ID_YES])
+        self.CreateActions([wx.ID_NO, wx.ID_YES])
         self.Bind(wx.EVT_BUTTON, self._process_event)
         self.SetAffirmativeId(wx.ID_YES)
 
@@ -176,7 +176,7 @@ class sppasInformationDialog(sppasBaseMessageDialog):
     # -----------------------------------------------------------------------
 
     def _create_buttons(self):
-        self.CreateButtons([wx.ID_OK])
+        self.CreateActions([wx.ID_OK])
         self.SetAffirmativeId(wx.ID_OK)
 
 # ---------------------------------------------------------------------------

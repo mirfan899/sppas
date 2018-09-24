@@ -44,9 +44,9 @@ from sppas.src.config import sg
 from sppas.src.config import paths
 from sppas.src.utils.datatype import sppasTime
 
+from .tools import sppasSwissKnife
 from .panels.basepanel import sppasPanel
 from .controls.buttons import sppasBitmapTextButton
-from .tools import sppasSwissKnife
 from .dialogs import Feedback
 
 # ---------------------------------------------------------------------------
@@ -274,6 +274,7 @@ class sppasLogWindow(wx.TopLevelWindow):
         self._create_content()
         self._setup_wx_logging(log_level)
         self._setup_events()
+        self.SetAutoLayout(True)
         self.Show(True)
 
     # ------------------------------------------------------------------------
@@ -342,7 +343,6 @@ class sppasLogWindow(wx.TopLevelWindow):
         top_sizer.Add(actions, 0, wx.EXPAND, 0)
 
         # Layout the content
-        self.SetAutoLayout(True)
         self.SetSizer(top_sizer)
         self.Layout()
 
@@ -651,11 +651,16 @@ class sppasMessageTextCtrl(wx.TextCtrl):
             value=value,
             style=sppasMessageTextCtrl.text_style
         )
-        self.SetStyles()
+        self.default = wx.TextAttr()
+        self.error = wx.TextAttr()
+        self.warning = wx.TextAttr()
+        self.debug = wx.TextAttr()
+
+        self.ResetStyles()
 
     # -----------------------------------------------------------------------
 
-    def SetStyles(self):
+    def ResetStyles(self):
         # here we could create various styles (one for debug messages, one
         # for information, one for errors, etc).
         settings = wx.GetApp().settings
@@ -733,7 +738,7 @@ class sppasLogMessagePanel(sppasPanel):
     def SetForegroundColour(self, colour):
         """Override."""
         # reset the existing styles...
-        self.txt.SetStyles()
+        self.txt.ResetStyles()
         self.txt.SetStyle(0, len(self.txt.GetValue()),
                           self.txt.GetDefaultStyle())
 

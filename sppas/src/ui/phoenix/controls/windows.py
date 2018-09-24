@@ -39,12 +39,12 @@ import wx
 
 
 class sppasNotebook(wx.Notebook):
-    """A notebook is a control, which manages multiple windows with tabs.
+    """A notebook is a control, which manages multiple pages with tabs.
 
     Possible constructors:
-        - Notebook()
-        - Notebook(parent, id=ID_ANY, pos=DefaultPosition, size=DefaultSize,
-                   style=0, name=NotebookNameStr)
+        - sppasNotebook()
+        - sppasNotebook(parent, id=ID_ANY, pos=DefaultPosition,
+            size=DefaultSize, style=0, name=NotebookNameStr)
 
     """
     def __init_(self, *args, **kw):
@@ -77,6 +77,60 @@ class sppasNotebook(wx.Notebook):
     def SetFont(self, font):
         """Override."""
         wx.Notebook.SetFont(self, font)
+        for i in range(self.GetPageCount()):
+            page = self.GetPage(i)
+            page.SetFont(font)
+
+
+# ---------------------------------------------------------------------------
+
+
+class sppasSimplebook(wx.Simplebook):
+    """A simple is a control, which manages multiple pages.
+
+    It is showing exactly one of its several pages.
+
+    Possible constructors:
+        - sppasSimplebook()
+        - sppasSimplebook(parent, id=ID_ANY, pos=DefaultPosition,
+            size=DefaultSize, style=0, name=NotebookNameStr)
+
+    >>> n = sppasSimplebook()
+    >>> n.ShowNewPage(page)
+
+    """
+    def __init_(self, *args, **kw):
+        super(sppasSimplebook, self).__init__(*args, **kw)
+        s = wx.GetApp().settings
+        self.SetBackgroundColour(s.bg_color)
+        self.SetForegroundColour(s.fg_color)
+        self.SetFont(s.text_font)
+        # self.SetEffects(showEffect, hideEffect)
+        # self.SetEffectsTimeouts(showTimeout, hideTimeout)
+
+    # -----------------------------------------------------------------------
+
+    def SetBackgroundColour(self, colour):
+        """Override."""
+        wx.Simplebook.SetBackgroundColour(self, colour)
+        for i in range(self.GetPageCount()):
+            page = self.GetPage(i)
+            page.SetBackgroundColour(colour)
+
+    # -----------------------------------------------------------------------
+
+    def SetForegroundColour(self, colour):
+        """Override."""
+        wx.Simplebook.SetForegroundColour(self, colour)
+        for i in range(self.GetPageCount()):
+            page = self.GetPage(i)
+            page.SetForegroundColour(colour)
+
+    # -----------------------------------------------------------------------
+
+    def SetFont(self, font):
+        """Override."""
+        wx.Simplebook.SetFont(self, font)
         for i in range(self.GetPageCount()):
             page = self.GetPage(i)
             page.SetFont(font)

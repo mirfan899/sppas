@@ -42,10 +42,16 @@ import wx.lib.scrolledpanel as sc
 class sppasPanel(wx.Panel):
     """A panel is a window on which controls are placed.
 
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
     Possible constructors:
 
-        - Panel()
-        - Panel(parent, id=ID_ANY, pos=DefaultPosition, size=DefaultSize,
+        - sppasPanel()
+        - sppasPanel(parent, id=ID_ANY, pos=DefaultPosition, size=DefaultSize,
               style=TAB_TRAVERSAL, name=PanelNameStr)
 
     """
@@ -87,11 +93,17 @@ class sppasPanel(wx.Panel):
 class sppasScrolledPanel(sc.ScrolledPanel):
     """A panel is a window on which controls are placed.
 
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
     Possible constructors:
 
-        - Panel()
-        - Panel(parent, id=ID_ANY, pos=DefaultPosition, size=DefaultSize,
-              style=TAB_TRAVERSAL, name=PanelNameStr)
+        - sppasScrolledPanel()
+        - sppasScrolledPanel(parent, id=ID_ANY, pos=DefaultPosition,
+            size=DefaultSize, style=TAB_TRAVERSAL, name=PanelNameStr)
 
     """
     def __init_(self, *args, **kw):

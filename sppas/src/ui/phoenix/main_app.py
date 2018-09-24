@@ -28,8 +28,8 @@
 
         ---------------------------------------------------------------------
 
-    ui.phoenix.main.py
-    ~~~~~~~~~~~~~~~~~~
+    ui.phoenix.main_app.py
+    ~~~~~~~~~~~~~~~~~~~~~~
 
 This is the main application for SPPAS, based on the Phoenix API.
 Create and run the application:
@@ -69,8 +69,11 @@ class sppasApp(wx.App):
     """
 
     def __init__(self):
-        """Wx Application initialization."""
-        # Initialize the wx application
+        """Wx Application initialization.
+
+        Create the application for the GUI of SPPAS based on Phoenix.
+
+        """
         self.cfg = WxAppConfig()
         wx.App.__init__(self,
                         redirect=False,
@@ -85,8 +88,8 @@ class sppasApp(wx.App):
         lang = wx.LANGUAGE_DEFAULT
         self.locale = wx.Locale(lang)
 
-        # Fix wx settings and logging
-        self.settings = WxAppSettings()
+        # Fix logging. Settings will be fixed at 'run'.
+        self.settings = None
         self.process_command_line_args()
         self.setup_python_logging()
 
@@ -138,7 +141,7 @@ class sppasApp(wx.App):
 
     def show_splash_screen(self):
         """Create and show the splash image."""
-        delay = self.settings.splash_delay
+        delay = self.cfg.splash_delay
         if delay <= 0:
             return
 
@@ -159,14 +162,20 @@ class sppasApp(wx.App):
 
     def background_initialization(self):
         """Initialize the application. """
-        # here we could load some resources, etc. while we show the Splash.
-        # for this example, we sleep some time to simulate we're doing something.
+        self.settings = WxAppSettings()
+
+        # here, we only sleep some time to simulate we're doing something.
         time.sleep(1)
 
     # -----------------------------------------------------------------------
 
     def run(self):
-        """Run the application and starts the main loop."""
+        """Run the application and starts the main loop.
+
+        A splash screen is displayed while a background initialization is
+        doing things, then the main frame is created.
+
+        """
         splash = None
         if adv_import:
             splash = self.show_splash_screen()

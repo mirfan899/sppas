@@ -50,7 +50,7 @@ app = testApp()
 
 # demo = sppasDialog(None, title="sppasDialog")
 # demo.CreateHeader("This is a BaseDialog...")
-# demo.CreateButtons([wx.CANCEL], [wx.OK])
+# demo.CreateActions([wx.CANCEL], [wx.OK])
 # demo.LayoutComponents()
 # demo.ShowModal()
 # demo.Destroy()
