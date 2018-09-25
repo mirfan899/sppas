@@ -36,12 +36,24 @@
 import wx
 
 from sppas.src.config import sg
-from sppas.src.ui.phoenix.tools import sppasSwissKnife
-from sppas.src.ui.phoenix.windows import sppasBitmapTextButton
-from sppas.src.ui.phoenix.windows import sppasStaticBitmap
-from sppas.src.ui.phoenix.windows import sppasPanel
+from sppas.src.config import ui_translation
 
-# ---------------------------------------------------------------------------
+from ..tools import sppasSwissKnife
+from . import sppasBitmapTextButton
+from . import sppasStaticBitmap
+from . import sppasPanel
+
+# ----------------------------------------------------------------------------
+
+MSG_ACTION_OK = ui_translation.gettext("Okay")
+MSG_ACTION_CANCEL = ui_translation.gettext("Cancel")
+MSG_ACTION_YES = ui_translation.gettext("Yes")
+MSG_ACTION_NO = ui_translation.gettext("No")
+MSG_ACTION_APPLY = ui_translation.gettext("Apply")
+MSG_ACTION_CLOSE = ui_translation.gettext("Close")
+MSG_ACTION_SAVE = ui_translation.gettext("Save")
+
+# ----------------------------------------------------------------------------
 
 
 class sppasDialog(wx.Dialog):
@@ -334,13 +346,13 @@ class sppasDialog(wx.Dialog):
 
         """
         btns = {
-            wx.ID_OK: ("Okay", "ok"),
-            wx.ID_CANCEL: ("Cancel", "cancel"),
-            wx.ID_YES: ("Yes", "yes"),
-            wx.ID_NO: ("No", "no"),
-            wx.ID_APPLY: ("Apply", "apply"),
-            wx.ID_CLOSE: ("Close", "close-window"),
-            wx.ID_SAVE: ("Save", "save"),
+            wx.ID_OK: (MSG_ACTION_OK, "ok"),
+            wx.ID_CANCEL: (MSG_ACTION_CANCEL, "cancel"),
+            wx.ID_YES: (MSG_ACTION_YES, "yes"),
+            wx.ID_NO: (MSG_ACTION_NO, "no"),
+            wx.ID_APPLY: (MSG_ACTION_APPLY, "apply"),
+            wx.ID_CLOSE: (MSG_ACTION_CLOSE, "close-window"),
+            wx.ID_SAVE: (MSG_ACTION_SAVE, "save"),
         }
         btn = sppasBitmapTextButton(parent, btns[flag][0], btns[flag][1])
         btn.SetId(flag)

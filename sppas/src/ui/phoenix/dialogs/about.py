@@ -38,6 +38,7 @@ import wx
 import webbrowser
 
 from sppas.src.config import sg
+from sppas.src.config import ui_translation
 
 from ..tools import sppasSwissKnife
 from ..windows import sppasScrolledPanel
@@ -45,6 +46,9 @@ from ..windows import sppasDialog
 
 # ----------------------------------------------------------------------------
 
+MSG_HEADER_ABOUT = ui_translation.gettext("About")
+
+# ----------------------------------------------------------------------------
 
 class sppasBaseAbout(sppasScrolledPanel):
     """An about base panel to include main information about a software.
@@ -270,7 +274,7 @@ class sppasAboutDialog(sppasDialog):
             title="About",
             style=wx.DEFAULT_FRAME_STYLE)
 
-        self.CreateHeader("About SPPAS...", 'about')
+        self.CreateHeader(MSG_HEADER_ABOUT, 'about')
         p = AboutSPPASPanel(self)
         self.SetContent(p)
         self.CreateActions([wx.ID_OK])
@@ -298,7 +302,7 @@ class sppasAboutPluginDialog(sppasDialog):
             title="About",
             style=wx.DEFAULT_FRAME_STYLE)
 
-        self.CreateHeader("About" + plugin.get_key() + "...", 'about')
+        self.CreateHeader(MSG_HEADER_ABOUT + plugin.get_key() + "...", 'about')
         p = AboutPluginPanel(self, plugin)
         self.SetContent(p)
         self.CreateActions([wx.ID_OK])

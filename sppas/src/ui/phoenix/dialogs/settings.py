@@ -35,6 +35,8 @@
 """
 import wx
 
+from sppas.src.config import ui_translation
+
 from ..windows import sppasDialog
 from ..windows import sppasPanel
 from ..windows import sppasNotebook
@@ -43,6 +45,17 @@ from ..tools import sppasSwissKnife
 
 # ---------------------------------------------------------------------------
 
+MSG_HEADER_SETTINGS = ui_translation.gettext("Settings")
+
+MSG_FONT = ui_translation.gettext("Font")
+MSG_BG = ui_translation.gettext("Background color")
+MSG_FG = ui_translation.gettext("Foreground color")
+MSG_FONT_COLORS = ui_translation.gettext("Fonts and Colors")
+MSG_HEADER = ui_translation.gettext("Top")
+MSG_CONTENT = ui_translation.gettext("Main content")
+MSG_ACTIONS = ui_translation.gettext("Bottom")
+
+# ---------------------------------------------------------------------------
 
 def GetColour(parent):
     """Return the color choose by the user.
@@ -100,7 +113,7 @@ class sppasSettingsDialog(sppasDialog):
         self.Bind(wx.EVT_CLOSE, self.on_cancel)
         self.Bind(wx.EVT_BUTTON, self._process_event)
 
-        self.CreateHeader("Settings...", "settings")
+        self.CreateHeader(MSG_HEADER_SETTINGS, "settings")
         self._create_content()
         self.CreateActions([wx.ID_CANCEL, wx.ID_OK])
         self.LayoutComponents()
@@ -131,7 +144,7 @@ class sppasSettingsDialog(sppasDialog):
         # page3 = PrefsAnnotationPanel(self.notebook, self.preferences)
         # add the pages to the notebook with the label to show on the tab
 
-        notebook.AddPage(page1, "Fonts and Colors")
+        notebook.AddPage(page1, MSG_FONT_COLORS)
         # self.notebook.AddPage(page2, "Icons Theme")
         # self.notebook.AddPage(page3, "Annotation")
 
@@ -237,7 +250,7 @@ class WxSettingsPanel(sppasPanel):
             parent=self,
             style=wx.BORDER_SUNKEN,
             name="colors_font_header",
-            title="Header: ")
+            title=MSG_HEADER)
         sizer.Add(p, 1, wx.EXPAND | wx.ALL, border=10)
 
         # Colors&Fonts of the main panel
@@ -245,7 +258,7 @@ class WxSettingsPanel(sppasPanel):
             parent=self,
             style=wx.BORDER_SUNKEN,
             name="colors_font_content",
-            title="Main content: ")
+            title=MSG_CONTENT)
         sizer.Add(p, 1, wx.EXPAND | wx.ALL, border=10)
 
         # Colors&Fonts of the actions panel
@@ -253,7 +266,7 @@ class WxSettingsPanel(sppasPanel):
             parent=self,
             style=wx.BORDER_SUNKEN,
             name="colors_font_actions",
-            title="Buttons at bottom: ")
+            title=MSG_ACTIONS)
         sizer.Add(p, 1, wx.EXPAND | wx.ALL, border=10)
 
         return sizer
@@ -365,7 +378,7 @@ class sppasColoursFontPanel(sppasPanel):
 
         # ---------- Background color
 
-        txt_bg = wx.StaticText(self, -1, "Background color: ")
+        txt_bg = wx.StaticText(self, -1, MSG_BG)
         gbs.Add(txt_bg, (1, 0), flag=flag, border=5)
 
         btn_color_bg = sppasBitmapButton(
@@ -378,7 +391,7 @@ class sppasColoursFontPanel(sppasPanel):
 
         # ---------- Foreground color
 
-        txt_fg = wx.StaticText(self, -1, "Foreground color: ")
+        txt_fg = wx.StaticText(self, -1, MSG_FG)
         gbs.Add(txt_fg, (2, 0), flag=flag, border=5)
 
         btn_color_fg = sppasBitmapButton(
@@ -391,7 +404,7 @@ class sppasColoursFontPanel(sppasPanel):
 
         # ---------- Font
 
-        txt_font = wx.StaticText(self, -1, "Font: ")
+        txt_font = wx.StaticText(self, -1, MSG_FONT)
         gbs.Add(txt_font, (3, 0), flag=flag, border=5)
 
         btn_font = sppasBitmapButton(

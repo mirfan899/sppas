@@ -41,6 +41,7 @@ except ImportError:
     from urllib.parse import quote  # Python 3+
 
 from sppas.src.config import sg
+from sppas.src.config import ui_translation
 
 from ..windows import sppasBitmapTextButton
 from ..windows import sppasTextCtrl
@@ -53,7 +54,18 @@ from .messages import Information
 # Constants
 # -------------------------------------------------------------------------
 
-DESCRIBE_TEXT = "Your message here..."
+DESCRIBE_TEXT = ui_translation.gettext("Write your message here")
+SEND_WITH_OTHER = ui_translation.gettext(
+    "Copy and paste the message into your favorite email client and "
+    "send it from there.")
+
+MSG_HEADER_FEEDBACK = ui_translation.gettext("Send e-mail")
+MSG_EMAIL_TO = ui_translation.gettext("To: ")
+MSG_EMAIL_SUBJECT = ui_translation.gettext("Subject: ")
+MSG_EMAIL_BODY = ui_translation.gettext("Body: ")
+MSG_EMAIL_SEND_WITH = ui_translation.gettext("Send with: ")
+MSG_ACTION_OTHER = ui_translation.gettext("Other")
+MSG_ACTION_CLOSE = ui_translation.gettext("Close")
 
 # ----------------------------------------------------------------------------
 
@@ -79,7 +91,7 @@ class sppasFeedbackDialog(sppasDialog):
             title='{:s} Feedback'.format(sg.__name__),
             style=wx.DEFAULT_FRAME_STYLE)
 
-        self.CreateHeader("Send e-mail...", icon_name="mail-at")
+        self.CreateHeader(MSG_HEADER_FEEDBACK, icon_name="mail-at")
         self._create_content()
         self._create_buttons()
         self.Bind(wx.EVT_BUTTON, self._process_event)
@@ -99,12 +111,12 @@ class sppasFeedbackDialog(sppasDialog):
             parent=panel,
             label=sg.__contact__)
 
-        subject = wx.StaticText(panel, label="Subject: ")
+        subject = wx.StaticText(panel, label=MSG_EMAIL_SUBJECT)
         self.subject_text = wx.StaticText(
             parent=panel,
             label=sg.__name__ + " " + sg.__version__ + " - Feedback...")
 
-        body = wx.StaticText(panel, label="Body: ")
+        body = wx.StaticText(panel, label=MSG_EMAIL_BODY)
         body_style = wx.TAB_TRAVERSAL | wx.TE_BESTWRAP |\
                      wx.TE_MULTILINE | wx.BORDER_STATIC
         self.body_text = sppasTextCtrl(
@@ -127,7 +139,7 @@ class sppasFeedbackDialog(sppasDialog):
         grid.Add(body, 0, flag=wx.TOP)
         grid.Add(self.body_text, 2, flag=wx.EXPAND)
 
-        s = wx.StaticText(panel, label="Send with: ")
+        s = wx.StaticText(panel, label=MSG_EMAIL_SEND_WITH)
         grid.Add(s, 0)
 
         panel.SetAutoLayout(True)
@@ -144,8 +156,8 @@ class sppasFeedbackDialog(sppasDialog):
         # Create the buttons
         gmail_btn = sppasBitmapTextButton(panel, "Gmail", name="gmail")
         default_btn = sppasBitmapTextButton(panel, "E-mail", name="email-window")
-        other_btn = sppasBitmapTextButton(panel, "Other", name="at")
-        close_btn = sppasBitmapTextButton(panel, "Close", name="close-window")
+        other_btn = sppasBitmapTextButton(panel, MSG_ACTION_OTHER, name="at")
+        close_btn = sppasBitmapTextButton(panel, MSG_ACTION_CLOSE, name="close-window")
 
         # Create vertical lines to separate buttons
         vertical_line_1 = wx.StaticLine(panel, style=wx.LI_VERTICAL)

@@ -36,6 +36,7 @@ import wx
 import webbrowser
 
 from sppas.src.config import sg
+from sppas.src.config import ui_translation
 
 from .windows import sppasBitmapTextButton
 from .windows import sppasTextButton
@@ -56,6 +57,21 @@ from .dialogs import Settings
 from .main_log import sppasLogWindow
 
 # ---------------------------------------------------------------------------
+
+MSG_ACTION_HOME = ui_translation.gettext('Home')
+MSG_ACTION_FILES = ui_translation.gettext('Files')
+MSG_ACTION_ANNOTATE = ui_translation.gettext('Annotate')
+MSG_ACTION_ANALYZE = ui_translation.gettext('Analyze')
+MSG_ACTION_PLUGINS = ui_translation.gettext('Plugins')
+MSG_ACTION_EXIT = ui_translation.gettext('Exit')
+MSG_ACTION_ABOUT = ui_translation.gettext('About')
+MSG_ACTION_SETTINGS = ui_translation.gettext('Settings')
+MSG_ACTION_VIEWLOGS = ui_translation.gettext('View logs')
+
+MSG_TOOLTIP_WEBSITE = ui_translation.gettext('Visit the website at ')
+MSG_CONFIRM = ui_translation.gettext("Confirm exit of {:s}").format(sg.__name__)
+
+# -----------------------------------------------------------------------
 
 
 class sppasMainWindow(sppasDialog):
@@ -247,8 +263,7 @@ class sppasMainWindow(sppasDialog):
         :param event: (wx.Event) Un-used.
 
         """
-        response = YesNoQuestion("Confirm exit of {:s}..."
-                                 "".format(sg.__name__))
+        response = YesNoQuestion(MSG_CONFIRM)
         if response == wx.ID_YES:
             self.exit()
 
@@ -335,19 +350,19 @@ class sppasMenuPanel(sppasPanel):
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        home = sppasTextButton(self, " Home ", name="home")
+        home = sppasTextButton(self, MSG_ACTION_HOME, name="home")
         sizer.Add(home, 1, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
 
-        files = sppasTextButton(self, " Files ", name="files")
+        files = sppasTextButton(self, MSG_ACTION_FILES, name="files")
         sizer.Add(files, 1, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
 
-        annotate = sppasTextButton(self, " Annotate ", name="annotate")
+        annotate = sppasTextButton(self, MSG_ACTION_ANNOTATE, name="annotate")
         sizer.Add(annotate, 1, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
 
-        analyze = sppasTextButton(self, " Analyze ", name="analyze")
+        analyze = sppasTextButton(self, MSG_ACTION_ANALYZE, name="analyze")
         sizer.Add(analyze, 1, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
 
-        plugins = sppasTextButton(self, " Plugins ", name="plugins")
+        plugins = sppasTextButton(self, MSG_ACTION_PLUGINS, name="plugins")
         sizer.Add(plugins, 1, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
 
         sizer.AddStretchSpacer(2)
@@ -357,7 +372,7 @@ class sppasMenuPanel(sppasPanel):
             name="sppas_64",
             height=int(wx.GetApp().settings.title_height * 0.8)
         )
-        sppas_logo.SetToolTip("Visit the website at "+sg.__url__)
+        sppas_logo.SetToolTip(MSG_TOOLTIP_WEBSITE + sg.__url__)
         sizer.Add(sppas_logo, 0,
                   wx.ALIGN_CENTER_VERTICAL | wx.LEFT | wx.RIGHT, border=10)
 
@@ -407,10 +422,14 @@ class sppasActionsPanel(sppasPanel):
         self.SetMinSize(wx.Size(-1, settings.action_height))
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        exit_btn = sppasBitmapTextButton(self, "Exit", name="exit")
-        about_btn = sppasBitmapTextButton(self, "About", name="about")
-        settings_btn = sppasBitmapTextButton(self, "Settings", name="settings")
-        log_btn = sppasBitmapTextButton(self, "View logs", name="view_log")
+        exit_btn = sppasBitmapTextButton(
+            self, MSG_ACTION_EXIT, name="exit")
+        about_btn = sppasBitmapTextButton(
+            self, MSG_ACTION_ABOUT, name="about")
+        settings_btn = sppasBitmapTextButton(
+            self, MSG_ACTION_SETTINGS, name="settings")
+        log_btn = sppasBitmapTextButton(
+            self, MSG_ACTION_VIEWLOGS, name="view_log")
 
         vertical_line_1 = wx.StaticLine(self, style=wx.LI_VERTICAL)
         vertical_line_2 = wx.StaticLine(self, style=wx.LI_VERTICAL)

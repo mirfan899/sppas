@@ -35,12 +35,20 @@
 """
 import wx
 
+from sppas.src.config import ui_translation
+
 from ..windows import sppasMessageText
 from ..windows import sppasPanel
 from ..windows import sppasDialog
 
 # ----------------------------------------------------------------------------
 
+MSG_HEADER_ERROR = ui_translation.gettext("Error")
+MSG_HEADER_WARNING = ui_translation.gettext("Warning")
+MSG_HEADER_QUESTION = ui_translation.gettext("Question")
+MSG_HEADER_INFO = ui_translation.gettext("Information")
+
+# ----------------------------------------------------------------------------
 
 class sppasBaseMessageDialog(sppasDialog):
     """Base class to create message dialogs.
@@ -83,13 +91,13 @@ class sppasBaseMessageDialog(sppasDialog):
         """Create the content of the message dialog."""
         # Create the header
         if style == wx.ICON_ERROR:
-            self.CreateHeader("Error")
+            self.CreateHeader(MSG_HEADER_ERROR, icon_name="error")
         elif style == wx.ICON_WARNING:
-            self.CreateHeader("Warning")
+            self.CreateHeader(MSG_HEADER_WARNING, icon_name="warning")
         elif style == wx.YES_NO:
-            self.CreateHeader("Question", icon_name="question")
+            self.CreateHeader(MSG_HEADER_QUESTION, icon_name="question")
         else:
-            self.CreateHeader("Information", icon_name="information")
+            self.CreateHeader(MSG_HEADER_INFO, icon_name="information")
 
         # Create the message content
         p = sppasPanel(self)

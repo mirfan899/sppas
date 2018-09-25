@@ -42,6 +42,7 @@ from datetime import date
 
 from sppas.src.config import sg
 from sppas.src.config import paths
+from sppas.src.config import ui_translation
 from sppas.src.utils.datatype import sppasTime
 
 from .tools import sppasSwissKnife
@@ -63,6 +64,14 @@ match_levels = {
     wx.LOG_Message: 'INFO',
     wx.LOG_Debug: 'DEBUG'
 }
+
+# ---------------------------------------------------------------------------
+
+MSG_HEADER_LOG = ui_translation.gettext("Log Window")
+MSG_ACTION_CLEAR = ui_translation.gettext("Clear")
+MSG_ACTION_SAVE = ui_translation.gettext("Save")
+MSG_ACTION_SEND = ui_translation.gettext("Send")
+MSG_ADD_COMMENT = ui_translation.gettext("Add comments here.")
 
 # ---------------------------------------------------------------------------
 
@@ -498,7 +507,7 @@ class sppasLogWindow(wx.TopLevelWindow):
 
     def feedback(self):
         """Send log messages to the author."""
-        text = "Add comments here...\n\n" + self.txt.GetValue()
+        text = MSG_ADD_COMMENT + "\n\n" + self.txt.GetValue()
         Feedback(self, text)
 
     # -----------------------------------------------------------------------
@@ -610,8 +619,7 @@ class sppasLogTitlePanel(sppasPanel):
         self.SetMinSize((-1, settings.title_height))
 
         # Create the title
-        title = '{:s} Log Window...'.format(sg.__name__)
-        st = wx.StaticText(parent=self, label=title)
+        st = wx.StaticText(parent=self, label=MSG_HEADER_LOG)
 
         # Put the title in a sizer
         sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -767,9 +775,9 @@ class sppasLogActionPanel(sppasPanel):
         self.SetMinSize((-1, settings.action_height))
 
         # create action buttons
-        clear_btn = sppasBitmapTextButton(self, "Clear", name="broom")
-        save_btn = sppasBitmapTextButton(self, "Save", name="save_log")
-        send_btn = sppasBitmapTextButton(self, "Send", name="mail-at")
+        clear_btn = sppasBitmapTextButton(self, MSG_ACTION_CLEAR, name="broom")
+        save_btn = sppasBitmapTextButton(self, MSG_ACTION_SAVE, name="save_log")
+        send_btn = sppasBitmapTextButton(self, MSG_ACTION_SEND, name="mail-at")
 
         # organize buttons in a sizer
         line1 = wx.StaticLine(self, style=wx.LI_VERTICAL)
