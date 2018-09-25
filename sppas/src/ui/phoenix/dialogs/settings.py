@@ -35,13 +35,11 @@
 """
 import wx
 
-from ..panels.basepanel import sppasPanel
-from ..controls.windows import sppasNotebook
-from ..controls.buttons import sppasBitmapTextButton
-from ..controls.buttons import sppasBitmapButton
+from ..windows import sppasDialog
+from ..windows import sppasPanel
+from ..windows import sppasNotebook
+from ..windows import sppasBitmapButton
 from ..tools import sppasSwissKnife
-
-from .basedialog import sppasDialog
 
 # ---------------------------------------------------------------------------
 

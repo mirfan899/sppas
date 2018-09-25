@@ -33,17 +33,27 @@
 
 """
 import wx
+import webbrowser
 
 from sppas.src.config import sg
 
-from .main_log import sppasLogWindow
-from .controls import sppasBitmapTextButton
-from .panels import sppasWelcomePanel
-from .panels import sppasPanel
-from .dialogs import sppasDialog
+from .windows import sppasBitmapTextButton
+from .windows import sppasTextButton
+from .windows import sppasSimplebook
+from .windows import sppasBitmapButton
+from .windows import sppasPanel
+from .windows import sppasDialog
+
+from .pages import sppasHomePanel
+from .pages import sppasFilesPanel
+from .pages import sppasAnnotatePanel
+from .pages import sppasAnalyzePanel
+from .pages import sppasPluginsPanel
+
 from .dialogs import YesNoQuestion
 from .dialogs import About
 from .dialogs import Settings
+from .main_log import sppasLogWindow
 
 # ---------------------------------------------------------------------------
 
@@ -115,9 +125,9 @@ class sppasMainWindow(sppasDialog):
         menus = sppasMenuPanel(self)
         self.SetHeader(menus)
 
-        # add a panel with a welcome message
-        msg_panel = sppasWelcomePanel(self)
-        self.SetContent(msg_panel)
+        # The content of this main frame is organized in a book
+        book = self._create_book()
+        self.SetContent(book)
 
         # add some action buttons
         actions = sppasActionsPanel(self)
@@ -125,6 +135,39 @@ class sppasMainWindow(sppasDialog):
 
         # organize the content and lays out.
         self.LayoutComponents()
+
+    # -----------------------------------------------------------------------
+
+    def _create_book(self):
+        """Create the simple book to manage the several pages of the frame.
+
+        Names of the pages are:
+        page_welcome, page_files, page_annotate, page_analyze, page_plugins
+
+        """
+        book = sppasSimplebook(
+            parent=self,
+            style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS,
+            name="content"
+        )
+        book.SetEffectsTimeouts(200, 200)
+
+        # 1st page: a panel with a welcome message
+        book.ShowNewPage(sppasHomePanel(book))
+
+        # 2nd: file browser
+        book.AddPage(sppasFilesPanel(book), text="")
+
+        # 3rd: annotate automatically selected files
+        book.AddPage(sppasAnnotatePanel(book), text="")
+
+        # 4th: analyze selected files
+        book.AddPage(sppasAnalyzePanel(book), text="")
+
+        # 5th: plugins
+        book.AddPage(sppasPluginsPanel(book), text="")
+
+        return book
 
     # -----------------------------------------------------------------------
     # Events management
@@ -172,6 +215,9 @@ class sppasMainWindow(sppasDialog):
 
         elif event_name == "settings":
             self.on_settings()
+
+        elif event_name in ("home", "files", "annotate", "analyze", "plugins"):
+            self.show_page("page_"+event_name)
 
         else:
             event.Skip()
@@ -229,13 +275,55 @@ class sppasMainWindow(sppasDialog):
         self.DestroyChildren()
         self.Destroy()
 
+    # -----------------------------------------------------------------------
+
+    def show_page(self, page_name):
+        """Show a page of the content panel.
+
+        If the page can't be found, the default home page is shown.
+
+        :param page_name: (str) one of 'page_home', 'page_files', ...
+
+        """
+        # Find the page number to switch on
+        book = self.FindWindow("content")
+        w = book.FindWindow(page_name)
+        if w is None:
+            w = book.FindWindow("page_home")
+        p = book.FindPage(w)
+        if p == -1:
+            p = 0
+
+        # current page number
+        c = book.FindPage(book.GetCurrentPage())
+
+        # assign the effect
+        if c < p:
+            book.SetEffects(showEffect=wx.SHOW_EFFECT_SLIDE_TO_LEFT,
+                            hideEffect=wx.SHOW_EFFECT_SLIDE_TO_LEFT)
+        elif c > p:
+            book.SetEffects(showEffect=wx.SHOW_EFFECT_SLIDE_TO_RIGHT,
+                            hideEffect=wx.SHOW_EFFECT_SLIDE_TO_RIGHT)
+        else:
+            book.SetEffects(showEffect=wx.SHOW_EFFECT_NONE,
+                            hideEffect=wx.SHOW_EFFECT_NONE)
+
+        # then change to the page
+        book.ChangeSelection(p)
+
 # ---------------------------------------------------------------------------
 
 
 class sppasMenuPanel(sppasPanel):
     """Create my own menu panel with several action buttons.
 
-    It aims to replace the old-style menus.
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    sppasMenuPanel() aims to replace the commons menus+toolbar.
 
     """
     def __init__(self, parent):
@@ -243,15 +331,56 @@ class sppasMenuPanel(sppasPanel):
             parent=parent,
             name="header")
 
-        # Fix Look&Feel
-        settings = wx.GetApp().settings
-        self.SetMinSize(wx.Size(-1, settings.title_height))
+        self.SetMinSize(wx.Size(-1, wx.GetApp().settings.title_height))
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        st = wx.StaticText(parent=self, label="{:s}".format(sg.__longname__))
-        sizer.Add(st, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
 
+        home = sppasTextButton(self, " Home ", name="home")
+        sizer.Add(home, 1, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
+
+        files = sppasTextButton(self, " Files ", name="files")
+        sizer.Add(files, 1, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
+
+        annotate = sppasTextButton(self, " Annotate ", name="annotate")
+        sizer.Add(annotate, 1, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
+
+        analyze = sppasTextButton(self, " Analyze ", name="analyze")
+        sizer.Add(analyze, 1, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
+
+        plugins = sppasTextButton(self, " Plugins ", name="plugins")
+        sizer.Add(plugins, 1, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, border=10)
+
+        sizer.AddStretchSpacer(2)
+
+        sppas_logo = sppasBitmapButton(
+            parent=self,
+            name="sppas_64",
+            height=int(wx.GetApp().settings.title_height * 0.8)
+        )
+        sppas_logo.SetToolTip("Visit the website at "+sg.__url__)
+        sizer.Add(sppas_logo, 0,
+                  wx.ALIGN_CENTER_VERTICAL | wx.LEFT | wx.RIGHT, border=10)
+
+        self.Bind(wx.EVT_BUTTON, self._process_event)
         self.SetSizer(sizer)
+
+    # ------------------------------------------------------------------------
+    # Callback to events
+    # ------------------------------------------------------------------------
+
+    def _process_event(self, event):
+        """Process any kind of events.
+
+        :param event: (wx.Event)
+
+        """
+        event_obj = event.GetEventObject()
+        event_name = event_obj.GetName()
+
+        if event_name == "sppas_64":
+            webbrowser.open(sg.__url__)
+        else:
+            event.Skip()
 
 # ---------------------------------------------------------------------------
 

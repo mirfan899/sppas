@@ -29,16 +29,16 @@
 
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.controls.buttons.py
+    src.ui.phoenix.windows.button.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import wx
 import logging
-
 from wx.lib.buttons import GenBitmapTextButton, GenButton, GenBitmapButton
+
 from ..tools import sppasSwissKnife
-from .images import ColorizeImage
+from .image import ColorizeImage
 
 # ---------------------------------------------------------------------------
 
@@ -144,13 +144,14 @@ class sppasBitmapButton(GenBitmapButton):
 
     """
 
-    def __init__(self, parent, name, style=DEFAULT_STYLE):
+    def __init__(self, parent, name, style=DEFAULT_STYLE, height=None):
 
-        btn_height = int(parent.GetSize()[1])
+        if height is None:
+            height = int(parent.GetSize()[1])
         super(sppasBitmapButton, self).__init__(
             parent,
             id=wx.NewId(),
-            bitmap=sppasSwissKnife.get_bmp_icon(name, height=btn_height),
+            bitmap=sppasSwissKnife.get_bmp_icon(name, height=height),
             style=style,
             name=name
         )

@@ -6,8 +6,8 @@ SPPAS = path.dirname(path.dirname(path.dirname(path.dirname(path.dirname(PROGRAM
 sys.path.append(SPPAS)
 
 from sppas.src.ui.phoenix import sppasApp
-from sppas.src.ui.phoenix.controls.buttons import sppasTextButton
-from sppas.src.ui.phoenix.controls.buttons import sppasBitmapTextButton
+from sppas.src.ui.phoenix.windows.buttons import sppasTextButton
+from sppas.src.ui.phoenix.windows.buttons import sppasBitmapTextButton
 
 
 class testButtonsFrame(wx.Frame):

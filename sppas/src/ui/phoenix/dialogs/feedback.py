@@ -42,10 +42,11 @@ except ImportError:
 
 from sppas.src.config import sg
 
-from ..controls.buttons import sppasBitmapTextButton
-from ..controls.texts import sppasTextCtrl
-from ..panels import sppasPanel
-from .basedialog import sppasDialog
+from ..windows import sppasBitmapTextButton
+from ..windows import sppasTextCtrl
+from ..windows import sppasPanel
+from ..windows import sppasDialog
+
 from .messages import Information
 
 # -------------------------------------------------------------------------
@@ -81,6 +82,7 @@ class sppasFeedbackDialog(sppasDialog):
         self.CreateHeader("Send e-mail...", icon_name="mail-at")
         self._create_content()
         self._create_buttons()
+        self.Bind(wx.EVT_BUTTON, self._process_event)
 
         self.SetMinSize(wx.Size(480, 320))
         self.LayoutComponents()
@@ -160,7 +162,6 @@ class sppasFeedbackDialog(sppasDialog):
         sizer.Add(vertical_line_3, 0, wx.EXPAND, 0)
         sizer.Add(close_btn, 2, wx.EXPAND, border=0)
 
-        self.Bind(wx.EVT_BUTTON, self._process_event)
         panel.SetSizer(sizer)
         self.SetActions(panel)
 
@@ -176,7 +177,6 @@ class sppasFeedbackDialog(sppasDialog):
         """
         event_obj = event.GetEventObject()
         event_name = event_obj.GetName()
-        print("event:"+event_name)
 
         if event_name == "close-window":
             self.SetReturnCode(wx.ID_CLOSE)

@@ -34,8 +34,9 @@
 
 """
 import wx
-from ..controls.texts import sppasMessageText
-from .basedialog import sppasDialog
+
+from ..windows import sppasMessageText
+from ..windows import sppasDialog
 
 # ----------------------------------------------------------------------------
 

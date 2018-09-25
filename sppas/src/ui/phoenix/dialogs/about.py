@@ -40,8 +40,8 @@ import webbrowser
 from sppas.src.config import sg
 
 from ..tools import sppasSwissKnife
-from ..panels import sppasScrolledPanel
-from . import sppasDialog
+from ..windows import sppasScrolledPanel
+from ..windows import sppasDialog
 
 # ----------------------------------------------------------------------------
 

@@ -8,11 +8,6 @@ SPPAS = path.dirname(path.dirname(path.dirname(path.dirname(path.dirname(path.di
 sys.path.append(SPPAS)
 
 from sppas.src.utils.fileutils import setup_logging
-from sppas.src.ui.phoenix.dialogs.basedialog import sppasDialog
-from sppas.src.ui.phoenix.dialogs.messages import sppasYesNoDialog
-from sppas.src.ui.phoenix.dialogs.messages import sppasInformationDialog
-from sppas.src.ui.phoenix.dialogs.feedback import sppasFeedbackDialog
-from sppas.src.ui.phoenix.dialogs.about import sppasAboutDialog
 from sppas.src.ui.phoenix.dialogs.settings import sppasSettingsDialog
 
 from sppas.src.ui.phoenix import WxAppConfig, WxAppSettings

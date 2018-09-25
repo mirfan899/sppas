@@ -45,8 +45,8 @@ from sppas.src.config import paths
 from sppas.src.utils.datatype import sppasTime
 
 from .tools import sppasSwissKnife
-from .panels.basepanel import sppasPanel
-from .controls.buttons import sppasBitmapTextButton
+from .windows import sppasPanel
+from .windows import sppasBitmapTextButton
 from .dialogs import Feedback
 
 # ---------------------------------------------------------------------------

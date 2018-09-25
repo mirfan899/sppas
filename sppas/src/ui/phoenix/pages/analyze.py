@@ -28,22 +28,21 @@
 
         ---------------------------------------------------------------------
 
-    ui.phoenix.panels.welcome.py
+    ui.phoenix.pages.analyze.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import wx
 
-from sppas.src.config import sg
-from ..controls.texts import sppasTitleText, sppasMessageText
-from ..panels.basepanel import sppasPanel
-from ..tools import sppasSwissKnife
+from ..windows import sppasTitleText
+from ..windows import sppasMessageText
+from ..windows import sppasPanel
 
 # ---------------------------------------------------------------------------
 
 
-class sppasWelcomePanel(sppasPanel):
-    """Create a panel to display a welcome message.
+class sppasAnalyzePanel(sppasPanel):
+    """Create a panel to analyze the selected files.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -54,9 +53,9 @@ class sppasWelcomePanel(sppasPanel):
     """
 
     def __init__(self, parent):
-        super(sppasWelcomePanel, self).__init__(
+        super(sppasAnalyzePanel, self).__init__(
             parent=parent,
-            name="welcome",
+            name="page_analyze",
             style=wx.BORDER_NONE
         )
         self._create_content()
@@ -69,29 +68,20 @@ class sppasWelcomePanel(sppasPanel):
 
     def _create_content(self):
         """"""
-        # create a banner
-        bmp = sppasSwissKnife.get_bmp_image('splash_transparent', 100)
-        sbmp = wx.StaticBitmap(self, wx.ID_ANY, bmp)
-
         # Create a title
         st = sppasTitleText(
             parent=self,
-            label="Installation issue...")
+            label="Not implemented...")
         st.SetName("title")
 
         # Create the welcome message
-        message = \
-            "The Graphical User Interface can't work because "\
-            "{:s} requires WxPython version 3 but version 4 is installed.\n" \
-            "Yet the Command-Line User Interface still works.\n\n"\
-            "For any help, see the web page for installation instructions " \
-            "and chapter 2 of the documentation.\n\n"\
-            "{:s}".format(sg.__name__, sg.__url__)
-        txt = sppasMessageText(self, message)
+        txt = sppasMessageText(
+            self,
+            "In future versions, analyzing annotated data will be here!"
+        )
 
         # Organize the title and message
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(sbmp, 2, wx.TOP | wx.EXPAND, 15)
         sizer.Add(st, 0, wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_HORIZONTAL, 15)
         sizer.Add(txt, 6, wx.LEFT | wx.RIGHT | wx.EXPAND, 10)
 

@@ -29,34 +29,26 @@
 
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.panels.basepanel.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.ui.phoenix.windows.book.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import wx
-import wx.lib.scrolledpanel as sc
 
 # ---------------------------------------------------------------------------
 
 
-class sppasPanel(wx.Panel):
-    """A panel is a window on which controls are placed.
-
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      develop@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+class sppasNotebook(wx.Notebook):
+    """A notebook is a control, which manages multiple pages with tabs.
 
     Possible constructors:
-
-        - sppasPanel()
-        - sppasPanel(parent, id=ID_ANY, pos=DefaultPosition, size=DefaultSize,
-              style=TAB_TRAVERSAL, name=PanelNameStr)
+        - sppasNotebook()
+        - sppasNotebook(parent, id=ID_ANY, pos=DefaultPosition,
+            size=DefaultSize, style=0, name=NotebookNameStr)
 
     """
     def __init_(self, *args, **kw):
-        super(sppasPanel, self).__init__(*args, **kw)
+        super(sppasNotebook, self).__init__(*args, **kw)
         s = wx.GetApp().settings
         self.SetBackgroundColour(s.bg_color)
         self.SetForegroundColour(s.fg_color)
@@ -66,48 +58,63 @@ class sppasPanel(wx.Panel):
 
     def SetBackgroundColour(self, colour):
         """Override."""
-        wx.Panel.SetBackgroundColour(self, colour)
-        for c in self.GetChildren():
-            c.SetBackgroundColour(colour)
+        wx.Notebook.SetBackgroundColour(self, colour)
+        for i in range(self.GetPageCount()):
+            page = self.GetPage(i)
+            page.SetBackgroundColour(colour)
 
     # -----------------------------------------------------------------------
 
     def SetForegroundColour(self, colour):
         """Override."""
-        wx.Panel.SetForegroundColour(self, colour)
-        for c in self.GetChildren():
-            c.SetForegroundColour(colour)
+        wx.Notebook.SetForegroundColour(self, colour)
+        for i in range(self.GetPageCount()):
+            page = self.GetPage(i)
+            page.SetForegroundColour(colour)
 
     # -----------------------------------------------------------------------
 
     def SetFont(self, font):
         """Override."""
-        wx.Panel.SetFont(self, font)
-        for c in self.GetChildren():
-            c.SetFont(font)
-        self.Layout()
+        wx.Notebook.SetFont(self, font)
+        for i in range(self.GetPageCount()):
+            page = self.GetPage(i)
+            page.SetFont(font)
+
 
 # ---------------------------------------------------------------------------
 
 
-class sppasScrolledPanel(sc.ScrolledPanel):
-    """A panel is a window on which controls are placed.
+class sppasSimplebook(wx.Simplebook):
+    """A simple is a control, which manages multiple pages.
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      develop@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    It is showing exactly one of its several pages.
 
     Possible constructors:
+        - sppasSimplebook()
+        - sppasSimplebook(parent, id=ID_ANY, pos=DefaultPosition,
+            size=DefaultSize, style=0, name=NotebookNameStr)
 
-        - sppasScrolledPanel()
-        - sppasScrolledPanel(parent, id=ID_ANY, pos=DefaultPosition,
-            size=DefaultSize, style=TAB_TRAVERSAL, name=PanelNameStr)
+    Possible effects:
+        - wx.SHOW_EFFECT_NONE 	No effect.
+        - wx.SHOW_EFFECT_ROLL_TO_LEFT 	Roll window to the left.
+        - wx.SHOW_EFFECT_ROLL_TO_RIGHT 	Roll window to the right.
+        - wx.SHOW_EFFECT_ROLL_TO_TOP 	Roll window to the top.
+        - wx.SHOW_EFFECT_ROLL_TO_BOTTOM 	Roll window to the bottom.
+        - wx.SHOW_EFFECT_SLIDE_TO_LEFT 	Slide window to the left.
+        - wx.SHOW_EFFECT_SLIDE_TO_RIGHT 	Slide window to the right.
+        - wx.SHOW_EFFECT_SLIDE_TO_TOP 	Slide window to the top.
+        - wx.SHOW_EFFECT_SLIDE_TO_BOTTOM 	Slide window to the bottom.
+        - wx.SHOW_EFFECT_BLEND 	Fade in or out effect.
+        - wx.SHOW_EFFECT_EXPAND 	Expanding or collapsing effect.
+        - wx.SHOW_EFFECT_MAX
+
+    >>> n = sppasSimplebook()
+    >>> n.ShowNewPage(page)
 
     """
     def __init_(self, *args, **kw):
-        super(sppasScrolledPanel, self).__init__(*args, **kw)
+        super(sppasSimplebook, self).__init__(*args, **kw)
         s = wx.GetApp().settings
         self.SetBackgroundColour(s.bg_color)
         self.SetForegroundColour(s.fg_color)
@@ -117,23 +124,25 @@ class sppasScrolledPanel(sc.ScrolledPanel):
 
     def SetBackgroundColour(self, colour):
         """Override."""
-        sc.ScrolledPanel.SetBackgroundColour(self, colour)
-        for c in self.GetChildren():
-            c.SetBackgroundColour(colour)
+        wx.Simplebook.SetBackgroundColour(self, colour)
+        for i in range(self.GetPageCount()):
+            page = self.GetPage(i)
+            page.SetBackgroundColour(colour)
 
     # -----------------------------------------------------------------------
 
     def SetForegroundColour(self, colour):
         """Override."""
-        sc.ScrolledPanel.SetForegroundColour(self, colour)
-        for c in self.GetChildren():
-            c.SetForegroundColour(colour)
+        wx.Simplebook.SetForegroundColour(self, colour)
+        for i in range(self.GetPageCount()):
+            page = self.GetPage(i)
+            page.SetForegroundColour(colour)
 
     # -----------------------------------------------------------------------
 
     def SetFont(self, font):
         """Override."""
-        sc.ScrolledPanel.SetFont(self, font)
-        for c in self.GetChildren():
-            c.SetFont(font)
-        self.Layout()
+        wx.Simplebook.SetFont(self, font)
+        for i in range(self.GetPageCount()):
+            page = self.GetPage(i)
+            page.SetFont(font)

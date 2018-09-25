@@ -29,17 +29,17 @@
 
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.dialogs.basedialog.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.ui.phoenix.windows.dialog.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import wx
 
 from sppas.src.config import sg
-from ..tools import sppasSwissKnife
-from ..controls import sppasBitmapTextButton
-from ..controls import sppasStaticBitmap
-from ..panels import sppasPanel
+from sppas.src.ui.phoenix.tools import sppasSwissKnife
+from sppas.src.ui.phoenix.windows import sppasBitmapTextButton
+from sppas.src.ui.phoenix.windows import sppasStaticBitmap
+from sppas.src.ui.phoenix.windows import sppasPanel
 
 # ---------------------------------------------------------------------------
 
@@ -186,10 +186,7 @@ class sppasDialog(wx.Dialog):
         :param window: (wx.Window) Any kind of wx.Window, wx.Panel, ...
 
         """
-        try:
-            object.SetName("content")
-        except:
-            pass  # logging.info('')
+        object.SetName("content")
         object.SetBackgroundColour(wx.GetApp().settings.bg_color)
         object.SetForegroundColour(wx.GetApp().settings.fg_color)
         object.SetFont(wx.GetApp().settings.text_font)
@@ -264,16 +261,16 @@ class sppasDialog(wx.Dialog):
         # Add header
         header = self.FindWindow("header")
         if header is not None:
-            sizer.Add(header, 1, wx.EXPAND, 0)
+            sizer.Add(header, 0, wx.EXPAND, 0)
             h_line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
             sizer.Add(h_line, 0, wx.ALL | wx.EXPAND, 0)
 
         # Add content
         content = self.FindWindow("content")
         if content is not None:
-            sizer.Add(content, 8, wx.EXPAND, 0)
+            sizer.Add(content, 1, wx.EXPAND, 0)
         else:
-            sizer.AddSpacer(2)
+            sizer.AddSpacer(1)
 
         # Add action buttons
         actions = self.FindWindow("actions")
