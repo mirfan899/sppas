@@ -60,8 +60,8 @@ class sppasDialog(wx.Dialog):
 
         Possible constructors:
 
-            - Dialog()
-            - Dialog(parent, id=ID_ANY, title="", pos=DefaultPosition,
+            - sppasDialog()
+            - sppasDialog(parent, id=ID_ANY, title="", pos=DefaultPosition,
                      size=DefaultSize, style=DEFAULT_DIALOG_STYLE,
                      name=DialogNameStr)
 
@@ -263,7 +263,7 @@ class sppasDialog(wx.Dialog):
         if header is not None:
             sizer.Add(header, 0, wx.EXPAND, 0)
             h_line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-            sizer.Add(h_line, 0, wx.ALL | wx.EXPAND, 0)
+            sizer.Add(h_line, 0, wx.EXPAND, 0)
 
         # Add content
         content = self.FindWindow("content")

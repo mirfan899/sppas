@@ -36,6 +36,7 @@
 import wx
 
 from ..windows import sppasMessageText
+from ..windows import sppasPanel
 from ..windows import sppasDialog
 
 # ----------------------------------------------------------------------------
@@ -66,6 +67,13 @@ class sppasBaseMessageDialog(sppasDialog):
 
         self._create_content(style, message)
         self._create_buttons()
+
+        # Fix frame properties
+        self.SetMinSize((320, 200))
+        w = int(wx.GetApp().settings.frame_size[0] * 0.3)
+        h = int(wx.GetApp().settings.frame_size[1] * 0.3)
+        self.SetSize(wx.Size(w, h))
+
         self.LayoutComponents()
         self.CenterOnParent()
 
@@ -84,8 +92,12 @@ class sppasBaseMessageDialog(sppasDialog):
             self.CreateHeader("Information", icon_name="information")
 
         # Create the message content
-        txt = sppasMessageText(self, message)
-        txt.SetName("content")
+        p = sppasPanel(self)
+        s = wx.BoxSizer(wx.HORIZONTAL)
+        txt = sppasMessageText(p, message)
+        s.Add(txt, 1, wx.ALL | wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 10)
+        p.SetSizer(s)
+        p.SetName("content")
 
     # -----------------------------------------------------------------------
 
