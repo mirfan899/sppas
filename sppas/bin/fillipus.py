@@ -30,7 +30,7 @@
 
         ---------------------------------------------------------------------
 
-    bin.searchipus.py
+    bin.fillipus.py
     ~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
@@ -38,7 +38,7 @@
     :contact:      contact@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      IPUs automatic detection.
+    :summary:      Search IPUs and fill in with a transcription
 
 """
 import sys
@@ -49,66 +49,42 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.annotations.SearchIPUs.sppassearchipus import sppasSearchIPUs
+from sppas.src.annotations.FillIPUs.sppasfillipus import sppasFillIPUs
 from sppas.src.utils.fileutils import setup_logging
 
 # ---------------------------------------------------------------------------
 # Verify and extract args:
 # ---------------------------------------------------------------------------
 
-w = sppasSearchIPUs()
+w = sppasFillIPUs()
 
 parser = ArgumentParser(usage="{:s} -w file [options]"
                               "".format(os.path.basename(PROGRAM)),
-                        description="Search for IPUs automatic annotation.")
+                        description="Fill in IPUs automatic annotation.")
 
 parser.add_argument("-w",
                     metavar="file",
                     required=True,
                     help='Input wav file name')
 
-# Silence/Speech segmentation options:
-parser.add_argument("-r", "--winrms",
-                    type=float,
-                    default=w.get_win_length(),
-                    help='Window size to estimate rms, in seconds '
-                         '(default: {:f})'.format(w.get_win_length()))
+parser.add_argument("-t",
+                    metavar="file",
+                    required=True,
+                    help='Input transcription file name')
 
 parser.add_argument("-m",
                     "--minipu",
                     type=float,
                     default=w.get_min_ipu(),
-                    help='Drop speech shorter than m seconds long '
+                    help='Initial value to drop units shorter than m seconds long '
                          '(default: {:f})'.format(w.get_min_ipu()))
 
 parser.add_argument("-s",
                     "--minsil",
                     type=float,
                     default=w.get_min_sil(),
-                    help='Drop silences shorter than s seconds long '
+                    help='Initial value to drop silences shorter than s seconds long '
                          '(default: {:f})'.format(w.get_min_sil()))
-
-parser.add_argument("-v",
-                    "--minrms",
-                    type=int,
-                    default=w.get_threshold(),
-                    help='Assume everything with a rms lower than v is a silence. 0=automatic adjust.'
-                         '(default: {:d})'.format(w.get_threshold()))
-
-# Other options:
-parser.add_argument("-d",
-                    "--shiftstart",
-                    type=float,
-                    default=w.get_shift_start(),
-                    help='Shift-left the start boundary of IPUs '
-                         '(default: {:f})'.format(w.get_shift_start()))
-
-parser.add_argument("-D",
-                    "--shiftend",
-                    type=float,
-                    default=w.get_shift_end(),
-                    help='Shift-right the end boundary of IPUs '
-                         '(default: {:f})'.format(w.get_shift_end()))
 
 # Output options:
 parser.add_argument("-o",
@@ -129,11 +105,6 @@ setup_logging(log_level, log_file)
 # Automatic IPUs segmentation is here:
 # ----------------------------------------------------------------------------
 
-w.set_shift_start(args.shiftstart)
-w.set_shift_end(args.shiftend)
 w.set_min_ipu(args.minipu)
 w.set_min_sil(args.minsil)
-w.set_threshold(args.minrms)
-w.set_win_length(args.winrms)
-
-trs_out = w.run(args.w, args.o)
+trs_out = w.run(args.w, args.t, args.o)

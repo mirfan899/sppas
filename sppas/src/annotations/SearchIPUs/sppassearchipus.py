@@ -33,7 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import os.path
+import os
 
 from sppas.src.config import annotations_translation
 from sppas.src.config import symbols
@@ -53,7 +53,7 @@ from ..annotationsexc import AnnotationOptionError
 from ..baseannot import sppasBaseAnnotation
 from .searchipus import SearchIPUs
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 SIL_ORTHO = list(
     symbols.ortho.keys()
@@ -61,12 +61,11 @@ SIL_ORTHO = list(
 
 _ = annotations_translation.gettext
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-MSG_INVALID = (_(":INFO 1224: "))
 MSG_NO_TIER = (_(":INFO 1264: "))
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasSearchIPUs(sppasBaseAnnotation):
@@ -136,7 +135,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
             else:
                 raise AnnotationOptionError(key)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_threshold(self):
         return self.__searcher.get_vol_threshold()
@@ -156,7 +155,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
     def get_shift_end(self):
         return self.__searcher.get_shift_end()
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_threshold(self, value):
         """Fix the threshold volume.
@@ -166,7 +165,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         """
         self.__searcher.set_vol_threshold(value)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_win_length(self, value):
         """Set a new length of window for a estimation or volume values.
@@ -219,20 +218,23 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         """
         self.__searcher.set_shift_end(value)
 
-    # ----------------------------------------------------------------------
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-    def tracks_to_tier(self, tracks, end_time):
+    @staticmethod
+    def tracks_to_tier(tracks, end_time, vagueness):
         """Create a sppasTier object from tracks.
 
         :param tracks: (List of tuple) with (from, to) values in seconds
         :param end_time: (float) End-time of the tier
+        :param vagueness: (float) vagueness used for silence search
 
         """
         if len(tracks) == 0:
             raise IOError('No IPUs to write.\n')
 
         tier = sppasTier("IPUs")
+        tier.set_meta('number_of_ipus', str(len(tracks)))
         i = 0
         to_prec = 0.
 
@@ -241,7 +243,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
             if from_time == 0. or to_time == end_time:
                 radius = 0.
             else:
-                radius = self.__searcher.get_vagueness() / 2.
+                radius = vagueness / 2.
 
             # From the previous track to the current track: silence
             if to_prec < from_time:
@@ -267,7 +269,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
             to_prec = to_time
 
         # The end is a silence? Fill...
-        begin = sppasPoint(to_prec, self.__searcher.get_vagueness() / 2.)
+        begin = sppasPoint(to_prec, vagueness / 2.)
         if begin < end_time:
             tier.create_annotation(
                 sppasLocation(
@@ -278,17 +280,35 @@ class sppasSearchIPUs(sppasBaseAnnotation):
 
         return tier
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+
+    def _set_meta(self, tier):
+        """Set meta values to the tier."""
+        tier.set_meta('threshold_volume', str(self.__searcher.get_vol_threshold()))
+        tier.set_meta('minimum_silence_duration', str(self.__searcher.get_min_sil_dur()))
+        tier.set_meta('minimum_ipus_duration', str(self.__searcher.get_min_ipu_dur()))
+        tier.set_meta('shift_ipus_start', str(self.__searcher.get_shift_start()))
+        tier.set_meta('shift_ipus_end', str(self.__searcher.get_shift_end()))
+
+        self.print_message("Information: ", indent=2)
+        m1 = "Threshold volume value:     {:d}".format(self.__searcher.get_vol_threshold())
+        m2 = "Threshold silence duration: {:.3f}".format(self.__searcher.get_min_sil_dur())
+        m3 = "Threshold speech duration:  {:.3f}".format(self.__searcher.get_min_ipu_dur())
+        m4 = "Number of IPUs found:       {:s}".format(tier.get_meta("number_of_ipus"))
+        for m in (m4, m1, m2, m3):
+            self.print_message(m, indent=3)
+
+    # -----------------------------------------------------------------------
 
     def run(self, input_filename, output_filename=None):
         """Perform the search of IPUs process.
 
         :param input_filename: (str) Input audio file
         :param output_filename: (str) Resulting annotated file with IPUs
+        :returns: (sppasTranscription)
 
         """
         self.print_filename(input_filename)
-        self.print_options()
         self.print_diagnosis(input_filename)
 
         # Get audio and the channel we'll work on
@@ -299,7 +319,12 @@ class sppasSearchIPUs(sppasBaseAnnotation):
 
         # Process the data.
         tracks = self.__searcher.get_tracks(time_domain=True)
-        tier = self.tracks_to_tier(tracks, end_time=channel.get_duration())
+        tier = self.tracks_to_tier(
+            tracks,
+            channel.get_duration(),
+            self.__searcher.get_vagueness()
+        )
+        self._set_meta(tier)
 
         # Create the transcription to put the result
         trs_output = sppasTranscription(self.__class__.__name__)
@@ -317,3 +342,79 @@ class sppasSearchIPUs(sppasBaseAnnotation):
             self.print_filename(output_filename, status=0)
 
         return trs_output
+
+    # -----------------------------------------------------------------------
+
+    def batch_processing(self, file_names, progress, output_format):
+        """
+
+        :param file_names:
+        :param progress: ProcessProgressTerminal() or ProcessProgressDialog()
+        :return:
+
+        """
+        if len(file_names) == 0:
+            return 0
+        total = len(file_names)
+        files_processed_success = 0
+        progress.set_header(self.__class__.__name__)
+        progress.update(0, "")
+
+        # Execute the annotation for each file in the list
+        for i, f in enumerate(file_names):
+
+            # Indicate the file to be processed
+            progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
+
+            # Fix input/output file name
+            out_name = os.path.splitext(f)[0] + output_format
+
+            # Is there already an existing output file (in any format)!
+            ext = []
+            for e in sppas.src.anndata.aio.extensions_in:
+                if e not in ('.txt', '.hz', '.PitchTier'):
+                    ext.append(e)
+            exist_out_name = self._get_filename(f, ext)
+
+            # it's existing... but not in the expected format: convert!
+            if exist_out_name is not None:
+                self.print_message(
+                    "A file with name {:s} is already existing."
+                    "".format(exist_out_name), indent=2)
+                if exist_out_name != out_name:
+                    try:
+                        parser = sppasRW(exist_out_name)
+                        t = parser.read()
+                        parser.set_filename(out_name)
+                        parser.write(t)
+                        # OK, it's done! just copy the file!
+                        self.print_message(
+                            'It was converted automatically to {:s}'
+                            ''.format(out_name), indent=2)
+                    except Exception:
+                        pass
+                self.print_message("No automatic annotation was done."
+                                   "", indent=2, status=3)
+            else:
+                try:
+                    # Execute annotation
+                    self.run(f, out_name)
+                    files_processed_success += 1
+                except Exception as e:
+                    self.print_message(
+                        "{:s} for file {:s}\n".format(str(e), out_name),
+                        indent=2, status=-1)
+
+            # Indicate progress
+            progress.set_fraction(float((i+1))/float(total))
+            self.print_newline()
+
+        # Indicate completed!
+        progress.update(
+            1,
+            "Completed ({:d} files successfully over {:d} files).\n"
+            "".format(files_processed_success, total)
+        )
+        progress.set_header("")
+
+        return files_processed_success

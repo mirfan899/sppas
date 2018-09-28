@@ -47,6 +47,7 @@ from sppas.src.annotations.log import sppasLog
 from sppas.src.annotations.Momel.sppasmomel import sppasMomel
 from sppas.src.annotations.Intsint.sppasintsint import sppasIntsint
 from sppas.src.annotations.SearchIPUs.sppassearchipus import sppasSearchIPUs
+from sppas.src.annotations.FillIPUs.sppasfillipus import sppasFillIPUs
 from sppas.src.annotations.TextNorm.sppastextnorm import sppasTextNorm
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
 from sppas.src.annotations.Chunks.sppaschunks import sppasChunks
@@ -362,6 +363,31 @@ class sppasAnnotationsManager(Thread):
         :returns: number of files processed successfully
 
         """
+        filelist = self.set_filelist(".wav")
+        if len(filelist) == 0:
+            return 0
+
+        # Create annotation instance, and fix options
+        try:
+            seg = sppasSearchIPUs(self._logfile)
+            seg.fix_options(self.parameters.get_step(stepidx).get_options())
+            n = seg.batch_processing(filelist, self._progress, self.parameters.get_output_format())
+        except Exception as e:
+            if self._logfile is not None:
+                self._logfile.print_message("%s\n" % str(e), indent=1, status=4)
+            return 0
+
+        return n
+
+    # ------------------------------------------------------------------------
+
+    def run_fillipus(self, stepidx):
+        """Execute the FillIPUs automatic annotation.
+
+        :param stepidx: (int) Index of this annotation
+        :returns: number of files processed successfully
+
+        """
         # Initializations
         step = self.parameters.get_step(stepidx)
         stepname = self.parameters.get_step_name(stepidx)
@@ -375,65 +401,65 @@ class sppasAnnotationsManager(Thread):
             return 0
         total = len(filelist)
 
-        # Create annotation instance, and fix options
-        try:
-            seg = sppasSearchIPUs(self._logfile)
-        except Exception as e:
-            if self._logfile is not None:
-                self._logfile.print_message("%s\n" % str(e), indent=1, status=4)
-            return 0
-
         # Execute the annotation for each file in the list
         for i, f in enumerate(filelist):
 
             # Indicate the file to be processed
-            if self._logfile is not None:
-                self._logfile.print_message(stepname + " of file " + f, indent=1)
             self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
 
             # Fix input/output file name
+            txtname = os.path.splitext(f)[0] + ".txt"
             outname = os.path.splitext(f)[0] + self.parameters.get_output_format()
 
-            # Is there already an existing IPU-seg (in any format)!
-            ext = []
-            for e in sppas.src.anndata.aio.extensions_in:
-                if e not in ('.txt', '.hz', '.PitchTier'):
-                    ext.append(e)
-            existoutname = self._get_filename(f, ext)
-
-            # it's existing... but not in the expected format: convert!
-            if existoutname is not None:
-                self._logfile.print_message(
-                    "A file with name {:s} is already existing."
-                    "".format(existoutname), indent=2)
-                if existoutname != outname:
-                    try:
-                        parser = sppasRW(existoutname)
-                        t = parser.read()
-                        parser.set_filename(outname)
-                        parser.write(t)
-                        # OK, it's done!
-                        # just copy the file!
-                        if self._logfile is not None:
-                            self._logfile.print_message(
-                                'It was exported to {:s}'.format(outname), indent=2)
-                    except Exception:
-                        pass
-                self._logfile.print_message(
-                    "No annotation was done.", indent=2, status=3)
+            # Is there already an existing transcription
+            if os.path.exists(txtname) is False:
+                if self._logfile is not None:
+                    self._logfile.print_message(
+                        "This annotation expects a file with name {:s}. File not found."
+                        "".format(txtname), indent=2, status=4)
+                    self._logfile.print_message(
+                        "No annotation was done.", indent=2, status=3)
             else:
-                try:
-                    # Execute annotation
-                    seg.fix_options(step.get_options())
-                    seg.run(f, outname)
-                    files_processed_success += 1
-                    if self._logfile is not None:
-                        self._logfile.print_message(outname, indent=2, status=0)
-                except Exception as e:
-                    if self._logfile is not None:
-                        self._logfile.print_message(
-                            "{:s} for file {:s}\n".format(str(e), outname),
-                            indent=2, status=-1)
+                # Is there already an existing IPU-seg (in any format)!
+                ext = []
+                for e in sppas.src.anndata.aio.extensions_in:
+                    if e not in ('.txt', '.hz', '.PitchTier'):
+                        ext.append(e)
+                existoutname = self._get_filename(f, ext)
+
+                # it's existing... but not in the expected format: convert!
+                if existoutname is not None:
+                    self._logfile.print_message(
+                        "A file with name {:s} is already existing."
+                        "".format(existoutname), indent=2)
+                    if existoutname != outname:
+                        try:
+                            parser = sppasRW(existoutname)
+                            t = parser.read()
+                            parser.set_filename(outname)
+                            parser.write(t)
+                            # OK, it's done!
+                            # just copy the file!
+                            if self._logfile is not None:
+                                self._logfile.print_message(
+                                    'It was exported to {:s}'.format(outname), indent=2)
+                        except Exception:
+                            pass
+                    self._logfile.print_message(
+                        "No annotation was done.", indent=2, status=3)
+                else:
+                    # Create annotation instance, fix options, run.
+                    try:
+                        seg = sppasFillIPUs(self._logfile)
+                        seg.fix_options(step.get_options())
+                        seg.run(f, txtname, outname)
+                        files_processed_success += 1
+                        if self._logfile is not None:
+                            self._logfile.print_message(outname, indent=2, status=0)
+                    except Exception as e:
+                        if self._logfile is not None:
+                            self._logfile.print_message("%s\n" % str(e), indent=1, status=4)
+                        return 0
 
             # Indicate progress
             self._progress.set_fraction(float((i+1))/float(total))
@@ -1213,6 +1239,8 @@ class sppasAnnotationsManager(Thread):
                     nbruns[i] = self.run_intsint(i)
                 elif self.parameters.get_step_key(i) == "searchipus":
                     nbruns[i] = self.run_searchipus(i)
+                elif self.parameters.get_step_key(i) == "fillipus":
+                    nbruns[i] = self.run_fillipus(i)
                 elif self.parameters.get_step_key(i) == "textnorm":
                     nbruns[i] = self.run_tokenization(i)
                 elif self.parameters.get_step_key(i) == "phon":
