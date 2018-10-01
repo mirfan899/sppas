@@ -245,6 +245,7 @@ class sppasPluginsManager(Thread):
                 self._progress.set_text(os.path.basename(pfile) +
                                         " ("+str(i+1) + "/" + str(total)+")")
             output_lines += info("4010").format(filename=pfile)
+            output_lines += "\n"
 
             # Apply the plugin
             process = sppasPluginProcess(self._plugins[plugin_id])
