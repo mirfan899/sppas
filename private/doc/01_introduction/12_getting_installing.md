@@ -32,11 +32,13 @@ The following software are required:
 
 It is very important to take care about the versions: 
 
-- SPPAS does not work with Python 3;
-- the GUI of SPPAS does not work with wxPython 4 (also called Phoenix).
+- With Python 3, SPPAS only provides some of the features it is supposed to.
+- No GUI is available with wxPython 4 - also called Phoenix.
 
 An installation guide is available on the website, depending 
-on the operating system. **Please, closely follow the instructions.**
+on the operating system: <http://www.sppas.org/installation.html>. 
+**Please, closely follow the instructions.**
+
 Notice that administrator rights are required to perform the installations.
 In case of difficulty arising from the installation of such software, 
 we invite you to consult the web first. It probably will provide the
@@ -65,7 +67,8 @@ The SPPAS package is compressed and zipped, so you will need to
 
 ### The SPPAS package
 
-Unlike many other software tool, SPPAS is not distributed as an executable program only.
+Unlike many other software tool, SPPAS is not distributed as an executable 
+program only.
 Instead, everything is done so that users can check / change operation.
 It is particularly suitable for automatic annotations: it allows any user
 to adapt automatic annotations to its own needs.
@@ -78,7 +81,8 @@ The SPPAS package contains:
 - the `README.txt` file, which aims to be read
 - the files `sppas.bat` and `sppas.command` to execute the Graphical User Interface
 - the `resources` directory contains data that are used by automatic annotations (lexicons, dictionaries, ...)
-- the `samples` directory contains folders of data of various languages, they are sets of annotations freely distributed to test features of SPPAS
+- the `samples` directory contains data of various languages; they are distributed to test various features of SPPAS
+- the `plugins` directory
 - the `sppas` directory contains the program itself
 - the `documentation` directory contains:
 

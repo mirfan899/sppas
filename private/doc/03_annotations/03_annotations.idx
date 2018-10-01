@@ -1,7 +1,8 @@
 30_title.md
 31_introduction.md
 32_transcription.md
-33_IPUs_segmentation.md
+33_1_searchipus.md
+33_2_fillipus.md
 34_tokenization.md
 35_phonetization.md
 36_alignment.md

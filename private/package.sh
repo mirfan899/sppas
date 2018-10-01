@@ -529,7 +529,7 @@ function fct_package {
 
     local packagename=`pwd`/${PROGRAM_NAME}-${PROGRAM_VERSION}-${TODAY}.zip
     pushd $PROGRAM_DIR
-    zip -q -r $packagename sppas.bat sppas.command bin etc documentation sppas resources samples scripts *.txt
+    zip -q -r $packagename sppas.bat sppas.command README.txt plugins documentation sppas resources samples
     if [ "$?" != 0 ]; then
         echo -e "${RED}No package created!${NC}"
         popd
