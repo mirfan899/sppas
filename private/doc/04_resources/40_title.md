@@ -1,1 +1,0 @@
-# Resources for Automatic Annotations
