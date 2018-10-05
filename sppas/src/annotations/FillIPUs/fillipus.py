@@ -112,7 +112,7 @@ class FillIPUs(SearchIPUs):
         if self._channel is None:
             return 0
 
-        vol_stats = self._channel.get_vol_stats()
+        vol_stats = self.get_volstats()
         # Min volume in the recorded channel
         vmin = vol_stats.min()
         # Max is set to the mean
@@ -167,16 +167,20 @@ class FillIPUs(SearchIPUs):
         :returns: tracks
 
         """
+        print("fix_threshold_durations")
         if self._channel is None:
             raise Exception('No audio data.')
 
         # Search tracks with default parameters
         self._vol_threshold = self.fix_threshold_vol()
+        print("initial vol: {:d}".format(self._vol_threshold))
+
         tracks = self.get_tracks(self._vol_threshold)
         n = len(tracks)
         b = self.__check_boundaries(tracks)
         if n == self._nb_ipus and b is True:
             return n
+        print(' ... got {:d} tracks'.format(n))
 
         # Search by changing only the volume threshold
         n = self._split_into_vol()

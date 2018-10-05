@@ -220,7 +220,8 @@ class SearchIPUs(sppasSilences):
 
         (from,to) values are converted, or not, into the time-domain.
 
-        The tracks are found from the current list of silences, which is firstly filtered with the min_sil_dur.
+        The tracks are found from the current list of silences, which is
+        firstly filtered with the min_sil_dur.
 
         This methods requires the following members to be fixed:
             - the volume threshold

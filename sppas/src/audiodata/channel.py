@@ -71,6 +71,7 @@ class sppasChannel(object):
 
     def set_frames(self, frames):
         """Set new frames to the channel.
+
         It is supposed the sampwidth and framerate are the same as the 
         current ones.
 

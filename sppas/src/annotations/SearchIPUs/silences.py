@@ -53,17 +53,19 @@ class sppasSilences(object):
     the frame from which the silences are beginning and ending respectively.
 
     """
-    def __init__(self, channel, win_len=0.02, vagueness=0.005):
+
+    def __init__(self, channel, win_len=0.020, vagueness=0.005):
         """Create a sppasSilences instance.
 
         :param channel: (sppasChannel) the input channel
         :param win_len: (float) duration of a window
         :param vagueness: (float) Windows length to estimate the boundaries.
         
-        Radius is the 2*vagueness of the boundaries. 
         Maximum value of vagueness is win_len.
-        The duration of a window is relevant for the estimation of the volume
-        values.
+        The duration of a window (win_len) is relevant for the estimation
+        of the rms values.
+
+        Radius (see sppasPoint) is the 2*vagueness of the boundaries.
 
         """
         self._win_len = win_len
@@ -234,13 +236,17 @@ class sppasSilences(object):
         vmean = self.__volume_stats.mean()
         vcvar = 1.5 * self.__volume_stats.coefvariation()
 
+        print(' - volume min={:f}'.format(vmin))
+        print(' - volume mean={:f}'.format(vmean))
+        print(' - coef var={:f}'.format(vcvar))
+
         # alternative, in case the audio is not as good as expected!
         # (too low volume, or outliers which make the coeff variation very high)
         alt = (vmean-vmin) / 5.
         if alt > vcvar or vcvar > vmean:
             vcvar = alt
 
-        return vmin + int((vmean - vcvar))
+        return int(vmin) + int((vmean - vcvar))
 
     # -----------------------------------------------------------------------
 

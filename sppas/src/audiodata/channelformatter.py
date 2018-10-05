@@ -122,6 +122,7 @@ class sppasChannelFormatter(object):
 
     def convert(self):
         """Convert the channel.
+
         Convert to the expected (already) given sample width and frame rate.
 
         """
@@ -138,6 +139,7 @@ class sppasChannelFormatter(object):
 
     def bias(self, bias_value):
         """Convert the channel with a bias added to each frame.
+
         Samples wrap around in case of overflow.
 
         :param bias_value: (int) the value to bias the frames
@@ -157,6 +159,7 @@ class sppasChannelFormatter(object):
 
     def mul(self, factor):
         """Convert the channel.
+
         All frames in the original channel are multiplied by the floating-
         point value factor.
         Samples are truncated in case of overflow.
@@ -178,7 +181,6 @@ class sppasChannelFormatter(object):
 
     def remove_offset(self):
         """Convert the channel by removing the offset in the channel."""
-
         new_channel = sppasChannel()
         new_channel.set_sampwidth(self._sampwidth)
         new_channel.set_framerate(self._framerate)

@@ -42,15 +42,16 @@ from .audiodataexc import SampleWidthError, ChannelIndexError
 
 
 class sppasAudioConverter(object):
-    """
+    """An utility to convert data formats.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      An utility to convert data formats.
 
     """
+
     def __init__(self):
         """Create a sppasAudioConverter instance."""
         pass
@@ -60,6 +61,7 @@ class sppasAudioConverter(object):
     @staticmethod
     def unpack_data(frames, samples_width, nchannels=1):
         """Turn frames into samples.
+
         Unpack the data frames depending on their sample width.
 
         :param frames: (str) Audio frames

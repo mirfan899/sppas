@@ -33,6 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+import logging
 from .audioframes import sppasAudioFrames
 from .basevolume import sppasBaseVolume
 
@@ -77,6 +78,9 @@ class sppasChannelVolume(sppasBaseVolume):
             rms = a.rms()
             if rms > 0:  # provide negative values of corrupted audio files
                 self._volumes[i] = a.rms()
+            elif rms < 0:
+                logging.warning("Corrupted audio? "
+                                "The RMS is a negative value {:d}".format(rms))
 
         if self._volumes[-1] == 0:
             self._volumes.pop()
