@@ -32,6 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+from sppas.src.utils.makeunicode import b
 from .audioframes import sppasAudioFrames
 from .audiodataexc import IntervalError, SampleWidthError, FrameRateError
 
@@ -39,16 +40,16 @@ from .audiodataexc import IntervalError, SampleWidthError, FrameRateError
 
 
 class sppasChannel(object):
-    """
+    """Manage data and information of a channel.
+
     :author:       Nicolas Chazeau, Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      A class to manage a channel.
 
     """
-    def __init__(self, framerate=16000, sampwidth=2, frames=""):
+    def __init__(self, framerate=16000, sampwidth=2, frames=b""):
         """Create a sppasChannel instance.
 
         :param framerate: (int) The frame rate of this channel, in Hertz.
@@ -58,7 +59,7 @@ class sppasChannel(object):
         """
         self._framerate = 16000
         self._sampwidth = 2
-        self._frames = ""
+        self._frames = b""
         self._position = 0
 
         self.set_framerate(framerate)
@@ -78,7 +79,8 @@ class sppasChannel(object):
         :param frames: (str) the new frames
 
         """
-        self._frames = str(frames)
+        # we should check if frames are bytes
+        self._frames = frames
 
     # ----------------------------------------------------------------------
 
@@ -127,9 +129,10 @@ class sppasChannel(object):
         chunck_size = int(chunck_size)
         p = self._position
         m = len(self._frames)
-        s = p*self._sampwidth
-        e = min(m, s + chunck_size*self._sampwidth)
-        f = ''.join(self._frames[i] for i in range(s, e))
+        s = p * self._sampwidth
+        e = min(m, s + chunck_size * self._sampwidth)
+        #f = b''.join(self._frames[i] for i in range(s, e))
+        f = self._frames[s:e]
         self._position = p + chunck_size
 
         return f
@@ -138,6 +141,7 @@ class sppasChannel(object):
 
     def get_nframes(self):
         """Return the number of frames.
+
         A frame has a length of (sampwidth) bytes.
 
         :returns: (int) the total number of frames
@@ -259,14 +263,12 @@ class sppasChannel(object):
 
     def tell(self):
         """Return the current position."""
-
         return self._position
 
     # ------------------------------------------------------------------------
 
     def rewind(self):
         """Set the position to 0."""
-
         self._position = 0
 
     # ------------------------------------------------------------------------

@@ -42,26 +42,29 @@ import sppas.src.calculus.stats.moment as moment
 
 
 class sppasBaseVolume(object):
-    """
+    """A base class to estimates the volume.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    :summary:      A base class to estimates the volume.
 
     """
     def __init__(self, win_len=0.01):
-        """Create a sppasBaseVolume instance."""
-        
-        self._volumes = []
+        """Create a sppasBaseVolume instance.
+
+        :param win_len: (float) Size of the window (in seconds)
+
+        """
+        self._volumes = list()
         self._rms = 0
         self._winlen = float(win_len)
 
     # -----------------------------------------------------------------------
 
     def get_winlen(self):
-        """Return the windows length that was used to estimate the volume values.
+        """Return the windows length used to estimate the volume values.
         
         :returns: (float) Duration in seconds.
 

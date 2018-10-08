@@ -174,7 +174,7 @@ class sppasChannelMixer(object):
                 value = sppasChannelMixer._sample_calculator(self._channels, s, sampwidth, self._factors, attenuator)
                 frames += struct.pack("<b", int(value))
 
-        return sppasChannel(framerate, sampwidth, str(frames))
+        return sppasChannel(framerate, sampwidth, frames)
 
     # -----------------------------------------------------------------------
 

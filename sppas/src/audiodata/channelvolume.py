@@ -41,13 +41,13 @@ from .basevolume import sppasBaseVolume
 
 
 class sppasChannelVolume(sppasBaseVolume):
-    """
+    """Estimate stats of the volume of an audio channel.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    :summary:      A class to estimates stats of the volume of an audio channel.
 
     The volume is the estimation of RMS values, sampled with a window of 10ms.
 

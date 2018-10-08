@@ -68,9 +68,10 @@ class TestAudioUtils(unittest.TestCase):
         f1 = sppasAudioConverter().samples2frames(s1, self._sample_1.get_sampwidth(), self._sample_1.get_nchannels())
         f2 = sppasAudioConverter().samples2frames(s2, self._sample_2.get_sampwidth(), self._sample_2.get_nchannels())
         f3 = sppasAudioConverter().samples2frames(s3, self._sample_3.get_sampwidth(), self._sample_3.get_nchannels())
-        self.assertItemsEqual(self._sample_1.read_frames(10), f1)
-        self.assertItemsEqual(self._sample_2.read_frames(10), f2)
-        self.assertItemsEqual(self._sample_3.read_frames(10), f3)
+
+        self.assertEqual(self._sample_1.read_frames(10), f1)
+        self.assertEqual(self._sample_2.read_frames(10), f2)
+        self.assertEqual(self._sample_3.read_frames(10), f3)
 
         self.assertEqual(s1, [[1, -1, 1, 1, 0, 0, -1, 1, -1, 1]])
         self.assertEqual(s2, [[82, 72, 51, 64, 57, 47, 53, 39, 6, 51]])

@@ -119,19 +119,19 @@ class sppasAudioConverter(object):
         if samples_width == 4:
             for i in range(nframes):
                 for j in range(nchannels):
-                    frames = frames + struct.pack("<l", samples[j][i])
+                    frames += struct.pack("<l", samples[j][i])
             return frames
 
         if samples_width == 2:
             for i in range(nframes):
                 for j in range(nchannels):
-                    frames = frames + struct.pack("<h", samples[j][i])
+                    frames += struct.pack("<h", samples[j][i])
             return frames
 
         if samples_width == 1:
             for i in range(nframes):
                 for j in range(nchannels):
-                    frames = frames + struct.pack("<b", samples[j][i])
+                    frames += struct.pack("<b", samples[j][i])
             return frames
 
         raise SampleWidthError(samples_width)

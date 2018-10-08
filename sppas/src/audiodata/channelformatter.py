@@ -65,13 +65,13 @@ class sppasChannelFormatter(object):
 
     def get_channel(self):
         """Return the sppasChannel."""
-
         return self._channel
 
     # -----------------------------------------------------------------------
 
     def get_framerate(self):
         """Return the expected frame rate for the channel.
+
         Notice that while convert is not applied, it can be different of the
         current one of the channel.
 
@@ -84,6 +84,7 @@ class sppasChannelFormatter(object):
 
     def get_sampwidth(self):
         """Return the expected sample width for the channel.
+
         Notice that while convert is not applied, it can be different of the
         current one  of the channel.
 
@@ -98,6 +99,7 @@ class sppasChannelFormatter(object):
 
     def set_framerate(self, framerate):
         """Fix the expected frame rate for the channel.
+
         Notice that while convert is not applied, it can be different of the
         current one  of the channel.
 
@@ -110,6 +112,7 @@ class sppasChannelFormatter(object):
 
     def set_sampwidth(self, sampwidth):
         """Fix the expected sample width for the channel.
+
         Notice that while convert is not applied, it can be different of the
         current one  of the channel.
 
