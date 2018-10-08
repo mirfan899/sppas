@@ -60,7 +60,7 @@ class sppasSilences(object):
         :param channel: (sppasChannel) the input channel
         :param win_len: (float) duration of a window
         :param vagueness: (float) Windows length to estimate the boundaries.
-        
+
         Maximum value of vagueness is win_len.
         The duration of a window (win_len) is relevant for the estimation
         of the rms values.
@@ -70,7 +70,7 @@ class sppasSilences(object):
         """
         self._win_len = win_len
         self._vagueness = vagueness
-        
+
         self._channel = None
         self.__volume_stats = None
         self.__silences = list()
@@ -92,7 +92,7 @@ class sppasSilences(object):
     # -----------------------------------------------------------------------
 
     def get_vagueness(self):
-        """"""
+        """Get the vagueness value (=2*radius)."""
         return self._vagueness
 
     # -----------------------------------------------------------------------
@@ -120,7 +120,9 @@ class sppasSilences(object):
     # -----------------------------------------------------------------------
 
     def set_silences(self, silences):
-        """Fix manually silences!
+        """Fix manually silences.
+
+        To be use carefully!
 
         :param silences: (list of tuples (start_pos, end_pos))
 
@@ -176,7 +178,7 @@ class sppasSilences(object):
         """Return the tracks, deduced from the silences and track constrains.
 
         :param min_track_dur: (float) The minimum duration for a track
-        :param shift_dur_start: (float) The time to remove to the start boundary
+        :param shift_dur_start: (float) The time to remove to the start bound
         :param shift_dur_end: (float) The time to add to the end boundary
         :returns: list of tuples (from_pos,to_pos)
 
@@ -236,12 +238,8 @@ class sppasSilences(object):
         vmean = self.__volume_stats.mean()
         vcvar = 1.5 * self.__volume_stats.coefvariation()
 
-        print(' - volume min={:f}'.format(vmin))
-        print(' - volume mean={:f}'.format(vmean))
-        print(' - coef var={:f}'.format(vcvar))
-
         # alternative, in case the audio is not as good as expected!
-        # (too low volume, or outliers which make the coeff variation very high)
+        # (too low volume, or outliers which make the coeff var very high)
         alt = (vmean-vmin) / 5.
         if alt > vcvar or vcvar > vmean:
             vcvar = alt
@@ -280,7 +278,7 @@ class sppasSilences(object):
         i = 0
         for v in self.__volume_stats:
             if v < threshold:
-                # It's a small enough volume to consider the window like a silence
+                # It's a small enough volume to consider the window a silence
                 if inside is False:
                     # We consider it like the beginning of a block of silences
                     idx_begin = i
@@ -298,11 +296,15 @@ class sppasSilences(object):
                         to_pos = int(idx_end * nframes)
 
                         # Find the boundaries with a better precision
-                        from_pos = self.adjust_bound(from_pos, threshold, direction=-1)
-                        new_to_pos = self.adjust_bound(to_pos, threshold, direction=1)
+                        from_pos = self.adjust_bound(from_pos, threshold,
+                                                     direction=-1)
+                        new_to_pos = self.adjust_bound(to_pos, threshold,
+                                                       direction=1)
                         if new_to_pos > to_pos:
-                            d = float(new_to_pos - to_pos) / float(self._channel.get_framerate())
-                            increment = math.ceil(d/self.__volume_stats.get_winlen())
+                            d = float(new_to_pos - to_pos) / \
+                                float(self._channel.get_framerate())
+                            increment = math.ceil(
+                                d / self.__volume_stats.get_winlen())
                             i += int(increment)
                         to_pos = new_to_pos
 
@@ -365,7 +367,9 @@ class sppasSilences(object):
         if self._vagueness == self._win_len:
             return pos
 
-        delta = int(1.5 * self.__volume_stats.get_winlen() * self._channel.get_framerate())
+        delta = int(1.5 *
+                    self.__volume_stats.get_winlen() *
+                    self._channel.get_framerate())
         from_pos = max(pos - delta, 0)
         self._channel.seek(from_pos)
 
@@ -378,17 +382,19 @@ class sppasSilences(object):
         if direction == 1:
             for i, v in enumerate(vol_stats):
                 if v > threshold:
-                    return from_pos + \
-                           (i *
-                            (int(self._vagueness * self._channel.get_framerate())))
+                    return \
+                        from_pos + \
+                        (i * (int(self._vagueness *
+                                  self._channel.get_framerate())))
 
         elif direction == -1:
             i = len(vol_stats)
             for v in reversed(vol_stats):
                 if v > threshold:
-                    return from_pos + \
-                           (i *
-                            (int(self._vagueness * self._channel.get_framerate())))
+                    return \
+                        from_pos + \
+                        (i * (int(self._vagueness *
+                                  self._channel.get_framerate())))
                 i -= 1
 
         return pos

@@ -155,15 +155,20 @@ class sppasChannelMixer(object):
         sampwidth = self._channels[0].get_sampwidth()
         framerate = self._channels[0].get_framerate()
 
-        frames = ""
+        frames = b""
         if sampwidth == 4:
             for s in range(0, len(self._channels[0].get_frames()), sampwidth):
                 value = sppasChannelMixer._sample_calculator(self._channels, s, sampwidth, self._factors, attenuator)
-                frames += struct.pack("<l", long(value))
+                try:
+                    frames += struct.pack("<l", long(value))  # python 2
+                except:
+                    frames += struct.pack("<l", int(value))  # python 3
+
         elif sampwidth == 2:
             for s in range(0, len(self._channels[0].get_frames()), sampwidth):
                 value = sppasChannelMixer._sample_calculator(self._channels, s, sampwidth, self._factors, attenuator)
                 frames += struct.pack("<h", int(value))
+
         else:
             for s in range(0, len(self._channels[0].get_frames()), sampwidth):
                 value = sppasChannelMixer._sample_calculator(self._channels, s, sampwidth, self._factors, attenuator)
@@ -188,7 +193,10 @@ class sppasChannelMixer(object):
         sampsum = 0
         for s in range(0, len(self._channels[0].get_frames()), sampwidth):
             value = sppasChannelMixer._sample_calculator(self._channels, s, sampwidth, self._factors, 1)
-            sampsum = long(value)
+            try:
+                sampsum = long(value)   # python 2
+            except:
+                sampsum = int(value)  # python 3
             maxval = max(sampsum, maxval)
             minval = min(sampsum, minval)
 

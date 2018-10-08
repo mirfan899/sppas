@@ -114,7 +114,7 @@ class sppasAudioConverter(object):
             raise ChannelIndexError(nchannels)
 
         nframes = len(samples[0])
-        frames = ""
+        frames = b""
 
         if samples_width == 4:
             for i in range(nframes):

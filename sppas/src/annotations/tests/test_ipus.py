@@ -66,22 +66,29 @@ class TestSilences(unittest.TestCase):
         # 1 sample represents 0.000125 second.
         samples = [0] * 8000
 
-        for i in range(2000, 2999):
-            samples[i] = i - 2000
+        for i in range(2000, 3000):
+            if i % 2:
+                samples[i] = i - 2000
+            else:
+                samples[i] = -i + 2000
 
-        for i in range(3000, 4999):
-            samples[i] = 1000
+        for i in range(3000, 5000):
+            if i % 2:
+                samples[i] = 1000
+            else:
+                samples[i] = -1000
 
-        for j, i in enumerate(range(5000, 5999)):
-            samples[i] = 1000-j
+        for j, i in enumerate(range(5000, 6000)):
+            if i % 2:
+                samples[i] = 1000 - j
+            else:
+                samples[i] = -1000 + j
 
         # Convert samples into frames (divide the use of memory by 2 --only!)
-        frames = ""
-        for i in samples:
-                frames = frames + struct.pack("<h", samples[i])
+        converted = b''.join(struct.pack('<h', elem) for elem in samples)
 
         self.channel = sppasChannel(
-            framerate=8000, sampwidth=2, frames=frames
+            framerate=8000, sampwidth=2, frames=str(converted)
         )
 
     # -----------------------------------------------------------------------
@@ -90,51 +97,103 @@ class TestSilences(unittest.TestCase):
 
         # Create the samples.
         samples = [0] * 8000
-        for i in range(2000, 2999):
-            samples[i] = i - 2000
-        for i in range(3000, 4999):
-            samples[i] = 1000
-        for j, i in enumerate(range(5000, 5999)):
-            samples[i] = 1000 - j
+        for i in range(2000, 3000):
+            if i % 2:
+                samples[i] = i - 2000
+            else:
+                samples[i] = -i + 2000
+        for i in range(3000, 5000):
+            if i % 2:
+                samples[i] = 1000
+            else:
+                samples[i] = -1000
+        for j, i in enumerate(range(5000, 6000)):
+            if i % 2:
+                samples[i] = 1000 - j
+            else:
+                samples[i] = -1000 + j
 
-        # Convert samples into frames (divide the use of memory by 2 --only!)
-        frames = ""
-        for i in samples:
-            frames = frames + struct.pack("<h", samples[i])
+        # Convert samples into frames
+        # pack interprets strings as packed binary data:
+        #   - < little endian
+        #   - h short (integer 2 bytes)
+        frames = b''.join(struct.pack('<h', elem) for elem in samples)
 
         # Convert-back to samples
-        data = list(struct.unpack("<%uh" % (len(frames) / 2), frames))
+        data = list(struct.unpack("<{}h".format(len(frames) / 2), frames))
 
         # data should be the initial samples
-        self.assertEquals(samples, data)
+        self.assertEqual(len(samples), len(data))
+        for s, d in zip(samples, data):
+            self.assertEquals(s, d)
 
     # -----------------------------------------------------------------------
-    #
-    # def test_vagueness(self):
-    #     silences = sppasSilences(self.channel, win_len=0.020, vagueness=0.005)
-    #     self.assertEquals(0.005, silences.get_vagueness())
-    #     silences.set_vagueness(0.01)
-    #     self.assertEquals(0.01, silences.get_vagueness())
-    #     silences.set_vagueness(0.05)
-    #     self.assertEquals(0.02, silences.get_vagueness())
-    #     silences.set_vagueness(0.005)
-    #     self.assertEquals(0.005, silences.get_vagueness())
-    #
-    # # -----------------------------------------------------------------------
-    #
-    # def test_channel(self):
-    #     silences = sppasSilences(self.channel, win_len=0.020, vagueness=0.005)
-    #     self.assertEquals(self.channel, silences._channel)
-    #     cha = sppasChannel()
-    #     silences.set_channel(cha)
-    #     self.assertEquals(cha, silences._channel)
-    #
-    # # -----------------------------------------------------------------------
-    #
-    # def test_vols(self):
-    #     silences = sppasSilences(self.channel, win_len=0.020, vagueness=0.005)
-    #     # there are 160 samples in a window of 20ms.
-    #     # so we'll estimate 8000/160 = 50 rms values
-    #     rms = silences.get_volstats()
-    #     self.assertEquals(50, len(rms))
-    #     # PROBLEM: ALL VALUES ARE 0
+
+    def test_vagueness(self):
+        silences = sppasSilences(self.channel, win_len=0.020, vagueness=0.005)
+        self.assertEquals(0.005, silences.get_vagueness())
+        silences.set_vagueness(0.01)
+        self.assertEquals(0.01, silences.get_vagueness())
+        silences.set_vagueness(0.05)
+        self.assertEquals(0.02, silences.get_vagueness())
+        silences.set_vagueness(0.005)
+        self.assertEquals(0.005, silences.get_vagueness())
+
+    # -----------------------------------------------------------------------
+
+    def test_channel(self):
+        silences = sppasSilences(self.channel, win_len=0.020, vagueness=0.005)
+        self.assertEquals(self.channel, silences._channel)
+        cha = sppasChannel()
+        silences.set_channel(cha)
+        self.assertEquals(cha, silences._channel)
+
+    # -----------------------------------------------------------------------
+
+    def test_vols(self):
+        silences = sppasSilences(self.channel, win_len=0.020, vagueness=0.005)
+        # there are 160 samples in a window of 20ms.
+        # so we'll estimate 8000/160 = 50 rms values
+        rms = silences.get_volstats()
+        self.assertEquals(50, len(rms))
+        # The 2000 first and last samples are 0. so rms is also 0.
+        for i in range(12):
+            self.assertEqual(0, rms[i])
+            self.assertEqual(0, rms[50-i-1])
+        # Others are positive values
+        for i in range(13, 50-12):
+            self.assertGreater(rms[i], 0)
+
+    # -----------------------------------------------------------------------
+
+    def test_fix_threshold_vol(self):
+        silences = sppasSilences(self.channel, win_len=0.020, vagueness=0.005)
+        threshold = silences.fix_threshold_vol()
+        self.assertEqual(201, threshold)
+
+    # -----------------------------------------------------------------------
+
+    def test_search_silences(self):
+        silences = sppasSilences(self.channel, win_len=0.020, vagueness=0.005)
+        threshold = silences.fix_threshold_vol()
+        th = silences.search_silences(threshold)
+        self.assertEqual(th, threshold)
+        # we have to found 2 silences: at the beginning and at the end
+        self.assertEqual(2, len(silences))
+        self.assertEqual((0, 2200), silences[0])
+        self.assertEqual((5920, 8000), silences[1])
+
+    # -----------------------------------------------------------------------
+
+    def test_extract_tracks(self):
+        silences = sppasSilences(self.channel, win_len=0.020, vagueness=0.005)
+        silences.search_silences()
+        self.assertEqual(2, len(silences))
+        tracks = silences.extract_tracks(min_track_dur=0.2,
+                                         shift_dur_start=0.,
+                                         shift_dur_end=0.)
+        self.assertEqual(1, len(tracks))
+        self.assertEqual((2200, 5920), tracks[0])
+
+# ---------------------------------------------------------------------------
+
