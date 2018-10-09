@@ -67,8 +67,10 @@ from .activity import sppasActivity
 from .alignio import AlignIO
 from .aligntrack import AlignTrack
 from .sppasalign import sppasAlign
+from .aligners import sppasAligners
 
 __all__ = (
+    'sppasAligners',
     'sppasActivity',
     'AlignIO',
     'AlignTrack',

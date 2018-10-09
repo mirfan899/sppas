@@ -58,7 +58,7 @@ class AlignTrack(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     Speech segmentation of a unit of speech (an IPU/utterance/sentence/segment)
     at phones and tokens levels.
@@ -69,15 +69,17 @@ class AlignTrack(object):
         - audio file: 1 channel, 16000 Hz, 16 bits;
         - tokenization: UTF-8 encoding file (optional);
         - phonetization: UTF-8 encoding file;
-        - acoustic model: HTK-ASCII (Julius and HVite expect this model format);
+        - acoustic model: HTK-ASCII (Julius and HVite expect this format);
         and that:
-        - both the AC and phonetization are based on the same phone set;
-        - both the tokenization and phonetization contain the same number of words.
+        - both the AC and phonetization are based on the same phone set
+        - both the tokenization and phonetization contain the same nb of words
 
     """
 
     aligners = sppasAligners()
     DEFAULT_ALIGNER = aligners.default_aligner_name()
+
+    # ------------------------------------------------------------------
 
     def __init__(self, model, aligner_name=DEFAULT_ALIGNER):
         """Create a AlignTrack instance.
@@ -148,28 +150,24 @@ class AlignTrack(object):
 
     def get_aligner(self):
         """Return the aligner name identifier."""
-
         return self._alignerid
 
     # ----------------------------------------------------------------------
 
     def get_aligner_ext(self):
         """Return the output file extension the aligner will use."""
-
         return self._aligner.get_outext()
 
     # ----------------------------------------------------------------------
 
     def set_aligner_ext(self, ext):
         """Fix the output file extension the aligner will use."""
-
         self._aligner.set_outext(ext)
 
     # ----------------------------------------------------------------------
 
     def get_model(self):
         """Return the model directory name."""
-
         return self._modeldir
 
     # ------------------------------------------------------------------------
@@ -178,9 +176,9 @@ class AlignTrack(object):
         """Call an aligner to perform speech segmentation and manage errors.
 
         :param audio_filename: (str) the audio file name of an IPU
-        :param phonname: (str) the file name with the phonetization
-        :param tokenname: (str) the file name with the tokenization
-        :param alignname: (str) the file name to save the result WITHOUT extension
+        :param phonname: (str) file name with the phonetization
+        :param tokenname: (str) file name with the tokenization
+        :param alignname: (str) file name to save the result WITHOUT extension
 
         :returns: A message of the aligner in case of any problem, or
         an empty string if success.
@@ -222,14 +220,14 @@ class AlignTrack(object):
 
     def _instantiate_aligner(self):
         """Instantiate self._aligner to the appropriate Aligner system."""
-        self._aligner = AlignTrack.aligners.instantiate(self._modeldir, self._alignerid)
+        self._aligner = AlignTrack.aligners.instantiate(self._modeldir,
+                                                        self._alignerid)
         self._aligner.set_infersp(self._infersp)
 
     # ------------------------------------------------------------------------
 
     def _readline(self, filename):
-        """Read the first line of filename, and return it as a unicode formatted string."""
-
+        """Return the first line of a file as a unicode formatted string."""
         line = ""
         try:
             with codecs.open(filename, 'r', sg.__encoding__) as fp:

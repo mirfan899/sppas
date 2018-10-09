@@ -53,29 +53,31 @@ from .aligners.alignerio import AlignerIO
 # ---------------------------------------------------------------------------
 
 
-class TrackNamesGenerator(object):
-    """
+class TrackNamesGenerator:
+    """Manage the filenames for the tracks.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Manage the filenames for the tracks.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
-    def __init__(self):
-        pass
 
-    def audio_filename(self, trackdir, tracknumber):
+    @staticmethod
+    def audio_filename(trackdir, tracknumber):
         return os.path.join(trackdir, "track_%.06d.wav" % tracknumber)
 
-    def phones_filename(self, trackdir, tracknumber):
+    @staticmethod
+    def phones_filename(trackdir, tracknumber):
         return os.path.join(trackdir, "track_%.06d.pron" % tracknumber)
 
-    def tokens_filename(self, trackdir, tracknumber):
+    @staticmethod
+    def tokens_filename(trackdir, tracknumber):
         return os.path.join(trackdir, "track_%.06d.term" % tracknumber)
 
-    def align_filename(self, trackdir, tracknumber, ext=None):
+    @staticmethod
+    def align_filename(trackdir, tracknumber, ext=None):
         if ext is None:
             return os.path.join(trackdir, "track_%.06d" % tracknumber)
         return os.path.join(trackdir, "track_%.06d.%s" % (tracknumber, ext))
@@ -84,15 +86,16 @@ class TrackNamesGenerator(object):
 
 
 class TrackSplitter(Transcription):
-    """
+    """Write tokenized-phonetized segments from Tiers.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Write tokenized-phonetized segments from Tiers.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
         """Creates a new TrackSplitter instance.
 
@@ -101,22 +104,13 @@ class TrackSplitter(Transcription):
         """
         super(TrackSplitter, self).__init__(name, mintime, maxtime)
         self._radius = 0.005
-        self._tracknames = TrackNamesGenerator()
         self._aligntrack = None
 
     # ------------------------------------------------------------------------
     # Setters
     # ------------------------------------------------------------------------
 
-    def set_tracksnames(self, track_names):
-        """Set the TrackNamesGenerator().
-
-        """
-        self._tracknames = track_names
-
-    # ------------------------------------------------------------------------
-
-    def set_trackalign( self, ta):
+    def set_trackalign(self, ta):
         """Set the aligner, required to create tracks (if any).
 
         :param ta:
@@ -176,12 +170,12 @@ class TrackSplitter(Transcription):
 
             # Here we write only the text-label with the best score,
             # we don't care about alternative text-labels
-            fnp = self._tracknames.phones_filename(diralign, len(units))
+            fnp = TrackNamesGenerator.phones_filename(diralign, len(units))
             textp = annp.GetLabel().GetValue()
             textp = textp.replace('\n', ' ')
             self._write_text_track(fnp, textp)
 
-            fnt = self._tracknames.tokens_filename(diralign, len(units))
+            fnt = TrackNamesGenerator.tokens_filename(diralign, len(units))
             label = annt.GetLabel()
             if tokens is False and label.IsSpeech() is True:
                 textt = " ".join(["w_"+str(i+1) for i in range(len(textp.split()))])
@@ -197,6 +191,7 @@ class TrackSplitter(Transcription):
 
     def write_audio_tracks(self, inputaudio, units, diralign, silence=0.):
         """Write the first channel of an audio file into separated track files.
+
         Re-sample to 16000 Hz, 16 bits.
 
         :param inputaudio: (src) File name of the audio file.
@@ -210,16 +205,14 @@ class TrackSplitter(Transcription):
 
         for track, u in enumerate(units):
             (s, e) = u
-            trackchannel = autils.extract_channel_fragment( channel, s, e, silence)
-            trackname = self._tracknames.audio_filename(diralign, track+1)
+            trackchannel = autils.extract_channel_fragment(channel, s, e, silence)
+            trackname = TrackNamesGenerator.audio_filename(diralign, track+1)
             autils.write_channel(trackname, trackchannel)
 
     # ------------------------------------------------------------------------
 
     def _write_text_track(self, trackname, trackcontent):
-        """Write a raw text in a file.
-
-        """
+        """Write a raw text in a file."""
         with codecs.open(trackname, "w", sg.__encoding__) as fp:
             fp.write(trackcontent)
 
@@ -227,28 +220,22 @@ class TrackSplitter(Transcription):
 
 
 class TracksReader(Transcription):
-    """
+    """Read time-aligned segments, convert into Tier.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Read time-aligned segments, convert into Tier.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, name="NoName", mintime=0., maxtime=0.):
-        """
-        Creates a new SegmentsIn instance.
+        """Create a new SegmentsIn instance.
 
         """
         super(TracksReader, self).__init__(name, mintime, maxtime)
         self._radius = 0.005
-        self._tracknames = TrackNamesGenerator()
-
-    # ------------------------------------------------------------------------
-
-    def set_tracksnames(self, tracknames):
-        self._tracknames = tracknames
 
     # ------------------------------------------------------------------------
 
@@ -273,8 +260,8 @@ class TracksReader(Transcription):
             # Get real start and end time values of this unit.
             unitstart, unitend = units[track]
 
-            basename = self._tracknames.align_filename(dirname, track+1)
-            _phonannots,_wordannots = AlignerIO.read_aligned(basename)
+            basename = TrackNamesGenerator.align_filename(dirname, track+1)
+            _phonannots, _wordannots = AlignerIO.read_aligned(basename)
 
             # Append alignments in tiers
             self._append_tuples(itemp, _phonannots, unitstart, unitend)
@@ -294,12 +281,13 @@ class TracksReader(Transcription):
 
     def _append_tuples(self, tier, tdata, delta, unitend):
         """Append a list of (start,end,text,score) into the tier.
+
         Shift start/end of a delta value and set the last end value.
 
         """
         try:
 
-            for i,t in enumerate(tdata):
+            for i, t in enumerate(tdata):
                 (loc_s, loc_e, lab, scr) = t
                 loc_s += delta
                 loc_e += delta
@@ -308,10 +296,10 @@ class TracksReader(Transcription):
 
                 # prepare the code in case we'll find a solution with
                 # alternatives phonetizations/tokenization....
-                #lab = [lab]
-                #scr = [scr]
-                #label = Label()
-                #for l,s in zip(lab,scr):
+                # lab = [lab]
+                # scr = [scr]
+                # label = Label()
+                # for l,s in zip(lab,scr):
                 #    label.AddValue(Text(l,s))
                 label = Label(Text(lab, scr))
                 annotationw = Annotation(TimeInterval(TimePoint(loc_s, self._radius), TimePoint(loc_e, self._radius)),

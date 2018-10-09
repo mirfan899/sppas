@@ -33,9 +33,7 @@
 
 """
 import os
-import codecs
 
-from sppas.src.config import sg
 from sppas.src.config import separators
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.makeunicode import sppasUnicode
@@ -46,22 +44,18 @@ from .tracks import TracksReader, TrackSplitter, TrackNamesGenerator
 # ------------------------------------------------------------------
 
 
-class ListIO(object):
-    """
+class ListIO:
+    """Manage the file with a list of tracks (units, ipus...).
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Manage the file with a list of tracks.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     DEFAULT_FILENAME = "tracks_index.list"
-
-    # ------------------------------------------------------------------
-
-    def __init__(self):
-        pass
 
     # ------------------------------------------------------------------
 
@@ -70,15 +64,17 @@ class ListIO(object):
         """Read a list file (start-time end-time).
 
         :param dirname: Name of the directory with the file to read.
+        :returns: list of units
 
         """
         filename = os.path.join(dirname, ListIO.DEFAULT_FILENAME)
-        with codecs.open(filename, 'r', sg.__encoding__) as fp:
+        with open(filename, 'r') as fp:
             lines = fp.readlines()
+            fp.close()
 
-        _units = []
         # Each line corresponds to a track,
         # with a couple 'start end' of float values.
+        _units = list()
         for line in lines:
             s = sppasUnicode(line)
             line = s.to_strip()
@@ -99,30 +95,34 @@ class ListIO(object):
 
         """
         filename = os.path.join(dirname, ListIO.DEFAULT_FILENAME)
-        with codecs.open(filename, 'w', sg.__encoding__) as fp:
+        with open(filename, 'w') as fp:
             for start, end in units:
-                fp.write("%.6f %.6f " % (start, end))
-                fp.write("\n")
+                fp.write("{:6f} {:6f}\n".format(start, end))
+            fp.close()
 
 # ------------------------------------------------------------------
 
 
 class AlignIO(object):
-    """
+    """Read/Write segments from/to Tiers.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Read/Write segments from/to Tiers.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    ??? HOW TO DO: READ ALL ALTERNATIVE LABELS AND MERGE ALTERNATIVE RESULTS ???
+    ??? HOW TO DO:
+    ??? READ ALL ALTERNATIVE LABELS AND MERGE ALTERNATIVE RESULTS ???
 
     """
+
     DELIMITERS = (" ", separators.variants, separators.phonemes)
 
+    # ------------------------------------------------------------------------
+
     def __init__(self, mapping, model):
-        """Creates a new AlignIO instance.
+        """Create a new AlignIO instance.
 
         :param mapping: (Mapping) a mapping table to convert the phone set
 
@@ -136,9 +136,6 @@ class AlignIO(object):
 
         # The automatic alignment system
         self.aligntrack = AlignTrack(model)
-
-        # The file names of tracks generator
-        self._tracknames = TrackNamesGenerator()
 
     # ------------------------------------------------------------------------
 
@@ -154,7 +151,6 @@ class AlignIO(object):
 
     def get_aligner(self):
         """Return the name used as identifier of the aligner."""
-
         return self.aligntrack.get_aligner()
 
     # ----------------------------------------------------------------------
@@ -174,7 +170,7 @@ class AlignIO(object):
     def segment_track(self, track, diralign, segment=True):
         """Perform the speech segmentation of a track in a directory.
 
-        :param track: (str - int)
+        :param track: (str)
         :param diralign: (str)
         :param segment: (bool) If True, call an aligner to segment speech,
         else create a file with an empty alignment.
@@ -183,15 +179,21 @@ class AlignIO(object):
         an empty string if success.
 
         """
-        audio_filename = self._tracknames.audio_filename(diralign, track)
-        phonname = self._tracknames.phones_filename(diralign, track)
-        tokenname = self._tracknames.tokens_filename(diralign, track)
-        alignname = self._tracknames.align_filename(diralign, track)
+        audio_filename = TrackNamesGenerator.audio_filename(diralign, track)
+        phonname = TrackNamesGenerator.phones_filename(diralign, track)
+        tokenname = TrackNamesGenerator.tokens_filename(diralign, track)
+        alignname = TrackNamesGenerator.align_filename(diralign, track)
 
         if segment is True:
-            msg = self.aligntrack.segmenter(audio_filename, phonname, tokenname, alignname)
+            msg = self.aligntrack.segmenter(audio_filename,
+                                            phonname,
+                                            tokenname,
+                                            alignname)
         else:
-            msg = self.aligntrack.segmenter(audio_filename, None, None, alignname)
+            msg = self.aligntrack.segmenter(audio_filename,
+                                            None,
+                                            None,
+                                            alignname)
 
         return msg
 
@@ -204,10 +206,9 @@ class AlignIO(object):
         :returns: Transcription
 
         """
-        units = ListIO().read(dirname)
+        units = ListIO.read(dirname)
 
         trsin = TracksReader()
-        trsin.set_tracksnames(self._tracknames)
         trsin.read(dirname, units)
 
         # map-back phonemes
@@ -246,9 +247,11 @@ class AlignIO(object):
         # Map phonetizations (even the alternatives)
         for ann in phontier:
             for text in ann.GetLabel().GetLabels():
-                # in case we previously had a sequence of labels, which we serialized into only one
+                # in case we previously had a sequence of labels,
+                # which we serialized into only one
                 content = text.GetValue().replace('\n', ' ')
-                # in case we previously had alternative tags, which we serialized into only one
+                # in case we previously had alternative tags,
+                # which we serialized into only one
                 content = content.replace('{', '')
                 content = content.replace('}', '')
                 content = content.replace('|', separators.variants)
@@ -256,9 +259,8 @@ class AlignIO(object):
                                                 AlignIO.DELIMITERS))
 
         sgmt = TrackSplitter()
-        sgmt.set_tracksnames(self._tracknames)
         sgmt.set_trackalign(self.aligntrack)
         units = sgmt.split(inputaudio, phontier, toktier, diralign)
-        ListIO().write(diralign, units)
+        ListIO.write(diralign, units)
 
         return sgmt

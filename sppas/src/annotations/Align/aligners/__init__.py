@@ -35,7 +35,7 @@ How to get the list of supported aligner names?
 
 >>> a = sppasAligners()
 >>> a.default_aligner_name()
->>> a.aligner_names()
+>>> a.names()
 
 How to get an instance of a given aligner?
 

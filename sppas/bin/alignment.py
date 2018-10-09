@@ -48,8 +48,8 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas.src.annotations.Align.aligners as aligners
-from sppas.src.annotations.Align.sppasalign import sppasAlign
+from sppas.src.annotations.Align import sppasAligners
+from sppas.src.annotations.Align import sppasAlign
 from sppas.src.utils.fileutils import setup_logging
 
 # ----------------------------------------------------------------------------
@@ -95,7 +95,7 @@ parser.add_argument("-o",
 parser.add_argument("-a",
                     metavar="name",
                     required=False,
-                    choices=aligners.aligner_names(),
+                    choices=sppasAligners().names(),
                     default="julius",
                     help='Speech automatic aligner system: '
                          'julius, hvite, basic (default: julius)')

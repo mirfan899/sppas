@@ -108,6 +108,7 @@ class AlignerIO(object):
         scores = [0]
         tokens = [""]
         wordlist = []
+        align_words = True
 
         with codecs.open(filename, 'r', sg.__encoding__) as fp:
             lines = fp.readlines()
@@ -126,7 +127,6 @@ class AlignerIO(object):
             elif line.startswith("phseq1:"):
                 s = sppasUnicode(line[7:])
                 line = s.to_strip()
-
                 wordseq = line.split('|')
                 # get indexes of each word
                 wordlist = []
@@ -172,12 +172,13 @@ class AlignerIO(object):
                                        loc_e,
                                        phonlist[phonidx],
                                        tab[2]])
+                    phonidx += 1
                 else:
                     _phonalign.append([loc_s,
                                        loc_e,
                                        "",
                                        tab[2]])
-                phonidx = phonidx+1
+                    align_words = False
 
         # Adjust time values and create wordalign
         wordidx = 0     # word index
@@ -198,25 +199,27 @@ class AlignerIO(object):
                 loc_e = nextloc_s
             _phonalign[phonidx][1] = loc_e
 
-            # Override the segmentation score of the phone by
-            # the score of the pronunciation of the word
-            _phonalign[phonidx][3] = scores[wordidx]
+            if align_words:
+                # Override the segmentation score of the phone by
+                # the score of the pronunciation of the word
+                _phonalign[phonidx][3] = scores[wordidx]
 
-            # add also the word?
-            if phonidx == wordlist[wordidx]:
+                # add also the word?
+                if phonidx == wordlist[wordidx]:
+                    _wordalign.append([wordloc_s,
+                                       loc_e,
+                                       tokens[wordidx],
+                                       scores[wordidx]])
+                    wordidx += 1
+                    wordloc_s = loc_e
+
+        if align_words:
+            # last word, or the only entry in case of empty interval...
+            if len(wordseq)-1 == wordidx:
                 _wordalign.append([wordloc_s,
                                    loc_e,
-                                   tokens[wordidx],
-                                   scores[wordidx]])
-                wordidx = wordidx + 1
-                wordloc_s = loc_e
-
-        # last word, or the only entry in case of empty interval...
-        if len(wordseq)-1 == wordidx:
-            _wordalign.append([wordloc_s,
-                               loc_e,
-                               tokens[wordidx-1],
-                               scores[wordidx-1]])
+                                   tokens[wordidx-1],
+                                   scores[wordidx-1]])
 
         return _phonalign, _wordalign
 

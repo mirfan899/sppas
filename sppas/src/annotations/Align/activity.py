@@ -92,7 +92,7 @@ class sppasActivity(object):
 
         sp = sppasUnicode(activity)
         activity = sp.to_strip()
-        
+
         if token not in self._activities:
             self._activities[token] = activity
 
@@ -141,7 +141,7 @@ class sppasActivity(object):
     # -----------------------------------------------------------------------
     # overloads
     # -----------------------------------------------------------------------
-    
+
     def __str__(self):
         return str(self._activities)
 

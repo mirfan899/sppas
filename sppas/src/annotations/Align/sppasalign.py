@@ -34,7 +34,7 @@
 
 """
 import shutil
-import os.path
+import os
 import glob
 import logging
 
@@ -83,13 +83,13 @@ MSG_WORKDIR = (_(":INFO 1280: "))
 
 
 class sppasAlign(sppasBaseAnnotation):
-    """
+    """SPPAS integration of the Alignment automatic annotation.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      SPPAS integration of the Alignment automatic annotation.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     This class can produce 1 up to 5 tiers with names:
 
@@ -102,14 +102,15 @@ class sppasAlign(sppasBaseAnnotation):
     How to use sppasAlign?
 
     >>> a = sppasAlign(model_dirname)
-    >>> a.run(input_phones_filename, input_tokens_filename, input_audio_filename, output_filename)
+    >>> a.run(input_phones, input_tokens, input_audio, output)
 
     """
+
     def __init__(self, model, model_L1=None, logfile=None):
         """Create a new sppasAlign instance.
 
-        :param model: (str) Name of the directory of the acoustic model of the language of the text
-        :param model_L1: (str) Name of the directory of the acoustic model of the mother language of the speaker
+        :param model: (str) Directory of the acoustic model
+        :param model_L1: (str) Directory of the acoustic model L1
         :param logfile: (sppasLog)
 
         """
@@ -124,7 +125,6 @@ class sppasAlign(sppasBaseAnnotation):
 
     def reset(self):
         """Reset the options to configure this automatic annotation."""
-
         self._options = dict()
         self._options['clean'] = True     # Remove temporary files
         self._options['infersp'] = False  # Add 'sp' at the end of each token
@@ -136,16 +136,20 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def fix_segmenter(self, model, model_L1):
-        """Fix the acoustic model directory, then create a SpeechSegmenter and AlignerIO.
+        """Fix the acoustic model directory.
 
-        :param model: (str) Name of the directory of the acoustic model of the language of the text
-        :param model_L1: (str) Name of the directory of the acoustic model of the mother language of the speaker
+        Create a SpeechSegmenter and AlignerIO.
+
+        :param model: (str) Directory of the acoustic model of the language
+        of the text
+        :param model_L1: (str) Directory of the acoustic model of
+        the mother language of the speaker
 
         """
         if model_L1 is not None:
             try:
                 model_mixer = sppasModelMixer()
-                model_mixer.load(model, model_L1)
+                model_mixer.read(model, model_L1)
                 output_dir = os.path.join(paths.resources, "models", "models-mix")
                 model_mixer.mix(output_dir, gamma=0.6)
                 model = output_dir
@@ -172,7 +176,9 @@ class sppasAlign(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def fix_options(self, options):
-        """Fix all options. Available options are:
+        """Fix all options.
+
+        Available options are:
 
             - clean
             - basic
@@ -334,7 +340,8 @@ class sppasAlign(sppasBaseAnnotation):
                     self.alignio.segment_track(track, diralign)
                     self.alignio.set_aligner(aligner_id)
 
-                # or Create an empty alignment, to get an empty interval in the final tier
+                # or Create an empty alignment,
+                # to get an empty interval in the final tier
                 else:
                     self.alignio.segment_track(track, diralign, segment=False)
 
@@ -343,10 +350,10 @@ class sppasAlign(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     def convert(self, phontier, toktier, inputaudio, workdir):
-        """Perform speech segmentation of data in tiers tokenization/phonetization.
+        """Perform speech segmentation of data.
 
-        :param phontier: (Tier) The phonetization.
-        :param toktier: (Tier) The tokenization, or None.
+        :param phontier: (Tier) phonetization.
+        :param toktier: (Tier) tokenization, or None.
         :param inputaudio: (str) Audio file name.
         :param workdir: (str) The working directory
 
@@ -441,7 +448,7 @@ class sppasAlign(sppasBaseAnnotation):
 
     @staticmethod
     def phntokalign_tier(tierphon, tiertoken):
-        """Generates the PhnTokAlignTier from PhonAlign and TokensAlign.
+        """Generate the PhnTokAlignTier from PhonAlign and TokensAlign.
 
         :param tierphon: (Tier)
         :param tiertoken: (Tier)
@@ -556,7 +563,6 @@ class sppasAlign(sppasBaseAnnotation):
 
     def rustine_others(self, trs):
         """veritable rustine pour decaler la fin des non-phonemes."""
-
         tierphon = trs.Find("PhonAlign")
         if tierphon is None:
             return trs
@@ -603,7 +609,6 @@ class sppasAlign(sppasBaseAnnotation):
 
     def rustine_liaisons(self, trs):
         """veritable rustine pour supprimer qqs liaisons en trop."""
-
         # Only for French!
         if self.alignio.aligntrack.get_model().endswith("fra") is False:
             return trs
