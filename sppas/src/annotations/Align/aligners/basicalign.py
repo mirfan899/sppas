@@ -55,6 +55,7 @@ class BasicAligner(BaseAligner):
     selected.
 
     """
+
     def __init__(self, model_dir=None):
         """Create a BasicAligner instance.
 

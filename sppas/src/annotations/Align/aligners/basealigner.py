@@ -126,7 +126,10 @@ class BaseAligner(object):
     def add_tiedlist(self, entries):
         """Add missing triphones/biphones in the tiedlist of the model.
 
+        Backup the initial file if entries were added.
+
         :param entries: (list) List of missing entries into the tiedlist.
+        :returns: list of entries really added
 
         """
         tied_file = os.path.join(self._model, "tiedlist")
@@ -135,14 +138,7 @@ class BaseAligner(object):
 
         tie = sppasTiedList()
         tie.read(tied_file)
-        add_entries = []
-        for entry in entries:
-            if tie.is_observed(entry) is False \
-                    and tie.is_tied(entry) is False:
-                ret = tie.add_tied(entry)
-                if ret is True:
-                    add_entries.append(entry)
-
+        add_entries = tie.add_to_tie(entries)
         if len(add_entries) > 0:
             today = str(date.today())
             rand_val = str(int(random.random()*10000))

@@ -47,13 +47,13 @@ from .basealigner import BaseAligner
 
 
 class HviteAligner(BaseAligner):
-    """
+    """HVite automatic alignment system.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      HVite automatic alignment system.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
 
@@ -81,16 +81,16 @@ class HviteAligner(BaseAligner):
 
     # -----------------------------------------------------------------------
 
-    def gen_dependencies(self, grammarname, dictname):
+    def gen_dependencies(self, grammar_name, dict_name):
         """Generate the dependencies (grammar, dictionary) for HVite.
 
-        :param grammarname: (str) the file name of the tokens
-        :param dictname: (str) the dictionary file name
+        :param grammar_name: (str) the file name of the tokens
+        :param dict_name: (str) the dictionary file name
 
         """
         dictpron = sppasDictPron()
 
-        with codecs.open(grammarname, 'w', sg.__encoding__) as flab:
+        with codecs.open(grammar_name, 'w', sg.__encoding__) as flab:
 
             for token, pron in zip(self._tokens.split(), self._phones.split()):
 
@@ -104,22 +104,26 @@ class HviteAligner(BaseAligner):
                 # lab file (one token per line)
                 flab.write(token+"\n")
 
-        dictpron.save_as_ascii(dictname)
+        dictpron.save_as_ascii(dict_name)
 
     # -----------------------------------------------------------------------
 
     def run_hvite(self, inputwav, outputalign):
         """Perform the speech segmentation.
+
         Call the system command `HVite`.
 
-        :param inputwav: (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
+        Given audio file must match the ones we used to train the acoustic
+        model: PCM-WAV 16000 Hz, 16 bits
+
+        :param inputwav: (str) audio input file name
         :param outputalign: (str) the output file name
 
         """
-        basename = os.path.splitext(inputwav)[0]
-        dictname = basename + ".dict"
-        grammarname = basename + ".lab"
-        self.gen_dependencies(grammarname, dictname)
+        base_name = os.path.splitext(inputwav)[0]
+        dict_name = base_name + ".dict"
+        grammar_name = base_name + ".lab"
+        self.gen_dependencies(grammar_name, dict_name)
 
         # Example of use with triphones:
         #
@@ -163,7 +167,7 @@ class HviteAligner(BaseAligner):
         command += " -t 250.0 150.0 1000.0 "
         command += ' -i "' + outputalign.replace('"', '\\"') + '" '
         command += ' -y lab'
-        command += ' "' + dictname.replace('"', '\\"') + '" '
+        command += ' "' + dict_name.replace('"', '\\"') + '" '
         command += ' "' + graph.replace('"', '\\"') + '" '
         command += inputwav
 
@@ -173,7 +177,8 @@ class HviteAligner(BaseAligner):
         line = p.communicate()
 
         if len(line[0]) > 0 and line[0].find("not found") > -1:
-            raise OSError("HVite is not properly installed. See installation instructions for details.")
+            raise OSError("HVite is not properly installed. "
+                          "See installation instructions for details.")
 
         if len(line[0]) > 0 and line[0].find("ERROR [") > -1:
             raise OSError("HVite command failed: {:s}".format(line[0]))
@@ -189,7 +194,10 @@ class HviteAligner(BaseAligner):
     def run_alignment(self, input_wav, output_align):
         """Execute the external program `HVite` to align.
 
-        :param input_wav: (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
+        Given audio file must match the ones we used to train the acoustic
+        model: PCM-WAV 16000 Hz, 16 bits
+
+        :param input_wav: (str) audio input file name
         :param output_align: (str) the output file name
 
         :returns: (str) An empty string.

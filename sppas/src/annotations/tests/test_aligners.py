@@ -34,7 +34,7 @@
 
 """
 import unittest
-import os.path
+import os
 
 from sppas.src.config import paths
 

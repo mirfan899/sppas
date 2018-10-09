@@ -147,7 +147,8 @@ class JuliusAligner(BaseAligner):
         """
         ext = ext.lower()
         if ext not in self._extensions:
-            raise ValueError("%s is not a valid file extension for JuliusAligner" % ext)
+            raise ValueError("{:s} is not a valid file extension for "
+                             "JuliusAligner".format(ext))
 
         self._outext = ext
 
@@ -156,12 +157,12 @@ class JuliusAligner(BaseAligner):
     def gen_slm_dependencies(self, basename, N=3):
         """Generate the dependencies (slm, dictionary) for julius.
 
-        :param basename: (str) the base name of the slm file and of the dictionary file
+        :param basename: (str) base name of the slm and dictionary files
         :param N: (int) Language model N-gram length.
 
         """
-        dictname = basename + ".dict"
-        slmname  = basename + ".arpa"
+        dict_name = basename + ".dict"
+        slm_name = basename + ".arpa"
 
         phoneslist = self._phones.split()
         tokenslist = self._tokens.split()
@@ -175,9 +176,9 @@ class JuliusAligner(BaseAligner):
         if dictpron.is_unk(START_SENT_SYMBOL) is True:
             dictpron.add_pron(START_SENT_SYMBOL, SIL_PHON)
         if dictpron.is_unk(END_SENT_SYMBOL) is True:
-            dictpron.add_pron( END_SENT_SYMBOL, SIL_PHON)
+            dictpron.add_pron(END_SENT_SYMBOL, SIL_PHON)
 
-        dictpron.save_as_ascii(dictname, False)
+        dictpron.save_as_ascii(dict_name, False)
 
         # Write the SLM
         model = sppasNgramsModel(N)
@@ -185,64 +186,72 @@ class JuliusAligner(BaseAligner):
         probas = model.probabilities(method="logml")
         arpaio = sppasArpaIO()
         arpaio.set(probas)
-        arpaio.save(slmname)
+        arpaio.save(slm_name)
 
     # ------------------------------------------------------------------------
 
     def gen_grammar_dependencies(self, basename):
         """Generate the dependencies (grammar, dictionary) for julius.
 
-        :param basename: (str) the base name of the grammar file and of the dictionary file
+        :param basename: (str) base name of the grammar and dictionary files
 
         """
-        dictname = basename + ".dict"
-        grammarname = basename + ".dfa"
+        dict_name = basename + ".dict"
+        grammar_name = basename + ".dfa"
 
         phoneslist = self._phones.split()
         tokenslist = self._tokens.split()
 
-        tokenidx = 0
-        nbtokens = len(tokenslist)-1
+        token_idx = 0
+        nb_tokens = len(tokenslist)-1
 
-        with codecs.open(grammarname, 'w', sg.__encoding__) as fdfa,\
-                codecs.open(dictname, 'w', sg.__encoding__) as fdict:
+        with codecs.open(grammar_name, 'w', sg.__encoding__) as fdfa,\
+                codecs.open(dict_name, 'w', sg.__encoding__) as fdict:
 
             for token, pron in zip(tokenslist, phoneslist):
 
                 # dictionary:
                 for variant in pron.split("|"):
-                    fdict.write(str(tokenidx))
+                    fdict.write(str(token_idx))
                     fdict.write(" ["+token+"] ")
                     fdict.write(variant.replace("-", " ")+"\n")
 
                 # grammar:
-                if tokenidx == 0:
-                    fdfa.write("0 %s 1 0 1\n" % nbtokens)
+                if token_idx == 0:
+                    fdfa.write("0 %s 1 0 1\n" % nb_tokens)
                 else:
-                    fdfa.write(str(tokenidx) + " "+str(nbtokens) + " " + str(tokenidx+1) + " 0 0\n")
+                    fdfa.write(str(token_idx) + " " +
+                               str(nb_tokens) + " " +
+                               str(token_idx+1) + " 0 0\n")
 
-                tokenidx += 1
-                nbtokens -= 1
+                token_idx += 1
+                nb_tokens -= 1
 
             # last line of the grammar
-            fdfa.write("%s -1 -1 1 0\n" % tokenidx)
+            fdfa.write("{:s} -1 -1 1 0\n".format(token_idx))
 
     # ------------------------------------------------------------------------
 
     def run_julius(self, inputwav, basename, outputalign):
         """Perform the speech segmentation.
+
         System call to the command `julius`.
 
-        :param inputwav: (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
-        :param basename: (str) the base name of the grammar file and of the dictionary file
-        :param outputalign: (str) the output file name
+        Given audio file must match the ones we used to train the acoustic
+        model: PCM-WAV 16000 Hz, 16 bits
+
+        :param inputwav: (str) audio input file name
+        :param basename: (str) base name of grammar and dictionary files
+        :param outputalign: (str) output file name
 
         """
         # Fix file names
         tiedlist = os.path.join(self._model, "tiedlist")
         config = os.path.join(self._model, "config")
         # Fix file names and protect special characters.
-        hmmdefs = '"' + os.path.join(self._model, "hmmdefs").replace('"', '\\"') + '"'
+        hmmdefs = '"' + \
+                  os.path.join(self._model, "hmmdefs").replace('"', '\\"') + \
+                  '"'
         output = '"' + outputalign.replace('"', '\\"') + '"'
         dictionary = '"' + basename.replace('"', '\\"') + ".dict" + '"'
         grammar = '"' + basename.replace('"', '\\"') + ".dfa" + '"'
@@ -295,11 +304,12 @@ class JuliusAligner(BaseAligner):
 
         # Julius not installed
         if len(line[0]) > 0 and "not found" in line[0]:
-            raise OSError("julius is not properly installed. See installation instructions for details.")
+            raise OSError("julius is not properly installed. "
+                          "See installation instructions for details.")
 
         # Bad command
         if len(line[0]) > 0 and "-help" in line[0]:
-            raise OSError("julius command failed: %s" % " ".join(line))
+            raise OSError("julius command failed: {:s}".format(" ".join(line)))
 
         # Check output file
         if os.path.isfile(outputalign) is False:
@@ -316,9 +326,12 @@ class JuliusAligner(BaseAligner):
             - set_phones(str)
             - set_tokens(str)
 
-        :param input_wav: (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
-        :param output_align: (str - OUT) the output file name
-        :param N: (int) N value of N-grams, used only if SLM (i.e. outext=walign)
+        Given audio file must match the ones we used to train the acoustic
+        model: PCM-WAV 16000 Hz, 16 bits
+
+        :param input_wav: (str) the audio input file name
+        :param output_align: (str) the output file name
+        :param N: (int) for N-grams, used only if SLM (i.e. outext=walign)
 
         :returns: (str) A message of `julius`.
 
