@@ -33,37 +33,42 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from sppas.src.resources.mapping import sppasMapping, DEFAULT_SEP
+from sppas.src.utils.makeunicode import u
+from sppas.src.resources.mapping import sppasMapping
+from sppas.src.resources.mapping import DEFAULT_SEP
+from sppas.src.anndata import sppasLabel, sppasTag
+from sppas.src.anndata import sppasAnnotation
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
-class TierMapping(sppasMapping):
-    """
+class sppasMappingTier(sppasMapping):
+    """Map content of annotations of a tier from a mapping table.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Class that is able to map labels from a table.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     A conversion table is used to map symbols of labels of a tier with new
     symbols. This class can convert either individual symbols or strings of
     symbols (syllables, words, ...) if a separator is given.
-    Any symbols in the transcription tier which are not in the conversion
-    table are replaced by a specific symbol (by default '*').
+
+    Any symbols in the transcription tier which is not in the conversion
+    table is replaced by a specific symbol (by default '*').
 
     """
     def __init__(self, dict_name=None):
-        """Create a TierMapping instance.
+        """Create a sppasMappingTier instance.
 
         :param dict_name: (str) The mapping dictionary.
 
         """
-        super(TierMapping, self).__init__(dict_name)
+        super(sppasMappingTier, self).__init__(dict_name)
         self._delimiters = DEFAULT_SEP
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_delimiters(self, delimit_list):
         """Fix the list of characters used as symbol delimiters.
@@ -71,7 +76,7 @@ class TierMapping(sppasMapping):
         If delimit_list is an empty list, the mapping system will map with a
         longest matching algorithm.
 
-        :param delimit_list: List of characters like for example [" ", ".", "-"]
+        :param delimit_list: List of characters, for example [" ", ".", "-"]
 
         """
         # Each element of the list must contain only one character
@@ -81,10 +86,10 @@ class TierMapping(sppasMapping):
         # Set the delimiters as Iterable() and not as List()
         self._delimiters = tuple(delimit_list)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def map_tier(self, tier):
-        """Run the TierMapping process on an input tier.
+        """Run the mapping process on an input tier.
 
         :param tier: (Tier) The tier instance to map label symbols.
         :returns: a new tier, with the same name as the given tier
@@ -105,3 +110,40 @@ class TierMapping(sppasMapping):
                     text.SetValue(l)
 
         return new_tier
+
+    # -----------------------------------------------------------------------
+
+    def map_annotation(self, annotation):
+        """Run the mapping process on an annotation.
+
+        :param annotation: (sppasAnnotation) annotation with symbols to map
+        :returns: a new annotation, with the same 'id' as the given one
+
+        """
+        # Annotation without label
+        if annotation.is_labelled() is False:
+            a = annotation.copy()
+            a.gen_id()
+            return a
+
+        # Map all tags of all labels, if tags are strings
+        new_labels = list()
+        for label in annotation.get_labels():
+            new_label = sppasLabel()
+            for tag, score in label:
+                if tag.get_type() == 'str' and \
+                        tag.is_empty() is False and \
+                        tag.is_silence() is False:
+                    new_content = self.map(tag.get_content(), self._delimiters)
+                    new_label.append(sppasTag(new_content), score)
+                else:
+                    new_label.append(tag.copy())
+            new_labels.append(new_label)
+
+        # Create an annotation with the new version of labels
+        a = sppasAnnotation(annotation.get_location().copy(), new_labels)
+        for m in annotation.get_meta_keys():
+            if m != 'id':
+                a.set_meta(m, annotation.get_meta(m))
+
+        return a

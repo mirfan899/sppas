@@ -249,13 +249,16 @@ class AlignIO(object):
             for text in ann.GetLabel().GetLabels():
                 # in case we previously had a sequence of labels,
                 # which we serialized into only one
-                content = text.GetValue().replace('\n', ' ')
-                # in case we previously had alternative tags,
-                # which we serialized into only one
-                content = content.replace('{', '')
-                content = content.replace('}', '')
-                content = content.replace('|', separators.variants)
-                text.SetValue(self._mapping.map(content,
+                tab = text.GetValue().split('\n')
+                content = list()
+                for item in tab:
+                    item = item.replace('|', separators.variants)
+                    if item.startswith('{') and item.endswith('}'):
+                        content.append(item[1:-1])
+                    else:
+                        content.append(item)
+
+                text.SetValue(self._mapping.map(" ".join(content),
                                                 AlignIO.DELIMITERS))
 
         sgmt = TrackSplitter()
