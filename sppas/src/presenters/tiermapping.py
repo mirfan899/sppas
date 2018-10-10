@@ -108,6 +108,7 @@ class sppasMappingTier(sppasMapping):
         for key in tier.get_meta_keys():
             if key != 'id':
                 new_tier.set_meta(key, tier.get_meta(key))
+        new_tier.set_meta('tier_was_mapped_from', tier.get_name())
 
         # if no annotations
         if len(tier) == 0:
