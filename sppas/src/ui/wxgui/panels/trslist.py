@@ -397,6 +397,7 @@ class TrsList(wx.Panel):
         new_tier = tier.copy()
         new_tier.set_meta("tier_was_copied_from_id", tier.get_meta('id'))
         new_tier.set_meta("tier_was_copied_from_name", tier.get_name())
+        new_tier.gen_id()
 
         return new_tier
 

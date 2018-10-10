@@ -63,6 +63,7 @@ NOISE_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("noi
 
 class TestTag(unittest.TestCase):
     """Represents a typed content of a label.
+
     A sppasTag() content can be one of the following types:
 
         1. string/unicode - (str)
@@ -72,6 +73,7 @@ class TestTag(unittest.TestCase):
         5. a list of sppasTag(), all of the same type - (list)
 
     """
+
     def test_unicode(self):
         text = sppasTag("\têtre   \r   être être  \n  ")
         self.assertIsInstance(str(text), str)
@@ -167,6 +169,7 @@ class TestTag(unittest.TestCase):
 
 class TestEvents(unittest.TestCase):
     """Events are labels with a specific text.
+
     This is a SPPAS convention!
     Test recognized events: silences, pauses, noises, etc.
 
@@ -364,12 +367,34 @@ class TestTagCompare(unittest.TestCase):
                                       u("a")) and self.tc.get("endswith")(sppasTag("abc"),
                                                                           u("c")))
 
-
 # ---------------------------------------------------------------------------
 
 
 class TestLabel(unittest.TestCase):
     """Test sppasLabel()."""
+
+    def test_init(self):
+        label = sppasLabel(None)
+        self.assertIsNone(label.get_best())
+
+        t = sppasTag("score0.5")
+        label = sppasLabel(t)
+        self.assertEqual(1, len(label))
+        self.assertEqual([t, None], label[0])
+
+        label = sppasLabel(t, 0.5)
+        self.assertEqual(1, len(label))
+        self.assertEqual([t, 0.5], label[0])
+
+        # inconsistency between given tags and scores
+        label = sppasLabel(t, [0.5, 0.5])
+        self.assertIsNone(label.get_score(t))
+
+        label = sppasLabel([t, t], 0.5)
+        self.assertEqual(1, len(label))
+        self.assertIsNone(label.get_score(t))
+
+    # -----------------------------------------------------------------------
 
     def test_unicode(self):
         sppasLabel(sppasTag("être"))
@@ -388,6 +413,25 @@ class TestLabel(unittest.TestCase):
         label = sppasLabel(sppasTag(SIL_ORTHO))
         text = label.get_best()
         self.assertFalse(text.is_speech())
+
+    # -----------------------------------------------------------------------
+
+    def test_append(self):
+        # do not add an already existing tag (test without scores)
+        t = sppasTag("score0.5")
+        label = sppasLabel(t)
+        label.append(t)
+        self.assertEqual(label.get_best().get_content(), u("score0.5"))
+        self.assertIsNone(label.get_score(t))
+
+        # do not add an already existing tag (test with scores)
+        t = sppasTag("score0.5")
+        label = sppasLabel(t, score=0.5)
+        label.append(t)
+        self.assertEqual(label.get_best().get_content(), u("score0.5"))
+        self.assertEqual(label.get_score(t), 0.5)
+        label.append(t, score=0.5)
+        self.assertEqual(label.get_score(t), 1.)
 
     # -----------------------------------------------------------------------
 

@@ -234,13 +234,15 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def copy(self):
-        """Return a deep copy of the tier."""
-        
+        """Return a deep copy of the tier (including 'id')."""
         new_tier = sppasTier(self.__name)
         new_tier.set_ctrl_vocab(self.__ctrl_vocab)
         new_tier.set_media(self.__media)
         for a in self.__ann:
             new_tier.add(a.copy())
+        # metadata
+        for key in self.get_meta_keys():
+            new_tier.set_meta(key, self.get_meta(key))
 
         return new_tier
 

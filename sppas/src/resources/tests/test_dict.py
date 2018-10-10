@@ -291,7 +291,10 @@ class TestMapping(unittest.TestCase):
     """Test of sppasMapping."""
 
     def setUp(self):
-        self.replfile = os.path.join(paths.resources, "models", "models-fra", "monophones.repl")
+        self.replfile = os.path.join(paths.resources,
+                                     "models",
+                                     "models-fra",
+                                     "monophones.repl")
 
     # -----------------------------------------------------------------
 
@@ -300,6 +303,7 @@ class TestMapping(unittest.TestCase):
 
         dict1.set_keep_miss(True)
         dict1.set_reverse(False)
+        self.assertEqual("#", dict1.map_entry("sil"))
         self.assertEqual("@", dict1.map_entry("@"))
         self.assertEqual("+", dict1.map_entry("sp"))
         self.assertEqual("9", dict1.map_entry("oe"))
@@ -384,3 +388,15 @@ class TestMapping(unittest.TestCase):
         self.assertFalse(" A " in d)
         self.assertFalse(d.is_key("a "))
         self.assertFalse(d.is_key("A"))
+
+    # -----------------------------------------------------------------
+
+    def test_map_with_delim(self):
+        d = sppasMapping()
+        d.add("60", "soixante")
+        d.add("70", "septante")
+        d.add("70", "soixante-dix")
+        self.assertEqual("soixante", d.map_entry("60"))
+        self.assertEqual("septante|soixante-dix", d.map("70"))
+        self.assertEqual("septante|soixante-dix;septante|soixante-dix",
+                         d.map("70;70"))

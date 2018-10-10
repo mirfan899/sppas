@@ -60,10 +60,11 @@ class sppasLabel(object):
     'float' or 'bool'.
 
     """
-    def __init__(self, tag, score=None):
-        """Creates a new sppasLabel instance.
 
-        :param tag: (sppasTag or list of sppasTag)
+    def __init__(self, tag, score=None):
+        """Create a new sppasLabel instance.
+
+        :param tag: (sppasTag or list of sppasTag or None)
         :param score: (float or list of float)
 
         """
@@ -75,9 +76,12 @@ class sppasLabel(object):
                     for t, s in zip(tag, score):
                         self.append(t, s)
                 else:
+                    # scores are ignored
                     for t in tag:
-                        self.append(t, 1./len(tag))
+                        self.append(t)
             else:
+                if isinstance(score, list):
+                    score = None
                 self.append(tag, score)
 
     # -----------------------------------------------------------------------
@@ -101,6 +105,9 @@ class sppasLabel(object):
     def append(self, tag, score=None):
         """Add a sppasTag into the list.
 
+        Do not add the tag if this alternative is already inside the list,
+        but add the scores.
+
         :param tag: (sppasTag)
         :param score: (float)
 
@@ -116,7 +123,19 @@ class sppasLabel(object):
             if self.__tags[0][0].get_type() != tag.get_type():
                 raise AnnDataTypeError(tag, self.__tags[0][0].get_type())
 
+        # check if this tag content is already in the list
+        for i in range(len(self.__tags)):
+            current_tag, current_score = self.__tags[i]
+            if tag.get_typed_content() == current_tag.get_typed_content():
+                if score is not None:
+                    if current_score is None:
+                        self.__tags[i][1] = score
+                    else:
+                        self.__tags[i][1] += score
+                return False
+
         self.__tags.append([tag, score])
+        return True
 
     # -----------------------------------------------------------------------
 
@@ -200,7 +219,6 @@ class sppasLabel(object):
 
     def get_type(self):
         """Return the type of the tags content."""
-
         if self.__tags is None:
             return "str"
 
@@ -476,8 +494,11 @@ class sppasLabel(object):
     # -----------------------------------------------------------------------
 
     def __eq__(self, other):
-        if self is not None:
+
+        if self.__tags is not None:
             if other is None:
+                return False
+            if isinstance(other, sppasLabel) is False:
                 return False
             if len(self.__tags) != len(other):
                 return False
