@@ -28,7 +28,7 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Align.aligntrack.py
+    src.annotations.Align.tracksgmt.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
@@ -40,19 +40,19 @@ from sppas.src.utils.makeunicode import sppasUnicode
 
 from .aligners import sppasAligners
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 _ = annotations_translation.gettext
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 MSG_EMPTY_INTERVAL = (_(":INFO 1222: "))
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
-class AlignTrack(object):
-    """Automatic segmentation of a segment of speech.
+class TrackSegmenter(object):
+    """Automatic segmentation of a unit of speech.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -70,7 +70,8 @@ class AlignTrack(object):
         - tokenization: UTF-8 encoding file (optional);
         - phonetization: UTF-8 encoding file;
         - acoustic model: HTK-ASCII (Julius and HVite expect this format);
-        and that:
+    
+    and that:
         - both the AC and phonetization are based on the same phone set
         - both the tokenization and phonetization contain the same nb of words
 
@@ -79,10 +80,10 @@ class AlignTrack(object):
     aligners = sppasAligners()
     DEFAULT_ALIGNER = aligners.default_aligner_name()
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __init__(self, model, aligner_name=DEFAULT_ALIGNER):
-        """Create a AlignTrack instance.
+        """Create a TrackSegmenter instance.
 
         :param model: (str) Name of the directory of the acoustic model.
         It is expected to contain at least a file with name "hmmdefs".
@@ -98,19 +99,19 @@ class AlignTrack(object):
         self._infersp = False
 
         # The acoustic model directory
-        self._modeldir = model
+        self._model_dir = model
 
         # The automatic alignment system, and the "basic".
         # The basic aligner is used:
         #   - when the track segment contains only one phoneme;
         #   - when the track segment does not contain phonemes.
-        self._alignerid = None
+        self._aligner_id = None
         self._aligner = None
         self.set_aligner(aligner_name)
-        self._basicaligner = AlignTrack.aligners.instantiate(None)
+        self._basic_aligner = TrackSegmenter.aligners.instantiate(None)
         self._instantiate_aligner()
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_model(self, model):
         """Fix an acoustic model to perform time-alignment.
@@ -118,10 +119,10 @@ class AlignTrack(object):
         :param model: (str) Name of the directory of the acoustic model.
 
         """
-        self._modeldir = model
+        self._model_dir = model
         self._instantiate_aligner()
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_aligner(self, aligner_name):
         """Fix the name of the aligner, one of aligners.ALIGNERS_TYPES.
@@ -129,14 +130,17 @@ class AlignTrack(object):
         :param aligner_name: (str) Case-insensitive name of an aligner system.
 
         """
-        aligner_name = AlignTrack.aligners.check(aligner_name)
-        self._alignerid = aligner_name
+        aligner_name = TrackSegmenter.aligners.check(aligner_name)
+        self._aligner_id = aligner_name
         self._instantiate_aligner()
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_infersp(self, infersp):
         """Fix the automatic inference of short pauses.
+
+        Not really relevant... it's not efficient. short-pauses should be
+        indicated manually in the ortho transcription.
 
         :param infersp: (bool) If infersp is set to True, a short pause is
         added at the end of each token, and the automatic aligner will infer
@@ -146,39 +150,39 @@ class AlignTrack(object):
         self._infersp = infersp
         self._aligner.set_infersp(infersp)
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_aligner(self):
         """Return the aligner name identifier."""
-        return self._alignerid
+        return self._aligner_id
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_aligner_ext(self):
         """Return the output file extension the aligner will use."""
         return self._aligner.get_outext()
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_aligner_ext(self, ext):
         """Fix the output file extension the aligner will use."""
         self._aligner.set_outext(ext)
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_model(self):
         """Return the model directory name."""
-        return self._modeldir
+        return self._model_dir
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-    def segmenter(self, audio_filename, phonname, tokenname, alignname):
+    def segment(self, audio_filename, phon_name, token_name, align_name):
         """Call an aligner to perform speech segmentation and manage errors.
 
         :param audio_filename: (str) the audio file name of an IPU
-        :param phonname: (str) file name with the phonetization
-        :param tokenname: (str) file name with the tokenization
-        :param alignname: (str) file name to save the result WITHOUT extension
+        :param phon_name: (str) file name with the phonetization
+        :param token_name: (str) file name with the tokenization
+        :param align_name: (str) file name to save the result WITHOUT extension
 
         :returns: A message of the aligner in case of any problem, or
         an empty string if success.
@@ -188,43 +192,43 @@ class AlignTrack(object):
         phones = ""
         tokens = ""
 
-        if phonname is not None:
-            phones = self._readline(phonname)
+        if phon_name is not None:
+            phones = self._readline(phon_name)
         self._aligner.set_phones(phones)
-        self._basicaligner.set_phones(phones)
+        self._basic_aligner.set_phones(phones)
 
-        if tokenname is not None:
-            tokens = self._readline(tokenname)
+        if token_name is not None:
+            tokens = self._readline(token_name)
         self._aligner.set_tokens(tokens)
-        self._basicaligner.set_tokens(tokens)
+        self._basic_aligner.set_tokens(tokens)
 
         # Do not align nothing!
         if len(phones) == 0:
-            self._basicaligner.run_alignment(audio_filename, alignname)
+            self._basic_aligner.run_alignment(audio_filename, align_name)
             return MSG_EMPTY_INTERVAL
 
         # Do not align only one phoneme!
         if len(phones.split()) <= 1 and "-" not in phones:
-            self._basicaligner.run_alignment(audio_filename, alignname)
+            self._basic_aligner.run_alignment(audio_filename, align_name)
             return ""
 
         # Execute Alignment
         ret = self._aligner.check_data()
-        ret += self._aligner.run_alignment(audio_filename, alignname)
+        ret += self._aligner.run_alignment(audio_filename, align_name)
 
         return ret
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Private
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _instantiate_aligner(self):
         """Instantiate self._aligner to the appropriate Aligner system."""
-        self._aligner = AlignTrack.aligners.instantiate(self._modeldir,
-                                                        self._alignerid)
+        self._aligner = TrackSegmenter.aligners.instantiate(self._model_dir,
+                                                             self._aligner_id)
         self._aligner.set_infersp(self._infersp)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _readline(self, filename):
         """Return the first line of a file as a unicode formatted string."""

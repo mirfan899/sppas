@@ -63,16 +63,17 @@ Each phoneme is represented by one of these statistical representations.
 SPPAS is based on the use of HTK-ASCII acoustic models.
 
 """
-from .activity import sppasActivity
-from .alignio import AlignIO
-from .aligntrack import AlignTrack
-from .sppasalign import sppasAlign
 from .aligners import sppasAligners
+from .tracksgmt import TrackSegmenter
+from .tracksio import TracksReaderWriter
+from .sppasalign import sppasAlign
+
+from .activity import sppasActivity
 
 __all__ = (
     'sppasAligners',
-    'sppasActivity',
-    'AlignIO',
-    'AlignTrack',
-    'sppasAlign'
+    'TrackSegmenter',
+    'TracksReaderWriter',
+    'sppasAlign',
+    'sppasActivity'
 )

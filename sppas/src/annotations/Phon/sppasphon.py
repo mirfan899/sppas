@@ -82,6 +82,7 @@ class sppasPhon(sppasBaseAnnotation):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, dict_filename, map_filename=None, logfile=None):
         """Create a sppasPhon instance.
 

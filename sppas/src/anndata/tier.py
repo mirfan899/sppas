@@ -463,6 +463,19 @@ class sppasTier(sppasMetaData):
 
     # -----------------------------------------------------------------------
 
+    def get_midpoint_intervals(self):
+        """Return midpoint values of all the intervals."""
+        units = list()
+        if self.is_point() is False:
+            for i in range(len(self)):
+                b = self.__ann[i].get_lowest_localization().get_midpoint()
+                e = self.__ann[i].get_highest_localization().get_midpoint()
+                units.append((b, e))
+
+        return units
+
+    # -----------------------------------------------------------------------
+
     def find(self, begin, end, overlaps=True):
         """Return a list of annotations between begin and end.
 
@@ -1006,6 +1019,7 @@ class sppasTier(sppasMetaData):
 
     def export_to_intervals(self, separators):
         """Create a tier with the consecutive filled intervals.
+
         The created intervals are not filled.
 
         :param separators: (list)

@@ -42,11 +42,8 @@ from sppas.src.config import paths
 from sppas.src.config import annots
 from sppas.src.config import annotations_translation
 import sppas.src.annotationdata.aio
-from sppas.src.annotationdata import Transcription
-from sppas.src.annotationdata import Tier
-from sppas.src.annotationdata import Media
-from sppas.src.annotationdata import Text
-from sppas.src.annotationdata.aio.utils import gen_id
+from sppas.src.anndata import sppasTranscription
+from sppas.src.anndata import sppasMedia
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.models.acm.modelmixer import sppasModelMixer
 
@@ -58,7 +55,8 @@ from ..annotationsexc import EmptyDirectoryError
 from ..annotationsexc import NoInputError
 from ..annutils import fix_audioinput, fix_workingdir
 
-from .alignio import AlignIO
+from .tracksio import TracksReaderWriter
+from .tracksgmt import TrackSegmenter
 from .activity import sppasActivity
 
 # ----------------------------------------------------------------------------
@@ -116,7 +114,8 @@ class sppasAlign(sppasBaseAnnotation):
         """
         sppasBaseAnnotation.__init__(self, logfile, "Alignment")
         self.mapping = sppasMapping()
-        self.alignio = None
+        self._segmenter = None
+        self._tracksrw = None
 
         self.fix_segmenter(model, model_L1)
         self.reset()
@@ -168,8 +167,9 @@ class sppasAlign(sppasBaseAnnotation):
         else:
             mapping = sppasMapping()
 
-        # Manager of the interval tracks
-        self.alignio = AlignIO(mapping, model)
+        # Managers of the automatic alignment task
+        self._tracksrw = TracksReaderWriter(mapping)
+        self._segmenter = TrackSegmenter(model)
 
     # ------------------------------------------------------------------------
     # Methods to fix options
@@ -238,7 +238,7 @@ class sppasAlign(sppasBaseAnnotation):
         :param aligner_name: (str) Case-insensitive name of the aligner.
 
         """
-        self.alignio.set_aligner(aligner_name)
+        self._segmenter.set_aligner(aligner_name)
         self._options['aligner'] = aligner_name
 
     # -----------------------------------------------------------------------
@@ -251,7 +251,7 @@ class sppasAlign(sppasBaseAnnotation):
         Unfortunately... it does not really work as we expected!
 
         """
-        self.alignio.set_infersp(infersp)
+        self._segmenter.set_infersp(infersp)
 
     # -----------------------------------------------------------------------
 
@@ -294,37 +294,38 @@ class sppasAlign(sppasBaseAnnotation):
         """
         self._options['phntok'] = bool(value)
 
-    # -----------------------------------------------------------------------
-    # Methods to time-align series of data
-    # -----------------------------------------------------------------------
+    # ------------------------------------------------------------------------
+    # Automatic Speech Segmentation
+    # ------------------------------------------------------------------------
 
-    def convert_tracks(self, diralign):
+    def segment_tracks(self, workdir):
         """Call the Aligner to align each unit of a directory.
 
-        :param diralign: the directory to get units and put alignments.
+        :param workdir: (str) directory to get units and put alignments.
 
         """
         # Verify if the directory exists
-        if os.path.exists(diralign) is False:
-            raise NoDirectoryError(diralign)
+        if os.path.exists(workdir) is False:
+            raise NoDirectoryError(workdir)
 
         # Get all audio tracks
-        dirlist = glob.glob(os.path.join(diralign, "track_*.wav"))
+        dirlist = glob.glob(os.path.join(workdir, "track_*.wav"))
         ntracks = len(dirlist)
         if ntracks == 0:
-            raise EmptyDirectoryError(diralign)
+            raise EmptyDirectoryError(workdir)
 
-        track = 1
-        while track <= ntracks:
-            self.print_message(MSG_ALIGN_TRACK.format(number=track), indent=2)
+        track_number = 1
+        while track_number <= ntracks:
+            self.print_message(MSG_ALIGN_TRACK.format(number=track_number), indent=2)
+            (audio, phn, token, align) = self._tracksrw.get_filenames(workdir, track_number)
 
             try:
-                msg = self.alignio.segment_track(track, diralign)
+                msg = self._segmenter.segment(audio, phn, token, align)
                 if len(msg) > 0:
                     self.print_message(msg, indent=3, status=annots.info)
 
             except Exception as e:
-                self.print_message(MSG_ALIGN_FAILED.format(name=self.alignio.get_aligner()),
+                self.print_message(MSG_ALIGN_FAILED.format(name=self._segmenter.get_aligner()),
                                    indent=3,
                                    status=annots.error)
                 self.print_message(str(e),
@@ -335,63 +336,51 @@ class sppasAlign(sppasBaseAnnotation):
                 if self._options['basic'] is True:
                     if self.logfile:
                         self.logfile.print_message(MSG_BASIC, indent=3)
-                    aligner_id = self.alignio.get_aligner()
-                    self.alignio.set_aligner('basic')
-                    self.alignio.segment_track(track, diralign)
-                    self.alignio.set_aligner(aligner_id)
+                    aligner_id = self._segmenter.get_aligner()
+                    self._segmenter.set_aligner('basic')
+                    msg = self._segmenter.segment(audio, phn, token, align)
+                    if len(msg) > 0:
+                        self.print_message(msg, indent=3, status=annots.info)
+                    self._segmenter.set_aligner(aligner_id)
 
                 # or Create an empty alignment,
                 # to get an empty interval in the final tier
                 else:
-                    self.alignio.segment_track(track, diralign, segment=False)
+                    self._segmenter.segment(audio, None, None, align)
 
-            track += 1
+            track_number += 1
 
     # ------------------------------------------------------------------------
 
-    def convert(self, phontier, toktier, inputaudio, workdir):
+    def convert(self, phon_tier, tok_tier, input_audio, workdir):
         """Perform speech segmentation of data.
 
-        :param phontier: (Tier) phonetization.
-        :param toktier: (Tier) tokenization, or None.
-        :param inputaudio: (str) Audio file name.
-        :param workdir: (str) The working directory
+        :param phon_tier: (Tier) phonetization.
+        :param tok_tier: (Tier) tokenization, or None.
+        :param input_audio: (str) Audio file name.
+        :param work_dir: (str) The working directory
 
         :returns: A transcription.
 
         """
+        # Split input into tracks
+        self.print_message(MSG_ACTION_SPLIT_INTERVALS, indent=2)
         if os.path.exists(workdir) is False:
             os.mkdir(workdir)
-
-        # Split input into tracks
-        # --------------------------------------------------------------
-
-        self.print_message(MSG_ACTION_SPLIT_INTERVALS, indent=2)
-        sgmt = self.alignio.split(inputaudio, phontier, toktier, workdir)
+        self._tracksrw.split_into_tracks(input_audio, phon_tier, tok_tier, workdir)
 
         # Align each track
-        # --------------------------------------------------------------
-
-        self.convert_tracks(workdir)
+        self.segment_tracks(workdir)
 
         # Merge track alignment results
-        # --------------------------------------------------------------
-
         self.print_message(MSG_ACTION_MERGE_INTERVALS, indent=2)
+        tier_phn, tier_tok = self._tracksrw.read_aligned_tracks(workdir)
 
-        trs_output = Transcription("AutomaticAlignment")
-        for tier in sgmt:
-            trs_output.Append(tier)
+        #if self._segmenter.get_aligner() != 'basic':
+        #    self.rustine_liaisons(tier_phn, tier_tok)
+        #    self.rustine_others(tier_phn, tier_tok)
 
-        # Create a Transcription() object with alignments
-        trs = self.alignio.read(workdir)
-        if self.alignio.get_aligner() != 'basic':
-            trs = self.rustine_liaisons(trs)
-            trs = self.rustine_others(trs)
-        for tier in trs:
-            trs_output.Append(tier)
-
-        return trs_output
+        return tier_phn, tier_tok
 
     # ------------------------------------------------------------------------
 
@@ -454,7 +443,7 @@ class sppasAlign(sppasBaseAnnotation):
         :param tiertoken: (Tier)
 
         """
-        new_tier = Tier('PhnTokAlign')
+        new_tier = sppasTier('PhnTokAlign')
         new_tier.SetMedia(tiertoken.GetMedia())
 
         for ann_token in tiertoken:
@@ -515,27 +504,30 @@ class sppasAlign(sppasBaseAnnotation):
         if self._options['clean'] is False:
             self.print_message(MSG_WORKDIR.format(dirname=workdir), indent=3, status=None)
 
+        # Set media
+        # --------------------------------------------------------------
+
+        extm = os.path.splitext(audioname)[1].lower()[1:]
+        media = sppasMedia(audioname, mime_type="audio/"+extm)
+
         # Processing...
         # ---------------------------------------------------------------
 
         try:
-            trs_output = self.convert(phontier, toktier, audioname, workdir)
-            if toktier is not None:
-                trs_output = self.append_extra(trs_output)
+            tier_phn, tier_tok = self.convert(phontier, toktier, audioname, workdir)
+            tier_phn.set_media(media)
+
+            trs_output = sppasTranscription()
+            trs_output.add(tier_phn)
+            if tier_tok is not None:
+                tier_tok.set_media(media)
+                trs_output.add(tier_tok)
+                # trs_output = self.append_extra(trs_output)
         except Exception as e:
             self.print_message(str(e))
             if self._options['clean'] is True:
                 shutil.rmtree(workdir)
             raise
-
-        # Set media
-        # --------------------------------------------------------------
-
-        extm = os.path.splitext(audioname)[1].lower()[1:]
-        media = Media(gen_id(), audioname, "audio/"+extm)
-        trs_output.AddMedia(media)
-        for tier in trs_output:
-            tier.SetMedia(media)
 
         # Save results
         # --------------------------------------------------------------
@@ -610,7 +602,7 @@ class sppasAlign(sppasBaseAnnotation):
     def rustine_liaisons(self, trs):
         """veritable rustine pour supprimer qqs liaisons en trop."""
         # Only for French!
-        if self.alignio.aligntrack.get_model().endswith("fra") is False:
+        if self._segmenter.aligntrack.get_model().endswith("fra") is False:
             return trs
 
         logging.debug('LIAISONS patch...')
