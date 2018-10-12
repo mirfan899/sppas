@@ -182,12 +182,12 @@ class LemmaDict(object):
             Return:      A string without special chars
         """
         # Remove multiple spaces
-        __str = re.sub(u"[\s]+", ur" ", entry)
+        __str = re.sub("[\s]+", r" ", entry)
         # Punct at end
-        __str = re.sub(u"\-+$", ur"", __str)
+        __str = re.sub("\-+$", r"", __str)
         # Spaces at beginning and end
-        __str = re.sub(u"^[ ]+", ur"", __str)
-        __str = re.sub(u"[ ]+$", ur"", __str)
+        __str = re.sub("^[ ]+", r"", __str)
+        __str = re.sub("[ ]+$", r"", __str)
 
         return __str.strip()
 

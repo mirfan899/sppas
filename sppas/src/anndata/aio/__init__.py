@@ -62,29 +62,6 @@ from .weka import sppasARFF
 from .weka import sppasXRFF
 from .xtrans import sppasTDF
 
-__all__ = (
-    "sppasANT",
-    "sppasANTX",
-    "sppasAnvil",
-    "sppasAudacity",
-    "sppasEAF",
-    "sppasLab",
-    "sppasMRK",
-    "sppasSignaix",
-    "sppasTextGrid",
-    "sppasIntensityTier",
-    "sppasPitchTier",
-    "sppasCTM",
-    "sppasSTM",
-    "sppasSubRip",
-    "sppasSubViewer",
-    "sppasRawText",
-    "sppasCSV",
-    "sppasARFF",
-    "sppasXRFF",
-    "sppasTDF"
-)
-
 # ----------------------------------------------------------------------------
 # Variables
 # ----------------------------------------------------------------------------
@@ -112,3 +89,31 @@ extensionsul = ext_sppas + ext_praat + ext_transcriber + ext_elan + ext_ascii + 
 extensions_in = ['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.txt', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', '.antx', '.anvil', '.aup', '.trs', '.tdf', '.hz', '.PitchTier']
 extensions_out = ['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.txt', '.stm', '.ctm', '.lab', '.mlf', '.sub', '.srt', '.antx', '.arff', '.xrff']
 extensions_out_multitiers = ['.xra', '.TextGrid', '.eaf', '.csv', '.mrk', '.antx', '.mlf', '.arff', '.xrff']
+
+# ----------------------------------------------------------------------------
+
+__all__ = (
+    "sppasANT",
+    "sppasANTX",
+    "sppasAnvil",
+    "sppasAudacity",
+    "sppasEAF",
+    "sppasLab",
+    "sppasMRK",
+    "sppasSignaix",
+    "sppasTextGrid",
+    "sppasIntensityTier",
+    "sppasPitchTier",
+    "sppasCTM",
+    "sppasSTM",
+    "sppasSubRip",
+    "sppasSubViewer",
+    "sppasRawText",
+    "sppasCSV",
+    "sppasARFF",
+    "sppasXRFF",
+    "sppasTDF",
+    "extensions",
+    "extensions_in",
+    "extensions_out"
+)

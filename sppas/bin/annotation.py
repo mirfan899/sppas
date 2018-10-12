@@ -40,6 +40,7 @@
     :summary:      Run any or all automatic annotations.
 
 """
+
 import sys
 import os
 from argparse import ArgumentParser
@@ -49,6 +50,7 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas.src.config import sg
+from sppas.src.config import annots
 from sppas.src.annotations.param import sppasParam
 from sppas.src.annotations.manager import sppasAnnotationsManager
 from sppas.src.anndata.aio import extensions_out
@@ -86,7 +88,7 @@ parser.add_argument("--momel", action='store_true',
 parser.add_argument("--intsint", action='store_true',
                     help="Activate INTSINT")
 parser.add_argument("--ipus", action='store_true',
-                    help="Activate IPUs Segmentation")
+                    help="Activate Search for IPUs")
 parser.add_argument("--tok", action='store_true',
                     help="Activate Tokenization")
 parser.add_argument("--phon", action='store_true',
@@ -139,7 +141,7 @@ if not ext.lower() in extensions:
     print("[WARNING] Unknown extension: {:s}. Extension is set to "
           "its default value.".format(args.e))
     print("\n")
-    ext = DEFAULT_OUTPUT_EXTENSION
+    ext = annots.extension
 parameters.set_output_format(ext)
 
 if args.momel:
@@ -147,7 +149,7 @@ if args.momel:
 if args.intsint:
     parameters.activate_annotation("intsint")
 if args.ipus:
-    parameters.activate_annotation("ipus")
+    parameters.activate_annotation("searchipus")
 if args.tok:
     parameters.activate_annotation("textnorm")
 if args.phon:
