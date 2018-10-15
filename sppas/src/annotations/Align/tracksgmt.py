@@ -32,6 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+import os
 import codecs
 
 from sppas.src.config import sg
@@ -60,17 +61,18 @@ class TrackSegmenter(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    Speech segmentation of a unit of speech (an IPU/utterance/sentence/segment)
+    Speech segmentation of a unit of speech (IPU/utterance/sentence/segment)
     at phones and tokens levels.
-    This class is mainly an interface with aligners.
+
+    This class is mainly an interface with external automatic aligners.
 
     It is expected that all the following data were previously properly
     fixed:
         - audio file: 1 channel, 16000 Hz, 16 bits;
         - tokenization: UTF-8 encoding file (optional);
         - phonetization: UTF-8 encoding file;
-        - acoustic model: HTK-ASCII (Julius and HVite expect this format);
-    
+        - acoustic model: HTK-ASCII (Julius or HVite expect this format);
+
     and that:
         - both the AC and phonetization are based on the same phone set
         - both the tokenization and phonetization contain the same nb of words
@@ -86,19 +88,23 @@ class TrackSegmenter(object):
         """Create a TrackSegmenter instance.
 
         :param model: (str) Name of the directory of the acoustic model.
-        It is expected to contain at least a file with name "hmmdefs".
+        :param aligner_name: (str) The identifier name of the aligner.
+
+        It is expected that the AC model contains at least a file with name
+        "hmmdefs", and a file with name "monophones" for HVite command.
         It can also contain:
             - tiedlist file;
             - monophones.repl file;
             - config file.
         Any other file will be ignored.
-        :param aligner_name: (str) The identifier name of the aligner.
 
         """
         # Options, must be fixed before to instantiate the aligner
         self._infersp = False
 
         # The acoustic model directory
+        if os.path.exists(model) is False:
+            raise IOError('Bad input model directory')
         self._model_dir = model
 
         # The automatic alignment system, and the "basic".
@@ -182,7 +188,7 @@ class TrackSegmenter(object):
         :param audio_filename: (str) the audio file name of an IPU
         :param phon_name: (str) file name with the phonetization
         :param token_name: (str) file name with the tokenization
-        :param align_name: (str) file name to save the result WITHOUT extension
+        :param align_name: (str) file name to save the result WITHOUT ext.
 
         :returns: A message of the aligner in case of any problem, or
         an empty string if success.
@@ -224,8 +230,10 @@ class TrackSegmenter(object):
 
     def _instantiate_aligner(self):
         """Instantiate self._aligner to the appropriate Aligner system."""
-        self._aligner = TrackSegmenter.aligners.instantiate(self._model_dir,
-                                                             self._aligner_id)
+        self._aligner = TrackSegmenter.aligners.instantiate(
+            self._model_dir,
+            self._aligner_id
+        )
         self._aligner.set_infersp(self._infersp)
 
     # -----------------------------------------------------------------------
@@ -237,7 +245,8 @@ class TrackSegmenter(object):
             with codecs.open(filename, 'r', sg.__encoding__) as fp:
                 sp = sppasUnicode(fp.readline())
                 line = sp.to_strip()
-        except Exception:
+                fp.close()
+        except:
             return ""
 
         return line

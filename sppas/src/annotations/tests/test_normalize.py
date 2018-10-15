@@ -446,13 +446,18 @@ class TestTextNorm(unittest.TestCase):
 
     def test_samples(self):
         """... Compare the current result is the same as the existing one."""
+        # Test the automatic annotation with its default parameters only.
 
         for samples_folder in os.listdir(paths.samples):
             if samples_folder.startswith("samples-") is False:
                 continue
+
+            # the place where are the existing results samples.
             expected_result_dir = os.path.join(paths.samples,
                                                "annotation-results",
                                                samples_folder)
+            if os.path.exists(expected_result_dir) is False:
+                continue
 
             # Create a TextNormalizer for the given set of samples
             lang = samples_folder[-3:]

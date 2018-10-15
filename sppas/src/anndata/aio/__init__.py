@@ -61,6 +61,7 @@ from .text import sppasCSV
 from .weka import sppasARFF
 from .weka import sppasXRFF
 from .xtrans import sppasTDF
+from .xra import sppasXRA
 
 # ----------------------------------------------------------------------------
 # Variables
@@ -113,6 +114,7 @@ __all__ = (
     "sppasARFF",
     "sppasXRFF",
     "sppasTDF",
+    "sppasXRA",
     "extensions",
     "extensions_in",
     "extensions_out"

@@ -39,21 +39,28 @@ import shutil
 import codecs
 
 from sppas.src.config import sg
+from sppas.src.config import paths
+from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasLocation
-from sppas.src.anndata import sppasInterval
 from sppas.src.anndata import sppasPoint
 from sppas.src.anndata import sppasTag
 from sppas.src.anndata import sppasLabel
 from sppas.src.anndata import sppasAnnotation
 from sppas.src.anndata import sppasTier
-
-from ..Align.tracksio import TrackNamesGenerator
-from ..Align.tracksio import TracksWriter
-from ..Align.tracksio import ListIO
+from sppas.src.anndata.aio import sppasXRA
 from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.resources import sppasMapping
+
 from ..annotationsexc import BadInputError
 from ..annotationsexc import SizeInputsError
 from ..annotationsexc import NoDirectoryError
+
+from ..Align.tracksio import ListOfTracks
+from ..Align.tracksio import TrackNamesGenerator
+from ..Align.tracksio import TracksWriter
+from ..Align.tracksio import TracksReader
+from ..Align.tracksio import TracksReaderWriter
+from ..Align.sppasalign import sppasAlign
 
 # ---------------------------------------------------------------------------
 
@@ -82,6 +89,31 @@ class TestTrackNamesGenerator(unittest.TestCase):
                          TrackNamesGenerator.align_filename("", 1))
         self.assertEqual("track_000001.palign",
                          TrackNamesGenerator.align_filename("", 1, "palign"))
+
+# ---------------------------------------------------------------------------
+
+
+class TestListOfTracks(unittest.TestCase):
+    """Write track files."""
+
+    def setUp(self):
+        if os.path.exists(TEMP) is False:
+            os.mkdir(TEMP)
+
+    def tearDown(self):
+        shutil.rmtree(TEMP)
+
+    # -----------------------------------------------------------------------
+
+    def test_read_write(self):
+        """Manage the file with a list of tracks (units, ipus...)."""
+        units = [(1., 2.), (2., 3.), (3., 4.)]
+        ListOfTracks.write(TEMP, units)
+        read_units = ListOfTracks.read(TEMP)
+        self.assertEqual(units, read_units)
+
+        with self.assertRaises(IOError):
+            ListOfTracks.read("toto")
 
 # ---------------------------------------------------------------------------
 
@@ -165,8 +197,10 @@ class TestTracksWriter(unittest.TestCase):
         l1 = sppasLabel([sppasTag("j"), sppasTag("S")])
         l2 = sppasLabel([sppasTag("e"), sppasTag("E")])
         tier = sppasTier("phonemes")
-        tier.create_annotation(sppasLocation(sppasPoint(1)), [l1, l2])
-        tier.create_annotation(sppasLocation(sppasPoint(2)), sppasLabel(sppasTag("{j|S} {e|E}")))
+        tier.create_annotation(sppasLocation(sppasPoint(1)),
+                               [l1, l2])
+        tier.create_annotation(sppasLocation(sppasPoint(2)),
+                               sppasLabel(sppasTag("{j|S} {e|E}")))
         tok_tier = TracksWriter._create_tok_tier(tier)
         self.assertEqual(2, len(tok_tier))
         content_a1 = tok_tier[0].get_best_tag().get_content()
@@ -181,11 +215,15 @@ class TestTracksWriter(unittest.TestCase):
         l1 = sppasLabel([sppasTag("j"), sppasTag("S")])
         l2 = sppasLabel([sppasTag("e"), sppasTag("E")])
         tier_phn = sppasTier("phonemes")
-        tier_phn.create_annotation(sppasLocation(sppasPoint(1)), [l1, l2])
-        tier_phn.create_annotation(sppasLocation(sppasPoint(2)), sppasLabel(sppasTag("j-e s-H-i")))
+        tier_phn.create_annotation(sppasLocation(sppasPoint(1)),
+                                   [l1, l2])
+        tier_phn.create_annotation(sppasLocation(sppasPoint(2)),
+                                   sppasLabel(sppasTag("j-e s-H-i")))
         tier_tok = sppasTier("tokens")
-        tier_tok.create_annotation(sppasLocation(sppasPoint(1)), sppasLabel(sppasTag("j' ai")))
-        tier_tok.create_annotation(sppasLocation(sppasPoint(2)), sppasLabel(sppasTag('je suis')))
+        tier_tok.create_annotation(sppasLocation(sppasPoint(1)),
+                                   sppasLabel(sppasTag("j' ai")))
+        tier_tok.create_annotation(sppasLocation(sppasPoint(2)),
+                                   sppasLabel(sppasTag('je suis')))
 
         with self.assertRaises(SizeInputsError):
             TracksWriter._write_text_tracks(tier_phn, sppasTier('toto'), TEMP)
@@ -238,8 +276,27 @@ class TestTracksWriter(unittest.TestCase):
 # ---------------------------------------------------------------------------
 
 
-class TestListIO(unittest.TestCase):
-    """Write track files."""
+class TestTracksReader(unittest.TestCase):
+    """Read time-aligned track files."""
+
+    def test_read(self):
+        tier_phn, tier_tok = TracksReader.read_aligned_tracks(DATA)
+        self.assertEqual(36, len(tier_phn))
+        self.assertEqual("dh", tier_phn[1].serialize_labels())
+        self.assertEqual("ax", tier_phn[2].serialize_labels())
+        self.assertEqual("f", tier_phn[3].serialize_labels())
+        self.assertEqual("l", tier_phn[4].serialize_labels())
+        self.assertEqual("ay", tier_phn[5].serialize_labels())
+        self.assertEqual("t", tier_phn[6].serialize_labels())
+        #self.assertEqual("ae", tier_phn[21].serialize_labels())
+
+        self.assertEqual(12, len(tier_tok))
+
+# ---------------------------------------------------------------------------
+
+
+class TestTracksReaderWriter(unittest.TestCase):
+    """Read/Write track files."""
 
     def setUp(self):
         if os.path.exists(TEMP) is False:
@@ -248,15 +305,247 @@ class TestListIO(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(TEMP)
 
-    def test_read_write(self):
-        """Manage the file with a list of tracks (units, ipus...)."""
-        units = [(1., 2.), (2., 3.), (3., 4.)]
-        ListIO.write(TEMP, units)
-        read_units = ListIO.read(TEMP)
-        self.assertEqual(units, read_units)
+    # -----------------------------------------------------------------------
 
-        with self.assertRaises(BadInputError):
-            ListIO.read("toto")
+    def test_init(self):
+        with self.assertRaises(TypeError):
+            TracksReaderWriter("")
+        t1 = TracksReaderWriter(sppasMapping())
+        t2 = TracksReaderWriter(None)
+
+    # -----------------------------------------------------------------------
+
+    def test_split_into_tracks_without_mapping(self):
+        """Test to read and write tracks without mapping."""
+        audio = os.path.join(DATA, "oriana1.wav")
+        phon = os.path.join(DATA, "oriana1-phon.xra")
+        token = os.path.join(DATA, "oriana1-token.xra")
+        t = sppasXRA()
+        t.read(phon)
+        t.read(token)
+        phn_tier = t.find('Phones')
+        tok_tier = t.find('Tokens')
+
+        trks = TracksReaderWriter(None)  # no mapping table
+        temp = os.path.join(TEMP, "test_split1")
+        os.mkdir(temp)
+
+        trks.split_into_tracks(audio, phn_tier, tok_tier, temp)
+        created_files = os.listdir(temp)
+        self.assertEqual(22, len(created_files))   # 21 tracks + List
+
+        # Tokenization of the 1st IPU
+        with codecs.open(os.path.join(temp, "track_000002.tok"),
+                         "r", sg.__encoding__) as fp:
+            new_lines = fp.readlines()
+            fp.close()
+        self.assertEqual(1, len(new_lines))
+        self.assertEqual("the flight was twelve hours long and "
+                         "we really got bored",
+                         new_lines[0])
+
+        # Phonetization of the 1st IPU
+        with codecs.open(os.path.join(temp, "track_000002.phn"),
+                         "r", sg.__encoding__) as fp:
+            new_lines = fp.readlines()
+            fp.close()
+        self.assertEqual(1, len(new_lines))
+        self.assertEqual("D-@|D-i:|D-V "
+                         "f-l-aI-t "
+                         "w-@-z|w-V-z|w-O:-z|w-A-z "
+                         "t-w-E-l-v "
+                         "aU-3:r-z|aU-r\-z "
+                         "l-O:-N "
+                         "{-n-d|@-n-d "
+                         "w-i: "
+                         "r\-I-l-i:|r\-i:-l-i: "
+                         "g-A-t "
+                         "b-O:-r\-d",
+                         new_lines[0])
+
+    # -----------------------------------------------------------------------
+
+    def test_split_into_tracks_with_mapping(self):
+        """Test to read and write tracks with mapping."""
+        audio = os.path.join(DATA, "oriana1.wav")
+        phon = os.path.join(DATA, "oriana1-phon.xra")
+        token = os.path.join(DATA, "oriana1-token.xra")
+        t = sppasXRA()
+        t.read(phon)
+        t.read(token)
+        phn_tier = t.find('Phones')
+        tok_tier = t.find('Tokens')
+
+        trks = TracksReaderWriter(sppasMapping(
+            os.path.join(DATA, "monophones.repl")
+        ))
+        temp = os.path.join(TEMP, "test_split2")
+        os.mkdir(temp)
+
+        trks.split_into_tracks(audio, phn_tier, tok_tier, temp)
+        created_files = os.listdir(temp)
+        self.assertEqual(22, len(created_files))  # 21 tracks + List
+
+        # Tokenization of the 1st IPU
+        with codecs.open(os.path.join(temp, "track_000002.tok"),
+                         "r", sg.__encoding__) as fp:
+            new_lines = fp.readlines()
+            fp.close()
+        self.assertEqual(1, len(new_lines))
+        self.assertEqual("the flight was twelve hours long and "
+                         "we really got bored",
+                         new_lines[0])
+
+        # Phonetization of the 1st IPU
+        with codecs.open(os.path.join(temp, "track_000002.phn"),
+                         "r", sg.__encoding__) as fp:
+            new_lines = fp.readlines()
+            fp.close()
+        self.assertEqual(1, len(new_lines))
+        self.assertEqual("dh-ax|dh-iy|dh-ah "
+                         "f-l-ay-t "
+                         "w-ax-z|w-ah-z|w-ao-z|w-aa-z "
+                         "t-w-eh-l-v "
+                         "aw-er-z|aw-r-z "
+                         "l-ao-ng "
+                         "ae-n-d|ax-n-d "
+                         "w-iy "
+                         "r-ih-l-iy|r-iy-l-iy "
+                         "g-aa-t "
+                         "b-ao-r-d",
+                         new_lines[0])
+
+    # -----------------------------------------------------------------------
+
+    def test_read_aligned_tracks(self):
+        trks = TracksReaderWriter(sppasMapping(
+            os.path.join(DATA, "monophones.repl")
+        ))
+
+        tier_phn, tier_tok = trks.read_aligned_tracks(DATA)
+        self.assertEqual(36, len(tier_phn))
+        self.assertEqual("D", tier_phn[1].serialize_labels())
+        self.assertEqual("@", tier_phn[2].serialize_labels())
+        self.assertEqual("f", tier_phn[3].serialize_labels())
+        self.assertEqual("l", tier_phn[4].serialize_labels())
+        self.assertEqual("aI", tier_phn[5].serialize_labels())
+        self.assertEqual("t", tier_phn[6].serialize_labels())
+        #self.assertEqual("{", tier_phn[21].serialize_labels())
+        self.assertEqual(12, len(tier_tok))
 
 # ---------------------------------------------------------------------------
 
+
+class TestAlign(unittest.TestCase):
+    """SPPAS Alignment."""
+
+    def setUp(self):
+        if os.path.exists(TEMP) is False:
+            os.mkdir(TEMP)
+
+    def tearDown(self):
+        shutil.rmtree(TEMP)
+
+    # -----------------------------------------------------------------------
+
+    def test_init(self):
+        model = os.path.join(paths.resources, "models", 'models-eng')
+        model1 = os.path.join(paths.resources, "models", 'models-fra')
+        sppasAlign(model)
+        sppasAlign(model, model1)
+
+        with self.assertRaises(IOError):
+            sppasAlign("toto")
+
+    # -----------------------------------------------------------------------
+
+    def test_convert(self):
+        model = os.path.join(paths.resources, "models", 'models-eng')
+        audio = os.path.join(DATA, "oriana1.wav")
+        phon = os.path.join(DATA, "oriana1-phon.xra")
+        token = os.path.join(DATA, "oriana1-token.xra")
+        t = sppasXRA()
+        t.read(phon)
+        t.read(token)
+        phn_tier = t.find('Phones')
+        tok_tier = t.find('Tokens')
+
+        a = sppasAlign(model)
+        tier_phn, tier_tok = a.convert(phn_tier, tok_tier, audio, TEMP)
+        self.assertEqual(123, len(tier_phn))
+        self.assertEqual("D", tier_phn[1].serialize_labels())
+        self.assertEqual("@", tier_phn[2].serialize_labels())
+        self.assertEqual("f", tier_phn[3].serialize_labels())
+        self.assertEqual("l", tier_phn[4].serialize_labels())
+        self.assertEqual("aI", tier_phn[5].serialize_labels())
+        self.assertEqual("t", tier_phn[6].serialize_labels())
+        # self.assertEqual("{", tier_phn[21].serialize_labels())
+        self.assertEqual(40, len(tier_tok))
+
+    # -----------------------------------------------------------------------
+
+    def test_samples(self):
+        """... Compare if the current result is the same as the existing one."""
+        # Test the automatic annotation with its default parameters only.
+
+        # each samples folder is tested
+        for samples_folder in os.listdir(paths.samples):
+            if samples_folder.startswith("samples-") is False:
+                continue
+
+            # the place where are the existing results samples.
+            expected_result_dir = os.path.join(paths.samples,
+                                               "annotation-results",
+                                               samples_folder)
+            if os.path.exists(expected_result_dir) is False:
+                continue
+
+            # Create an Aligner for the given set of samples of the given language
+            lang = samples_folder[-3:]
+            model = os.path.join(paths.resources, "models", "models-"+lang)
+            sa = sppasAlign(model)
+
+            # Apply Alignment on each sample
+            for filename in os.listdir(os.path.join(paths.samples, samples_folder)):
+                if filename.endswith(".wav") is False:
+                    continue
+
+                # Get the expected result
+                expected_result_filename = os.path.join(
+                    expected_result_dir,
+                    filename[:-4] + "-palign.xra")
+                if os.path.exists(expected_result_filename) is False:
+                    print("no existing alignment result {:s}".format(expected_result_filename))
+                    continue
+                parser = sppasRW(expected_result_filename)
+                expected_result = parser.read()
+                expected_tier_phones = expected_result.find('PhonAlign')
+                if expected_tier_phones is None:
+                    print("malformed alignment result for:", filename)
+                    continue
+
+                # Estimate a result and check if it's like expected.
+                audio_file = os.path.join(paths.samples, samples_folder, filename)
+                phn_file = os.path.join(expected_result_dir, filename.replace('.wav', '-phon.xra'))
+                tok_file = os.path.join(expected_result_dir, filename.replace('.wav', '-token.xra'))
+                result_file = os.path.join(paths.samples, samples_folder, filename.replace('.wav', '-palign.xra'))
+                expected_result = sa.run(phn_file, tok_file, audio_file, result_file)
+
+                self.compare_tiers(expected_tier_phones,
+                                   expected_result.find('PhonAlign'))
+
+    # -----------------------------------------------------------------------
+
+    def compare_tiers(self, expected, result):
+        self.assertEqual(len(expected), len(result))
+        for a1, a2 in zip(expected, result):
+            self.assertEqual(a1.get_location(), a2.get_location())
+            self.assertEqual(len(a1.get_labels()), len(a2.get_labels()))
+            for l1, l2 in zip(a1.get_labels(), a2.get_labels()):
+                self.assertEqual(l1, l2)
+            for key in a1.get_meta_keys():
+                if key != 'id':
+                    self.assertEqual(a1.get_meta(key), a2.get_meta(key))
+        for key in expected.get_meta_keys():
+            if key != 'id':
+                self.assertEqual(expected.get_meta(key), result.get_meta(key))

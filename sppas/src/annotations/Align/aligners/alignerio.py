@@ -41,7 +41,7 @@ from sppas.src.utils.makeunicode import sppasUnicode
 # ---------------------------------------------------------------------------
 
 
-class AlignerIO(object):
+class AlignerIO:
     """Read/Write time-aligned files.
 
     :author:       Brigitte Bigi
@@ -68,6 +68,9 @@ class AlignerIO(object):
         :returns: Two lists of tuples with phones and words
             - (start-time end-time phoneme score)
             - (start-time end-time word score)
+
+        The score can be None.
+        todo: The "phoneme" column can be a sequence of alternative phonemes.
 
         """
         for ext in AlignerIO.EXTENSIONS:
@@ -105,7 +108,7 @@ class AlignerIO(object):
         loc_e = 0.       # phoneme end time
         phonlist = []
         wordseq = []
-        scores = [0]
+        scores = None
         tokens = [""]
         wordlist = []
         align_words = True
@@ -143,9 +146,9 @@ class AlignerIO(object):
             elif line.startswith('cmscore1:'):
                 line = line[9:]
                 # confidence score of the pronunciation of each token
-                scores = [float(s) for s in line.split()]
+                scores = line.split()
                 if len(scores) == 0:
-                    scores = [0]
+                    scores = None
 
             elif line.startswith('sentence1:'):
                 line = line[10:]
@@ -202,14 +205,22 @@ class AlignerIO(object):
             if align_words:
                 # Override the segmentation score of the phone by
                 # the score of the pronunciation of the word
-                _phonalign[phonidx][3] = scores[wordidx]
+                if scores is not None:
+                    _phonalign[phonidx][3] = scores[wordidx]
+                    # add also the word?
+                    if phonidx == wordlist[wordidx]:
 
-                # add also the word?
-                if phonidx == wordlist[wordidx]:
-                    _wordalign.append([wordloc_s,
-                                       loc_e,
-                                       tokens[wordidx],
-                                       scores[wordidx]])
+                        _wordalign.append([wordloc_s,
+                                           loc_e,
+                                           tokens[wordidx],
+                                           scores[wordidx]])
+                else:
+                    _phonalign[phonidx][3] = None
+                    if phonidx == wordlist[wordidx]:
+                        _wordalign.append([wordloc_s,
+                                           loc_e,
+                                           tokens[wordidx],
+                                           None])
                     wordidx += 1
                     wordloc_s = loc_e
 
@@ -236,7 +247,7 @@ class AlignerIO(object):
 
         """
         tokens = [""]
-        scores = [0]
+        scores = None
         _wordalign = []
         wordidx = -1
         with codecs.open(filename, 'r', sg.__encoding__) as fp:
@@ -262,9 +273,9 @@ class AlignerIO(object):
             elif line.startswith('cmscore1:'):
                 line = line[9:]
                 # confidence score of the pronunciation of each token
-                scores = [float(s) for s in line.split()]
+                scores = line.split()
                 if len(scores) == 0:
-                    scores = [0]
+                    scores = None
 
             elif line.startswith('[') and wordidx > -1:
                 # New phonemes
@@ -334,16 +345,12 @@ class AlignerIO(object):
                                 pmin = round(float(line[0]) / samplerate, 5)
                                 first = False
                             else:
-                                pmin = round(float(line[0]) / samplerate, 5)\
-                                       + \
-                                       0.005
-                            pmax = round(float(line[1]) / samplerate, 5)\
-                                   + \
-                                   0.005
+                                pmin = round(float(line[0]) / samplerate, 5) + 0.005
+                            pmax = round(float(line[1]) / samplerate, 5) + 0.005
                             if pmin != pmax:  # for sp
-                                phon.append((pmin, pmax, line[2], 1))
+                                phon.append((pmin, pmax, line[2], None))
                             if wmrk:
-                                word.append((wsrt, wend, wmrk, 1))
+                                word.append((wsrt, wend, wmrk, None))
                             wmrk = line[4]
                             wsrt = pmin
                             wend = pmax
@@ -353,22 +360,20 @@ class AlignerIO(object):
                                 pmin = round(float(line[0]) / samplerate, 5)
                                 first = False
                             else:
-                                pmin = round(float(line[0]) / samplerate, 5) \
-                                             + 0.005
-                            pmax = round(float(line[1]) / samplerate, 5) \
-                                         + 0.005
+                                pmin = round(float(line[0]) / samplerate, 5) + 0.005
+                            pmax = round(float(line[1]) / samplerate, 5) + 0.005
                             if line[2] == 'sp' and pmin != pmax:
                                 if wmrk:
-                                    word.append((wsrt, wend, wmrk, 1))
+                                    word.append((wsrt, wend, wmrk, None))
                                 wmrk = line[2]
                                 wsrt = pmin
                                 wend = pmax
                             elif pmin != pmax:  # for sp
-                                phon.append((pmin, pmax, line[2], 1))
+                                phon.append((pmin, pmax, line[2], None))
                             wend = pmax
 
                         else:  # it's a period
-                            word.append((wsrt, wend - 0.005, wmrk, 1))
+                            word.append((wsrt, wend - 0.005, wmrk, None))
                             break
                 else:
                     break

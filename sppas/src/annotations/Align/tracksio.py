@@ -82,8 +82,19 @@ class TracksReaderWriter(object):
         if mapping is None:
             mapping = sppasMapping()
         if isinstance(mapping, sppasMapping) is False:
-            raise TypeError('Aligner expected a Mapping() as argument.')
+            raise TypeError('Expected a sppasMapping() as argument.'
+                            'Got {:s} instead.'.format(type(mapping)))
         self._mapping = mapping
+
+    # ------------------------------------------------------------------------
+
+    def get_units(self, dir_name):
+        """Return the time units of all tracks.
+
+        :param dir_name: (str) Input directory to get files.
+
+        """
+        return ListOfTracks.read(dir_name)
 
     # ------------------------------------------------------------------------
     # Read files
@@ -96,17 +107,25 @@ class TracksReaderWriter(object):
         :returns: sppasTranscription
 
         """
-        tracks_reader = TracksReader()
-        (tier_phn, tier_tok) = tracks_reader.read_aligned_tracks(dir_name)
+        (tier_phn, tier_tok) = TracksReader.read_aligned_tracks(dir_name)
 
         # map-back phonemes
         self._mapping.set_keep_miss(True)
         self._mapping.set_reverse(False)
 
         # Map-back time-aligned phonemes to SAMPA
+        # include the mapping of alternative tags
         for ann in tier_phn:
-            for text in ann.GetLabel().GetLabels():
-                text.SetValue(self._mapping.map_entry(text.GetValue()))
+            labels = list()
+            for label in ann.get_labels():
+                tags = list()
+                scores = list()
+                for tag, score in label:
+                    text = tag.get_content()
+                    tags.append(sppasTag(self._mapping.map_entry(text)))
+                    scores.append(score)
+                labels.append(sppasLabel(tags, scores))
+            ann.set_labels(labels)
 
         return tier_phn, tier_tok
 
@@ -131,23 +150,23 @@ class TracksReaderWriter(object):
 
         # Map phonetizations (even the alternatives)
         for ann in phon_tier:
-            for text in ann.GetLabel().GetLabels():
-                # in case we previously had a sequence of labels,
-                # which we serialized into only one
-                tab = text.GetValue().split('\n')
-                content = list()
-                for item in tab:
-                    item = item.replace('|', separators.variants)
-                    if item.startswith('{') and item.endswith('}'):
-                        content.append(item[1:-1])
-                    else:
-                        content.append(item)
+            text = ann.serialize_labels(separator="\n", empty="", alt=True)
+            tab = text.split('\n')
+            content = list()
+            for item in tab:
+                item = item.replace('|', separators.variants)
+                if item.startswith('{') and item.endswith('}'):
+                    content.append(item[1:-1])
+                else:
+                    content.append(item)
 
-                text.SetValue(self._mapping.map(" ".join(content),
-                                                TracksReaderWriter.DELIMITERS))
+            mapped = self._mapping.map(" ".join(content),
+                                       TracksReaderWriter.DELIMITERS)
+            ann.set_labels(sppasLabel(sppasTag(mapped)))
 
         try:
-            TracksWriter.write_tracks(input_audio, phon_tier, tok_tier, dir_align)
+            TracksWriter.write_tracks(input_audio, phon_tier, tok_tier,
+                                      dir_align)
         except SizeInputsError:
             # number of intervals are not matching
             TracksWriter.write_tracks(input_audio, phon_tier, None, dir_align)
@@ -188,21 +207,25 @@ class TrackNamesGenerator:
 
     @staticmethod
     def audio_filename(track_dir, track_number):
+        """Return the name of the audio file."""
         return os.path.join(track_dir,
                             "track_{:06d}.wav".format(track_number))
 
     @staticmethod
     def phones_filename(track_dir, track_number):
+        """Return the name of the file with Phonetization."""
         return os.path.join(track_dir,
                             "track_{:06d}.phn".format(track_number))
 
     @staticmethod
     def tokens_filename(track_dir, track_number):
+        """Return the name of the file with Tokenization."""
         return os.path.join(track_dir,
                             "track_{:06d}.tok".format(track_number))
 
     @staticmethod
     def align_filename(track_dir, track_number, ext=None):
+        """Return the name of the time-aligned file, without extension."""
         if ext is None:
             return os.path.join(track_dir,
                                 "track_{:06d}".format(track_number))
@@ -253,7 +276,8 @@ class TracksReader:
         for unit_start, unit_end in units:
 
             # Fix filename to read, and load the content
-            basename = TrackNamesGenerator.align_filename(dir_name, track_number)
+            basename = \
+                TrackNamesGenerator.align_filename(dir_name, track_number)
             _phonannots, _wordannots = AlignerIO.read_aligned(basename)
 
             # Append alignments in tiers
@@ -310,7 +334,7 @@ class TracksReader:
         except Exception as e:
             logging.error('The following data were not added to the tier '
                           '{:s} at position {:f}: {:s}'
-                          ''.format(tier.get_name(), delta, tdata))
+                          ''.format(tier.get_name(), delta, str(tdata)))
             logging.error('Error message is: {:s}'.format(str(e)))
 
 # ---------------------------------------------------------------------------
@@ -373,8 +397,10 @@ class TracksWriter:
 
         for track, u in enumerate(units):
             (s, e) = u
-            track_channel = autils.extract_channel_fragment(channel, s, e, silence)
-            track_name = TrackNamesGenerator.audio_filename(dir_align, track + 1)
+            track_channel = \
+                autils.extract_channel_fragment(channel, s, e, silence)
+            track_name = \
+                TrackNamesGenerator.audio_filename(dir_align, track + 1)
             autils.write_channel(track_name, track_channel)
 
     # ------------------------------------------------------------------------
@@ -489,7 +515,8 @@ class ListOfTracks:
         """
         filename = os.path.join(dir_name, ListOfTracks.DEFAULT_FILENAME)
         if os.path.exists(filename) is False:
-            raise BadInputError
+            raise IOError('The list of tracks is missing of the directory '
+                          '{:s}'.format(dir_name))
 
         with open(filename, 'r') as fp:
             lines = fp.readlines()
