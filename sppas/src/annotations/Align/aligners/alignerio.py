@@ -41,8 +41,8 @@ from sppas.src.utils.makeunicode import sppasUnicode
 # ---------------------------------------------------------------------------
 
 
-class AlignerIO:
-    """Readers/writer of the output files of the aligners.
+class BaseAlignersReader(object):
+    """Base class for readers/writers of time-aligned files.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -50,52 +50,10 @@ class AlignerIO:
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    AlignerIO implements methods to read/write files of the external aligner
-    systems.
-
     """
 
-    # List of file extensions this class is able to read and/or write.
-    EXTENSIONS = ['palign', 'mlf', 'walign']
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def read_aligned(basename):
-        """Find an aligned file and read it.
-
-        :param basename: (str) File name without extension
-        :returns: Two lists of tuples with phones and words
-            - (start-time end-time phoneme score)
-            - (start-time end-time word score)
-
-        The score can be None.
-        todo: The "phoneme" column can be a sequence of alternative phonemes.
-
-        """
-        for ext in AlignerIO.EXTENSIONS:
-            track_name = basename + "." + ext
-            if os.path.isfile(track_name) is True:
-
-                if ext == "palign":
-                    return palign.read(track_name)
-
-                elif ext == "mlf":
-                    return mlf.read(track_name)
-
-                elif ext == "walign":
-                    return palign.read_walign(track_name)
-
-        raise IOError('No time-aligned file was found for {:s}'
-                      ''.format(basename))
-
-# ---------------------------------------------------------------------------
-
-
-class BaseAlignersReader(object):
-
     def __init__(self):
-        self.extention = ""
+        self.extension = ""
 
     # -----------------------------------------------------------------------
 
@@ -116,7 +74,7 @@ class BaseAlignersReader(object):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def get_units_palign(lines):
+    def get_units_julius(lines):
         """Return the units of a palign/walign file (in frames).
 
         :param lines: (List of str)
@@ -150,7 +108,7 @@ class BaseAlignersReader(object):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def get_phonemes(lines):
+    def get_phonemes_julius(lines):
         """Return the pronunciation of all words.
 
         :param lines: (List of str)
@@ -174,7 +132,7 @@ class BaseAlignersReader(object):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def get_words(lines):
+    def get_words_julius(lines):
         """Return all words.
 
         :param lines: (List of str)
@@ -194,7 +152,7 @@ class BaseAlignersReader(object):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def get_word_scores(lines):
+    def get_word_scores_julius(lines):
         """Return all scores of words.
 
         :param lines: (List of str)
@@ -244,11 +202,42 @@ class BaseAlignersReader(object):
 
         return u
 
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def make_result(units, words, phonemes, scores):
+        aligned_words = list()
+        aligned_phones = list()
+        i = 0
+        for wd, phn_seq, sc in zip(words, phonemes, scores):
+
+            start_wd = units[i][0]
+            for phn in phn_seq:
+                if i == len(units):
+                    raise IOError('Phonemes/Units are not matching in alignment result')
+                start_phn, end_phn = units[i]
+                aligned_phones.append((start_phn, end_phn, phn, None))
+                i += 1
+
+            end_wd = units[i - 1][1]
+            aligned_words.append((start_wd, end_wd, wd, sc))
+
+        return aligned_phones, aligned_words
+
+
 # ---------------------------------------------------------------------------
 
 
 class palign(BaseAlignersReader):
+    """palign reader/writer of time-aligned files (Julius CSR Engine).
 
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    """
     def __init__(self):
         super(palign, self).__init__()
         self.extension = "palign"
@@ -267,33 +256,17 @@ class palign(BaseAlignersReader):
         """
         b = BaseAlignersReader()
         lines = b.get_lines(filename)
-        phonemes = b.get_phonemes(lines)
-        words = b.get_words(lines)
-        scores = b.get_word_scores(lines)
+        phonemes = b.get_phonemes_julius(lines)
+        words = b.get_words_julius(lines)
+        scores = b.get_word_scores_julius(lines)
         if len(words) != len(phonemes):
             raise IOError("Words/Phonemes are not matching in alignment result")
         if len(words) != len(scores):
             raise IOError("Words/Scores are not matching in alignment result")
-        units = b.get_units_palign(lines)
+        units = b.get_units_julius(lines)
         units = b.units_to_time(units, 100)
 
-        aligned_words = list()
-        aligned_phones = list()
-        i = 0
-        for wd, phn_seq, sc in zip(words, phonemes, scores):
-
-            start_wd = units[i][0]
-            for phn in phn_seq:
-                if i == len(units):
-                    raise IOError('Phonemes/Units are not matching in alignment result')
-                start_phn, end_phn = units[i]
-                aligned_phones.append((start_phn, end_phn, phn, None))
-                i += 1
-
-            end_wd = units[i-1][1]
-            aligned_words.append((start_wd, end_wd, wd, sc))
-
-        return aligned_phones, aligned_words
+        return BaseAlignersReader.make_result(units, words, phonemes, scores)
 
     # -----------------------------------------------------------------------
 
@@ -360,7 +333,15 @@ class palign(BaseAlignersReader):
 
 
 class walign(BaseAlignersReader):
+    """walign reader of time-aligned files (Julius CSR Engine).
 
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    """
     def __init__(self):
         super(walign, self).__init__()
         self.extension = "walign"
@@ -379,11 +360,11 @@ class walign(BaseAlignersReader):
         """
         b = BaseAlignersReader()
         lines = b.get_lines(filename)
-        words = b.get_words(lines)
-        scores = b.get_word_scores(lines)
+        words = b.get_words_julius(lines)
+        scores = b.get_word_scores_julius(lines)
         if len(words) != len(scores):
             raise IOError("Words/Scores are not matching in alignment result")
-        units = b.get_units_palign(lines)
+        units = b.get_units_julius(lines)
         units = b.units_to_time(units, 100)
 
         aligned_words = list()
@@ -403,10 +384,124 @@ class walign(BaseAlignersReader):
 
 
 class mlf(BaseAlignersReader):
+    """palign reader/writer of time-aligned files (Julius CSR Engine).
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    todo: READ MLF has to TO BE TESTED
+
+    When the -m option is used, the transcriptions output by HVITE would by
+    default contain both the model level and word level transcriptions .
+    For example, a typical fragment of the output might be:
+
+        7500000  8700000 f  -1081.604736 FOUR 30.000000
+        8700000  9800000 ao  -903.821350
+        9800000 10400000 r   -665.931641
+       10400000 10400000 sp    -0.103585
+       10400000 11700000 s  -1266.470093 SEVEN 22.860001
+       11700000 12500000 eh  -765.568237
+       12500000 13000000 v   -476.323334
+       13000000 14400000 n  -1285.369629
+       14400000 14400000 sp    -0.103585
+
+    """
 
     def __init__(self):
         super(mlf, self).__init__()
-        self.extention = "mlf"
+        self.extension = "mlf"
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def is_integer(s):
+        """Check whether a string is an integer or not.
+
+        :param s: (str or unicode)
+        :returns: (bool)
+
+        """
+        try:
+            int(s)
+            return True
+        except ValueError:
+            pass
+
+        try:
+            import unicodedata
+            unicodedata.numeric(s)
+            return True
+        except (TypeError, ValueError):
+            pass
+
+        return False
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_units(lines):
+        """Return the units of a mlf file (in nano-seconds).
+
+        :param lines: (List of str)
+        :returns: List of tuples (start, end)
+
+        """
+        units = list()
+        for line in lines:
+            columns = line.split()
+            if len(columns) > 3:
+                if mlf.is_integer(columns[0]) and mlf.is_integer(columns[1]):
+                    units.append((int(columns[0]), int(columns[1])))
+        return units
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_phonemes(lines):
+        """Return the pronunciation of all words.
+
+        :param lines: (List of str)
+        :returns: List of tuples (ph1 ph2...phN)
+
+        """
+        phonemes = list()
+        phon_seq = list()
+        for line in lines:
+            columns = line.split()
+            if len(columns) > 3:
+                if mlf.is_integer(columns[0]) and mlf.is_integer(columns[1]):
+                    phon = columns[2]
+                    if len(columns) >= 7:
+                        if len(phon_seq) > 0:
+                            phonemes.append(tuple(phon_seq))
+                            phon_seq = list()
+                    phon_seq.append(phon)
+        if len(phon_seq) > 0:
+            phonemes.append(tuple(phon_seq))
+
+        return phonemes
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_words(lines):
+        """Return all words.
+
+        :param lines: (List of str)
+        :returns: List
+
+        """
+        words = list()
+        for line in lines:
+            columns = line.split()
+            if len(columns) > 3:
+                if mlf.is_integer(columns[0]) and mlf.is_integer(columns[1]):
+                    if len(columns) >= 7:
+                        words.append(columns[6])
+        return words
 
     # -----------------------------------------------------------------------
 
@@ -414,66 +509,117 @@ class mlf(BaseAlignersReader):
     def read(filename):
         """Read an alignment file (a mlf file).
 
-        :param filename: is the input file (a HVite mlf output file).
+        :param filename: (str) the input file (a HVite mlf output file).
 
         :returns: 2 lists of tuples:
-            - (start-time end-time phoneme 1)
-            - (start-time end-time word 1)
+            - (start-time end-time phoneme None)
+            - (start-time end-time word None)
 
         """
-        phon = []
-        word = []
-        samplerate = 10e6
+        lines = BaseAlignersReader.get_lines(filename)
+        units = mlf.get_units(lines)
+        units = BaseAlignersReader.units_to_time(units, 10e6)
+        phonemes = mlf.get_phonemes(lines)
+        words = mlf.get_words(lines)
+        scores = [None]*len(words)
+        if len(words) != len(phonemes):
+            raise IOError("Words/Phonemes are not matching in alignment result")
 
-        with codecs.open(filename, 'r', sg.__encoding__) as source:
+        return BaseAlignersReader.make_result(units, words, phonemes, scores)
+        #
+        # phon = []
+        # word = []
+        # samplerate = 10e6
+        # first = True
+        # wmrk = ''
+        # wsrt = 0.
+        # wend = 0.
+        #
+        # i = 1  # ignore header
+        # while i < len(lines):
+        #
+        #     line = lines[i].rstrip().split()
+        #
+        #     if len(line) >= 5:  # word on this line
+        #         if first is True:
+        #             pmin = round(float(line[0]) / samplerate, 5)
+        #             first = False
+        #         else:
+        #             pmin = round(float(line[0]) / samplerate, 5) + 0.005
+        #         pmax = round(float(line[1]) / samplerate, 5) + 0.005
+        #         if pmin != pmax:  # for sp
+        #             phon.append((pmin, pmax, line[2], None))
+        #         if wmrk:
+        #             word.append((wsrt, wend, wmrk, None))
+        #         wmrk = line[4]
+        #         wsrt = pmin
+        #         wend = pmax
+        #
+        #     elif len(line) == 4:  # just phone
+        #         if first is True:
+        #             pmin = round(float(line[0]) / samplerate, 5)
+        #             first = False
+        #         else:
+        #             pmin = round(float(line[0]) / samplerate, 5) + 0.005
+        #         pmax = round(float(line[1]) / samplerate, 5) + 0.005
+        #         if line[2] == 'sp' and pmin != pmax:
+        #             if wmrk:
+        #                 word.append((wsrt, wend, wmrk, None))
+        #             wmrk = line[2]
+        #             wsrt = pmin
+        #             wend = pmax
+        #         elif pmin != pmax:  # for sp
+        #             phon.append((pmin, pmax, line[2], None))
+        #         wend = pmax
+        #
+        #     else:  # it's a period
+        #         word.append((wsrt, wend - 0.005, wmrk, None))
+        #         break
+        #
+        # return phon, word
 
-            source.readline()  # header
-            while True:  # loop over text
-                name = source.readline().rstrip()
-                if name:
-                    first = True
-                    wmrk = ''
-                    wsrt = 0.
-                    wend = 0.
-                    while 1:  # loop over the lines in each grid
-                        line = source.readline().rstrip().split()
+# ---------------------------------------------------------------------------
 
-                        if len(line) == 5:  # word on this line
-                            if first is True:
-                                pmin = round(float(line[0]) / samplerate, 5)
-                                first = False
-                            else:
-                                pmin = round(float(line[0]) / samplerate, 5) + 0.005
-                            pmax = round(float(line[1]) / samplerate, 5) + 0.005
-                            if pmin != pmax:  # for sp
-                                phon.append((pmin, pmax, line[2], None))
-                            if wmrk:
-                                word.append((wsrt, wend, wmrk, None))
-                            wmrk = line[4]
-                            wsrt = pmin
-                            wend = pmax
 
-                        elif len(line) == 4:  # just phone
-                            if first is True:
-                                pmin = round(float(line[0]) / samplerate, 5)
-                                first = False
-                            else:
-                                pmin = round(float(line[0]) / samplerate, 5) + 0.005
-                            pmax = round(float(line[1]) / samplerate, 5) + 0.005
-                            if line[2] == 'sp' and pmin != pmax:
-                                if wmrk:
-                                    word.append((wsrt, wend, wmrk, None))
-                                wmrk = line[2]
-                                wsrt = pmin
-                                wend = pmax
-                            elif pmin != pmax:  # for sp
-                                phon.append((pmin, pmax, line[2], None))
-                            wend = pmax
+class AlignerIO(object):
+    """Reader/writer of the output files of the aligners.
 
-                        else:  # it's a period
-                            word.append((wsrt, wend - 0.005, wmrk, None))
-                            break
-                else:
-                    break
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-        return phon, word
+    AlignerIO implements methods to read/write files of the external aligner
+    systems.
+
+    """
+
+    # List of file extensions this class is able to read and/or write.
+    EXTENSIONS_READ = {palign().extension: palign,
+                       mlf().extension: mlf,
+                       walign().extension: walign}
+    EXTENSIONS_WRITE = {palign().extension: palign}
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def read_aligned(basename):
+        """Find an aligned file and read it.
+
+        :param basename: (str) File name without extension
+        :returns: Two lists of tuples with phones and words
+            - (start-time end-time phoneme score)
+            - (start-time end-time word score)
+
+        The score can be None.
+        todo: The "phoneme" column can be a sequence of alternative phonemes.
+
+        """
+        for ext in AlignerIO.EXTENSIONS_READ:
+            track_name = basename + "." + ext
+            if os.path.isfile(track_name) is True:
+                return AlignerIO.EXTENSIONS_READ[ext]().read(track_name)
+
+        raise IOError('No time-aligned file was found for {:s}'
+                      ''.format(basename))

@@ -43,7 +43,8 @@ from ..Align.aligners.basealigner import BaseAligner
 from ..Align.aligners.basicalign import BasicAligner
 from ..Align.aligners.juliusalign import JuliusAligner
 from ..Align.aligners.hvitealign import HviteAligner
-from ..Align.aligners.alignerio import BaseAlignersReader, palign, walign
+from ..Align.aligners.alignerio import BaseAlignersReader
+from ..Align.aligners.alignerio import palign, walign, mlf
 
 # ---------------------------------------------------------------------------
 
@@ -59,16 +60,16 @@ class TestAlignersIO(unittest.TestCase):
 
     def test_BaseAlignersReader(self):
         b = BaseAlignersReader()
-        self.assertEquals('', b.extention)
+        self.assertEqual('', b.extension)
         with self.assertRaises(NotImplementedError):
             b.read('toto')
 
     def test_getlines(self):
         b = BaseAlignersReader()
         lines = b.get_lines(os.path.join(DATA, "track_000002.palign"))
-        self.assertEquals(311, len(lines))
+        self.assertEqual(311, len(lines))
 
-    def test_get_time_units(self):
+    def test_get_time_units_palign(self):
         b = BaseAlignersReader()
         lines = b.get_lines(os.path.join(DATA, "track_000002.palign"))
         expected_units = [(0, 2), (3, 5), (6, 15), (16, 22), (23, 31),\
@@ -80,27 +81,27 @@ class TestAlignersIO(unittest.TestCase):
                           (197, 208), (209, 214), (215, 227), (228, 236),\
                           (237, 240), (241, 252), (253, 264), (265, 282)]
 
-        units = b.get_units_palign(lines)
-        self.assertEquals(expected_units, units)
+        units = b.get_units_julius(lines)
+        self.assertEqual(expected_units, units)
         units = b.units_to_time(units, 100)
-        self.assertEquals(0., units[0][0])
-        self.assertEquals(0.03, units[0][1])
-        self.assertEquals(2.65, units[-1][0])
-        self.assertEquals(2.82, units[-1][1])
+        self.assertEqual(0., units[0][0])
+        self.assertEqual(0.03, units[0][1])
+        self.assertEqual(2.65, units[-1][0])
+        self.assertEqual(2.82, units[-1][1])
 
-    def test_get_words_phonemes(self):
+    def test_get_words_julius_phonemes(self):
         b = BaseAlignersReader()
         lines = b.get_lines(os.path.join(DATA, "track_000002.palign"))
-        phonemes = b.get_phonemes(lines)
-        words = b.get_words(lines)
-        scores = b.get_word_scores(lines)
-        self.assertEquals(11, len(words))
-        self.assertEquals(11, len(phonemes))
-        self.assertEquals(11, len(scores))
+        phonemes = b.get_phonemes_julius(lines)
+        words = b.get_words_julius(lines)
+        scores = b.get_word_scores_julius(lines)
+        self.assertEqual(11, len(words))
+        self.assertEqual(11, len(phonemes))
+        self.assertEqual(11, len(scores))
 
     def test_read_palign(self):
         b = palign()
-        self.assertEquals("palign", b.extension)
+        self.assertEqual("palign", b.extension)
         expected_tokens = \
             [(0.0, 0.06, 'the', '0.618'), (0.06, 0.35, 'flight', '1.000'),\
              (0.35, 0.61, 'was', '0.432'), (0.61, 0.85, 'twelve', '1.000'),\
@@ -110,15 +111,49 @@ class TestAlignersIO(unittest.TestCase):
              (2.37, 2.82, 'bored', '1.000')]
 
         phones, tokens = b.read(os.path.join(DATA, "track_000002.palign"))
-        self.assertEquals(expected_tokens, tokens)
-        self.assertEquals(35, len(phones))
+        self.assertEqual(expected_tokens, tokens)
+        self.assertEqual(35, len(phones))
 
     def test_read_walign(self):
         b = walign()
-        self.assertEquals("walign", b.extension)
+        self.assertEqual("walign", b.extension)
         phones, tokens = b.read(os.path.join(DATA, "track_000000.walign"))
-        self.assertEquals(21, len(tokens))
-        self.assertEquals((0.2, 0.37, '感', '0.306'), tokens[1])
+        self.assertEqual(21, len(tokens))
+        self.assertEqual((0.2, 0.37, '感', '0.306'), tokens[1])
+
+    def test_get_time_units_mlf(self):
+        b = mlf()
+        lines = b.get_lines(os.path.join(DATA, "track_sample.mlf"))
+        expected_units = [
+            (0, 200000), (200000, 400000), (400000, 800000),\
+            (800000, 1200000), (1200000, 1500000), (1500000, 1800000),\
+            (1800000, 1900000), (1900000, 2400000), (2400000, 2800000)]
+        units = b.get_units(lines)
+        self.assertEqual(expected_units, units)
+        units = b.units_to_time(units, 10e6)
+        self.assertEqual(0., units[0][0])
+        self.assertEqual(0.02, units[0][1])
+        self.assertEqual(0.28, units[-1][1])
+
+    def test_get_phonemes_mlf(self):
+        b = mlf()
+        lines = b.get_lines(os.path.join(DATA, "track_sample.mlf"))
+        phonemes = b.get_phonemes(lines)
+        words = b.get_words(lines)
+        self.assertEquals(3, len(phonemes))
+        self.assertEquals(3, len(words))
+
+    def test_read_mlf(self):
+        b = mlf()
+        self.assertEqual("mlf", b.extension)
+        phones, tokens = b.read(os.path.join(DATA, "track_sample.mlf"))
+        expected_tokens = \
+            [(0.0, 0.08, 'w_1', None),\
+             (0.08, 0.18, 'w_2', None),\
+             (0.18, 0.28, 'w_3', None)]
+        self.assertEqual(expected_tokens, tokens)
+        self.assertEqual(9, len(phones))
+
 
 # ---------------------------------------------------------------------------
 
@@ -200,30 +235,30 @@ class TestBasicAlign(unittest.TestCase):
     def test_run_basic(self):
 
         self._aligner.set_phones("")
-        self.assertEquals([(0, 0, "")], self._aligner.run_basic(0.))
-        self.assertEquals([(0, 1, "")], self._aligner.run_basic(0.01))
-        self.assertEquals([(0, 2, "")], self._aligner.run_basic(0.02))
-        self.assertEquals([(0, 20, "")], self._aligner.run_basic(0.2))
-        self.assertEquals([(0, 1000, "")], self._aligner.run_basic(10.))
+        self.assertEqual([(0, 0, "")], self._aligner.run_basic(0.))
+        self.assertEqual([(0, 1, "")], self._aligner.run_basic(0.01))
+        self.assertEqual([(0, 2, "")], self._aligner.run_basic(0.02))
+        self.assertEqual([(0, 20, "")], self._aligner.run_basic(0.2))
+        self.assertEqual([(0, 1000, "")], self._aligner.run_basic(10.))
 
         self._aligner.set_phones("a")
-        self.assertEquals([(0, 0, "")], self._aligner.run_basic(0.))
-        self.assertEquals([(0, 1, "a")], self._aligner.run_basic(0.02))
-        self.assertEquals([(0, 1, "a")], self._aligner.run_basic(0.02))
+        self.assertEqual([(0, 0, "")], self._aligner.run_basic(0.))
+        self.assertEqual([(0, 1, "a")], self._aligner.run_basic(0.02))
+        self.assertEqual([(0, 1, "a")], self._aligner.run_basic(0.02))
 
         self._aligner.set_phones("a b c")
-        self.assertEquals([(0, 2, "")], self._aligner.run_basic(0.02))
+        self.assertEqual([(0, 2, "")], self._aligner.run_basic(0.02))
 
         self._aligner.set_phones("a b")
-        self.assertEquals([(0, 9, "a"), (10, 19, "b")],
+        self.assertEqual([(0, 9, "a"), (10, 19, "b")],
                           self._aligner.run_basic(0.2))
 
         self._aligner.set_phones("a|aa b|bb")
-        self.assertEquals([(0, 9, "a"), (10, 19, "b")],
+        self.assertEqual([(0, 9, "a"), (10, 19, "b")],
                           self._aligner.run_basic(0.2))
 
         self._aligner.set_phones("a|A b|B")
-        self.assertEquals([(0, 9, "a"), (10, 19, "b")],
+        self.assertEqual([(0, 9, "a"), (10, 19, "b")],
                           self._aligner.run_basic(0.2))
 
 # ---------------------------------------------------------------------------

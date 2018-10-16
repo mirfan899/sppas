@@ -35,7 +35,6 @@
 """
 import shutil
 import os
-import glob
 import logging
 
 from sppas.src.config import paths
