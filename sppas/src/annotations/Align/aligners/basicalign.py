@@ -36,7 +36,7 @@ import sppas.src.audiodata.aio
 
 from sppas.src.config import separators
 from .basealigner import BaseAligner
-from .alignerio import AlignerIO
+from .alignerio import palign
 
 # ---------------------------------------------------------------------------
 
@@ -67,8 +67,8 @@ class BasicAligner(BaseAligner):
         """
         super(BasicAligner, self).__init__()
 
-        self._extensions = ["palign"]
-        self._outext = self._extensions[0]
+        self._extensions = [palign().extension]
+        self._outext = palign().extension
         self._name = "basic"
 
     # -----------------------------------------------------------------------
@@ -174,10 +174,7 @@ class BasicAligner(BaseAligner):
 
         if output_align is not None:
             output_align = output_align + "." + self._outext
-            AlignerIO.write_palign(phonetization,
-                                   tokenization,
-                                   alignments,
-                                   output_align)
+            palign().write(phonetization, tokenization, alignments, output_align)
 
         return alignments
 

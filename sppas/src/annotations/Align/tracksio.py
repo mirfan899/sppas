@@ -35,6 +35,7 @@
 import os
 import codecs
 import logging
+import traceback
 
 from sppas.src.anndata import sppasTier
 from sppas.src.anndata import sppasLocation
@@ -326,16 +327,19 @@ class TracksReader:
                 # fix the label
                 # allow to work with alternative tags
                 tags = [sppasTag(c) for c in contents.split('|')]
-                tag_scores = [float(s) for s in scores.split('|')]
+                if scores is not None:
+                    tag_scores = [float(s) for s in scores.split('|')]
+                else:
+                    tag_scores = None
                 label = sppasLabel(tags, tag_scores)
 
                 tier.create_annotation(location, label)
 
-        except Exception as e:
+        except:
             logging.error('The following data were not added to the tier '
                           '{:s} at position {:f}: {:s}'
                           ''.format(tier.get_name(), delta, str(tdata)))
-            logging.error('Error message is: {:s}'.format(str(e)))
+            logging.error(traceback.format_exc())
 
 # ---------------------------------------------------------------------------
 

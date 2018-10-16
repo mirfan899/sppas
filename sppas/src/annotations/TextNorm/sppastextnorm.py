@@ -35,7 +35,7 @@
     SPPAS integration of Text Normalization.
 
 """
-import os.path
+import os
 
 from sppas.src.config import paths
 from sppas.src.config import symbols

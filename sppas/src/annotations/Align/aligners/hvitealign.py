@@ -77,7 +77,7 @@ class HviteAligner(BaseAligner):
 
         self._extensions = ["mlf"]
         self._outext = self._extensions[0]
-        self._name = "julius"
+        self._name = "hvite"
 
     # -----------------------------------------------------------------------
 

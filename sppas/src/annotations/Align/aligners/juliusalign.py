@@ -218,7 +218,7 @@ class JuliusAligner(BaseAligner):
 
                 # grammar:
                 if token_idx == 0:
-                    fdfa.write("0 %s 1 0 1\n" % nb_tokens)
+                    fdfa.write("0 {:d} 1 0 1\n".format(nb_tokens))
                 else:
                     fdfa.write(str(token_idx) + " " +
                                str(nb_tokens) + " " +
@@ -228,7 +228,7 @@ class JuliusAligner(BaseAligner):
                 nb_tokens -= 1
 
             # last line of the grammar
-            fdfa.write("{:s} -1 -1 1 0\n".format(token_idx))
+            fdfa.write("{:d} -1 -1 1 0\n".format(token_idx))
 
     # ------------------------------------------------------------------------
 
@@ -347,6 +347,7 @@ class JuliusAligner(BaseAligner):
         self.run_julius(input_wav, basename, output_align)
         with codecs.open(output_align, 'r', sg.__encoding__) as f:
             lines = f.readlines()
+            f.close()
 
         error_lines = ""
         message = ""
