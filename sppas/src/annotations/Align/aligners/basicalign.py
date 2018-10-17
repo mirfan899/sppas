@@ -174,7 +174,8 @@ class BasicAligner(BaseAligner):
 
         if output_align is not None:
             output_align = output_align + "." + self._outext
-            palign().write(phonetization, tokenization, alignments, output_align)
+            palign().write(phonetization, tokenization,
+                           alignments, output_align)
 
         return alignments
 
@@ -186,7 +187,7 @@ class BasicAligner(BaseAligner):
 
         :param pron: (str) The phonetization of a token
         :returns: (str) pronunciation
-        
+
         """
         if len(pron) == 0:
             return ""

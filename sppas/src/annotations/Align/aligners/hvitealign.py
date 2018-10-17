@@ -133,7 +133,7 @@ class HviteAligner(BaseAligner):
         #   -T 1                           # set trace flags to N
         #   -l '*'                         # dir to store label/lattice files
         #   -a                             # align from label file
-        #   -b SENT-END                    # *** TO NOT USE for forced-alignment ***
+        #   -b SENT-END                    # *** TO NOT USE for FA ***
         #   -m                             # output model alignment
         #   -C models-EN/config            # model config !IMPORTANT!
         #   -H models-EN/macros

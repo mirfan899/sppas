@@ -73,7 +73,8 @@ from .basealigner import BaseAligner
 
 # ----------------------------------------------------------------------------
 
-SIL_PHON = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
+SIL_PHON = \
+    list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
 
 # ----------------------------------------------------------------------------
 

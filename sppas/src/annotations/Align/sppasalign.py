@@ -149,7 +149,8 @@ class sppasAlign(sppasBaseAnnotation):
             try:
                 model_mixer = sppasModelMixer()
                 model_mixer.read(model, model_L1)
-                output_dir = os.path.join(paths.resources, "models", "models-mix")
+                output_dir = os.path.join(paths.resources,
+                                          "models", "models-mix")
                 model_mixer.mix(output_dir, gamma=0.6)
                 model = output_dir
             except Exception as e:
@@ -365,11 +366,7 @@ class sppasAlign(sppasBaseAnnotation):
         if os.path.exists(workdir) is False:
             os.mkdir(workdir)
         self._tracksrw.split_into_tracks(
-            input_audio, 
-            phon_tier, 
-            tok_tier, 
-            workdir
-        )
+            input_audio, phon_tier, tok_tier, workdir)
 
         # Align each track
         self._segment_tracks(workdir)
@@ -389,33 +386,35 @@ class sppasAlign(sppasBaseAnnotation):
         :param trs: (Transcription)
 
         """
-        token_align = trs.Find("TokensAlign")
+        token_align = trs.find("TokensAlign")
         if token_align is None:
-            self.print_message(MSG_NO_TOKENS_ALIGN, indent=2, status=annots.warning)
+            self.print_message(MSG_NO_TOKENS_ALIGN, indent=2,
+                               status=annots.warning)
             return trs
 
         # Activity tier
-        if self._options['activity'] is True or self._options['activityduration'] is True:
+        if self._options['activity'] is True or \
+                self._options['activityduration'] is True:
             try:
                 activity = sppasActivity()
                 tier = activity.get_tier(trs)
                 if self._options['activity'] is True:
-                    trs.Append(tier)
-                    trs.GetHierarchy().add_link("TimeAlignment", token_align, tier)
+                    trs.append(tier)
+                    trs.add_hierarchy_link("TimeAlignment", token_align, tier)
 
                 if self._options['activityduration'] is True:
-                    dtier = tier.Copy()
-                    dtier.SetName("ActivityDuration")
-                    trs.Append(dtier)
+                    dtier = tier.copy()
+                    dtier.set_name("ActivityDuration")
+                    trs.append(dtier)
                     for a in dtier:
-                        d = a.GetLocation().GetDuration().GetValue()
-                        a.GetLabel().SetValue('%.3f' % d)
+                        d = a.get_best_localization().duration().get_value()
+                        a.set_labels(sppasLabel(sppasTag(d, float)))
 
             except Exception as e:
                 self.print_message(
-                    MSG_EXTRA_TIER.format(tiername="Activities", message=str(e)), 
-                    indent=2, 
-                    status=annots.warning)
+                    MSG_EXTRA_TIER.format(
+                        tiername="Activities", message=str(e)),
+                    indent=2, status=annots.warning)
 
         return trs
 
@@ -487,20 +486,25 @@ class sppasAlign(sppasBaseAnnotation):
                 tier_tok.set_media(media)
                 trs_output.append(tier_tok)
                 try:
-                    trs_output.add_hierarchy_link("TimeAlignment", tier_phn, tier_tok)
+                    trs_output.add_hierarchy_link(
+                        "TimeAlignment", tier_phn, tier_tok)
                 except:
-                    pass
+                    logging.error('No hierarchy was created between'
+                                  'phonemes and tokens')
 
             if tier_pron is not None:
                 tier_pron.set_media(media)
                 trs_output.append(tier_pron)
                 try:
                     if tier_tok is not None:
-                        trs_output.add_hierarchy_link("TimeAssociation", tier_tok, tier_pron)
+                        trs_output.add_hierarchy_link(
+                            "TimeAssociation", tier_tok, tier_pron)
                     else:
-                        trs_output.add_hierarchy_link("TimeAlignment", tier_phn, tier_pron)
+                        trs_output.add_hierarchy_link(
+                            "TimeAlignment", tier_phn, tier_pron)
                 except:
-                    pass
+                    logging.error('No hierarchy was created between'
+                                  'phonemes and tokens')
 
         except Exception as e:
             self.print_message(str(e))

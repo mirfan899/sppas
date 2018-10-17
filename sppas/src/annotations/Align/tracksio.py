@@ -136,7 +136,8 @@ class TracksReaderWriter(object):
                 scores = list()
                 for tag, score in label:
                     text = tag.get_content()
-                    tags.append(sppasTag(self._mapping.map(text, [separators.phonemes])))
+                    tags.append(sppasTag(
+                        self._mapping.map(text, [separators.phonemes])))
                     scores.append(score)
                 labels.append(sppasLabel(tags, scores))
             ann.set_labels(labels)

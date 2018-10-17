@@ -122,7 +122,8 @@ class BaseAlignersReader(object):
         while lines[i].startswith('phseq1') is False:
             i += 1
             if i == len(lines):
-                raise IOError('Phonemes sequence not found in alignment result')
+                raise IOError('Phonemes sequence not found '
+                              'in alignment result')
         line = lines[i]
         line = line[7:]
         words = line.split('|')
@@ -260,7 +261,8 @@ class BaseAlignersReader(object):
             start_wd = units[i][0]
             for phn in phn_seq:
                 if i == len(units):
-                    raise IOError('Phonemes/Units are not matching in alignment result')
+                    raise IOError('Phonemes/Units are not matching '
+                                  'in alignment result')
                 start_phn, end_phn = units[i]
                 aligned_phones.append((start_phn, end_phn, phn, None))
                 i += 1
@@ -283,7 +285,9 @@ class palign(BaseAlignersReader):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self):
+        """Create a palign instance to read palign files of Julius."""
         super(palign, self).__init__()
         self.extension = "palign"
 
@@ -310,7 +314,8 @@ class palign(BaseAlignersReader):
         if len(words) != len(phonemes):
             logging.error('Got words: {:s}'.format(words))
             logging.error('Got phonemes: {:s}'.format(phonemes))
-            raise IOError("Words/Phonemes are not matching in alignment result")
+            raise IOError("Words/Phonemes are not matching "
+                          "in alignment result")
         if len(words) != len(scores):
             logging.error('Got words: {:s}'.format(words))
             logging.error('Got scores: {:s}'.format(scores))
@@ -320,7 +325,7 @@ class palign(BaseAlignersReader):
         units = b.shift_time_units(units, 0.01)
 
         data_phon, data_words = b.make_result(units, words, phonemes, None)
-        data_phon, data_pron = b.make_result(units, pron_words, phonemes, scores)
+        d, data_pron = b.make_result(units, pron_words, phonemes, scores)
         return data_phon, data_words, data_pron
 
     # -----------------------------------------------------------------------
@@ -397,7 +402,9 @@ class walign(BaseAlignersReader):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self):
+        """Create a walign instance to read walign files of Julius."""
         super(walign, self).__init__()
         self.extension = "walign"
 
@@ -408,8 +415,7 @@ class walign(BaseAlignersReader):
         """Read an alignment file in the format of Julius CSR engine.
 
         :param filename: (str) The input file name.
-        :returns: A list of tuples:
-$            - (start-time end-time word score)
+        :returns: A list of tuples (start-time end-time word score)
 
         """
         b = BaseAlignersReader()
@@ -430,7 +436,8 @@ $            - (start-time end-time word score)
             if i == len(units):
                 logging.error('Got words: {:s}'.format(words))
                 logging.error('Got units: {:s}'.format(units))
-                raise IOError('Phonemes/Units are not matching in alignment result')
+                raise IOError('Phonemes/Units are not matching '
+                              'in alignment result')
 
             start_wd = units[i][0]
             end_wd = units[i][1]
@@ -468,6 +475,7 @@ class mlf(BaseAlignersReader):
     """
 
     def __init__(self):
+        """Create a mlf instance to parse mlf files from HVite."""
         super(mlf, self).__init__()
         self.extension = "mlf"
 
@@ -585,7 +593,8 @@ class mlf(BaseAlignersReader):
         if len(words) != len(phonemes):
             logging.error('Got words: {:s}'.format(words))
             logging.error('Got phonemes: {:s}'.format(phonemes))
-            raise IOError("Words/Phonemes are not matching in alignment result")
+            raise IOError("Words/Phonemes are not matching "
+                          "in alignment result")
 
         data_phon, data_words = b.make_result(units, words, phonemes, None)
         data_phon, data_pron = b.make_result(units, pron_words, phonemes, None)
