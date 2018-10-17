@@ -85,9 +85,9 @@ class sppasTag(object):
 
         :param tag_content: (any) Data content
         :param tag_type: (str): The type of this content.\
-        One of: (str, int, float, bool, list).
+        One of: ('str', 'int', 'float', 'bool', 'list').
 
-        str type is used by default.
+        'str' is the default tag_type.
 
         """
         self.__tag_content = ""
@@ -113,6 +113,7 @@ class sppasTag(object):
 
     def get_content(self):
         """Return an unicode string corresponding to the content.
+
         Also returns a unicode string in case of a list (elements are
         separated by a space).
 
@@ -125,7 +126,6 @@ class sppasTag(object):
 
     def get_typed_content(self):
         """Return the content value, in its appropriate type."""
-
         if self.__tag_type is not None:
 
             if self.__tag_type == "int":
@@ -188,31 +188,26 @@ class sppasTag(object):
 
     def copy(self):
         """Return a deep copy of self."""
-
         return sppasTag(self.__tag_content, self.__tag_type)
 
     # ------------------------------------------------------------------------
 
     def get_type(self):
         """Return the type of the tag content."""
-
         if self.__tag_type is None:
             return "str"
-
         return self.__tag_type
 
     # ------------------------------------------------------------------------
 
     def is_empty(self):
         """Return True if the tag is an empty string."""
-
         return self.__tag_content == ""
 
     # -----------------------------------------------------------------------
 
     def is_speech(self):
         """Return True if the tag is not a silence."""
-        
         return not (self.is_silence() or
                     self.is_pause() or
                     self.is_laugh() or
@@ -223,7 +218,6 @@ class sppasTag(object):
 
     def is_silence(self):
         """Return True if the tag is a silence."""
-
         if self.__tag_type is None or self.__tag_type == "str":
             # create a list of silence symbols from the list of all symbols
             silences = list()
@@ -244,7 +238,6 @@ class sppasTag(object):
 
     def is_pause(self):
         """Return True if the tag is a short pause."""
-
         # create a list of pause symbols from the list of all symbols
         pauses = list()
         for symbol in symbols.all:
@@ -257,7 +250,6 @@ class sppasTag(object):
 
     def is_laugh(self):
         """Return True if the tag is a laughing."""
-
         # create a list of laughter symbols from the list of all symbols
         laugh = list()
         for symbol in symbols.all:
@@ -270,7 +262,6 @@ class sppasTag(object):
 
     def is_noise(self):
         """Return True if the tag is a noise."""
-
         # create a list of noise symbols from the list of all symbols
         noises = list()
         for symbol in symbols.all:
@@ -283,7 +274,6 @@ class sppasTag(object):
 
     def is_dummy(self):
         """Return True if the tag is a dummy label."""
-
         return self.__tag_content == "dummy"
 
     # ------------------------------------------------------------------------

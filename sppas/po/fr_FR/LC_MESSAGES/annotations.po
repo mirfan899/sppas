@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Brigitte Bigi <contact@sppas.org>\n"
+"Last-Translator: Brigitte Bigi <brigitte.bigi@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
@@ -153,34 +153,31 @@ msgid ":INFO 1240: "
 msgstr "La même durée est assignée à chaque phonème."
 
 msgid ":INFO 1250: "
-msgstr "Découpage en intervalles"
+msgstr "Découpage en intervalles: "
 
 msgid ":INFO 1252: "
-msgstr "Alignement de chaque intervalle"
+msgstr "Alignement de chaque intervalle: "
 
 msgid ":INFO 1254: "
-msgstr "Fusion des alignements"
+msgstr "Fusion des alignements des intervalles:"
 
 msgid ":INFO 1256: "
-msgstr "Fichier {!s:s}"
+msgstr "Création de la tier des activités:"
 
 msgid ":INFO 1260: "
 msgstr "Alignement des tokens désactivé."
 
 msgid ":INFO 1262: "
-msgstr "Pas de Tokens alignés trouvé. Aucune extra tier ne pourra être créée."
+msgstr "Pas de tier de tokens alignés. La génération des activités est annulé."
 
 msgid ":INFO 1264: "
-msgstr "La tier {tiername} n'a pas été trouvée. Aucune tier supplémentaire ne pourra être créée."
+msgstr "La tier {tiername} n'a pas été trouvée. Aucune tier supplémentaire ne peut être créée."
 
 msgid ":INFO 1270: "
-msgstr "Génération de la tier {tiername} : {message}"
+msgstr "Génération de la tier {tiername}: {message}"
 
 msgid ":INFO 1280: "
-msgstr "Répertoire de travail : {dirname}."
-
-msgid ":ERROR 4014: "
-msgstr "Il manque la section {section_name} dans le fichier de configuration."
+msgstr "Le répertoire de travail est {dirname}."
 
 msgid ":ERROR 1010: "
 msgstr "Option inconnue avec la clé {key}."
@@ -211,3 +208,6 @@ msgstr "Le dossier {dirname} n'existe pas."
 
 msgid ":ERROR 1220: "
 msgstr "Le dossier {dirname} ne contient aucun fichier qui pourrait être utilisé."
+
+msgid ":ERROR 4014: "
+msgstr "Il manque la section {section_name} dans le fichier de configuration."

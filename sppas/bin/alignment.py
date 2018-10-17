@@ -112,9 +112,9 @@ parser.add_argument("--noactivity",
                     action='store_true',
                     help="Do not generate Activity tier")
 
-parser.add_argument("--nophntok",
+parser.add_argument("--activitydur",
                     action='store_true',
-                    help="Do not generate PhnTokAlign tier")
+                    help="Generates the Activity Duration tier")
 
 parser.add_argument("--quiet",
                     action='store_true',
@@ -159,9 +159,9 @@ a.set_activity_tier(True)
 if args.noactivity:
     a.set_activity_tier(False)
 
-a.set_phntokalign_tier(True)
-if args.nophntok:
-    a.set_phntokalign_tier(False)
+a.set_activity_duration_tier(False)
+if args.activitydur:
+    a.set_activity_duration_tier(True)
 
 a.set_aligner(args.a)
 

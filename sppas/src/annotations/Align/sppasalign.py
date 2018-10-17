@@ -36,14 +36,14 @@
 import shutil
 import os
 import logging
+import traceback
 
 from sppas.src.config import paths
 from sppas.src.config import annots
-from sppas.src.config import separators
 from sppas.src.config import annotations_translation
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
-from sppas.src.anndata import sppasTier
+from sppas.src.anndata import sppasLabel, sppasTag, sppasLocation
 from sppas.src.anndata import sppasMedia
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.models.acm.modelmixer import sppasModelMixer
@@ -60,11 +60,11 @@ from .tracksio import TracksReaderWriter
 from .tracksgmt import TrackSegmenter
 from .activity import sppasActivity
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 _ = annotations_translation.gettext
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 MSG_MODEL_L1_FAILED = (_(":INFO 1210: "))
 MSG_ALIGN_TRACK = (_(":INFO 1220: "))
@@ -73,12 +73,13 @@ MSG_BASIC = (_(":INFO 1240: "))
 MSG_ACTION_SPLIT_INTERVALS = (_(":INFO 1250: "))
 MSG_ACTION_ALIGN_INTERVALS = (_(":INFO 1252: "))
 MSG_ACTION_MERGE_INTERVALS = (_(":INFO 1254: "))
+MSG_ACTION_EXTRA_TIER = (_(":INFO 1256: "))
 MSG_TOKENS_DISABLED = (_(":INFO 1260: "))
 MSG_NO_TOKENS_ALIGN = (_(":INFO 1262: "))
 MSG_EXTRA_TIER = (_(":INFO 1270: "))
 MSG_WORKDIR = (_(":INFO 1280: "))
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasAlign(sppasBaseAnnotation):
@@ -121,7 +122,7 @@ class sppasAlign(sppasBaseAnnotation):
         self.fix_segmenter(model, model_L1)
         self.reset()
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def reset(self):
         """Reset the options to configure this automatic annotation."""
@@ -130,7 +131,6 @@ class sppasAlign(sppasBaseAnnotation):
         self._options['basic'] = False    # Perform a basic alignment if error
         self._options['activity'] = True  # Add the Activity tier
         self._options['activityduration'] = False
-        self._options['phntok'] = False   # Add the PhnTokAlign tier
 
     # -----------------------------------------------------------------------
 
@@ -174,9 +174,9 @@ class sppasAlign(sppasBaseAnnotation):
         self._tracksrw = TracksReaderWriter(mapping)
         self._segmenter = TrackSegmenter(model)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Methods to fix options
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def fix_options(self, options):
         """Fix all options.
@@ -188,7 +188,6 @@ class sppasAlign(sppasBaseAnnotation):
             - aligner
             - activity
             - activityduration
-            - phntok
 
         :param options: (sppasOption)
 
@@ -212,13 +211,10 @@ class sppasAlign(sppasBaseAnnotation):
             elif "activityduration" == key:
                 self.set_activity_duration_tier(opt.get_value())
 
-            elif "phntok" == key:
-                self.set_phntokalign_tier(opt.get_value())
-
             else:
                 raise AnnotationOptionError(key)
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_clean(self, clean):
         """Fix the clean option.
@@ -272,18 +268,8 @@ class sppasAlign(sppasBaseAnnotation):
         self._options['activityduration'] = bool(value)
 
     # -----------------------------------------------------------------------
-
-    def set_phntokalign_tier(self, value):
-        """Fix the phntok option.
-
-        :param value: (bool) PhnTokAlign tier generation.
-
-        """
-        self._options['phntok'] = bool(value)
-
-    # ------------------------------------------------------------------------
     # Automatic Speech Segmentation
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _segment_track_with_basic(self, audio, phn, token, align):
         """Segmentation of a track with the basic alignment system."""
@@ -378,7 +364,7 @@ class sppasAlign(sppasBaseAnnotation):
 
         return tier_phn, tier_tok, tier_pron
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def append_extra(self, trs):
         """Append extra tiers in trs.
@@ -386,6 +372,10 @@ class sppasAlign(sppasBaseAnnotation):
         :param trs: (Transcription)
 
         """
+        if self._options['activity'] is False and \
+                self._options['activityduration'] is False:
+            return
+
         token_align = trs.find("TokensAlign")
         if token_align is None:
             self.print_message(MSG_NO_TOKENS_ALIGN, indent=2,
@@ -393,32 +383,34 @@ class sppasAlign(sppasBaseAnnotation):
             return trs
 
         # Activity tier
-        if self._options['activity'] is True or \
-                self._options['activityduration'] is True:
-            try:
-                activity = sppasActivity()
-                tier = activity.get_tier(trs)
-                if self._options['activity'] is True:
-                    trs.append(tier)
-                    trs.add_hierarchy_link("TimeAlignment", token_align, tier)
+        try:
+            self.print_message(MSG_ACTION_EXTRA_TIER, indent=2,
+                               status=annots.info)
+            activity = sppasActivity()
+            tier = activity.get_tier(trs)
+            if self._options['activity'] is True:
+                trs.append(tier)
+                trs.add_hierarchy_link("TimeAlignment", token_align, tier)
 
-                if self._options['activityduration'] is True:
-                    dtier = tier.copy()
-                    dtier.set_name("ActivityDuration")
-                    trs.append(dtier)
-                    for a in dtier:
-                        d = a.get_best_localization().duration().get_value()
-                        a.set_labels(sppasLabel(sppasTag(d, float)))
+            if self._options['activityduration'] is True:
+                dur_tier = trs.create_tier('ActivityDuration')
+                for a in tier:
+                    interval = a.get_location().get_best()
+                    dur = interval.duration().get_value()
+                    dur_tier.create_annotation(
+                        sppasLocation(interval.copy()),
+                        sppasLabel(sppasTag(dur, tag_type="float"))
+                    )
+                trs.add_hierarchy_link("TimeAssociation",
+                                       tier, dur_tier)
+        except Exception as e:
+            logging.error(traceback.format_exc())
+            self.print_message(
+                MSG_EXTRA_TIER.format(
+                    tiername="Activities", message=str(e)),
+                indent=2, status=annots.warning)
 
-            except Exception as e:
-                self.print_message(
-                    MSG_EXTRA_TIER.format(
-                        tiername="Activities", message=str(e)),
-                    indent=2, status=annots.warning)
-
-        return trs
-
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def run(self, phonesname, tokensname, audioname, outputfilename=None):
         """Execute SPPAS Alignment.
@@ -436,8 +428,6 @@ class sppasAlign(sppasBaseAnnotation):
         self.print_diagnosis(audioname, phonesname, tokensname)
 
         # Get the tiers to be time-aligned
-        # ---------------------------------------------------------------
-
         parser = sppasRW(phonesname)
         trs_input = parser.read()
         phon_tier = sppasFindTier.phonetization(trs_input)
@@ -454,8 +444,6 @@ class sppasAlign(sppasBaseAnnotation):
                                indent=2, status=annots.warning)
 
         # Prepare data
-        # -------------------------------------------------------------
-
         input_audio = fix_audioinput(audioname)
         workdir = fix_workingdir(input_audio)
         if self._options['clean'] is False:
@@ -463,14 +451,10 @@ class sppasAlign(sppasBaseAnnotation):
                                indent=3, status=None)
 
         # Set media
-        # --------------------------------------------------------------
-
         extm = os.path.splitext(audioname)[1].lower()[1:]
         media = sppasMedia(audioname, mime_type="audio/"+extm)
 
         # Processing...
-        # ---------------------------------------------------------------
-
         try:
             tier_phn, tier_tok, tier_pron = self.convert(
                 phon_tier,
@@ -512,8 +496,9 @@ class sppasAlign(sppasBaseAnnotation):
                 shutil.rmtree(workdir)
             raise
 
+        self.append_extra(trs_output)
+
         # Save results
-        # --------------------------------------------------------------
         if outputfilename is not None:
             try:
                 # Save in a file
@@ -526,7 +511,6 @@ class sppasAlign(sppasBaseAnnotation):
                 raise
 
         # Clean!
-        # --------------------------------------------------------------
         # if the audio file was converted.... remove the tmpaudio
         if input_audio != audioname:
             os.remove(input_audio)
