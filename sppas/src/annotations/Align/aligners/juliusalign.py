@@ -66,7 +66,7 @@ from sppas.src.config import symbols
 from sppas.src.models.slm.ngramsmodel import sppasNgramsModel
 from sppas.src.models.slm.arpaio import sppasArpaIO
 from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
-from sppas.src.utils.makeunicode import sppasUnicode
+from sppas.src.utils.makeunicode import sppasUnicode, u
 from sppas.src.resources.dictpron import sppasDictPron
 
 from .basealigner import BaseAligner
@@ -304,13 +304,14 @@ class JuliusAligner(BaseAligner):
         line = p.communicate()
 
         # Julius not installed
-        if len(line[0]) > 0 and "not found" in line[0]:
+        if len(line[0]) > 0 and u("not found") in u(line[0]):
             raise OSError("julius is not properly installed. "
                           "See installation instructions for details.")
 
         # Bad command
-        if len(line[0]) > 0 and "-help" in line[0]:
-            raise OSError("julius command failed: {:s}".format(" ".join(line)))
+        if len(line[0]) > 0 and u("-help") in u(line[0]):
+            msg = u(" ".join(line))
+            raise OSError("julius command failed: {:s}".format(msg))
 
         # Check output file
         if os.path.isfile(outputalign) is False:

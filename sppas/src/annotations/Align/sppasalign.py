@@ -321,6 +321,7 @@ class sppasAlign(sppasBaseAnnotation):
                     indent=3,
                     status=annots.error)
                 self.print_message(str(e), indent=4, status=annots.info)
+                logging.error(traceback.format_exc())
 
                 # Execute BasicAlign
                 if self._options['basic'] is True:

@@ -312,13 +312,13 @@ class palign(BaseAlignersReader):
         pron_words = [separators.phonemes.join(phn) for phn in phonemes]
         scores = b.get_word_scores_julius(lines)
         if len(words) != len(phonemes):
-            logging.error('Got words: {:s}'.format(words))
-            logging.error('Got phonemes: {:s}'.format(phonemes))
+            logging.error('Got words: {}'.format(words))
+            logging.error('Got phonemes: {}'.format(phonemes))
             raise IOError("Words/Phonemes are not matching "
                           "in alignment result")
         if len(words) != len(scores):
-            logging.error('Got words: {:s}'.format(words))
-            logging.error('Got scores: {:s}'.format(scores))
+            logging.error('Got words: {}'.format(words))
+            logging.error('Got scores: {}'.format(scores))
             raise IOError("Words/Scores are not matching in alignment result")
         units = b.get_units_julius(lines)
         units = b.units_to_time(units, 100)
@@ -423,8 +423,8 @@ class walign(BaseAlignersReader):
         words = b.get_words_julius(lines)
         scores = b.get_word_scores_julius(lines)
         if len(words) != len(scores):
-            logging.error('Got words: {:s}'.format(words))
-            logging.error('Got scores: {:s}'.format(scores))
+            logging.error('Got words: {}'.format(words))
+            logging.error('Got scores: {}'.format(scores))
             raise IOError("Words/Scores are not matching in alignment result")
         units = b.get_units_julius(lines)
         units = b.units_to_time(units, 100)
@@ -434,8 +434,8 @@ class walign(BaseAlignersReader):
         i = 0
         for wd, sc in zip(words, scores):
             if i == len(units):
-                logging.error('Got words: {:s}'.format(words))
-                logging.error('Got units: {:s}'.format(units))
+                logging.error('Got words: {}'.format(words))
+                logging.error('Got units: {}'.format(units))
                 raise IOError('Phonemes/Units are not matching '
                               'in alignment result')
 
@@ -591,8 +591,8 @@ class mlf(BaseAlignersReader):
         pron_words = [separators.phonemes.join(phn) for phn in phonemes]
         words = mlf.get_words(lines)
         if len(words) != len(phonemes):
-            logging.error('Got words: {:s}'.format(words))
-            logging.error('Got phonemes: {:s}'.format(phonemes))
+            logging.error('Got words: {}'.format(words))
+            logging.error('Got phonemes: {}'.format(phonemes))
             raise IOError("Words/Phonemes are not matching "
                           "in alignment result")
 
