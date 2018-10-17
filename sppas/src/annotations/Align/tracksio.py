@@ -105,10 +105,11 @@ class TracksReaderWriter(object):
         """Read time-aligned tracks in a directory.
 
         :param dir_name: (str) Input directory to get files.
-        :returns: sppasTranscription
+        :returns: (sppasTier, sppasTier, sppasTier)
 
         """
-        (tier_phn, tier_tok) = TracksReader.read_aligned_tracks(dir_name)
+        tier_phn, tier_tok, tier_pron = \
+            TracksReader.read_aligned_tracks(dir_name)
 
         # map-back phonemes
         self._mapping.set_keep_miss(True)
@@ -128,7 +129,18 @@ class TracksReaderWriter(object):
                 labels.append(sppasLabel(tags, scores))
             ann.set_labels(labels)
 
-        return tier_phn, tier_tok
+        for ann in tier_pron:
+            labels = list()
+            for label in ann.get_labels():
+                tags = list()
+                scores = list()
+                for tag, score in label:
+                    text = tag.get_content()
+                    tags.append(sppasTag(self._mapping.map(text, [separators.phonemes])))
+                    scores.append(score)
+                labels.append(sppasLabel(tags, scores))
+            ann.set_labels(labels)
+        return tier_phn, tier_tok, tier_pron
 
     # ------------------------------------------------------------------------
     # Write files
@@ -271,6 +283,7 @@ class TracksReader:
         # Create new tiers
         tier_phn = sppasTier("PhonAlign")
         tier_tok = sppasTier("TokensAlign")
+        tier_pron = sppasTier("PronTokAlign")
 
         # Explore each unit to get alignments
         track_number = 1
@@ -279,25 +292,21 @@ class TracksReader:
             # Fix filename to read, and load the content
             basename = \
                 TrackNamesGenerator.align_filename(dir_name, track_number)
-            _phonannots, _wordannots = AlignerIO.read_aligned(basename)
+            _phons, _words, _prons = AlignerIO.read_aligned(basename)
 
             # Append alignments in tiers
             TracksReader._add_aligned_track_into_tier(
-                tier_phn,
-                _phonannots,
-                unit_start,
-                unit_end
-            )
+                tier_phn, _phons, unit_start, unit_end)
 
             TracksReader._add_aligned_track_into_tier(
-                tier_tok,
-                _wordannots,
-                unit_start,
-                unit_end
-            )
+                tier_tok, _words, unit_start, unit_end)
+
+            TracksReader._add_aligned_track_into_tier(
+                tier_pron, _prons, unit_start, unit_end)
+
             track_number += 1
 
-        return tier_phn, tier_tok
+        return tier_phn, tier_tok, tier_pron
 
     # ------------------------------------------------------------------------
 

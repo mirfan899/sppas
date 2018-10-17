@@ -39,9 +39,11 @@ import logging
 
 from sppas.src.config import paths
 from sppas.src.config import annots
+from sppas.src.config import separators
 from sppas.src.config import annotations_translation
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
+from sppas.src.anndata import sppasTier
 from sppas.src.anndata import sppasMedia
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.models.acm.modelmixer import sppasModelMixer
@@ -125,7 +127,6 @@ class sppasAlign(sppasBaseAnnotation):
         """Reset the options to configure this automatic annotation."""
         self._options = dict()
         self._options['clean'] = True     # Remove temporary files
-        self._options['infersp'] = False  # Add 'sp' at the end of each token
         self._options['basic'] = False    # Perform a basic alignment if error
         self._options['activity'] = True  # Add the Activity tier
         self._options['activityduration'] = False
@@ -184,7 +185,6 @@ class sppasAlign(sppasBaseAnnotation):
             - clean
             - basic
             - aligner
-            - infersp
             - activity
             - activityduration
             - phntok
@@ -204,9 +204,6 @@ class sppasAlign(sppasBaseAnnotation):
 
             elif "aligner" == key:
                 self.set_aligner(opt.get_value())
-
-            elif "infersp" == key:
-                self.set_infersp(opt.get_value())
 
             elif "activity" == key:
                 self.set_activity_tier(opt.get_value())
@@ -241,18 +238,6 @@ class sppasAlign(sppasBaseAnnotation):
         """
         self._segmenter.set_aligner(aligner_name)
         self._options['aligner'] = aligner_name
-
-    # -----------------------------------------------------------------------
-
-    def set_infersp(self, infersp):
-        """Fix the infersp option.
-
-        :param infersp: (bool) When set to True, the aligner adds an optional
-        short pause at the end of each token, and it will infer it.
-        Unfortunately... it does not really work as we expected!
-
-        """
-        self._segmenter.set_infersp(infersp)
 
     # -----------------------------------------------------------------------
 
@@ -391,13 +376,10 @@ class sppasAlign(sppasBaseAnnotation):
 
         # Merge track alignment results
         self.print_message(MSG_ACTION_MERGE_INTERVALS, indent=2)
-        tier_phn, tier_tok = self._tracksrw.read_aligned_tracks(workdir)
+        tier_phn, tier_tok, tier_pron = \
+            self._tracksrw.read_aligned_tracks(workdir)
 
-        #if self._segmenter.get_aligner() != 'basic':
-        #    self.rustine_liaisons(tier_phn, tier_tok)
-        #    self.rustine_others(tier_phn, tier_tok)
-
-        return tier_phn, tier_tok
+        return tier_phn, tier_tok, tier_pron
 
     # ------------------------------------------------------------------------
 
@@ -411,19 +393,6 @@ class sppasAlign(sppasBaseAnnotation):
         if token_align is None:
             self.print_message(MSG_NO_TOKENS_ALIGN, indent=2, status=annots.warning)
             return trs
-
-        # PhnTokAlign tier
-        if self._options['phntok'] is True:
-            try:
-                phonalign = trs.Find("PhonAlign")
-                tier = sppasAlign.phntokalign_tier(phonalign, token_align)
-                trs.Append(tier)
-                trs.GetHierarchy().add_link("TimeAssociation", token_align, tier)
-            except Exception as e:
-                self.print_message(
-                    MSG_EXTRA_TIER.format(tiername="PhnTokAlign", message=str(e)), 
-                    indent=2, 
-                    status=annots.warning)
 
         # Activity tier
         if self._options['activity'] is True or self._options['activityduration'] is True:
@@ -449,37 +418,6 @@ class sppasAlign(sppasBaseAnnotation):
                     status=annots.warning)
 
         return trs
-
-    # ------------------------------------------------------------------------
-
-    @staticmethod
-    def phntokalign_tier(tierphon, tiertoken):
-        """Generate the PhnTokAlignTier from PhonAlign and TokensAlign.
-
-        :param tierphon: (Tier)
-        :param tiertoken: (Tier)
-
-        """
-        new_tier = sppasTier('PhnTokAlign')
-        new_tier.SetMedia(tiertoken.GetMedia())
-
-        for ann_token in tiertoken:
-
-            # Create the sequence of phonemes
-            # Use only the phoneme with the best score.
-            # Don't generate alternatives, and won't never do it.
-            beg = ann_token.GetLocation().GetBegin()
-            end = ann_token.GetLocation().GetEnd()
-            ann_phons = tierphon.Find(beg, end)
-            l = "-".join(ann.GetLabel().GetValue() for ann in ann_phons)
-
-            # Append in the new tier
-            new_ann = ann_token.Copy()
-            score = new_ann.GetLabel().GetLabel().GetScore()
-            new_ann.GetLabel().SetValue(Text(l, score))
-            new_tier.Add(new_ann)
-
-        return new_tier
 
     # ------------------------------------------------------------------------
 
@@ -535,7 +473,7 @@ class sppasAlign(sppasBaseAnnotation):
         # ---------------------------------------------------------------
 
         try:
-            tier_phn, tier_tok = self.convert(
+            tier_phn, tier_tok, tier_pron = self.convert(
                 phon_tier,
                 tok_tier,
                 audioname,
@@ -548,7 +486,22 @@ class sppasAlign(sppasBaseAnnotation):
             if tier_tok is not None:
                 tier_tok.set_media(media)
                 trs_output.append(tier_tok)
-                # trs_output = self.append_extra(trs_output)
+                try:
+                    trs_output.add_hierarchy_link("TimeAlignment", tier_phn, tier_tok)
+                except:
+                    pass
+
+            if tier_pron is not None:
+                tier_pron.set_media(media)
+                trs_output.append(tier_pron)
+                try:
+                    if tier_tok is not None:
+                        trs_output.add_hierarchy_link("TimeAssociation", tier_tok, tier_pron)
+                    else:
+                        trs_output.add_hierarchy_link("TimeAlignment", tier_phn, tier_pron)
+                except:
+                    pass
+
         except Exception as e:
             self.print_message(str(e))
             if self._options['clean'] is True:
@@ -578,89 +531,3 @@ class sppasAlign(sppasBaseAnnotation):
             shutil.rmtree(workdir)
 
         return trs_output
-
-    # ------------------------------------------------------------------------
-    # Private: some very bad hack...
-    # ------------------------------------------------------------------------
-
-    def rustine_others(self, trs):
-        """veritable rustine pour decaler la fin des non-phonemes."""
-        tierphon = trs.Find("PhonAlign")
-        if tierphon is None:
-            return trs
-
-        imax = tierphon.GetSize() - 1
-        for i, a in reversed(list(enumerate(tierphon))):
-            if i < imax:
-                nexta = tierphon[i+1]
-                if nexta.GetLabel().GetValue() == "#":
-                    continue
-                durnexta = nexta.GetLocation().GetDuration()
-
-                if a.GetLabel().GetValue() == "sil" and durnexta > 0.05:
-                    a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.03)
-                    nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
-
-                if a.GetLabel().GetValue() in ["fp", "dummy"] and durnexta > 0.04:
-                    a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.02)
-                    nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
-
-        tiertok = trs.Find("TokensAlign")
-        if tiertok is None:
-            return trs
-
-        imax = tiertok.GetSize() - 1
-        for i, a in reversed(list(enumerate(tiertok))):
-            if i < imax:
-                nexta = tiertok[i+1]
-                if nexta.GetLabel().GetValue() == "#":
-                    continue
-                durnexta = nexta.GetLocation().GetDuration()
-
-                if a.GetLabel().GetValue() == "sil" and durnexta > 0.05:
-                    a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.03)
-                    nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
-
-                if a.GetLabel().GetValue() in ["euh", "dummy"] and durnexta > 0.04:
-                    a.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint() + 0.02)
-                    nexta.GetLocation().SetBeginMidpoint(a.GetLocation().GetEndMidpoint())
-
-        return trs
-
-    # ------------------------------------------------------------------------
-
-    def rustine_liaisons(self, trs):
-        """veritable rustine pour supprimer qqs liaisons en trop."""
-        # Only for French!
-        if self._segmenter.aligntrack.get_model().endswith("fra") is False:
-            return trs
-
-        logging.debug('LIAISONS patch...')
-
-        tierphon = trs.Find("PhonAlign")
-        tiertokens = trs.Find("TokensAlign")
-        if tiertokens is None or tierphon is None:
-            return trs
-
-        # supprime les /z/ et /t/ de fin de mot si leur duree est < 65ms.
-        for i, a in reversed(list(enumerate(tierphon))):
-            if a.GetLocation().GetDuration().GetValue() < 0.055 and \
-               a.GetLabel().GetValue() in ["z", "n", "t"]:
-                # get the corresponding token
-                for t in tiertokens:
-                    # this is not the only phoneme in this token!
-                    # and the token is not finishing by a vowel...
-                    last_char = t.GetLabel().GetValue()
-                    if len(last_char) > 0:
-                        last_char = last_char[-1]
-                    if a.GetLocation().GetEnd() == t.GetLocation().GetEnd() and \
-                       a.GetLocation().GetBegin() != t.GetLocation().GetBegin() and \
-                       last_char not in ["a", "e", "i", "o", "u", u"é", u"à", u"è"]:
-                        # Remove a and extend previous annotation
-                        logging.debug(' ... liaison removed %s in token %s' % (a, t.GetLabel().GetValue()))
-                        prev = tierphon[i-1]
-                        a = tierphon.Pop(i)
-                        prev.GetLocation().SetEndMidpoint(a.GetLocation().GetEndMidpoint())
-                        #self.logfile.print_message("Liaison removed: %s " % a)
-
-        return trs

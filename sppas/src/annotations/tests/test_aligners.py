@@ -89,6 +89,13 @@ class TestAlignersIO(unittest.TestCase):
         self.assertEqual(2.65, units[-1][0])
         self.assertEqual(2.82, units[-1][1])
 
+    def test_shift_time_units(self):
+        units = [(0., 0.03), (0.03, 1.)]
+        shifted = BaseAlignersReader.shift_time_units(units, 0.01)
+        self.assertEqual([(0., 0.04), (0.04, 1.)], shifted)
+        shifted = BaseAlignersReader.shift_time_units(shifted, -0.01)
+        self.assertEqual(units, shifted)
+
     def test_get_words_julius_phonemes(self):
         b = BaseAlignersReader()
         lines = b.get_lines(os.path.join(DATA, "track_000002.palign"))
@@ -103,23 +110,26 @@ class TestAlignersIO(unittest.TestCase):
         b = palign()
         self.assertEqual("palign", b.extension)
         expected_tokens = \
-            [(0.0, 0.06, 'the', '0.618'), (0.06, 0.35, 'flight', '1.000'),\
-             (0.35, 0.61, 'was', '0.432'), (0.61, 0.85, 'twelve', '1.000'),\
-             (0.85, 1.21, 'hours', '0.746'), (1.21, 1.42, 'long', '1.000'),\
-             (1.42, 1.56, 'and', '0.510'), (1.56, 1.76, 'we', '1.000'),\
-             (1.76, 2.09, 'really', '0.808'), (2.09, 2.37, 'got', '1.000'),\
-             (2.37, 2.82, 'bored', '1.000')]
+            [(0.0, 0.07, 'the', None), (0.07, 0.36, 'flight', None),\
+             (0.36, 0.62, 'was', None), (0.62, 0.86, 'twelve', None),\
+             (0.86, 1.22, 'hours', None), (1.22, 1.43, 'long', None),\
+             (1.43, 1.57, 'and', None), (1.57, 1.77, 'we', None),\
+             (1.77, 2.1, 'really', None), (2.10, 2.38, 'got', None),\
+             (2.38, 2.82, 'bored', None)]
 
-        phones, tokens = b.read(os.path.join(DATA, "track_000002.palign"))
+        phones, tokens, prons = b.read(os.path.join(DATA, "track_000002.palign"))
         self.assertEqual(expected_tokens, tokens)
+        self.assertEqual(len(expected_tokens), len(prons))
         self.assertEqual(35, len(phones))
+        self.assertEqual((0., 0.07, 'dh-ax', '0.618'), prons[0])
+        self.assertEqual((1.43, 1.57, 'n-d', '0.510'), prons[6])
 
     def test_read_walign(self):
         b = walign()
         self.assertEqual("walign", b.extension)
-        phones, tokens = b.read(os.path.join(DATA, "track_000000.walign"))
+        tokens = b.read(os.path.join(DATA, "track_000000.walign"))
         self.assertEqual(21, len(tokens))
-        self.assertEqual((0.2, 0.37, '感', '0.306'), tokens[1])
+        self.assertEqual((0.21, 0.38, '感', '0.306'), tokens[1])
 
     def test_get_time_units_mlf(self):
         b = mlf()
@@ -140,20 +150,21 @@ class TestAlignersIO(unittest.TestCase):
         lines = b.get_lines(os.path.join(DATA, "track_sample.mlf"))
         phonemes = b.get_phonemes(lines)
         words = b.get_words(lines)
-        self.assertEquals(3, len(phonemes))
-        self.assertEquals(3, len(words))
+        self.assertEqual(3, len(phonemes))
+        self.assertEqual(3, len(words))
 
     def test_read_mlf(self):
         b = mlf()
         self.assertEqual("mlf", b.extension)
-        phones, tokens = b.read(os.path.join(DATA, "track_sample.mlf"))
+        phones, tokens, prons = b.read(os.path.join(DATA, "track_sample.mlf"))
         expected_tokens = \
-            [(0.0, 0.08, 'w_1', None),\
-             (0.08, 0.18, 'w_2', None),\
-             (0.18, 0.28, 'w_3', None)]
+            [(0.0, 0.09, 'h#', None),\
+             (0.09, 0.19, 'q', None),\
+             (0.19, 0.28, 'iy', None)]
         self.assertEqual(expected_tokens, tokens)
+        self.assertEqual(len(expected_tokens), len(prons))
+        self.assertEqual((0., 0.09, 'h#_s2-h#_s3-h#_s4', None), prons[0])
         self.assertEqual(9, len(phones))
-
 
 # ---------------------------------------------------------------------------
 
@@ -198,7 +209,7 @@ class TestBaseAligner(unittest.TestCase):
         self.assertFalse(self._aligner.get_infersp())
         self._aligner.set_infersp(True)
         self.assertTrue(self._aligner.get_infersp())
-        self._aligner.set_infersp("ejzkjreg")
+        self._aligner.set_infersp("ejzkjg")
         self.assertFalse(self._aligner.get_infersp())
 
     def test_norun(self):

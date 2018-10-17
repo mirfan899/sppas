@@ -280,17 +280,20 @@ class TestTracksReader(unittest.TestCase):
     """Read time-aligned track files."""
 
     def test_read(self):
-        tier_phn, tier_tok = TracksReader.read_aligned_tracks(DATA)
+        tier_phn, tier_tok, tier_pron = TracksReader.read_aligned_tracks(DATA)
         self.assertEqual(36, len(tier_phn))
+        self.assertEqual(12, len(tier_tok))
+        self.assertEqual(12, len(tier_pron))
+
         self.assertEqual("dh", tier_phn[1].serialize_labels())
         self.assertEqual("ax", tier_phn[2].serialize_labels())
         self.assertEqual("f", tier_phn[3].serialize_labels())
         self.assertEqual("l", tier_phn[4].serialize_labels())
         self.assertEqual("ay", tier_phn[5].serialize_labels())
         self.assertEqual("t", tier_phn[6].serialize_labels())
-        #self.assertEqual("ae", tier_phn[21].serialize_labels())
 
-        self.assertEqual(12, len(tier_tok))
+        self.assertEqual("dh-ax", tier_pron[1].serialize_labels())
+        self.assertEqual("f-l-ay-t", tier_pron[2].serialize_labels())
 
 # ---------------------------------------------------------------------------
 
@@ -422,16 +425,20 @@ class TestTracksReaderWriter(unittest.TestCase):
             os.path.join(DATA, "monophones.repl")
         ))
 
-        tier_phn, tier_tok = trks.read_aligned_tracks(DATA)
+        tier_phn, tier_tok, tier_pron = trks.read_aligned_tracks(DATA)
         self.assertEqual(36, len(tier_phn))
+        self.assertEqual(12, len(tier_tok))
+        self.assertEqual(12, len(tier_pron))
+
         self.assertEqual("D", tier_phn[1].serialize_labels())
         self.assertEqual("@", tier_phn[2].serialize_labels())
         self.assertEqual("f", tier_phn[3].serialize_labels())
         self.assertEqual("l", tier_phn[4].serialize_labels())
         self.assertEqual("aI", tier_phn[5].serialize_labels())
         self.assertEqual("t", tier_phn[6].serialize_labels())
-        #self.assertEqual("{", tier_phn[21].serialize_labels())
-        self.assertEqual(12, len(tier_tok))
+
+        self.assertEqual("D-@", tier_pron[1].serialize_labels())
+        self.assertEqual("f-l-aI-t", tier_pron[2].serialize_labels())
 
 # ---------------------------------------------------------------------------
 
@@ -471,16 +478,20 @@ class TestAlign(unittest.TestCase):
         tok_tier = t.find('Tokens')
 
         a = sppasAlign(model)
-        tier_phn, tier_tok = a.convert(phn_tier, tok_tier, audio, TEMP)
+        tier_phn, tier_tok, tier_pron = a.convert(phn_tier, tok_tier, audio, TEMP)
+
         self.assertEqual(123, len(tier_phn))
+        self.assertEqual(39, len(tier_tok))
+        self.assertEqual(39, len(tier_pron))
+
         self.assertEqual("D", tier_phn[1].serialize_labels())
         self.assertEqual("@", tier_phn[2].serialize_labels())
         self.assertEqual("f", tier_phn[3].serialize_labels())
         self.assertEqual("l", tier_phn[4].serialize_labels())
         self.assertEqual("aI", tier_phn[5].serialize_labels())
         self.assertEqual("t", tier_phn[6].serialize_labels())
-        # self.assertEqual("{", tier_phn[21].serialize_labels())
-        self.assertEqual(40, len(tier_tok))
+        self.assertEqual("{", tier_phn[21].serialize_labels())
+        self.assertEqual("{-n-d", tier_pron[7].serialize_labels())
 
     # -----------------------------------------------------------------------
 
