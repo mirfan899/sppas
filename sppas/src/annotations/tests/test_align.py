@@ -495,55 +495,76 @@ class TestAlign(unittest.TestCase):
 
     # -----------------------------------------------------------------------
 
-    def test_samples(self):
+    def test_samples_fra(self):
         """... Compare if the current result is the same as the existing one."""
-        # Test the automatic annotation with its default parameters only.
+        self.compare_samples("fra")
 
-        # each samples folder is tested
-        for samples_folder in os.listdir(paths.samples):
-            if samples_folder.startswith("samples-") is False:
+    # -----------------------------------------------------------------------
+    #
+    # def test_samples_cat(self):
+    #     """... Compare if the current result is the same as the existing one."""
+    #     self.compare_samples("cat")
+
+    # -----------------------------------------------------------------------
+
+    def test_samples_cmn(self):
+        """... Compare if the current result is the same as the existing one."""
+        self.compare_samples("cmn")
+
+    # -----------------------------------------------------------------------
+
+    def test_samples_eng(self):
+        """... Compare if the current result is the same as the existing one."""
+        self.compare_samples("eng")
+
+    # -----------------------------------------------------------------------
+    # internal
+    # -----------------------------------------------------------------------
+
+    def compare_samples(self, lang):
+        samples_folder = os.path.join(paths.samples, "samples-"+lang)
+
+        # the place where are the existing results samples.
+        expected_result_dir = os.path.join(paths.samples,
+                                           "annotation-results",
+                                           "samples-" + lang)
+
+        # Create an Aligner for the given set of samples of the given language
+        sa = sppasAlign(os.path.join(paths.resources, "models", "models-"+lang))
+        self.compare_folders(samples_folder, expected_result_dir, sa)
+
+    # -----------------------------------------------------------------------
+
+    def compare_folders(self, samples_folder, expected_result_dir, sa):
+        # Apply Alignment on each sample
+        for filename in os.listdir(os.path.join(paths.samples, samples_folder)):
+            if filename.endswith(".wav") is False:
                 continue
 
-            # the place where are the existing results samples.
-            expected_result_dir = os.path.join(paths.samples,
-                                               "annotation-results",
-                                               samples_folder)
-            if os.path.exists(expected_result_dir) is False:
+            # Get the expected result
+            expected_result_filename = os.path.join(
+                expected_result_dir,
+                filename[:-4] + "-palign.xra")
+            if os.path.exists(expected_result_filename) is False:
+                print("no existing alignment result {:s}".format(expected_result_filename))
+                continue
+            parser = sppasRW(expected_result_filename)
+            expected_result = parser.read()
+            expected_tier_phones = expected_result.find('PhonAlign')
+            if expected_tier_phones is None:
+                print("malformed alignment result for:", filename)
                 continue
 
-            # Create an Aligner for the given set of samples of the given language
-            lang = samples_folder[-3:]
-            model = os.path.join(paths.resources, "models", "models-"+lang)
-            sa = sppasAlign(model)
+            # Estimate a result and check if it's like expected.
+            audio_file = os.path.join(paths.samples, samples_folder, filename)
+            phn_file = os.path.join(expected_result_dir, filename.replace('.wav', '-phon.xra'))
+            tok_file = os.path.join(expected_result_dir, filename.replace('.wav', '-token.xra'))
+            result_file = os.path.join(paths.samples, samples_folder, filename.replace('.wav', '-palign.xra'))
+            expected_result = sa.run(phn_file, tok_file, audio_file, result_file)
+            print('Evaluate:', audio_file)
 
-            # Apply Alignment on each sample
-            for filename in os.listdir(os.path.join(paths.samples, samples_folder)):
-                if filename.endswith(".wav") is False:
-                    continue
-
-                # Get the expected result
-                expected_result_filename = os.path.join(
-                    expected_result_dir,
-                    filename[:-4] + "-palign.xra")
-                if os.path.exists(expected_result_filename) is False:
-                    print("no existing alignment result {:s}".format(expected_result_filename))
-                    continue
-                parser = sppasRW(expected_result_filename)
-                expected_result = parser.read()
-                expected_tier_phones = expected_result.find('PhonAlign')
-                if expected_tier_phones is None:
-                    print("malformed alignment result for:", filename)
-                    continue
-
-                # Estimate a result and check if it's like expected.
-                audio_file = os.path.join(paths.samples, samples_folder, filename)
-                phn_file = os.path.join(expected_result_dir, filename.replace('.wav', '-phon.xra'))
-                tok_file = os.path.join(expected_result_dir, filename.replace('.wav', '-token.xra'))
-                result_file = os.path.join(paths.samples, samples_folder, filename.replace('.wav', '-palign.xra'))
-                expected_result = sa.run(phn_file, tok_file, audio_file, result_file)
-
-                self.compare_tiers(expected_tier_phones,
-                                   expected_result.find('PhonAlign'))
+            self.compare_tiers(expected_tier_phones,
+                               expected_result.find('PhonAlign'))
 
     # -----------------------------------------------------------------------
 

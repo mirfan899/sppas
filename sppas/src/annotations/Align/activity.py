@@ -125,6 +125,9 @@ class sppasActivity(object):
             return new_tier
         tokens = fill_gaps(tokens_tier, trs.get_min_loc(), trs.get_max_loc())
 
+        if len(tokens) == 0:
+            return new_tier
+
         if len(tokens) == 1:
             new_tier.create_annotation(
                 tokens[0].get_location().copy(),
@@ -132,7 +135,6 @@ class sppasActivity(object):
             return new_tier
 
         for ann in tokens:
-
             new_activity = self.fix_activity(ann)
             # The activity has changed
             if activity != new_activity and activity != "<INIT>":
@@ -151,14 +153,23 @@ class sppasActivity(object):
             # In any case, update current activity
             activity = new_activity
 
-        # Last interval
+        # last registered activity (we ignored it)
 
-        if new_tier.get_last_point() < tokens.get_last_point():
+        if len(new_tier) == 0:
+            # we observed only one activity...
             new_tier.create_annotation(
                 sppasLocation(sppasInterval(
-                    new_tier.get_last_point(),
+                    tokens.get_first_point(),
                     tokens.get_last_point())),
                 sppasLabel(sppasTag(activity)))
+
+        else:
+            if new_tier.get_last_point() < tokens.get_last_point():
+                new_tier.create_annotation(
+                    sppasLocation(sppasInterval(
+                        new_tier.get_last_point(),
+                        tokens.get_last_point())),
+                    sppasLabel(sppasTag(activity)))
 
         return unfill_gaps(new_tier)
 
