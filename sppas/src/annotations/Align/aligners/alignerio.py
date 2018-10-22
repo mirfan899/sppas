@@ -122,10 +122,11 @@ class BaseAlignersReader(object):
         while lines[i].startswith('phseq1') is False:
             i += 1
             if i == len(lines):
-                raise IOError('Phonemes sequence not found '
-                              'in alignment result')
+                raise IOError('Phonemes sequence not found.')
         line = lines[i]
-        line = line[7:]
+        line = line[7:].strip()
+        if len(line) == 0:
+            raise IOError('Empty phonemes sequence.')
         words = line.split('|')
         for phn in words:
             phn = phn.strip()
@@ -307,18 +308,28 @@ class palign(BaseAlignersReader):
         """
         b = BaseAlignersReader()
         lines = b.get_lines(filename)
-        phonemes = b.get_phonemes_julius(lines)
+        try:
+            phonemes = b.get_phonemes_julius(lines)
+        except IOError:
+            logging.error('Got no time-aligned phonemes in file {:s}:'
+                          ''.format(filename))
+            raise
+
         words = b.get_words_julius(lines)
         pron_words = [separators.phonemes.join(phn) for phn in phonemes]
         scores = b.get_word_scores_julius(lines)
         if len(words) != len(phonemes):
-            logging.error('Got words: {}'.format(words))
-            logging.error('Got phonemes: {}'.format(phonemes))
+            logging.error('Words/Phonemes are not matching in file: {:s}'
+                          ''.format(filename))
+            logging.error('   - words: {}'.format(words))
+            logging.error('   - phonemes: {}'.format(phonemes))
             raise IOError("Words/Phonemes are not matching "
                           "in alignment result")
         if len(words) != len(scores):
-            logging.error('Got words: {}'.format(words))
-            logging.error('Got scores: {}'.format(scores))
+            logging.error('Words/Scores are not matching in file: {:s}'
+                          ''.format(filename))
+            logging.error('   - words: {}'.format(words))
+            logging.error('   - scores: {}'.format(scores))
             raise IOError("Words/Scores are not matching in alignment result")
         units = b.get_units_julius(lines)
         units = b.units_to_time(units, 100)
