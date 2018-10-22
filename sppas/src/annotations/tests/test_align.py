@@ -501,9 +501,9 @@ class TestAlign(unittest.TestCase):
 
     # -----------------------------------------------------------------------
     #
-    # def test_samples_cat(self):
-    #     """... Compare if the current result is the same as the existing one."""
-    #     self.compare_samples("cat")
+    def test_samples_cat(self):
+        """... Compare if the current result is the same as the existing one."""
+        self.compare_samples("cat")
 
     # -----------------------------------------------------------------------
 

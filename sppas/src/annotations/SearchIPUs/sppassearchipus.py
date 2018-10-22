@@ -308,9 +308,6 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         :returns: (sppasTranscription)
 
         """
-        self.print_filename(input_filename)
-        self.print_diagnosis(input_filename)
-
         # Get audio and the channel we'll work on
         audio_speech = sppas.src.audiodata.aio.open(input_filename)
         idx = audio_speech.extract_channel()
@@ -365,6 +362,8 @@ class sppasSearchIPUs(sppasBaseAnnotation):
 
             # Indicate the file to be processed
             progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
+            self.print_filename(f)
+            self.print_diagnosis(f)
 
             # Fix input/output file name
             out_name = os.path.splitext(f)[0] + output_format

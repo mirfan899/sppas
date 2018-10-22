@@ -385,8 +385,7 @@ class sppasAlign(sppasBaseAnnotation):
 
         # Activity tier
         try:
-            self.print_message(MSG_ACTION_EXTRA_TIER, indent=2,
-                               status=annots.info)
+            self.print_message(MSG_ACTION_EXTRA_TIER, indent=2)
             activity = sppasActivity()
             tier = activity.get_tier(trs)
             if self._options['activity'] is True:

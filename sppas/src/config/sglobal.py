@@ -54,7 +54,7 @@ class sppasGlobalSettings(sppasBaseSettings):
         super(sppasGlobalSettings, self).__init__()
 
         self.__dict__ = dict(
-            __version__="1.9.8",
+            __version__="1.9.9",
             __author__="Brigitte Bigi",
             __contact__="contact@sppas.org",
             __copyright__="Copyright (C) 2011-2018 Brigitte Bigi",
