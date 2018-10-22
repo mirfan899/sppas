@@ -44,7 +44,7 @@
         the Phonetician - International Society of Phonetic Sciences,
         ISSN 0741-6164, Number 111-112 / 2015-I-II, pages 54-69.
 
-    To be published:
+    Last published reference:
 
         Brigitte Bigi and Christine Meunier (2018).
         Automatic speech segmentation of spontaneous speech.
