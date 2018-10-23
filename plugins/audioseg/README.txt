@@ -4,8 +4,8 @@ program:    audioseg
 author:     Brigitte Bigi
 contact:    develop@sppas.org
 date:       2018-10-01
-version:    1.0
-copyright:  Copyright (C) 2018  Brigitte Bigi
+version:    2.0
+copyright:  Copyright (C) 2018 Brigitte Bigi
 license:    GNU Public License version 3 or any later version
 brief:      SPPAS plugin for AudioSegmenter.
 
