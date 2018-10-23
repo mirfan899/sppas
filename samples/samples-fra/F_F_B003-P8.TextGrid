@@ -43,7 +43,7 @@ item []:
 		intervals [8]:
 			xmin = 12.494
 			xmax = 15.036
-			text = "ipu_4 j'ai réalisé tout d'un coup + que j'étais enfermé dehors"
+			text = "ipu_4 j'ai réalisé tout d'un coup + que j'étais enfermé dehors !"
 		intervals [9]:
 			xmin = 15.036
 			xmax = 16.602

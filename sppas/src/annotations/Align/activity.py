@@ -171,7 +171,9 @@ class sppasActivity(object):
                         tokens.get_last_point())),
                     sppasLabel(sppasTag(activity)))
 
-        return unfill_gaps(new_tier)
+        new_tier = unfill_gaps(new_tier)
+        new_tier.set_name('Activity')
+        return new_tier
 
     # -----------------------------------------------------------------------
     # overloads
