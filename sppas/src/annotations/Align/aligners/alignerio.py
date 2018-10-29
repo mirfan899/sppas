@@ -318,19 +318,23 @@ class palign(BaseAlignersReader):
         words = b.get_words_julius(lines)
         pron_words = [separators.phonemes.join(phn) for phn in phonemes]
         scores = b.get_word_scores_julius(lines)
+
         if len(words) != len(phonemes):
             logging.error('Words/Phonemes are not matching in file: {:s}'
                           ''.format(filename))
             logging.error('   - words: {}'.format(words))
             logging.error('   - phonemes: {}'.format(phonemes))
             raise IOError("Words/Phonemes are not matching "
-                          "in alignment result")
+                          "in alignment result of file {:s}".format(filename))
+
         if len(words) != len(scores):
             logging.error('Words/Scores are not matching in file: {:s}'
                           ''.format(filename))
             logging.error('   - words: {}'.format(words))
             logging.error('   - scores: {}'.format(scores))
-            raise IOError("Words/Scores are not matching in alignment result")
+            raise IOError("Words/Scores are not matching in alignment result "
+                          "of file {:s}".format(filename))
+
         units = b.get_units_julius(lines)
         units = b.units_to_time(units, 100)
         units = b.shift_time_units(units, 0.01)
